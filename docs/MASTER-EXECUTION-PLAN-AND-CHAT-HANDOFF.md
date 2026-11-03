@@ -5555,3 +5555,54 @@ Older triage progress bullets called the /h/ allophone work C04; that label is i
 ## C08 no-generalization regression — 2026-11-03
 
 Added negative controls to `tests/test_end_to_end.py` for the five reconstructed or prosodically uncertain C08 contexts: `해줄것`, `많을거같이`, `보일거라`, `내릴수있는`, and `안할듯`. The current R013 implementation does not fortify these without an exact word/phrase license. These tests protect the evidence boundary; they do not claim the five have plain-consonant normative gold. Exact-head Verify run 41611695345 passed all 624 Python tests and 1,389 Browser tests.
+
+
+## Kozak Kim continuation — 2026-11-03 (PR #424, exact head dca6425)
+
+### Scope and implementation
+
+- Continued the existing stacked PR chain #422 → #423 → #424; no parallel implementation or architecture reset. PR #424 is Draft/open and based on #423 at `902d65f40cdbe4b94c5c02c90cd9f493379b846f`; its exact head is `dca64251e073c74a61e62dab3cb99c5fdcb36943` (43 commits ahead of its base, 0 behind).
+- Corrected the exact Kozak Kim lexical entry `끌다`: source-attested Hangul surface is `끌다`, with first-syllable length and plain following ㄷ. The Korean Basic Dictionary entry ParaWordNo=62281 gives `[끌ː다]` and `끌어[끄ː러]`; NIKL teacher-training material independently lists the same pair under the §7 length exceptions. Project IPA `k͈ɯːl|da` is explicitly project-derived, not source-supplied IPA. The Ukrainian target remains provisional and is withheld from canonical output (`input_kind=kozak-research-only`).
+- Added exact, rule-environment-bounded `굶다` mapping for §24: stem-final ㄻ + dictionary ending `-다`; the source explicitly excludes the -기- causative/passive environment and lists `굶기다` as a negative control. This is a rule-derived exact-form extension, not a directly quoted example. No coda-wide generalization was introduced.
+- Added a guard in the project's g2pK comparison adapter so `kozak-research-only` rows cannot modify g2pK surface overrides or IPA lexical overrides. This is adapter isolation, not a change to upstream g2pK: no `src/vendor/g2pk/**` file is in the PR diff, and the pinned g2pK 0.9.4 package/source remains the comparison baseline.
+- Updated Native, Browser, CSV-integrity, source-register and adversarial regression tests. The existing IPA-first pipeline and Ukrainian-target abstention boundary are preserved.
+
+### Exact-head verification
+
+All listed workflows ran on exact head `dca64251e073c74a61e62dab3cb99c5fdcb36943`:
+
+- System Verify [41628584922](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41628584922): **PASS** — Browser regression 1,391/1,391; Python regression/data integrity PASS; production Vite build PASS; generated-page checks PASS. NIKL metadata-only inventory **SKIPPED**.
+- Optional g2pK integration [41628584800](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41628584800): **PASS** on Python 3.11 and 3.12.
+- Morphology consensus [41628584819](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41628584819): **PASS**.
+- Test-case extraction [41628584854](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41628584854): **PASS**.
+- UGTPHON diagnostic [41628584903](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41628584903): **PASS**.
+- Morphology adapter smoke [41628584814](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41628584814): **PASS** (Kiwi/MeCab-Ko real-engine smoke and boundary consensus jobs).
+- Paired Native/g2pK [41628584865](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41628584865): **PASS**, artifact [13226343472](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41628584865/artifacts/13226343472).
+- Multi-engine diagnostic [41628584832](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41628584832): **PASS**, artifact [13226589858](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41628584832/artifacts/13226589858). CharsiuG2P, ByT5 and neural pairing jobs were **SKIPPED**; no scores are claimed for them.
+- Local shell/pytest/npm execution was not available in this session; exact-head GitHub Actions are the verification evidence. The build emitted existing non-fatal large-chunk and Node 20 deprecation warnings.
+
+### Refreshed paired diagnostics (not normative IPA gold)
+
+- UGTPHON: 2,698 paired tokens. Kozak Native scored 1,431 exact (53.0393%), CER 9.0613%; g2pK scored all 2,703 tokens, 1,435 exact (53.0892%), CER 9.2285%. On the 2,698 paired subset, g2pK−Kozak exact delta +0.0741 pp (95% CI −0.0824 to +0.2840; crosses zero) and CER delta +0.1691 pp (95% CI +0.0860 to +0.2617). Kozak has lower CER; g2pK has a two-exact-case overall edge. Kozak abstained on five inputs; g2pK did not.
+- SIGMORPHON 2021: 998 paired scored tokens. Kozak scored 998/999, 358 exact (35.8717%), CER 14.5598%; g2pK scored 999/999, 353 exact (35.3353%), CER 14.8222%. Paired g2pK−Kozak exact delta −0.5010 pp (95% CI −1.0020 to −0.1002) and CER delta +0.2508 pp (95% CI +0.0986 to +0.4444). Kozak is ahead on both paired metrics in this lexical split.
+- Native/Browser parity on UGTPHON: 2,698/2,698 scored raw IPA strings identical; both runtimes abstained on the same five. This is implementation parity, not independent human IPA validation. Both datasets remain diagnostic corpus-label comparisons; g2pK output passes through the repository's shared IPA renderer. Do not claim universal superiority or compare these results with independent IPA gold.
+
+### Updated task ledger
+
+| Work item | Status | Evidence / acceptance |
+|---|---|---|
+| `끌다` source-backed Hangul surface + target abstention | DONE_VERIFIED | NIKL Basic Dictionary ParaWordNo=62281 and official §7 teaching material; exact-head Python/Browser/CSV regressions pass. Project IPA remains derived, not source IPA. |
+| Independent IPA adjudication for `끌다` | PARTIAL | Source gives Hangul reading and length, not IPA. Acceptance: qualified independent IPA review; target adaptation remains withheld. |
+| Exact Rule §24 `굶다` morphology license | DONE_VERIFIED | Source-backed ㄻ + `-다` environment, explicit `굶기다` negative control, Native/Browser regression coverage and exact-head CI pass. |
+| g2pK comparison-baseline isolation | DONE_VERIFIED | Adapter excludes Kozak-only research rows; Python and Browser regression tests pass; upstream/vendor g2pK files untouched. |
+| Exact-head software/build verification | DONE_VERIFIED | System Verify 41628584922; Browser 1,391/1,391; Python/data integrity, build and generated pages pass. |
+| Paired benchmark refresh | DONE_VERIFIED | Runs 41628584865 and 41628584832 plus artifacts inspected; diagnostic limitations recorded above. |
+| Independent Korean IPA review / adjudication | BLOCKED | Requires two qualified independent reviewers and adjudication submissions. |
+| NIKL item-level reuse rights | BLOCKED | Metadata-only inventory skipped; exact item-level KOGL status still needs confirmation. |
+| Ukrainian phonetic/orthographic target review | BLOCKED | Independent target policy review and accepted gold examples absent; target remains provisional/withheld. |
+| C12 `kx/kç` exact-environment evidence | BLOCKED | Need primary acoustic/articulatory evidence and expert IPA review; no production rewrite. |
+| 239 unmapped mismatch occurrences | TODO | Sentence/morphology/boundary/source context adjudication still required. |
+| Supervised IPA training | BLOCKED | No independently adjudicated IPA gold for additions/holdout; training gate remains closed. |
+| CharsiuG2P / ByT5 inference and NIKL metadata inventory | DEFERRED / SKIPPED | Optional workflows skipped; no inference or rights conclusions claimed. |
+
+**Disposition:** stronger and freshly verified research prototype; not research-certified or release-ready. PR #424 remains Draft/open and unmerged. No release, deployment, force-push, branch deletion or main-branch write performed.
