@@ -177,6 +177,7 @@ const NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS=new Map([
   ['비출산','출>산'], // Exact prefixed form; its Sino-Korean constituent 출산 is dictionary-attested [출싼].
   ['저출산','출>산'], // NIKL Basic Dictionary directly lists 저출산[저ː출싼].
   ['실시간','실>시'], // NIKL §26 + NIKL lexical source records 實時間; exact Sino-Korean 실>시간 boundary.
+  ['팔자걸음','팔>자'], // NIKL Basic Dictionary 팔자[팔짜]; exact corpus compound only.
 ]);
 
 // Exact, source-backed NIKL §28 compound fortition cases. These licenses
@@ -190,8 +191,11 @@ const NIKL_28_COMPOUND_FORTITION_FORMS=new Map([
   ['그믐달','믐>달'], ['강가','강>가'], ['초승달','승>달'],
   ['등불','등>불'], ['창살','창>살'], ['강줄기','강>줄'],
   ['아침밥','침>밥'], ['굴속','굴>속'], ['술잔','술>잔'],
-  // NIKL Online Q&A 316282 explicitly cites 물가[물까], 봄비[봄삐].
-  ['물가','물>가'], ['봄비','봄>비'],
+  // NIKL Moscow training material p.12 gives 물가[물까] and negative control 결과[결과].
+  // The attached-particle corpus token is licensed exactly; no ㄹ+ㄱ generalization.
+  ['물가','물>가'], ['물가로','물>가'], ['봄비','봄>비'],
+  // NIKL Basic Dictionary 정신병자[정신뼝자]; exact corpus form with -네 only.
+  ['정신병자네','신>병'],
   // Korean Basic Dictionary directly lists 닭갈비[닥깔비] (ParaWordNo=56047).
   // Exact-form surface evidence only; do not generalize to other ㄺ+ㄱ sequences.
   ['닭갈비','닭>갈'],
@@ -208,7 +212,9 @@ const NIKL_27_ADNOMINAL_PHRASES=new Map([
 // Exact same-eojeol C08 licenses supported by restored UGTPHON contexts and
 // NIKL morphology evidence. These are full-form gates, not a productive -ㄹ+ㅅ rule.
 const NIKL_27_ADNOMINAL_FORMS=new Map([
-  ['무고일수도있다는','일>수'],['했을시','을>시']
+  ['무고일수도있다는','일>수'],['했을시','을>시'],
+  // NIKL §27 commentary: 할 듯하다[할뜨타다]; exact UGTPHON eojeol contexts.
+  ['보일거라','일>거'],['없을듯','을>듯'],['안할듯','할>듯']
 ]);
 const NIKL_29_PHRASE_INSERTION=new Map([
   ['한 일',{onset:'ㄴ'}],['옷 입다',{coda:'ㄴ',onset:'ㄴ'}],

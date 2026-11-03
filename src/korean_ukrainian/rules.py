@@ -205,6 +205,7 @@ _NIKL_R012_WORD_LICENSES = {
     "비출산": "출>산",  # Exact complete-token license for the corpus form; do not generalize to arbitrary internal ㄹ+ㅅ substrings. 출산 itself is dictionary-attested [출싼].
     "저출산": "출>산",  # NIKL Basic Dictionary directly lists 저출산[저ː출싼].
     "실시간": "실>시",  # NIKL lexical source records 실시간(實時間); §26 licenses this exact Sino-Korean boundary.
+    "팔자걸음": "팔>자",  # NIKL Basic Dictionary 팔자[팔짜]; exact corpus compound only.
 }
 
 # Exact examples explicitly listed in NIKL §28 (fortition in compounds
@@ -226,6 +227,12 @@ _NIKL_R013_PHRASE_LICENSES = {
 _NIKL_R013_WORD_LICENSES = {
     "무고일수도있다는": "일>수",
     "했을시": "을>시",
+    # NIKL §27 commentary explicitly gives 할 듯하다[할뜨타다]; UGTPHON
+    # supplies these exact, tightly connected eojeol contexts.
+    "보일거라": "일>거",
+    "없을듯": "을>듯",
+    "안할듯": "할>듯",
+    # Do not infer from -ㄹ alone: many other corpus tokens remain unlicensed.
 }
 
 _NIKL_R014_WORD_LICENSES = {
@@ -235,9 +242,11 @@ _NIKL_R014_WORD_LICENSES = {
     "그믐달": "믐>달", "강가": "강>가", "초승달": "승>달",
     "등불": "등>불", "창살": "창>살", "강줄기": "강>줄",
     "아침밥": "침>밥", "굴속": "굴>속", "술잔": "술>잔",
-    # NIKL Online Q&A qna_seq=316282 explicitly gives 물가[물까] and 봄비[봄삐]
-    # as fortition examples in compounds without written 사이시옷.
-    "물가": "물>가", "봄비": "봄>비",
+    # NIKL Moscow training material p.12 gives 물가[물까] and negative control
+    # 결과[결과] as irregular lexical readings; Q&A 316282 also lists 물가.
+    "물가": "물>가", "물가로": "물>가", "봄비": "봄>비",
+    # NIKL Basic Dictionary 정신병자[정신뼝자]; exact corpus form with -네 only.
+    "정신병자네": "신>병",
     # Korean Basic Dictionary directly lists 닭갈비[닥깔비] (ParaWordNo=56047).
     # Exact-form only: the dictionary attests the surface, not IPA or Ukrainian output.
     "닭갈비": "닭>갈",

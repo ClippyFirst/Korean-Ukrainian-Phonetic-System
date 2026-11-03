@@ -99,10 +99,10 @@ def test_nikl_moscow_material_supports_only_the_exact_water_price_exception():
     assert "item-level KOGL" in source["license_status"]
     assert "not a general" in source["limitations_or_next_action"].lower()
 
-def test_nikl_2010_and_dictionary_discrepancy_sources_keep_exact_evidence_scope():
+def test_nikl_dictionary_discrepancy_sources_keep_exact_evidence_scope():
     rows = {row["source_id"]: row for row in load_source_register()}
     expected = {
-        "SRC-NIKL-EDU-MOSKVA-2010": "물가[물까]",
+        "SRC-NIKL-EDU-MOSKVA": "물가[물까]",
         "SRC-NIKL-KRDICT-82835": "팔자[팔짜]",
         "SRC-NIKL-KRDICT-75022": "정신병자[정신뼝자]",
         "SRC-NIKL-KRDICT-HYEMO": "혐오증[혀모쯩]",
