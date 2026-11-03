@@ -169,9 +169,10 @@ def build_rows(
     report: dict,
     corpus_rows: list[dict] | None = None,
     corpus_revision: str = "",
+    corpus_license: str = "",
 ) -> list[dict[str, str]]:
-    if corpus_rows is not None and not corpus_revision:
-        raise ValueError("corpus_revision is required when corpus_rows are supplied")
+    if corpus_rows is not None and (not corpus_revision or not corpus_license):
+        raise ValueError("corpus_revision and corpus_license are required when corpus_rows are supplied")
     corpus_by_id = {
         str(row["id"]): row
         for row in (corpus_rows or [])
@@ -240,7 +241,7 @@ def build_rows(
             "has_unmapped_broad_fragments": "true" if unmapped_broad else "false",
             "context_corpus": "UGTPHON/ko/test.json" if context_requested else "",
             "context_corpus_revision": corpus_revision if context_requested else "",
-            "context_corpus_license": "Apache-2.0" if context_requested else "",
+            "context_corpus_license": corpus_license if context_requested else "",
             "context_lookup_status": (
                 "FOUND" if context_found else "MISSING"
             ) if context_requested else "NOT_REQUESTED",
@@ -262,16 +263,20 @@ def main() -> int:
     parser.add_argument("--output-csv", type=Path, required=True)
     parser.add_argument("--corpus-json", type=Path)
     parser.add_argument("--corpus-revision")
+    parser.add_argument("--corpus-license")
     parser.add_argument("--only-unmapped-broad", action="store_true")
     args = parser.parse_args()
-    if bool(args.corpus_json) != bool(args.corpus_revision):
-        parser.error("--corpus-json and --corpus-revision must be supplied together")
+    corpus_args_supplied = bool(args.corpus_json)
+    if corpus_args_supplied != bool(args.corpus_revision) or corpus_args_supplied != bool(args.corpus_license):
+        parser.error("--corpus-json, --corpus-revision, and --corpus-license must be supplied together")
     report = json.loads(args.report_json.read_text(encoding="utf-8"))
     corpus_rows = (
         json.loads(args.corpus_json.read_text(encoding="utf-8"))
         if args.corpus_json else None
     )
-    all_rows = build_rows(report, corpus_rows, args.corpus_revision or "")
+    all_rows = build_rows(
+        report, corpus_rows, args.corpus_revision or "", args.corpus_license or ""
+    )
     rows = filter_unmapped_broad(all_rows) if args.only_unmapped_broad else all_rows
     args.output_csv.parent.mkdir(parents=True, exist_ok=True)
     with args.output_csv.open("w", encoding="utf-8", newline="") as stream:
