@@ -438,3 +438,14 @@ The earlier blocker “source utterance context unavailable” is superseded. Al
 Training gate: the latest readiness audit finds 644 unique lexical rows but zero explicitly independently adjudicated IPA gold rows and 24 frozen holdout cases without IPA gold. Supervised IPA training remains blocked until provenance review, independent annotation/adjudication and frozen train/dev/test splits are complete.
 
 - Exact-head Python/data integrity and browser regression/build passed on code/test head `8b22f778112442024f876061bd0e576af762e761` (push run 41358504664; PR run 41358508399). Latest native pair: run 41358508325, artifact 13104257589; native CER 9.1047% vs g2pK 9.2304%, exact match 53.0393% vs 53.1134%.
+
+
+## 2026-11-03 — Kozak Kim lexical and morphology correction (PR #424)
+
+- **DONE_VERIFIED:** exact `끌다` source-backed Hangul surface correction to `끌다` with long first syllable and plain ㄷ; official Korean Basic Dictionary ParaWordNo=62281 and NIKL §7 teaching material agree on `[끌ː다]`. IPA remains project-derived and Ukrainian target withheld pending independent review.
+- **DONE_VERIFIED:** bounded §24 `굶다` rule application for stem-final ㄻ + `-다`; explicit `굶기다` -기- negative control retained. No generalized ㄻ rule.
+- **DONE_VERIFIED:** Kozak-only lexical research entries are excluded from g2pK comparison-adapter overrides; vendored/upstream g2pK 0.9.4 remains untouched.
+- **DONE_VERIFIED:** exact-head system Verify 41628584922 (Browser 1,391/1,391, Python/data integrity, production build and generated pages); g2pK integration 3.11/3.12; morphology consensus, extraction, UGTPHON, Native/g2pK and multi-engine workflows all PASS. CharsiuG2P, ByT5 and NIKL metadata inventory SKIPPED.
+- **DONE_VERIFIED diagnostic:** UGTPHON paired CER 9.0613% vs g2pK 9.2285% (2,698 paired); g2pK retains a two-case overall exact-match edge. SIGMORPHON paired CER 14.5598% vs 14.8222%, exact 35.8717% vs 35.3353% (998 paired); Kozak leads both. These are corpus-label diagnostics, not independent IPA gold; see master handoff.
+- **BLOCKED:** independent Korean IPA adjudication, NIKL item-level reuse rights, Ukrainian target review, C12 acoustic/articulatory evidence, 239 unmapped mismatches, and supervised training without adjudicated IPA gold.
+- **Release status:** research prototype; not research-certified or release-ready. PR #424 remains Draft/open/unmerged.
