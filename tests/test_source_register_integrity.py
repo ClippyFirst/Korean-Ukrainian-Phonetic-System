@@ -479,3 +479,15 @@ def test_c12_velar_coarticulation_source_is_cautionary_not_a_rewrite_license():
     assert "SRC-KCI-ITO-2007-MORPHEME-STRUCTURE" in c12_cluster["production_decision"] + c12_cluster["next_action"]
     assert clusters["C04"]["unique_occurrences"] == "0"
     assert clusters["C04"]["edit_operations"] == "0"
+
+def test_sigmorphon_native_only_exact_cases_have_bounded_nikl_sources():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    value_source = rows["SRC-NIKL-MCFAQ-5949"]
+    assert "값어치[가버치]" in value_source["coverage"]
+    assert "§15" in value_source["coverage"]
+    assert "not IPA" in value_source["limitations_or_next_action"]
+
+    taste_source = rows["SRC-NIKL-QNA-319525"]
+    assert "맛없다[마덥따]" in taste_source["coverage"]
+    assert "§15" in taste_source["coverage"]
+    assert "not IPA" in taste_source["limitations_or_next_action"]
