@@ -119,3 +119,62 @@ def test_build_rows_reports_unmapped_broad_fragments_inside_mixed_cluster_occurr
     assert json.loads(row["unmapped_broad_fragments"]) == [
         {"op": "S", "reference_fragment": "k͈", "kozak_fragment": "ɡ"},
     ]
+
+
+
+def test_build_rows_records_pinned_context_pointer_without_copying_sentence_text():
+    report = {
+        "benchmark": "fixture",
+        "eligible_token_occurrences": 1,
+        "native_ipa_profile": {"ipa_profile": "broad-v1"},
+        "broad_candidate_profile": {"profile_id": "broad-candidate-v1"},
+        "per_engine_occurrences": {
+            "clippyfirst_native": [{
+                "occurrence_id": "1", "row_id": "r1", "token": "시험",
+                "surface_hangul": "시험", "gold": "ɕk͈", "ipa": "sɡ",
+                "status": "scored", "distance": 2,
+                "broad_candidate": {"closest_gold": "ɕk͈", "predicted": "sɡ", "distance": 2},
+            }],
+            "g2pk_0_9_4": [{"occurrence_id": "1", "ipa": "ɕk͈", "distance": 0}],
+        },
+    }
+    corpus_rows = [{
+        "id": "r1", "lang": "ko", "split": "test",
+        "text": "SENTENCE_CONTEXT_MUST_NOT_BE_COPIED",
+        "canonical": "시험",
+    }]
+    row = MODULE.build_rows(
+        report, corpus_rows, "ef0d5a09c2ea1874c7206020f875cbd9cfea2f54", "Apache-2.0"
+    )[0]
+    assert row["context_corpus"] == "UGTPHON/ko/test.json"
+    assert row["context_corpus_revision"] == "ef0d5a09c2ea1874c7206020f875cbd9cfea2f54"
+    assert row["context_corpus_license"] == "Apache-2.0"
+    assert row["context_lookup_status"] == "FOUND"
+    assert "SENTENCE_CONTEXT_MUST_NOT_BE_COPIED" not in json.dumps(row, ensure_ascii=False)
+
+
+def test_build_rows_marks_missing_context_row_and_requires_provenance():
+    report = {
+        "per_engine_occurrences": {
+            "clippyfirst_native": [{
+                "occurrence_id": "1", "row_id": "missing", "token": "시험",
+                "surface_hangul": "시험", "gold": "ɕk͈", "ipa": "sɡ",
+                "status": "scored", "distance": 2,
+                "broad_candidate": {"closest_gold": "ɕk͈", "predicted": "sɡ", "distance": 2},
+            }],
+            "g2pk_0_9_4": [{"occurrence_id": "1", "ipa": "ɕk͈", "distance": 0}],
+        },
+    }
+    assert MODULE.build_rows(report, [{"id": "other"}], "revision", "Apache-2.0")[0]["context_lookup_status"] == "MISSING"
+    import pytest
+    with pytest.raises(ValueError, match="corpus_revision and corpus_license"):
+        MODULE.build_rows(report, [{"id": "missing"}])
+
+
+def test_filter_unmapped_broad_keeps_only_occurrences_with_unmapped_edits():
+    rows = [
+        {"occurrence_id": "1", "has_unmapped_broad_fragments": "true"},
+        {"occurrence_id": "2", "has_unmapped_broad_fragments": "false"},
+        {"occurrence_id": "3", "has_unmapped_broad_fragments": "true"},
+    ]
+    assert [row["occurrence_id"] for row in MODULE.filter_unmapped_broad(rows)] == ["1", "3"]
