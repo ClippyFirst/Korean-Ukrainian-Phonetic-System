@@ -422,3 +422,58 @@ def test_broad_candidate_normalizer_matches_browser_runtime():
             "serialization_normalization_counts": audit["serialization_normalization_counts"],
         })
     assert browser == python
+
+
+def test_research_lexical_ablation_audit_reports_occurrence_level_effects():
+    from scripts.benchmark_multi_engine_ko import _build_research_lexical_ablation_audit
+
+    items = [
+        {"occurrence_id": "u1", "row_id": "r1", "word": "사람", "gold_ipa": "saː.ɾam"},
+        {"occurrence_id": "u2", "row_id": "r2", "word": "사람", "gold_ipa": "saː.ɾam"},
+        {"occurrence_id": "u3", "row_id": "r3", "word": "없는", "gold_ipa": "ʌm.nɯn"},
+    ]
+    native_cache = {
+        "사람": {
+            "ipa": "saː.ɾam",
+            "research_lexical_entries": [
+                {"input_kind": "variant-aware-research", "source": "NIKL"}
+            ],
+        },
+        "없는": {"ipa": "ʌm.nɯn", "research_lexical_entries": []},
+    }
+    ablated_cache = {
+        "사람": {"ipa": "sa.ɾam"},
+        "없는": {"ipa": "ʌm.nɯn"},
+    }
+
+    audit = _build_research_lexical_ablation_audit(items, native_cache, ablated_cache)
+
+    assert audit["occurrence_count"] == 2
+    assert audit["unique_forms"] == 1
+    assert audit["input_kind_counts"] == {"variant-aware-research": 2}
+    assert audit["full_native_exact_matches"] == 2
+    assert audit["no_research_lexical_exact_matches"] == 0
+
+
+def test_pairwise_engine_audit_can_compare_ablation_to_original_g2pk():
+    from scripts.benchmark_multi_engine_ko import _build_pairwise_engine_audit
+
+    items = [
+        {"occurrence_id": "u1", "row_id": "r1", "word": "alpha", "gold_ipa": "a"},
+        {"occurrence_id": "u2", "row_id": "r2", "word": "beta", "gold_ipa": "b"},
+    ]
+    native_cache = {
+        "alpha": {"ipa": "a", "unresolved": False},
+        "beta": {"ipa": "x", "unresolved": False},
+    }
+    g2pk_predictions = {
+        "alpha": {"ipa": "x"},
+        "beta": {"ipa": "b"},
+    }
+
+    audit = _build_pairwise_engine_audit(
+        items, native_cache, g2pk_predictions, candidate_name="g2pk_0_9_4"
+    )
+
+    assert audit["category_counts"]["native_only_exact"] == 1
+    assert audit["category_counts"]["g2pk_only_exact"] == 1

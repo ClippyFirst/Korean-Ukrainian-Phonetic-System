@@ -681,3 +681,36 @@ def test_narrow_research_ipa_never_leaks_into_accepted_ukrainian_output():
     assert result["target_status"] == "unavailable"
     assert result["target_unavailable_reason"] == "narrow_ipa_profile_not_target_compatible"
 
+
+
+def test_research_lexical_overrides_can_be_disabled_for_ablation():
+    full = phoneticize_korean("사람")
+    ablated = phoneticize_korean("사람", include_research_lexical=False)
+
+    assert full["ipa"]["ipa"] != ablated["ipa"]["ipa"]
+    assert full["lexical_policy"] == "research-overlays-included"
+    assert ablated["lexical_policy"] == "research-overlays-excluded"
+
+    full_entries = [
+        trace for trace in full["rules"]
+        if trace.get("input_kind") == "variant-aware-research"
+    ]
+    ablated_entries = [
+        trace for trace in ablated["rules"]
+        if trace.get("input_kind") == "variant-aware-research"
+    ]
+    assert full_entries
+    assert any(trace.get("status") == "research-lexical-excluded" for trace in ablated_entries)
+
+
+def test_research_lexical_ablation_excludes_both_research_input_kinds():
+    for word, input_kind in [("끌다", "kozak-research-only"), ("사람", "variant-aware-research")]:
+        full = phoneticize_korean(word)
+        ablated = phoneticize_korean(word, include_research_lexical=False)
+
+        assert any(trace.get("input_kind") == input_kind for trace in full["rules"])
+        assert any(
+            trace.get("input_kind") == input_kind
+            and trace.get("status") == "research-lexical-excluded"
+            for trace in ablated["rules"]
+        )
