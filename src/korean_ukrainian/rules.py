@@ -738,27 +738,6 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 changed=True
                 license_context=f"R015:saisiot:{word_form}:{pair}"
     name,source,confidence=RULE_META[rule_id]
-            return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
-        for i in range(len(items)-1):
-            a,b=items[i],items[i+1]
-            if not _eligible(a,b,boundary_mode=boundary_mode) or a.coda!="ㅅ": continue
-            pair=f"{a.text}>{b.text}"
-            if pair not in exact_pairs:
-                conditional_disabled=True
-                continue
-            pair_changed=False
-            if b.onset in PLAIN_TO_FORTIS:
-                b.onset=PLAIN_TO_FORTIS[b.onset]; a.coda=""; pair_changed=True
-            elif b.onset in {"ㄴ","ㅁ"}:
-                a.coda="ㄴ"; pair_changed=True
-            elif b.onset=="ㅇ" and b.nucleus=="ㅣ":
-                a.coda="ㄴ"; b.onset="ㄴ"; pair_changed=True
-            else:
-                conditional_disabled=True
-            if pair_changed:
-                changed=True
-                license_context=f"R015:saisiot:{full_form}:{pair}"
-    name,source,confidence=RULE_META[rule_id]
     if rule_id=="R013" and license_context and license_context.startswith("R013:attested_l_ge_ending:"):
         source="NIKL §27; official Q&A https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=330963"
         confidence="high"
