@@ -5688,3 +5688,43 @@ PR #424 remains Draft/open/unmerged, stacked on #423. No merge, release, deploym
 | Supervised IPA training / release | DEFERRED | No independent IPA gold; remain research prototype, not release-ready. |
 
 No merge, release, deployment, force-push, or branch deletion. PR #420–#425 remain an unmerged Kozak Kim stack.
+
+
+## 2026-11-03 continuation checkpoint — PR #426
+
+Active branch: `fix/kozak-kim-water-price-lexical-exception-2026-11-03`  
+Exact head at checkpoint: `92519699ccc573a3a7f89e6a0afe67fb6323e4e5`  
+Draft PR: [#426](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/426), stacked on research lexical ablation PR #425. No PR was merged.
+
+### What changed
+- Exact source-backed R002/R003/R007/R009–R016 licenses now resolve against the exact eojeol form and licensed adjacent syllable pair while retaining full-sentence trace context. This prevents a matching substring elsewhere in a sentence from borrowing a lexical license.
+- Added sentence-context positive cases `물가로`, `팔자걸음`, `정신병자네` and negative control `결과로`, with expected surface and trace assertions.
+- Added validation for `data/korean/sources.csv` column shape and unique IDs. Fixed S001's comma-containing locator by quoting the CSV field.
+- g2pK 0.9.4 remains the original comparison baseline; no upstream/vendor engine changes.
+
+### Exact-head verification
+- System Verify push run [41723435274](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41723435274): **PASS**.
+- Browser regression/build: **1,394/1,394 PASS**; Vite public-page build and generated-page checks **PASS**.
+- Python regression/data-integrity job: **PASS**.
+- Paired Native vs g2pK diagnostic [41723446261](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41723446261): **PASS**.
+- External UGTPHON diagnostic [41723446132](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41723446132): **PASS**.
+- Morphology consensus [41723446066](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41723446066): **PASS**.
+- Research morphology adapter smoke [41723445936](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41723445936): **PASS**.
+- Exhaustive test-case register extraction [41723446543](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41723446543): **PASS**.
+- Multi-engine benchmark [41723446626](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41723446626): **IN PROGRESS** at this checkpoint. Setup, license checks, pinned UGTPHON/SIGMORPHON test-split validation, benchmark adapter tests, training-readiness/frozen-holdout audit and reviewer packet generation passed. Final comparison and downstream artifacts are not yet verified.
+- NIKL metadata-only crawl remains skipped; do not report it as passed.
+
+### Updated task disposition
+| Area | Status | Next acceptance criterion |
+|---|---|---|
+| Exact-eojeol NIKL licenses in sentence context | DONE_VERIFIED | Native and Browser regressions on exact head pass. |
+| Source-catalog CSV integrity | DONE_VERIFIED | Exact columns, nonblank unique IDs, well-formed rows pass CI. |
+| Python/Browser regression and build | DONE_VERIFIED | Exact-head CI pass; Browser 1,394/1,394. |
+| Original g2pK baseline isolation | DONE_VERIFIED | No upstream/vendor edits; paired diagnostic pass. |
+| Multi-engine comparative benchmark | PARTIAL | Wait for run 41723446626; inspect scores, denominator, paired artifacts, mismatch export, parity and holdout leakage checks before accepting. |
+| Independent Korean IPA gold / Ukrainian target | BLOCKED | Two qualified independent Korean reviewers plus target-language review/adjudication. |
+| NIKL item-level reuse rights | BLOCKED | Item-specific permission and reviewer-sharing rights evidence. |
+| Unmapped mismatch occurrences and C12 | BLOCKED / TODO | Primary exact-context pronunciation evidence and independent occurrence adjudication. |
+| Hanja, RR, regional/style variants | DEFERRED | Keep research-only and separate from core mode unless a distinct evidence-backed task is opened. |
+
+The repository remains a research prototype, not release-ready. No release, deployment, merge, force-push or branch deletion.

@@ -299,3 +299,23 @@ Benchmark update: UGTPHON raw outputs have different denominators: Kozak n=2,698
 | Independent Korean IPA review, NIKL item-level rights, Ukrainian target review, C12 evidence, 239 mismatch occurrences, adjudicated IPA gold | BLOCKED / TODO | External review, rights evidence, exact acoustic/articulatory source, context adjudication and independent holdout labels remain absent. |
 
 TDD evidence: test-only commit `5131e807` failed with the intended assertion `'몬니러' == '못잃어'`; minimal implementation commit `2e6e739` passes. No new dependency, phonological generalization, or parallel adapter was introduced.
+
+
+## 2026-11-03 exact-eojeol sentence-context follow-up — PR #426
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Apply existing exact NIKL compound/Sino-Korean licenses inside complete eojeols in sentence context | DONE_VERIFIED | Python Native regressions and Browser integration tests pass on exact head `92519699`; positive forms `물가로`, `팔자걸음`, `정신병자네` and negative control `결과로` are asserted with rule trace provenance. |
+| Keep licenses scoped to the exact eojeol rather than arbitrary sentence substrings | DONE_VERIFIED | Existing R002/R003/R007/R009–R016 exact-form matching was revised and covered by positive/negative regression assertions; no broad productive generalization added. |
+| Source-catalog CSV integrity | DONE_VERIFIED | Added Python schema/unique-ID validation; repaired S001 locator containing commas by quoting the CSV field. |
+| Browser regression and generated pages | DONE_VERIFIED | Run 41723435274, Browser regression/build job: 1,394/1,394 tests PASS; public-page build and generated-page verification PASS. |
+| Python regression and data integrity | DONE_VERIFIED | Run 41723435274, Python regression/data-integrity job PASS, including source-catalog shape test. |
+| Paired Native vs original g2pK diagnostic | DONE_VERIFIED | Run 41723446261 PASS. |
+| External UGTPHON diagnostic; morphology consensus; research morphology smoke; test-case extraction | DONE_VERIFIED | Runs 41723446132, 41723446066, 41723445936, 41723446543 PASS. |
+| Full multi-engine diagnostic and fresh blind-packet/mismatch artifacts | PARTIAL / IN PROGRESS | Run 41723446626: dependency/license checks, pinned UGTPHON and SIGMORPHON holdout fetch/validation, benchmark adapter tests, training-readiness/frozen-holdout audit, and independent reviewer-packet generation PASS; final multi-engine comparison still running at this checkpoint. |
+| g2pK 0.9.4 original engine and vendored upstream source | DONE_VERIFIED | Vendor and adapter source unchanged by this follow-up; baseline isolation remains intact. |
+| Independent Korean IPA gold, item-level NIKL rights, Ukrainian target review | BLOCKED | Requires qualified independent adjudication, rights determination and accepted target review; no synthetic gold substituted. |
+| Remaining unmapped mismatches / C12 and supervised training | BLOCKED / TODO | Requires exact-context primary evidence, occurrence adjudication and independently adjudicated IPA gold. |
+| Hanja/RR research modes and regional/style variation | DEFERRED | Not changed in this Kozak-only phonology follow-up; keep explicitly separate from core transcription claims. |
+
+Verification note: an earlier intermediate head reported 1,395 Browser tests; the final documented head `92519699` has 1,394 tests because the redundant sentence-context Browser duplicate was removed after equivalent Native coverage and a dedicated Browser test path were already present. The final CI count, not the intermediate count, is authoritative. No merge or release.
