@@ -22,7 +22,7 @@ Interpretation: the data now supports lower Kozak CER on both independent benchm
 |---:|---|---|---|
 | 1 | C11 /s/ → [ɕ] — 229 operations / 227 occurrences | Expanded optional Broad [ɕ] candidates to ㅕ/ㅛ/ㅠ as well as existing /i,j/-initial contexts, consistent with Lee (1999). Canonical /s/ and fortis ㅆ unchanged. Python and Browser now agree. | PARTIAL: two independent IPA reviewers still required |
 | 2 | C05 ㅟ — 72 combined operations | Preserve [y] canonical; retain [wi] and [ɥi] alternatives. | PARTIAL: adjudication required |
-| 3 | C12 `kx/kç → kʰ` — 45 operations / 37 occurrences | No production rewrite; no exact-environment primary source plus independent item-level IPA review. | BLOCKED |
+| 3 | C12 `kx/kç → kʰ` — 45 operations / 37 occurrences | No phonological rewrite. Ito (2007), `SRC-KCI-ITO-2007-MORPHEME-STRUCTURE`, is abstract-only lexical-distribution context, not acoustic evidence for [kx]/[kç] or a license to map them to [kʰ]. | BLOCKED pending exact-environment primary evidence and independent item-level IPA review. |
 | 4 | C06 unreleased coda — 34 operations | Preserve [p̚,t̚,k̚]; do not strip because a corpus annotation omitted release diacritics. | DONE_VERIFIED |
 | 5 | C01/C07 liquids — 12 operations | Seoul-scoped optional [ɭ] retained for same-word intervocalic /l/ and the cited front/glide environment. Require a same-word predecessor; word-initial `례` remains [ɾ], not a spurious [ɭ] candidate. | PARTIAL |
 | 6 | C09 lexical length — 8 operations | Preserve source-attested length. NIKL §7 `알다[알ː다]`, §14 `없어[업ː써]`, and §18 `없는[엄ː는]` show that the UGTPHON gold omits length in some occurrences. | DONE_VERIFIED as a preservation decision |

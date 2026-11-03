@@ -465,7 +465,17 @@ def test_c12_velar_coarticulation_source_is_cautionary_not_a_rewrite_license():
     assert "exact-token" in source["limitations_or_next_action"].lower()
 
     triage = (ROOT / "research" / "KOZAK-KIM-MISMATCH-FRAGMENT-TRIAGE-2026-11-02.md").read_text(encoding="utf-8")
-    c12 = next(line for line in triage.splitlines() if "`kx/kç → kʰ`" in line)
+    c12 = next(line for line in triage.splitlines() if "`kx/kç → kʰ`" in line and "45 operations / 37 occurrences" in line and "No phonological rewrite" in line)
     assert "SRC-KCI-ITO-2007-MORPHEME-STRUCTURE" in c12
     assert "No phonological rewrite" in c12
     assert "BLOCKED" in c12
+
+    with C08_CLUSTER_REGISTER.open("r", encoding="utf-8-sig", newline="") as stream:
+        clusters = {row["cluster_id"]: row for row in csv.DictReader(stream)}
+    c12_cluster = clusters["C12"]
+    assert c12_cluster["unique_occurrences"] == "37"
+    assert c12_cluster["edit_operations"] == "45"
+    assert c12_cluster["status"] == "BLOCKED_EVIDENCE_AND_IPA_REVIEW_REQUIRED"
+    assert "SRC-KCI-ITO-2007-MORPHEME-STRUCTURE" in c12_cluster["production_decision"] + c12_cluster["next_action"]
+    assert clusters["C04"]["unique_occurrences"] == "0"
+    assert clusters["C04"]["edit_operations"] == "0"
