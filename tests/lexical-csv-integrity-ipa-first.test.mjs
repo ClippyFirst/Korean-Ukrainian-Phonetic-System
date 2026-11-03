@@ -143,7 +143,7 @@ test('NIKL Basic Dictionary exact 이중성 reading preserves long vowel and for
 
 
 test('NIKL 물가 compound fortition persists in exact attached-particle form 물가로', () => {
-  const result = engine.convert('물가로');
+  const result = engine.convert('물가로', { ipaProfile: 'clippyfirst-korean-broad-v1' });
   assert.equal(result.surfaceHangul, '물까로');
   assert.equal(result.ipa, renderExpectedIpa('물가로', ['mul', 'k͈a', 'ɾo']));
 
@@ -160,7 +160,7 @@ test('source-attested UGTPHON fortition mismatches are corrected by exact NIKL l
     ['안할듯', '안할뜻', 't͈'],
   ];
   for (const [word, surface, fortis] of expected) {
-    const result = engine.convert(word);
+    const result = engine.convert(word, { ipaProfile: 'clippyfirst-korean-broad-v1' });
     assert.equal(result.surfaceHangul, surface, word);
     assert.ok(result.ipa.includes(fortis), word + ': IPA must preserve the licensed fortis segment');
   }
@@ -180,7 +180,7 @@ test('NIKL Basic Dictionary 혐오증 reading enters Kozak Kim as a provisional 
   assert.equal(row.input_kind, 'kozak-research-only');
   assert.ok(row.source_url.includes('mainSearchWord='));
 
-  const result = researchEngine.convert('혐오증');
+  const result = researchEngine.convert('혐오증', { ipaProfile: 'clippyfirst-korean-broad-v1' });
   assert.equal(result.surfaceHangul, '혀모쯩');
   assert.equal(result.ipa, renderExpectedIpa('혐오증', ['hjʌ', 'mo', 'tɕ͈ɯŋ']));
   assert.equal(result.ukrainian, '', 'unreviewed target must remain unavailable');
