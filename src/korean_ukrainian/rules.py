@@ -611,7 +611,9 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 elif scope=="phrase" and licensed_form==full_form and boundary_mode=="phrase" and a.boundary_after=="word":
                     permitted=True; permitted_scope=scope; permitted_form=full_form
                 if permitted: break
-            if not permitted: continue
+            if not permitted:
+                conditional_disabled=True
+                continue
             b.onset="ㄹ" if FINAL_REPRESENTATIVE.get(a.coda,a.coda)=="ㄹ" else "ㄴ"
             changed=True
             license_context=f"R009:{permitted_scope}:{permitted_form}:{pair}"
