@@ -1,41 +1,50 @@
-# Session checkpoint — 2026-11-02
+# Session checkpoint — 2026-11-03 (Kozak Kim only)
 
-**Repository:** `ClippyFirst/Korean-Ukrainian-Phonetic-System`  
-**Branch:** `research/kozak-kim-mismatch-fragment-triage-2026-11-02`  
-**Latest code/test head (subsequent commits are documentation-only):** `5c775dfa6b6a969c320f47c1420c75ffa645e369`  
-**PR:** [#423](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/423), Draft / unmerged.  
-**Scope:** Kozak Kim only; g2pK 0.9.4 remains unchanged as baseline.
+**Repository:** ClippyFirst/Korean-Ukrainian-Phonetic-System  
+**Branch:** research/kozak-kim-mismatch-fragment-triage-2026-11-02  
+**Branch HEAD:** 06b0a9180295f729f9ba9580cd59c3097b02d745  
+**Code/test tree:** 5c775dfa6b6a969c320f47c1420c75ffa645e369  
+**PR:** [#423](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/423), Draft / open / unmerged; stacked on #422.  
+**Scope:** Kozak Kim only. Original g2pK 0.9.4 source and vendor files remain unchanged.
 
-## What is done
+## Latest verification
 
-- Python and Browser Broad [ɕ] candidates aligned for ㅕ/ㅛ/ㅠ.
-- [ɭ] candidate restricted to same-word context; no word-initial `례` false positive.
-- [ɸ] restricted to same-word intervocalic ㅎ; narrow profile v5 assertions fixed.
-- C11/C05/C01-C07/C02 remain source-scoped optional research variants; C12 remains blocked; C06/C09 preservation decisions are verified.
-- Source review confirms some apparent g2pK wins are UGTPHON length omissions: NIKL §18 `없는[엄ː는]`, §7 `알다[알ː다]`, §14 `없어[업ː써]`.
-- Browser paired exact is tied; Browser CER is lower; Native CER is lower with a two-occurrence exact-match edge. See master handoff for full metrics and examples.
+- System Verify [41535300205](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300205) PASS: 621 Python tests, 1,389 Browser tests, source/data integrity, production build and generated-page checks.
+- Browser G2P [41535300397](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300397), UGTPHON [41535300287](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300287), paired Native/g2pK [41535300645](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300645), morphology [41535300307](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300307), test extraction [41535300790](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300790): PASS.
+- Multi-engine UGTPHON/SIGMORPHON and Native/Browser parity [41535300358](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300358): PASS; artifact [13184368365](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300358/artifacts/13184368365).
+- Native/Browser: 2,703/2,703 surface parity; 2,698/2,698 raw IPA parity; five shared abstentions.
+- UGTPHON paired Native: Kozak 53.0393% exact / 9.0613% CER; g2pK 53.1134% / 9.2304%. Kozak lower CER; g2pK +2 exact occurrences.
+- SIGMORPHON paired: Kozak 35.8717% exact / 14.6100% CER; g2pK 35.3707% / 14.8106%. Kozak +5 exact occurrences and lower CER.
+- These are corpus diagnostics, not normative IPA gold. g2pK output passes through the shared project IPA renderer.
+- Charsiu/ByT5 inference and Charsiu train/dev queue skipped; NIKL metadata/license inventory skipped.
 
-## Verified on current HEAD
+## Current ledger
 
-- Python regression/data integrity PASS — run 41532567453.
-- Browser 1,389/1,389 + build/generated pages PASS — run 41532567453.
-- Browser G2P PASS — run 41532567366.
-- UGTPHON and paired Browser/g2pK PASS — run 41532567276.
-- Paired Native/g2pK PASS — run 41532567384.
-- Morphology consensus PASS — run 41532567281.
-- Test-case extraction PASS — run 41532567279.
-- Ten-engine + SIGMORPHON + Native/Browser parity rerun queued as attempt 2 after attempt 1 was cancelled — run 41532567426.
-- NIKL metadata inventory, Charsiu queue and neural inference jobs skipped; no results claimed.
+| Item | Status | Remaining acceptance |
+|---|---|---|
+| C11 [ɕ], C05 [y]/[wi]/[ɥi], C01/C07 [ɭ], C02 [ɸ] | PARTIAL | Source-scoped variants and regression/parity checks pass; two independent IPA reviewers and item-level adjudication still needed. |
+| C06 unreleased coda, C09 lexical length | DONE_VERIFIED (preservation decisions) | Preserve source-supported detail; do not fit corpus omissions. |
+| C12 kx/kç → kʰ | BLOCKED | Exact-environment primary evidence and independent IPA adjudication absent. |
+| Native/Browser parity | DONE_VERIFIED | 2,703 surface and 2,698 scored IPA occurrences identical. |
+| Main CI + diagnostics | DONE_VERIFIED | All non-skipped exact-head workflows passed. |
+| 239 unmapped occurrences | TODO | Sentence/morphology/source adjudication. |
+| Independent Korean IPA gold | BLOCKED | Two qualified independent reviewers and adjudication. |
+| NIKL item-level reuse rights | BLOCKED | Written rights determination; metadata inventory skipped. |
+| Ukrainian target adaptation | BLOCKED | Independent target review and acceptance tests. |
+| CharsiuG2P / ByT5 | DEFERRED | Inference skipped; no results. |
+| Release readiness | DEFERRED | Research prototype; not release-ready. |
 
-## Resume from here
+Training-readiness audit says supervised IPA training is not ready: no explicitly independently adjudicated IPA labels in the inspected additions and no IPA gold for the frozen holdout. Do not train on UGTPHON, SIGMORPHON test, or the frozen holdout.
 
-1. Check run 41532567426. If successful, download and inspect its multi-engine, SIGMORPHON, holdout packet and runtime parity artifacts; if it fails, capture the exact failed step and blocker.
-2. Update the master handoff and this checkpoint with the final artifact IDs, metrics and SHA. Do not edit engine code unless the benchmark exposes a reproducible, source-supported defect.
-3. Keep C12, the 239 unmapped cases, two-reviewer IPA adjudication, NIKL reuse rights and Ukrainian target review as explicit blockers.
-4. Perform one final diff/code review. This harness has no reviewer subagent tool; record it as a self-review, not an independent review.
-5. Leave PR #423 Draft and unmerged. Do not touch g2pK/vendor files, retarget the stacked PR, publish or release.
+Local clone remains unavailable in this environment because DNS resolution for github.com failed; test claims above are from GitHub Actions, not local commands. No merge, release, deployment, force-push or g2pK/vendor change was made.
 
-Local clone failed on DNS resolution for github.com. CI evidence comes from GitHub Actions; no local pytest/npm/build command is claimed.
+## Next genuine blockers
+
+1. Two independent Korean IPA reviewers to annotate the frozen 24-item holdout and adjudicate disagreements.
+2. Item-level NIKL reuse-rights determination.
+3. Independent Ukrainian phonetic/orthographic target review.
+4. Context/source adjudication for C12 and the 239 unmapped occurrences.
+5. Only after gold/rights/target gates: consider supervised training or optional neural engine inference.
 
 ---
 
