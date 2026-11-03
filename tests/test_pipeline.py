@@ -214,6 +214,27 @@ def test_second_pass_sourced_lexical_pronunciations_match_shared_ipa_data():
 
 
 
+
+def test_water_price_fortis_is_an_exact_lexical_exception_not_a_general_rule():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    water_price = phoneticize_korean("물가")
+    assert water_price["surface_hangul"] == "물까"
+    assert water_price["ipa"]["ipa"] == "mul.k͈a"
+    assert any(
+        rule.get("rule_id") == "LEXICON"
+        and rule.get("status") == "lexical-override"
+        and rule.get("input_kind") == "kozak-research-only"
+        for rule in water_price["rules"]
+    )
+
+    negative_control = phoneticize_korean("결과")
+    assert negative_control["surface_hangul"] == "결과"
+    assert not any(
+        rule.get("rule_id") == "LEXICON" and rule.get("status") == "lexical-override"
+        for rule in negative_control["rules"]
+    )
+
 def test_second_pass_lexical_targets_are_references_not_ukrainian_overrides():
     from korean_ukrainian.pipeline import transliterate_korean, render_sequence
     expected = {
