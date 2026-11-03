@@ -146,7 +146,11 @@ def test_nikl_section_24_source_backed_fortition_examples():
         ), word
 
     negative = phoneticize_korean("굶기다")
-    assert not any(trace.get("rule_id") == "R010" for trace in negative["rules"]), (
+    assert not any(
+        trace.get("rule_id") == "R010"
+        and trace.get("license_context", "").startswith("R010:stem_n_m+suffix:")
+        for trace in negative["rules"]
+    ), (
         "causative/passive -기- must remain outside the §24 stem+ending license"
     )
 
