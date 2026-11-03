@@ -273,6 +273,16 @@ def test_source_attested_ipa_discrepancy_forms_use_exact_licensed_nikl_rules():
         ), word
 
 
+def test_source_backed_rule_license_lookup_splits_exact_eojeols_in_sentences():
+    from korean_ukrainian.phonology import parse_syllables
+    from korean_ukrainian.rules import _source_backed_rule_licenses
+
+    items = parse_syllables("물가로 계산한다")
+    boundaries = [(item.text, item.boundary_after) for item in items]
+    licenses = _source_backed_rule_licenses(items, "same_word")
+    assert "R014:compound:물가로:물>가" in licenses, {"boundaries": boundaries, "licenses": sorted(licenses)}
+
+
 def test_source_backed_eojeol_licenses_apply_inside_sentences_without_substring_generalization():
     from korean_ukrainian.pipeline import phoneticize_korean
 
