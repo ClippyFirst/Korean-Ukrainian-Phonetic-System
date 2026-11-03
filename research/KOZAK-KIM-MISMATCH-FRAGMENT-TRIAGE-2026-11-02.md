@@ -147,9 +147,9 @@ For every proposed production change: add a failing regression first, establish 
 The following changes address high-frequency clusters without forcing a corpus convention onto canonical broad IPA:
 
 - **C11 sibilant place:** Broad canonical /s/ remains unchanged. The engine now exposes an optional [ɕ] allophone variant for lenis ㅅ before ㅣ, ㅑ, ㅒ, ㅖ; fortis ㅆ is deliberately excluded. The narrow profile continues to expose [ɕʰ] and now includes ㅒ. Evidence: Lee (1999), Korean, Illustrations of the IPA, describes /s/ as [ɕ] before /i/ or a diphthong beginning [j]; Kang (2010) supplies acoustic evidence for /i, ye, ya/ and cautions that /yo, yu/ differ. This is an optional reading, not a forced broad rewrite.
-- **C04 /h/ allophones:** The narrow research profile now outputs [ç] before selected high-front/glide nuclei and [x] before ㅜ; the shared Broad result also exposes these as optional variants while retaining canonical [h]. The narrow profile is versioned v4. Evidence: Lee (1999), *Korean, Illustrations of the IPA*. This does not solve C12, which concerns aspirated velar /kʰ/ release/coarticulation, not underlying ㅎ.
+- **C02 /h/ allophones:** The narrow research profile now outputs [ç] before selected high-front/glide nuclei and [x] before ㅜ; the shared Broad result also exposes these as optional variants while retaining canonical [h]. The narrow profile has since advanced to v5 with source-scoped [ɸ] and [ɭ] candidates. Evidence: Lee (1999), *Korean, Illustrations of the IPA*. This does not solve C12, which concerns aspirated velar /kʰ/ release/coarticulation, not underlying ㅎ.
 - **C05 front-rounded ㅟ:** [ɥi] is now exposed as an additional broad IPA variant alongside existing canonical [y] and alternate [wi]. Evidence: the UCL acoustic/phonetic thesis review of Lee (1996) describes /wi/ as sometimes [ɥi], [ø] or [y]. The canonical remains [y]; the variant does not assert one speaker-independent pronunciation.
-- **C04 /h/ allophones:** Narrow research IPA now represents [ç] before selected high-front/glide nuclei and [x] before ㅜ; the previously implemented optional post-sonorant [ɦ] retains priority. Broad and phonemic IPA are unchanged. The narrow profile was versioned from v3 to v4. Evidence: Lee (1999), Illustrations of the IPA, for Seoul Korean. This is profile-scoped, not a general ㅎ deletion rule.
+- **C02 /h/ allophones:** Narrow research IPA now represents [ç] before selected high-front/glide nuclei and [x] before ㅜ; the previously implemented optional post-sonorant [ɦ] retains priority. Broad and phonemic IPA are unchanged. The narrow profile was subsequently advanced to v5; see the v5 profile tests and current cluster register. Evidence: Lee (1999), Illustrations of the IPA, for Seoul Korean. This is profile-scoped, not a general ㅎ deletion rule.
 - **C06 release marking and C09 lexical length:** No change. Existing [p̚,t̚,k̚] output and source-attested lexical length remain. UGTPHON omissions are not enough to justify stripping these features.
 - **C01/C07 liquids:** No blanket ɾ/l/ɭ/ʎ replacement. The remaining examples include different positions and possible morphology/prosody; the corpus does not establish a single safe environment. Further context/source adjudication is required.
 
@@ -207,3 +207,20 @@ These are paired corpus-relative diagnostics, not normative IPA accuracy. Native
 3. Keep C12 and the 239 unmapped mismatch occurrences evidence-limited until source/context adjudication exists.
 4. Obtain two independent IPA reviewers, complete item-level NIKL rights review, and independent Ukrainian target-layer review before release claims.
 
+
+
+## Continuation correction — 2026-11-03
+
+### C04/C02 cluster identity
+
+The earlier progress bullets above incorrectly labelled the /h/ allophone work as C04. The current mass-mismatch register defines **C02** as the /h/ realization cluster. **C04** is a separate IPA aspiration-symbol/segmentation convention cluster and now has zero assigned residual occurrences after the 37-occurrence `kx/kç` set was reclassified as C12. The [ç]/[x]/[ɸ] work belongs under C02; the optional [ɭ] work belongs under C01/C07. No phonological inference should be drawn from the old C04 labels.
+
+### C08 occurrence traceability
+
+The pinned fixture `tests/fixtures/kozak-kim-c08-source-contexts.json` now maps all eight C08 source-row IDs. Three IDs (`multilexnorm2026_1953`, `multilexnorm2026_1979`, `dc_inside_2024`) were independently recovered from the paired artifact; five (`multilexnorm2026_1916`, `multilexnorm2026_2011`, `dc_inside_2186`, `dc_inside_2266`, `dc_inside_2557`) are high-confidence reconstructions from the pinned fortis-mismatch signature and exact token/context in the pinned source split. The missing original one-off extraction table is still not recovered, so those five must remain explicitly labelled reconstructed.
+
+Seven cases have conditional morphology / Rule §27 environment leads; this is not exact-token IPA gold. `유사성` remains the one unresolved lexical case: NIKL Q&A 312649 attests `의외성`, not `유사성`. The fixture records the analyzer disagreement for `했을시`, the colloquial dependent noun `거`, pause/prosody uncertainty for `안할듯`, and the exact source-row sentences. No new production rule is licensed by this mapping. Added a Python integrity test for the eight-ID partition, three independently recovered plus five reconstructed, the unresolved `유사성` case, and explicit non-gold/no-production-change limitations.
+
+### Additional NIKL surface comparator
+
+Registered NIKL Q&A 319525 for `맛없다[마덥따]` under §15. It is Hangul surface evidence, not IPA or Ukrainian target gold. In the paired SIGMORPHON diagnostic, Kozak Kim's surface-derived form matches this official Korean reading while original g2pK's does not. This is a bounded exact-form comparison only; it does not license a general rule for every `맛+vowel` sequence. Original g2pK remains unchanged.
