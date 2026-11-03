@@ -191,7 +191,7 @@ const NIKL_28_COMPOUND_FORTITION_FORMS=new Map([
   ['그믐달','믐>달'], ['강가','강>가'], ['초승달','승>달'],
   ['등불','등>불'], ['창살','창>살'], ['강줄기','강>줄'],
   ['아침밥','침>밥'], ['굴속','굴>속'], ['술잔','술>잔'],
-  // NIKL Moscow training material p.12 gives 물가[물까] and negative control 결과[결과].
+  // NIKL Moscow training material §4 '소리의 변화', '다. 된소리 되기' example (25) gives 물가[물까] and negative control 결과[결과].
   // The attached-particle corpus token is licensed exactly; no ㄹ+ㄱ generalization.
   ['물가','물>가'], ['물가로','물>가'], ['봄비','봄>비'],
   // NIKL Basic Dictionary 정신병자[정신뼝자]; exact corpus form with -네 only.
@@ -213,7 +213,7 @@ const NIKL_27_ADNOMINAL_PHRASES=new Map([
 // NIKL morphology evidence. These are full-form gates, not a productive -ㄹ+ㅅ rule.
 const NIKL_27_ADNOMINAL_FORMS=new Map([
   ['무고일수도있다는','일>수'],['했을시','을>시'],
-  // NIKL §27 commentary: 할 듯하다[할뜨타다]; exact UGTPHON eojeol contexts.
+  // NIKL §27: 할 듯하다[할뜨타다]; Q&A 310899 confirms colloquial 거 = 것; exact UGTPHON contexts.
   ['보일거라','일>거'],['없을듯','을>듯'],['안할듯','할>듯']
 ]);
 const NIKL_29_PHRASE_INSERTION=new Map([

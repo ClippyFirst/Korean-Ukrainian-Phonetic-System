@@ -64,7 +64,9 @@
       "morphology_evidence": [
         "SRC-NIKL-QNA-312649"
       ],
-      "rule_evidence": [],
+      "rule_evidence": [
+        "SRC-NIKL-PRON"
+      ],
       "status": "UNRESOLVED_EXACT_LEXICAL_PRONUNCIATION",
       "notes": "Q&A 312649 directly confirms 의외성 only; 유사성 appears in the question, not in the official answer. No suffix-wide -성 rule is authorized."
     },
