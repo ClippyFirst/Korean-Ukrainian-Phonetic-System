@@ -163,6 +163,10 @@ test('source-attested UGTPHON fortition mismatches are corrected by exact NIKL l
     const result = engine.convert(word, { ipaProfile: 'clippyfirst-korean-broad-v1' });
     assert.equal(result.surfaceHangul, surface, word);
     assert.ok(result.ipa.includes(fortis), word + ': IPA must preserve the licensed fortis segment');
+    if (word === '없을듯') {
+      assert.ok(result.trace.some(item => item.rules.includes('complex-coda-liaison-exact-form-formal')));
+      assert.ok(result.trace.some(item => item.rules.includes('adnominal-r-fortition-§27-exact-form')));
+    }
   }
 
   for (const word of ['많을거같이', '해줄것', '결과로']) {

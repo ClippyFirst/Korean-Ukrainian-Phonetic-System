@@ -60,6 +60,7 @@ _NIKL_R002_FORMAL_LICENSES = {
     "붙어": "붙>어",  # §13: 붙어[부터].
     "읽어": "읽>어",  # §14: 읽어[일거].
     "없어도": "없>어",  # 없- + connective ending -어도; NIKL §14 attests 없어[업써].
+    "없을듯": "없>을",  # 없- + adnominal ending -을; exact C08 eojeol, §§13–14 complex-coda liaison.
     # Direct NIKL surface evidence: 없음[업씀], Q&A/FAQ 8391 (also listed in Q&A 335008).
     "없음": "없>음",
     # NIKL Q&A 326978 explicitly describes 있- + -었- and gives 있었- [이썯].

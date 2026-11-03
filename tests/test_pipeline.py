@@ -257,6 +257,14 @@ def test_source_attested_ipa_discrepancy_forms_use_exact_licensed_nikl_rules():
             for rule in result["rules"]
         ), word
 
+    none = phoneticize_korean("없을듯")
+    assert any(
+        rule.get("rule_id") == "R002"
+        and rule.get("changed") is True
+        and rule.get("license_context") == "R002:formal:없을듯:없>을"
+        for rule in none["rules"]
+    )
+
     for word in ("많을거같이", "해줄것"):
         result = phoneticize_korean(word)
         assert not any(

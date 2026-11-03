@@ -91,6 +91,12 @@ def test_nikl_27_c08_exact_word_licenses_apply_inside_full_sentences():
     result = transliterate_korean(safe_sentence)
     assert "업쓸뜯" in result["phonetics"]["surface_hangul"]
     assert any(
+        trace["rule_id"] == "R002"
+        and trace["changed"]
+        and trace["license_context"] == "R002:formal:없을듯:없>을"
+        for trace in result["phonetics"]["rules"]
+    )
+    assert any(
         trace["rule_id"] == "R013"
         and trace["changed"]
         and trace["license_context"] == "R013:adnominal_l:없을듯:을>듯"
