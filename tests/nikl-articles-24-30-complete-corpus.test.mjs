@@ -162,7 +162,7 @@ test('every lexical row round-trips to its stored Korean surface, Ukrainian targ
     const result = engine.convert(row.input);
     assert.equal(result.surfaceHangul, row.surface_hangul, 'surface: ' + row.input);
     if (row.target_status !== 'surface-only') {
-      if (row.input_kind === 'variant-aware-research' && row.target_status === 'provisional') {
+      if (['variant-aware-research', 'kozak-research-only'].includes(row.input_kind) && row.target_status === 'provisional') {
         assert.equal(result.ukrainian, '', 'provisional target must not be accepted: ' + row.input);
         assert.equal(result.candidate_ukrainian, expectedTarget(row), 'candidate Ukrainian: ' + row.input);
         assert.equal(result.candidate_status, 'provisional', 'candidate status: ' + row.input);
