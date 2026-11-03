@@ -512,5 +512,5 @@ def test_c08_fixture_maps_all_eight_occurrences_without_promoting_hypotheses_to_
     assert unresolved[0]["source_row_id"] == "dc_inside_2024"
     assert unresolved[0]["input"] == "유사성"
     assert all(case.get("morphology_evidence") for case in cases if case["source_row_id"] != "dc_inside_2024")
-    assert any("not gold" in item.lower() for item in mapping["limitations"])
+    assert any("not independently adjudicated normative IPA gold" in item for item in mapping["limitations"])
     assert any("No production phonology rule" in item for item in mapping["limitations"])
