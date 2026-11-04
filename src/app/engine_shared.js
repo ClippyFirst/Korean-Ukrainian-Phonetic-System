@@ -207,7 +207,9 @@ const NIKL_28_COMPOUND_FORTITION_FORMS=new Map([
 const NIKL_27_ADNOMINAL_PHRASES=new Map([
   ['할 것을','ㄱ'],['갈 데가','ㄷ'],['할 바를','ㅂ'],['할 수는','ㅅ'],['읽을 수','ㅅ'],
   ['할 적에','ㅈ'],['갈 곳','ㄱ'],['할 도리','ㄷ'],['만날 사람','ㅅ'],
-  ['무고일 수도','ㅅ'],['했을 시','ㅅ']
+  ['무고일 수도','ㅅ'],['했을 시','ㅅ'],
+  // NIKL §27 exact adjacent eojeol pairs; Q&A 310899 confirms 거 is a dependent noun.
+  ['줄 것','ㄱ'],['많을 거','ㄱ']
 ]);
 
 // Exact same-eojeol C08 licenses supported by restored UGTPHON contexts and

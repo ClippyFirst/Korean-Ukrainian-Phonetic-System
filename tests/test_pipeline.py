@@ -841,3 +841,30 @@ def test_research_lexical_ablation_excludes_both_research_input_kinds():
             and trace.get("status") == "research-lexical-excluded"
             for trace in ablated["rules"]
         )
+
+def test_r013_phrase_licenses_match_exact_adjacent_eojeol_pairs_inside_sentences():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    cases = [
+        ("해 줄 것 같다", "껃", "줄 것", "줄>것"),
+        ("많을 거 같이", "꺼", "많을 거", "을>거"),
+    ]
+    for sentence, surface_fragment, phrase_form, pair in cases:
+        result = phoneticize_korean(sentence, boundary_mode="phrase")
+        assert surface_fragment in result["surface_hangul"], sentence
+        expected_context = f"R013:phrase:{phrase_form}:{pair}"
+        assert any(
+            rule.get("rule_id") == "R013"
+            and rule.get("changed") is True
+            and rule.get("license_context") == expected_context
+            for rule in result["rules"]
+        ), sentence
+
+    # Explicit phrase mode still must not reconstruct spaces that were absent
+    # in the source token. These compact UGTPHON forms remain unresolved.
+    for sentence in ("해줄것 같다", "많을거같이 보인다"):
+        result = phoneticize_korean(sentence, boundary_mode="phrase")
+        assert not any(
+            rule.get("rule_id") == "R013" and rule.get("changed") is True
+            for rule in result["rules"]
+        ), sentence

@@ -219,6 +219,10 @@ _NIKL_R013_PHRASE_LICENSES = {
     "할 수는": "할>수", "읽을 수": "을>수", "할 적에": "할>적",
     "갈 곳": "갈>곳", "할 도리": "할>도", "만날 사람": "날>사",
     "무고일 수도": "일>수", "했을 시": "을>시",
+    # Exact adjacent eojeol pairs supported by NIKL §27. Q&A 310899 confirms
+    # colloquial 거 as a dependent noun; do not infer these boundaries in
+    # compact/no-space corpus tokens.
+    "줄 것": "줄>것", "많을 거": "을>거",
 }
 
 # Exact same-eojeol C08 forms. Restored UGTPHON source contexts confirm the
@@ -346,9 +350,13 @@ def _source_backed_rule_licenses(items, boundary_mode):
             licenses.add(f"R016:verb_stem_rieul_giyeok_suffix:{word_form}:{pair}")
 
     if boundary_mode == "phrase":
-        pair = _NIKL_R013_PHRASE_LICENSES.get(full_form)
-        if pair is not None:
-            licenses.add(f"R013:adnominal_l:{full_form}:{pair}")
+        # Match complete adjacent eojeol pairs inside sentences, as the
+        # browser runtime does. This never infers hidden spaces in compact text.
+        for left_word, right_word in zip(word_forms, word_forms[1:]):
+            phrase_form = f"{left_word} {right_word}"
+            pair = _NIKL_R013_PHRASE_LICENSES.get(phrase_form)
+            if pair is not None:
+                licenses.add(f"R013:adnominal_l:{phrase_form}:{pair}")
         pair = _NIKL_R009_PHRASE_LICENSES.get(full_form)
         if pair is not None:
             licenses.add(f"R009:phrase:{full_form}:{pair}")
@@ -641,6 +649,22 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 pair=f"{items[i].text}>{items[i+1].text}"
                 if pair in exact_pairs_by_word.get(word_form,set()):
                     word_exact_pair_contexts[i]=word_form
+        phrase_exact_pair_contexts={}
+        if rule_id=="R013" and boundary_mode=="phrase":
+            for license in exact_licenses:
+                parts=license.split(":",3)
+                if len(parts)!=4 or parts[1]!=scope:
+                    continue
+                phrase_words=parts[2].split(" ")
+                if len(phrase_words)!=2:
+                    continue
+                for i in range(len(items)-1):
+                    if items[i].boundary_after!="word":
+                        continue
+                    if word_form_by_index[i]!=phrase_words[0] or word_form_by_index[i+1]!=phrase_words[1]:
+                        continue
+                    if f"{items[i].text}>{items[i+1].text}"==parts[3]:
+                        phrase_exact_pair_contexts[i]=parts[2]
         attested_l_ge_pairs=set()
         if rule_id=="R013":
             for i in range(len(items)-1):
@@ -658,7 +682,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 pair=f"{a.text}>{b.text}"
                 exact_pairs.add(pair)
                 attested_l_ge_pairs.add(pair)
-        if not exact_pairs and not word_exact_pair_contexts:
+        if not exact_pairs and not word_exact_pair_contexts and not phrase_exact_pair_contexts:
             name,source,confidence=RULE_META[rule_id]
             return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
         for i in range(len(items)-1):
@@ -674,7 +698,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             )
             if not applies: continue
             pair=f"{a.text}>{b.text}"
-            if pair not in exact_pairs and i not in word_exact_pair_contexts:
+            if pair not in exact_pairs and i not in word_exact_pair_contexts and i not in phrase_exact_pair_contexts:
                 conditional_disabled=True
                 continue
             if rule_id=="R011" and a.coda=="ㄾ":
@@ -685,6 +709,8 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 license_context=f"R013:attested_l_ge_ending:{full_form}:{pair}"
                 source="NIKL Standard Pronunciation Rule 27; official Q&A https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=330963"
                 confidence="high"
+            elif i in phrase_exact_pair_contexts:
+                license_context=f"{rule_id}:phrase:{phrase_exact_pair_contexts[i]}:{pair}"
             else:
                 license_form=word_exact_pair_contexts.get(i,full_form)
                 license_context=f"{rule_id}:{scope}:{license_form}:{pair}"

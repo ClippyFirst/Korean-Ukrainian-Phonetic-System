@@ -5791,3 +5791,18 @@ Latest documented branch head before this verification note: `528c811224e9725360
 | Linguistic adjudication of remaining mapped C06/C11 and 36 unresolved queue entries | BLOCKED / EVIDENCE-LIMITED | Independent Korean IPA reviewers and item-level evidence remain required; queue labels do not constitute adjudication. |
 
 Original g2pK remains untouched and comparison-only. Repository disposition remains research prototype, not research-certified or release-ready.
+
+## 2026-11-04 — exact-head benchmark and phrase-boundary R013 continuation
+
+**Verified baseline after queue reconciliation:** run [41797276965](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41797276965), artifact [13306613436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41797276965/artifacts/13306613436), head `682c3a5b562fb63dd99f8ed14fbb004372ff79ef`. All 17 job steps succeeded, including refreshed queue comparison, same-occurrence Browser run, Native/Browser parity audit, SIGMORPHON portfolio and artifact upload.
+
+- UGTPHON strict paired subset n=2,698: Native 1,431 exact (53.0393%), CER 8.9920%; original g2pK 1,433 exact (53.1134%), CER 9.2304%. Exact-match delta is inconclusive (existing paired 95% CI −0.0824 to +0.2840 percentage points); Native has lower CER by 0.2384 pp.
+- SIGMORPHON paired subset n=998: Native 358 exact (35.8717%), CER 14.5598%; original g2pK 353 exact (35.3707%), CER 14.8106%. Native has five net exact wins and lower paired CER by 0.2508 pp. Exact McNemar two-sided p=0.0625 (5 Native-only exact, 0 g2pK-only exact): promising but not decisive at 0.05.
+- Research-only Broad sensitivity: UGTPHON Native 86.4715% exact / 2.1317% CER vs g2pK 85.7196% / 2.3693%; SIGMORPHON Native 69.7395% / 6.1801% vs g2pK 68.6687% / 6.4584%. Broad profile removes separators and selected phonetic distinctions; it is not normative IPA gold.
+- Same-run Native/Browser: surface Hangul 2,703/2,703 equal; IPA 2,698/2,698 equal; both engines scored the same 2,698 and abstained on the same five. Strict and Broad scores identical across runtimes.
+- The 24-case blind holdout packet was generated for two independent reviewers; packets contain no engine outputs or IPA gold and prohibit tuning. Annotation remains pending.
+- SIGMORPHON is a lexical word-level set, not a sentence-context/NIKL gold standard; its IPA conventions differ from the engine profile. The g2pK comparison uses the shared project IPA renderer. Neither benchmark measures Ukrainian target quality.
+
+**New source-backed phrase-boundary implementation in this continuation:** R013 phrase licenses now match exact adjacent eojeol pairs inside a sentence when Python is explicitly called with `boundary_mode="phrase"`, and the Browser runtime uses the same pair map. Added `줄 것` and `많을 거` using NIKL §27 plus the NIKL Q&A evidence that colloquial `거` is a dependent noun. Matching is indexed to the exact left/right eojeol boundary; it is not a syllable-substring or suffix-wide rule. Compact inputs `해줄것` and `많을거같이` remain unlicensed without explicit spacing. New Python and Browser positive/negative tests are included. This is rule-derived standard-pronunciation support, not direct acoustic IPA attestation.
+
+The benchmark run above predates this phrase-boundary code extension; the new code/tests require their own exact-head CI verification before this implementation is marked DONE_VERIFIED.

@@ -245,3 +245,11 @@ The new exact-head implementation adds an explicit research-overlay ablation mod
 - System Verify 41654558006 PASS (Python regression/data integrity, Browser 1,391/1,391, Vite build, generated pages). Paired Native/g2pK 41654557675 PASS; Native exact 53.0393%, CER 9.0613%; g2pK paired exact 53.1134%, CER 9.2304% on 2,698 shared tokens.
 - Multi-engine run 41654557693 remains IN PROGRESS at this report update. Its completed artifact and generated mismatch queue must be inspected before any new benchmark conclusion or mismatch count is recorded.
 - Original g2pK vendor Browser file remains identical to main. No independent IPA gold, rights clearance, or Ukrainian target adjudication is implied by software tests.
+
+## 2026-11-04 — current unmapped-broad queue and rule-boundary triage
+
+The exact refreshed queue has 36 occurrence rows, 32 unique Hangul tokens, 27 source-row IDs, 55 unmapped-broad fragments, and 36/36 context lookups FOUND. The 55 fragments represent repeated occurrence-level evidence, not 55 independent linguistic phenomena. Frequent families include stop/affricate voicing or transcription differences (`t→d`), segment deletions (notably `j`, `n`, `l`, `ŋ`), fortis/lenis differences (`s͈→s`, `k͈→ɡ`) and sibilant-place/voicing differences (`ɕ→ʑ`, `ɕ͈→ʑ`). Repeated tokens mean raw fragment counts overstate independent lexical coverage.
+
+No production rule is inferred from those fragments alone: they may reflect phonemic/phonetic convention, corpus annotation, morphology, prosody or genuine engine error. In particular, the compact UGC tokens `해줄것` and `많을거같이` remain unlicensed for R013 because the runtime cannot safely reconstruct their word boundaries or pause structure from the token alone.
+
+A bounded improvement now supports explicit phrase input: `줄 것` and `많을 거` are exact NIKL §27 adjacent-eojeol licenses. Python requires `boundary_mode="phrase"`; Browser uses the same exact pair map. The Python implementation records the exact pair index so a matching syllable sequence elsewhere in the sentence cannot inherit the license. New tests preserve the no-space and punctuation negatives. This is a rule-derived standard reading, not direct acoustic IPA evidence; new CI is pending.

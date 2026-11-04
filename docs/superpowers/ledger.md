@@ -322,3 +322,11 @@ Verification note: an earlier intermediate head reported 1,395 Browser tests; th
 
 
 Final review (2026-11-03): self-review (no subagent tool available). Reviewed the complete 29-commit PR #426 delta, with focused inspection of exact eojeol license generation/application, Python trace provenance, Browser lexical license inventory, CSV parser/schema validation, and the g2pK adapter boundary. No Critical or Important code defect identified in the reviewed scope. Review limitation: this is author self-review, not an independent fresh-context review; human review remains appropriate before merge. The only external baseline source file `src/vendor/g2pk/g2p-browser.ts` is byte-identical to `main`; the project-owned Python adapter differs only to exclude Kozak research-only lexical overlays from the g2pK comparison path. Multi-engine benchmark run 41725895705 remains in progress and is not accepted as verified evidence.
+
+## 2026-11-04 — exact-head evidence and TDD phrase-boundary continuation
+
+- Applied the integrated Superpowers/Matt Pocock/Ponytail methodology without copying those repositories wholesale: inspected the red/green boundary in the existing R013 tests, added exact phrase-boundary positives and compact/punctuation negatives, and kept the change restricted to the Kozak Kim IPA rule adapter.
+- The source rule is NIKL §27. Q&A 310899 supports the dependent-noun analysis of colloquial `거`; Q&A 317798 documents the §27 rule and its pause caveat. The implementation only licenses exact adjacent eojeol pairs `줄 것` and `많을 거`; it does not infer missing spaces in `해줄것` or `많을거같이`.
+- Python phrase-license lookup is now index-scoped to the exact adjacent word boundary, matching the Browser phrase map rather than accepting a syllable pair elsewhere in the sentence. Tests assert the license context and negative controls.
+- Baseline run 41797276965 / artifact 13306613436 passed all 17 steps, including queue cmp, same-occurrence Browser, 2,703 surface/2,698 IPA parity, and SIGMORPHON. That run predates the new phrase code; the phrase extension remains CI-pending.
+- No original g2pK source, adapter, or baseline data changed.

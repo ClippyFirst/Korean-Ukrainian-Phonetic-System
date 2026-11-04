@@ -159,3 +159,15 @@ The benchmark comparison is differential corpus evidence only. It does not estab
 | Independent Korean IPA / Ukrainian target acceptance | BLOCKED | Qualified external review and adjudication still absent; corpus-relative labels cannot substitute. |
 
 No runtime code or g2pK baseline code changed in this queue reconciliation. Research-prototype disposition unchanged.
+
+## 2026-11-04 — benchmark and phrase-boundary coverage update
+
+| Area | Status | Evidence / remaining acceptance |
+|---|---|---|
+| Refreshed UGTPHON queue and multi-engine gate | DONE_VERIFIED | Run 41797276965 / artifact 13306613436; 36 queue rows, 55 fragments, all context lookups found; exporter cmp PASS. |
+| Native/Browser parity | DONE_VERIFIED | Same run: 2,703/2,703 surface parity; 2,698/2,698 IPA parity; no differences. |
+| SIGMORPHON lexical comparison | DONE_VERIFIED as diagnostic | Paired n=998; Native 358 exact / 14.5598% CER vs g2pK 353 exact / 14.8106% CER; exact McNemar p=0.0625. |
+| Blind IPA holdout | PARTIAL / BLOCKED | 24 cases packaged for reviewers A/B; no predictions or gold included; independent annotations pending. |
+| R013 explicit phrase boundaries `줄 것`, `많을 거` | PARTIAL / CI PENDING | Python and Browser exact-pair licenses and positive/negative tests added. Compact no-space tokens remain intentionally unlicensed. Requires exact-head Python/Browser CI. |
+
+The benchmark run predates the phrase-boundary code extension. Do not reuse its PASS as evidence for that new code.

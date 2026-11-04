@@ -220,6 +220,34 @@ test('§27 C08 source contexts: exact eojeol licenses apply inside full sentence
   }
 });
 
+test('§27 exact phrase licenses apply at adjacent eojeol pairs inside sentences only', () => {
+  const cases = [
+    ['해 줄 것 같다', '껃'],
+    ['많을 거 같이', '꺼'],
+  ];
+  for (const [input, surface] of cases) {
+    const result = generic.convert(input);
+    assert.ok(
+      result.trace.some((item) => item.rules.includes('adnominal-r-fortition-§27')),
+      input + ': exact adjacent eojeol pair must receive §27 fortition',
+    );
+    assert.ok(result.surfaceHangul.includes(surface), input + ': licensed onset must be fortis');
+  }
+
+  for (const input of [
+    '해줄것 같다',
+    '많을거같이 보인다',
+    '해 줄, 것 같다',
+    '많을, 거 같이',
+  ]) {
+    const result = generic.convert(input);
+    assert.ok(
+      !result.trace.some((item) => item.rules.includes('adnominal-r-fortition-§27')),
+      input + ': missing exact connected eojeol pair must not inherit the phrase license',
+    );
+  }
+});
+
 test('C08 context recovery does not authorize the unresolved -성 lexical case', () => {
   const sourceCase = c08ContextFixture.cases.find((item) => item.source_row_id === 'dc_inside_2024');
   assert.ok(sourceCase && sourceCase.source_sentence.includes('유사성'));

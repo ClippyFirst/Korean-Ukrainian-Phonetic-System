@@ -876,3 +876,15 @@ Exact-head verification: push run `41358504664` and PR run `41358508399` both pa
 | Independent Korean IPA and Ukrainian target review | BLOCKED | Requires independent qualified reviewers and adjudication; corpus annotations and cluster labels are not gold. |
 
 **Disposition:** the stale queue mismatch is reconciled; release/research certification gates remain open. Original g2pK is unchanged.
+
+## 2026-11-04 — refreshed benchmark gate and R013 phrase extension
+
+| Gate | Status | Evidence / acceptance |
+|---|---|---|
+| Refreshed multi-engine UGTPHON, queue cmp, Browser and Native/Browser parity | DONE_VERIFIED | Run 41797276965 / artifact 13306613436; all 17 steps PASS; queue 36 rows / 55 fragments / 0 missing contexts; 2,703 surface and 2,698 IPA occurrences equal across runtimes. |
+| SIGMORPHON lexical portfolio | DONE_VERIFIED as diagnostic | Same run; paired n=998, Native 358 exact and 14.5598% CER vs g2pK 353 exact and 14.8106% CER; exact McNemar p=0.0625. |
+| Independent IPA holdout | BLOCKED | 24-case packets prepared for two reviewers; annotations pending. |
+| R013 phrase-level `줄 것` and `많을 거` | IN_PROGRESS | Exact eojeol pair matching, Python phrase mode, Browser parity map and negative controls implemented; run exact-head tests before marking DONE_VERIFIED. |
+| Independent Ukrainian target review, NIKL item-level rights, C12 primary evidence, historical 239-case adjudication | BLOCKED | External evidence/review remains required. |
+
+Original g2pK 0.9.4 remains unchanged and comparison-only.
