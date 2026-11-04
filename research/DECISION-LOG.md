@@ -85,3 +85,16 @@ Record consequential linguistic, data, architecture, testing, licensing, and rel
 - **Safety against false certainty:** if the upstream G2P path supplies no surface form, the UI displays an em dash instead of romanizing the original spelling as if pronunciation had been resolved.
 - **Verification:** isolated Node.js harness passed 6/6 tests, including all 11,172 modern precomposed Hangul syllables. Full repository test/build/browser verification is not yet confirmed.
 - **Revisit/acceptance:** before merge, pass exact-head CI and browser checks; complete a source-backed NIKL RR conformance matrix. The current implementation is a basic RR renderer, not a claim of complete conformance.
+
+
+## DEC-2026-006 — Version browser and Python artifacts independently
+- **Date:** 2026-11-04
+- **Status:** accepted as the prospective repository policy; historical intent not established.
+- **Context/problem:** `package.json` is version 1.0.0 and private, while `pyproject.toml` is version 0.6.0 and defines an installable Python distribution. Treating the numeric difference as drift would incorrectly assume a single shared release artifact.
+- **Evidence:** current package metadata and scripts; browser Vite/Pages role; Python distribution metadata and CLI entry point.
+- **Options considered:** force both values to match; leave the difference undocumented; define two independent version streams.
+- **Decision:** maintain independent browser-application and Python-distribution versions. Bump only affected artifacts; coordinated releases may record both versions without requiring equal numbers. Do not publish the private npm package unless the owner changes that policy.
+- **Consequences and trade-offs:** avoids meaningless synchronized bumps and accurately reflects separate release surfaces. It does not prove why the original values were chosen.
+- **Affected files:** `package.json`, `pyproject.toml`, `docs/VERSIONING-POLICY.md`.
+- **Validation/tests:** metadata and package roles inspected; no version value changed. Exact-head CI remains required for any future metadata/runtime change.
+- **Revisit when:** the project adopts one unified release artifact or changes the browser package's private/public distribution status.
