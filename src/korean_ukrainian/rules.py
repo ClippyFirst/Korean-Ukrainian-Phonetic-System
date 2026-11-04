@@ -667,7 +667,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                         continue
                     if f"{items[i].text}>{items[i+1].text}"==parts[3]:
                         phrase_exact_pair_contexts[i]=parts[2]
-        attested_l_ge_pairs=set()
+        attested_l_ge_contexts={}
         if rule_id=="R013":
             for i in range(len(items)-1):
                 a,b=items[i],items[i+1]
@@ -682,9 +682,8 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 if not ending_is_complete:
                     continue
                 pair=f"{a.text}>{b.text}"
-                exact_pairs.add(pair)
-                attested_l_ge_pairs.add(pair)
-        if not exact_pairs and not word_exact_pair_contexts and not phrase_exact_pair_contexts:
+                attested_l_ge_contexts[i]=full_form
+        if not exact_pairs and not word_exact_pair_contexts and not phrase_exact_pair_contexts and not attested_l_ge_contexts:
             name,source,confidence=RULE_META[rule_id]
             return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
         for i in range(len(items)-1):
@@ -700,15 +699,23 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             )
             if not applies: continue
             pair=f"{a.text}>{b.text}"
-            if pair not in exact_pairs and i not in word_exact_pair_contexts and i not in phrase_exact_pair_contexts:
+            if rule_id == "R013":
+                licensed_at_position = (
+                    i in word_exact_pair_contexts
+                    or i in phrase_exact_pair_contexts
+                    or i in attested_l_ge_contexts
+                )
+            else:
+                licensed_at_position = pair in exact_pairs or i in word_exact_pair_contexts
+            if not licensed_at_position:
                 conditional_disabled=True
                 continue
             if rule_id=="R011" and a.coda=="ㄾ":
                 a.coda="ㄹ"
             b.onset=PLAIN_TO_FORTIS[b.onset]
             changed=True
-            if pair in attested_l_ge_pairs:
-                license_context=f"R013:attested_l_ge_ending:{full_form}:{pair}"
+            if i in attested_l_ge_contexts:
+                license_context=f"R013:attested_l_ge_ending:{attested_l_ge_contexts[i]}:{pair}"
                 source="NIKL Standard Pronunciation Rule 27; official Q&A https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=330963"
                 confidence="high"
             elif i in phrase_exact_pair_contexts:
