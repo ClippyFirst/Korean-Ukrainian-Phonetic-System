@@ -64,7 +64,7 @@ def test_section4_generic_oe_and_wi_diphthong_variants():
 
     wi = phoneticize_korean("귀")["ipa"]
     assert wi["ipa"] == "ky"
-    assert [variant["ipa"] for variant in wi["variants"]] == ["kwi"]
+    assert [variant["ipa"] for variant in wi["variants"]] == ["kwi", "kɥi"]
 
 def test_section4_combines_up_to_three_optional_vowels():
     result = phoneticize_korean("괴물귀")["ipa"]
@@ -73,6 +73,7 @@ def test_section4_combines_up_to_three_optional_vowels():
         "kwe.mul.ɡy",
         "kø.mul.ɡwi",
         "kwe.mul.ɡwi",
+        "kø.mul.ɡɥi",
     ]
 
 def test_section4_keeps_sourced_lexical_length_and_spelling_in_variants():
@@ -172,12 +173,12 @@ def test_python_ipa_results_expose_a_versioned_profile_contract():
     expected = {
         "phonemic": ("clippyfirst-korean-phonemic-v1", "phonemic"),
         "broad": ("clippyfirst-korean-broad-v1", "broad"),
-        "narrow": ("clippyfirst-korean-narrow-partial-sibilant-nasal-h-v3", "narrow"),
+        "narrow": ("clippyfirst-korean-narrow-contextual-allophones-v5", "narrow"),
     }
     for level, (profile_id, profile_level) in expected.items():
         result = phoneticize_korean("씨", ipa_level=level)["ipa"]
         assert result["ipa_profile"] == profile_id
-        assert result["ipa_profile_version"] == (3 if level == "narrow" else 1)
+        assert result["ipa_profile_version"] == (5 if level == "narrow" else 1)
         assert result["ipa_profile_level"] == profile_level
         assert result["ipa_profile_status"] == (
             "partial-research-only" if level == "narrow"
@@ -236,10 +237,74 @@ def test_narrow_h_voicing_after_sonorant_coda_is_scoped_and_not_target_approved(
         assert result["transcription_profile"]["target_compatible"] is False
 
     # Negative controls: no preceding sonorant coda, or a word boundary.
-    assert phoneticize_korean("아하", ipa_level="narrow")["ipa"]["ipa"] == "a.ha"
+    assert phoneticize_korean("하", ipa_level="narrow")["ipa"]["ipa"] == "ha"
     assert phoneticize_korean("감 하", ipa_level="narrow")["ipa"]["ipa"] == "kam ha"
 
     # The default broad and underlying phonemic representations remain stable.
     assert phoneticize_korean("감히", ipa_level="broad")["ipa"]["ipa"] == "kam.hi"
     assert phoneticize_korean("감히", ipa_level="phonemic")["ipa"]["ipa"] == "kam.hi"
+
+
+
+def test_broad_sibilant_palatalization_is_available_as_an_optional_ipa_variant():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    result = phoneticize_korean("시")["ipa"]
+    assert result["ipa"] == "si"
+    assert any(variant["ipa"] == "ɕi" for variant in result["variants"])
+
+    # The evidence used here concerns lenis /s/, not fortis /s͈/.
+    fortis = phoneticize_korean("씨")["ipa"]
+    assert fortis["ipa"] == "s͈i"
+    assert not any("ɕ͈" in variant["ipa"] for variant in fortis["variants"])
+
+
+def test_narrow_h_has_context_conditioned_palatal_and_velar_allophones():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    assert phoneticize_korean("히", ipa_level="narrow")["ipa"]["ipa"] == "çi"
+    assert phoneticize_korean("후", ipa_level="narrow")["ipa"]["ipa"] == "xu"
+    assert phoneticize_korean("하", ipa_level="narrow")["ipa"]["ipa"] == "ha"
+
+
+
+def test_narrow_sibilant_profile_includes_yae_but_broad_keeps_it_optional():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    assert phoneticize_korean("섀", ipa_level="narrow")["ipa"]["ipa"] == "ɕʰjɛ"
+    broad = phoneticize_korean("섀")["ipa"]
+    assert broad["ipa"] == "sjɛ"
+    assert any(variant["ipa"] == "ɕjɛ" for variant in broad["variants"])
+
+def test_broad_h_allophones_are_optional_and_profile_scoped():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    hi = phoneticize_korean("히")["ipa"]
+    hu = phoneticize_korean("후")["ipa"]
+    assert hi["ipa"] == "hi"
+    assert any(item["ipa"] == "çi" for item in hi["variants"])
+    assert hu["ipa"] == "hu"
+    assert any(item["ipa"] == "xu" for item in hu["variants"])
+    assert phoneticize_korean("하")["ipa"]["variants"] == []
+
+
+def test_seoul_broad_profile_offers_source_scoped_h_and_liquid_allophones():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    h = phoneticize_korean("아하")["ipa"]
+    assert h["ipa"] == "a.ha"
+    assert any(item["ipa"] == "a.ɸa" for item in h["variants"])
+
+    liquid = phoneticize_korean("나라")["ipa"]
+    assert liquid["ipa"] == "na.ɾa"
+    assert any(item["ipa"] == "na.ɭa" for item in liquid["variants"])
+
+    # Lee (1999) describes /ɕ/ before all these /j/-initial diphthongs.
+    # Python and Browser shared Broad profiles must expose the same candidates.
+    for word, expected in {"셔": "ɕjʌ", "쇼": "ɕjo", "슈": "ɕju"}.items():
+        sibilant = phoneticize_korean(word)["ipa"]
+        assert sibilant["ipa"].startswith("s")
+        assert any(item["ipa"] == expected for item in sibilant["variants"]), word
+    fortis = phoneticize_korean("쑈")["ipa"]
+    assert not any("ɕ͈" in item["ipa"] for item in fortis["variants"])
 

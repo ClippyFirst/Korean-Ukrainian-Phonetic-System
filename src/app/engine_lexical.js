@@ -154,7 +154,7 @@ export function firstSyllableInWord(units,index){
   return true;
 }
 
-export function genericVowelVariants(text,units,originalUnits,ipa,output,status){
+export function genericVowelVariants(text,units,originalUnits,ipa,output,status,includeBroadAllophones=false){
   const sites=[];
   for(let i=0;i<originalUnits.length;i++){
     const syllable=originalUnits[i];
@@ -171,37 +171,148 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status)
     if(!alternate||!ipa[i]||!ipa[i].includes(primary))continue;
     sites.push({index:i,vowel,primary,alternate,section});
   }
-  if(!sites.length||status==='unresolved')return[];
-  const masks=sites.length<=3
-    ?Array.from({length:(1<<sites.length)-1},(_,i)=>i+1)
-    :sites.map((_,i)=>1<<i);
-  return masks.map(mask=>{
-    const changed=sites.filter((_,i)=>(mask&(1<<i))!==0);
-    const alternateIpa=ipa.slice();
-    for(const site of changed){
-      alternateIpa[site.index]=alternateIpa[site.index].replace(site.primary,site.alternate);
-    }
-    const alternateMapped=alternateIpa.map(value=>ipaSyllableToUkrainian(value,{allowProvisional:true}));
-    const alternateOutput=alternateMapped.map(item=>item.text);
-    const labels=changed.map(site=>{
-      if(site.vowel==='ㅚ')return 'ㅚ [we]';
-      if(site.vowel==='ㅟ')return 'ㅟ [wi]';
-      if(site.vowel==='ㅖ')return 'ㅖ [e]';
-      return '비초성 ㅢ [i]';
-    });
-    const sections=[...new Set(changed.map(site=>site.section))].join('/');
-    const note=sites.length<=3
-      ?sections+': дозволена альтернативна вимова '+labels.join(' + ')+'; корейське написання не змінюється.'
-      :sections+': альтернативна вимова '+labels.join(' + ')+'; інші необрані голосні зберігають основне читання, написання не змінюється.';
-    return{
-      source:text,
-      surface:text,
-      ukrainian:alternateOutput.join(''),
-      ipa:renderStructured(units,alternateIpa,'.'),
-      note,
-      status:alternateMapped.some(item=>item.status==='provisional')?'lexical-review':status,
-      target_status:alternateMapped.some(item=>item.status==='unavailable'||item.unknown)?'unavailable':alternateMapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
-    };
-  });
-}
+  if(status==='unresolved')return[];
+  const variants=[];
+  if(sites.length){
+    const masks=sites.length<=3
+      ?Array.from({length:(1<<sites.length)-1},(_,i)=>i+1)
+      :sites.map((_,i)=>1<<i);
+    variants.push(...masks.map(mask=>{
+      const changed=sites.filter((_,i)=>(mask&(1<<i))!==0);
+      const alternateIpa=ipa.slice();
+      for(const site of changed){
+        alternateIpa[site.index]=alternateIpa[site.index].replace(site.primary,site.alternate);
+      }
+      const alternateMapped=alternateIpa.map(value=>ipaSyllableToUkrainian(value,{allowProvisional:true}));
+      const alternateOutput=alternateMapped.map(item=>item.text??'');
+      const labels=changed.map(site=>{
+        if(site.vowel==='ㅚ')return 'ㅚ [we]';
+        if(site.vowel==='ㅟ')return 'ㅟ [wi]';
+        if(site.vowel==='ㅖ')return 'ㅖ [e]';
+        return '비초성 ㅢ [i]';
+      });
+      const sections=[...new Set(changed.map(site=>site.section))].join('/');
+      const note=sites.length<=3
+        ?sections+': дозволена альтернативна вимова '+labels.join(' + ')+'; корейське написання не змінюється.'
+        :sections+': альтернативна вимова '+labels.join(' + ')+'; інші необрані голосні зберігають основне читання, написання не змінюється.';
+      return{
+        source:text,
+        surface:text,
+        ukrainian:alternateOutput.join(''),
+        ipa:renderStructured(units,alternateIpa,'.'),
+        note,
+        status:alternateMapped.some(item=>item.status==='provisional')?'lexical-review':status,
+        target_status:alternateMapped.some(item=>item.status==='unavailable'||item.unknown)?'unavailable':alternateMapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
+      };
+    }));
+  }
 
+  if(includeBroadAllophones){
+    // Korean ㅟ has a documented [ɥi] realization in addition to [y]/[wi].
+    // Keep [y] canonical and expose the phonetic realization as an alternative.
+    for(const site of sites.filter(item=>item.vowel==='ㅟ')){
+      const alternateIpa=ipa.slice();
+      alternateIpa[site.index]=alternateIpa[site.index].replace(site.primary,'ɥi');
+      const mapped=alternateIpa.map(value=>ipaSyllableToUkrainian(value,{allowProvisional:true}));
+      variants.push({
+        source:text,
+        surface:text,
+        ukrainian:mapped.map(item=>item.text??'').join(''),
+        ipa:renderStructured(units,alternateIpa,'.'),
+        note:'Korean ㅟ may be realized as [ɥi] in phonetic descriptions; canonical [y] and [wi] are retained.',
+        status:mapped.some(item=>item.status==='provisional')?'lexical-review':status,
+        target_status:mapped.some(item=>item.status==='unavailable'||item.unknown)?'unavailable':mapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
+      });
+    }
+  }
+
+  // Lee's Seoul Korean IPA description also supports [ç] before /i,j/ and
+  // [x] before /u/. Keep broad [h] canonical and expose scoped variants.
+  if(includeBroadAllophones){
+    for(let i=0;i<originalUnits.length;i++){
+      const syllable=originalUnits[i];
+      const alternateInitial=['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ'].includes(syllable.vowel)
+        ?'ç':syllable.vowel==='ㅜ'?'x':'';
+      if(syllable.onset!=='ㅎ'||!alternateInitial||!ipa[i]?.startsWith('h'))continue;
+      const alternateIpa=ipa.slice();
+      alternateIpa[i]=alternateInitial+alternateIpa[i].slice(1);
+      const mapped=alternateIpa.map(value=>ipaSyllableToUkrainian(value,{allowProvisional:true}));
+      variants.push({
+        source:text,
+        surface:text,
+        ukrainian:mapped.map(item=>item.text??'').join(''),
+        ipa:renderStructured(units,alternateIpa,'.'),
+        note:'Optional Seoul Korean /h/ allophone ['+alternateInitial+'] in this vowel context; broad canonical [h] is preserved.',
+        status:mapped.some(item=>item.status==='provisional')?'lexical-review':status,
+        target_status:mapped.some(item=>item.status==='unavailable'||item.unknown)?'unavailable':mapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
+      });
+    }
+  }
+
+  // Lee's Seoul Korean IPA description and Kang (2010) support [ɕ] as a
+  // lenis /s/ allophone before /i/ and selected /j/-initial diphthongs.
+  // Keep the broad canonical /s/ and fortis /s͈/ unchanged.
+  if(includeBroadAllophones){
+    const palatalNuclei=new Set(['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ']);
+    for(let i=0;i<originalUnits.length;i++){
+      const syllable=originalUnits[i];
+      if(syllable.onset!=='ㅅ'||!palatalNuclei.has(syllable.vowel)||!ipa[i]?.startsWith('s'))continue;
+      const alternateIpa=ipa.slice();
+      alternateIpa[i]='ɕ'+alternateIpa[i].slice(1);
+      const mapped=alternateIpa.map(value=>ipaSyllableToUkrainian(value,{allowProvisional:true}));
+      variants.push({
+        source:text,
+        surface:text,
+        ukrainian:mapped.map(item=>item.text??'').join(''),
+        ipa:renderStructured(units,alternateIpa,'.'),
+        note:'Optional [ɕ] allophone of lenis /s/ before /i/ or a Lee (1999)-described /j/-initial diphthong; broad canonical /s/ is preserved.',
+        status:mapped.some(item=>item.status==='provisional')?'lexical-review':status,
+        target_status:mapped.some(item=>item.status==='unavailable'||item.unknown)?'unavailable':mapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
+      });
+    }
+  }
+  if(includeBroadAllophones){
+    // S018: intervocalic /h/ may surface as [ɸ]. Keep [h] canonical.
+    for(let i=1;i<originalUnits.length;i++){
+      const syllable=originalUnits[i];
+      const previous=originalUnits[i-1];
+      if(syllable.onset!=='ㅎ'||previous.coda!==''||!ipa[i]?.startsWith('h'))continue;
+      const alternateIpa=ipa.slice();
+      alternateIpa[i]='ɸ'+alternateIpa[i].slice(1);
+      const mapped=alternateIpa.map(value=>ipaSyllableToUkrainian(value,{allowProvisional:true}));
+      variants.push({
+        source:text,surface:text,ukrainian:mapped.map(item=>item.text??'').join(''),
+        ipa:renderStructured(units,alternateIpa,'.'),
+        note:'Optional Seoul Korean [ɸ] for /h/ between voiced sounds (S018); broad canonical [h] is preserved.',
+        status:mapped.some(item=>item.status==='provisional')?'lexical-review':status,
+        target_status:mapped.some(item=>item.status==='unavailable'||item.unknown)?'unavailable':mapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
+      });
+    }
+
+    // S018: /l/ may be [ɭ] intervocalically or before /i,j/. Keep
+    // the broad canonical liquid unchanged and expose this as a variant.
+    const palatalLiquidNuclei=new Set(['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ']);
+    for(let i=0;i<originalUnits.length;i++){
+      const syllable=originalUnits[i];
+      if(syllable.onset!=='ㄹ'||!ipa[i]||!(/^(ɾ|l)/u).test(ipa[i]))continue;
+      const previous=originalUnits[i-1];
+      const sameWordPredecessor=Boolean(previous)&&!firstSyllableInWord(units,i);
+      const afterLiquidCoda=sameWordPredecessor&&previous.coda==='ㄹ';
+      const intervocalic=sameWordPredecessor&&previous.coda==='';
+      const beforeFrontGlide=sameWordPredecessor&&palatalLiquidNuclei.has(syllable.vowel);
+      if(afterLiquidCoda||!(intervocalic||beforeFrontGlide))continue;
+      const alternateIpa=ipa.slice();
+      alternateIpa[i]='ɭ'+alternateIpa[i].slice(1);
+      const mapped=alternateIpa.map(value=>ipaSyllableToUkrainian(value,{allowProvisional:true}));
+      variants.push({
+        source:text,surface:text,ukrainian:mapped.map(item=>item.text??'').join(''),
+        ipa:renderStructured(units,alternateIpa,'.'),
+        note:'Optional Seoul Korean [ɭ] for /l/ intervocalically or before /i,j/ (S018); broad canonical liquid is preserved.',
+        status:mapped.some(item=>item.status==='provisional')?'lexical-review':status,
+        target_status:mapped.some(item=>item.status==='unavailable'||item.unknown)?'unavailable':mapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
+      });
+    }
+  }
+
+  return variants;
+}

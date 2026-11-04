@@ -452,3 +452,65 @@ def test_c01_c07_and_c10_cluster_decisions_follow_the_reviewed_profile_evidence(
     assert "do not mark English-style primary lexical stress" in clusters["C10"]["production_decision"]
     assert clusters["C09"]["status"] == "SOURCE_LENGTH_IMPLEMENTED_7_FORMS_IPA_REVIEW_PENDING"
     assert "all seven named forms" in clusters["C09"]["production_decision"].lower()
+
+
+def test_c12_velar_coarticulation_source_is_cautionary_not_a_rewrite_license():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-KCI-ITO-2007-MORPHEME-STRUCTURE"]
+    assert source["url"] == "https://doi.org/10.17959/sppm.2007.13.3.373"
+    assert "abstract" in source["review_status"].lower()
+    assert "underrepresented" in source["coverage"].lower()
+    assert "velar/uvular fricative" in source["coverage"].lower()
+    assert "does not establish" in source["limitations_or_next_action"].lower()
+    assert "exact-token" in source["limitations_or_next_action"].lower()
+
+    triage = (ROOT / "research" / "KOZAK-KIM-MISMATCH-FRAGMENT-TRIAGE-2026-11-02.md").read_text(encoding="utf-8")
+    c12 = next(line for line in triage.splitlines() if "`kx/kç → kʰ`" in line and "45 operations / 37 occurrences" in line and "No phonological rewrite" in line)
+    assert "SRC-KCI-ITO-2007-MORPHEME-STRUCTURE" in c12
+    assert "No phonological rewrite" in c12
+    assert "BLOCKED" in c12
+
+    with C08_CLUSTER_REGISTER.open("r", encoding="utf-8-sig", newline="") as stream:
+        clusters = {row["cluster_id"]: row for row in csv.DictReader(stream)}
+    c12_cluster = clusters["C12"]
+    assert c12_cluster["unique_occurrences"] == "37"
+    assert c12_cluster["edit_operations"] == "45"
+    assert c12_cluster["status"] == "BLOCKED_EVIDENCE_AND_IPA_REVIEW_REQUIRED"
+    assert "SRC-KCI-ITO-2007-MORPHEME-STRUCTURE" in c12_cluster["production_decision"] + c12_cluster["next_action"]
+    assert clusters["C04"]["unique_occurrences"] == "0"
+    assert clusters["C04"]["edit_operations"] == "0"
+
+def test_sigmorphon_native_only_exact_cases_have_bounded_nikl_sources():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    value_source = rows["SRC-NIKL-MCFAQ-5949"]
+    assert "값어치[가버치]" in value_source["coverage"]
+    assert "§15" in value_source["coverage"]
+    assert "not IPA" in value_source["limitations_or_next_action"]
+
+    taste_source = rows["SRC-NIKL-QNA-319525"]
+    assert "맛없다[마덥따]" in taste_source["coverage"]
+    assert "§15" in taste_source["coverage"]
+    assert "not IPA" in taste_source["limitations_or_next_action"]
+
+
+def test_c08_fixture_maps_all_eight_occurrences_without_promoting_hypotheses_to_gold():
+    fixture = json.loads((ROOT / "tests" / "fixtures" / "kozak-kim-c08-source-contexts.json").read_text(encoding="utf-8"))
+    mapping = fixture["cluster_occurrence_mapping"]
+    cases = fixture["cases"]
+    case_ids = {case["source_row_id"] for case in cases}
+
+    assert len(cases) == 8
+    assert set(mapping["occurrence_ids"]) == case_ids
+    assert len(mapping["independently_recovered_ids"]) == 3
+    assert len(mapping["reconstructed_ids"]) == 5
+    assert set(mapping["independently_recovered_ids"]).isdisjoint(mapping["reconstructed_ids"])
+    assert set(mapping["independently_recovered_ids"]) | set(mapping["reconstructed_ids"]) == case_ids
+    assert mapping["status"] == "ALL_EIGHT_SOURCE_ROWS_MAPPED_WITH_FIVE_HIGH_CONFIDENCE_RECONSTRUCTIONS"
+
+    unresolved = [case for case in cases if case["status"] == "UNRESOLVED_EXACT_LEXICAL_PRONUNCIATION"]
+    assert len(unresolved) == 1
+    assert unresolved[0]["source_row_id"] == "dc_inside_2024"
+    assert unresolved[0]["input"] == "유사성"
+    assert all(case.get("morphology_evidence") for case in cases if case["source_row_id"] != "dc_inside_2024")
+    assert any("not independently adjudicated normative IPA gold" in item for item in mapping["limitations"])
+    assert any("No production phonology rule" in item for item in mapping["limitations"])

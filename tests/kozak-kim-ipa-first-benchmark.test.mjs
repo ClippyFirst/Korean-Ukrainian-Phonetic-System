@@ -376,3 +376,60 @@ test('shared Broad profile exposes deterministic coda surfaces without resolving
     assert.equal(legacy.surfaceHangul, expectedLegacySurface, word);
   }
 });
+
+test('shared broad profile exposes source-backed sibilant palatalization as a variant, not a forced rewrite', () => {
+  const engine = createBrowserKozakKimEngine();
+  const lenis = engine.convert('시', { ipaProfile: 'clippyfirst-korean-broad-v1' });
+  assert.equal(lenis.ipa, 'si');
+  assert.ok(lenis.variants.some(variant => variant.ipa === 'ɕi'));
+
+  const fortis = engine.convert('씨', { ipaProfile: 'clippyfirst-korean-broad-v1' });
+  assert.equal(fortis.ipa, 's͈i');
+  assert.ok(!fortis.variants.some(variant => variant.ipa.includes('ɕ͈')));
+});
+
+test('shared broad profile offers [ɥi] as a documented ㅟ alternative', () => {
+  const result = createBrowserKozakKimEngine().convert('귀', {
+    ipaProfile: 'clippyfirst-korean-broad-v1'
+  });
+  assert.equal(result.ipa, 'ky');
+  assert.ok(result.variants.some(variant => variant.ipa === 'kɥi'));
+});
+
+test('shared broad profile exposes optional Seoul ㅎ allophones without changing canonical IPA', () => {
+  const engine = createBrowserKozakKimEngine();
+  const hi = engine.convert('히', { ipaProfile: 'clippyfirst-korean-broad-v1' });
+  const hu = engine.convert('후', { ipaProfile: 'clippyfirst-korean-broad-v1' });
+  assert.equal(hi.ipa, 'hi');
+  assert.ok(hi.variants.some(variant => variant.ipa === 'çi'));
+  assert.equal(hu.ipa, 'hu');
+  assert.ok(hu.variants.some(variant => variant.ipa === 'xu'));
+});
+
+test('shared Broad profile exposes Lee 1999 intervocalic [ɸ] and [ɭ] as optional variants', () => {
+  const engine = createBrowserKozakKimEngine();
+  const h = engine.convert('아하', { ipaProfile: 'clippyfirst-korean-broad-v1' });
+  assert.equal(h.ipa, 'a.ha');
+  assert.ok(h.variants.some(variant => variant.ipa === 'a.ɸa'));
+
+  const liquid = engine.convert('나라', { ipaProfile: 'clippyfirst-korean-broad-v1' });
+  assert.equal(liquid.ipa, 'na.ɾa');
+  assert.ok(liquid.variants.some(variant => variant.ipa === 'na.ɭa'));
+
+  // Word-initial ㄹ before a glide is a tap context here, not the cited
+  // intervocalic /l/ environment; do not emit a spurious [ɭ] candidate.
+  const initialLiquid = engine.convert('례', { ipaProfile: 'clippyfirst-korean-broad-v1' });
+  assert.equal(initialLiquid.ipa, 'ɾje');
+  assert.ok(!initialLiquid.variants.some(variant => variant.ipa.includes('ɭ')));
+});
+
+test('shared Broad profile exposes [ɕ] before all Lee 1999 /j/-initial diphthongs only as variants', () => {
+  const engine = createBrowserKozakKimEngine();
+  for (const [word, expected] of [['쇼', 'ɕjo'], ['슈', 'ɕju'], ['셔', 'ɕjʌ']]) {
+    const result = engine.convert(word, { ipaProfile: 'clippyfirst-korean-broad-v1' });
+    assert.ok(result.variants.some(variant => variant.ipa === expected), word);
+  }
+  const fortis = engine.convert('쑈', { ipaProfile: 'clippyfirst-korean-broad-v1' });
+  assert.ok(!fortis.variants.some(variant => variant.ipa.includes('ɕ͈')));
+});
+
