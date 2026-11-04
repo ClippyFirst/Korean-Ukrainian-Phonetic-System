@@ -1,7 +1,7 @@
 # Korean–Ukrainian Phonetic System: Research Programme
 
-Status: research programme established; baseline repository and runtime audits substantially reconstructed; official NIKL inventory crawl is blocked by HTTP 403 from the GitHub Actions runner.
-Last updated: 2026-10-21.
+Status: research prototype; repository documentation, versioning policy and owner-approved custom licence are integrated into main. Scientific certification and release readiness remain blocked by independent IPA/Ukrainian review, NIKL item-level rights, C12 evidence, historical mismatch reconciliation and remaining coverage/parity work.
+Last updated: 2026-11-05.
 
 This directory is the durable source of truth for research planning, evidence tracking, implementation coverage, decisions, and release acceptance. Continue work from these files rather than relying on chat history.
 
@@ -18,15 +18,20 @@ This directory is the durable source of truth for research planning, evidence tr
 10. [Decision log](DECISION-LOG.md) — durable record of consequential decisions.
 11. [Release acceptance gates](ACCEPTANCE-GATES.md) — evidence required before a release is accepted.
 
-## Current state
-The Phase 0 reconstruction is substantially complete on the current mainline, with current CI and deployment evidence recorded in the master handoff. Do not treat the programme as scientifically complete: the official NIKL source inventory has not yet been crawled by the new collector, full browser/Python morphology parity is not established, and independent IPA/Ukrainian target validation remains open.
+## Current state — 2026-11-05
+The repository audit/navigation, independent browser/Python version policy, and owner-approved ClippyFirst Project License have been merged into `main` via PR #434 (merge commit `56318e8a293d6f92dc307256430279d386a77d33`). The repository remains a **partial research prototype**, not research-certified or release-ready. Software CI on the exact PR head passed, but those checks do not establish linguistic correctness or source-item reuse rights. The official NIKL metadata-only inventory was skipped; it must not be described as passed.
 
 Current evidence gaps:
-- run the official NIKL collector in a network-enabled environment and reconcile all 30 article headings;
-- inspect current source reuse terms before retaining or redistributing official article text;
-- finish rule-level parity across browser, Python, CLI, and API where the current matrix says it is incomplete;
-- obtain independent phonetic/IPA and Ukrainian target-layer review;
+- complete a network-enabled, policy-compliant NIKL item inventory and inspect per-item KOGL markings/source ownership; the Standard Pronunciation Rules page previously returned HTTP 403 to automation;
+- obtain independent Korean IPA review and adjudication from qualified reviewers on a frozen holdout;
+- obtain independent Ukrainian phonetic/orthographic target review on frozen IPA inputs;
+- finish rule-level parity across browser, Python, CLI, and API where the current rule coverage matrix says it is incomplete;
+- crosswalk C12 mismatch rows to source utterances, audio, speakers, dialect and prosodic context before any production change;
+- recover and reconcile the historical 239 mismatch occurrences into a hash-pinned occurrence ledger; the current 36-row Broad queue is not a substitute;
+- close remaining names, loanwords, Hanja and regional-style coverage gaps;
 - retain exact-head CI and deployment smoke evidence for each release candidate.
+
+Supervised neural training remains deferred until independently adjudicated IPA gold is available.
 
 ## Working rules
 - Update these files as work progresses. Every work session must leave a durable status update.
