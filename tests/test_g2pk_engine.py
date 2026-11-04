@@ -170,9 +170,12 @@ def test_g2pk_baseline_does_not_consume_kozak_only_research_lexical_candidates(m
             "rule_notes": "Synthetic isolation fixture; not linguistic evidence.",
             "confidence": "test-only",
             "input_kind": "kozak-research-only",
+            "ipa_adjudication_status": "diagnostic_only_unresolved_pronunciation",
         },
     )
     ipa_only_result = g2pk_engine.phoneticize_with_g2pk("바나나")
     assert ipa_only_result["surface_hangul"] == "바나나"
     assert ipa_only_result["ipa"]["lexical_overrides"] == []
     assert ipa_only_result["ipa"]["ipa"] != "x.y.z"
+    assert ipa_only_result["ipa"]["status"] != "diagnostic_only_unresolved_pronunciation"
+    assert ipa_only_result["ipa"]["word_analyses"][0]["status"] == "derived-from-surface"
