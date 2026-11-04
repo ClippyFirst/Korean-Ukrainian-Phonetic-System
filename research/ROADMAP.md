@@ -295,3 +295,66 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 - **BLOCKED / EVIDENCE-LIMITED:** independent accuracy evaluation needs adjudicated held-out Korean pronunciation gold. No neural runtime or remote service is introduced.
 
 - **DEFERRED:** Python CLI/API do not expose Super-soft and remain strict/soft; no cross-runtime parity claim.
+
+## Kozak Kim browser G2P and benchmark improvement — 2026-11-01
+
+- **DONE_VERIFIED (PR #415, code head `d66d02889ffcf405dc9f927a61d3da69fbfe8697`):** separate Korean pronunciation resolution from IPA→Ukrainian target status; preserve resolved IPA when only the target mapping is provisional/unavailable; preserve literal/Jamo content in explicit Super-soft mode.
+- **DONE_VERIFIED:** add two exact NIKL-backed lexical surface entries: 사건[사ː껀] and 인기[인끼], retaining the optional non-fortis 인기[인기] alternative. IPA is project-derived from the attested Hangul surfaces; Ukrainian target remains provisional.
+- **DONE_VERIFIED (diagnostic only):** direct browser UGTPHON test-split run: 1,428/2,699 exact (52.9085%), CER 8.2571%, coverage 99.852%, 4 unresolved, 0 engine errors. Paired Python comparison on 2,698 common tokens: native 53.0393% exact / 9.1351% CER; g2pK 53.1134% / 9.2304%. No clear engine winner.
+- **PARTIAL / RESEARCH-ONLY:** broad IPA sensitivity profile yields 2,495/2,699 exact (92.4416%) and CER 1.3562% after collapsing selected narrow allophones and sibilant aspiration. This is a comparison convention analysis, not a change to engine output or a new accuracy claim; independent phonetics adjudication remains blocked.
+- **Research result:** UGTPHON's Korean task requires canonical-form inference from raw user-generated text. The EMNLP 2026 paper's Korean ablation shows sentence context is the dominant factor (word-to-word PERnc 47.5 vs sentence-to-word 28.1); retrieval adds only a small improvement (27.7), while staged decoding worsens the Korean result (33.1 / 32.0). If pursued, build a separate sentence-context lexical-normalization stage with train-only evidence and abstention, not a generic phonological rule.
+- **BLOCKED:** independent Korean IPA profile review; independent Ukrainian target review; NIKL item-level reuse verification and IPA-Dict/UGTPHON source-license compatibility review.
+- **IN_PROGRESS:** multi-engine comparison workflow 41309605046; CharsiuG2P and ByT5 remain skipped under default-off gates.
+- **Release status:** research prototype / diagnostic engine; not research-certified or release-ready. Full ledger and exact run evidence: `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md` and `research/ACCEPTANCE-GATES.md`.
+
+
+
+## 2026-11-01 — Kozak Kim exact-form G2P corrections (PR #415)
+
+- **PARTIAL pending exact-head CI:** add NIKL Q&A-backed exact §26 form `실수[실쑤]` to both browser and Python rule inventories; no productive rule expansion.
+- **PARTIAL pending exact-head CI:** add dictionary-backed `한자[한ː짜]` with long-vowel length preserved, IPA derived by the project, and Ukrainian target marked provisional.
+- **PARTIAL pending exact-head CI:** Python target adapter now withholds any candidate orthography for provisional lexical targets even when no target-reference string exists.
+- **Source register:** 139 records, 12 columns; rights counts 1 recorded, 1 not applicable, 130 review-required, 7 manual-classification-required.
+- **Projected only:** prior artifact recalculation estimates strict CER 8.2571% → 8.2441% (exact match unchanged) and broad-candidate exact 92.4416% → 92.4787%. No updated score may be published until current-head browser benchmark completes.
+- **BLOCKED:** connector commits have not triggered new CI runs; exact-head tests/build/system/benchmark require manual Actions dispatch or an event-triggering push. Korean phonetics adjudication, Ukrainian target review and item-level rights verification remain open.
+- **Release status:** research prototype; not research-certified or release-ready. See the latest continuation in `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md`.
+
+
+## 2026-11-01 — Canonical IPA benchmark error taxonomy (PR #415)
+
+- Direct browser run 41309605083: 2,699 tokens; strict exact 52.9085%, CER 8.2571%.
+- Research-only broad-candidate sensitivity: 92.4416% exact, CER 1.3562%; 1,067/1,271 strict mismatches (83.95%) normalize to exact; 204 remain.
+- Broad normalization is unadjudicated and must not be promoted as the official score. Review remaining cases with Korean sources and preserve length/allophone detail unless an adjudicated standard permits normalization.
+- New 실수 and 한자 corrections have projected, not measured, deltas pending exact-head CI and benchmark rerun.
+
+
+## 2026-11-01 — Measured source-backed G2P corrections (PR #415)
+
+- **DONE_VERIFIED diagnostic:** direct browser run 41311996175 on 2,699 tokens (99.852% coverage): strict exact 52.9085% unchanged; strict CER improved 8.2571% → 8.2441%; broad-candidate exact 92.4416% → 92.4787%, CER 1.3562% → 1.3427%.
+- \`실수\` now produces \`ɕil.s͈u\` and is broad-candidate exact; strict mismatch is annotation allophone. \`한자\` now produces \`haːn.tɕ͈a\`, preserving dictionary length; benchmark gold omits length, so distance 1 remains.
+- Paired native/g2pK: native 53.0393% exact / 9.1220% CER vs g2pK 53.1134% / 9.2304%; keep native as default.
+- Exact-head unit/system CI remains required before these changes can be promoted from benchmark-verified to fully verified.
+
+
+## 2026-11-01 — measured raw-surface and morphology follow-up (PR #415)
+
+- **DONE_VERIFIED:** restored the existing raw-surface benchmark implementation and corrected its Python regression contract; Python 3.11/3.12/3.13, wheel, web, teacher-corpus, browser regression/build and system verification passed in runs 41325015110 / 41325014981 / 41325014980.
+- **DONE_VERIFIED diagnostic:** exact pinned UGTPHON train/test split integrity and Apache-2.0 declaration checked in run 41325015010. Train 1,976 rows; test 275 rows; both Git blob hashes match the repository's pinned manifest.
+- **DONE_VERIFIED research result:** train-only raw-surface retrieval improves the paired 2,624-token subset from 51.3720% to 51.6006% exact (+0.2287 pp) and CER 10.0783% to 9.9730% (−0.1054 pp); 6 exact improvements, 0 regressions, 15 rescued, 0 lost. Only 22/722 noncanonical tokens hit; exact-context retrieval produced 0 hits. Do not promote to standard runtime.
+- **DONE_VERIFIED diagnostic / no adoption:** Kiwi + MeCab consensus changed 4 unique words, gave no exact-match gain and worsened paired CER by 0.000087. Preserve strict engine.
+- **Research direction:** EMNLP 2026's Korean ablation identifies sentence context as the main UGT lever; retrieval adds little after context and staged decoding worsens Korean. If continuing UGT, prototype a context-conditioned train-only candidate stage with canonical controls and calibrated abstention, not broad phonological rules.
+- **Benchmark interpretation:** direct browser canonical test remains 52.9085% exact / 8.2441% CER at 99.852% coverage. Broad-candidate sensitivity (92.4787% exact / 1.3427% CER) is not normative engine accuracy. Paired native/g2pK still favours native CER; no reason to replace Kozak Kim.
+- **BLOCKED:** independent Korean IPA adjudication, independent Ukrainian target review, NIKL item-level rights and IPA-Dict/UGTPHON license compatibility.
+- **IN_PROGRESS at last check:** latest post-test-only head workflows were still running; verify the current tip before merge. Multi-engine Charsiu/ByT5 jobs remain skipped by default.
+- **Release status:** research prototype; not research-certified or release-ready. Canonical handoff and exact artifact details remain in `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md`.
+
+
+## 2026-11-01 — Kozak Kim browser parity and direct original-g2pK comparison
+
+- **DONE_VERIFIED implementation:** browser IPA now mirrors the existing Python broad-profile handling of NIKL Standard Pronunciation Rule 5, exception 1. The correction removes the prohibited [j] glide in the covered ㅈ/ㅉ/ㅊ + ㅕ forms and adds an inspectable trace entry. The g2pK vendor source is unchanged.
+- **DONE_VERIFIED measured browser regression:** strict exact 1,428→1,442 (+14), strict CER 8.2441%→8.1358%; broad-candidate exact 2,496→2,521 (+25), broad-candidate CER 1.3427%→1.2301%. Broad-candidate results remain sensitivity analysis only.
+- **DONE_VERIFIED paired diagnostic:** on 2,699 shared UGTPHON occurrences, Kozak Kim and original g2pK both score 53.4272% exact. Kozak Kim CER is 8.1358%, g2pK CER 8.2138%. Four exact discordances favour each engine. A 264-row-cluster, 2,000-resample bootstrap gives exact-delta 95% CI [−0.207,+0.201] pp and CER-delta CI [−0.166,0.000] pp. Do not claim statistically robust overall superiority.
+- **Source adjudication:** all four apparent g2pK-only exacts are 없는; the NIKL §18 quoted example preserves vowel length [엄ː는], which UGTPHON gold omits. 못잃어 has two survey-attested readings; 인기 has optional fortition. 닮다 and 넘게 are supported §24 Kozak Kim wins. Existing 넓죽하다 and 읽고 source-backed regressions remain.
+- **Residual rule work:** keep R010/R012/R013/R028 conservative until a morphology-boundary model can distinguish verb stems, bound nouns, Sino-Korean compounds and lexicalized compounds. Do not add test-specific exact entries. Remaining IPA notation groups (ㅟ, aspiration notation, coda release marks, liquids) need convention adjudication, not blind normalization.
+- **Exact-head verification at implementation commit c7e2ce435960856a9382e79e71a8d49dc51c4e09:** system, JavaScript tests (1,364/1,364), Python 3.11/3.12/3.13, wheel/clean install, teacher corpus audit, browser build/integration, external UGTPHON benchmark, paired browser g2pK benchmark, morphology smoke/consensus, exhaustive register extraction and master-table artifacts passed.
+- **Status:** research prototype; not release-ready. Independent Korean IPA review, Ukrainian target review and item-level licensing remain blockers. PR #415 remains draft and unmerged.

@@ -201,3 +201,49 @@ def test_dictionary_source_review_preserves_partial_attestation_scope():
     assert "particle-attached target remains derived" in pronunciation["integration_status"]
     assert "not the full form 발음과" in pronunciation["limitations_or_next_action"]
     assert "item-level KOGL rights remain unverified" in pronunciation["limitations_or_next_action"]
+
+def test_2026_11_01_g2p_sources_keep_scope_and_license_provenance_explicit():
+    rows = {row["source_id"]: row for row in load_source_register()}
+
+    incident = rows["SRC-NIKL-QNA-313244"]
+    assert "사건[사ː껀]" in incident["coverage"]
+    assert "IPA is derived" in incident["contribution_expected"]
+    assert "item-level" in incident["limitations_or_next_action"]
+
+    popularity = rows["SRC-NIKL-QNA-331569"]
+    assert "인기[인끼]" in popularity["coverage"]
+    assert "optional" in popularity["coverage"].casefold()
+    assert "provisional" in popularity["integration_status"]
+
+    caution = rows["SRC-NIKL-QNA-337054"]
+    assert "not clearly established" in caution["authority_or_role"]
+    assert "Does not independently attest" in caution["limitations_or_next_action"]
+
+    hanja = rows["SRC-KRDICT-ENG-72461"]
+    assert "한자[한ː짜]" in hanja["coverage"]
+    assert "item-level KOGL" in hanja["license_status"]
+    assert "preserve long vowel" in hanja["limitations_or_next_action"]
+
+    silsoo = rows["SRC-NIKL-QNA-330843"]
+    assert "실수[실쑤]" in silsoo["coverage"]
+    assert "§26" in silsoo["integration_status"]
+    assert "item-level KOGL" in silsoo["license_status"]
+
+    diphthong = rows["SRC-NIKL-QNA-326554"]
+    assert "ㅟ" in diphthong["coverage"]
+    assert "[wi]" in diphthong["coverage"]
+
+    allophones = rows["SRC-OSU-KO-IPA-2022"]
+    assert "broad_candidate" in allophones["integration_status"]
+    assert "CC BY-NC" in allophones["license_status"]
+    assert "not a normative" in allophones["limitations_or_next_action"]
+
+    ipa_dict = rows["SRC-IPA-DICT-KO"]
+    assert "CC BY-SA" in ipa_dict["license_status"]
+    assert "broadly phonemic" in ipa_dict["authority_or_role"]
+
+    ugtphon = rows["SRC-UGTPHON-EMNLP-2026"]
+    assert "Apache-2.0" in ugtphon["license_status"]
+    assert "CC BY-SA" in ugtphon["license_status"]
+    assert "UGT" in ugtphon["limitations_or_next_action"]
+

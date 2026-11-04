@@ -11,7 +11,7 @@ test('§4 generic ㅚ words expose [we] without changing Korean spelling or Ukra
   const result = engine.convert('괴물');
   assert.equal(result.ipa, 'kø.mul');
   assert.equal(result.ukrainian, '');
-  assert.equal(result.target_status, 'unavailable');
+  assert.equal(result.target_status, 'provisional');
   assert.equal(result.candidate_ukrainian, 'квемул');
   assert.equal(result.candidate_status, 'provisional');
   assert.equal(result.variants.length, 1);
@@ -26,7 +26,7 @@ test('§4 generic ㅟ words expose [wi] without changing Korean spelling or Ukra
   const result = engine.convert('귀');
   assert.equal(result.ipa, 'ky');
   assert.equal(result.ukrainian, '');
-  assert.equal(result.target_status, 'unavailable');
+  assert.equal(result.target_status, 'provisional');
   assert.equal(result.candidate_ukrainian, 'кві');
   assert.equal(result.candidate_status, 'provisional');
   assert.equal(result.variants.length, 1);
@@ -73,7 +73,7 @@ test('§5 non-initial ㅢ exposes the permitted [i] reading and adjusts the Ukra
   const result = genericEngine.convert('민주주의');
   assert.equal(result.ipa, 'min.dʑu.dʑu.ɰi');
   assert.equal(result.ukrainian, '');
-  assert.equal(result.target_status, 'unavailable');
+  assert.equal(result.target_status, 'provisional');
   assert.equal(result.candidate_ukrainian, 'мінджуджуий');
   assert.equal(result.candidate_status, 'provisional');
   assert.equal(result.variants.length, 1);

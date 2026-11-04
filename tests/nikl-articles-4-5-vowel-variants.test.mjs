@@ -67,8 +67,30 @@ test('§5 all listed 의 alternations are kept as explicit variants', () => {
   assert.equal(pronunciation.variants[0].ukrainian, 'париме');
 });
 
-test('§5 contracted 져/쪄/쳐 use the explicit short-vowel readings', () => {
-  for (const [word, surface] of Object.entries({져:'저',쪄:'쩌',쳐:'처'})) {
-    assert.equal(engine.convert(word).surfaceHangul, surface, word);
+test('§5 contracted 져/쪄/쳐 use the explicit short-vowel readings in surface IPA', () => {
+  const expected = {
+    져: { surface: '저', ipa: 'tɕʌ' },
+    쪄: { surface: '쩌', ipa: 'tɕ͈ʌ' },
+    쳐: { surface: '처', ipa: 'tɕʰʌ' }
+  };
+  for (const [word, value] of Object.entries(expected)) {
+    const result = engine.convert(word);
+    assert.equal(result.surfaceHangul, value.surface, word);
+    assert.equal(result.ipa, value.ipa, word);
+  }
+});
+
+test('§5 exception 1 removes the prohibited [j] glide after palatal affricates in full forms', () => {
+  const expected = {
+    던져주다: 'tʌn.dʑʌ.dʑu.da',
+    쳐먹고: 'tɕʰʌ.mʌk̚.k͈o',
+    빠져: 'p͈a.dʑʌ'
+  };
+  for (const [word, ipa] of Object.entries(expected)) {
+    const result = engine.convert(word);
+    assert.equal(result.ipa, ipa, word);
+    assert.ok(result.trace.some(item =>
+      item.rules.includes('vowel-yeo-monophthongization-§5-exception-1')
+    ), word);
   }
 });

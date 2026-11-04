@@ -805,12 +805,10 @@ def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_leve
     orthographic=target_mapping.get("ukrainian_orthography")
     lexical=LEXICAL_PRONUNCIATIONS.get(text)
     lexical_reference="".join(lexical["target_syllables"].split("|")) if lexical and lexical.get("target_syllables") else None
-    lexical_reference_status=lexical.get("target_status","model-selected") if lexical_reference is not None else None
+    lexical_reference_status=lexical.get("target_status","model-selected") if lexical is not None else None
     # A provisional lexical target is a review reference, never an accepted
     # output merely because its IPA segments happen to have model-selected mappings.
-    if (lexical_reference_status == "provisional"
-            and target_mapping.get("status") == "model-selected"
-            and orthographic is not None):
+    if lexical_reference_status == "provisional" and orthographic is not None:
         target_mapping = dict(target_mapping)
         target_mapping["candidate_orthography"] = orthographic
         target_mapping["candidate_status"] = "provisional"

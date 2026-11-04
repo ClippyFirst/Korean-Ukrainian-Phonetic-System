@@ -223,7 +223,7 @@ test('main browser conversion withholds provisional target output and exposes on
   const engine = createEngine(jamoCsv, lexicalCsv);
   const result = engine.convert('의', { morphologyMode: 'strict' });
   assert.equal(result.ukrainian, '');
-  assert.equal(result.target_status, 'unavailable');
+  assert.equal(result.target_status, 'provisional');
   assert.equal(result.candidate_ukrainian, 'ий');
   assert.equal(result.candidate_status, 'provisional');
   assert.equal(result.trace[0].candidateOutput, 'ий');
@@ -236,7 +236,7 @@ test('a phrase with a provisional target withholds partial output but preserves 
   const engine = createEngine(canonicalCsv, lexicalCsv);
   const result = engine.convert('가 의!');
   assert.equal(result.ukrainian, '');
-  assert.equal(result.target_status, 'unavailable');
+  assert.equal(result.target_status, 'provisional');
   assert.equal(result.candidate_status, 'provisional');
   assert.ok(result.candidate_ukrainian.includes('ий'));
   assert.ok(result.candidate_ukrainian.includes('!'));

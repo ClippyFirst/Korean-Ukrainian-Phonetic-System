@@ -6,9 +6,16 @@ on:
     paths:
       - "scripts/benchmark_ugtphon_ko.py"
       - "scripts/benchmark_native_vs_g2pk_ko.py"
+      - "scripts/benchmark_kozak_kim_browser.mjs"
+      - "scripts/benchmark_kozak_kim_vs_g2pk_browser.mjs"
+      - "scripts/benchmark_ugtphon_ko_surface.py"
       - "tests/test_ugtphon_benchmark.py"
+      - "tests/kozak-kim-ipa-first-benchmark.test.mjs"
+      - "tests/kozak-kim-vs-original-g2pk-browser.test.mjs"
+      - "tests/test_ugtphon_surface_benchmark.py"
       - ".github/workflows/ugtphon-benchmark.yml"
       - "src/korean_ukrainian/**"
+      - "src/app/engine_convert.js"
       - "data/korean/**"
       - ".github/workflows/native-vs-g2pk-benchmark.yml"
 
@@ -21,6 +28,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.12.0"
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -32,19 +42,31 @@ jobs:
         run: |
           set -euo pipefail
           curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/naver-ai/UGTPHON/${UGT_PHON_COMMIT}/ko/train.json" \
+            --output "$RUNNER_TEMP/ko-train.json"
+          curl --fail --location --retry 3 \
             "https://raw.githubusercontent.com/naver-ai/UGTPHON/${UGT_PHON_COMMIT}/ko/test.json" \
             --output "$RUNNER_TEMP/ko-test.json"
           curl --fail --location --retry 3 \
             "https://raw.githubusercontent.com/naver-ai/UGTPHON/${UGT_PHON_COMMIT}/ko/LICENSE" \
             --output "$RUNNER_TEMP/ko-LICENSE"
           grep -q "Apache License, Version 2.0" "$RUNNER_TEMP/ko-LICENSE"
-          python - "$RUNNER_TEMP/ko-test.json" <<'PY'
-          import json, sys
+          python - "$RUNNER_TEMP/ko-train.json" "$RUNNER_TEMP/ko-test.json" <<'PY'
+          import hashlib, json, sys
           from pathlib import Path
-          rows = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
-          assert len(rows) == 275, f"pinned corpus row-count drift: {len(rows)}"
-          assert all(row.get("lang") == "ko" and row.get("split") == "test" for row in rows)
-          print(f"Validated pinned UGTPHON Korean test split: {len(rows)} rows")
+          expected = {
+              "train": ("771ef17ceed8127980f0be5103674cfa53627e55", 1976),
+              "test": ("59380491d5a797308c475f7d0007dcf6c4be00af", 275),
+          }
+          for split, filename in zip(("train", "test"), sys.argv[1:]):
+              data = Path(filename).read_bytes()
+              actual = hashlib.sha1(b"blob " + str(len(data)).encode("ascii") + b"\0" + data).hexdigest()
+              rows = json.loads(data.decode("utf-8"))
+              expected_sha, expected_rows = expected[split]
+              assert actual == expected_sha, f"{split} pinned Git blob drift: {actual}"
+              assert len(rows) == expected_rows, f"{split} row-count drift: {len(rows)}"
+              assert all(row.get("lang") == "ko" and row.get("split") == split for row in rows)
+              print(f"Validated pinned UGTPHON Korean {split} split: {len(rows)} rows; Git blob {actual}")
           PY
       - name: Run external IPA diagnostic
         run: |
@@ -64,6 +86,90 @@ jobs:
               print(f"{key}: {report.get(key)}")
           print("Diagnostic only: do not treat this score as normative accuracy or a release gate.")
           PY
+      - name: Run actual browser-side Kozak Kim JavaScript engine diagnostic
+        run: |
+          set -euo pipefail
+          node scripts/benchmark_kozak_kim_browser.mjs \
+            --corpus "$RUNNER_TEMP/ko-test.json" \
+            --split test \
+            --output "$RUNNER_TEMP/kozak-kim-browser-test-report.json"
+          python - "$RUNNER_TEMP/kozak-kim-browser-test-report.json" <<'PY'
+          import json, sys
+          from pathlib import Path
+          report = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          for key in ("engine", "rows", "eligible_tokens", "scored_tokens", "coverage_rate",
+                      "exact_matches", "exact_match_rate", "coverage_adjusted_exact_match_rate",
+                      "character_error_rate", "unresolved_tokens", "partial_tokens",
+                      "heuristic_tokens", "target_unavailable_tokens", "engine_errors"):
+              print(f"{key}: {report.get(key)}")
+          print("Direct browser-side Kozak Kim diagnostic; IPA is scored independently of Ukrainian target availability.")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kozak-kim-browser-ugtphon-diagnostic
+          path: |
+            ${{ runner.temp }}/kozak-kim-browser-test-report.json
+          if-no-files-found: warn
+      - name: Run paired browser Kozak Kim vs untouched original g2pK diagnostic
+        run: |
+          set -euo pipefail
+          node --experimental-strip-types scripts/benchmark_kozak_kim_vs_g2pk_browser.mjs \
+            --corpus "$RUNNER_TEMP/ko-test.json" \
+            --output "$RUNNER_TEMP/kozak-kim-vs-original-g2pk-browser-report.json"
+          python - "$RUNNER_TEMP/kozak-kim-vs-original-g2pk-browser-report.json" <<'PY'
+          import json, sys
+          from pathlib import Path
+          report = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          for key in ("eligible_tokens", "skipped_non_hangul", "skipped_missing_gold"):
+              print(f"{key}: {report.get(key)}")
+          for engine in ("kozak_kim", "g2pk"):
+              item = report[engine]
+              print(f"{engine}: scored={item['scored_tokens']} exact={item['exact_matches']} "
+                    f"rate={item['exact_match_rate']} CER={item.get('character_error_rate')} "
+                    f"unresolved={item['unresolved_tokens']} errors={item['engine_errors']}")
+          paired = report["paired_subset"]
+          print("paired:", {key: paired[key] for key in (
+              "tokens_scored_by_both", "both_exact", "kozak_kim_only_exact",
+              "g2pk_only_exact", "both_wrong", "exact_match_delta_kozak_minus_g2pk",
+              "cer_delta_kozak_minus_g2pk", "sentence_cluster_bootstrap")})
+          print("Diagnostic only: g2pK source is untouched; UGTPHON is not normative pronunciation gold.")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kozak-kim-vs-original-g2pk-browser-diagnostic
+          path: |
+            ${{ runner.temp }}/kozak-kim-vs-original-g2pk-browser-report.json
+          if-no-files-found: warn
+      - name: Run train-only raw-surface UGTPHON retrieval diagnostic
+        run: |
+          set -euo pipefail
+          python scripts/benchmark_ugtphon_ko_surface.py \
+            --train-corpus "$RUNNER_TEMP/ko-train.json" \
+            --test-corpus "$RUNNER_TEMP/ko-test.json" \
+            --ipa-level broad \
+            --output "$RUNNER_TEMP/ugtphon-ko-raw-surface-report.json"
+          python - "$RUNNER_TEMP/ugtphon-ko-raw-surface-report.json" <<'PY'
+          import json, sys
+          from pathlib import Path
+          r = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          for key in ("attempted_tokens", "scored_tokens", "coverage_rate",
+                      "exact_matches", "exact_match_rate", "coverage_adjusted_exact_match_rate",
+                      "character_error_rate", "unresolved_tokens", "engine_errors"):
+              print(f"normalized.{key}: {r.get(key)}")
+          print("raw_baseline:", r["baseline"])
+          print("paired_subset:", r["paired_subset"])
+          print("normalization:", r["normalization"])
+          print("Research-only train-retrieval diagnostic; canonical G2P and Ukrainian output are unchanged.")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ugtphon-korean-raw-surface-diagnostic
+          path: |
+            ${{ runner.temp }}/ugtphon-ko-raw-surface-report.json
+          if-no-files-found: warn
       - name: Run paired native-vs-g2pk comparison
         run: |
           set -euo pipefail

@@ -257,7 +257,7 @@ def test_g2pk_differential_script_has_valid_python_syntax():
     ast.parse(script.read_text(encoding="utf-8"), filename=str(script))
 
 
-def test_python_g2pk_surface_differential_against_browser_fixture():
+def test_python_g2pk_surface_differential_against_pinned_js_port_fixture():
     import json
     import sys
     import warnings
@@ -281,7 +281,7 @@ def test_python_g2pk_surface_differential_against_browser_fixture():
         rows.append({
             "input": case["input"],
             "phenomenon": case["phenomenon"],
-            "browser_expected_surface": case["expectedSurface"],
+            "pinned_js_port_surface": case["expectedSurface"],
             "recorded_python_surface": case["pythonG2pkSurface"],
             "python_g2pk_surface": python_surface,
             "equal": python_surface == case["expectedSurface"],
@@ -290,19 +290,19 @@ def test_python_g2pk_surface_differential_against_browser_fixture():
             "practical_adapter_surface": case.get("normativeSurface"),
         })
     mismatches = [row for row in rows if not row["equal"]]
-    # These are known, evidence-backed JS-port divergences, not interchangeable
-    # IPA gold. Keep the practical port contract visible while guarding against
-    # silent additions/removals from this diagnostic.
+    # These are known, evidence-backed raw JS g2pK-port divergences, not
+    # current browser-engine outputs or interchangeable IPA gold. Keep the
+    # practical port contract visible while guarding against silent drift.
     expected_mismatches = {
-        "넓죽하다": {"browser": "널쭈카다", "python": "넙쭈카다"},
-        "읽고": {"browser": "익꼬", "python": "일꼬"},
+        "넓죽하다": {"js_port": "널쭈카다", "python": "넙쭈카다"},
+        "읽고": {"js_port": "익꼬", "python": "일꼬"},
     }
     assert {row["input"] for row in mismatches} == set(expected_mismatches)
     by_input = {case["input"]: case for case in fixture["cases"]}
     for row in mismatches:
         expected = expected_mismatches[row["input"]]
         case = by_input[row["input"]]
-        assert row["browser_expected_surface"] == expected["browser"]
+        assert row["pinned_js_port_surface"] == expected["js_port"]
         assert row["python_g2pk_surface"] == expected["python"]
         assert case["normativeSurface"] == expected["python"], row["input"]
         assert case["expectedSurface"] != case["normativeSurface"], row["input"]
@@ -382,6 +382,28 @@ def test_source_backed_complex_coda_lexicon_entry_resolves_its_own_pronunciation
     analysis = phoneticize_korean("값어치")
     assert analysis["pronunciation_status"] == "provisional"
     assert analysis["unresolved_contexts"] == []
+
+
+def test_provisional_lexical_target_without_reference_never_becomes_accepted():
+    from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
+
+    analysis = phoneticize_korean("한자")
+    assert analysis["ipa"]["ipa"] == "haːn.tɕ͈a"
+    result = transliterate_korean("한자")
+    assert result["ukrainian_orthography"] is None
+    assert result["target_status"] == "unavailable"
+    assert result["target_unavailable_reason"] == "provisional_lexical_target_requires_review"
+
+
+def test_nikl_sino_korean_rieul_fortition_has_direct_qna_attestation():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    analysis = phoneticize_korean("실수")
+    # Broad IPA intentionally keeps the sibilant allophone at [s]; the NIKL Q&A attests the Hangul surface and fortition, not a narrow [ɕ] transcription.
+    assert analysis["ipa"]["ipa"] == "sil.s͈u"
+    trace = next(item for item in analysis["rules"] if item["rule_id"] == "R012" and item["changed"])
+    assert "실수" in trace["license_context"]
+    assert "qna_seq=330843" in trace["source"]
 
 
 def test_nikl_attested_l_ge_ending_has_sourced_fortition():
