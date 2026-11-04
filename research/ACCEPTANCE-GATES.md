@@ -1165,3 +1165,8 @@ Source register: `SRC-NIKL-KRDICT-89917`; catalog: `S026`; mass cluster: C13; pa
 - Independent Korean IPA review, independent Ukrainian target review, item-level NIKL rights, C12 source audio/speaker/prosodic crosswalk, historical 239-case adjudication, and names/loans/Hanja/regional-style coverage remain open.
 - Research-only neural inference remains deferred/skipped.
 - Readiness remains **research prototype**, not research-certified or release-ready.
+
+
+### 2026-11-04 status correction — multi-engine rerun
+
+The first attempt of multi-engine workflow run [41870455614](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41870455614) was **cancelled** while the `Run multi-engine comparison` step was active. It produced no final artifact and no new benchmark score. A rerun of the failed/cancelled multi-engine job (job ID `126716565928`) was requested; attempt 2 was pending/queued at the latest status check. Until that rerun completes, use the latest completed benchmark artifact from run `41851913351` (artifact `13337845603`, SHA-256 `7c0dce9cada1c15a22f99f18bea048b75f2df9b0133d9e87fcda3f95b82a484c`). The production engine has not changed since that completed artifact; do not claim the cancelled attempt passed.
