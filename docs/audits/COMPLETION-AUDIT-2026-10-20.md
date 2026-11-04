@@ -1,5 +1,16 @@
 # Completion audit — Korean-to-Ukrainian Phonetic System
 
+## 2026-11-04 CI repair checkpoint
+
+| Task | Status | Evidence | Acceptance |
+|---|---|---|---|
+| Restore missing UGTPHON surface benchmark module on main | PARTIAL (PR #428; code + regression checks pass) | Exact module blob `25d0b2054b7d12208d282cbe04197f3ff248b7c1` restored; PR head `cd824c361062fbd0a39cdd9f2efbf698348fee5b`; Verify `41795308197` PASS; matrix `41795308362` PASS across Python 3.11/3.12/3.13, web, wheel and teacher audit; artifact build `41795308356` PASS. | Merge only after exhaustive register extraction `41795308312` succeeds and PR remains clean. |
+| Refresh generated unmapped IPA review queue | PARTIAL (PR #427; exact-head workflow pending) | Compared artifact from run `41726881384`; removed stale occurrences `868`, `1406`, `1527`, `2001`, `2010`, `2533`, `2562`; current queue contains 36 ordered occurrence IDs. | Multi-engine rerun `41794474070` must succeed; PR #427 must remain mergeable into #426 branch. |
+| Reconcile existing Korean PR stack | DONE_VERIFIED (inspection only) | #415, #414, #411, #371 and stacked #426/#425/#424/#423/#422/#421/#420/#419/#417/#416 inspected. #415 is broad draft despite passing checks; #411/#371 are unmergeable/stale; #414 is separate external smoke. | Leave unrelated branches and PRs untouched; do not merge broad/draft changes merely to repair the narrow CI issue. |
+
+**Evidence boundary:** no phonological rule, IPA gold label, Ukrainian output, or accuracy metric was changed. The missing benchmark module and its test contract are restored only. Independent Korean IPA gold remains a separate research gate.
+
+
 **Date:** 2026-10-20  
 **Audited baseline:** `main` at `8641dac4002f951d391682062ba134894e4198d7`  
 **Type:** repository and evidence audit from GitHub API/source files; not a local execution or independent phonetic validation.
