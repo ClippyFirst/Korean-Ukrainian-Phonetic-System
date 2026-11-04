@@ -240,5 +240,5 @@ No source/runtime code, linguistic production data, generated artifacts, third-p
 ### Post-merge branch and navigation check
 
 - Documentation map local links: **12/12 targets fetched successfully** from `main` on 2026-11-05.
-- Branch search returns `main` plus the merged PR head branch `docs/repository-audit-and-navigation-2026-11-04`. The latter is **10 commits behind main, 0 ahead**; it is a stale merged branch, not an open PR. It was deliberately left untouched; no branch deletion was performed.
+- Branch search returns `main` plus the merged PR head branch `docs/repository-audit-and-navigation-2026-11-04`. The latter is **behind main, with no unique commits**; it is a stale merged branch, not an open PR. It was deliberately left untouched; no branch deletion was performed.
 - Main has since advanced through post-merge audit, handoff and research-status maintenance commits. Inspect the live default-branch HEAD before starting the next task.
