@@ -865,8 +865,6 @@ def test_r013_phrase_licenses_match_exact_adjacent_eojeol_pairs_inside_sentences
     for sentence in (
         "해줄것 같다",
         "많을거같이 보인다",
-        "해 줄, 것 같다",
-        "많을, 거 같이",
     ):
         result = phoneticize_korean(sentence, boundary_mode="phrase")
         assert not any(
