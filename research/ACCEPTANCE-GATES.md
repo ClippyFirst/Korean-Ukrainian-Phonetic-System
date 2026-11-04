@@ -1262,3 +1262,14 @@ This dated addendum supersedes earlier shorthand where the current repository ev
 - Only source-supported, independently adjudicated corrections may enter production, with positive/negative controls and exact-head regression evidence.
 
 **Readiness:** partial research prototype. Software/documentation CI cannot close expert-review, legal-rights or historical evidence gates.
+
+
+## 2026-11-05 — PR #434 merge and project-level disposition
+
+PR #434 merged into `main` at `56318e8a293d6f92dc307256430279d386a77d33`. The owner-approved custom ClippyFirst licence, documentation map, repository audit and versioning policy are now integrated. This closes the root-license owner-decision gate and documentation discoverability work; it does not alter the linguistic or data-rights gates.
+
+The exact PR head `fbfe7f481fa0ac35264bf060fc8170d7310f3176` passed Python 3.11/3.12/3.13, teacher-corpus audit, browser regression/build, wheel-install checks, System Verify and generated master-table/research-corpus checks. NIKL metadata-only inventory was skipped, not passed. No post-merge workflow result was returned for the merge commit, so none is claimed.
+
+**Current project disposition: partial research prototype; not research-certified and not release-ready.** Remaining gates: independent Korean IPA gold/adjudication; independent Ukrainian target review; NIKL item-level KOGL/source-rights review; C12 audio/speaker/prosody crosswalk; hash-pinned reconciliation/adjudication of the historical 239 mismatch occurrences; remaining names/loanwords/Hanja/regional-style coverage; full cross-runtime parity where the rule-coverage matrix remains incomplete. Neural training remains deferred until independently adjudicated IPA gold exists.
+
+The custom licence is purpose-limited and not OSI-approved/open source. Scientific use of public-service results and the Korean→Ukrainian correspondence table is permitted with attribution; technical reuse requires prior written permission. Third-party terms remain separate. See root `LICENSE`, `docs/LICENSING-AND-PERMISSIONS.md`, and DEC-2026-007.
