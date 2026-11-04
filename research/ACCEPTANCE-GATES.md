@@ -849,3 +849,18 @@ Exact-head verification: push run `41358504664` and PR run `41358508399` both pa
 | C12 / 239 mismatch cases / training | BLOCKED / TODO | Exact-context evidence, adjudication and independent IPA gold remain absent. |
 
 **Disposition:** software regression gates are green on implementation head; research/linguistic acceptance and release gates remain open. CharsiuG2P, ByT5, Charsiu train/dev, and NIKL metadata inventory are skipped, not passes.
+
+
+## Exact-head acceptance update — PR #426 continuation (2026-11-04)
+
+| Gate | Status | Evidence / acceptance |
+|---|---|---|
+| Exact-eojeol NIKL licenses in sentence context | DONE_VERIFIED on code-bearing head | PR #426 code head `074350da133b6ed654b3960879cbb7c809c0ebe1`; System Verify 41725888453 and related exact-head Native/Browser, morphology, UGTPHON and extraction checks passed. |
+| Native Kozak Kim vs original g2pK 0.9.4 paired UGTPHON diagnostic | DONE_VERIFIED as diagnostic only | Run 41726881384 / artifact 13276390247; paired n=2,698; exact delta +0.0741 pp CI crosses zero; paired CER delta +0.2384 pp (g2pK higher, CI excludes zero). No independent IPA gold claim. |
+| Checked-in unmapped mismatch review queue | PARTIAL | Current-head exporter generated 36 rows / 55 fragments, zero missing context lookups; golden `cmp` failed at byte 31,117 / line 14. Must review and refresh expected rows, then rerun exact-head gate. |
+| Same-occurrence Browser comparison and parity in multi-engine workflow | TODO / BLOCKED_BY_UPSTREAM_GATE | Skipped after queue mismatch; separate Browser G2P CI passing is not a substitute for same-occurrence parity artifact. |
+| SIGMORPHON portfolio on current head | TODO / BLOCKED_BY_UPSTREAM_GATE | Skipped; do not reuse older-head scores as current-head verification. |
+| NIKL metadata crawl and optional neural inference | SKIPPED | Not passes; no claims of full NIKL source inventory or teacher advantage. |
+| Independent Korean IPA, Ukrainian target, item-level rights, C12 and 239 mismatch adjudication | BLOCKED / TODO | Require independent reviewer submissions, rights evidence, primary phonetic evidence and exact-context adjudication. |
+
+**Disposition:** research prototype; not research-certified or release-ready. Original g2pK remains unchanged and comparison-only.
