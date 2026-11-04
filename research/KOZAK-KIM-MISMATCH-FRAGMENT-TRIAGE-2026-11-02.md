@@ -317,3 +317,17 @@ The two pinned corpora are diagnostic annotations, not independently adjudicated
 Latest completed artifact [41843472619](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41843472619), artifact 13330749031, SHA-256 `4c0b22df3e964b6483c098b066497dbe5518ed13e6a55af919e41a1d8cbb357d`. UGTPHON paired n=2,698: Kozak 53.0393% exact / 8.9920% CER; original g2pK 53.1134% / 9.2304%. SIGMORPHON paired n=998: Kozak 35.8717% / 14.5598%; g2pK 35.3707% / 14.8106%. Exact-match uncertainty on UGTPHON crosses zero; SIGMORPHON favours Kozak on exact and CER. Both are diagnostic annotations, not normative IPA gold. Native/Browser parity on the same UGTPHON occurrences is 2,703/2,703 surface and 2,698/2,698 IPA identical, with five shared abstentions.
 
 Exact-head rerun [41849673041](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41849673041) on `02a72da6534b110d63810c497a6b7fba9b790a3e` is still running its multi-engine comparison; this completed artifact is the prior reproducible snapshot, not a result from the rerun.
+
+
+## 2026-11-04 — source-attested vowel-length discrepancy: 없는
+
+**Disposition: Kozak Kim preserved; no production change.**
+
+The completed exact-head multi-engine artifact (run [41851913351](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41851913351), artifact 13337845603, SHA-256 `7c0dce9cada1c15a22f99f18bea048b75f2df9b0133d9e87fcda3f95b82a484c`) contains four occurrences of `없는` (source rows `dc_inside_2035`, `dc_inside_2108`, `dc_inside_2212`, `dc_inside_2269`). All four have the same diagnostic split:
+- Kozak Kim: `ʌːm.nɯn`
+- original g2pK 0.9.4: `ʌm.nɯn`
+- corpus reference: `ʌ̹mnɯn`
+
+The official NIKL Korean Basic Dictionary entry `없다` (ParaWordNo=89917) directly lists the application `없는[엄ː는]`. This is Hangul surface evidence for vowel length, not source IPA. The project's `/ʌːm.nɯn/` is the broad-IPA rendering of that attested length. Therefore the four g2pK exact matches are matches to a corpus string that omits the source-attested length; they are not evidence that Kozak Kim should shorten the vowel.
+
+The source is registered as `SRC-NIKL-KRDICT-89917` / `S026`; C13 and four occurrence rows are added to the discrepancy registers. The new regression checks the exact source record and existing Kozak output. The raw corpus annotation, benchmark scoring and original g2pK implementation remain untouched. Item-level KOGL marking is still unverified.

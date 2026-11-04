@@ -1082,3 +1082,51 @@ The earlier self-review entry stating that no Important defect was identified is
 | C12 acoustic interpretation and NIKL item-level rights | BLOCKED | Source audio/metadata and item-specific rights evidence remain unavailable. |
 
 No g2pK source, dependency pin, or vendor blob was modified. PR #426 remains Draft/open, stacked on PR #425. No merge, release, deployment, force-push or branch deletion. Readiness remains research prototype, not research-certified or release-ready.
+
+
+## 2026-11-04 exact-head continuation — benchmark refresh and NIKL length adjudication
+
+**Latest verified code/test baseline before this evidence-only patch:** `3a262b317a6ec5ffa49a11ebd46926be2d5a1a72`. The current evidence-only branch head includes a test-first RED checkpoint described below; no production engine code changed in this continuation.
+
+### Test-first evidence update
+
+- RED commit `e11be81d5a2db517aa808a12f6eb31264fb492ef`; System Verify [41869617954](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41869617954) failed only in Python data-integrity because the newly added test correctly found the missing source-register key `SRC-NIKL-KRDICT-89917`. The Browser regression/build job passed; official NIKL metadata-only inventory was skipped.
+- The failure was the expected missing evidence record, not a Kozak Kim pronunciation defect. The implementation response is source-register/catalog/ledger addition only; production IPA remains unchanged.
+- The new test asserts the official dictionary's Hangul form `없는[엄ː는]` and separately checks the project's current broad IPA `ʌːm.nɯn`. It explicitly does not claim that the dictionary supplies IPA.
+
+### Current exact-head verification (before this evidence-only patch)
+
+- System Verify [41851913461](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41851913461): PASS — Python regression/data integrity and Browser regression/build jobs succeeded; official NIKL metadata-only inventory was skipped.
+- Multi-engine Korean IPA diagnostic [41851913351](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41851913351): PASS. Artifact 13337845603; SHA-256 `7c0dce9cada1c15a22f99f18bea048b75f2df9b0133d9e87fcda3f95b82a484c`.
+- External UGTPHON [41851913522], paired Native/g2pK [41851913346], Browser G2P [41851913352], exhaustive test-case extraction [41851913799], morphology consensus [41851913516], and real-engine morphology smoke [41851913585]: PASS.
+- Multi-engine neural inference jobs (CharsiuG2P, ByT5 and pairing neural outputs): SKIPPED, not passed. Official NIKL metadata-only inventory: SKIPPED, not passed.
+
+### Paired diagnostic against unchanged original g2pK 0.9.4
+
+- UGTPHON paired set (n=2,698): Kozak Kim 1,431 exact (53.0393%), CER 8.9920%; g2pK 1,433 exact (53.1134%), paired CER 9.2304%. Exact-match delta is 0.0741 percentage points in g2pK's favour, with paired row-cluster 95% CI −0.0824 to +0.2840 pp (crosses zero). Kozak Kim CER is lower by 0.2384 pp; paired CI for g2pK-minus-Kozak CER is +0.1392 to +0.3464 pp.
+- SIGMORPHON paired set (n=998): Kozak Kim 358 exact (35.8717%), CER 14.5598%; g2pK 353 exact (35.3707%), paired CER 14.8106%. Five net Kozak-only exact wins; exact two-sided McNemar p=0.0625 (promising, not decisive at 0.05). Kozak Kim CER is lower by 0.2508 pp; paired bootstrap CI +0.0986 to +0.4444 pp.
+- Broad-candidate sensitivity is higher for Kozak on both sets (UGTPHON 86.47% vs 85.69%; SIGMORPHON 69.74% vs 68.74%), but the profile removes selected IPA distinctions and is research-only/unadjudicated. Do not report these as normative accuracy.
+- The two corpora are diagnostic annotations, not independently adjudicated Korean IPA gold. g2pK is rendered through the shared project IPA adapter. No universal superiority claim follows.
+
+### Native/Browser parity
+
+On the 2,703 eligible UGTPHON occurrences, Native and Browser surface Hangul are identical (2,703/2,703); on 2,698 scored IPA occurrences, raw IPA is identical (2,698/2,698). Both runtimes abstain on the same five cases. This verifies cross-runtime parity, not linguistic correctness.
+
+### C13 — source-attested length in 없는
+
+The four UGTPHON cases (`dc_inside_2035`, `dc_inside_2108`, `dc_inside_2212`, `dc_inside_2269`) all show Kozak `/ʌːm.nɯn/`, g2pK `/ʌm.nɯn/`, corpus `/ʌ̹mnɯn/`. NIKL Korean Basic Dictionary entry 89917 directly lists `없는[엄ː는]`. The corpus omits the long mark, so g2pK's exact match is not the stronger source-backed reading. Kozak's output is preserved; no production change and no benchmark reference rewrite. Source row `SRC-NIKL-KRDICT-89917`, catalog row `S026`, C13 cluster and four paired occurrence rows record the adjudication. The official source supplies Hangul, not IPA; the project's broad IPA is derived. Item-level KOGL status remains unchecked.
+
+### Methodology applied from the four referenced engineering repositories
+
+- **Superpowers:** red/green discipline and systematic root-cause investigation. The new test was observed failing for the expected missing evidence key before the source/catalog records were added.
+- **Matt Pocock skills:** small composable engineering checks; preserve the existing task contract rather than replacing it with a new process.
+- **Ponytail:** minimal-change discipline; this finding did not justify modifying phonological production code.
+- **unlazy:** explicit acceptance evidence and re-verification; runnable checks are reported separately from skipped/manual gates.
+
+These methods are used as engineering practices, not vendored dependencies or new production packages.
+
+### Remaining blockers and readiness
+
+Independent Korean IPA adjudication (24-case blind packet), independent Ukrainian target review, item-level NIKL/KOGL permissions, C12 source audio and speaker/prosodic crosswalk, historical 239-case adjudication, and broad NIKL/names/loans/Hanja/regional-style coverage remain open. Neural teacher inference remains deferred/skipped. Original g2pK 0.9.4 and all vendored g2pK files remain unchanged.
+
+Readiness: **research prototype**, not research-certified or release-ready.
