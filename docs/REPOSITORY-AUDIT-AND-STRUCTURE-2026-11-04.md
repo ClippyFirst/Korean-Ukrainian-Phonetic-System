@@ -86,10 +86,10 @@ These are software/automation results only. They do not close the independent IP
 
 ### Findings to address incrementally
 
-1. **Documentation index missing.** Add one entry point rather than moving hundreds of files in a broad, high-conflict rename.
+1. **Documentation discoverability — addressed on PR #434.** A single entry point now exists at `docs/README.md`; the historical flat namespace remains intentionally unmoved to protect existing links.
 2. **Flat documentation namespace.** Keep existing paths stable for now; classify documents through the new index. Move files only in a later mechanical migration with link checking and no content changes.
 3. **Master handoff is very large and append-only.** Retain it as historical evidence; link its latest dated section from the index and avoid adding another competing handoff.
-4. **Version policy is unclear.** Define whether npm and Python versions intentionally track separate release lines before changing either value.
+4. **Version policy — addressed prospectively on PR #434.** `docs/VERSIONING-POLICY.md` defines independent browser and Python version streams; historical intent behind the original numbers remains unprovable.
 5. **No root project license.** Owner decision required; do not infer permission from vendored Apache notices or data-source licenses.
 6. **Some dated audit files are historical snapshots.** The newest exact-head CI and newest handoff/audit entries must take precedence; stale statements should be superseded, not silently rewritten.
 7. **Large script/test surface.** Existing files include both browser and Python suites plus many one-off evidence/benchmark scripts. Add ownership/readme pointers before reorganizing filenames or extracting modules.
@@ -113,7 +113,7 @@ These are software/automation results only. They do not close the independent IP
 
 1. Keep `main` as the sole integration branch unless a real parallel task requires a short-lived branch.
 2. Use this documentation map as the entry point; do not bulk-move historical evidence files during a documentation pass.
-3. Add a short release/version policy decision distinguishing Python package version and browser application version.
+3. Version policy is now documented; keep future version bumps artifact-specific.
 4. Obtain an owner-selected root project license before describing the repository as openly licensed.
 5. Complete independent Korean IPA review, Ukrainian target review and source-item rights clearance before making research-certified or release-ready claims.
 6. Re-run exact-head CI after any implementation/data changes; preserve the benchmark split/profile metadata and do not treat skipped jobs as passes.
@@ -127,13 +127,13 @@ This documentation pass adds navigation and a verified snapshot. It intentionall
 
 - Branch: `docs/repository-audit-and-navigation-2026-11-04`
 - PR: [#434](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/434)
-- Branch head: `17b57c4388b01ad4d0aabea745a6088c89ada87c`
-- Base at PR creation: `c4c3fdf59ebeae18ede0c7429964239b1eb2570d`
-- Compare result: 3 commits ahead, 0 behind; 3 files changed (193 additions, 0 deletions).
-- Referenced documentation targets in the new index: all fetched successfully from the branch.
-- PR Actions: Master table/research corpus artifacts #41918593824 — PASS; System Verify #41918593827 — PASS; tests #41918593914 — PASS.
-- PR state at audit completion: OPEN, mergeable; not merged. The integration branch `main` remains unchanged.
-- No local test commands were run in this environment. Verification above is GitHub Actions and remote file/commit inspection.
+- Initial documentation-only commit: `17b57c4388b01ad4d0aabea745a6088c89ada87c`; verification-status follow-up: `8111e62e98c7537d272e4a863151742567cb4649`.
+- Latest inspected branch commit after the five-finding follow-up: `d14a02044d7be68580a79025a25a490203b97fc2`.
+- Base: `c4c3fdf59ebeae18ede0c7429964239b1eb2570d`; compare: 9 commits ahead, 0 behind; 5 files changed (README, docs index, audit, version policy, decision log).
+- All navigation targets in `docs/README.md` and the new version policy were fetched from the branch. README/index formatting was rechecked after correcting literal newline artifacts.
+- Exact-head PR checks on `8111e62e98c7537d272e4a863151742567cb4649`: tests #41918810327 — PASS; master artifacts #41918810355 — PASS; System Verify #41918810404 — PASS. These runs precede the subsequent documentation-only commits; no Actions runs were returned for latest commit `d14a020...` at this check.
+- PR #434 remains OPEN and unmerged; `main` remains unchanged.
+- No local test commands were run in this environment. Verification is remote GitHub file/commit inspection and the stated Actions runs.
 
 This PR is documentation-only. The green software checks validate repository automation on this commit; they do not close the independent linguistic or licensing blockers listed above.
 
