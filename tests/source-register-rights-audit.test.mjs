@@ -56,9 +56,9 @@ test('real source register is structurally valid and unresolved rights remain vi
   const csv = readFileSync(new URL('../research/SOURCE-REGISTER.csv', import.meta.url), 'utf8');
   const report = auditSourceRegister(csv);
   assert.equal(report.structuralErrorCount, 0, JSON.stringify(report.structuralErrors));
-  assert.equal(report.sourceRegisterRows, 175);
+  assert.equal(report.sourceRegisterRows, 176);
   assert.deepEqual(report.rightsClassificationCounts, {
-    ITEM_LEVEL_LICENSE_RECORDED: 2,
+    ITEM_LEVEL_LICENSE_RECORDED: 3,
     NOT_APPLICABLE_RECORDED: 1,
     REVIEW_REQUIRED: 164,
     MANUAL_CLASSIFICATION_REQUIRED: 8,
@@ -70,6 +70,10 @@ test('real source register is structurally valid and unresolved rights remain vi
     report.rightsClassificationCounts.REVIEW_REQUIRED + report.rightsClassificationCounts.MANUAL_CLASSIFICATION_REQUIRED,
   );
   assert.ok(report.itemLevelRightsNotClosed.every(item => item.sourceId && item.currentLicenseStatus !== null));
+  const c12AcousticSource = report.records.find(record => record.sourceId === 'SRC-JIPA-SCHWEIZER-AHN-KWON-2026-SEOUL-STOPS');
+  assert.ok(c12AcousticSource, 'the newly registered C12 primary acoustic source must be present');
+  assert.equal(c12AcousticSource.rightsReviewStatus, 'ITEM_LEVEL_LICENSE_RECORDED');
+  assert.match(c12AcousticSource.currentLicenseStatus, /^CC-BY-4\\.0 verified/u);
   const unresolvedIds = new Set(report.itemLevelRightsNotClosed.map(item => item.sourceId));
   assert.ok(unresolvedIds.has('SRC-NIKL-QNA-327466'));
   assert.ok(unresolvedIds.has('SRC-NIKL-QNA-313481'));
