@@ -842,6 +842,19 @@ def test_research_lexical_ablation_excludes_both_research_input_kinds():
             for trace in ablated["rules"]
         )
 
+def test_r013_same_eojeol_license_is_retained_when_phrase_mode_is_enabled():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    result = phoneticize_korean("보일거라 생각한다", boundary_mode="phrase")
+    assert "보일꺼라" in result["surface_hangul"]
+    assert any(
+        rule.get("rule_id") == "R013"
+        and rule.get("changed") is True
+        and rule.get("license_context") == "R013:adnominal_l:보일거라:일>거"
+        for rule in result["rules"]
+    )
+
+
 def test_r013_phrase_licenses_match_exact_adjacent_eojeol_pairs_inside_sentences():
     from korean_ukrainian.pipeline import phoneticize_korean
 
