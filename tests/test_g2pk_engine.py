@@ -156,4 +156,23 @@ def test_g2pk_baseline_does_not_consume_kozak_only_research_lexical_candidates(m
 
     assert result["surface_hangul"] == "가나다"
     assert result["ipa"]["lexical_overrides"] == []
-    assert result["ipa"]["ipa"] != "x.y.z"
+
+    # A research-only row whose Hangul surface already matches the external
+    # engine output must still not inject Kozak's project-derived IPA.
+    monkeypatch.setitem(
+        pipeline.LEXICAL_PRONUNCIATIONS,
+        "바나나",
+        {
+            "input": "바나나",
+            "surface_hangul": "바나나",
+            "ipa_syllables": "x|y|z",
+            "source_url": "https://example.invalid/research-only-ipa-fixture",
+            "rule_notes": "Synthetic isolation fixture; not linguistic evidence.",
+            "confidence": "test-only",
+            "input_kind": "kozak-research-only",
+        },
+    )
+    ipa_only_result = g2pk_engine.phoneticize_with_g2pk("바나나")
+    assert ipa_only_result["surface_hangul"] == "바나나"
+    assert ipa_only_result["ipa"]["lexical_overrides"] == []
+    assert ipa_only_result["ipa"]["ipa"] != "x.y.z"
