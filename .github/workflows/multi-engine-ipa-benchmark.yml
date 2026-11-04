@@ -12,6 +12,9 @@ on:
   pull_request:
     paths:
       - "scripts/benchmark_multi_engine_ko.py"
+      - "scripts/export_kozak_kim_mismatch_fragments.py"
+      - "tests/test_export_kozak_kim_mismatch_fragments.py"
+      - "research/kozak-kim-unmapped-mismatch-review-queue-2026-11-03.csv"
       - "scripts/benchmark_kozak_kim_browser.mjs"
       - "src/app/engine_convert.js"
       - "src/app/engine.js"
@@ -166,7 +169,7 @@ jobs:
           set -euo pipefail
           node --check scripts/benchmark_phonemize_adapter.cjs
           node --test tests/kozak-kim-ipa-first-benchmark.test.mjs
-          python -m pytest tests/test_multi_engine_benchmark.py tests/test_kozak_kim_runtime_parity.py tests/test_ipa_holdout_review_packets.py tests/test_sigmorphon_benchmark.py tests/test_contextual_g2p_benchmark.py tests/test_charsiu_g2p_benchmark.py tests/test_compare_neural_with_multiengine.py tests/test_v3_training_readiness.py
+          python -m pytest tests/test_multi_engine_benchmark.py tests/test_kozak_kim_runtime_parity.py tests/test_ipa_holdout_review_packets.py tests/test_sigmorphon_benchmark.py tests/test_contextual_g2p_benchmark.py tests/test_charsiu_g2p_benchmark.py tests/test_compare_neural_with_multiengine.py tests/test_v3_training_readiness.py tests/test_export_kozak_kim_mismatch_fragments.py
 
       - name: Audit training readiness and frozen-holdout overlap
         run: python scripts/audit_v3_training_readiness.py --output "$RUNNER_TEMP/v3-training-readiness.json"
@@ -288,6 +291,26 @@ jobs:
           print("Scored independent candidates:", ", ".join(usable))
           PY
 
+      - name: Export per-fragment mismatch ledger and unresolved review queue
+        env:
+          UGT_PHON_COMMIT: ef0d5a09c2ea1874c7206020f875cbd9cfea2f54
+        run: |
+          set -euo pipefail
+          python scripts/export_kozak_kim_mismatch_fragments.py \
+            --report-json "$RUNNER_TEMP/multi-engine-ipa-report.json" \
+            --output-csv "$RUNNER_TEMP/kozak-kim-mismatch-fragments.csv" \
+            --corpus-json "$RUNNER_TEMP/ko-test.json" \
+            --corpus-revision "$UGT_PHON_COMMIT" \
+            --corpus-license "Apache-2.0"
+          python scripts/export_kozak_kim_mismatch_fragments.py \
+            --report-json "$RUNNER_TEMP/multi-engine-ipa-report.json" \
+            --output-csv "$RUNNER_TEMP/kozak-kim-unmapped-mismatch-review-queue.csv" \
+            --corpus-json "$RUNNER_TEMP/ko-test.json" \
+            --corpus-revision "$UGT_PHON_COMMIT" \
+            --corpus-license "Apache-2.0" \
+            --only-unmapped-broad
+          cmp "$RUNNER_TEMP/kozak-kim-unmapped-mismatch-review-queue.csv" \
+            research/kozak-kim-unmapped-mismatch-review-queue-2026-11-03.csv
       - name: Run Browser Kozak Kim on the same UGTPHON occurrences
         run: |
           set -euo pipefail
@@ -420,6 +443,8 @@ jobs:
           name: multi-engine-korean-ipa-diagnostic
           path: |
             ${{ runner.temp }}/multi-engine-ipa-report.json
+            ${{ runner.temp }}/kozak-kim-mismatch-fragments.csv
+            ${{ runner.temp }}/kozak-kim-unmapped-mismatch-review-queue.csv
             ${{ runner.temp }}/kozak-kim-browser-ugtphon-report.json
             ${{ runner.temp }}/kozak-kim-runtime-parity-report.json
             ${{ runner.temp }}/multi-engine-ipa-stdout.json

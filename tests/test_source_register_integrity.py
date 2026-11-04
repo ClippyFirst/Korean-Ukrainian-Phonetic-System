@@ -41,6 +41,13 @@ def load_source_register() -> list[dict[str, str]]:
     return rows
 
 
+DATA_SOURCE_CATALOG = ROOT / "data" / "korean" / "sources.csv"
+DATA_SOURCE_COLUMNS = [
+    "source_id", "source_type", "title", "author_or_organization",
+    "year", "locator", "url", "evidence_level",
+]
+
+
 def source_identity(url: str) -> tuple[str, ...]:
     parsed = urlsplit(url)
     query = parse_qs(parsed.query, keep_blank_values=True)
@@ -57,6 +64,27 @@ def source_identity(url: str) -> tuple[str, ...]:
     if query.get("regltn_code") == ["0002"]:
         return ("NIKL-RULES", "0002")
     return ("URL", url)
+
+
+def test_data_source_catalog_has_exact_columns_and_unique_source_ids():
+    with DATA_SOURCE_CATALOG.open("r", encoding="utf-8-sig", newline="") as stream:
+        reader = csv.DictReader(stream)
+        assert reader.fieldnames == DATA_SOURCE_COLUMNS
+        rows = list(reader)
+
+    assert rows, "data source catalog must not be empty"
+    malformed_rows = [
+        row.get("source_id", "<unknown>")
+        for row in rows
+        if None in row or any(value is None for value in row.values())
+    ]
+    assert not malformed_rows, (
+        "data/korean/sources.csv rows must contain exactly the declared columns: "
+        + ", ".join(malformed_rows)
+    )
+    source_ids = [row["source_id"].strip() for row in rows]
+    assert all(source_ids), "every data source needs a nonblank source_id"
+    assert len(source_ids) == len(set(source_ids)), "data source IDs must be unique"
 
 
 def test_source_register_has_unique_nonblank_ids_and_stable_shape():
@@ -88,6 +116,30 @@ def test_nikl_copyright_policy_is_registered_without_claiming_item_level_clearan
     assert "item-level" in policy["limitations_or_next_action"]
     assert "not established" in policy["limitations_or_next_action"]
 
+
+
+
+def test_nikl_moscow_material_supports_only_the_exact_water_price_exception():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-NIKL-EDU-MOSKVA"]
+    assert "물가[물까]" in source["coverage"]
+    assert "irregular" in source["coverage"].lower()
+    assert "item-level KOGL" in source["license_status"]
+    assert "not a general" in source["limitations_or_next_action"].lower()
+
+def test_nikl_dictionary_discrepancy_sources_keep_exact_evidence_scope():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    expected = {
+        "SRC-NIKL-EDU-MOSKVA": "물가[물까]",
+        "SRC-NIKL-KRDICT-82835": "팔자[팔짜]",
+        "SRC-NIKL-KRDICT-75022": "정신병자[정신뼝자]",
+        "SRC-NIKL-KRDICT-HYEMO": "혐오증(嫌惡症)[혀모쯩]",
+    }
+    for source_id, example in expected.items():
+        source = rows[source_id]
+        assert example in source["coverage"]
+        assert "item-level KOGL" in source["license_status"]
+        assert "not checked" in source["license_status"].lower() or "not verified" in source["license_status"].lower()
 
 
 def test_every_ipa_queue_surface_source_is_registered_with_an_exact_url():
@@ -146,6 +198,28 @@ def test_unreviewed_lexical_citations_are_not_promoted_to_verified_evidence():
         assert "not independently rechecked" in row["limitations_or_next_action"]
         assert "not verified" in row["license_status"].lower() or "not assessed" in row["license_status"].lower()
 
+
+
+
+def test_kozak_kkeulda_dictionary_evidence_is_exact_and_not_ipa_gold():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-NIKL-KRDICT-62281"]
+    assert "ParaWordNo=62281" in source["url"]
+    assert "끌다[끌ː다]" in source["coverage"]
+    assert "Hangul notation is not IPA" in source["contribution_expected"]
+    assert "item-level KOGL" in source["license_status"]
+    assert "unverified" in source["license_status"].lower() or "not checked" in source["license_status"].lower()
+
+def test_nikl_rule24_scope_supports_exact_gulmda_license_and_preserves_gulm_gida_exception():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-NIKL-TRAINING-2009"]
+    assert "ㅁ(ㄻ)" in source["coverage"]
+    assert "굶기다" in source["coverage"]
+    assert "굶-" in source["contribution_expected"]
+    assert "-다" in source["contribution_expected"]
+    assert "not a directly quoted example" in source["limitations_or_next_action"]
+    dictionary = rows["SRC-NIKL-KRDICT-62281"]
+    assert "kozak-research-only lexical entry updated" in dictionary["integration_status"]
 
 
 def test_orthography_qna_examples_are_not_described_as_direct_pronunciation_answers():
@@ -457,6 +531,13 @@ def test_c01_c07_and_c10_cluster_decisions_follow_the_reviewed_profile_evidence(
 def test_c12_velar_coarticulation_source_is_cautionary_not_a_rewrite_license():
     rows = {row["source_id"]: row for row in load_source_register()}
     source = rows["SRC-KCI-ITO-2007-MORPHEME-STRUCTURE"]
+    acoustic = rows["SRC-JIPA-SCHWEIZER-AHN-KWON-2026-SEOUL-STOPS"]
+    assert acoustic["license_status"].startswith("CC-BY-4.0 verified")
+    assert "burst duration" in acoustic["coverage"].lower()
+    assert "does not report [kx]/[kç]" in acoustic["limitations_or_next_action"].lower()
+    assert "no /ɯ/ or /j/" in acoustic["limitations_or_next_action"].lower()
+    assert "study 1 uses /a/" in acoustic["limitations_or_next_action"].lower()
+    assert "study 2 uses /i,u,a,ʌ/" in acoustic["limitations_or_next_action"].lower()
     assert source["url"] == "https://doi.org/10.17959/sppm.2007.13.3.373"
     assert "abstract" in source["review_status"].lower()
     assert "underrepresented" in source["coverage"].lower()
@@ -468,15 +549,58 @@ def test_c12_velar_coarticulation_source_is_cautionary_not_a_rewrite_license():
     c12 = next(line for line in triage.splitlines() if "`kx/kç → kʰ`" in line and "45 operations / 37 occurrences" in line and "No phonological rewrite" in line)
     assert "SRC-KCI-ITO-2007-MORPHEME-STRUCTURE" in c12
     assert "No phonological rewrite" in c12
-    assert "BLOCKED" in c12
+    assert "PARTIAL" in c12
+    assert "SRC-JIPA-SCHWEIZER-AHN-KWON-2026-SEOUL-STOPS" in c12
 
     with C08_CLUSTER_REGISTER.open("r", encoding="utf-8-sig", newline="") as stream:
         clusters = {row["cluster_id"]: row for row in csv.DictReader(stream)}
     c12_cluster = clusters["C12"]
     assert c12_cluster["unique_occurrences"] == "37"
     assert c12_cluster["edit_operations"] == "45"
-    assert c12_cluster["status"] == "BLOCKED_EVIDENCE_AND_IPA_REVIEW_REQUIRED"
+    assert c12_cluster["status"] == "PARTIAL_GENERAL_ACOUSTIC_EVIDENCE_EXACT_C12_REVIEW_BLOCKED"
     assert "SRC-KCI-ITO-2007-MORPHEME-STRUCTURE" in c12_cluster["production_decision"] + c12_cluster["next_action"]
+    assert "SRC-JIPA-SCHWEIZER-AHN-KWON-2026-SEOUL-STOPS" in c12_cluster["production_decision"] + c12_cluster["next_action"]
+
+    fragment_path = ROOT / "research" / "kozak-kim-mismatch-fragments-2026-11-02.csv"
+    with fragment_path.open("r", encoding="utf-8-sig", newline="") as stream:
+        fragment_reader = csv.DictReader(stream)
+        fragment_fields = fragment_reader.fieldnames or []
+        fragments = list(fragment_reader)
+    c12_rows = [
+        row for row in fragments
+        if "kʰ" in row["strict_kozak_ipa"]
+        and any(pattern in row["strict_reference_ipa"] for pattern in ("kxɯ", "kçi", "kçj"))
+    ]
+    assert len(c12_rows) == 37
+    assert len({row["token"] for row in c12_rows}) == 29
+    assert not any("audio" in field.lower() or "speaker" in field.lower() for field in fragment_fields)
+
+    pattern_counts = {"kxɯ_only": 0, "kçi_only": 0, "kçj_only": 0, "kxɯ_and_kçi": 0}
+    source_counts = {"multilexnorm2026": 0, "dc_inside": 0}
+    for row in c12_rows:
+        ipa = row["strict_reference_ipa"]
+        has_kxɯ = "kxɯ" in ipa
+        has_kçi = "kçi" in ipa
+        has_kçj = "kçj" in ipa
+        if has_kxɯ and has_kçi:
+            pattern_counts["kxɯ_and_kçi"] += 1
+        elif has_kxɯ:
+            pattern_counts["kxɯ_only"] += 1
+        elif has_kçi:
+            pattern_counts["kçi_only"] += 1
+        elif has_kçj:
+            pattern_counts["kçj_only"] += 1
+        else:
+            raise AssertionError(f"unclassified C12 occurrence: {row['occurrence_id']}")
+        source_id = row["source_row_id"]
+        if source_id.startswith("multilexnorm2026_"):
+            source_counts["multilexnorm2026"] += 1
+        elif source_id.startswith("dc_inside_"):
+            source_counts["dc_inside"] += 1
+        else:
+            raise AssertionError(f"unexpected C12 source namespace: {source_id}")
+    assert pattern_counts == {"kxɯ_only": 16, "kçi_only": 12, "kçj_only": 8, "kxɯ_and_kçi": 1}
+    assert source_counts == {"multilexnorm2026": 12, "dc_inside": 25}
     assert clusters["C04"]["unique_occurrences"] == "0"
     assert clusters["C04"]["edit_operations"] == "0"
 
@@ -514,3 +638,32 @@ def test_c08_fixture_maps_all_eight_occurrences_without_promoting_hypotheses_to_
     assert all(case.get("morphology_evidence") for case in cases if case["source_row_id"] != "dc_inside_2024")
     assert any("not independently adjudicated normative IPA gold" in item for item in mapping["limitations"])
     assert any("No production phonology rule" in item for item in mapping["limitations"])
+
+def test_nikl_dictionary_noeun_length_attestation_is_not_lost_to_corpus_reference():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-NIKL-KRDICT-89917"]
+    assert "없는[엄ː는]" in source["coverage"]
+    assert "Hangul" in source["limitations_or_next_action"]
+    assert "not checked" in source["license_status"].lower()
+
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    result = phoneticize_korean("없는")
+    assert result["surface_hangul"] == "엄는"
+    # The official dictionary gives Hangul pronunciation, not IPA. This is
+    # the project's broad-IPA rendering of that attested vowel length.
+    assert result["ipa"]["ipa"] == "ʌːm.nɯn"
+
+
+def test_wiktionary_central_similarity_is_secondary_and_cannot_license_production_ipa():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-WIKTIONARY-JUNGSIMDALMEUM"]
+    assert source["source_type"] == "secondary_lexical"
+    assert source["url"] == "https://en.wiktionary.org/wiki/중심닮음"
+    assert source["license_status"].startswith("CC BY-SA 4.0")
+    assert "중심 + 닮- + -음" in source["coverage"]
+    assert "North Korean" in source["coverage"]
+    assert "SK Standard/Seoul" in source["coverage"]
+    assert source["integration_status"] == "research_only_not_integrated"
+    assert "not independent confirmation" in source["limitations_or_next_action"]
+    assert "Do not copy" in source["limitations_or_next_action"]

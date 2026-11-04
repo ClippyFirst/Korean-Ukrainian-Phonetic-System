@@ -66,7 +66,7 @@ test('every Hangul-only lexical target is rendered from its stored IPA, not inde
     const result = engine.convert(row.input);
     assert.equal(result.ipa, renderExpectedIpa(row.input,row.ipa_syllables.split('|')), row.input + ': runtime IPA');
     const expectedTarget = row.target_syllables.split('|').join('');
-    if (row.input_kind === 'variant-aware-research' && row.target_status === 'provisional') {
+    if (['variant-aware-research', 'kozak-research-only'].includes(row.input_kind) && row.target_status === 'provisional') {
       assert.equal(result.ukrainian, '', row.input + ': provisional target must not be accepted');
       assert.equal(result.candidate_ukrainian, expectedTarget, row.input + ': IPA-derived candidate');
       assert.equal(result.candidate_status, 'provisional', row.input + ': candidate status');
@@ -102,6 +102,25 @@ test('all surface-only lexical overrides still cross the IPA-to-Ukrainian bounda
 });
 
 
+
+test('NIKL §7 끌다 keeps its long vowel and plain ㄷ while retaining provisional target status', () => {
+  const row = rows.find(item => item.input === '끌다');
+  assert.ok(row, 'the exact NIKL §7 lexical entry must remain present');
+  assert.equal(row.surface_hangul, '끌다');
+  assert.equal(row.ipa_syllables, 'k͈ɯːl|da');
+  assert.equal(row.target_syllables, 'ккил|да');
+  assert.equal(row.target_status, 'provisional');
+  assert.equal(row.input_kind, 'kozak-research-only');
+
+  const result = engine.convert('끌다');
+  assert.equal(result.surfaceHangul, '끌다');
+  assert.equal(result.ipa, renderExpectedIpa('끌다', ['k͈ɯːl', 'da']));
+  assert.equal(result.ukrainian, '', 'unreviewed target must remain unavailable');
+  assert.equal(result.candidate_ukrainian, 'ккилда');
+  assert.equal(result.candidate_status, 'provisional');
+  assert.equal(row.target_status, 'provisional', 'do not promote the Ukrainian target to reviewed');
+});
+
 test('NIKL Basic Dictionary exact 이중성 reading preserves long vowel and fortisness through IPA-first provisional target', () => {
   const row = additions.find(item => item.input === '이중성');
   assert.ok(row, 'dated lexical additions must include the exact NIKL 이중성 reading');
@@ -121,6 +140,73 @@ test('NIKL Basic Dictionary exact 이중성 reading preserves long vowel and for
 });
 
 
+
+
+test('NIKL 물가 compound fortition persists in exact attached-particle form 물가로', () => {
+  const result = engine.convert('물가로', { ipaProfile: 'clippyfirst-korean-broad-v1' });
+  assert.equal(result.surfaceHangul, '물까로');
+  assert.equal(result.ipa, renderExpectedIpa('물가로', ['mul', 'k͈a', 'ɾo']));
+
+  // 결과[결과] is a source-internal negative control; Python regression
+  // asserts it remains plain. Browser exact-form gates below must not widen.
+});
+
+test('source-attested UGTPHON fortition mismatches are corrected by exact NIKL licenses only', () => {
+  const expected = [
+    ['팔자걸음', '팔짜거름', 'tɕ͈'],
+    ['정신병자네', '정신뼝자네', 'p͈'],
+    ['보일거라', '보일꺼라', 'k͈'],
+    ['없을듯', '업쓸뜯', 't͈'],
+    ['안할듯', '안할뜯', 't͈'],
+  ];
+  for (const [word, surface, fortis] of expected) {
+    const result = engine.convert(word, { ipaProfile: 'clippyfirst-korean-broad-v1' });
+    assert.equal(result.surfaceHangul, surface, word);
+    assert.ok(result.ipa.includes(fortis), word + ': IPA must preserve the licensed fortis segment');
+    if (word === '없을듯') {
+      assert.ok(result.trace.some(item => item.rules.includes('complex-coda-liaison-exact-form-formal')));
+      assert.ok(result.trace.some(item => item.rules.includes('adnominal-r-fortition-§27-exact-form')));
+    }
+  }
+
+  const sentenceCases = [
+    ['물가로 계산한다', '물까로', 'k͈'],
+    ['팔자걸음 보인다', '팔짜거름', 'tɕ͈'],
+    ['정신병자네 하고 웃는다', '정신뼝자네', 'p͈'],
+    ['보일거라 생각한다', '보일꺼라', 'k͈'],
+    ['거의 없을듯', '업쓸뜯', 't͈'],
+    ['안할듯 보인다', '안할뜯', 't͈'],
+  ];
+  for (const [sentence, surface, fortis] of sentenceCases) {
+    const contextual = engine.convert(sentence, { ipaProfile: 'clippyfirst-korean-broad-v1' });
+    assert.ok(contextual.surfaceHangul.includes(surface), sentence);
+    assert.ok(contextual.ipa.includes(fortis), sentence);
+  }
+
+  for (const word of ['많을거같이', '해줄것', '결과로']) {
+    const control = engine.convert(word, { ipaProfile: 'clippyfirst-korean-broad-v1' });
+    assert.ok(control.ipa, word + ': broad IPA must be available');
+    assert.doesNotMatch(control.ipa, /k͈/u, word + ': no unlicensed R013/R014 fortition');
+  }
+});
+
+test('NIKL Basic Dictionary 혐오증 reading enters Kozak Kim as a provisional IPA-first lexical candidate', () => {
+  const row = additions.find(item => item.input === '혐오증');
+  assert.ok(row, 'the exact NIKL Basic Dictionary reading must be present');
+  assert.equal(row.surface_hangul, '혀모쯩');
+  assert.equal(row.ipa_syllables, 'hjʌ|mo|tɕ͈ɯŋ');
+  assert.equal(row.target_syllables, 'гьо|мо|ччин');
+  assert.equal(row.target_status, 'provisional');
+  assert.equal(row.input_kind, 'kozak-research-only');
+  assert.ok(row.source_url.includes('mainSearchWord='));
+
+  const result = researchEngine.convert('혐오증', { ipaProfile: 'clippyfirst-korean-broad-v1' });
+  assert.equal(result.surfaceHangul, '혀모쯩');
+  assert.equal(result.ipa, renderExpectedIpa('혐오증', ['hjʌ', 'mo', 'tɕ͈ɯŋ']));
+  assert.equal(result.ukrainian, '', 'unreviewed target must remain unavailable');
+  assert.equal(result.candidate_ukrainian, 'гьомоччин');
+  assert.equal(result.candidate_status, 'provisional');
+});
 
 test('C09 NIKL dictionary length attestations enter the Kozak Kim IPA-first lexical adapter', () => {
   const expected = {

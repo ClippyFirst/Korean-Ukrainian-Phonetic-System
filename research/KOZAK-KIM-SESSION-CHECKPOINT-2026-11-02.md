@@ -238,3 +238,37 @@ No merge, release, publication, or external settings changes were made. This che
 ## C08 regression boundary — 2026-11-03
 
 `tests/test_end_to_end.py` now guards the five reconstructed/uncertain contexts (`해줄것`, `많을거같이`, `보일거라`, `내릴수있는`, `안할듯`) against inferred R013 fortition. This is a conservative no-generalization test, not gold pronunciation for those forms. Exact-head Verify [41611695345](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41611695345) passed.
+
+
+## Session continuation checkpoint — 2026-11-03 (PR #424)
+
+- Active branch: `fix/kozak-kim-kkeulda-lexical-correction-2026-11-03`; code head `2e6e739c2ede3f08b6289022037a06406221c5a4`; PR #424 Draft/open, stacked on #423. The chain #420→#421→#422→#423→#424 remains unmerged.
+- `끌다`: exact NIKL §7 length-retention example `[끌ː다]` with `끌어[끄ː러]`; dictionary entry 62281 corroborates. Project IPA is derived; Ukrainian target withheld.
+- `굶다`: exact Rule §24 derivation from ㄻ + ending-initial ㄷ; `굶기다` is the explicit -기- negative control.
+- Fixed a g2pK adapter leak: `variant-aware-research` (`못잃어`) could previously change the adapter output to provisional `몬니러`. TDD red commit `5131e807` reproduced it; implementation `2e6e739` excludes both research-only input kinds from surface and IPA overrides. Original g2pK and vendored source remain unchanged; raw benchmark script uses direct `G2p()`.
+- System Verify 41637788167 and 41637795909 PASS; Browser 1,391/1,391, Python/data integrity, build and generated pages pass. g2pK 3.11/3.12 integration, extraction, UGTPHON, paired Native/g2pK, morphology consensus and adapter smoke all PASS.
+- Multi-engine rerun 41637795800 was IN PROGRESS; do not claim new results. Existing artifact 13226589858 remains valid for the unchanged raw benchmark path.
+- Remaining blockers: two independent Korean IPA reviewers/adjudication; item-level NIKL rights; independent Ukrainian target review; C12 acoustic/articulatory evidence; 239 mismatch occurrences; adjudicated IPA gold for supervised training. Not release-ready.
+
+
+## Session continuation checkpoint — 2026-11-03 (PR #425)
+
+- Active continuation branch: `fix/kozak-kim-research-lexical-ablation-2026-11-03`; implementation head `c5f8f8a5db6ca1fae9ffb2cb86f014f7d4df900d`; Draft PR #425 stacked on Draft PR #424, which is stacked on #423. No PR merged.
+- TDD red head `6c6edcc` exposed four Python regression failures and two benchmark-helper import failures. Implementation added the ablation flag and both audit helpers; it did not weaken or remove the tests.
+- Default Kozak Kim remains research overlays included. Explicit ablation excludes `kozak-research-only` and `variant-aware-research` from both surface and IPA override paths, while recording `research-lexical-excluded`. The filtered lexicon is also used by unresolved-context and IPA-adjudication checks.
+- New benchmark artifact field: `research_lexical_ablation_audit`; pairwise Native/g2pK ledger now uses tested helper and preserves occurrence categories.
+- Exact-head runs: System Verify 41654558006 PASS (Browser 1,391/1,391, Python regression/data integrity, build/generated pages); g2pK integration 41654557638 PASS; paired Native/g2pK 41654557675 PASS; UGTPHON 41654557866 PASS; morphology consensus 41654557961 PASS; morphology adapter smoke 41654557801 PASS.
+- Multi-engine run 41654557693 remains IN PROGRESS at checkpoint; adapter tests and readiness/holdout-packet steps passed, comparison/export/Browser parity/SIGMORPHON steps pending. Do not claim new multi-engine scores or artifact acceptance.
+- CharsiuG2P, ByT5, Charsiu train/dev and NIKL metadata inventory were SKIPPED. Local clone attempt failed due DNS resolution for github.com; CI evidence is from GitHub Actions only.
+- Vendored g2pK Browser SHA remains identical to main: `1e3705b9439c637f3442864cb3105e771dff2ed7`. No g2pK upstream/vendor change, merge, release, deployment, or force-push.
+
+| Work item | Status | Remaining acceptance |
+|---|---|---|
+| Research lexical ablation API and trace | DONE_VERIFIED | System Verify exact-head pass; default and disabled paths covered. |
+| Ablation/pairwise benchmark helpers | DONE_VERIFIED at unit level | Inspect final multi-engine artifact after run 41654557693 completes. |
+| Multi-engine benchmark and mismatch exporter | IN PROGRESS | Run 41654557693 must complete comparison, mismatch queue, Browser parity, and SIGMORPHON. |
+| Independent Korean IPA gold | BLOCKED | Two qualified independent reviewers and adjudication. |
+| NIKL item-level rights | BLOCKED | Written item-level reuse and reviewer-sharing rights determination. |
+| Ukrainian target adaptation | BLOCKED | Independent phonetic and orthographic review. |
+| C12 and 239 unmapped occurrences | BLOCKED / TODO | Exact-context primary evidence and source/morphology adjudication. |
+| Supervised IPA training and release | DEFERRED | No independent gold; prototype only. |

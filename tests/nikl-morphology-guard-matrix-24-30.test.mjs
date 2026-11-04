@@ -50,7 +50,7 @@ test('§§24–28: generic mode does not claim morphology-specific fortition', (
 });
 
 test('§24 exact-form stem-n/m ending licenses match the native engine without enabling productive guessing', () => {
-  const expected = [['닮다', 'tam.t͈a'], ['넘게', 'nʌm.k͈e'], ['안지', 'an.tɕ͈i'], ['신다', 'ɕin.t͈a']];
+  const expected = [['닮다', 'tam.t͈a'], ['넘게', 'nʌm.k͈e'], ['굶다', 'kum.t͈a'], ['안지', 'an.tɕ͈i'], ['신다', 'ɕin.t͈a']];
   for (const [input, ipa] of expected) {
     const result = generic.convert(input);
     assert.equal(result.ipa, ipa, input + ': source-backed broad IPA');
@@ -220,9 +220,45 @@ test('§27 C08 source contexts: exact eojeol licenses apply inside full sentence
   }
 });
 
+test('§27 exact phrase licenses apply at adjacent eojeol pairs inside sentences only', () => {
+  const cases = [
+    ['해 줄 것 같다', '껏'],
+    ['많을 거 같이', '꺼'],
+  ];
+  for (const [input, surface] of cases) {
+    const result = generic.convert(input);
+    assert.ok(
+      result.trace.some((item) => item.rules.includes('adnominal-r-fortition-§27')),
+      input + ': exact adjacent eojeol pair must receive §27 fortition',
+    );
+    assert.ok(result.surfaceHangul.includes(surface), input + ': licensed onset must be fortis');
+  }
+
+  for (const input of [
+    '해줄것 같다',
+    '많을거같이 보인다',
+    '해 줄, 것 같다',
+    '많을, 거 같이',
+  ]) {
+    const result = generic.convert(input);
+    assert.ok(
+      !result.trace.some((item) => item.rules.includes('adnominal-r-fortition-§27')),
+      input + ': missing exact connected eojeol pair must not inherit the phrase license',
+    );
+  }
+});
+
 test('C08 context recovery does not authorize the unresolved -성 lexical case', () => {
   const sourceCase = c08ContextFixture.cases.find((item) => item.source_row_id === 'dc_inside_2024');
   assert.ok(sourceCase && sourceCase.source_sentence.includes('유사성'));
   const result = generic.convert(sourceCase.source_sentence);
-  assert.ok(!result.trace.some((item) => item.rules.includes('adnominal-r-fortition-§27-exact-form')), 'the exact -성 token remains unlicensed; no suffix-wide fortition');
+  // This sentence also contains the independently licensed exact form 없을듯.
+  // Do not mistake that R013 trace for evidence about the unresolved -성 token.
+  assert.ok(result.surfaceHangul.includes('유사성'), '유사성 must remain plain');
+  assert.ok(!result.surfaceHangul.includes('유사썽'), 'no suffix-wide -성 fortition is authorized');
+});
+
+test('§27 attached -ㄹ게 ending license stays inside its exact eojeol', () => {
+  const result = generic.convert('할게 할게다');
+  assert.equal(result.surfaceHangul, '할께 할게다');
 });

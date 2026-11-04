@@ -18,6 +18,8 @@ from .phonology import parse_syllables
 # the surrounding Korean chunk so g2pK can use sentence context.
 _PROTECTED = re.compile(r"([A-Za-z0-9ㄱ-ㅎㅏ-ㅣ]+)")
 _SURFACE_TOKENS = re.compile(r"[가-힣]+|[^가-힣]+")
+# These are Kozak research overlays, not evidence for the independent g2pK adapter.
+_RESEARCH_ONLY_INPUT_KINDS = frozenset({"kozak-research-only", "variant-aware-research"})
 _ENGINE = None
 
 
@@ -96,6 +98,9 @@ def _apply_sourced_surface_overrides(source_text: str, surface: str) -> tuple[st
     traces: list[dict[str, str]] = []
     for index, (source_word, surface_word) in enumerate(zip(source_words, surface_words)):
         entry = LEXICAL_PRONUNCIATIONS.get(source_word)
+        # Kozak-only research candidates must never alter the pinned g2pK baseline.
+        if entry and entry.get("input_kind") in _RESEARCH_ONLY_INPUT_KINDS:
+            continue
         expected = entry.get("surface_hangul", "") if entry else ""
         if not expected or len(expected) != len(surface_word):
             continue
@@ -142,13 +147,16 @@ def _surface_ipa(surface: str, source_text: str) -> dict[str, Any]:
             source_word = source_words[source_index] if source_index < len(source_words) else ""
             source_index += 1
             entry = LEXICAL_PRONUNCIATIONS.get(source_word)
-            values = entry.get("ipa_syllables", "").split("|") if entry else []
+            # Research-only Kozak candidates are not evidence for the external g2pK adapter.
+            research_only = bool(entry and entry.get("input_kind") in _RESEARCH_ONLY_INPUT_KINDS)
+            values = entry.get("ipa_syllables", "").split("|") if entry and not research_only else []
             diagnostic_only = bool(
                 entry
                 and entry.get("ipa_adjudication_status") == "diagnostic_only_unresolved_pronunciation"
             )
             exact_override = bool(
                 entry
+                and not research_only
                 and not diagnostic_only
                 and entry.get("surface_hangul") == token
                 and len(values) == len(items)

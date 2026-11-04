@@ -919,7 +919,7 @@ def test_nikl_section_27_adnominal_phrase_licenses_match_browser_inventory():
         right_item = next(item for item in items if item.text == right)
         assert right_item.onset == onset, phrase
         assert traces[0].changed, phrase
-        assert traces[0].license_context == f"R013:adnominal_l:{phrase}:{pair}", phrase
+        assert traces[0].license_context == f"R013:phrase:{phrase}:{pair}", phrase
 
     items, traces = apply_ordered_rules(
         parse_syllables("할 것을"), ["R013"], boundary_mode="same_word"

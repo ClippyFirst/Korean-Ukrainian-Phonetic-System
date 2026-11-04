@@ -19,7 +19,13 @@ function assertOfficial(word, surface, ipa, { long = false, short = false } = {}
   const result = engine.convert(word);
   assert.equal(result.surfaceHangul, surface, word);
   assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);
-  assert.equal(result.ukrainian, row.target_syllables.split('|').join(''), word);
+  if (['variant-aware-research', 'kozak-research-only'].includes(row.input_kind) && row.target_status === 'provisional') {
+    assert.equal(result.ukrainian, '', word);
+    assert.equal(result.candidate_ukrainian, row.target_syllables.split('|').join(''), word);
+    assert.equal(result.candidate_status, 'provisional', word);
+  } else {
+    assert.equal(result.ukrainian, row.target_syllables.split('|').join(''), word);
+  }
   if (long) assert.match(ipa, /ː/u, word + ': expected a long vowel');
   if (short) assert.doesNotMatch(ipa, /ː/u, word + ': expected no long vowel');
 }
@@ -89,7 +95,7 @@ test('§7 long-vowel citation forms are paired with the short/retained inflected
     '밟다':['밥따','paːp̚ t͈a'],
     '신다':['신따','ɕiːn t͈a'],
     '알다':['알다','aːl da'],
-    '끌다':['끌따','k͈ɯːl t͈a'],
+    '끌다':['끌다','k͈ɯːl da'],
     '떨다':['떨다','t͈ʌːl da'],
     '벌다':['벌다','pʌːl da'],
     '쓸다':['쓸다','s͈ɯːl da'],

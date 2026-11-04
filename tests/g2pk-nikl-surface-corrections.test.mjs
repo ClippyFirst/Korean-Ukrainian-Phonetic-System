@@ -93,6 +93,18 @@ test('exact NIKL-attested surface divergences are corrected before IPA adaptatio
   }
 });
 
+
+test('Kozak research-only 끌다 candidate does not change the pinned browser g2pK baseline', () => {
+  const rawSurface = rawPort.convert('끌다', {
+    descriptive: false, verbose: false, groupVowels: false, toSyl: true
+  });
+  const result = adapter.convert('끌다');
+  const baselineIpa = engine.convertSurface(rawSurface);
+  assert.deepEqual(result.normativeCorrections, []);
+  assert.equal(result.surfaceHangul || '끌다', rawSurface);
+  assert.equal(result.ipa.replaceAll(' ', '.'), baselineIpa.ipa.replaceAll(' ', '.'));
+});
+
 test('source-backed exceptions are exact-form allowlist entries, not generalized grapheme rules', () => {
   for (const input of ['넓다', '읽는', '같이']) {
     const result = adapter.convert(input);
@@ -160,4 +172,3 @@ test('the NIKL-attested 멋있어 variants are explicit alternatives, never gold
     assert.deepEqual(variants, [], 'do not invent a variant when G2P output is not one of the attested readings');
   }
 });
-

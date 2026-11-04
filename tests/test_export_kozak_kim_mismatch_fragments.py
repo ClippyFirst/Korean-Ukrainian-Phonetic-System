@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+import pytest
 import importlib.util
 from pathlib import Path
 
@@ -81,3 +83,155 @@ def test_aspirated_velar_coarticulation_is_not_misclassified_as_h_aspiration():
         strict_reference="kxɯ",
         strict_prediction="kʰɯ",
     ) == ["C12_aspirated_velar_coarticulation_profile"]
+
+
+
+def test_candidate_clusters_expose_unmapped_fragments_even_when_another_fragment_is_mapped():
+    fragments = [
+        {"op": "S", "reference_fragment": "ɕ", "kozak_fragment": "s"},
+        {"op": "S", "reference_fragment": "k͈", "kozak_fragment": "ɡ"},
+    ]
+    assert MODULE.candidate_clusters(fragments) == [
+        "C11_sibilant_place_profile_boundary",
+        "UNMAPPED_REQUIRES_REVIEW",
+    ]
+
+
+def test_build_rows_reports_unmapped_broad_fragments_inside_mixed_cluster_occurrence():
+    report = {
+        "benchmark": "fixture",
+        "eligible_token_occurrences": 1,
+        "native_ipa_profile": {"ipa_profile": "broad-v1"},
+        "broad_candidate_profile": {"profile_id": "broad-candidate-v1"},
+        "per_engine_occurrences": {
+            "clippyfirst_native": [
+                {
+                    "occurrence_id": "1", "row_id": "r1", "token": "시험",
+                    "surface_hangul": "시험", "gold": "ɕk͈", "ipa": "sɡ",
+                    "status": "scored", "distance": 2,
+                    "broad_candidate": {"closest_gold": "ɕk͈", "predicted": "sɡ", "distance": 2},
+                },
+            ],
+            "g2pk_0_9_4": [{"occurrence_id": "1", "ipa": "ɕk͈", "distance": 0}],
+        },
+    }
+    row = MODULE.build_rows(report)[0]
+    assert row["unmapped_broad_fragment_count"] == "1"
+    assert json.loads(row["unmapped_broad_fragments"]) == [
+        {"op": "S", "reference_fragment": "k͈", "kozak_fragment": "ɡ"},
+    ]
+
+
+
+def test_build_rows_records_pinned_context_pointer_without_copying_sentence_text():
+    report = {
+        "benchmark": "fixture",
+        "eligible_token_occurrences": 1,
+        "native_ipa_profile": {"ipa_profile": "broad-v1"},
+        "broad_candidate_profile": {"profile_id": "broad-candidate-v1"},
+        "per_engine_occurrences": {
+            "clippyfirst_native": [{
+                "occurrence_id": "1", "row_id": "r1", "token": "시험",
+                "surface_hangul": "시험", "gold": "ɕk͈", "ipa": "sɡ",
+                "status": "scored", "distance": 2,
+                "broad_candidate": {"closest_gold": "ɕk͈", "predicted": "sɡ", "distance": 2},
+            }],
+            "g2pk_0_9_4": [{"occurrence_id": "1", "ipa": "ɕk͈", "distance": 0}],
+        },
+    }
+    corpus_rows = [{
+        "id": "r1", "lang": "ko", "split": "test",
+        "text": "SENTENCE_CONTEXT_MUST_NOT_BE_COPIED",
+        "canonical": "시험",
+    }]
+    row = MODULE.build_rows(
+        report, corpus_rows, "ef0d5a09c2ea1874c7206020f875cbd9cfea2f54", "Apache-2.0"
+    )[0]
+    assert row["context_corpus"] == "UGTPHON/ko/test.json"
+    assert row["context_corpus_revision"] == "ef0d5a09c2ea1874c7206020f875cbd9cfea2f54"
+    assert row["context_corpus_license"] == "Apache-2.0"
+    assert row["context_lookup_status"] == "FOUND"
+    assert "SENTENCE_CONTEXT_MUST_NOT_BE_COPIED" not in json.dumps(row, ensure_ascii=False)
+
+
+def test_build_rows_marks_missing_context_row_and_requires_provenance():
+    report = {
+        "per_engine_occurrences": {
+            "clippyfirst_native": [{
+                "occurrence_id": "1", "row_id": "missing", "token": "시험",
+                "surface_hangul": "시험", "gold": "ɕk͈", "ipa": "sɡ",
+                "status": "scored", "distance": 2,
+                "broad_candidate": {"closest_gold": "ɕk͈", "predicted": "sɡ", "distance": 2},
+            }],
+            "g2pk_0_9_4": [{"occurrence_id": "1", "ipa": "ɕk͈", "distance": 0}],
+        },
+    }
+    assert MODULE.build_rows(report, [{"id": "other"}], "revision", "Apache-2.0")[0]["context_lookup_status"] == "MISSING"
+    import pytest
+    with pytest.raises(ValueError, match="corpus_revision and corpus_license"):
+        MODULE.build_rows(report, [{"id": "missing"}])
+
+
+def test_filter_unmapped_broad_keeps_only_occurrences_with_unmapped_edits():
+    rows = [
+        {"occurrence_id": "1", "has_unmapped_broad_fragments": "true"},
+        {"occurrence_id": "2", "has_unmapped_broad_fragments": "false"},
+        {"occurrence_id": "3", "has_unmapped_broad_fragments": "true"},
+    ]
+    assert [row["occurrence_id"] for row in MODULE.filter_unmapped_broad(rows)] == ["1", "3"]
+
+
+
+def _minimal_mismatch_report(native_occurrences, g2pk_occurrences):
+    return {
+        "per_engine_occurrences": {
+            "clippyfirst_native": native_occurrences,
+            "g2pk_0_9_4": g2pk_occurrences,
+        },
+    }
+
+
+def _native_occurrence(occurrence_id="1", row_id="r1"):
+    return {
+        "occurrence_id": occurrence_id,
+        "row_id": row_id,
+        "token": "사",
+        "surface_hangul": "사",
+        "gold": "sʰa",
+        "ipa": "sa",
+        "status": "scored",
+        "distance": 1,
+        "broad_candidate": {"closest_gold": "sʰa", "predicted": "sa", "distance": 1},
+    }
+
+
+def _g2pk_occurrence(occurrence_id="1"):
+    return {"occurrence_id": occurrence_id, "ipa": "sʰa", "distance": 0}
+
+
+@pytest.mark.parametrize("duplicate_ledger", ["native", "g2pk"])
+def test_build_rows_rejects_duplicate_occurrence_ids_in_engine_ledgers(duplicate_ledger):
+    native = [_native_occurrence()]
+    g2pk = [_g2pk_occurrence()]
+    if duplicate_ledger == "native":
+        native.append(_native_occurrence())
+    else:
+        g2pk.append(_g2pk_occurrence())
+
+    with pytest.raises(ValueError, match="duplicate occurrence_id"):
+        MODULE.build_rows(_minimal_mismatch_report(native, g2pk))
+
+
+def test_build_rows_rejects_duplicate_context_corpus_row_ids():
+    report = _minimal_mismatch_report(
+        [_native_occurrence()],
+        [_g2pk_occurrence()],
+    )
+
+    with pytest.raises(ValueError, match="duplicate corpus row id"):
+        MODULE.build_rows(
+            report,
+            [{"id": "r1", "canonical": "사"}, {"id": "r1", "canonical": "다"}],
+            "pinned-revision",
+            "Apache-2.0",
+        )

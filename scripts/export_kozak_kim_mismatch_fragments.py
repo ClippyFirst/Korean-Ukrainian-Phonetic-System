@@ -19,6 +19,11 @@ FIELDS = [
     "g2pk_ipa", "g2pk_edit_distance",
     "broad_reference_ipa", "broad_kozak_ipa", "broad_edit_distance",
     "strict_mismatch_fragments", "broad_mismatch_fragments",
+    "strict_fragment_cluster_labels", "broad_fragment_cluster_labels",
+    "unmapped_strict_fragment_count", "unmapped_broad_fragment_count",
+    "unmapped_broad_fragments", "has_unmapped_broad_fragments",
+    "context_corpus", "context_corpus_revision", "context_corpus_license",
+    "context_lookup_status",
     "candidate_clusters", "review_status", "production_action",
 ]
 
@@ -72,42 +77,143 @@ def align(reference: str, prediction: str) -> list[dict[str, str]]:
     return list(reversed(edits))
 
 
-def candidate_clusters(fragments: list[dict[str, str]], strict_reference: str = "", strict_prediction: str = "") -> list[str]:
-    text = "".join(item["reference_fragment"] + item["kozak_fragment"] for item in fragments)
-    labels = []
-    if any(char in text for char in "ɭɾʎ"):
-        labels.append("C01_C07_liquid_realization")
-    aspirated_velar_profile_difference = (("kx" in strict_reference or "kç" in strict_reference) and "kʰ" in strict_prediction)
-    if aspirated_velar_profile_difference:
-        labels.append("C12_aspirated_velar_coarticulation_profile")
-    elif any(char in text for char in "ɦçβʝɸxɣ") or ("h" in text and "ʰ" not in text):
-        labels.append("C02_h_realization")
-    if "ɲ" in text:
-        labels.append("C03_nasal_palatalization")
-    if any(char in text for char in "ʰ͡") and not aspirated_velar_profile_difference:
-        labels.append("C04_aspiration_affricate_notation")
-    if "s" in text and "ɕ" in text:
-        labels.append("C11_sibilant_place_profile_boundary")
-    if any(char in text for char in "yɥø"):
-        labels.append("C05_front_rounded_vowel")
-    if "̚" in text:
-        labels.append("C06_unreleased_coda")
-    if any(char in text for char in "ːˑ"):
-        labels.append("C09_vowel_length")
-    if any(char in text for char in "ˈˌ"):
-        labels.append("C10_stress")
-    if not labels:
-        labels.append("UNMAPPED_REQUIRES_REVIEW")
-    return labels
+def classify_fragments(
+    fragments: list[dict[str, str]],
+    strict_reference: str = "",
+    strict_prediction: str = "",
+) -> list[dict[str, object]]:
+    """Attach conservative candidate labels to each edit, not just its token.
+
+    A token can contain both a familiar difference and an unrelated edit.
+    Keeping the latter explicitly unmapped prevents a known cluster from
+    masking work that still needs review. Labels remain diagnostic hypotheses.
+    """
+    c12_context = (
+        ("kx" in strict_reference or "kç" in strict_reference)
+        and "kʰ" in strict_prediction
+    )
+    classified: list[dict[str, object]] = []
+    for index, fragment in enumerate(fragments):
+        reference = fragment["reference_fragment"]
+        prediction = fragment["kozak_fragment"]
+        text = reference + prediction
+        labels: list[str] = []
+
+        c12_fragment = False
+        if c12_context:
+            c12_fragment = (
+                "x" in reference
+                or "ç" in reference
+                or "kʰ" in prediction
+                or (
+                    reference == "k"
+                    and not prediction
+                    and index + 1 < len(fragments)
+                    and fragments[index + 1]["reference_fragment"] == "h"
+                    and fragments[index + 1]["kozak_fragment"] == "kʰ"
+                )
+            )
+
+        if c12_fragment:
+            labels.append("C12_aspirated_velar_coarticulation_profile")
+        if any(char in text for char in "ɭɾʎ"):
+            labels.append("C01_C07_liquid_realization")
+        if not c12_fragment and (
+            any(char in text for char in "ɦçβʝɸxɣ")
+            or ("h" in text and "ʰ" not in text)
+        ):
+            labels.append("C02_h_realization")
+        if "ɲ" in text:
+            labels.append("C03_nasal_palatalization")
+        if not c12_fragment and any(char in text for char in "ʰ͡"):
+            labels.append("C04_aspiration_affricate_notation")
+        if (
+            ("ɕ" in reference and "s" in prediction)
+            or ("s" in reference and "ɕ" in prediction)
+        ):
+            labels.append("C11_sibilant_place_profile_boundary")
+        if any(char in text for char in "yɥø"):
+            labels.append("C05_front_rounded_vowel")
+        if "̚" in text:
+            labels.append("C06_unreleased_coda")
+        if any(char in text for char in "ːˑ"):
+            labels.append("C09_vowel_length")
+        if any(char in text for char in "ˈˌ"):
+            labels.append("C10_stress")
+        if not labels:
+            labels.append("UNMAPPED_REQUIRES_REVIEW")
+
+        classified.append({
+            **fragment,
+            "candidate_clusters": sorted(set(labels)),
+        })
+    return classified
 
 
-def build_rows(report: dict) -> list[dict[str, str]]:
+def candidate_clusters(
+    fragments: list[dict[str, str]],
+    strict_reference: str = "",
+    strict_prediction: str = "",
+) -> list[str]:
+    """Return the union of candidate labels and expose any unmapped edit."""
+    classified = classify_fragments(fragments, strict_reference, strict_prediction)
+    labels = {
+        label
+        for fragment in classified
+        for label in fragment["candidate_clusters"]
+    }
+    return sorted(labels)
+
+
+
+def _index_unique_ids(
+    records: list[dict],
+    id_field: str,
+    label: str,
+    *,
+    allow_missing: bool = False,
+    id_label: str | None = None,
+) -> dict[str, dict]:
+    """Index records without silently choosing a winner for duplicate IDs."""
+    indexed: dict[str, dict] = {}
+    display_field = id_label or id_field
+    for record in records:
+        if not isinstance(record, dict):
+            raise ValueError(f"{label} contains a non-object record")
+        value = record.get(id_field)
+        if value is None or str(value) == "":
+            if allow_missing:
+                continue
+            raise ValueError(f"{label} record is missing {display_field}")
+        identity = str(value)
+        if identity in indexed:
+            raise ValueError(f"{label} contains duplicate {display_field}: {identity}")
+        indexed[identity] = record
+    return indexed
+
+
+def build_rows(
+    report: dict,
+    corpus_rows: list[dict] | None = None,
+    corpus_revision: str = "",
+    corpus_license: str = "",
+) -> list[dict[str, str]]:
+    if corpus_rows is not None and (not corpus_revision or not corpus_license):
+        raise ValueError("corpus_revision and corpus_license are required when corpus_rows are supplied")
+    corpus_by_id = _index_unique_ids(
+        corpus_rows or [],
+        "id",
+        "context corpus",
+        allow_missing=True,
+        id_label="corpus row id",
+    )
     engines = report.get("per_engine_occurrences", {})
     native = engines.get("clippyfirst_native")
     g2pk = engines.get("g2pk_0_9_4")
     if not isinstance(native, list) or not isinstance(g2pk, list):
         raise ValueError("report must contain Native and g2pK occurrence ledgers")
-    g2pk_by_id = {str(item["occurrence_id"]): item for item in g2pk}
+    _index_unique_ids(native, "occurrence_id", "Native occurrence ledger")
+    g2pk_by_id = _index_unique_ids(g2pk, "occurrence_id", "g2pK occurrence ledger")
     rows = []
     for item in native:
         if item.get("status") != "scored":
@@ -122,10 +228,29 @@ def build_rows(report: dict) -> list[dict[str, str]]:
         broad_fragments = align(broad_reference, broad_prediction) if broad_distance else []
         if not strict_fragments and not broad_fragments:
             continue
-        labels = sorted(set(candidate_clusters(strict_fragments + broad_fragments, item["gold"], item["ipa"])))
+        strict_classified = classify_fragments(strict_fragments, item["gold"], item["ipa"])
+        broad_classified = classify_fragments(broad_fragments, item["gold"], item["ipa"])
+        labels = sorted({
+            label
+            for fragment in strict_classified + broad_classified
+            for label in fragment["candidate_clusters"]
+        })
+        unmapped_strict = [
+            {key: fragment[key] for key in ("op", "reference_fragment", "kozak_fragment")}
+            for fragment in strict_classified
+            if "UNMAPPED_REQUIRES_REVIEW" in fragment["candidate_clusters"]
+        ]
+        unmapped_broad = [
+            {key: fragment[key] for key in ("op", "reference_fragment", "kozak_fragment")}
+            for fragment in broad_classified
+            if "UNMAPPED_REQUIRES_REVIEW" in fragment["candidate_clusters"]
+        ]
+        source_row_id = str(item.get("row_id", ""))
+        context_requested = corpus_rows is not None
+        context_found = source_row_id in corpus_by_id
         rows.append({
             "occurrence_id": str(item["occurrence_id"]),
-            "source_row_id": str(item.get("row_id", "")),
+            "source_row_id": source_row_id,
             "token": str(item.get("token", "")),
             "surface_hangul": str(item.get("surface_hangul", "")),
             "strict_reference_ipa": str(item["gold"]),
@@ -138,6 +263,18 @@ def build_rows(report: dict) -> list[dict[str, str]]:
             "broad_edit_distance": str(broad_distance),
             "strict_mismatch_fragments": json.dumps(strict_fragments, ensure_ascii=False, separators=(",", ":")),
             "broad_mismatch_fragments": json.dumps(broad_fragments, ensure_ascii=False, separators=(",", ":")),
+            "strict_fragment_cluster_labels": json.dumps(strict_classified, ensure_ascii=False, separators=(",", ":")),
+            "broad_fragment_cluster_labels": json.dumps(broad_classified, ensure_ascii=False, separators=(",", ":")),
+            "unmapped_strict_fragment_count": str(len(unmapped_strict)),
+            "unmapped_broad_fragment_count": str(len(unmapped_broad)),
+            "unmapped_broad_fragments": json.dumps(unmapped_broad, ensure_ascii=False, separators=(",", ":")),
+            "has_unmapped_broad_fragments": "true" if unmapped_broad else "false",
+            "context_corpus": "UGTPHON/ko/test.json" if context_requested else "",
+            "context_corpus_revision": corpus_revision if context_requested else "",
+            "context_corpus_license": corpus_license if context_requested else "",
+            "context_lookup_status": (
+                "FOUND" if context_found else "MISSING"
+            ) if context_requested else "NOT_REQUESTED",
             "candidate_clusters": ";".join(labels),
             "review_status": "UNADJUDICATED_DIAGNOSTIC",
             "production_action": "NO_CHANGE_PENDING_SOURCE_AND_IPA_REVIEW",
@@ -145,23 +282,53 @@ def build_rows(report: dict) -> list[dict[str, str]]:
     return rows
 
 
+def filter_unmapped_broad(rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    """Select only occurrences with at least one unmapped Broad-profile edit."""
+    return [row for row in rows if row.get("has_unmapped_broad_fragments") == "true"]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--report-json", type=Path, required=True)
     parser.add_argument("--output-csv", type=Path, required=True)
+    parser.add_argument("--corpus-json", type=Path)
+    parser.add_argument("--corpus-revision")
+    parser.add_argument("--corpus-license")
+    parser.add_argument("--only-unmapped-broad", action="store_true")
     args = parser.parse_args()
+    corpus_args_supplied = bool(args.corpus_json)
+    if corpus_args_supplied != bool(args.corpus_revision) or corpus_args_supplied != bool(args.corpus_license):
+        parser.error("--corpus-json, --corpus-revision, and --corpus-license must be supplied together")
     report = json.loads(args.report_json.read_text(encoding="utf-8"))
-    rows = build_rows(report)
+    corpus_rows = (
+        json.loads(args.corpus_json.read_text(encoding="utf-8"))
+        if args.corpus_json else None
+    )
+    all_rows = build_rows(
+        report, corpus_rows, args.corpus_revision or "", args.corpus_license or ""
+    )
+    rows = filter_unmapped_broad(all_rows) if args.only_unmapped_broad else all_rows
     args.output_csv.parent.mkdir(parents=True, exist_ok=True)
     with args.output_csv.open("w", encoding="utf-8", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=FIELDS)
+        writer = csv.DictWriter(stream, fieldnames=FIELDS, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
     print(json.dumps({
         "status": "DIAGNOSTIC_ONLY",
         "benchmark": report.get("benchmark"),
         "eligible_occurrences": report.get("eligible_token_occurrences"),
-        "annotated_mismatch_occurrences": len(rows),
+        "annotated_mismatch_occurrences": len(all_rows),
+        "output_rows": len(rows),
+        "only_unmapped_broad": args.only_unmapped_broad,
+        "unmapped_broad_occurrences": sum(
+            row["has_unmapped_broad_fragments"] == "true" for row in all_rows
+        ),
+        "unmapped_broad_fragments": sum(
+            int(row["unmapped_broad_fragment_count"]) for row in all_rows
+        ),
+        "context_lookup_missing": sum(
+            row["context_lookup_status"] == "MISSING" for row in all_rows
+        ),
         "strict_profile": report.get("native_ipa_profile"),
         "broad_profile": report.get("broad_candidate_profile", {}).get("profile_id"),
         "alignment": "NFC Unicode grapheme-cluster Levenshtein; not phoneme alignment",

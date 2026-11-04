@@ -77,7 +77,7 @@ Software regressions/build are verified. Broad score targets remain unmet. Runti
 | Strict IPA preservation | No evidence-backed distinctions collapsed | Strict scoring retained; broad sensitivity losses separately reported | PARTIAL — independent convention adjudication pending |
 | Independent IPA gold | Two independent reviews + adjudication | Frozen 24-item holdout and separate A/B templates prepared; no reviewer submissions yet | BLOCKED |
 
-The Browser normal-conversion metadata path has been corrected to report the explicitly selected broad profile; a Python/JavaScript normalizer parity test now checks shared edge cases and feature-loss ledgers. Both implementations are present, but the latest exact-head CI is still queued and these items remain PARTIAL until verified. The R013 change in this continuation is a narrowly scoped correction to the existing NIKL Q&A 330963-backed -ㄹ게 ending license, with positive and negative controls; it is not a new general phonological rule.
+The Browser normal-conversion metadata path has been corrected to report the explicitly selected broad profile; a Python/JavaScript normalizer parity test now checks shared edge cases and feature-loss ledgers. Both implementations are present, but the exact-head System Verify 41843473006 passed on 2026-11-04 and these items remain PARTIAL until verified. The R013 change in this continuation is a narrowly scoped correction to the existing NIKL Q&A 330963-backed -ㄹ게 ending license, with positive and negative controls; it is not a new general phonological rule.
 
 Do not use the old 93.81% Browser score as evidence of superiority: it came from `browser-legacy-contextual-v1`, whereas Native used `clippyfirst-korean-broad-v1`. The common-profile run is the only valid runtime comparison.
 
@@ -813,3 +813,431 @@ The multi-engine comparison workflow did not produce a completed score report: r
 
 
 Exact-head verification: push run `41358504664` and PR run `41358508399` both passed on code/test head `8b22f778112442024f876061bd0e576af762e761`. Native paired diagnostic run `41357680365` is a separate runtime profile and does not establish normative IPA accuracy.
+
+
+## Kozak Kim exact-head acceptance update — 2026-11-03 (PR #424)
+
+| Gate | Status | Evidence / acceptance |
+|---|---|---|
+| Source-backed lexical correction `끌다` | DONE_VERIFIED for Hangul surface/length | Official NIKL Standard Pronunciation Rule §7 lists `끌다[끌ː다]` and `끌어[끄ː러]`; Korean Basic Dictionary ParaWordNo=62281 agrees. IPA is project-derived; Ukrainian target remains provisional/withheld. |
+| Rule §24 exact `굶다` | DONE_VERIFIED as rule-derived form | Official rule covers stem-final ㄴ(ㄵ), ㅁ(ㄻ) + ending-initial ㄱ/ㄷ/ㅅ/ㅈ; `굶기다` is an explicit -기- negative control. Not claimed as a direct lexical example. |
+| Research candidate isolation from g2pK app adapter | DONE_VERIFIED | Both `kozak-research-only` and `variant-aware-research` are excluded from surface and IPA overrides. Test-first failure `5131e807` reproduced `못잃어 → 몬니러`; fix `2e6e739` passes. |
+| Original g2pK baseline integrity | DONE_VERIFIED | No upstream/vendor file changed; raw benchmark script constructs `G2p()` directly. |
+| Software verification | DONE_VERIFIED | 41637788167 / 41637795909 PASS: Browser 1,391/1,391, Python/data integrity, Vite build and generated pages. g2pK 3.11/3.12 integration 41637795791 PASS. |
+| Paired and morphology diagnostics | DONE_VERIFIED | 41637795740, 41637795766, 41637795818, 41637795832, 41637795861 PASS. |
+| Multi-engine rerun | PARTIAL / IN PROGRESS | 41637795800 had not completed at this update; do not claim its result. Previous raw-path artifact 13226589858 is valid for the same benchmark code path. |
+| Independent Korean IPA / Ukrainian target review | BLOCKED | Need two qualified independent IPA reviewers/adjudication and independent Ukrainian phonetic/orthographic review. |
+| NIKL item-level reuse rights | BLOCKED | Metadata-only inventory skipped; exact item-level KOGL/reviewer-sharing rights unresolved. |
+| C12, 239 mismatches, supervised training | BLOCKED / TODO | Need exact acoustic/articulatory evidence for C12, source-context adjudication for 239 occurrences, and independently adjudicated IPA gold for holdout/training. |
+
+**Disposition:** technically verified research prototype, not research-certified and not release-ready. CharsiuG2P, ByT5 and NIKL metadata-only inventory were SKIPPED, not passes. No merge or release.
+
+
+## Exact-head acceptance update — PR #425 (2026-11-03)
+
+| Gate | Status | Evidence / acceptance |
+|---|---|---|
+| Research lexical ablation | DONE_VERIFIED | `include_research_lexical=False` excludes both research-only input kinds from surface and IPA overlays, preserves explicit exclusion traces, and leaves the default policy unchanged. System Verify 41654558006 PASS. |
+| Ablation and pairwise audit helpers | DONE_VERIFIED at unit level | Multi-engine benchmark adapter tests passed in run 41654557693 before the long comparison step. Final artifact inspection remains pending. |
+| System regression/build | DONE_VERIFIED | 41654558006 PASS: Python regression/data integrity; Browser 1,391/1,391; Vite build and generated pages. |
+| Paired Native/g2pK | DONE_VERIFIED diagnostic | 41654557675 PASS, 2,698 paired occurrences; Native 53.0393% exact / 9.0613% CER; g2pK 53.1134% exact / 9.2304% CER. |
+| External UGTPHON | DONE_VERIFIED | 41654557866 PASS. |
+| Optional g2pK integration | DONE_VERIFIED | 41654557638 PASS. |
+| Morphology consensus and adapter smoke | DONE_VERIFIED | 41654557961 and 41654557801 PASS. |
+| Full multi-engine comparison / mismatch queue / Browser parity | IN PROGRESS | 41654557693; do not infer scores or artifact acceptance until all remaining steps finish. |
+| Independent IPA review / NIKL rights / Ukrainian target review | BLOCKED | External expert adjudication, item-level permission, and independent target review remain necessary. |
+| C12 / 239 mismatch cases / training | BLOCKED / TODO | Exact-context evidence, adjudication and independent IPA gold remain absent. |
+
+**Disposition:** software regression gates are green on implementation head; research/linguistic acceptance and release gates remain open. CharsiuG2P, ByT5, Charsiu train/dev, and NIKL metadata inventory are skipped, not passes.
+
+
+## Exact-head acceptance update — PR #426 continuation (2026-11-04)
+
+| Gate | Status | Evidence / acceptance |
+|---|---|---|
+| Exact-eojeol NIKL licenses in sentence context | DONE_VERIFIED on code-bearing head | PR #426 code head `074350da133b6ed654b3960879cbb7c809c0ebe1`; System Verify 41725888453 and related exact-head Native/Browser, morphology, UGTPHON and extraction checks passed. |
+| Native Kozak Kim vs original g2pK 0.9.4 paired UGTPHON diagnostic | DONE_VERIFIED as diagnostic only | Run 41726881384 / artifact 13276390247; paired n=2,698; Native 1,431/2,698 exact (53.0393%), CER 8.9920%; g2pK 1,433/2,698 exact (53.1134%), CER 9.2304%; exact delta +0.0741 pp (CI crosses zero), paired CER delta +0.2384 pp (g2pK higher, CI excludes zero). Raw g2pK denominator is 2,703 and must not be substituted for the paired result. No independent IPA gold claim. |
+| Checked-in unmapped mismatch review queue | PARTIAL | Current-head exporter generated 36 rows / 55 fragments, zero missing context lookups; golden `cmp` failed at byte 31,117 / line 14. Must review and refresh expected rows, then rerun exact-head gate. |
+| Same-occurrence Browser comparison and parity in multi-engine workflow | TODO / BLOCKED_BY_UPSTREAM_GATE | Skipped after queue mismatch; separate Browser G2P CI passing is not a substitute for same-occurrence parity artifact. |
+| SIGMORPHON portfolio on current head | TODO / BLOCKED_BY_UPSTREAM_GATE | Skipped; do not reuse older-head scores as current-head verification. |
+| NIKL metadata crawl and optional neural inference | SKIPPED | Not passes; no claims of full NIKL source inventory or teacher advantage. |
+| Independent Korean IPA, Ukrainian target, item-level rights, C12 and 239 mismatch adjudication | BLOCKED / TODO | Require independent reviewer submissions, rights evidence, primary phonetic evidence and exact-context adjudication. |
+
+**Disposition:** research prototype; not research-certified or release-ready. Original g2pK remains unchanged and comparison-only.
+
+
+## 2026-11-04 — mismatch-queue reconciliation gate (PR #426)
+
+| Gate | Status | Evidence / acceptance |
+|---|---|---|
+| Generated unmapped-broad queue reconciled with checked-in snapshot | DONE_VERIFIED as artifact reconciliation | Run 41794874090 / artifact 13305816579; 36 rows, 55 fragments, zero missing context lookups. Commit c0cbe3740e734c87d3202cca496b83d9603ea218 updates the snapshot from 43 to 36 rows. All 36 retained rows match the generated rows byte-for-byte by per-row hash. |
+| Disposition of seven removed rows | DONE_VERIFIED as queue triage, not linguistic adjudication | Five now broad-exact (1406, 1527, 2001, 2010, 2533); 868 retains mapped C06; 2562 retains mapped C11. No claim that mapped differences are accepted pronunciation. |
+| Exact-head multi-engine gate after refresh | IN_PROGRESS | Run 41797143756. Must complete exporter `cmp`, same-occurrence Browser, Native/Browser parity and SIGMORPHON portfolio, then inspect artifact. |
+| Independent Korean IPA and Ukrainian target review | BLOCKED | Requires independent qualified reviewers and adjudication; corpus annotations and cluster labels are not gold. |
+
+**Disposition:** the stale queue mismatch is reconciled; release/research certification gates remain open. Original g2pK is unchanged.
+
+## 2026-11-04 — refreshed benchmark gate and R013 phrase extension
+
+| Gate | Status | Evidence / acceptance |
+|---|---|---|
+| Refreshed multi-engine UGTPHON, queue cmp, Browser and Native/Browser parity | DONE_VERIFIED | Run 41797276965 / artifact 13306613436; all 17 steps PASS; queue 36 rows / 55 fragments / 0 missing contexts; 2,703 surface and 2,698 IPA occurrences equal across runtimes. |
+| SIGMORPHON lexical portfolio | DONE_VERIFIED as diagnostic | Same run; paired n=998, Native 358 exact and 14.5598% CER vs g2pK 353 exact and 14.8106% CER; exact McNemar p=0.0625. |
+| Independent IPA holdout | BLOCKED | 24-case packets prepared for two reviewers; annotations pending. |
+| R013 phrase-level `줄 것` / `많을 거` and same-eojeol phrase-mode retention | DONE_VERIFIED for software behavior | Exact pair/index licenses, negative controls and phrase-mode same-eojeol regression pass System Verify 41849672939 on head `02a72da6534b110d63810c497a6b7fba9b790a3e` (Python 652; Browser 1,396/1,396; build/generated pages PASS). Prosodic pause remains unobservable in plain text. |
+| Independent Ukrainian target review, NIKL item-level rights, C12 primary evidence, historical 239-case adjudication | BLOCKED | External evidence/review remains required. |
+
+Original g2pK 0.9.4 remains unchanged and comparison-only.
+
+## 2026-11-04 — R013 connected-phrase follow-up and current-head evidence
+
+R013 / NIKL §27 exact connected-phrase licenses added for `줄 것` and `많을 거`. Python phrase mode binds each license to the exact adjacent eojeol pair and syllable-pair index; Browser phrase assimilation uses the same exact pair map. Positive cases: `해 줄 것 같다`, `많을 거 같이`. Compact no-space forms remain unlicensed; Browser additionally rejects punctuation-separated pairs. No hidden spaces are reconstructed.
+
+Phrase mode assumes connected speech. NIKL §27 says a pause blocks fortition; the text API cannot infer prosodic pauses. This is rule-derived standard-pronunciation support, not acoustic IPA attestation. Primary evidence: NIKL Standard Pronunciation Rule 27 and official Q&A 310899 for colloquial dependent noun `거`.
+
+Exact-head System Verify [41806844422] PASS: Python regression/data integrity; Browser 1,395/1,395; Vite build. Browser G2P [41806844476], paired Native/g2pK [41806844324], UGTPHON [41806844305], morphology consensus [41806844379], extraction [41806844316], and morphology smoke [41806844503] PASS. Multi-engine run [41806844311] was still in its comparison step at this checkpoint; no pass is claimed. Last completed full comparison: [41797276965], artifact [13306613436].
+
+Comparative diagnostic (run 41797276965): UGTPHON paired n=2,698: Kozak Kim 1,431 exact / 8.9920% CER vs original g2pK 1,433 exact / 9.2304% CER; exact difference inconclusive (95% CI −0.0824 to +0.2840 pp), Kozak Kim CER lower by 0.2384 pp. SIGMORPHON paired n=998: Kozak Kim 358 exact / 14.5598% CER vs g2pK 353 exact / 14.8106% CER; five net Kozak-only exact wins, McNemar p=0.0625. Corpus IPA labels are not normative IPA gold; neither metric measures Ukrainian target quality.
+
+Main is `607dccb46`, advanced through merged PRs #428/#430/#431. The benchmark module restored by #428 is byte-identical on main and this branch. PR #426 remains stacked on #425; no blind rebase. The corrected 36-row queue is already in #426 at `682c3a5`, byte-identical to its generated artifact. #427/#429 closed as superseded/no-op; branches retained.
+
+R013 phrase implementation/tests: DONE_VERIFIED. IPA/prosody adjudication: PARTIAL/BLOCKED. Overall readiness: research prototype only. Independent Korean IPA reviewers, Ukrainian target review, NIKL item-level rights, C12 primary evidence and historical 239-case adjudication remain blocked.
+
+
+## 2026-11-04 — exact-head verification and discrepancy benchmark refresh
+
+**Verified branch head:** `02a72da6534b110d63810c497a6b7fba9b790a3e` (PR #426). System Verify 41849672939 PASS; Browser G2P 41849673226, paired Native/g2pK 41849673222, UGTPHON 41849673067, morphology consensus 41849673050, morphology smoke 41849673025 and extraction 41849672945 PASS. Multi-engine 41849673041 remains in progress.
+
+### Exact-head software and runtime verification
+
+- System Verify [41809176725](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41809176725): **PASS** — Browser regression/build job PASS; Python regression/data-integrity job PASS. The Browser suite is 1,395/1,395 at this head. Official NIKL source inventory was **SKIPPED** (metadata-only), not passed.
+- Browser G2P integration [41809183570](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41809183570): **PASS**.
+- Paired Native/g2pK [41809183782](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41809183782): **PASS**.
+- External UGTPHON [41809183902](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41809183902): **PASS**.
+- Morphology consensus [41809183398](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41809183398), morphology adapter smoke [41809183542](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41809183542), and exhaustive test-case extraction [41809183481](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41809183481): **PASS**.
+- Multi-engine benchmark [41809183760](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41809183760): **PASS**, all 17 comparison/export/runtime-parity steps passed. Artifact [13312557366](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41809183760/artifacts/13312557366), SHA-256 `c33601cf32fbe70aa4f199936eeacb749f4f305dabd574f44dc9d3da02b89315`.
+- CharsiuG2P inference, ByT5 inference, and neural pairing were **SKIPPED** under the default-off policy. They are not passes and no neural result is claimed.
+
+### Runtime parity
+
+On the same pinned UGTPHON occurrences and shared IPA profile:
+- Surface Hangul: **2,703/2,703 identical** between Native and Browser.
+- Raw IPA: **2,698/2,698 identical**.
+- Broad IPA: **2,698/2,698 identical**.
+- Both runtimes scored the same 2,698 occurrences and abstained on the same five.
+
+This verifies implementation parity, not independent pronunciation accuracy.
+
+### Refreshed paired diagnostic against the unchanged original g2pK 0.9.4 baseline
+
+**UGTPHON, 2,698 paired scored occurrences**
+- Kozak Kim: 1,431 exact (**53.0393%**), CER **8.9920%**.
+- Original g2pK: 1,433 exact (**53.1134%**), CER **9.2304%**.
+- g2pK's exact-match point edge is **0.0741 pp**; the paired row-cluster 95% CI for g2pK-minus-Kozak exact delta is **−0.0824 to +0.2840 pp**, crossing zero.
+- Kozak Kim's CER is lower by **0.2384 pp**; paired row-cluster 95% CI for g2pK-minus-Kozak CER delta is **+0.1392 to +0.3464 pp**.
+
+**SIGMORPHON 2021, 998 paired scored occurrences**
+- Kozak Kim: 358 exact (**35.8717%**), CER **14.5598%**.
+- Original g2pK: 353 exact (**35.3707%**), CER **14.8222%**.
+- Kozak Kim has five net exact wins (five Kozak-only exact, zero g2pK-only exact); exact two-sided McNemar **p = 0.0625**, so the exact-match result is promising but not decisive at the 0.05 threshold.
+- Paired row-cluster bootstrap gives a descriptive Kozak-minus-g2pK exact delta interval of **+0.1002 to +1.0020 pp** and a CER improvement interval of **+0.0986 to +0.4444 pp**. These descriptive bootstrap intervals are not substituted for the exact McNemar test or a preregistered inference plan.
+- The broad-candidate view is separately reported and is sensitivity analysis only; its normalizations remove selected IPA distinctions and do not establish normative IPA accuracy.
+
+The two pinned corpora are diagnostic annotations, not independently adjudicated Korean IPA gold. The g2pK surface is rendered through the shared project IPA adapter, so it is not an independent IPA encoder. Neither corpus measures Ukrainian target quality. No universal engine-superiority claim is made.
+
+### R013 phrase-boundary acceptance
+
+**DONE_VERIFIED:** exact NIKL §27 adjacent-eojeol licenses `줄 것` and `많을 거` now have current-head Python and Browser verification. Python phrase mode records the exact adjacent pair index and trace context; Browser uses the same exact pair map. Compact no-space forms and punctuation-separated boundaries remain negative controls. Phrase mode assumes connected speech; NIKL §27 says a pause blocks fortition, and the text API does not infer pauses. This is a rule-derived surface/phonology result, not direct acoustic IPA attestation.
+
+### Remaining blockers
+
+- Independent Korean IPA adjudication: two qualified reviewers must annotate the frozen 24-case blind packet; no reviewer annotation is yet accepted.
+- Independent Ukrainian target-layer review and reader validation.
+- Item-level NIKL reuse/KOGL verification; metadata-only inventory remains skipped and the official metadata route has returned 403.
+- C12 aspirated-velar coarticulation: exact-environment primary acoustic/articulatory evidence and independent item-level IPA review are missing; no `kx/kç → kʰ` production rewrite.
+- Historical 239-case mismatch population: exact source/context adjudication remains incomplete. The refreshed 36-row unmapped-Broad queue is a separate generated subset (36/36 context lookups found), not a resolution of all 239 historical occurrences.
+- Remaining NIKL interaction, names/loans, Hanja, and regional/style coverage remain partial or unverified.
+
+**Readiness:** software and current branch CI are verified for this continuation; the overall system remains a **research prototype**, not research-certified or release-ready. Original g2pK 0.9.4 and vendored source remain unchanged and comparison-only.
+
+
+## 2026-11-04 — C12 primary acoustic evidence refinement
+
+A relevant peer-reviewed primary source has now been identified and reviewed: Schweizer, Ahn & Kwon (2026), *Acoustic properties of Seoul Korean stops in phrase-initial and word-medial positions*, Journal of the International Phonetic Association 56, Article e6, DOI 10.1017/S002510032510087X. Cambridge Core identifies the article as Open Access under CC BY 4.0. The source is registered as `SRC-JIPA-SCHWEIZER-AHN-KWON-2026-SEOUL-STOPS`.
+
+The paper reports two datasets: a controlled production experiment with nine native Seoul-Gyeonggi speakers and a reading-corpus analysis of 15 female speakers from the NIKL 2005 Speech Corpus. It measures burst duration from stop release to voicing onset (or F2 onset for pre-voiced tokens), closure duration, voicing during closure, post-stop f0, F1 and H1*-H2*. It finds that the acoustic realization of the three-way stop contrast depends on prosodic position and other speaker/context factors; in word-medial contexts aspirated stops have longer release+aspiration burst durations than lax stops in the reported conditions.
+
+**Evidence boundary:** this is direct primary acoustic evidence for the general release/aspiration behavior of Seoul Korean stops. It is *not* direct evidence for the specific narrow strings `[kx]` or `[kç]`, does not report those as target transcriptions, and does not adjudicate the 37 C12 occurrences. It therefore improves the general acoustic evidence base but does not close the C12 acceptance gate.
+
+**Status:** PARTIAL — general acoustic evidence identified and source-registered; BLOCKED — exact [kx]/[kç] interpretation, source-audio crosswalk, dialect/prosodic conditioning and two independent Korean IPA reviews. No Kozak Kim production rule, IPA adapter, lexical entry or default profile was changed. The broad /kʰ/ category remains intact; any future [kx]/[kç] treatment must be a separately typed, evidence-backed narrow variant rather than a phonological replacement.
+
+The secondary Wiktionary note suggesting [kx] before /ɯ/ and [cç] before /i,j/ is not accepted as primary evidence: its footnote does not resolve to a traceable source in the retrieved page. It may be retained only as a search lead, not as a rule license.
+
+
+## 2026-11-04 final continuation status — Kozak Kim only
+
+**Production-code head:** a6ac71c1f3b2c543544e8bf4331f7a6555374422. No Kozak Kim production source or benchmark implementation changed after the earlier verified code head 9803eef502ea655319954520b984fe33049ffe8e; subsequent changes are source-register, evidence, documentation and regression-test updates.
+
+### Exact-head checks before the final C12 data-distribution assertion
+- System Verify 41813316574 and 41813324446: PASS — Browser regression suite 1,395/1,395, Vite production build/generated-page checks, Python regression and data-integrity suite.
+- Browser G2P 41813324361, paired Native/g2pK 41813324279, external UGTPHON 41813324358, morphology consensus 41813324282, morphology smoke 41813324356, and exhaustive test-case extraction 41813324414: PASS.
+- Latest completed multi-engine comparison 41809183760: PASS, artifact 13312557366, SHA-256 c33601cf32fbe70aa4f199936eeacb749f4f305dabd574f44dc9d3da02b89315.
+- The C12 occurrence-distribution assertion is added in this final documentation/test commit and must be included in the final System Verify rerun.
+- NIKL metadata-only inventory, CharsiuG2P and ByT5 inference remain SKIPPED, not passed.
+
+### Paired diagnostic against unchanged original g2pK 0.9.4
+- UGTPHON paired set (n=2,698): Kozak Kim 1,431 exact (53.0393%), CER 8.9920%; g2pK 1,433 exact (53.1134%), paired CER 9.2304%. Exact-match delta is only 0.0741 pp in g2pK's favour and its paired 95% CI crosses zero (−0.0824 to +0.2840 pp). Kozak Kim CER is lower by 0.2384 pp (paired CI for g2pK-minus-Kozak CER: +0.1392 to +0.3464 pp).
+- SIGMORPHON paired set (n=998): Kozak Kim 358 exact (35.8717%), CER 14.5598%; g2pK 353 exact (35.3707%), paired CER 14.8106%. Five net Kozak-only exact wins yield exact two-sided McNemar p=0.0625: promising, not decisive at 0.05. Kozak Kim CER is lower by 0.2508 pp (paired bootstrap CI +0.0986 to +0.4444 pp). The full g2pK scored-set CER is 14.8222% on 999 cases; do not confuse it with the 998-case paired CER.
+- These corpora are diagnostic annotations, not independently adjudicated Korean IPA gold. g2pK's IPA is rendered through the shared project adapter; it is not an independent IPA encoder. No universal superiority claim follows.
+
+### C12 — evidence refinement, no production rewrite
+The 37 mismatch rows represent 29 unique token strings: 16 kxɯ-only, 12 kçi-only, 8 kçj-only, and one overlapping kxɯ+kçi row (키큰남). Source-row namespaces: 12 multilexnorm2026, 25 dc_inside. The fragment CSV contains text/IPA fields but no audio or speaker metadata.
+
+Schweizer, Ahn & Kwon (2026), JIPA 56, e6, DOI 10.1017/S002510032510087X, CC-BY-4.0, is registered as contextual primary acoustic evidence. It measures burst duration (release to voicing onset; release+aspiration if any), closure duration, voicing and spectral measures. Study 1 uses following /a/; Study 2 uses /i,u,a,ʌ/. It has no /ɯ/ or /j/ target context and reports no [kx]/[kç] transcription. It cannot adjudicate the C12 tokens. Status remains PARTIAL for general acoustic evidence and BLOCKED for exact [kx]/[kç] interpretation, source-audio/annotation crosswalk and two independent Korean IPA reviews. No C12 production rule, lexical entry or narrow IPA profile was added.
+
+### Scope and readiness
+- Kozak Kim is the only engine being improved. Original g2pK 0.9.4 remains an unmodified comparison baseline; all nine vendored g2pK files are byte-identical to current main and the dependency remains pinned.
+- The 36-row unmapped-Broad queue (55 fragments; 36/36 context lookups found) is not a resolution of the historical 239-case mismatch population.
+- Independent Korean IPA review, Ukrainian target-layer review, item-level NIKL reuse verification, C12 audio adjudication, and names/loans/Hanja/regional-style coverage remain open.
+- Readiness: research prototype; not research-certified and not release-ready.
+
+
+## 2026-11-04 — final verification refresh and methodology review
+
+**Exact verified pre-documentation head:** `8615aa8eb4195c23bc7ff0a3eac64ae122af9b46` (PR #426, still draft/open; base PR #425). The following workflows completed on this exact head:
+
+- System Verify [41815472574](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41815472574): PASS. Python regression/data-integrity job PASS; Browser regression/build PASS, **1,395/1,395 tests, 0 failures**. Vite production build and generated-page checks passed. The Python pytest output reached 100% with no failures; pytest did emit its intentional diagnostic-only Python-vs-pinned-JS comparison warning (18/20 equal, two known port divergences where Python matches the project practical adapter). This warning is not a suite failure.
+- Browser G2P [41815472566](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41815472566): PASS (25/25 tests).
+- Paired Native/g2pK [41815473135](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41815473135): PASS. UGTPHON shared scored set n=2,698: Kozak Kim 1,431 exact (53.0393%), CER 8.9920%; original g2pK 1,433 exact (53.1134%), CER 9.2304%. Exact-match difference remains inconclusive; Kozak CER is lower by 0.2384 pp. g2pK's full 2,703-case denominator is not the paired denominator.
+- External UGTPHON [41815472667](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41815472667), morphology consensus [41815472569](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41815472569), morphology smoke [41815472553](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41815472553), and exhaustive test-case extraction [41815472973](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41815472973): PASS. The morphology-consensus diagnostic did not improve exact matches and had slightly higher CER than strict (0.090093 vs 0.089920); it remains diagnostic-only, not a production replacement.
+- Multi-engine benchmark [41815472970](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41815472970): PASS; all 17 workflow steps succeeded. Artifact [13314914671](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41815472970/artifacts/13314914671), SHA-256 `b33d8838877ef2bf89f959e920d1d4c82c831a108248fa002dbd773316e27a14`. Its multi-engine runner reports 71 Python checks and 25 Node tests passing. This is diagnostic comparison, not normative IPA adjudication.
+- Official NIKL metadata-only inventory: SKIPPED. CharsiuG2P inference, ByT5 inference and neural pairing: SKIPPED. None is reported as passed.
+- Non-fatal environment/build notices: Node 20 deprecation notices from upstream Actions, Node `punycode`/`url.parse` deprecations, and Vite's large-chunk warning. No failed check is attributed to these notices.
+
+### C12 exact-data verification
+
+The final regression assertion now validates all 37 C12 occurrence rows, 29 unique token strings, the exact pattern partition (16 `kxɯ` only, 12 `kçi` only, 8 `kçj` only, one overlapping `kxɯ+kçi` row), source namespaces (12 `multilexnorm2026`, 25 `dc_inside`), and the absence of audio/speaker columns in the fragment CSV. CI passed on this assertion. This verifies the mismatch dataset's structure, not the acoustic interpretation of the source IPA.
+
+### Methodology review and decisions
+
+- **Superpowers:** retain plan-first execution, one vertical slice at a time, TDD red→green, systematic diagnosis for failed checks, and a final verification gate.
+- **Matt Pocock Skills:** retain public-behaviour test seams, independent expected values, one change per slice, and separate standards/spec review axes.
+- **Ponytail:** retain the smallest justified change, reuse of existing Python/Browser rule maps and repository contracts, and review of surrounding callers rather than diff-only inspection.
+- **Unlazy:** apply explicit acceptance gates, task decomposition, evidence fingerprints/artifact references, and re-verification of already completed checks. The repository already has canonical master plan, acceptance-gates, coverage matrix and task ledger; therefore no duplicate `GATES.md`, external skill dependency, hook, or imported script was added. Unlazy's executable checker requires local shell approval and is not available through this GitHub-only execution path.
+- **Ruling:** keep the project's existing phonetic-engineering skill and canonical execution records as the source of truth; borrow compatible methods, do not wholesale vendor four agent frameworks or duplicate their overlapping ledgers. This avoids maintenance burden and preserves the user's existing architecture.
+
+### Current task ledger
+
+| Work item | Status | Evidence / acceptance still required |
+|---|---|---|
+| Current Python regression/data integrity, Browser suite/build, Browser G2P and diagnostic workflows | DONE_VERIFIED at exact head above | Re-run after this documentation-only refresh; do not transfer this exact-head claim to later code changes. |
+| C12 row-count, unique-token, pattern and source-namespace integrity | DONE_VERIFIED | Regression assertion passed in System Verify. |
+| C12 exact [kx]/[kç] acoustic interpretation | BLOCKED | Obtain source recordings, speaker/dialect/prosodic metadata and original annotation protocol; then two independent Korean IPA reviews. No production rewrite. |
+| Independent Korean IPA blind packet (24 cases) | BLOCKED | Two qualified reviewers annotate independently, reconcile disagreements, and provide provenance. |
+| Ukrainian target layer | BLOCKED | Independent Ukrainian phonetic/orthographic review and reader validation; corpus IPA metrics cannot substitute. |
+| NIKL item-level reuse/KOGL permissions | BLOCKED | Item-specific source and redistribution/reviewer-sharing rights evidence; official metadata crawl currently returns 403. |
+| Historical 239-case mismatch population | PARTIAL / EVIDENCE-LIMITED | Reconstruct exact source/context memberships and adjudicate every retained occurrence; the 36-row unmapped-Broad queue is not a substitute. |
+| C01–C11 optional variants and profile conventions | PARTIAL / REVIEW-PENDING | Review token contexts, dialect/prosody and source transcription conventions; two independent IPA reviewers before promoting any narrow profile. |
+| Names, loans, Hanja, regional/style coverage | TODO / PARTIAL | Evidence-backed scoped datasets and explicit uncertainty/abstention acceptance; Hanja and RR remain separate research modes. |
+| Neural teacher evaluation | DEFERRED / SKIPPED | Only revisit with reproducible licensed model weights, independent held-out IPA gold and a demonstrated advantage; no production integration now. |
+| Original g2pK 0.9.4 baseline | DONE_VERIFIED as preserved dependency | Keep pinned and unmodified; comparison output remains diagnostic and is not used as a source of production rules. |
+
+**Readiness remains:** research prototype; software checks for the exact head are green, but research certification and release acceptance are not met.
+
+
+## 2026-11-04 — R013 occurrence-scope defect found and corrected
+
+**Code/test head:** `648949a40638a7b0d18b8c026b15de7e24a1235f`.
+
+### Root cause and TDD evidence
+
+A focused re-review of the R013 attached ending `-ㄹ게` found that Python accumulated the licensed syllable pair in a sentence-global `attested_l_ge_pairs` set. If one complete `-ㄹ게` ending licensed `할>게`, another identical pair inside a longer, unrelated eojeol could inherit that permission.
+
+The minimal counterexample is `할게 할게다`:
+- RED commit `34fffa593bd10a16a2d963b252cef92caa8ed7d3`, System Verify [41841891363](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41841891363): the new Python regression failed exactly as predicted: actual `할께 할께다`, expected `할께 할게다`. Browser regression/build passed on the same red commit.
+- GREEN commit `3358b81492022da11154b375121bbd16e1912c13`: replaced the global pair set with an occurrence-indexed `attested_l_ge_contexts` map. R013 now authorizes the exact eligible position; unrelated same-pair positions cannot inherit the license.
+- Browser parity regression commit `648949a40638a7b0d18b8c026b15de7e24a1235f`: added the same counterexample to the Browser morphology guard suite. Browser already checked the exact eojeol and correctly returns `할께 할게다`.
+
+### Exact-head verification
+
+- System Verify [41842288415](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41842288415): PASS on the code/test head; Python regression/data integrity PASS; Browser **1,396/1,396**, 0 failures; production build/generated-page checks PASS. The new Browser counterexample is test 1,148 and passed.
+- Browser G2P [41842288550](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41842288550): PASS.
+- Paired Native/g2pK [41842288377](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41842288377), external UGTPHON [41842288200](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41842288200), morphology consensus [41842288389](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41842288389), research morphology smoke [41842288230](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41842288230), and test-case extraction [41842288344](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41842288344): PASS.
+- Multi-engine benchmark [41842288431](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41842288431): IN PROGRESS at this ledger update. Its 12 setup/validation/adapter/holdout steps have passed; the multi-engine comparison is running, and queue export, same-occurrence Browser, runtime parity, SIGMORPHON and artifact upload have not yet been verified on this head. Do not infer a final result.
+- Official NIKL metadata-only inventory: SKIPPED, not passed. Neural inference: SKIPPED.
+- All nine vendored `src/vendor/g2pk/` blobs are SHA-identical to current `main`; no vendored g2pK file changed.
+
+### Review correction
+
+The earlier self-review entry stating that no Important defect was identified is superseded for this area: the earlier review did not include this sentence-level repeated-pair counterexample. The focused re-review found one Important correctness defect, reproduced it with a red test, fixed it, and verified both runtimes. This remains an author self-review, not independent human review; PR #426 has no submitted reviews or inline review threads.
+
+### Updated task disposition
+
+| Task | Status | Evidence / remaining acceptance |
+|---|---|---|
+| R013 `-ㄹ게` license must remain inside the exact eligible occurrence | DONE_VERIFIED | Red failure 41841891363; occurrence-indexed fix 3358b814; phrase-mode same-eojeol regression added test-first (red 41848156604 on 873a8e980acc5e4a16d5c0d2c34afe8999f0fc6c); final fix on 02a72da6534b110d63810c497a6b7fba9b790a3e; System Verify 41849672939 PASS. |
+| R013 exact phrase and same-eojeol licenses in phrase mode | DONE_VERIFIED for software behavior | System Verify 41849672939 PASS on 02a72da6534b110d63810c497a6b7fba9b790a3e; exact adjacent eojeol and same-eojeol licenses both retained, with compact/punctuation negatives. Pause/cohesion still conditional. |
+| Multi-engine benchmark on current Kozak Kim head | PARTIAL / IN_PROGRESS | Completed artifact from 41843472619 (artifact 13330749031, SHA-256 4c0b22df3e964b6483c098b066497dbe5518ed13e6a55af919e41a1d8cbb357d); current exact-head rerun 41849673041 remains at step 13. |
+| Independent Korean IPA / Ukrainian target review | BLOCKED | Human reviewers and adjudication still absent. |
+| C12 acoustic interpretation and NIKL item-level rights | BLOCKED | Source audio/metadata and item-specific rights evidence remain unavailable. |
+
+No g2pK source, dependency pin, or vendor blob was modified. PR #426 remains Draft/open, stacked on PR #425. No merge, release, deployment, force-push or branch deletion. Readiness remains research prototype, not research-certified or release-ready.
+
+
+## 2026-11-04 exact-head continuation — benchmark refresh and NIKL length adjudication
+
+**Latest verified code/test baseline before this evidence-only patch:** `3a262b317a6ec5ffa49a11ebd46926be2d5a1a72`. The current evidence-only branch head includes a test-first RED checkpoint described below; no production engine code changed in this continuation.
+
+### Test-first evidence update
+
+- RED commit `e11be81d5a2db517aa808a12f6eb31264fb492ef`; System Verify [41869617954](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41869617954) failed only in Python data-integrity because the newly added test correctly found the missing source-register key `SRC-NIKL-KRDICT-89917`. The Browser regression/build job passed; official NIKL metadata-only inventory was skipped.
+- The failure was the expected missing evidence record, not a Kozak Kim pronunciation defect. The implementation response is source-register/catalog/ledger addition only; production IPA remains unchanged.
+- The new test asserts the official dictionary's Hangul form `없는[엄ː는]` and separately checks the project's current broad IPA `ʌːm.nɯn`. It explicitly does not claim that the dictionary supplies IPA.
+
+### Current exact-head verification (before this evidence-only patch)
+
+- System Verify [41851913461](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41851913461): PASS — Python regression/data integrity and Browser regression/build jobs succeeded; official NIKL metadata-only inventory was skipped.
+- Multi-engine Korean IPA diagnostic [41851913351](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41851913351): PASS. Artifact 13337845603; SHA-256 `7c0dce9cada1c15a22f99f18bea048b75f2df9b0133d9e87fcda3f95b82a484c`.
+- External UGTPHON [41851913522], paired Native/g2pK [41851913346], Browser G2P [41851913352], exhaustive test-case extraction [41851913799], morphology consensus [41851913516], and real-engine morphology smoke [41851913585]: PASS.
+- Multi-engine neural inference jobs (CharsiuG2P, ByT5 and pairing neural outputs): SKIPPED, not passed. Official NIKL metadata-only inventory: SKIPPED, not passed.
+
+### Paired diagnostic against unchanged original g2pK 0.9.4
+
+- UGTPHON paired set (n=2,698): Kozak Kim 1,431 exact (53.0393%), CER 8.9920%; g2pK 1,433 exact (53.1134%), paired CER 9.2304%. Exact-match delta is 0.0741 percentage points in g2pK's favour, with paired row-cluster 95% CI −0.0824 to +0.2840 pp (crosses zero). Kozak Kim CER is lower by 0.2384 pp; paired CI for g2pK-minus-Kozak CER is +0.1392 to +0.3464 pp.
+- SIGMORPHON paired set (n=998): Kozak Kim 358 exact (35.8717%), CER 14.5598%; g2pK 353 exact (35.3707%), paired CER 14.8106%. Five net Kozak-only exact wins; exact two-sided McNemar p=0.0625 (promising, not decisive at 0.05). Kozak Kim CER is lower by 0.2508 pp; paired bootstrap CI +0.0986 to +0.4444 pp.
+- Broad-candidate sensitivity is higher for Kozak on both sets (UGTPHON 86.47% vs 85.69%; SIGMORPHON 69.74% vs 68.74%), but the profile removes selected IPA distinctions and is research-only/unadjudicated. Do not report these as normative accuracy.
+- The two corpora are diagnostic annotations, not independently adjudicated Korean IPA gold. g2pK is rendered through the shared project IPA adapter. No universal superiority claim follows.
+
+### Native/Browser parity
+
+On the 2,703 eligible UGTPHON occurrences, Native and Browser surface Hangul are identical (2,703/2,703); on 2,698 scored IPA occurrences, raw IPA is identical (2,698/2,698). Both runtimes abstain on the same five cases. This verifies cross-runtime parity, not linguistic correctness.
+
+### C13 — source-attested length in 없는
+
+The four UGTPHON cases (`dc_inside_2035`, `dc_inside_2108`, `dc_inside_2212`, `dc_inside_2269`) all show Kozak `/ʌːm.nɯn/`, g2pK `/ʌm.nɯn/`, corpus `/ʌ̹mnɯn/`. NIKL Korean Basic Dictionary entry 89917 directly lists `없는[엄ː는]`. The corpus omits the long mark, so g2pK's exact match is not the stronger source-backed reading. Kozak's output is preserved; no production change and no benchmark reference rewrite. Source row `SRC-NIKL-KRDICT-89917`, catalog row `S026`, C13 cluster and four paired occurrence rows record the adjudication. The official source supplies Hangul, not IPA; the project's broad IPA is derived. Item-level KOGL status remains unchecked.
+
+### Methodology applied from the four referenced engineering repositories
+
+- **Superpowers:** red/green discipline and systematic root-cause investigation. The new test was observed failing for the expected missing evidence key before the source/catalog records were added.
+- **Matt Pocock skills:** small composable engineering checks; preserve the existing task contract rather than replacing it with a new process.
+- **Ponytail:** minimal-change discipline; this finding did not justify modifying phonological production code.
+- **unlazy:** explicit acceptance evidence and re-verification; runnable checks are reported separately from skipped/manual gates.
+
+These methods are used as engineering practices, not vendored dependencies or new production packages.
+
+### Remaining blockers and readiness
+
+Independent Korean IPA adjudication (24-case blind packet), independent Ukrainian target review, item-level NIKL/KOGL permissions, C12 source audio and speaker/prosodic crosswalk, historical 239-case adjudication, and broad NIKL/names/loans/Hanja/regional-style coverage remain open. Neural teacher inference remains deferred/skipped. Original g2pK 0.9.4 and all vendored g2pK files remain unchanged.
+
+Readiness: **research prototype**, not research-certified or release-ready.
+
+
+## 2026-11-04 final verification checkpoint — evidence-only NIKL length adjudication
+
+**Branch head entering this checkpoint:** `9b81a412d733b61ddd0782920ef727291cd1a374`. The C13 continuation changes only source metadata, discrepancy evidence, tests, and documentation; Kozak Kim production code and the pinned g2pK baseline are unchanged.
+
+### Red/green and exact-head verification
+
+- Test-first RED: `e11be81d5a2db517aa808a12f6eb31264fb492ef`; System Verify [41869617954](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41869617954) failed exactly because `SRC-NIKL-KRDICT-89917` had not yet been registered. The Browser suite passed at this RED checkpoint.
+- Evidence GREEN: `00aa0b6ebb1c4dfae906d4661cb88d8b8d0876a9` added the NIKL source to the research register and source catalog, C13 and four paired occurrence rows, and the test asserting the source-backed length and the existing Kozak IPA.
+- Follow-up test correction: `9b81a412d733b61ddd0782920ef727291cd1a374` updated the Browser source-rights audit's expected register count from 176 to 177 and REVIEW_REQUIRED from 164 to 165, and explicitly checks the new source remains unresolved for item-level rights. This was a stale fixed-count assertion caused by the new source record, not a browser-engine regression.
+- Exact-head System Verify [41870455925](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41870455925): PASS — Python regression/data integrity PASS; Browser **1,396/1,396**, 0 failures; Vite build (55 modules) and generated-page checks PASS. A duplicate exact-head verify [41870442892](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41870442892) also PASS.
+- Browser G2P [41870455567], paired Native/g2pK [41870455546], external UGTPHON [41870455517], morphology consensus [41870455515], morphology adapter smoke [41870455495], and exhaustive extraction [41870455600]: PASS.
+- Multi-engine rerun [41870455614] is still in progress at the multi-engine comparison step as of this checkpoint. Do not claim a result from that run until it completes. The latest completed exact production-code benchmark remains [41851913351], artifact 13337845603, SHA-256 `7c0dce9cada1c15a22f99f18bea048b75f2df9b0133d9e87fcda3f95b82a484c`; production code is unchanged since that benchmark.
+- Official NIKL metadata-only inventory: SKIPPED, not passed. CharsiuG2P and ByT5 inference: SKIPPED, not passed.
+
+### C13 source adjudication: 없는
+
+The four UGTPHON occurrences (`dc_inside_2035`, `dc_inside_2108`, `dc_inside_2212`, `dc_inside_2269`) all have Kozak `/ʌːm.nɯn/`, original g2pK `/ʌm.nɯn/`, and corpus reference `/ʌ̹mnɯn/`. NIKL Korean Basic Dictionary entry 89917 directly lists `없는[엄ː는]`. This supports the long vowel at the Hangul surface level; it does not supply IPA. The project's `/ʌːm.nɯn/` is the derived broad-IPA rendering. The corpus annotation omits length, so g2pK's exact string match is not the stronger source-backed reading. Preserve Kozak's existing output; do not shorten it or rewrite the raw corpus reference.
+
+Source register: `SRC-NIKL-KRDICT-89917`; catalog: `S026`; mass cluster: C13; paired ledger: occurrence IDs 893, 1145, 1621, 2290. The new Python regression passed on the exact verified head. Item-level KOGL marking remains unchecked.
+
+### Existing source-backed comparative wins retained
+
+- `인기`: NIKL Q&A 331569 explicitly gives optional `인기[인끼]`; the existing `variant-aware-research` row preserves the non-fortis alternative. The current paired occurrence is native exact and g2pK non-exact. This is a lexical optional variant, not a productive ㄴ+ㄱ or all-`氣` rule.
+- `못잃어`: the existing `variant-aware-research` entry keeps both `몬니러` and `모시러` candidates. NIKL's 2022 usage survey discusses both n-insertion and non-insertion for `못 잃어`, but the percentages in the surfaced table belong to `못 잇는다` and must not be transferred. The primary candidate is not a normative ranking. The paired occurrence is native exact and g2pK non-exact.
+- These existing rows are preserved; no new productive rule or production override was introduced in this checkpoint.
+
+### Readiness and handoff
+
+- Original g2pK 0.9.4 remains pinned and unchanged; no vendor file was touched.
+- PR #426 remains Draft/open, based on PR #425; it is a stacked change and must not be merged independently. No merge, release, deployment, force-push, or branch deletion.
+- Independent Korean IPA review, independent Ukrainian target review, item-level NIKL rights, C12 source audio/speaker/prosodic crosswalk, historical 239-case adjudication, and names/loans/Hanja/regional-style coverage remain open.
+- Research-only neural inference remains deferred/skipped.
+- Readiness remains **research prototype**, not research-certified or release-ready.
+
+
+### 2026-11-04 status correction — multi-engine rerun
+
+The first attempt of multi-engine workflow run [41870455614](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41870455614) was **cancelled** while the `Run multi-engine comparison` step was active. It produced no final artifact and no new benchmark score. A rerun of the failed/cancelled multi-engine job (job ID `126716565928`) was requested; attempt 2 was pending/queued at the latest status check. Until that rerun completes, use the latest completed benchmark artifact from run `41851913351` (artifact `13337845603`, SHA-256 `7c0dce9cada1c15a22f99f18bea048b75f2df9b0133d9e87fcda3f95b82a484c`). The production engine has not changed since that completed artifact; do not claim the cancelled attempt passed.
+
+
+### Final status correction — multi-engine run attempts
+
+Run `41870455614` was cancelled twice: attempt 1 while `Run multi-engine comparison` was active; attempt 2 during `Install the native engine, comparison dependencies, and eSpeak NG`. Neither attempt produced a final benchmark artifact. No new score is claimed. No further rerun was started because the repository already has a completed reproducible multi-engine artifact (`41851913351`, artifact `13337845603`, SHA-256 `7c0dce9cada1c15a22f99f18bea048b75f2df9b0133d9e87fcda3f95b82a484c`) on unchanged Kozak Kim production code. If a fresh comparison is needed, the next acceptance step is to diagnose why the Actions job is cancelled and then obtain a complete artifact; do not treat cancellation as a benchmark failure or success.
+
+
+## 2026-11-04 exact-head continuation — final multi-engine evidence
+
+**Branch / PR:** `fix/kozak-kim-water-price-lexical-exception-2026-11-03`, PR #426 Draft/open, stacked on PR #425. Exact head: `e2131ad93dd58049aa68ccf1b88563acfe185ef5`. The benchmark artifact is from this exact head: [workflow 41872601963](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41872601963), artifact 13347030495, SHA-256 `aacf63f6b68a717bc13922160195d7d7d55d639ec12cdec9906669666e781812`.
+
+### Exact-head verification
+- System Verify 41872601794: PASS — Browser regression 1,396/1,396; Python regression/data-integrity command exited successfully; Vite production build and generated-page checks passed. Hanja build generated 184,079 word readings in 19 lazy chunks plus 555 single-syllable readings (4,067,901 generated bytes).
+- Browser G2P 41872601768, Native-vs-original-g2pK 41872601752, external UGTPHON 41872601829, morphology consensus 41872601855, morphology adapter smoke 41872601866, and exhaustive test-case extraction 41872601824: PASS.
+- Multi-engine UGTPHON + SIGMORPHON run 41872601963: PASS; artifact above. All 10 pinned engine entries produced scored tokens on both splits, including original g2pK 0.9.4. CharsiuG2P inference, ByT5 inference, and neural pairing were SKIPPED, not passed.
+- NIKL metadata-only inventory remained SKIPPED. No independent IPA or Ukrainian review is implied by these software checks.
+
+### Paired diagnostic against unchanged original g2pK 0.9.4
+
+**UGTPHON Korean test split:** 275 source rows, 2,703 eligible occurrences, 1,907 unique Hangul words; 2,698 paired scored occurrences (five Kozak abstentions).
+- Kozak Kim Native: 1,431/2,698 exact (53.0393%), CER 8.9920%.
+- g2pK paired subset: 1,433/2,698 exact (53.1134%), CER 9.2304%.
+- g2pK-minus-Kozak exact delta +0.0741 percentage points; paired row-cluster 95% CI [−0.0824,+0.2840] pp crosses zero.
+- g2pK-minus-Kozak CER delta +0.2384 pp; paired row-cluster 95% CI [+0.1392,+0.3464] pp. Lower CER favours Kozak.
+- Broad-candidate sensitivity only: Kozak 2,333/2,698 exact (86.4715%), CER 2.1317%; g2pK 2,312/2,698 exact (85.6931%), CER 2.3751%. This normalization is explicitly research-only/unadjudicated and is not a new normative score.
+
+**SIGMORPHON 2021 Korean public lexical test:** 1,000 file rows, 999 eligible Hangul occurrences, 999 unique words; 998 paired scored occurrences (one Kozak abstention).
+- Kozak Kim Native: 358/998 exact (35.8717%), CER 14.5598%.
+- g2pK paired subset: 353/998 exact (35.3707%), CER 14.8106%.
+- g2pK-minus-Kozak exact delta −0.5010 pp; paired row-cluster 95% CI [−1.0020,−0.1002] pp.
+- g2pK-minus-Kozak CER delta +0.2508 pp; paired row-cluster 95% CI [+0.0986,+0.4444] pp.
+- The full g2pK run scores 999 cases; its full-set CER 14.8222% must not be substituted for the 998-case paired CER. SIGMORPHON README format notes differ from the pinned TSV contents; the workflow validates the actual pinned file and row count.
+
+**Interpretation:** on both diagnostic splits Kozak Kim has lower CER than original g2pK. On SIGMORPHON it also has a higher paired exact-match rate; on UGTPHON the exact-match point estimate is two tokens lower and the paired interval crosses zero. These are corpus-relative results, not independent normative IPA gold and not Ukrainian-target validation. Do not claim universal superiority.
+
+### Python / Browser parity — verified for the pinned UGTPHON split
+- Surface Hangul: 2,703/2,703 identical.
+- Scored raw IPA: 2,698/2,698 identical; five shared unresolved/abstained occurrences.
+- Both runtimes use `clippyfirst-korean-broad-v1`, version 1, broad level, status `unadjudicated-cross-runtime`.
+- This closes parity for this pinned occurrence set only; it does not adjudicate whether the shared profile is phonetically normative.
+
+### Mismatch queue and C12 recheck
+- Generated unresolved Broad queue: 36 ordered, unique occurrence IDs; all remain `UNADJUDICATED_DIAGNOSTIC` / `NO_CHANGE_PENDING_SOURCE_AND_IPA_REVIEW`. The tracked queue has the same 36 occurrence IDs (blob `fc331b42bbfd31700892d1f7df04dcb8578461f5`). No queue item is promoted to a phonological correction.
+- Generated mismatch-fragment ledger: 1,267 rows. C12 remains 37 occurrences / 29 unique token strings: 16 `kxɯ` only, 12 `kçi` only, 8 `kçj` only, one `kxɯ+kçi` overlap; 12 source-row IDs are `multilexnorm2026`, 25 are `dc_inside`.
+- The fragment schema still contains no linked audio or speaker metadata. The acoustic paper does not represent following /ɯ/ or /j/ and does not report [kx]/[kç]. C12 remains evidence-limited; no production rule, lexical entry, or narrow profile was added.
+
+### Training readiness and scope
+- Training audit: 644 lexical rows, 46 addition rows, 24 frozen holdout cases, zero addition rows explicitly marked as independently adjudicated IPA, and zero holdout forms with IPA gold. Supervised IPA training is **not ready**.
+- Reviewer A/B holdout packets were generated without engine outputs; they remain awaiting independent annotation/adjudication.
+- Original g2pK 0.9.4 remains pinned and unmodified. No g2pK vendor file or external baseline was changed.
+- Research readiness: comparative diagnostic evidence is materially stronger; independent IPA gold, independent Ukrainian target review, item-level NIKL reuse verification, C12 audio/prosody crosswalk, historical 239-case adjudication, and names/loans/Hanja/regional-style coverage remain open.
+- Release status: **research prototype**, not research-certified and not release-ready.
+
+
+## 2026-11-04 paired-discordance and abstention drill-down
+
+### Where the paired engines actually differ
+
+**UGTPHON (2,698 paired scored occurrences):** both exact 1,429; both non-exact 1,263; g2pK-only exact 4; Kozak-only exact 2; Kozak abstained on 5. All four g2pK-only exact occurrences are the same token `없는` repeated in the corpus. The two Kozak-only exact cases are `못잃어` and `인기`. The five abstentions are `칡칡이`, `쫒아내면`, `많앗구나유유유`, `삶의`, and `무서웟어`. Thus the four g2pK-only wins are not four independent lexical phenomena; they are a repeated annotation/convention case. No change to the native vowel-length or source-IPA policy is justified by these rows alone.
+
+**SIGMORPHON (998 paired scored occurrences):** both exact 353; both non-exact 640; Kozak-only exact 5; g2pK-only exact 0; one additional Kozak abstention on the 999-token eligible set. The five Kozak-only exact cases are `값어치`, `놓치다`, `많다`, `맛없다`, and `인기`. The single abstention is `중심닮음`, unresolved at R002 boundary `닮>음` pending exact morphological evidence.
+
+### `중심닮음` — researched, not promoted
+
+A secondary Wiktionary entry decomposes `중심닮음` as `중심 + 닮- + -음`, classifies it as a North Korean mathematical noun, and gives an IPA labelled SK Standard/Seoul that exactly matches the SIGMORPHON gold. Its page is user-edited and licensed CC BY-SA 4.0. Because the IPA exactly matches the test gold, it is not independent corroboration; the North Korean classification also leaves dialect/scope unresolved. NIKL §14 supports the general complex-coda resyllabification pattern when the vowel-initial ending/suffix boundary is established, but does not independently attest this exact term. The source is registered as secondary/research-only. Keep the production R002 abstention; no lexical row or exact production license is added.
+
+### Morphology consensus — no production promotion
+
+On the 1,907 unique UGTPHON words, Kiwi and MeCab-Ko have 80.5978% exact boundary-set agreement. Across 217 common observed rule events their boundary-presence agreement is 94.0092%. The two-analyzer consensus changes three unique words versus strict, newly resolves one (`칡칡이`), and withholds 24 unspaced phrase-boundary cases. It does not improve the diagnostic gold score: strict 53.0393% exact / 8.9920% CER; consensus 53.0196% exact / 9.0086% CER. Treat this as diagnostic morphology evidence, not production accuracy or gold segmentation. Keep exact licenses fail-closed.
+
+No production code change was justified by this drill-down. The next legitimate acceptance step is independent Korean morphological/IPA adjudication for the exact abstention and for the residual queue, not an engine-specific guess.

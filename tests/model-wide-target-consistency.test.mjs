@@ -324,7 +324,7 @@ test('all lexical Ukrainian targets are mechanically reproducible from their IPA
     }
     const runtime = engine.convert(row.input);
     assert.equal(runtime.ipa, renderExpectedIpa(row.input,ipa), row.input + ': runtime IPA must match the lexical source');
-    if (row.input_kind === 'variant-aware-research' && row.target_status === 'provisional') {
+    if (['variant-aware-research', 'kozak-research-only'].includes(row.input_kind) && row.target_status === 'provisional') {
       assert.equal(runtime.ukrainian, '', row.input + ': provisional target must not be accepted');
       assert.equal(runtime.candidate_ukrainian, target.join(''), row.input + ': runtime candidate must remain IPA-derived');
       assert.equal(runtime.candidate_status, 'provisional', row.input + ': candidate status');

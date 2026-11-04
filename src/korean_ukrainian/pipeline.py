@@ -40,8 +40,11 @@ def _load_lexicon():
 
 LEXICAL_PRONUNCIATIONS=_load_lexicon()
 
-def _apply_lexical_pronunciations(items):
-    """Apply exact, sourced lexical forms after general rules; never generalize by spelling alone."""
+RESEARCH_LEXICAL_INPUT_KINDS = frozenset({"kozak-research-only", "variant-aware-research"})
+
+
+def _apply_lexical_pronunciations(items, *, include_research_lexical=True):
+    """Apply exact lexical forms; optionally ablate research-only overlays with traceability."""
     from .phonology import parse_syllables
     traces=[]
     i=0
@@ -53,11 +56,22 @@ def _apply_lexical_pronunciations(items):
         word="".join(s.text for s in group)
         entry=LEXICAL_PRONUNCIATIONS.get(word)
         if entry:
+            input_kind=entry.get("input_kind","")
+            if not include_research_lexical and input_kind in RESEARCH_LEXICAL_INPUT_KINDS:
+                traces.append({
+                    "rule_id":"LEXICON","name":"lexical-pronunciation","changed":False,
+                    "status":"research-lexical-excluded","input_kind":input_kind,
+                    "source":entry.get("source_url",""),
+                    "license_context":entry.get("rule_notes",""),
+                })
+                i=j
+                continue
             surface=parse_syllables(entry["surface_hangul"])
             if len(surface)!=len(group):
                 traces.append({
                     "rule_id":"LEXICON","name":"lexical-pronunciation","changed":False,
-                    "status":"invalid-entry","confidence":entry.get("confidence","unknown"),
+                    "status":"invalid-entry","input_kind":input_kind,
+                    "confidence":entry.get("confidence","unknown"),
                     "source":entry.get("source_url",""),
                     "notes":f"syllable count mismatch for {word}: {len(group)} != {len(surface)}"
                 })
@@ -68,7 +82,8 @@ def _apply_lexical_pronunciations(items):
                 traces.append({
                     "rule_id":"LEXICON","name":"lexical-pronunciation","changed":before != [s.to_dict() for s in group],
                     "before":before,"after":[s.to_dict() for s in group],
-                    "status":"lexical-override","confidence":entry.get("confidence","unknown"),
+                    "status":"lexical-override","input_kind":input_kind,
+                    "confidence":entry.get("confidence","unknown"),
                     "source":entry.get("source_url",""),"license_context":entry.get("rule_notes","")
                 })
         i=j
@@ -123,8 +138,9 @@ def _render_surface_hangul(items):
             rendered.append(" ")
     return "".join(rendered).strip()
 
-def _apply_lexical_ipa(items,ipa_result):
-    """Use sourced surface IPA for matched forms without overriding phonemic mode."""
+def _apply_lexical_ipa(items,ipa_result, *, lexicon=None):
+    """Use allowed sourced surface IPA without overriding phonemic mode."""
+    lexicon = LEXICAL_PRONUNCIATIONS if lexicon is None else lexicon
     if ipa_result.get("level")!="broad":
         return ipa_result
     syllable_ipa=list(ipa_result["syllables"])
@@ -134,7 +150,7 @@ def _apply_lexical_ipa(items,ipa_result):
         while j<len(items) and items[j-1].boundary_after!="word":
             j+=1
         word="".join(s.text for s in items[i:j])
-        entry=LEXICAL_PRONUNCIATIONS.get(word)
+        entry=lexicon.get(word)
         if entry:
             values=entry.get("ipa_syllables","").split("|")
             if len(values)==j-i and all(values):
@@ -155,7 +171,7 @@ def _apply_lexical_ipa(items,ipa_result):
         while j<len(items) and items[j-1].boundary_after!="word":
             j+=1
         word="".join(s.text for s in items[i:j])
-        entry=LEXICAL_PRONUNCIATIONS.get(word)
+        entry=lexicon.get(word)
         if entry:
             alternate=entry.get("alternate_ipa_syllables","").split("|")
             if len(alternate)==j-i and all(alternate):
@@ -177,7 +193,8 @@ def _apply_lexical_ipa(items,ipa_result):
     ipa_result["variants"]=generate_vowel_variants(items,syllable_ipa,level=ipa_result.get("level","broad"))
     return ipa_result
 
-def _unlicensed_ambiguous_pronunciation_contexts(traces, final_items):
+def _unlicensed_ambiguous_pronunciation_contexts(traces, final_items, *, lexicon=None):
+    lexicon = LEXICAL_PRONUNCIATIONS if lexicon is None else lexicon
     """Find withheld morphophonological contexts before they become definitive IPA.
 
     Exact source-backed lexical entries resolve their own full-word pronunciation.
@@ -255,7 +272,7 @@ def _unlicensed_ambiguous_pronunciation_contexts(traces, final_items):
             while end < len(before) and before[end - 1].get("boundary_after") != "word":
                 end += 1
             word = "".join(item.get("text", "") for item in before[start:end])
-            entry = LEXICAL_PRONUNCIATIONS.get(word)
+            entry = lexicon.get(word)
             if entry:
                 values = entry.get("ipa_syllables", "").split("|")
                 if len(values) == end - start and all(values):
@@ -275,15 +292,19 @@ def _unlicensed_ambiguous_pronunciation_contexts(traces, final_items):
     return findings
 
 
-def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad",n_insertion_licensed=False,rule_licenses=None,morphology_mode="strict"):
+def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad",n_insertion_licensed=False,rule_licenses=None,morphology_mode="strict",include_research_lexical=True):
     _validate_korean_input(text)
     items=parse_syllables(text)
     items,traces=apply_ordered_rules(items,rule_ids,boundary_mode=boundary_mode,n_insertion_licensed=n_insertion_licensed,rule_licenses=rule_licenses,morphology_mode=morphology_mode)
-    lexical_traces=_apply_lexical_pronunciations(items)
+    active_lexicon = LEXICAL_PRONUNCIATIONS if include_research_lexical else {
+        word: entry for word, entry in LEXICAL_PRONUNCIATIONS.items()
+        if entry.get("input_kind", "") not in RESEARCH_LEXICAL_INPUT_KINDS
+    }
+    lexical_traces=_apply_lexical_pronunciations(items,include_research_lexical=include_research_lexical)
     surface_hangul=_render_surface_hangul(items)
-    ipa=_apply_lexical_ipa(items,realize_syllables(items,level=ipa_level))
+    ipa=_apply_lexical_ipa(items,realize_syllables(items,level=ipa_level),lexicon=active_lexicon)
     all_traces=[x.to_dict() for x in traces]+lexical_traces
-    unresolved_contexts=_unlicensed_ambiguous_pronunciation_contexts(all_traces, items)
+    unresolved_contexts=_unlicensed_ambiguous_pronunciation_contexts(all_traces, items, lexicon=active_lexicon)
     # A lexicon entry may have directly attested Korean surface Hangul while
     # its IPA rendering remains unreviewed. Do not let a lexical override
     # silently promote project-generated IPA to an accepted pronunciation.
@@ -293,7 +314,7 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
         while j<len(items) and items[j-1].boundary_after!="word":
             j+=1
         word="".join(s.text for s in items[i:j])
-        entry=LEXICAL_PRONUNCIATIONS.get(word)
+        entry=active_lexicon.get(word)
         if entry and entry.get("ipa_adjudication_status")=="diagnostic_only_unresolved_pronunciation":
             unresolved_contexts.append({
                 "rule_id":"IPA_ADJUDICATION",
@@ -325,6 +346,7 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
         "rules":all_traces,
         "ipa":ipa,
         "morphology_mode":morphology_mode,
+        "lexical_policy":"research-overlays-included" if include_research_lexical else "research-overlays-excluded",
         "surface_status":"rule-and-lexicon-derived-research-analysis",
         "pronunciation_status":"unresolved" if unresolved_contexts else "provisional",
         # Keep diagnostic IPA inspectable for research, but make its acceptance

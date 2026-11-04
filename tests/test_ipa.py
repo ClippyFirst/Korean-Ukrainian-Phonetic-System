@@ -1,5 +1,5 @@
 import pytest
-from korean_ukrainian.pipeline import phoneticize_korean
+from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
 
 def test_basic_broad_ipa(): assert phoneticize_korean("가")["ipa"]["ipa"]=="ka"
 def test_intervocalic_lenis_voicing(): assert "ɡ" in phoneticize_korean("아가")["ipa"]["ipa"]
@@ -135,7 +135,7 @@ def test_broad_ipa_preserves_final_ng_before_vowel_initial_syllable():
 
 
 def test_nikl_section_24_source_backed_fortition_examples():
-    expected = {"닮다": "tam.t͈a", "넘게": "nʌm.k͈e"}
+    expected = {"닮다": "tam.t͈a", "넘게": "nʌm.k͈e", "굶다": "kum.t͈a"}
     for word, ipa in expected.items():
         result = phoneticize_korean(word)
         assert result["ipa"]["ipa"] == ipa, word
@@ -144,6 +144,29 @@ def test_nikl_section_24_source_backed_fortition_examples():
             and trace.get("license_context") == f"R010:stem_n_m+suffix:{word}:{word[0]}>" + word[1]
             for trace in result["rules"]
         ), word
+
+    negative = phoneticize_korean("굶기다")
+    assert not any(
+        trace.get("rule_id") == "R010"
+        and (trace.get("license_context") or "").startswith("R010:stem_n_m+suffix:")
+        for trace in negative["rules"]
+    ), (
+        "causative/passive -기- must remain outside the §24 stem+ending license"
+    )
+
+
+def test_nikl_끌다_lexical_surface_and_ipa_do_not_invent_fortition():
+    result = phoneticize_korean("끌다")
+    assert result["surface_hangul"] == "끌다"
+    assert result["ipa"]["ipa"] == "k͈ɯːl.da"
+    target = transliterate_korean("끌다")
+    assert target["target_status"] == "unavailable"
+    assert target["candidate_orthography"] == "ккилда"
+
+    # Preserve the separate §7 length-retention exception in 끌어.
+    inflected = phoneticize_korean("끌어")
+    assert inflected["surface_hangul"] == "끄러"
+    assert inflected["ipa"]["ipa"] == "k͈ɯː.ɾʌ"
 
 
 def test_broad_ipa_absorbs_yod_after_palatal_affricates():
@@ -307,4 +330,3 @@ def test_seoul_broad_profile_offers_source_scoped_h_and_liquid_allophones():
         assert any(item["ipa"] == expected for item in sibilant["variants"]), word
     fortis = phoneticize_korean("쑈")["ipa"]
     assert not any("ɕ͈" in item["ipa"] for item in fortis["variants"])
-

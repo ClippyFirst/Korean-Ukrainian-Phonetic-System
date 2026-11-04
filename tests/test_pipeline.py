@@ -214,6 +214,133 @@ def test_second_pass_sourced_lexical_pronunciations_match_shared_ipa_data():
 
 
 
+
+def test_water_price_compound_fortis_survives_attached_particle_without_generalizing():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    water_price = phoneticize_korean("물가로")
+    assert water_price["surface_hangul"] == "물까로"
+    assert water_price["ipa"]["ipa"] == "mul.k͈a.ɾo"
+    assert any(
+        rule.get("rule_id") == "R014"
+        and rule.get("status") == "established"
+        and rule.get("license_context") == "R014:compound:물가로:물>가"
+        for rule in water_price["rules"]
+    )
+
+    negative_control = phoneticize_korean("결과로")
+    assert negative_control["surface_hangul"] == "결과로"
+    assert not any(
+        rule.get("rule_id") == "R014" and rule.get("status") == "established"
+        for rule in negative_control["rules"]
+    )
+
+
+def test_source_attested_ipa_discrepancy_forms_use_exact_licensed_nikl_rules():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    expected = {
+        "팔자걸음": ("팔짜거름", "R012", "R012:sino_ryeon:팔자걸음:팔>자"),
+        "정신병자네": ("정신뼝자네", "R014", "R014:compound:정신병자네:신>병"),
+        "보일거라": ("보일꺼라", "R013", "R013:adnominal_l:보일거라:일>거"),
+        "없을듯": ("업쓸뜯", "R013", "R013:adnominal_l:없을듯:을>듯"),
+        "안할듯": ("안할뜯", "R013", "R013:adnominal_l:안할듯:할>듯"),
+    }
+    for word, (surface, rule_id, license_context) in expected.items():
+        result = phoneticize_korean(word)
+        assert result["surface_hangul"] == surface, word
+        assert any(
+            rule.get("rule_id") == rule_id
+            and rule.get("status") in {"established", "partially-conditional"}
+            and rule.get("changed") is True
+            and rule.get("license_context") == license_context
+            for rule in result["rules"]
+        ), word
+
+    none = phoneticize_korean("없을듯")
+    assert any(
+        rule.get("rule_id") == "R002"
+        and rule.get("changed") is True
+        and rule.get("license_context") == "R002:formal:없을듯:없>을"
+        for rule in none["rules"]
+    )
+
+    for word in ("많을거같이", "해줄것"):
+        result = phoneticize_korean(word)
+        assert not any(
+            rule.get("rule_id") == "R013" and rule.get("status") == "established"
+            for rule in result["rules"]
+        ), word
+
+
+def test_source_backed_rule_license_lookup_splits_exact_eojeols_in_sentences():
+    from korean_ukrainian.phonology import parse_syllables
+    from korean_ukrainian.rules import _source_backed_rule_licenses
+
+    items = parse_syllables("물가로 계산한다")
+    boundaries = [(item.text, item.boundary_after) for item in items]
+    licenses = _source_backed_rule_licenses(items, "same_word")
+    assert "R014:compound:물가로:물>가" in licenses, {"boundaries": boundaries, "licenses": sorted(licenses)}
+
+
+def test_source_backed_eojeol_licenses_apply_inside_sentences_without_substring_generalization():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    cases = [
+        ("물가로 계산한다", "물까로", "R014", "R014:compound:물가로:물>가"),
+        ("팔자걸음 보인다", "팔짜거름", "R012", "R012:sino_ryeon:팔자걸음:팔>자"),
+        ("정신병자네 하고 웃는다", "정신뼝자네", "R014", "R014:compound:정신병자네:신>병"),
+        ("보일거라 생각한다", "보일꺼라", "R013", "R013:adnominal_l:보일거라:일>거"),
+        ("거의 없을듯", "업쓸뜯", "R013", "R013:adnominal_l:없을듯:을>듯"),
+        ("안할듯 보인다", "안할뜯", "R013", "R013:adnominal_l:안할듯:할>듯"),
+    ]
+    for sentence, surface_fragment, rule_id, license_context in cases:
+        result = phoneticize_korean(sentence)
+        assert surface_fragment in result["surface_hangul"], sentence
+        assert any(
+            rule.get("rule_id") == rule_id
+            and rule.get("changed") is True
+            and rule.get("license_context") == license_context
+            for rule in result["rules"]
+        ), sentence
+
+    no_space_generalization = [
+        ("많을거같이 보인다", "많을거같이"),
+        ("해줄것 같다", "해줄것"),
+        ("유사성은 있다", "유사성"),
+    ]
+    for sentence, token in no_space_generalization:
+        result = phoneticize_korean(sentence)
+        assert not any(
+            rule.get("rule_id") == "R013"
+            and rule.get("changed")
+            and token in (rule.get("license_context") or "")
+            for rule in result["rules"]
+        ), sentence
+
+    lexical = phoneticize_korean("혐오증 생겼다")
+    assert "혀모쯩" in lexical["surface_hangul"]
+    assert any(rule.get("rule_id") == "LEXICON" for rule in lexical["rules"])
+
+
+def test_nikl_dictionary_hyeomojeung_is_an_exact_provisional_lexical_override():
+    from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
+
+    pronunciation = phoneticize_korean("혐오증")
+    assert pronunciation["surface_hangul"] == "혀모쯩"
+    assert pronunciation["ipa"]["ipa"] == "hjʌ.mo.tɕ͈ɯŋ"
+    assert any(
+        rule.get("rule_id") == "LEXICON" and rule.get("status") == "lexical-override"
+        for rule in pronunciation["rules"]
+    )
+
+    target = transliterate_korean("혐오증")
+    assert target["ukrainian_orthography"] is None
+    assert target["target_status"] == "unavailable"
+    assert target["candidate_orthography"] == "гьомоччин"
+    assert target["candidate_status"] == "provisional"
+
+
 def test_second_pass_lexical_targets_are_references_not_ukrainian_overrides():
     from korean_ukrainian.pipeline import transliterate_korean, render_sequence
     expected = {
@@ -681,3 +808,88 @@ def test_narrow_research_ipa_never_leaks_into_accepted_ukrainian_output():
     assert result["target_status"] == "unavailable"
     assert result["target_unavailable_reason"] == "narrow_ipa_profile_not_target_compatible"
 
+
+
+def test_research_lexical_overrides_can_be_disabled_for_ablation():
+    full = phoneticize_korean("사람")
+    ablated = phoneticize_korean("사람", include_research_lexical=False)
+
+    assert full["ipa"]["ipa"] != ablated["ipa"]["ipa"]
+    assert full["lexical_policy"] == "research-overlays-included"
+    assert ablated["lexical_policy"] == "research-overlays-excluded"
+
+    full_entries = [
+        trace for trace in full["rules"]
+        if trace.get("input_kind") == "variant-aware-research"
+    ]
+    ablated_entries = [
+        trace for trace in ablated["rules"]
+        if trace.get("input_kind") == "variant-aware-research"
+    ]
+    assert full_entries
+    assert any(trace.get("status") == "research-lexical-excluded" for trace in ablated_entries)
+
+
+def test_research_lexical_ablation_excludes_both_research_input_kinds():
+    for word, input_kind in [("끌다", "kozak-research-only"), ("사람", "variant-aware-research")]:
+        full = phoneticize_korean(word)
+        ablated = phoneticize_korean(word, include_research_lexical=False)
+
+        assert any(trace.get("input_kind") == input_kind for trace in full["rules"])
+        assert any(
+            trace.get("input_kind") == input_kind
+            and trace.get("status") == "research-lexical-excluded"
+            for trace in ablated["rules"]
+        )
+
+def test_r013_same_eojeol_license_is_retained_when_phrase_mode_is_enabled():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    result = phoneticize_korean("보일거라 생각한다", boundary_mode="phrase")
+    assert "보일꺼라" in result["surface_hangul"]
+    assert any(
+        rule.get("rule_id") == "R013"
+        and rule.get("changed") is True
+        and rule.get("license_context") == "R013:adnominal_l:보일거라:일>거"
+        for rule in result["rules"]
+    )
+
+
+def test_r013_phrase_licenses_match_exact_adjacent_eojeol_pairs_inside_sentences():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    cases = [
+        ("해 줄 것 같다", "껃", "줄 것", "줄>것"),
+        ("많을 거 같이", "꺼", "많을 거", "을>거"),
+    ]
+    for sentence, surface_fragment, phrase_form, pair in cases:
+        result = phoneticize_korean(sentence, boundary_mode="phrase")
+        assert surface_fragment in result["surface_hangul"], sentence
+        expected_context = f"R013:phrase:{phrase_form}:{pair}"
+        assert any(
+            rule.get("rule_id") == "R013"
+            and rule.get("changed") is True
+            and rule.get("license_context") == expected_context
+            for rule in result["rules"]
+        ), sentence
+
+    # Explicit phrase mode still must not reconstruct spaces that were absent
+    # in the source token. These compact UGTPHON forms remain unresolved.
+    for sentence in (
+        "해줄것 같다",
+        "많을거같이 보인다",
+    ):
+        result = phoneticize_korean(sentence, boundary_mode="phrase")
+        assert not any(
+            rule.get("rule_id") == "R013" and rule.get("changed") is True
+            for rule in result["rules"]
+        ), sentence
+
+
+def test_r013_attested_l_ge_license_does_not_leak_to_another_same_pair_in_sentence():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    # The first eojeol is a complete attested -ㄹ게 ending. The second contains
+    # the same adjacent syllables inside a longer eojeol and is not that ending.
+    result = phoneticize_korean("할게 할게다")
+    assert result["surface_hangul"] == "할께 할게다"

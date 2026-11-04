@@ -48,6 +48,7 @@ const NIKL_13_14_FORMAL_LIAISON_FORMS=new Map([
   ['붙어','붙>어'], // NIKL §13: 붙어[부터].
   ['읽어','읽>어'], // NIKL §14: 읽어[일거].
   ['없어도','없>어'], // Exact formal-morpheme environment; no productive generalization.
+  ['없을듯','없>을'], // Exact 없- + adnominal -을; §§13–14 liaison, separate from R013 fortition.
   ['없음','없>음'], // NIKL FAQ 8391 / Q&A 335008: 없음[업씀].
   ['있었','있>었'], // NIKL Q&A 326978 explains 있- + -었- as [이썯].
   ['멋있어','있>어'], // NIKL Q&A 306166 gives [머디써] and [머시써]; preserve variant status.
@@ -154,6 +155,7 @@ const NIKL_24_STEM_NM_ENDING_FORMS=new Map([
   ['닮고','닮>고'],
   ['젊지','젊>지'],
   ['닮다','닮>다'],
+  ['굶다','굶>다'], // §24: exact stem-final ㄻ + -다; -기- forms remain excluded.
   ['넘게','넘>게'],
 ]);
 
@@ -176,6 +178,7 @@ const NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS=new Map([
   ['비출산','출>산'], // Exact prefixed form; its Sino-Korean constituent 출산 is dictionary-attested [출싼].
   ['저출산','출>산'], // NIKL Basic Dictionary directly lists 저출산[저ː출싼].
   ['실시간','실>시'], // NIKL §26 + NIKL lexical source records 實時間; exact Sino-Korean 실>시간 boundary.
+  ['팔자걸음','팔>자'], // NIKL Basic Dictionary 팔자[팔짜]; exact corpus compound only.
 ]);
 
 // Exact, source-backed NIKL §28 compound fortition cases. These licenses
@@ -189,8 +192,11 @@ const NIKL_28_COMPOUND_FORTITION_FORMS=new Map([
   ['그믐달','믐>달'], ['강가','강>가'], ['초승달','승>달'],
   ['등불','등>불'], ['창살','창>살'], ['강줄기','강>줄'],
   ['아침밥','침>밥'], ['굴속','굴>속'], ['술잔','술>잔'],
-  // NIKL Online Q&A 316282 explicitly cites 물가[물까], 봄비[봄삐].
-  ['물가','물>가'], ['봄비','봄>비'],
+  // NIKL Moscow training material §4 '소리의 변화', '다. 된소리 되기' example (25) gives 물가[물까] and negative control 결과[결과].
+  // The attached-particle corpus token is licensed exactly; no ㄹ+ㄱ generalization.
+  ['물가','물>가'], ['물가로','물>가'], ['봄비','봄>비'],
+  // NIKL Basic Dictionary 정신병자[정신뼝자]; exact corpus form with -네 only.
+  ['정신병자네','신>병'],
   // Korean Basic Dictionary directly lists 닭갈비[닥깔비] (ParaWordNo=56047).
   // Exact-form surface evidence only; do not generalize to other ㄺ+ㄱ sequences.
   ['닭갈비','닭>갈'],
@@ -201,13 +207,17 @@ const NIKL_28_COMPOUND_FORTITION_FORMS=new Map([
 const NIKL_27_ADNOMINAL_PHRASES=new Map([
   ['할 것을','ㄱ'],['갈 데가','ㄷ'],['할 바를','ㅂ'],['할 수는','ㅅ'],['읽을 수','ㅅ'],
   ['할 적에','ㅈ'],['갈 곳','ㄱ'],['할 도리','ㄷ'],['만날 사람','ㅅ'],
-  ['무고일 수도','ㅅ'],['했을 시','ㅅ']
+  ['무고일 수도','ㅅ'],['했을 시','ㅅ'],
+  // NIKL §27 exact adjacent eojeol pairs; Q&A 310899 confirms 거 is a dependent noun.
+  ['줄 것','ㄱ'],['많을 거','ㄱ']
 ]);
 
 // Exact same-eojeol C08 licenses supported by restored UGTPHON contexts and
 // NIKL morphology evidence. These are full-form gates, not a productive -ㄹ+ㅅ rule.
 const NIKL_27_ADNOMINAL_FORMS=new Map([
-  ['무고일수도있다는','일>수'],['했을시','을>시']
+  ['무고일수도있다는','일>수'],['했을시','을>시'],
+  // NIKL §27: 할 듯하다[할뜨타다]; Q&A 310899 confirms colloquial 거 = 것; exact UGTPHON contexts.
+  ['보일거라','일>거'],['없을듯','을>듯'],['안할듯','할>듯']
 ]);
 const NIKL_29_PHRASE_INSERTION=new Map([
   ['한 일',{onset:'ㄴ'}],['옷 입다',{coda:'ㄴ',onset:'ㄴ'}],
