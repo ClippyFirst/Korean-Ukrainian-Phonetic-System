@@ -157,7 +157,7 @@ This PR is documentation-only. The green software checks validate repository aut
 
 - Korean source IPA and Ukrainian target adaptation are separate review questions.
 - Existing reviewer packet generation/validation and regression tests establish process integrity, not expert correctness.
-- Acceptance still requires two qualified independent Korean IPA reviewers, an explicit convention and adjudication record, followed by independent Ukrainian phonetic/orthographic review on frozen IPA inputs and suitable reader-evaluation evidence. No reviewer identities, credentials, submissions or approvals were fabricated.
+- Acceptance still requires two qualified independent Korean IPA reviewers, an explicit convention and adjudication record, followed by independent Ukrainian phonetic/orthographic review on frozen IPA inputs and suitable reader-evaluation evidence. Existing C01–C07 blind packets contain token/source-row IDs but lack licensed source utterance context and reviewer-sharing rights, so they are not ready for scoring or external dispatch. Issue #337 remains open without qualified submissions. No reviewer identities, credentials, submissions or approvals were fabricated.
 
 ### 11.4 NIKL source rights — PARTIAL / BLOCKED at item level
 
@@ -188,3 +188,22 @@ Applied selectively: retain the repository's existing research/acceptance regist
 ## 13. Current disposition
 
 Software/documentation work can be reviewed through PR #434. The five findings are not all technically closable in code: versioning policy is documented; root licensing, expert review, item-level rights and historical occurrence adjudication remain owner-/evidence-dependent. The repository remains a partial research prototype, not a research-certified or release-ready transcription standard.
+
+
+## 14. Final audit continuation and exact-head verification — 2026-11-04
+
+Audited snapshot: `0a19df3870d2ac6a027072997469227505486b2b` on `docs/repository-audit-and-navigation-2026-11-04`.
+
+- Compare against `main` `c4c3fdf59ebeae18ede0c7429964239b1eb2570d`: 18 commits ahead, 0 behind; 7 changed files (root README, docs index, this audit, version policy, acceptance gates, decision log and NIKL source register).
+- The 11 links in the documentation index were fetched successfully from the branch.
+- Exact-head GitHub Actions:
+  - [tests #41920075080](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41920075080) — PASS.
+  - [System Verify #41920074881](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41920074881) — PASS.
+  - [Master table and research corpus artifacts #41920074823](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41920074823) — PASS.
+  - Tests include Python 3.11/3.12/3.13, browser regression/build, wheel installation, teacher-corpus audit and generated corpus. All returned successful on this head.
+  - Official NIKL metadata-only inventory — SKIPPED by workflow configuration; this is not a rights review and not a pass.
+- A preceding run caught two documentation-to-test contract issues in the NIKL source-register note: the expected explicit `not established` wording and the expected rights-review classification. Both were corrected without changing the unresolved item-level rights conclusion; the exact-head rerun above passed.
+- PR [#434](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/434) is OPEN and mergeable; it is not merged. `main` remains unchanged.
+- No local shell/npm/pytest commands were available or executed. Verification here is remote GitHub Actions and file/commit inspection.
+
+The green checks establish software and artifact consistency for the audited snapshot. They do not close expert IPA/target review, page-level rights verification or the historical 239-occurrence crosswalk.
