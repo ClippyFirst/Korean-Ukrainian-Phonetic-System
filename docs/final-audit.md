@@ -1,3 +1,11 @@
+## 2026-11-04 verification refresh — g2pK baseline isolation
+
+The code/test snapshot `047ecf2885281b0c5d579212439f36b6b815219d` passed System Verify [41879691726] (Browser 1,345/1,345, Python regression/data-integrity step, build and generated-page checks), optional g2pK integration [41879691621] (29/29 on Python 3.11 and 29/29 on Python 3.12), paired Native/g2pK diagnostic [41879691663], and external UGTPHON diagnostic [41879691630]. The official live NIKL inventory was skipped. The broader tests matrix had web, wheel-install and Python 3.12 green; Python 3.11/3.13 and teacher-corpus audit were still in progress at last inspection.
+
+The paired UGTPHON artifact [13347638522](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41879691663/artifacts/13347638522) covers 2,698 shared occurrences: native Kozak 53.0022% exact / 9.1697% CER; g2pK 53.1134% exact / 9.2304% CER. g2pK has a 0.1112 percentage-point exact-match point edge; Kozak has 0.0607 percentage-point lower CER. These are diagnostic, annotation-dependent results, not normative pronunciation gold or a universal superiority claim. Five native abstentions and zero engine errors were recorded.
+
+The current PR head `2c906fb7c91d54154acfe2cb5e99177272fa388a` adds documentation only; exact-head reruns are queued. The initial test-first RED run was not observed because its workflow remained queued until after implementation. No release-readiness claim follows from these software checks.
+
 ## Continuation audit — 2026-11-04: g2pK research-overlay isolation
 
 **Status: PARTIAL; PR #432 is Draft/open and exact-head CI is pending.**

@@ -1,3 +1,18 @@
+## 2026-11-04 CI refresh — g2pK baseline isolation (code/test head PASS; documentation head pending)
+
+This section supersedes the initial queued-status snapshot below.
+
+Verified code/test head: `047ecf2885281b0c5d579212439f36b6b815219d`.
+
+- System Verify [41879691726](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41879691726): **PASS**. Browser suite 1,345/1,345; Python regression/data-integrity step successful; Vite build and generated-page checks successful. The official live NIKL metadata inventory was **SKIPPED**, not passed.
+- Optional g2pK integration [41879691621](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41879691621): **PASS**, 29 tests on Python 3.11 and 29 on Python 3.12.
+- Paired Native/g2pK UGTPHON diagnostic [41879691663](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41879691663): **PASS**, artifact [13347638522](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41879691663/artifacts/13347638522). Paired n=2,698; native Kozak 53.0022% exact / 9.1697% CER; g2pK 53.1134% exact / 9.2304% CER; native five unresolved, zero engine errors. g2pK has a 0.1112 pp exact-match point edge; Kozak CER is lower by 0.0607 pp. This is noisy UGTPHON diagnostic evidence, not normative IPA gold or universal superiority.
+- External UGTPHON diagnostic [41879691630](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41879691630): **PASS**.
+- Tests workflow [41879691744](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41879691744): web, wheel-install and Python 3.12 jobs **PASS**; Python 3.11/3.13 and teacher-corpus audit remained in progress at the last inspection.
+- Test-first RED remains **unverified**: the test-only run was queued until after the first implementation commit. Do not claim a red/green sequence was observed.
+
+Current branch head is documentation-only commit `2c906fb7c91d54154acfe2cb5e99177272fa388a`. Exact-head verification for that documentation head is queued; the PASS evidence above is specifically for the preceding code/test head. The code/test head changed no files after its successful checks.
+
 ## 2026-11-04 — g2pK baseline isolation from Kozak research overlays (PARTIAL)
 
 **Scope:** Kozak Kim comparison integrity only. g2pK 0.9.4 remains the unchanged comparison engine; no original/vendor g2pK source was modified.

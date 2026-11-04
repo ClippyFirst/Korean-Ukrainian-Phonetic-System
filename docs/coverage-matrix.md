@@ -1,3 +1,9 @@
+## Verification refresh — 2026-11-04
+
+For the g2pK research-overlay isolation continuation, code/test head `047ecf2885281b0c5d579212439f36b6b815219d` passed System Verify [41879691726], including Browser 1,345/1,345, Python regression/data-integrity step, build and generated-page checks; optional g2pK integration [41879691621] (29 tests each on Python 3.11 and 3.12); paired Native/g2pK diagnostic [41879691663]; and external UGTPHON diagnostic [41879691630]. Official live NIKL inventory was skipped. Tests matrix web, wheel install and Python 3.12 passed; Python 3.11/3.13 and teacher-corpus audit were still in progress at the last inspection.
+
+Paired UGTPHON (n=2,698) on this mainline snapshot: Kozak Native 53.0022% exact / 9.1697% CER; original g2pK 53.1134% exact / 9.2304% CER. Exact match favours g2pK by 0.1112 pp; CER favours Kozak by 0.0607 pp. This is a noisy corpus diagnostic, not normative IPA gold. The current PR head `2c906fb7c91d54154acfe2cb5e99177272fa388a` is documentation-only and awaits exact-head reruns. TDD RED was not observed.
+
 ## Current continuation delta — 2026-11-04
 
 | Requirement | Current state | Evidence / next acceptance |
