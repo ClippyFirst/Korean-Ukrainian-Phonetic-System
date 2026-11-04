@@ -161,9 +161,10 @@ This PR is documentation-only. The green software checks validate repository aut
 
 ### 11.4 NIKL source rights — PARTIAL / BLOCKED at item level
 
-- The source register records an official site-wide reuse policy under Korean Copyright Act Article 24-2 unless a separate KOGL type is displayed.
-- The exact KOGL marking on the Standard Pronunciation Rules page and individual Q&A pages was not visually verified. The automated live inventory repeatedly encountered HTTP 403; the authorized local HTML import records that live-response/robots provenance was not checked.
-- Therefore, do not describe all NIKL-derived content as fully rights-cleared. Acceptance requires per-page/per-item marking checks (or written confirmation), mapping each retained/redistributed text excerpt to its source and permitted use, and updating the source register. A surface-form citation and a permission to reproduce source text are distinct.
+- The official [NIKL copyright policy](https://www.korean.go.kr/front/nuri/pageView.do?mkn=3&page_id=P000189) says (lines 166–170) that materials provided on its website may be used without separate permission under Copyright Act Article 24-2 unless a separate KOGL type is displayed. The same page describes KOGL types 0–4 and AI-use conditions (lines 171–231).
+- The current [Korean Copyright Act, Article 24-2](https://www.law.go.kr/lsLinkCommonInfo.do?chrClsCd=010202&lsJoLnkSeq=1030281869), effective 2026-10-29, is not a blanket license for every item found on a government website: its scope and statutory exceptions still matter. The NIKL site policy is the operative site-level statement, subject to item-specific markings.
+- The Standard Pronunciation Rules page remains HTTP 403 to the automated retrieval environment, so its page-specific KOGL designation could not be checked. Q&A pages are individually retrievable, but no reliable item-level KOGL badge determination has been recorded. The local HTML import also has unknown original HTTP/robots provenance.
+- Status remains PARTIAL / BLOCKED at item level. Do not describe every NIKL-derived item or embedded third-party content as fully rights-cleared. Acceptance requires a per-item check for a separate KOGL mark (or written confirmation), a mapping of retained/redistributed excerpts to source and terms, and a source-register update. A surface-form citation and permission to reproduce source text are distinct.
 
 ### 11.5 Historical 239 mismatch occurrences — PARTIAL / EVIDENCE-LIMITED
 
