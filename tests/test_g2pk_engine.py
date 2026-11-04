@@ -179,3 +179,18 @@ def test_g2pk_baseline_does_not_consume_kozak_only_research_lexical_candidates(m
     assert ipa_only_result["ipa"]["ipa"] != "x.y.z"
     assert ipa_only_result["ipa"]["status"] != "diagnostic_only_unresolved_pronunciation"
     assert ipa_only_result["ipa"]["word_analyses"][0]["status"] == "derived-from-surface"
+
+def test_g2pk_keeps_source_backed_diagnostic_only_ipa_status(monkeypatch):
+    class PassThroughG2p:
+        def __call__(self, text, descriptive=False):
+            return text
+
+    monkeypatch.setattr(g2pk_engine, "_ENGINE", PassThroughG2p())
+    result = g2pk_engine.phoneticize_with_g2pk("삶의")
+
+    # This is a source-backed NIKL variant with unresolved project IPA,
+    # not a Kozak-only research overlay; retain the diagnostic warning.
+    assert result["surface_hangul"] == "살믜"
+    assert result["ipa"]["is_diagnostic_only"] is True
+    assert result["ipa"]["status"] == "diagnostic_only_unresolved_pronunciation"
+    assert result["ipa"]["lexical_overrides"] == []
