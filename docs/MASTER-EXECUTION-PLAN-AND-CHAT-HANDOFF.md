@@ -5728,3 +5728,35 @@ Draft PR: [#426](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System
 | Hanja, RR, regional/style variants | DEFERRED | Keep research-only and separate from core mode unless a distinct evidence-backed task is opened. |
 
 The repository remains a research prototype, not release-ready. No release, deployment, merge, force-push or branch deletion.
+
+
+## 2026-11-04 continuation — Kozak Kim benchmark artifact drift (PR #426)
+
+Inspected head: `6b0dd939ad55013361a95420135439bf5d469646`. Latest multi-engine workflow: [41726881384](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41726881384); artifact [13276390247](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41726881384/artifacts/13276390247).
+
+### Verified diagnostic evidence
+
+- Pinned UGTPHON and SIGMORPHON split validation, adapter tests, training-readiness/frozen-holdout audit and blinded IPA packet generation passed.
+- UGTPHON: Native Kozak/ClippyFirst scored 2,698/2,703 (99.815% coverage), 1,431 exact / 2,698 paired scored tokens (53.0393%), CER 8.9920%, five explicit abstentions. Original g2pK 0.9.4 scored 2,703/2,703, 1,435 exact (53.0892%), CER 9.2285%.
+- Fair paired comparison: 2,698 shared scored occurrences; g2pK-minus-Native exact-rate delta +0.0741 percentage points (95% CI −0.0824 to +0.2840; inconclusive); CER delta +0.2384 percentage points (95% CI +0.1392 to +0.3464; g2pK higher/worse CER on this corpus). Pairwise counts over 2,703 occurrences: both exact 1,429; both not exact 1,263; g2pK-only exact 4; Native-only exact 2; Native abstained/g2pK exact 2; Native abstained/g2pK not exact 3.
+- Interpretation: Native has lower paired CER; exact match is unresolved by the paired interval. UGTPHON is diagnostic, not normative IPA gold. g2pK surface Hangul passes through the shared project IPA renderer, so this is not an independent IPA-encoder comparison. Original pinned g2pK and vendored source remain unchanged.
+
+### Exact failure and disposition
+
+- Engine comparison completed and emitted its artifact. The subsequent golden-file check failed: the newly exported 36-row `--only-unmapped-broad` queue differs from `research/kozak-kim-unmapped-mismatch-review-queue-2026-11-03.csv` at byte 31,117 / line 14. Exporter summary: 2,703 eligible occurrences, 1,267 annotated mismatch occurrences, 36 unmapped-broad occurrences / 55 fragments, zero missing corpus-context lookups.
+- This is FAIL / artifact drift, not a benchmark-engine crash. Same-occurrence Browser Kozak Kim, Native/Browser parity and SIGMORPHON portfolio steps were skipped after the exporter failure. Do not claim those steps passed or treat the checked-in queue as refreshed.
+- System Verify [41726881404](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41726881404), Browser G2P integration [41726881454](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41726881454), Native-vs-g2pK [41726881375](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41726881375), UGTPHON [41726881376](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41726881376), morphology consensus [41726881382](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41726881382), research morphology smoke [41726881366](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41726881366), and test-case extraction [41726881450](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41726881450) completed successfully on this head.
+- NIKL metadata-only crawl and opt-in neural inference were skipped. Independent Korean IPA adjudication, item-level NIKL rights review, Ukrainian target review, C12 source evidence and independent held-out IPA gold remain blocked/evidence-limited.
+
+### Task ledger
+
+| Task | Status | Acceptance criterion / blocker |
+|---|---|---|
+| Native Kozak Kim vs original g2pK diagnostic on pinned UGTPHON | DONE_VERIFIED as diagnostic evidence | Paired denominators, abstentions and CIs recorded above; not normative accuracy. |
+| Mismatch exporter and checked-in 36-row review queue | PARTIAL | Regenerate and review the queue from artifact 13276390247; verify every changed/removed occurrence and preserve source/context provenance; rerun exact-head benchmark through final `cmp`. |
+| Same-occurrence Browser Kozak Kim and Native/Browser parity in multi-engine workflow | TODO / BLOCKED_BY_UPSTREAM_GATE | Run after golden queue reconciliation; require both jobs and artifact validation on the same commit. |
+| SIGMORPHON multi-engine comparison on this head | TODO / BLOCKED_BY_UPSTREAM_GATE | Run after golden queue reconciliation; no current-head result from run 41726881384. |
+| Independent IPA and Ukrainian target acceptance | BLOCKED / EVIDENCE-LIMITED | Qualified independent reviewers and adjudicated source-separated gold are absent. |
+| Original g2pK baseline integrity | DONE_VERIFIED | Original 0.9.4 and vendored browser source unchanged; Kozak research lexical overlays excluded from baseline. |
+
+No merge, deployment, release, force-push or branch deletion. PR #426 and its preceding Kozak Kim stack remain open/unmerged. Repository remains a research prototype, not research-certified or release-ready.
