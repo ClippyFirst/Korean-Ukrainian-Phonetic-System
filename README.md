@@ -2,6 +2,11 @@
 
 Research-grade, machine-readable framework for Korean → Ukrainian phonetic-graphemic correspondence, now with a two-page browser service.
 
+## Documentation and repository map
+
+- [Documentation index](docs/README.md) — canonical navigation for users, developers and researchers.
+- [Repository audit and structure (2026-11-04)](docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — verified repository inventory, CI snapshot, documentation ownership and remaining research/release gates.
+
 ## Public web service
 
 The project has two public-facing pages:
