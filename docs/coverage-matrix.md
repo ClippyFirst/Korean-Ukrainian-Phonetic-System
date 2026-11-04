@@ -146,3 +146,16 @@ The current branch head `ab9a0ad7ea96e73c7fc76a8a97a3bf5f9ff16d38` passed system
 | Independent Korean IPA and Ukrainian target acceptance | BLOCKED | Independent qualified reviewers/adjudication and separate Ukrainian target review/gold are absent. |
 
 The benchmark comparison is differential corpus evidence only. It does not establish universal Kozak Kim superiority, normative IPA accuracy, or Ukrainian output quality.
+
+
+## 2026-11-04 — exact artifact queue reconciliation
+
+| Coverage area | Status | Evidence / remaining acceptance |
+|---|---|---|
+| Generated vs checked-in unmapped-broad queue | DONE_VERIFIED as artifact reconciliation | Run 41794874090 / artifact 13305816579 generated 36 occurrences / 55 fragments / 0 missing context lookups. Commit c0cbe3740e734c87d3202cca496b83d9603ea218 refreshes the checked-in file from 43 to 36 rows; all 36 retained rows match the generated artifact byte-for-byte by per-row hash. |
+| Seven previously queued occurrences | DONE_VERIFIED as disposition reconciliation only | 1406, 1527, 2001, 2010, 2533 are broad-exact; 868 retains mapped C06; 2562 retains mapped C11. This does not adjudicate IPA truth. |
+| Same-occurrence Browser / Native parity | TODO / IN_PROGRESS | Run 41797143756 triggered on refreshed queue commit; inspect final job statuses and artifact before marking complete. |
+| SIGMORPHON portfolio on refreshed queue head | TODO / IN_PROGRESS | Same run 41797143756; no current-head score claimed yet. |
+| Independent Korean IPA / Ukrainian target acceptance | BLOCKED | Qualified external review and adjudication still absent; corpus-relative labels cannot substitute. |
+
+No runtime code or g2pK baseline code changed in this queue reconciliation. Research-prototype disposition unchanged.
