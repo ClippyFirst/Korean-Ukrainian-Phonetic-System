@@ -73,7 +73,7 @@ test('real source register is structurally valid and unresolved rights remain vi
   const c12AcousticSource = report.records.find(record => record.sourceId === 'SRC-JIPA-SCHWEIZER-AHN-KWON-2026-SEOUL-STOPS');
   assert.ok(c12AcousticSource, 'the newly registered C12 primary acoustic source must be present');
   assert.equal(c12AcousticSource.rightsReviewStatus, 'ITEM_LEVEL_LICENSE_RECORDED');
-  assert.match(c12AcousticSource.currentLicenseStatus, /^CC-BY-4\\.0 verified/u);
+  assert.match(c12AcousticSource.currentLicenseStatus, /^CC-BY-4\.0 verified/u);
   const unresolvedIds = new Set(report.itemLevelRightsNotClosed.map(item => item.sourceId));
   assert.ok(unresolvedIds.has('SRC-NIKL-QNA-327466'));
   assert.ok(unresolvedIds.has('SRC-NIKL-QNA-313481'));
@@ -97,7 +97,7 @@ test('CLI reports structure by default and keeps strict rights acceptance blocke
   const normal = spawnSync(process.execPath, [script, '--json'], { cwd: process.cwd(), encoding: 'utf8' });
   assert.equal(normal.status, 0, normal.stderr);
   const report = JSON.parse(normal.stdout);
-  assert.equal(report.sourceRegisterRows, 175);
+  assert.equal(report.sourceRegisterRows, 176);
   assert.equal(report.structuralErrorCount, 0);
   assert.ok(report.itemLevelRightsNotClosed.length > 0);
 
