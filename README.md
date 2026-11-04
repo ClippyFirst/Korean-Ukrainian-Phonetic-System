@@ -2,6 +2,16 @@
 
 Research-grade, machine-readable framework for Korean → Ukrainian phonetic-graphemic correspondence, now with a two-page browser service.
 
+## Documentation and repository map
+
+- [Documentation index](docs/README.md) — canonical navigation for users, developers and researchers.
+- [Versioning policy](docs/VERSIONING-POLICY.md) — separate version streams for the private browser app and installable Python package.
+- [Repository audit and structure (2026-11-04)](docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — verified repository inventory, CI snapshot, documentation ownership and remaining research/release gates.
+
+## Author, licensing and permissions
+
+The project is authored by **Vitalii Volodymyrovych Tkachuk** under the authorial pseudonym **ClippyFirst**. The original project materials are governed by the custom [ClippyFirst Project License](LICENSE); a practical explanation is in [Licensing and permissions](docs/LICENSING-AND-PERMISSIONS.md). Scientific use of the public service's results and the Korean-to-Ukrainian correspondence table is permitted with attribution. Reuse, integration, self-hosting, modification or redistribution of the technical implementation requires the author's prior written permission. Third-party components and datasets retain their own licences and notices.
+
 ## Public web service
 
 The project has two public-facing pages:

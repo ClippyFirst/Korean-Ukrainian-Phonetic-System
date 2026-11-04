@@ -85,3 +85,30 @@ Record consequential linguistic, data, architecture, testing, licensing, and rel
 - **Safety against false certainty:** if the upstream G2P path supplies no surface form, the UI displays an em dash instead of romanizing the original spelling as if pronunciation had been resolved.
 - **Verification:** isolated Node.js harness passed 6/6 tests, including all 11,172 modern precomposed Hangul syllables. Full repository test/build/browser verification is not yet confirmed.
 - **Revisit/acceptance:** before merge, pass exact-head CI and browser checks; complete a source-backed NIKL RR conformance matrix. The current implementation is a basic RR renderer, not a claim of complete conformance.
+
+
+## DEC-2026-006 — Version browser and Python artifacts independently
+- **Date:** 2026-11-04
+- **Status:** accepted as the prospective repository policy; historical intent not established.
+- **Context/problem:** `package.json` is version 1.0.0 and private, while `pyproject.toml` is version 0.6.0 and defines an installable Python distribution. Treating the numeric difference as drift would incorrectly assume a single shared release artifact.
+- **Evidence:** current package metadata and scripts; browser Vite/Pages role; Python distribution metadata and CLI entry point.
+- **Options considered:** force both values to match; leave the difference undocumented; define two independent version streams.
+- **Decision:** maintain independent browser-application and Python-distribution versions. Bump only affected artifacts; coordinated releases may record both versions without requiring equal numbers. Do not publish the private npm package unless the owner changes that policy.
+- **Consequences and trade-offs:** avoids meaningless synchronized bumps and accurately reflects separate release surfaces. It does not prove why the original values were chosen.
+- **Affected files:** `package.json`, `pyproject.toml`, `docs/VERSIONING-POLICY.md`.
+- **Validation/tests:** metadata and package roles inspected; no version value changed. Exact-head CI remains required for any future metadata/runtime change.
+- **Revisit when:** the project adopts one unified release artifact or changes the browser package's private/public distribution status.
+
+
+## DEC-2026-007 — Adopt ClippyFirst purpose-limited project licence
+- **Date:** 2026-11-05
+- **Status:** accepted by project owner; implementation committed on the documentation/licensing continuation branch, pending PR review and merge.
+- **Author identity:** Vitalii Volodymyrovych Tkachuk, publishing under the authorial pseudonym **ClippyFirst**. Project start year: 2026.
+- **Context/problem:** The repository had no root project licence. The owner wants scientific reuse of published service results and the Korean-to-Ukrainian correspondence table, while retaining control over reuse of the technical implementation.
+- **Decision:** Apply one custom ClippyFirst Project License to original project materials controlled by the author. Permit ordinary use of the official public web service and attributed use, quotation, citation and scholarly reproduction of individual service results and the correspondence table solely for genuine scientific research. Require the author's prior written permission for source-code reuse, self-hosting, mirroring, integration, modification, porting, redistribution, or other technical reuse not expressly granted.
+- **Attribution:** Credit “ClippyFirst (Vitalii Volodymyrovych Tkachuk)” and link to the repository. Substantial table reproduction/adaptation must identify the project table and disclose changes.
+- **Third-party boundary:** The custom licence does not override vendored Apache-2.0 software, BSD-3-Clause Hanja data, external corpora, dictionaries, or other third-party rights; their own terms remain applicable.
+- **Consequences and trade-offs:** This is a custom, purpose-limited licence and is not an OSI-approved open-source licence. It is not compatible with workflows requiring unrestricted open-source reuse. The licence states the author's intended permissions only for rights the author controls; legal enforceability of table/data restrictions and jurisdiction-specific effects have not been independently assessed.
+- **Affected files:** `LICENSE`, `docs/LICENSING-AND-PERMISSIONS.md`, `README.md`, `docs/README.md`, `docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md`, `research/ACCEPTANCE-GATES.md`.
+- **Validation:** File presence, links, scope wording and third-party carve-outs must be checked on the final branch head; no code/runtime behaviour is changed by this policy update.
+- **Revisit when:** The owner changes scientific-use scope, wants commercial/institutional licensing, accepts third-party contributions under additional terms, or requests a standard open-source licence.

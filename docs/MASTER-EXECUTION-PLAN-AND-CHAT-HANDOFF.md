@@ -1,3 +1,22 @@
+## 2026-11-05 — Owner-approved ClippyFirst project licence
+
+**Branch:** `docs/repository-audit-and-navigation-2026-11-04`  
+**Decision:** DEC-2026-007. The project owner confirmed that Vitalii Volodymyrovych Tkachuk publishes this project under the authorial pseudonym **ClippyFirst**, and that the project began in 2026.
+
+A single custom, purpose-limited licence has been added for original project materials controlled by the author:
+- Root `LICENSE`: author identity, scope, scientific-use permission, technical-use restriction, attribution, third-party carve-outs and warranty terms.
+- `docs/LICENSING-AND-PERMISSIONS.md`: practical explanation and recommended attribution.
+- `README.md` and `docs/README.md`: public discovery and navigation.
+- Repository audit, acceptance-gate register and decision log updated; DEC-2026-007 records the owner decision.
+
+**Permission boundary:** ordinary use of the official public web service is allowed. Individual service results may be displayed, quoted, cited and reproduced in scientific research outputs and research websites with attribution. The Korean→Ukrainian correspondence/transliteration table may be consulted, analysed, quoted and reproduced solely for genuine scientific research with attribution. Substantial reproduction/adaptation must identify the ClippyFirst table and disclose changes. Copying/reusing source code, self-hosting/mirroring, integration, modification, porting, redistribution or other technical reuse requires the author's prior written permission via [ClippyFirst on GitHub](https://github.com/ClippyFirst).
+
+**Important scope boundary:** this is a custom licence, not an OSI-approved open-source licence. It applies only to rights the author owns or is authorized to license. Vendored Apache-2.0 code, BSD-3-Clause Hanja data, external corpora, dictionaries and other third-party materials retain their own terms. The wording records the owner's intended permissions; it is not an independent legal opinion or cross-jurisdiction enforceability assessment.
+
+**Verification still required:** fetch every changed file from the final branch head, confirm exact links and that third-party notices remain unchanged, inspect the PR diff and run relevant repository checks. No runtime code or generated artifacts were changed. The PR is not merged; `main` remains untouched.
+
+---
+
 ## 2026-11-04 — Kozak Kim stack consolidated into main (MERGED)
 
 **Current main:** `e628096e7d1a06ed355de27936c42fa732f4f6b6` (merge of PR #433). Starting main: `607dccb46fd83d7bd70245c165dbd9fe6dfd3af9`.

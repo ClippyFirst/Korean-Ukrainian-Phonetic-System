@@ -1218,7 +1218,7 @@ Run `41870455614` was cancelled twice: attempt 1 while `Run multi-engine compari
 
 ### Training readiness and scope
 - Training audit: 644 lexical rows, 46 addition rows, 24 frozen holdout cases, zero addition rows explicitly marked as independently adjudicated IPA, and zero holdout forms with IPA gold. Supervised IPA training is **not ready**.
-- Reviewer A/B holdout packets were generated without engine outputs; they remain awaiting independent annotation/adjudication.
+- Reviewer A/B holdout packets were generated without engine outputs; they remain awaiting independent annotation/adjudication. C01–C07 blind packets contain token/source-row IDs but lack licensed source utterance context and reviewer-sharing rights, so they are not yet ready for external scoring/dispatch. Issue #337 remains open without qualified submissions.
 - Original g2pK 0.9.4 remains pinned and unmodified. No g2pK vendor file or external baseline was changed.
 - Research readiness: comparative diagnostic evidence is materially stronger; independent IPA gold, independent Ukrainian target review, item-level NIKL reuse verification, C12 audio/prosody crosswalk, historical 239-case adjudication, and names/loans/Hanja/regional-style coverage remain open.
 - Release status: **research prototype**, not research-certified and not release-ready.
@@ -1241,3 +1241,24 @@ A secondary Wiktionary entry decomposes `중심닮음` as `중심 + 닮- + -음`
 On the 1,907 unique UGTPHON words, Kiwi and MeCab-Ko have 80.5978% exact boundary-set agreement. Across 217 common observed rule events their boundary-presence agreement is 94.0092%. The two-analyzer consensus changes three unique words versus strict, newly resolves one (`칡칡이`), and withholds 24 unspaced phrase-boundary cases. It does not improve the diagnostic gold score: strict 53.0393% exact / 8.9920% CER; consensus 53.0196% exact / 9.0086% CER. Treat this as diagnostic morphology evidence, not production accuracy or gold segmentation. Keep exact licenses fail-closed.
 
 No production code change was justified by this drill-down. The next legitimate acceptance step is independent Korean morphological/IPA adjudication for the exact abstention and for the residual queue, not an engine-specific guess.
+
+
+## 2026-11-04 focused status reconciliation — five owner-requested findings
+
+This dated addendum supersedes earlier shorthand where the current repository evidence is more precise. It does not alter historical rows or mark unresolved research gates as passed.
+
+| Finding | Current status | Evidence / acceptance criterion |
+|---|---|---|
+| Root project license | **DONE_VERIFIED — owner-selected custom policy documented** | Root `LICENSE` and `docs/LICENSING-AND-PERMISSIONS.md` define ClippyFirst's 2026 purpose-limited permissions. Scientific use of public-service results and the Korean→Ukrainian table is allowed with attribution; technical reuse requires prior written permission. This is not OSI-approved/open source. Third-party rights remain separate; legal enforceability and jurisdiction-specific application have not been independently reviewed. |
+| Browser/Python versions | **DONE_VERIFIED — policy documented** | Private browser app `package.json` 1.0.0 and installable Python distribution `pyproject.toml` 0.6.0 are separate artifacts. Independent version streams are documented in `docs/VERSIONING-POLICY.md` and DEC-2026-006; no version values changed. |
+| Korean IPA and Ukrainian adaptation | **BLOCKED — independent expert evidence** | Two independent qualified Korean IPA reviewers and separate Ukrainian target-layer review remain required. Existing packets/tests validate workflow, not phonetic correctness. |
+| NIKL rights | **PARTIAL — site policy verified, item-level status open** | NIKL's official policy page states website materials may be reused under Copyright Act Article 24-2 unless a separate KOGL type is displayed. Current Article 24-2 text and its scope/exceptions are linked from the audit. The Standard Pronunciation Rules page remains inaccessible to the automated retrieval environment (HTTP 403); page-specific KOGL status is not established. Q&A item-level marks also require an explicit source-record decision. Keep the source register review status open. |
+| Legacy 239 mismatch cases | **PARTIAL / EVIDENCE-LIMITED** | The 239 count is a historical population, not the current 36-row unmapped-Broad queue. Current diagnostic ledgers have distinct grains: 1,267 mismatch-fragment rows (all unadjudicated), 36 unmapped-Broad rows (all unadjudicated), 13 cluster rows, and 38 selected paired-discrepancy rows. Recover the exact 239 occurrence/source identities and reconcile them against current artifacts before adjudication; no guessed repairs. |
+
+### Rights and mismatch acceptance
+
+- NIKL: check each retained source page for a specific KOGL badge; record the item type, attribution requirement, derivative/commercial restrictions and whether the content is actually NIKL-authored or includes third-party material. A site-wide policy statement does not justify bulk-clearing uninspected items.
+- Mismatches: produce a versioned, hash-pinned 239-occurrence crosswalk with source-row ID, token/context, dataset/profile/engine versions, reference convention and cluster assignment. If an original occurrence cannot be recovered, mark it explicitly unrecoverable with evidence; do not silently drop it.
+- Only source-supported, independently adjudicated corrections may enter production, with positive/negative controls and exact-head regression evidence.
+
+**Readiness:** partial research prototype. Software/documentation CI cannot close expert-review, legal-rights or historical evidence gates.
