@@ -1,5 +1,26 @@
 # Full benchmark integration, methodology evidence and readiness — 2026-10-31
 
+## Current repository repair checkpoint — 2026-11-04
+
+### Default-branch CI regression
+
+- Audited `main` at `7bbbd7e7ce888a9c995bb70959e17858263c07a8`. Its Python regression job failed during test collection because `tests/test_ugtphon_surface_benchmark.py` imported missing `scripts.benchmark_ugtphon_ko_surface` (`ModuleNotFoundError`; run [41312706323](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41312706323)).
+- The same research-only module already existed, byte-identically, in open draft PR #415 and the Kozak Kim continuation branch used by #426. Rather than merge the broad 26-file draft or the 29-commit stack, a narrow repair PR #428 restores only that module and aligns the stale canonical-false-rewrite test with the existing evaluator contract: both untouched surface baseline and retrieved candidate are scored.
+- PR #428 head `cd824c361062fbd0a39cdd9f2efbf698348fee5b`: Verify run [41795308197](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41795308197) PASS; test matrix [41795308362](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41795308362) PASS (Python 3.11/3.12/3.13, web, wheel-install, teacher-corpus audit); master table/research artifacts [41795308356](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41795308356) PASS. Exhaustive test-case register extraction [41795308312](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41795308312) was still running at this checkpoint; do not claim it passed until its final result is visible.
+
+### Generated diagnostic queue drift
+
+- Open PR #426's exact-head multi-engine run [41726881384](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41726881384) generated a 36-row unmapped-broad review queue while the tracked CSV retained seven stale occurrences (`868`, `1406`, `1527`, `2001`, `2010`, `2533`, `2562`).
+- PR #427 removes only those seven obsolete rows and preserves the 36 current occurrence IDs. It is stacked on the #426 head branch; multi-engine rerun [41794474070](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41794474070) was still in progress at this checkpoint. Do not merge #427 until that exact-head workflow completes successfully and the PR remains mergeable.
+
+### PR reconciliation
+
+- #415 remains a broad draft (26 files) with its own passing verification evidence; it contains the same benchmark module, but also unrelated engine/browser/workflow and research changes. It was not merged just to repair the missing module.
+- #426 remains an open stacked research PR. #427 is its narrow generated-artifact correction. #414 (external service smoke), #411 (large RR/Hanja/UI scope, currently unmergeable), and #371 (stale/unmergeable benchmark expansion) were inspected and left untouched; their scope is not required for the CI repair.
+- No independent Korean IPA gold, Ukrainian target adjudication, or release claim is created by these CI repairs. Metrics remain diagnostic and the repository remains a research prototype.
+
+
+
 **Starting main for this continuation:** `f0bd109a294fff9eca9037023653c5765eb17225`  
 **Current main after completed integration:** `ca6133890139f76c88253b2b1d0bbc3a6191601a`  
 **Working state:** all listed PRs merged; no uncommitted local checkout was available. GitHub branches/PRs and workflow evidence were inspected through the repository connector.
