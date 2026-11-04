@@ -18,6 +18,16 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
   const practicalOn=morphologyMode==='practical';
   const superSoftOn=morphologyMode==='super-soft';
   const preserveUnresolvedSource=options.preserveUnresolvedSource===true;
+  // Explicitly select the same broad IPA serialization contract as Python.
+  // This is a profile choice, not a phonological-rule change; the legacy
+  // browser-contextual profile remains the default for existing callers.
+  const useSharedBroadIpaProfile=options.ipaProfile==='clippyfirst-korean-broad-v1';
+  if(options.ipaProfile!==undefined&&!useSharedBroadIpaProfile){
+    throw new TypeError('unsupported IPA profile: '+String(options.ipaProfile));
+  }
+  if(useSharedBroadIpaProfile&&(morphologyMode!=='strict'||options.surfaceMode===true)){
+    throw new TypeError('clippyfirst-korean-broad-v1 requires strict morphology mode and surfaceMode=false');
+  }
   if(!skipLexicon&&lexicon.size){
     const mixedKeys=[...lexicon.keys()].filter(key=>/[^가-힣]/u.test(key)).sort((a,b)=>b.length-a.length);
     const parts=[];
@@ -130,9 +140,9 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       }
       return{
         source:text,
-        ipa_profile:superSoftOn?'browser-super-soft-maximum-coverage-v1':options.surfaceMode?'browser-surface-mode-legacy-v1':'browser-legacy-contextual-v1',
+        ipa_profile:useSharedBroadIpaProfile?'clippyfirst-korean-broad-v1':superSoftOn?'browser-super-soft-maximum-coverage-v1':options.surfaceMode?'browser-surface-mode-legacy-v1':'browser-legacy-contextual-v1',
         ipa_profile_version:1,
-        ipa_profile_level:superSoftOn?'orthographic-fallback-enabled':options.surfaceMode?'surface-mode':'surface-contextual',
+        ipa_profile_level:useSharedBroadIpaProfile?'broad':superSoftOn?'orthographic-fallback-enabled':options.surfaceMode?'surface-mode':'surface-contextual',
         ipa_profile_status:'unadjudicated-cross-runtime',
         surfaceHangul:results.map(r=>r.surfaceHangul||'').join(''),
         // A phrase with any provisional target has no complete accepted
@@ -316,7 +326,8 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
 
     const o=get(map,'onset',onset),v=get(map,'vowel',vowelJamo),c=u.coda?get(map,'coda',u.coda):null;
     const vowelIpa=defaultUi?'ɰi':palatalYeo?'ʌ':(v?.ipa||'');
-    const ipaOnset=(J_VOWELS.has(u.vowel)&&onset==='ㅅ')?'ɕ':
+    const ipaOnset=useSharedBroadIpaProfile?(o?.ipa||''):
+      (J_VOWELS.has(u.vowel)&&onset==='ㅅ')?'ɕ':
       (J_VOWELS.has(u.vowel)&&onset==='ㅆ')?'ɕ͈':(o?.ipa||'');
     let unitIpa=ipaOnset+vowelIpa+(c?.ipa||'');
     if(liquid&&onset==='ㄹ')unitIpa='l'+(v?.ipa||'')+(c?.ipa||'');
@@ -389,8 +400,20 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       u.__complexLiaisonUnlicensed||u.__complexHAspirationUnlicensed||
       u.__substantiveLiaisonUnlicensed||u.__rieulGiyeokUnlicensed
     );
-    if(unresolvedKoreanMorphology){surfaceParts.push(u.char);continue;}
-    surfaceParts.push(compose(u.onset,u.vowel,u.coda||''));
+    if(unresolvedKoreanMorphology){
+      // Broad surface parity may expose deterministic coda neutralization, but
+      // unresolved morphology must still withhold IPA and Ukrainian output.
+      if(useSharedBroadIpaProfile){
+        surfaceParts.push(compose(u.onset,u.vowel,representative(u.coda||'')));
+      }else{
+        surfaceParts.push(u.char);
+      }
+      continue;
+    }
+    // The shared research profile exposes the same fully neutralized Hangul
+    // surface as Native. Keep the legacy Browser display contract unchanged.
+    const surfaceCoda=useSharedBroadIpaProfile?representative(u.coda||''):(u.coda||'');
+    surfaceParts.push(compose(u.onset,u.vowel,surfaceCoda));
   }
   const recomposed=surfaceParts.join('');
   const originalHangul=units.filter(u=>u.type==='hangul').map(u=>u.char).join('');
@@ -437,9 +460,9 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       : 'model-selected';
   return{
     source:text,
-    ipa_profile:superSoftOn?'browser-super-soft-maximum-coverage-v1':options.surfaceMode?'browser-surface-mode-legacy-v1':'browser-legacy-contextual-v1',
+    ipa_profile:useSharedBroadIpaProfile?'clippyfirst-korean-broad-v1':superSoftOn?'browser-super-soft-maximum-coverage-v1':options.surfaceMode?'browser-surface-mode-legacy-v1':'browser-legacy-contextual-v1',
     ipa_profile_version:1,
-    ipa_profile_level:superSoftOn?'orthographic-fallback-enabled':options.surfaceMode?'surface-mode':'surface-contextual',
+    ipa_profile_level:useSharedBroadIpaProfile?'broad':superSoftOn?'orthographic-fallback-enabled':options.surfaceMode?'surface-mode':'surface-contextual',
     ipa_profile_status:'unadjudicated-cross-runtime',
     surfaceHangul:recomposed===originalHangul?'':recomposed,
     ukrainian:unresolvedWholeHangulToken||targetMappingUnavailable||(pronunciation_status==='partial'&&!superSoftOn)||provisionalCandidateAvailable||superSoftCandidateAvailable?'':output.join(''),

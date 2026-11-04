@@ -1,3 +1,86 @@
+# 2026-11-02 acceptance-gate update — Kozak Kim only
+
+## 2026-11-02 — Kozak Kim cross-runtime evidence and parity continuation
+
+**Scope:** Kozak Kim only. Original g2pK code and vendor files remain unchanged. No new general phonological rule was added.
+
+**Repository state:** branch `fix/kozak-kim-broad-version-metadata-2026-11-02`; Draft PR #421 stacked on Draft PR #420; code/test head `b4ace0eba2d1573cd78b1e6a971de5556a0bcb3c`. Starting point was PR #420 head `2db86dd97eab99fc18d5fa30c82febb76d5a4068`. No merge, release, deployment, or branch deletion.
+
+| Work item | Status | Evidence / acceptance |
+|---|---|---|
+| Browser Broad IPA v2 metadata contract | DONE_VERIFIED | Browser report now keeps numeric `broad_candidate_benchmark_version: 2`; regression test covers actual `evaluateRows()` output. |
+| IPA adjudication overlay in Browser runtime | DONE_VERIFIED | App and benchmark merge the existing IPA-adjudication CSV with appended metadata column preserved. `삶의` retains source-backed Hangul `살믜` / `살메`, but IPA and Ukrainian output are withheld. |
+| Native R013 false abstention | DONE_VERIFIED | Exact attached `-ㄹ게` / attested `-ㄹ게요` completion gate is shared by rule and abstention logic. Internal substrings `올게이` / `할게이` remain non-R013 controls and return provisional, non-diagnostic-only project IPA. |
+| Broad-profile Browser surface coda rendering | DONE_VERIFIED | Shared research profile renders representative final coda (`있다` → `읻따`); default Browser legacy profile remains `있따`. |
+| Python regression/data integrity | DONE_VERIFIED | System verification run 41447654924 PASS (`python -m pytest -q`). |
+| Browser regression/build | DONE_VERIFIED | System verification run 41447654924 PASS; 1,382 / 1,382 tests; `npm run build`; generated-page checks. |
+| Browser/Native occurrence-level IPA parity | PARTIAL | Multi-engine run 41447654927 completed its Browser comparison and parity-audit steps successfully; exact artifact is still being assembled during the SIGMORPHON phase. Do not claim a numerical parity rate until the artifact is read. |
+| Full Browser surface parity | PARTIAL | Direct Browser report 13143156104: 2,698 scored / 2,703 eligible. Preliminary comparison to the Native ledger showed 2,693 equal surfaces, four differences on morphology-abstained cases, and six missing Browser surface reconstructions. Final occurrence audit artifact is authoritative. |
+| Broad v2 target thresholds | PARTIAL / NOT MET | Browser direct UGTPHON: Broad exact 86.2861%, Broad CER 2.2083%, five unresolved, zero engine errors; target 90%+ exact / CER ≤2% not met. |
+| Original g2pK baseline | DONE_VERIFIED | Paired Native/g2pK diagnostic run 41447654997 PASS; no g2pK source/vendor files changed. |
+| Independent IPA gold | BLOCKED | Frozen 24-item holdout and reviewer A/B packets exist; two qualified independent reviewers and adjudication are still required. |
+| NIKL item-level reuse rights | BLOCKED | Official metadata inventory was SKIPPED; item-level KOGL clearance remains unverified. |
+| Ukrainian target adaptation review | BLOCKED | Requires independent Ukrainian phonetic/orthographic expert review. |
+| CharsiuG2P / ByT5 inference | DEFERRED | Both optional inference jobs were SKIPPED by workflow policy; no inference result is claimed. |
+
+### Comparative results — do not mix profiles
+
+**Native strict IPA vs original g2pK**, 2,698 paired UGTPHON occurrences:
+- Kozak Native: 53.0393% strict exact; 9.0657% CER.
+- g2pK: 53.1134% strict exact; 9.2304% CER.
+- Kozak has lower CER; g2pK has a 0.0741 percentage-point strict-exact point edge.
+
+**Browser legacy-default vs original g2pK**, 2,698 paired occurrences:
+- Exact match tied at 53.4469%.
+- Browser CER 8.0728% vs g2pK 8.2072%; paired sentence-cluster 95% CI for Browser-minus-g2pK CER delta: [−0.2246, −0.0531] percentage points.
+- This is a separate legacy-default diagnostic, not the shared Broad profile.
+
+**Browser shared Broad v2 direct UGTPHON**:
+- 2,698 / 2,703 scored; 86.2861% Broad exact; 2.2083% Broad CER; five unresolved; zero engine errors.
+- These corpus-relative metrics are not normative IPA accuracy. The original g2pK adapter uses the project's shared segment renderer, so it is not an independent IPA encoder.
+
+### Exact CI commands and outcomes
+
+- `npm install --no-audit --no-fund` — PASS.
+- `npm test` → `node --experimental-strip-types --test tests/*.test.mjs` — PASS, 1,382 tests.
+- `npm run build` → dictionary preparation + Vite production build — PASS.
+- `test -f dist/index.html && test -f dist/system.html` — PASS.
+- `python -m pip install -e ".[dev,all]"` — PASS.
+- `python -m pytest -q` — PASS.
+- Browser G2P integration run 41447654972 — PASS.
+- Paired Native/g2pK run 41447654997 — PASS.
+- External UGTPHON diagnostic run 41447654983 — PASS.
+- Kiwi + MeCab-Ko morphology consensus run 41447654952 — PASS.
+- Exhaustive test-case register extraction run 41447654941 — PASS; extracted classification queue still requires manual review.
+- Research morphology adapter smoke run 41447655002 — PASS.
+- Optional g2pK integration run 41447654921 — PASS; baseline code/vendor unchanged.
+- Multi-engine run 41447654927: multi-engine comparison, Browser same-occurrence comparison, and Native/Browser parity-audit steps PASS; SIGMORPHON benchmark and artifact upload still running at this snapshot.
+- NIKL metadata-only inventory — SKIPPED.
+- CharsiuG2P and ByT5 inference — SKIPPED.
+- Local pytest/npm were not run in this session; verification was performed by GitHub Actions.
+
+**Readiness:** partial research prototype, not release-ready and not research-certified. The next evidence gates are the final multi-engine/SIGMORPHON artifact, independent IPA adjudication, item-level source-rights review, and independent Ukrainian target review.
+
+## Gate decision
+Software regressions/build are verified. Broad score targets remain unmet. Runtime parity audit execution passed, but its exact numerical results must be read from the final uploaded artifact before any 99.9% claim. Independent IPA gold, source-rights review, and Ukrainian target review remain blocked by external expert/evidence requirements.
+
+---
+
+## 2026-11-02 — Kozak Kim runtime and Broad IPA v2 gate status
+
+| Gate | Target | Current evidence | Status |
+|---|---:|---|---|
+| Broad exact match (UGTPHON) | >=90% | Historical raw-artifact recomputation: Native 86.25%; current common-profile exact-head report pending | PARTIAL |
+| Broad exact match (SIGMORPHON) | >=90% | Historical raw-artifact recomputation: Native 69.64%; current exact-head report pending | PARTIAL |
+| Broad CER | <=2% | Historical Native: 2.22% UGTPHON; 6.23% SIGMORPHON | NOT_MET |
+| Native/Browser runtime parity | >=99.9% | New benchmark selects identical `clippyfirst-korean-broad-v1` profile and compares complete surface + raw IPA; exact-head report pending | PARTIAL |
+| Strict IPA preservation | No evidence-backed distinctions collapsed | Strict scoring retained; broad sensitivity losses separately reported | PARTIAL — independent convention adjudication pending |
+| Independent IPA gold | Two independent reviews + adjudication | Frozen 24-item holdout and separate A/B templates prepared; no reviewer submissions yet | BLOCKED |
+
+The Browser normal-conversion metadata path has been corrected to report the explicitly selected broad profile; a Python/JavaScript normalizer parity test now checks shared edge cases and feature-loss ledgers. Both implementations are present, but the latest exact-head CI is still queued and these items remain PARTIAL until verified. The R013 change in this continuation is a narrowly scoped correction to the existing NIKL Q&A 330963-backed -ㄹ게 ending license, with positive and negative controls; it is not a new general phonological rule.
+
+Do not use the old 93.81% Browser score as evidence of superiority: it came from `browser-legacy-contextual-v1`, whereas Native used `clippyfirst-korean-broad-v1`. The common-profile run is the only valid runtime comparison.
+
 ## Latest evidence snapshot — 2026-11-02 (research prototype; not release acceptance)
 
 | Gate | Status | Evidence / reason |

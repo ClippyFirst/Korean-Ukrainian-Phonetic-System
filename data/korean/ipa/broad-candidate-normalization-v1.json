@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "profile_id": "korean-broad-candidate-sensitivity-v1",
+  "profile_version": 1,
+  "status": "research-only-unadjudicated",
+  "purpose": "Sensitivity-only normalization that compares broad Korean IPA outputs with predictable narrow allophone variants in phonetic corpus annotations. It is not an adjudicated pronunciation standard and must never replace strict scoring.",
+  "operations": {
+    "canonicalize_g": "ɡ",
+    "remove_tie_bar": "͡",
+    "remove_stress_markers": [
+      "ˈ",
+      "ˌ"
+    ],
+    "remove_fricative_aspiration": {
+      "after": [
+        "s",
+        "ɕ",
+        "ʃ"
+      ],
+      "marker": "ʰ"
+    },
+    "remove_h_labialization": {
+      "base": "h",
+      "marker": "ʷ"
+    },
+    "allophone_map": {
+      "ɭ": {
+        "to": "l",
+        "loss": "lateral_retroflexion"
+      },
+      "ʎ": {
+        "to": "l",
+        "loss": "lateral_palatalization"
+      },
+      "ɲ": {
+        "to": "n",
+        "loss": "nasal_palatalization"
+      },
+      "ɦ": {
+        "to": "h",
+        "loss": "h_voicing"
+      },
+      "ç": {
+        "to": "h",
+        "loss": "h_place"
+      },
+      "x": {
+        "to": "h",
+        "loss": "h_place"
+      },
+      "ɣ": {
+        "to": "h",
+        "loss": "h_place_and_voicing"
+      },
+      "ɸ": {
+        "to": "h",
+        "loss": "h_place_and_manner"
+      },
+      "β": {
+        "to": "h",
+        "loss": "h_place_voicing_and_manner"
+      },
+      "ʝ": {
+        "to": "h",
+        "loss": "h_place_and_manner"
+      }
+    },
+    "remove_separators": [
+      "."
+    ],
+    "remove_diacritics": [
+      "̝",
+      "̹",
+      "̞",
+      "̠"
+    ]
+  },
+  "preserves": [
+    "stop aspiration",
+    "fortisness marker ͈",
+    "vowel length ː",
+    "unreleased-coda marker ̚",
+    "sibilant place contrast among s, ɕ and ʃ"
+  ],
+  "known_feature_losses": [
+    "lexical stress marks are removed",
+    "fricative aspiration is removed after s, ɕ and ʃ; stop aspiration is retained",
+    "retroflex and palatal lateral distinctions are collapsed to l",
+    "palatal nasal ɲ is collapsed to n",
+    "voicing/place/manner distinctions among several h-like realizations are collapsed to h",
+    "h labialization is removed",
+    "selected segmental quality diacritics are removed",
+    "syllable and word separators are removed"
+  ],
+  "limitations": [
+    "This profile is a research-only sensitivity analysis, not a normative IPA gold convention.",
+    "It intentionally does not merge s with ɕ or ʃ; a separate, independently adjudicated sibilant policy is required.",
+    "A high exact score under this profile does not establish narrow phonetic accuracy or Ukrainian target quality."
+  ]
+}

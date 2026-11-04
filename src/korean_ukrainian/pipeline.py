@@ -224,11 +224,22 @@ def _unlicensed_ambiguous_pronunciation_contexts(traces, final_items):
                 candidate = True
                 reason = "ㄺ-before-ㄱ fortition depends on lexical/morphological class"
             elif rule_id == "R013" and coda == "ㄹ" and onset == "ㄱ" and b.get("text") == "게":
-                # NIKL Standard Pronunciation Rule 27's attached ending -ㄹ게
-                # is explicitly documented as [ㄹ께]. Keep this narrow so
-                # unrelated lexical sequences such as 일본/실수 are not
-                # falsely treated as unresolved adnominal constructions.
-                candidate = True
+                # Only the complete attached ending -ㄹ게 (or attested -ㄹ게요)
+                # is ambiguous here. An internal substring such as 올게이 is
+                # not an R013 candidate and must not be blocked by this guard.
+                following = before[i + 2] if i + 2 < len(before) else None
+                ending_is_complete = (
+                    following is None
+                    or b.get("boundary_after") == "word"
+                    or (
+                        following.get("text") == "요"
+                        and (
+                            i + 2 == len(before) - 1
+                            or following.get("boundary_after") == "word"
+                        )
+                    )
+                )
+                candidate = ending_is_complete
                 reason = "the -ㄹ게 ending requires fortition evidence or a licensed morphology mode"
             if not candidate:
                 continue

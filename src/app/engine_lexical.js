@@ -29,6 +29,36 @@ function renderLexicalIpa(text, ipas){
 }
 
 export function lexicalResult(text,entry){
+  if(entry.ipa_adjudication_status==='diagnostic_only_unresolved_pronunciation'){
+    const syllables=[...text];
+    const alternateSurface=entry.alternate_surface_hangul||'';
+    return {
+      source:text,
+      surfaceHangul:entry.surface_hangul||'',
+      pronunciation_status:'unresolved',
+      ukrainian:'',
+      ipa:'',
+      analysis:text+' → '+(entry.surface_hangul||'')+' (independent IPA adjudication required)',
+      variants:alternateSurface?[{
+        source:text,
+        surface:alternateSurface,
+        ukrainian:'',
+        ipa:'',
+        note:entry.variant_note||'Source-attested Hangul variant; IPA requires independent adjudication.',
+        status:'unresolved'
+      }]:[],
+      trace:syllables.map(ch=>({
+        source:ch,
+        status:'unresolved',
+        rules:['lexical-pronunciation','independent-ipa-adjudication-required'],
+        output:'',
+        ipa:''
+      })),
+      issues:[text+': Korean surface readings are source-attested, but IPA has not been independently adjudicated; IPA and Ukrainian output are withheld.'],
+      target_status:'unavailable',
+      status:'unresolved'
+    };
+  }
   const ipas=entry.ipa_syllables.split('|');
   const mappedTargets=ipas.map(ipa=>ipaSyllableToUkrainian(ipa,{allowProvisional:true}));
   const targets=mappedTargets.map((item,i)=>item.unknown?'⟦'+ipas[i]+'⟧':item.text);

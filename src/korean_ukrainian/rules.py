@@ -669,10 +669,29 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
         if rule_id=="R013":
             for i in range(len(items)-1):
                 a,b=items[i],items[i+1]
-                if a.boundary_after!="word" and a.coda=="ㄹ" and b.text=="게" and b.onset=="ㄱ":
-                    pair=f"{a.text}>{b.text}"
-                    exact_pairs.add(pair)
-                    attested_l_ge_pairs.add(pair)
+                if a.boundary_after=="word" or a.coda!="ㄹ" or b.text!="게" or b.onset!="ㄱ":
+                    continue
+                # Q&A 330963 licenses the complete attached ending -ㄹ게.
+                # A following 요 is the one supported sentence-final particle
+                # extension; an arbitrary continuation (e.g. 올게이) is not.
+                ending_is_complete = (
+                    i + 1 == len(items) - 1
+                    or b.boundary_after == "word"
+                    or (
+                        i + 2 == len(items) - 1
+                        and items[i + 2].text == "요"
+                    )
+                    or (
+                        i + 2 < len(items)
+                        and items[i + 2].text == "요"
+                        and items[i + 2].boundary_after == "word"
+                    )
+                )
+                if not ending_is_complete:
+                    continue
+                pair=f"{a.text}>{b.text}"
+                exact_pairs.add(pair)
+                attested_l_ge_pairs.add(pair)
         if not exact_pairs and not word_exact_pair_contexts:
             name,source,confidence=RULE_META[rule_id]
             return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)

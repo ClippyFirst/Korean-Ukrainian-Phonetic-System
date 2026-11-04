@@ -468,6 +468,41 @@ def test_nikl_section_24_exact_form_licenses_cover_dalmda_and_neomge_without_gen
     assert traces[0].status == "conditional-disabled"
 
 
+
+def test_nikl_qna_330963_l_ge_license_requires_complete_attached_ending_boundary():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    # NIKL Q&A 330963 licenses the complete attached ending -ㄹ게, including
+    # its particle-요 form; it does not license an internal ㄹ+게 substring.
+    for word, expected_surface in [("할게", "할께"), ("올게", "올께"), ("할게요", "할께요"), ("올게요", "올께요")]:
+        result = phoneticize_korean(word)
+        assert result["surface_hangul"] == expected_surface, word
+        assert any(
+            trace.get("rule_id") == "R013"
+            and trace.get("changed")
+            and trace.get("license_context") == f"R013:attested_l_ge_ending:{word}:{word[:1]}>{word[1:2]}"
+            for trace in result["rules"]
+        ), word
+
+    # The UGTPHON token 올게이 is a boundary negative control, not normative IPA gold.
+    for word in ["올게이", "할게이"]:
+        result = phoneticize_korean(word)
+        assert result["surface_hangul"] == word, word
+        # An internal ㄹ+게 sequence is not the attested ending -ㄹ게.
+        # It remains a provisional project analysis, but not a diagnostic-only
+        # abstention caused by an R013 rule that does not apply.
+        assert result["pronunciation_status"] == "provisional", word
+        assert result["ipa"]["status"] == "provisional", word
+        assert result["ipa"]["is_diagnostic_only"] is False, word
+        assert isinstance(result["ipa"].get("ipa"), str) and result["ipa"]["ipa"], word
+        assert not any(
+            trace.get("rule_id") == "R013"
+            and trace.get("changed")
+            and trace.get("license_context", "").startswith("R013:attested_l_ge_ending:")
+            for trace in result["rules"]
+        ), word
+
+
 def test_section_27_adnominal_l_fortition_can_cross_a_word_boundary_only_with_phrase_evidence():
     items,traces=apply_ordered_rules(
         parse_syllables("할 것"),["R013"],boundary_mode="phrase",
@@ -1008,3 +1043,11 @@ def test_nikl_section_26_source_derived_silsigan_exact_license():
     items, traces = apply_ordered_rules(parse_syllables("실구간"))
     assert items[1].onset == "ㄱ"
     assert traces[9].status == "conditional-disabled"
+
+
+def test_nikl_basic_dictionary_70041_preserves_initial_length_in_dae_han_min_guk():
+    result = phoneticize_korean("대한민국")
+    assert result["surface_hangul"] == "대한민국"
+    assert result["ipa"]["ipa"] == "teː.han.min.ɡuk̚"
+    assert result["ipa"]["status"] == "provisional"
+    assert result["ipa"]["is_diagnostic_only"] is False

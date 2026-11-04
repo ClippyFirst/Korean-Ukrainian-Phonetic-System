@@ -1,3 +1,28 @@
+## 2026-11-02 continuation — Broad IPA benchmark v2 and same-profile runtime audit
+
+PR [#420](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/420) adds a versioned 'broad-candidate-ipa-v2' scoring contract to the existing 10-engine benchmark. The normalization profile itself remains 'korean-broad-candidate-sensitivity-v1' (profile version 1); benchmark version 2 adds occurrence-level feature-loss/serialization-loss reporting, explicit coverage-adjusted exact match, and a Native-vs-Browser same-occurrence audit. Strict IPA exact/CER remain separate.
+
+**Runtime profile contract:** Python Native uses 'clippyfirst-korean-broad-v1'. The Browser benchmark now explicitly requests that same profile; its previous 'browser-legacy-contextual-v1' remains the default for normal callers. The old Browser 93.81% Broad score is therefore not comparable with Native 86.25%; the 7.56 pp gap was mainly the 's' vs 'ɕ' profile difference (231/232 raw IPA mismatches in the old paired artifact), plus one '올게이' R013 boundary false positive now fixed. Exact-head runtime parity must be read from the new workflow artifact; no 99.9% claim is made yet.
+
+**Historical recomputation from raw artifact 13129993707** (pre-R013-fix; research-only, not the v2 exact-head artifact):
+
+| Engine | UGTPHON Broad exact | UGTPHON CER | SIGMORPHON Broad exact | SIGMORPHON CER |
+|---|---:|---:|---:|---:|
+| Kozak Kim Native | 2327/2698 (86.25%) | 2.22% | 695/998 (69.64%) | 6.23% |
+| g2pK 0.9.4 | 2317/2703 (85.72%) | 2.37% | 686/999 (68.67%) | 6.46% |
+| g2p-ko 1.0.0 | 2293/2703 (84.83%) | 2.54% | 690/999 (69.07%) | 6.31% |
+| KoG2Padvanced | 1900/2703 (70.29%) | 4.92% | 597/999 (59.76%) | 8.78% |
+| phonemize | 1901/2703 (70.33%) | 7.73% | 582/999 (58.26%) | 9.31% |
+| KoG2P 2019 | 1102/2703 (40.77%) | 13.35% | 345/999 (34.53%) | 14.39% |
+| kokorog2p | 770/2703 (28.49%) | 20.39% | 204/999 (20.42%) | 23.18% |
+| hama | 765/2703 (28.30%) | 18.98% | 275/999 (27.53%) | 19.99% |
+| hangul_to_ipa | 696/2703 (25.75%) | 19.61% | 172/999 (17.22%) | 23.48% |
+| espeak-ng | 326/2703 (12.06%) | 29.92% | 67/999 (6.71%) | 36.33% |
+
+Native coverage was 2698/2703 on UGTPHON and 998/999 on SIGMORPHON; coverage-adjusted exact was 86.09% and 69.57%. These historical results show a small Broad exact lead over original g2pK (+0.56 pp on paired UGTPHON; +0.90 pp on paired SIGMORPHON) and g2p-ko (+1.41 pp and +0.50 pp paired), but they do **not** meet the 90% exact / <=2% CER targets. The broad normalizer intentionally removes selected narrow distinctions and is research-only, not normative IPA gold.
+
+The current exact-head workflow run for commit 'a921f268c9f19ae3f19ad3c7b134fdc0aff78c2e' is queued: system verification '41440127701', multi-engine benchmark '41440127807', and external UGTPHON '41440127686'. No current-head pass is claimed until those jobs finish and their artifacts are inspected.
+
 ## Integration checkpoint — corrected 10-engine benchmark integrated and validated (2026-10-31)
 
 PR [#399](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/399) added schema-v1 occurrence ledgers; PR [#401](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/401) integrated the corrected extended benchmark into main as `eb8e1f100e8aca377aef05a2aa896756c909ec5c`. The corrected implementation uses nearest-rank p95, independently selects the best IPA gold alternative per metric, validates ledger identity/order/score fields, and exposes CER, broad-IPA segment PER, and the project-defined feature-weighted proxy.

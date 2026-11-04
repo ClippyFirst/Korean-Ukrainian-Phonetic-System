@@ -21,7 +21,7 @@ import sys
 import time
 import statistics
 import unicodedata
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any, Callable
 
@@ -66,6 +66,89 @@ def kog2p_phones_to_ipa(value: str) -> str:
 
 def _gold_variants(raw: str) -> list[str]:
     return [normalize_ipa(part) for part in raw.split(",") if part.strip()]
+
+
+def _load_broad_candidate_profile() -> dict[str, Any]:
+    path = Path(__file__).resolve().parents[1] / "data/korean/ipa/broad-candidate-normalization-v1.json"
+    profile = json.loads(path.read_text(encoding="utf-8"))
+    if profile.get("schema_version") != 1 or profile.get("profile_id") != "korean-broad-candidate-sensitivity-v1":
+        raise ValueError("unsupported broad-candidate normalization profile")
+    return profile
+
+
+BROAD_CANDIDATE_BENCHMARK_VERSION = 2
+_BROAD_CANDIDATE_PROFILE = _load_broad_candidate_profile()
+_BROAD_OPS = _BROAD_CANDIDATE_PROFILE["operations"]
+_BROAD_ALLOPHONE_MAP = _BROAD_OPS["allophone_map"]
+
+
+def normalize_ipa_broad_candidate_with_loss(value: str) -> tuple[str, dict[str, dict[str, int]]]:
+    """Apply the shared research-only broad-candidate profile and expose every feature loss."""
+    text = unicodedata.normalize("NFC", str(value or ""))
+    losses: Counter[str] = Counter()
+    serialization: Counter[str] = Counter()
+
+    canonical_g = _BROAD_OPS["canonicalize_g"]
+    if "g" in text:
+        serialization["ascii_g_to_ipa_script_g"] += text.count("g")
+        text = text.replace("g", canonical_g)
+
+    tie_bar = _BROAD_OPS["remove_tie_bar"]
+    if tie_bar in text:
+        serialization["affricate_tie_bar_removed"] += text.count(tie_bar)
+        text = text.replace(tie_bar, "")
+
+    chars = list(text)
+    normalized: list[str] = []
+    stress_markers = set(_BROAD_OPS["remove_stress_markers"])
+    fricatives = set(_BROAD_OPS["remove_fricative_aspiration"]["after"])
+    aspiration_marker = _BROAD_OPS["remove_fricative_aspiration"]["marker"]
+    labialization = _BROAD_OPS["remove_h_labialization"]["marker"]
+    labialization_base = _BROAD_OPS["remove_h_labialization"]["base"]
+
+    index = 0
+    while index < len(chars):
+        char = chars[index]
+        if char in stress_markers:
+            losses["lexical_stress"] += 1
+            index += 1
+            continue
+        if char in fricatives and index + 1 < len(chars) and chars[index + 1] == aspiration_marker:
+            losses["fricative_aspiration"] += 1
+            normalized.append(char)
+            index += 2
+            continue
+        if char == labialization and normalized and normalized[-1] == labialization_base:
+            losses["h_labialization"] += 1
+            index += 1
+            continue
+        mapping = _BROAD_ALLOPHONE_MAP.get(char)
+        if mapping:
+            losses[mapping["loss"]] += 1
+            normalized.append(mapping["to"])
+        else:
+            normalized.append(char)
+        index += 1
+
+    separators = set(_BROAD_OPS["remove_separators"])
+    ignored_diacritics = set(_BROAD_OPS["remove_diacritics"])
+    output: list[str] = []
+    for char in normalized:
+        if char.isspace() or char in separators:
+            serialization["syllable_or_word_boundary_removed"] += 1
+        elif char in ignored_diacritics:
+            losses["selected_segmental_quality_diacritics"] += 1
+        else:
+            output.append(char)
+
+    return unicodedata.normalize("NFC", "".join(output)), {
+        "feature_loss_counts": dict(sorted(losses.items())),
+        "serialization_normalization_counts": dict(sorted(serialization.items())),
+    }
+
+
+def normalize_ipa_broad_candidate(value: str) -> str:
+    return normalize_ipa_broad_candidate_with_loss(value)[0]
 
 
 
@@ -218,6 +301,15 @@ def _score(prediction: str, gold_raw: str) -> dict[str, Any]:
     feature_candidates = [(_segment_edit_distance(predicted_segments, _ipa_segments(gold), weighted=True), gold, _ipa_segments(gold)) for gold in variants]
     feature_distance, feature_gold, feature_reference_segments = min(feature_candidates, key=lambda item: item[0])
     unsupported = sum(_segment_features(segment).get("kind") == "unknown" for segment in predicted_segments + feature_reference_segments)
+    broad_prediction, prediction_loss = normalize_ipa_broad_candidate_with_loss(prediction)
+    broad_gold_variants = [
+        normalize_ipa_broad_candidate(part)
+        for part in gold_raw.split(",") if part.strip()
+    ]
+    broad_distance, broad_closest = min(
+        ((edit_distance(broad_prediction, gold), gold) for gold in broad_gold_variants),
+        key=lambda pair: pair[0],
+    )
     return {
         "predicted": prediction, "normalized_predicted": predicted,
         "closest_normalized_gold": closest, "closest_phoneme_gold": phoneme_gold,
@@ -229,6 +321,15 @@ def _score(prediction: str, gold_raw: str) -> dict[str, Any]:
         "feature_weighted_distance": round(feature_distance, 6),
         "feature_reference_phoneme_count": len(feature_reference_segments),
         "unsupported_feature_segments": unsupported,
+        "broad_candidate": {
+            "predicted": broad_prediction,
+            "closest_gold": broad_closest,
+            "distance": broad_distance,
+            "exact": broad_distance == 0,
+            "reference_length": len(broad_closest),
+            "prediction_feature_loss_counts": prediction_loss["feature_loss_counts"],
+            "prediction_serialization_normalization_counts": prediction_loss["serialization_normalization_counts"],
+        },
     }
 
 
@@ -254,6 +355,14 @@ def _build_per_engine_occurrences(
                 "token": word,
                 "gold": item["gold"],
             }
+            if engine == "clippyfirst_native":
+                source = native_cache.get(word, {})
+                record.update({
+                    "surface_hangul": source.get("surface_hangul"),
+                    "ipa_profile": source.get("ipa_profile"),
+                    "ipa_profile_version": source.get("ipa_profile_version"),
+                    "ipa_profile_status": source.get("ipa_profile_status"),
+                })
             scored = scored_by_id.get(occurrence_id)
             if scored is not None:
                 record.update({
@@ -263,6 +372,7 @@ def _build_per_engine_occurrences(
                     "exact": scored.get("exact"),
                     "distance": scored.get("distance"),
                     "reference_length": scored.get("reference_length"),
+                    "broad_candidate": scored.get("broad_candidate"),
                 })
             else:
                 if engine == "clippyfirst_native":
@@ -308,6 +418,57 @@ def _metrics(items: list[dict[str, Any]]) -> dict[str, Any]:
         "predicted_phonemes": predicted_phonemes,
         "unsupported_feature_segments": unsupported, "reference_characters": ref_chars,
     }
+
+
+def _broad_candidate_scoring_items(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [
+        {
+            **item,
+            "exact": bool(item["broad_candidate"]["exact"]),
+            "distance": int(item["broad_candidate"]["distance"]),
+            "reference_length": int(item["broad_candidate"]["reference_length"]),
+        }
+        for item in items if isinstance(item.get("broad_candidate"), dict)
+    ]
+
+
+def _broad_candidate_metrics(items: list[dict[str, Any]]) -> dict[str, Any]:
+    broad_items = [item.get("broad_candidate") for item in items if isinstance(item.get("broad_candidate"), dict)]
+    if not broad_items:
+        return {
+            "scored_tokens": 0, "exact_matches": 0, "exact_match_rate": None,
+            "character_error_rate": None, "character_errors": 0,
+            "reference_characters": 0, "prediction_feature_loss_counts": {},
+            "prediction_serialization_normalization_counts": {},
+        }
+    exact = sum(bool(item["exact"]) for item in broad_items)
+    distance = sum(int(item["distance"]) for item in broad_items)
+    reference_characters = sum(int(item["reference_length"]) for item in broad_items)
+    feature_losses: Counter[str] = Counter()
+    serialization: Counter[str] = Counter()
+    for item in broad_items:
+        feature_losses.update(item.get("prediction_feature_loss_counts", {}))
+        serialization.update(item.get("prediction_serialization_normalization_counts", {}))
+    return {
+        "scored_tokens": len(broad_items),
+        "exact_matches": exact,
+        "exact_match_rate": round(exact / len(broad_items), 6),
+        "character_error_rate": round(distance / reference_characters, 6) if reference_characters else None,
+        "character_errors": distance,
+        "reference_characters": reference_characters,
+        "prediction_feature_loss_counts": dict(sorted(feature_losses.items())),
+        "prediction_serialization_normalization_counts": dict(sorted(serialization.items())),
+    }
+
+
+def _reference_broad_candidate_loss(items: list[dict[str, Any]]) -> dict[str, int]:
+    counts: Counter[str] = Counter()
+    for item in items:
+        for variant in str(item.get("gold", "")).split(","):
+            if variant.strip():
+                _normalized, loss = normalize_ipa_broad_candidate_with_loss(variant)
+                counts.update(loss["feature_loss_counts"])
+    return dict(sorted(counts.items()))
 
 
 def _bootstrap_ci(items: list[dict[str, Any]], replicates: int = BOOTSTRAP_REPLICATES) -> dict[str, Any]:
@@ -442,6 +603,159 @@ def _paired_bootstrap_delta_ci(
         "exact_delta_interval_direction": interval_direction(exact_ci),
         "cer_delta_interval_direction": interval_direction(cer_ci),
         "interpretation": "paired diagnostic interval only; positive exact delta favors candidate, negative CER delta favors candidate. Interval direction is descriptive and is not a substitute for preregistered statistical inference or independent gold validation.",
+    }
+
+
+def _native_competitor_error_analysis(
+    scored_by_engine: dict[str, list[dict[str, Any]]],
+) -> dict[str, Any]:
+    """Compare Kozak Kim with g2pK and g2p-ko on identical scored occurrences."""
+    native_by_id = {str(item["occurrence_id"]): item for item in scored_by_engine.get("clippyfirst_native", [])}
+    comparisons: dict[str, Any] = {}
+    competitor_names = ("g2pk_0_9_4", "g2p_ko_1_0_0")
+    indexed: dict[str, dict[str, dict[str, Any]]] = {}
+
+    def view(item: dict[str, Any], broad: bool) -> dict[str, Any]:
+        if not broad:
+            return item
+        candidate = item.get("broad_candidate")
+        if not isinstance(candidate, dict):
+            raise ValueError("broad candidate score missing from occurrence ledger")
+        return {
+            **item,
+            "exact": bool(candidate["exact"]),
+            "distance": int(candidate["distance"]),
+            "reference_length": int(candidate["reference_length"]),
+        }
+
+    for name in competitor_names:
+        candidate_by_id = {str(item["occurrence_id"]): item for item in scored_by_engine.get(name, [])}
+        indexed[name] = candidate_by_id
+        common_ids = sorted(set(native_by_id) & set(candidate_by_id))
+        candidate_items = [candidate_by_id[key] for key in common_ids]
+        native_items = [native_by_id[key] for key in common_ids]
+        for left, right in zip(candidate_items, native_items):
+            if str(left["row_id"]) != str(right["row_id"]) or str(left["token"]) != str(right["token"]):
+                raise ValueError(f"{name}: paired occurrence identity mismatch at {left['occurrence_id']}")
+
+        def summary(broad: bool) -> dict[str, Any]:
+            candidate_view = [view(item, broad) for item in candidate_items]
+            native_view = [view(item, broad) for item in native_items]
+            if broad:
+                cm, nm = _broad_candidate_metrics(candidate_items), _broad_candidate_metrics(native_items)
+            else:
+                cm, nm = _metrics(candidate_view), _metrics(native_view)
+            category_counts: Counter[str] = Counter()
+            worse: list[dict[str, Any]] = []
+            for candidate, native in zip(candidate_view, native_view):
+                if candidate["exact"] and native["exact"]:
+                    category = "both_exact"
+                elif candidate["exact"]:
+                    category = "competitor_only_exact"
+                elif native["exact"]:
+                    category = "native_only_exact"
+                else:
+                    category = "both_not_exact"
+                category_counts[category] += 1
+                if int(native["distance"]) > int(candidate["distance"]):
+                    worse.append({
+                        "occurrence_id": native["occurrence_id"],
+                        "row_id": native["row_id"],
+                        "token": native["token"],
+                        "gold": native["gold"],
+                        "native_ipa": native.get("predicted"),
+                        "competitor_ipa": candidate.get("predicted"),
+                        "native_distance": native["distance"],
+                        "competitor_distance": candidate["distance"],
+                        "native_exact": native["exact"],
+                        "competitor_exact": candidate["exact"],
+                    })
+            return {
+                "paired_scored_occurrences": len(common_ids),
+                "native": nm,
+                "competitor": cm,
+                "competitor_minus_native_exact_rate": (
+                    round(cm["exact_match_rate"] - nm["exact_match_rate"], 6)
+                    if cm["exact_match_rate"] is not None and nm["exact_match_rate"] is not None else None
+                ),
+                "competitor_minus_native_cer": (
+                    round(cm["character_error_rate"] - nm["character_error_rate"], 6)
+                    if cm["character_error_rate"] is not None and nm["character_error_rate"] is not None else None
+                ),
+                "exact_classification_counts": dict(sorted(category_counts.items())),
+                "native_distance_worse_occurrences": worse,
+            }
+
+        comparisons[name] = {
+            "strict": summary(False),
+            "broad_candidate": summary(True),
+        }
+
+    common_triad = set(native_by_id)
+    for name in competitor_names:
+        common_triad &= set(indexed.get(name, {}))
+    triad_cases: dict[str, list[dict[str, Any]]] = {
+        "strict_native_not_exact_both_competitors_exact": [],
+        "strict_native_distance_worse_than_both": [],
+        "broad_native_not_exact_both_competitors_exact": [],
+        "broad_native_distance_worse_than_both": [],
+    }
+    for occurrence_id in sorted(common_triad):
+        native = native_by_id[occurrence_id]
+        g2pk = indexed["g2pk_0_9_4"][occurrence_id]
+        g2p_ko = indexed["g2p_ko_1_0_0"][occurrence_id]
+        if str(native["row_id"]) != str(g2pk["row_id"]) or str(native["row_id"]) != str(g2p_ko["row_id"]):
+            raise ValueError(f"triad row identity mismatch at {occurrence_id}")
+
+        def add_case(key: str, broad: bool, condition: bool) -> None:
+            if not condition:
+                return
+            n, a, b = view(native, broad), view(g2pk, broad), view(g2p_ko, broad)
+            triad_cases[key].append({
+                "occurrence_id": occurrence_id,
+                "row_id": native["row_id"],
+                "token": native["token"],
+                "gold": native["gold"],
+                "native_ipa": native.get("predicted"),
+                "g2pk_ipa": g2pk.get("predicted"),
+                "g2p_ko_ipa": g2p_ko.get("predicted"),
+                "native_distance": n["distance"],
+                "g2pk_distance": a["distance"],
+                "g2p_ko_distance": b["distance"],
+                "native_exact": n["exact"],
+                "g2pk_exact": a["exact"],
+                "g2p_ko_exact": b["exact"],
+            })
+
+        add_case(
+            "strict_native_not_exact_both_competitors_exact", False,
+            not native["exact"] and g2pk["exact"] and g2p_ko["exact"],
+        )
+        add_case(
+            "strict_native_distance_worse_than_both", False,
+            native["distance"] > g2pk["distance"] and native["distance"] > g2p_ko["distance"],
+        )
+        nb, ab, bb = view(native, True), view(g2pk, True), view(g2p_ko, True)
+        add_case(
+            "broad_native_not_exact_both_competitors_exact", True,
+            not nb["exact"] and ab["exact"] and bb["exact"],
+        )
+        add_case(
+            "broad_native_distance_worse_than_both", True,
+            nb["distance"] > ab["distance"] and nb["distance"] > bb["distance"],
+        )
+
+    return {
+        "comparisons": comparisons,
+        "three_way_common_scored_occurrences": len(common_triad),
+        "native_loses_to_both": {
+            key: {"count": len(values), "occurrences": values}
+            for key, values in triad_cases.items()
+        },
+        "interpretation": (
+            "Occurrence-level differential analysis only. UGTPHON/SIGMORPHON annotations are not normative IPA gold; "
+            "a lower edit distance is a review priority, not proof of a correct pronunciation."
+        ),
     }
 
 
@@ -1050,8 +1364,14 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
     for word in words:
         try:
             result = phoneticize_korean(word)
+            ipa_payload = result.get("ipa", {})
             native_cache[word] = {
-                "ipa": result.get("ipa", {}).get("ipa"),
+                "ipa": ipa_payload.get("ipa"),
+                "surface_hangul": result.get("surface_hangul"),
+                "ipa_profile": ipa_payload.get("ipa_profile"),
+                "ipa_profile_version": ipa_payload.get("ipa_profile_version"),
+                "ipa_profile_level": ipa_payload.get("ipa_profile_level"),
+                "ipa_profile_status": ipa_payload.get("ipa_profile_status"),
                 "unresolved": result.get("pronunciation_status") == "unresolved",
                 "reason": result.get("ipa_status_reason"),
                 "unresolved_contexts": result.get("unresolved_contexts", []),
@@ -1103,8 +1423,16 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
     for name, scored in scored_by_engine.items():
         attempted = len(items)
         metrics = _metrics(scored)
+        broad_metrics = _broad_candidate_metrics(scored)
         result: dict[str, Any] = {
             **metrics,
+            "broad_candidate": {
+                **broad_metrics,
+                "coverage_adjusted_exact_match_rate": (
+                    round(broad_metrics["exact_matches"] / attempted, 6) if attempted else None
+                ),
+                "bootstrap_95pct_ci": _bootstrap_ci(_broad_candidate_scoring_items(scored)),
+            },
             "attempted_tokens": attempted,
             "coverage": round(len(scored) / attempted, 6) if attempted else None,
             "coverage_adjusted_exact_match_rate": round(metrics["exact_matches"] / attempted, 6) if attempted else None,
@@ -1120,9 +1448,27 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             paired_candidate = [by_key[k] for k in keys]
             paired_native = [native_by_key[k] for k in keys]
             cm, nm = _metrics(paired_candidate), _metrics(paired_native)
+            broad_cm = _broad_candidate_metrics(paired_candidate)
+            broad_nm = _broad_candidate_metrics(paired_native)
             result["paired_with_native"] = {
                 "paired_tokens": len(keys),
                 "candidate": cm, "native": nm,
+                "broad_candidate": {
+                    "candidate": broad_cm,
+                    "native": broad_nm,
+                    "exact_rate_delta_candidate_minus_native": (
+                        round(broad_cm["exact_match_rate"] - broad_nm["exact_match_rate"], 6)
+                        if broad_cm["exact_match_rate"] is not None and broad_nm["exact_match_rate"] is not None else None
+                    ),
+                    "cer_delta_candidate_minus_native": (
+                        round(broad_cm["character_error_rate"] - broad_nm["character_error_rate"], 6)
+                        if broad_cm["character_error_rate"] is not None and broad_nm["character_error_rate"] is not None else None
+                    ),
+                    "paired_bootstrap_delta_95pct_ci": _paired_bootstrap_delta_ci(
+                        _broad_candidate_scoring_items(paired_candidate),
+                        _broad_candidate_scoring_items(paired_native),
+                    ),
+                },
                 "exact_rate_delta_candidate_minus_native": (
                     round(cm["exact_match_rate"] - nm["exact_match_rate"], 6)
                     if cm["exact_match_rate"] is not None and nm["exact_match_rate"] is not None else None
@@ -1264,7 +1610,8 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
 
     return {
         "benchmark": args.benchmark_name,
-        "benchmark_version": "multi-engine-ipa-diagnostic-v5",
+        "benchmark_version": "multi-engine-ipa-diagnostic-v6",
+        "broad_candidate_benchmark": "broad-candidate-ipa-v2",
         "dataset_source": args.dataset_source,
         "native_abstention_audit": {
             "occurrence_count": len(native_abstention_audit),
@@ -1282,9 +1629,23 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "rules": "NFD canonicalization, g->ɡ, tie bars and selected narrow diacritics (including retraction U+0320) removed, spaces/periods removed; stress/length/aspiration/fortis/unreleased stops retained",
             "gold_variants": "CER, PER and feature proxy independently select the best comma-separated IPA alternative for their own metric",
         },
+        "broad_candidate_profile": {
+            **_BROAD_CANDIDATE_PROFILE,
+            "reference_feature_loss_counts": _reference_broad_candidate_loss(items),
+        },
         "engine_order": list(engine_results),
+        "native_ipa_profile": next((
+            {
+                "ipa_profile": value.get("ipa_profile"),
+                "ipa_profile_version": value.get("ipa_profile_version"),
+                "ipa_profile_level": value.get("ipa_profile_level"),
+                "ipa_profile_status": value.get("ipa_profile_status"),
+            }
+            for value in native_cache.values() if value.get("ipa_profile")
+        ), None),
         "engines": engine_results,
-        "occurrence_ledger_schema_version": 1,
+        "occurrence_ledger_schema_version": 2,
+        "broad_candidate_benchmark_version": BROAD_CANDIDATE_BENCHMARK_VERSION,
         "per_engine_occurrences": _build_per_engine_occurrences(
             items, scored_by_engine, predictions, native_cache
         ),
@@ -1306,6 +1667,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "interpretation": "complete occurrence-level native-vs-g2pk diagnostic; categories compare each prediction to the corpus annotation, which is not normative gold",
             "occurrences": native_g2pk_pairwise_audit,
         },
+        "native_competitor_error_analysis": _native_competitor_error_analysis(scored_by_engine),
         "upstream_pins": {
             "g2pk": "0.9.4",
             "KoG2P": "scarletcho/KoG2P commit cbc69bbe1439862364d4ffd1552f59b930f655c7; GPL-3.0; executed as external checkout, not vendored",

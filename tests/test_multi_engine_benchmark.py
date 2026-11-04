@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import json
+import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -8,6 +11,9 @@ sys.path.insert(0, str(SCRIPTS))
 
 from benchmark_multi_engine_ko import (  # noqa: E402
     _bootstrap_ci,
+    _broad_candidate_metrics,
+    BROAD_CANDIDATE_BENCHMARK_VERSION,
+    _native_competitor_error_analysis,
     _build_per_engine_occurrences,
     _g2pk_surface_to_ipa,
     _g2p_ko_result_to_ipa,
@@ -19,6 +25,8 @@ from benchmark_multi_engine_ko import (  # noqa: E402
     _metrics,
     _paired_bootstrap_delta_ci,
     _score,
+    normalize_ipa_broad_candidate,
+    normalize_ipa_broad_candidate_with_loss,
     kog2p_phones_to_ipa,
 )
 
@@ -42,6 +50,82 @@ def test_scoring_uses_best_reference_variant_and_reference_length():
     assert exact["exact"] is True
     assert exact["distance"] == 0
     assert exact["reference_length"] == 3
+
+
+def test_broad_candidate_normalizer_uses_shared_profile_and_reports_feature_losses():
+    value = "ˈsʰɭɲɦçxɣɸβʝʷ̠ːt̚k͈"
+    normalized, losses = normalize_ipa_broad_candidate_with_loss(value)
+    assert normalized == "slnhhhhhhhːt̚k͈"
+    assert losses["feature_loss_counts"] == {
+        "fricative_aspiration": 1,
+        "h_labialization": 1,
+        "h_place": 2,
+        "h_place_and_manner": 2,
+        "h_place_and_voicing": 1,
+        "h_place_voicing_and_manner": 1,
+        "h_voicing": 1,
+        "lateral_retroflexion": 1,
+        "lexical_stress": 1,
+        "nasal_palatalization": 1,
+        "selected_segmental_quality_diacritics": 1,
+    }
+    assert normalize_ipa_broad_candidate("s͈i") == "s͈i"
+    assert normalize_ipa_broad_candidate("ɕʰi") == "ɕi"
+    assert normalize_ipa_broad_candidate("pʰtʰkʰk͈aːt̚") == "pʰtʰkʰk͈aːt̚"
+
+
+def test_scoring_keeps_strict_and_broad_candidate_metrics_separate():
+    scored = _score("ˈsʰa̠ːk͈ʌn", "sʰa̠ːk͈ʌn")
+    assert scored["exact"] is False
+    assert scored["broad_candidate"]["exact"] is True
+    assert scored["broad_candidate"]["predicted"] == "saːk͈ʌn"
+    assert scored["broad_candidate"]["reference_length"] == len("saːk͈ʌn")
+
+
+def test_native_competitor_error_analysis_finds_losses_to_both_baselines():
+    def item(key, distance, broad_distance):
+        return {
+            "occurrence_id": key, "row_id": "row-" + key, "token": "가" + key,
+            "gold": "ka", "predicted": "prediction-" + key,
+            "distance": distance, "exact": distance == 0, "reference_length": 2,
+            "broad_candidate": {
+                "distance": broad_distance, "exact": broad_distance == 0,
+                "reference_length": 2,
+            },
+        }
+
+    scored = {
+        "clippyfirst_native": [item("1", 2, 2), item("2", 1, 1), item("3", 2, 2)],
+        "g2pk_0_9_4": [item("1", 0, 0), item("2", 2, 2), item("3", 0, 0)],
+        "g2p_ko_1_0_0": [item("1", 1, 0), item("2", 0, 0), item("3", 0, 0)],
+    }
+    report = _native_competitor_error_analysis(scored)
+    assert report["three_way_common_scored_occurrences"] == 3
+    assert report["native_loses_to_both"]["strict_native_not_exact_both_competitors_exact"]["count"] == 1
+    assert report["native_loses_to_both"]["strict_native_distance_worse_than_both"]["count"] == 2
+    assert report["native_loses_to_both"]["broad_native_not_exact_both_competitors_exact"]["count"] == 2
+    assert report["native_loses_to_both"]["broad_native_distance_worse_than_both"]["count"] == 2
+    assert report["comparisons"]["g2pk_0_9_4"]["strict"]["paired_scored_occurrences"] == 3
+    assert report["comparisons"]["g2p_ko_1_0_0"]["broad_candidate"]["paired_scored_occurrences"] == 3
+
+
+def test_broad_candidate_benchmark_version_is_explicit():
+    assert BROAD_CANDIDATE_BENCHMARK_VERSION == 2
+
+
+def test_broad_candidate_metrics_use_their_own_denominator_and_loss_counts():
+    items = [
+        {"broad_candidate": {"exact": True, "distance": 0, "reference_length": 2,
+                             "prediction_feature_loss_counts": {"stress": 1}}},
+        {"broad_candidate": {"exact": False, "distance": 1, "reference_length": 2,
+                             "prediction_feature_loss_counts": {"h_place": 2}}},
+    ]
+    metrics = _broad_candidate_metrics(items)
+    assert metrics["scored_tokens"] == 2
+    assert metrics["exact_matches"] == 1
+    assert metrics["exact_match_rate"] == 0.5
+    assert metrics["character_error_rate"] == 0.25
+    assert metrics["prediction_feature_loss_counts"] == {"h_place": 2, "stress": 1}
 
 
 def test_metrics_report_coverage_denominator_independently():
@@ -294,3 +378,47 @@ def test_occurrence_ledger_preserves_repeated_tokens_and_explicit_non_scored_sta
     assert ledgers["g2pk_0_9_4"][2]["status"] == "error"
     assert ledgers["g2pk_0_9_4"][2]["reason"] == "adapter failed"
     assert ledgers["g2pk_0_9_4"][1]["row_id"] == "r2"
+
+
+
+def test_broad_candidate_normalizer_matches_browser_runtime():
+    """The Python and browser benchmark adapters must implement one shared profile."""
+    node = shutil.which("node")
+    if node is None:
+        import pytest
+        pytest.skip("Node.js is required for the cross-runtime IPA profile parity check")
+
+    root = Path(__file__).resolve().parents[1]
+    cases = [
+        "ˈsʰɭɲɦçxɣɸβʝʷ̠ːt̚k͈",
+        "t͡ɕʰi",
+        "kɡa.ɾɯn",
+        "s͈i ɕʰi ʃʰi",
+        "a\u0320",
+        "",
+    ]
+    node_source = (
+        "import { readFileSync } from 'node:fs';"
+        "import { normalizeIpaBroadCandidateWithLoss } "
+        "from './scripts/benchmark_kozak_kim_browser.mjs';"
+        "const values = JSON.parse(readFileSync(0, 'utf8'));"
+        "process.stdout.write(JSON.stringify(values.map(normalizeIpaBroadCandidateWithLoss)));"
+    )
+    completed = subprocess.run(
+        [node, "--input-type=module", "-e", node_source],
+        input=json.dumps(cases, ensure_ascii=False),
+        text=True,
+        capture_output=True,
+        cwd=root,
+        check=True,
+    )
+    browser = json.loads(completed.stdout)
+    python = []
+    for value in cases:
+        normalized, audit = normalize_ipa_broad_candidate_with_loss(value)
+        python.append({
+            "normalized": normalized,
+            "feature_loss_counts": audit["feature_loss_counts"],
+            "serialization_normalization_counts": audit["serialization_normalization_counts"],
+        })
+    assert browser == python

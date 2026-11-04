@@ -127,6 +127,7 @@ test('C09 NIKL dictionary length attestations enter the Kozak Kim IPA-first lexi
     '사람': { ipa: 'saː|ɾam', target: 'са|рам', source: 'ParaWordNo=58161' },
     '모르다': { ipa: 'moː|ɾɯ|da', target: 'мо|ри|да', source: 'ParaWordNo=29712' },
     '괴성': { ipa: 'køː|sʌŋ', target: 'кве|сон', source: 'krdict.korean.go.kr', alternate: 'kweː|sʌŋ' },
+    '대한민국': { ipa: 'teː|han|min|ɡuk̚', target: 'те|ган|мін|ґук', source: 'ParaWordNo=70041' },
   };
   for (const [word, item] of Object.entries(expected)) {
     const row = additions.find(entry => entry.input === word);

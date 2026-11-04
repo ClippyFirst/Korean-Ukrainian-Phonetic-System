@@ -1,3 +1,133 @@
+# 2026-11-02 task ledger — Kozak Kim cross-runtime continuation
+
+## 2026-11-02 — Kozak Kim cross-runtime evidence and parity continuation
+
+**Scope:** Kozak Kim only. Original g2pK code and vendor files remain unchanged. No new general phonological rule was added.
+
+**Repository state:** branch `fix/kozak-kim-broad-version-metadata-2026-11-02`; Draft PR #421 stacked on Draft PR #420; code/test head `b4ace0eba2d1573cd78b1e6a971de5556a0bcb3c`. Starting point was PR #420 head `2db86dd97eab99fc18d5fa30c82febb76d5a4068`. No merge, release, deployment, or branch deletion.
+
+| Work item | Status | Evidence / acceptance |
+|---|---|---|
+| Browser Broad IPA v2 metadata contract | DONE_VERIFIED | Browser report now keeps numeric `broad_candidate_benchmark_version: 2`; regression test covers actual `evaluateRows()` output. |
+| IPA adjudication overlay in Browser runtime | DONE_VERIFIED | App and benchmark merge the existing IPA-adjudication CSV with appended metadata column preserved. `삶의` retains source-backed Hangul `살믜` / `살메`, but IPA and Ukrainian output are withheld. |
+| Native R013 false abstention | DONE_VERIFIED | Exact attached `-ㄹ게` / attested `-ㄹ게요` completion gate is shared by rule and abstention logic. Internal substrings `올게이` / `할게이` remain non-R013 controls and return provisional, non-diagnostic-only project IPA. |
+| Broad-profile Browser surface coda rendering | DONE_VERIFIED | Shared research profile renders representative final coda (`있다` → `읻따`); default Browser legacy profile remains `있따`. |
+| Python regression/data integrity | DONE_VERIFIED | System verification run 41447654924 PASS (`python -m pytest -q`). |
+| Browser regression/build | DONE_VERIFIED | System verification run 41447654924 PASS; 1,382 / 1,382 tests; `npm run build`; generated-page checks. |
+| Browser/Native occurrence-level IPA parity | PARTIAL | Multi-engine run 41447654927 completed its Browser comparison and parity-audit steps successfully; exact artifact is still being assembled during the SIGMORPHON phase. Do not claim a numerical parity rate until the artifact is read. |
+| Full Browser surface parity | PARTIAL | Direct Browser report 13143156104: 2,698 scored / 2,703 eligible. Preliminary comparison to the Native ledger showed 2,693 equal surfaces, four differences on morphology-abstained cases, and six missing Browser surface reconstructions. Final occurrence audit artifact is authoritative. |
+| Broad v2 target thresholds | PARTIAL / NOT MET | Browser direct UGTPHON: Broad exact 86.2861%, Broad CER 2.2083%, five unresolved, zero engine errors; target 90%+ exact / CER ≤2% not met. |
+| Original g2pK baseline | DONE_VERIFIED | Paired Native/g2pK diagnostic run 41447654997 PASS; no g2pK source/vendor files changed. |
+| Independent IPA gold | BLOCKED | Frozen 24-item holdout and reviewer A/B packets exist; two qualified independent reviewers and adjudication are still required. |
+| NIKL item-level reuse rights | BLOCKED | Official metadata inventory was SKIPPED; item-level KOGL clearance remains unverified. |
+| Ukrainian target adaptation review | BLOCKED | Requires independent Ukrainian phonetic/orthographic expert review. |
+| CharsiuG2P / ByT5 inference | DEFERRED | Both optional inference jobs were SKIPPED by workflow policy; no inference result is claimed. |
+
+### Comparative results — do not mix profiles
+
+**Native strict IPA vs original g2pK**, 2,698 paired UGTPHON occurrences:
+- Kozak Native: 53.0393% strict exact; 9.0657% CER.
+- g2pK: 53.1134% strict exact; 9.2304% CER.
+- Kozak has lower CER; g2pK has a 0.0741 percentage-point strict-exact point edge.
+
+**Browser legacy-default vs original g2pK**, 2,698 paired occurrences:
+- Exact match tied at 53.4469%.
+- Browser CER 8.0728% vs g2pK 8.2072%; paired sentence-cluster 95% CI for Browser-minus-g2pK CER delta: [−0.2246, −0.0531] percentage points.
+- This is a separate legacy-default diagnostic, not the shared Broad profile.
+
+**Browser shared Broad v2 direct UGTPHON**:
+- 2,698 / 2,703 scored; 86.2861% Broad exact; 2.2083% Broad CER; five unresolved; zero engine errors.
+- These corpus-relative metrics are not normative IPA accuracy. The original g2pK adapter uses the project's shared segment renderer, so it is not an independent IPA encoder.
+
+### Exact CI commands and outcomes
+
+- `npm install --no-audit --no-fund` — PASS.
+- `npm test` → `node --experimental-strip-types --test tests/*.test.mjs` — PASS, 1,382 tests.
+- `npm run build` → dictionary preparation + Vite production build — PASS.
+- `test -f dist/index.html && test -f dist/system.html` — PASS.
+- `python -m pip install -e ".[dev,all]"` — PASS.
+- `python -m pytest -q` — PASS.
+- Browser G2P integration run 41447654972 — PASS.
+- Paired Native/g2pK run 41447654997 — PASS.
+- External UGTPHON diagnostic run 41447654983 — PASS.
+- Kiwi + MeCab-Ko morphology consensus run 41447654952 — PASS.
+- Exhaustive test-case register extraction run 41447654941 — PASS; extracted classification queue still requires manual review.
+- Research morphology adapter smoke run 41447655002 — PASS.
+- Optional g2pK integration run 41447654921 — PASS; baseline code/vendor unchanged.
+- Multi-engine run 41447654927: multi-engine comparison, Browser same-occurrence comparison, and Native/Browser parity-audit steps PASS; SIGMORPHON benchmark and artifact upload still running at this snapshot.
+- NIKL metadata-only inventory — SKIPPED.
+- CharsiuG2P and ByT5 inference — SKIPPED.
+- Local pytest/npm were not run in this session; verification was performed by GitHub Actions.
+
+**Readiness:** partial research prototype, not release-ready and not research-certified. The next evidence gates are the final multi-engine/SIGMORPHON artifact, independent IPA adjudication, item-level source-rights review, and independent Ukrainian target review.
+
+---
+
+## 2026-11-02 continuation ledger — PR #420
+
+**Starting point:** PR #419 head `88cae4bdeefce66ee8026bb1380f17271c85630d` (itself stacked on the existing #417 chain).  
+**Working branch:** `research/kozak-kim-runtime-parity-broad-v2-2026-11-02`  
+**PR:** [#420](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/420), draft, based on #419.  
+**Scope:** Kozak Kim only. Original g2pK is preserved as a comparator baseline; no g2pK/vendor files are changed.
+
+| Priority | Status | Evidence / remaining acceptance |
+|---|---|---|
+| 1. Native/Browser runtime parity | PARTIAL | Explicit shared profile selected for Browser benchmark; Browser metadata fixed and direct report confirms `clippyfirst-korean-broad-v1`. Browser shared-profile UGTPHON: 2,699 scored, strict exact 53.0196%, CER 9.0720%; Broad exact 86.2912%, CER 2.2078%. Same-occurrence Native/Browser audit and 99.9% gate still pending in multi-engine run 41441868695. |
+| 2. Broad IPA benchmark v2 | PARTIAL | Shared versioned sensitivity profile and per-engine feature/serialization loss counts implemented; adapter parity tests PASS. Exact-head ten-engine UGTPHON + SIGMORPHON report still running in 41441868695. Historical Native scores remain below 90% exact / 2% CER; do not treat them as final v2 results. |
+| 3. Native error analysis vs g2pK and g2p-ko | PARTIAL | Added occurrence-level pairwise and three-way loss reports. Historical raw-artifact review shows many apparent losses are reference-convention omissions; see the discrepancy report. Re-run after the narrow R013 ending-boundary tightening before final counts. |
+| 4. Independent IPA gold | PARTIAL / BLOCKED | Frozen 24-item holdout remains prediction-free. Separate reviewer A/B templates and a reproducible packet builder are ready. Two qualified independent annotations and adjudication remain external blockers. |
+| Preserve original g2pK | DONE_VERIFIED | PR #420 changed-file list contains no g2pK or vendor-g2pK paths. Paired Native diagnostic: 2,697 shared; Native 53.0590% exact / 9.0633% CER vs original g2pK 53.0892% / 9.2285%. g2pK retains a tiny exact point edge; Native has lower CER. |
+| Avoid unsupported general rule expansion | DONE_VERIFIED | No new general rule was added. This continuation does include one narrow correction to existing, NIKL-backed R013: require the complete attached -ㄹ게 ending (or attested -ㄹ게요) rather than matching an internal ㄹ+게 substring. Positive/negative controls are present; exact-head CI remains pending. |
+
+### Reproducible baseline recomputation (pre-R013-fix raw artifact)
+
+The old multi-engine artifact did not serialize broad metrics, so broad scores below were recomputed from its per-occurrence raw IPA predictions using the repository's versioned `korean-broad-candidate-sensitivity-v1` normalizer. These are historical diagnostic values, not the final v2 artifact and not adjudicated accuracy.
+
+| Engine | UGTPHON broad exact (scored) | UGTPHON broad CER | SIGMORPHON broad exact (scored) | SIGMORPHON broad CER |
+|---|---:|---:|---:|---:|
+| Kozak Kim Native | 2327/2698 (86.25%; coverage 2698/2703) | 2.22% | 695/998 (69.64%; coverage 998/999) | 6.23% |
+| g2pK 0.9.4 | 2317/2703 (85.72%) | 2.37% | 686/999 (68.67%) | 6.46% |
+| g2p-ko 1.0.0 | 2293/2703 (84.83%) | 2.54% | 690/999 (69.07%) | 6.31% |
+| KoG2Padvanced | 1900/2703 (70.29%) | 4.92% | 597/999 (59.76%) | 8.78% |
+| phonemize | 1901/2703 (70.33%) | 7.73% | 582/999 (58.26%) | 9.31% |
+| KoG2P 2019 | 1102/2703 (40.77%) | 13.35% | 345/999 (34.53%) | 14.39% |
+| kokorog2p | 770/2703 (28.49%) | 20.39% | 204/999 (20.42%) | 23.18% |
+| hama | 765/2703 (28.30%) | 18.98% | 275/999 (27.53%) | 19.99% |
+| hangul_to_ipa | 696/2703 (25.75%) | 19.61% | 172/999 (17.22%) | 23.48% |
+| espeak-ng | 326/2703 (12.06%) | 29.92% | 67/999 (6.71%) | 36.33% |
+
+The Native target of 90%+ broad exact and <=2% broad CER is **not yet met** on either historical set. Coverage-adjusted exact is 86.09% UGTPHON and 69.57% SIGMORPHON for Native. Broad profile status remains research-only/unadjudicated; the profile removes documented distinctions and its feature-loss report must accompany every score.
+
+### Runtime root cause found
+
+On the old paired UGTPHON artifact, 2698 occurrences were scored by both runtimes: 2466 raw IPA outputs matched and 232 differed. Of the 232 differences, 231 were only `s` vs `ɕ`; one was the old `올게이` / R013 boundary false positive. The Python Native profile was `clippyfirst-korean-broad-v1`; Browser was `browser-legacy-contextual-v1`. Therefore the former 93.81% Browser broad score was not comparable with Native 86.25% and must not be presented as a runtime advantage. The benchmark now explicitly selects the shared broad IPA profile and leaves Browser's default behavior unchanged. The new audit must verify the full profile contract and complete surface output before any 99.9% parity claim.
+
+### Error triage found in the same historical artifact
+
+- `출산`: NIKL §26 / existing R012 supports `[출싼]`; the corpus gold omits the fortis distinction. Existing rule/test retained.
+- `없는`, `없어`, `알다`: source-backed lexical length is present in Kozak Kim but omitted by the corpus annotation. Existing C09 evidence retained; do not strip length to improve exact match.
+- `올게이`: old R013 substring false positive is fixed by the current boundary guard and regression coverage.
+- `대한민국`: NIKL Basic Dictionary entry 70041 records `[대ː한민국]` (source S017). Native and both baselines omit length in the old artifact; the IPA vowel-quality choice still requires expert review, so no speculative lexical IPA was added.
+
+### Independent review packet
+
+`research/ipa-holdout-review-packets/reviewer-a.csv` and `reviewer-b.csv` are separate blank templates with no engine outputs or IPA gold. `scripts/build_ipa_holdout_review_packets.py` records manifest and packet SHA-256 hashes and refuses to overwrite existing annotations. The 24 items remain a frozen holdout with tuning prohibited.
+
+### Review follow-ups on the implementation branch
+
+- **R013 scope clarification:** the branch does not add a new general phonological process. It tightens the existing Q&A 330963-backed -ㄹ게 fortition license so it applies only to the complete attached ending or the attested -ㄹ게요 extension. 올게이/할게이 are explicit negative controls. This is a production rule correction in this continuation, not a pre-existing change.
+- **Browser profile metadata:** fixed the ordinary convertText() return path so an explicit clippyfirst-korean-broad-v1 selection is reflected in ipa_profile and ipa_profile_level; the multi-part/lexical return path already exposed those fields. The existing browser benchmark test covers an ordinary non-lexical token.
+- **Normalizer parity:** added a Python test that invokes the Browser JavaScript normalizer against the same edge-case inputs and compares normalized IPA, feature-loss counts, and serialization-normalization counts. The test skips only when Node.js is unavailable; the multi-engine CI job installs Node 22.12.0.
+- **Code/test head:** 5247ee778741ff0a438e3b304ffd3837fabb2f83. Follow-up code commits: 321672de41853d8562578f6676302ff08005fdd4 (Browser metadata fix), b69737d5da49e3f2845b40a15b42562bdbbe5d31 (Python/Browser normalizer parity test), ff62260010a4a188acea1aaf151f23ff5ccb99eb (preserve sibilant-place contrast in regression), and 5247ee778741ff0a438e3b304ffd3837fabb2f83 (source-register count expectations). Documentation commits follow the code/test head.
+- **Exact-head verification:** Browser G2P 41441868581 PASS (npm 1,379/1,379 + build); system 41441868736 PASS (Python regression/data integrity, Browser 1,379/1,379, production build and generated-page checks); paired Native/g2pK 41441868606 PASS; UGTPHON 41441868613 PASS; extraction 41441869064 PASS; morphology consensus 41441868622 PASS; Kiwi and MeCab-Ko smoke 41441868796 PASS. CharsiuG2P, ByT5 and live NIKL metadata inventory SKIPPED. Multi-engine v2 + same-occurrence Native/Browser audit 41441868695 is still in progress; do not mark broad v2 or runtime parity complete until its artifact is inspected. Local git ls-remote failed because the container cannot resolve github.com; local pytest/npm were therefore not run.
+
+### Verification state
+
+- A prior system verification run passed on the assertion-correction head; later exact-head runs are pending and must be read before marking this continuation complete.
+- Multi-engine workflow now runs Native and Browser on the same pinned UGTPHON test occurrences, validates occurrence-ledger schema v2, checks profile-contract equality, prints broad metrics and feature losses, and uploads the runtime-parity report.
+- The final commit SHA and exact-head CI outcomes are to be filled after the current workflow completes. Do not mark parity or release gates complete based on historical artifacts.
+- No local test run is claimed; verification is through repository CI.
+
 # Superpowers execution ledger — latest continuation 2026-11-02
 
 ## Latest verified status — discrepancy-ledger audit and evidence-gated revalidation
@@ -33,7 +163,7 @@
 | C10 AP/IP prosody contract | TODO | Define whether phrase-level prosody is in product scope; if yes, specify AP/IP representation and obtain specialist review. |
 | Four morphophonological native abstentions | BLOCKED | `칡칡이`, `쫒아내면`, `많앗구나유유유`, `무서웟어`; require exact lexical/morpheme/audio evidence before rule licensing. |
 | `삶의` IPA | PARTIAL | NIKL MCFAQ 5716 confirms [살믜]/[살메]; project IPA variants remain provisional. Criterion: independent IPA adjudication; until then no Ukrainian output. |
-| Source and item-level rights | PARTIAL | 167-row register; 157 review-required, 7 manual classifications, 2 item-level licenses, 1 not applicable. Criterion: complete item-level rights review and attribution. |
+| Source and item-level rights | PARTIAL | 168-row register; 158 review-required, 7 manual classifications, 2 item-level licenses, 1 not applicable. Criterion: complete item-level rights review and attribution. The new NIKL dictionary entry is citation-only; rights are not cleared. |
 | Ukrainian target adaptation | BLOCKED | No independent Ukrainian target review; criterion: documented target-policy review and accepted gold examples. |
 | Optional CharsiuG2P / ByT5 / live NIKL inventory | BLOCKED / NOT RUN | Workflows SKIPPED; not counted as successful. Criterion: licensed weights/data and available source inventory service. |
 | Research certification / release | BLOCKED | Research prototype only; requires all specialist, rights, target and product gates above. |
