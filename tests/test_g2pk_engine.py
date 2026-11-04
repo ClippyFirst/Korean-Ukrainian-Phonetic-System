@@ -114,3 +114,46 @@ def test_g2pk_live_engine_smoke_and_normative_controls():
         assert result["surface_hangul"] == surface, word
         assert result["ipa"]["ipa"], word
         assert result["pronunciation_engine"] == "g2pK"
+
+def test_g2pk_baseline_does_not_consume_variant_aware_research_lexical_candidates(monkeypatch):
+    class PassThroughG2p:
+        def __call__(self, text, descriptive=False):
+            return text
+
+    monkeypatch.setattr(g2pk_engine, "_ENGINE", PassThroughG2p())
+    result = g2pk_engine.phoneticize_with_g2pk("못잃어")
+
+    assert result["surface_hangul"] == "못잃어"
+    assert result["ipa"]["lexical_overrides"] == []
+    assert not any(
+        rule["name"] == "sourced-lexical-surface-override"
+        for rule in result["rules"]
+    )
+
+
+def test_g2pk_baseline_does_not_consume_kozak_only_research_lexical_candidates(monkeypatch):
+    from korean_ukrainian import pipeline
+
+    class PassThroughG2p:
+        def __call__(self, text, descriptive=False):
+            return text
+
+    monkeypatch.setitem(
+        pipeline.LEXICAL_PRONUNCIATIONS,
+        "가나다",
+        {
+            "input": "가나다",
+            "surface_hangul": "가나따",
+            "ipa_syllables": "x|y|z",
+            "source_url": "https://example.invalid/research-only-fixture",
+            "rule_notes": "Synthetic isolation fixture; not linguistic evidence.",
+            "confidence": "test-only",
+            "input_kind": "kozak-research-only",
+        },
+    )
+    monkeypatch.setattr(g2pk_engine, "_ENGINE", PassThroughG2p())
+    result = g2pk_engine.phoneticize_with_g2pk("가나다")
+
+    assert result["surface_hangul"] == "가나다"
+    assert result["ipa"]["lexical_overrides"] == []
+    assert result["ipa"]["ipa"] != "x.y.z"
