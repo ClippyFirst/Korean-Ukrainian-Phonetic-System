@@ -16,6 +16,8 @@ This page is the entry point for project documentation. It distinguishes current
 10. [Decision log](../research/DECISION-LOG.md) — append-only consequential decisions.
 11. [Master execution plan and handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) — detailed historical execution record; use the newest dated section, not an old snapshot.
 
+- [Licensing and permissions](LICENSING-AND-PERMISSIONS.md) — author identity, scientific-use permissions, technical permission boundary and third-party licence scope.
+
 ## Documentation by responsibility
 
 | Area | Canonical entry points | Contents |
