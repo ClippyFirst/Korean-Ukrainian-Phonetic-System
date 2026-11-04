@@ -6280,5 +6280,5 @@ The official NIKL metadata-only inventory was skipped by workflow configuration.
 ### Post-merge verification addendum — 2026-11-05
 
 - Documentation map local links verified: **12/12 targets fetched successfully** from `main`.
-- Branch search shows `main` and the merged PR head branch `docs/repository-audit-and-navigation-2026-11-04`; the latter is 5 commits behind `main`, 0 ahead. It is retained and was not deleted. No open PRs remain.
+- Branch search shows `main` and the merged PR head branch `docs/repository-audit-and-navigation-2026-11-04`; the latter is 10 commits behind `main`, 0 ahead. It is retained and was not deleted. No open PRs remain.
 - Main subsequently advanced through audit/handoff maintenance commits; inspect live `main` for the current HEAD before continuing.
