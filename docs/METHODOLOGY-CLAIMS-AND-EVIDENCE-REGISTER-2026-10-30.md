@@ -336,3 +336,12 @@ Original g2pK remains the baseline; no upstream or vendored g2pK code was change
 
 
 | M-22 | Native Kozak Kim outperforms original g2pK under the separate research-only Broad sensitivity profile — DONE_VERIFIED as sensitivity evidence | Artifact `13276390247`, 2,698 paired UGTPHON scored occurrences; profile `korean-broad-candidate-sensitivity-v1` | Native 2,333/2,698 exact (86.4715%), CER 2.1317%; g2pK 2,312/2,698 exact (85.6931%), CER 2.3751%; paired deltas g2pK−Native: exact −0.7784 pp, CER +0.2434 pp. | No paired CI for Broad deltas; no independent IPA gold, normative standard, narrow phonetic correctness, or Ukrainian target quality. Profile is research-only/unadjudicated and removes separators and selected phonetic distinctions (including 205 prediction-side fricative-aspiration losses and 5,828 separator removals). Strict metrics remain primary. |
+
+
+## 2026-11-04 — M-21 mismatch queue reconciliation
+
+| Claim | Status | Evidence | Supported interpretation | Not established |
+|---|---|---|---|---|
+| The checked-in unmapped-broad review queue matches the latest exact-head export | DONE_VERIFIED as artifact reconciliation | Run [41794874090](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41794874090), artifact [13305816579](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41794874090/artifacts/13305816579); refresh commit `c0cbe3740e734c87d3202cca496b83d9603ea218`. Generated 36 rows / 55 fragments / 0 missing context lookups. All 36 retained rows match their generated rows byte-for-byte by per-row hash; seven obsolete rows were removed with occurrence-specific dispositions recorded in the master handoff. | The checked-in 36-row queue now represents the exact generated unmapped-broad set for this pinned UGTPHON artifact. | That any corpus label is normative IPA gold; that mapped C06/C11 differences are adjudicated; that all 36 remaining cases are engine errors or all should be fixed. |
+
+The seven removed occurrences are not a general waiver: five are now broad-exact on the current Kozak Kim head (1406, 1527, 2001, 2010, 2533); 868 retains a mapped C06 coda difference; 2562 retains a mapped C11 sibilant-place difference. The queue refresh changed no runtime/phonology code and did not alter original g2pK. Current-head downstream Browser/parity and SIGMORPHON evidence is pending run 41797143756.
