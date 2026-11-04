@@ -5772,3 +5772,22 @@ This profile is `korean-broad-candidate-sensitivity-v1`, status `research-only-u
 ## 2026-11-04 exact-head docs-only verification refresh
 
 Latest documented branch head before this verification note: `528c811224e9725360282441d71ff5b8baac1423`. Exact-head System Verify [41794525526](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41794525526) completed SUCCESS: Python regression/data integrity PASS; Browser regression/build PASS with 1,394/1,394 tests, 0 failures, 0 skips; Vite production build and generated-page checks PASS. NIKL metadata-only inventory was SKIPPED, not passed. Build emitted a non-fatal large-chunk warning (two generated dictionary chunks exceed 500 kB) and Node 20 deprecation warnings from setup actions; no build failure. This is docs-only verification on the current algorithm tree, not a new pronunciation/benchmark result. The multi-engine golden-queue mismatch described above remains unresolved.
+
+
+## 2026-11-04 — mismatch-queue reconciliation on exact artifact (PR #426)
+
+**Queue reconciliation commit:** `c0cbe3740e734c87d3202cca496b83d9603ea218` (data artifact only; no phonology/runtime code changed).
+
+- Exact-head multi-engine run [41794874090](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41794874090), artifact [13305816579](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41794874090/artifacts/13305816579), re-generated the pinned UGTPHON queue: 36 occurrences, 55 unmapped-broad fragments, zero missing context lookups, using corpus revision `ef0d5a09c2ea1874c7206020f875cbd9cfea2f54`.
+- Reconciled the checked-in 43-row snapshot against that artifact. All 36 retained rows were verified byte-identical to their corresponding generated rows (stable per-row hash comparison). Seven old rows were removed because their broad-profile differences were no longer *unmapped*: occurrence 1406 `팔자걸음`, 1527 `보일거라`, 2001 `물가로`, 2010 `혐오증`, and 2533 `안할듯` now have zero broad edit distance; 868 `없을듯` retains only a mapped C06 unreleased-coda difference after the former fortis mismatch disappeared; 2562 `정신병자네` retains a C11 sibilant-place profile difference, now explicitly mapped rather than silently dropped.
+- This is queue taxonomy/reconciliation, **not** independent linguistic adjudication. C06 and C11 remain diagnostic hypotheses; the UGTPHON annotation is not normative IPA gold. No production phonology rule was added in this reconciliation.
+- The checked-in queue now has exactly 36 rows and matches the generated artifact content for all retained rows. The next multi-engine run was triggered by this commit: [41797143756](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41797143756). At the time of this note, it and the exact-head regression workflows were still in progress; no result is claimed yet.
+
+| Task | Status | Acceptance / next evidence |
+|---|---|---|
+| Refresh and reconcile the unmapped-broad queue | DONE_VERIFIED as artifact reconciliation | 36/36 retained rows match generated artifact; seven superseded rows classified above; exact-head multi-engine rerun must pass final `cmp`. |
+| Same-occurrence Browser comparison and Native/Browser parity | TODO / IN_PROGRESS | Require run 41797143756 to complete all downstream steps and inspect its artifact. |
+| Current-head SIGMORPHON portfolio | TODO / IN_PROGRESS | Require same run's SIGMORPHON stage and inspect its artifact; no result yet. |
+| Linguistic adjudication of remaining mapped C06/C11 and 36 unresolved queue entries | BLOCKED / EVIDENCE-LIMITED | Independent Korean IPA reviewers and item-level evidence remain required; queue labels do not constitute adjudication. |
+
+Original g2pK remains untouched and comparison-only. Repository disposition remains research prototype, not research-certified or release-ready.
