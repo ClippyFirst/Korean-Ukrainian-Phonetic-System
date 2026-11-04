@@ -257,3 +257,8 @@ test('C08 context recovery does not authorize the unresolved -성 lexical case',
   assert.ok(result.surfaceHangul.includes('유사성'), '유사성 must remain plain');
   assert.ok(!result.surfaceHangul.includes('유사썽'), 'no suffix-wide -성 fortition is authorized');
 });
+
+test('§27 attached -ㄹ게 ending license stays inside its exact eojeol', () => {
+  const result = generic.convert('할게 할게다');
+  assert.equal(result.surfaceHangul, '할께 할게다');
+});
