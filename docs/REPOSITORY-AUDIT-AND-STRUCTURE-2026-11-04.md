@@ -235,3 +235,10 @@ Current outstanding acceptance work:
 **Verification boundary:** exact-head GitHub Actions on PR head `fbfe7f481fa0ac35264bf060fc8170d7310f3176` passed: Python 3.11/3.12/3.13 tests, teacher-corpus audit, browser tests/build, wheel-install check, System Verify, and generated master-table/research-corpus checks. The official NIKL metadata-only inventory job was skipped, not passed. These runs validate software automation and artifacts, not independent linguistic correctness or item-level reuse rights. The connector did not return workflow runs associated with the merge commit itself; no post-merge Actions result is claimed here.
 
 No source/runtime code, linguistic production data, generated artifacts, third-party notices, or external branches were changed as part of the merge.
+
+
+### Post-merge branch and navigation check
+
+- Documentation map local links: **12/12 targets fetched successfully** from `main` on 2026-11-05.
+- Branch search returns `main` plus the merged PR head branch `docs/repository-audit-and-navigation-2026-11-04`. The latter is **5 commits behind main, 0 ahead**; it is a stale merged branch, not an open PR. It was deliberately left untouched; no branch deletion was performed.
+- Latest inspected main commit after the post-merge documentation/status updates: `7b58f04f3cea75e5b3623bf303627a075aaf11cc` (research README status refresh). Subsequent audit/handoff maintenance commits may advance main; always inspect current default-branch HEAD before the next task.
