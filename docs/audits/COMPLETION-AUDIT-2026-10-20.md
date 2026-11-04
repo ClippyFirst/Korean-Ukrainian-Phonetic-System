@@ -2,13 +2,15 @@
 
 
 
-## 2026-11-04 CI repair checkpoint (superseding update)
+
+
+## 2026-11-04 CI repair checkpoint (final reconciliation)
 
 | Task | Status | Evidence | Acceptance |
 |---|---|---|---|
-| Restore missing UGTPHON surface benchmark module on main | DONE_VERIFIED | PR #428 merged as `340e34e70c726f3a07910a494272990e31658e65`; post-merge Verify `41795765027` PASS; tests `41795764853` PASS (Python 3.11/3.12/3.13, web, wheel, teacher audit); master artifacts `41795764897` PASS; Pages deploy `41795764838` PASS; exhaustive register extraction `41795516445` PASS on PR head. | Closed. No production phonology/IPA labels changed. |
-| Refresh generated unmapped IPA review queue | PARTIAL (PR #429 on latest #426 head) | Exact-head source run `41726881384` produced 36 rows; seven stale IDs removed. PR #427 closed as superseded when base advanced. Replacement PR #429 head `20b1efb4214537b7b40c18d169c63743039683b0`; Verify `41795979788` and push verify `41795973920` PASS; multi-engine run `41795979739` still running. | Require multi-engine output parity, artifact checksum, browser/native parity and SIGMORPHON comparison to pass on the latest #426 head before merge. |
-| Reconcile existing Korean PR stack | DONE_VERIFIED (inspection only) | #415 broad draft (26 files, checks pass), #414 external smoke, #411 unmergeable RR/Hanja/UI scope, #371 stale/unmergeable benchmark; #426 stack and #429 narrow follow-up inspected. #427 closed superseded, branch retained. | Keep unrelated drafts/branches untouched; do not merge broad changes merely to fix the main CI regression. |
+| Restore missing UGTPHON surface benchmark module on main | DONE_VERIFIED | PR #428 merged; current main 35df18f7bf9be01a6c6ef5edcbb576ef35da52cf; Verify 41797781851 PASS; tests 41797781802 PASS (Python 3.11/3.12/3.13, web, wheel, teacher audit); master artifacts 41797781786 PASS; Pages deploy 41797781777 PASS; exhaustive register extraction 41795516445 PASS on PR head. | Closed. No production phonology/IPA labels changed. |
+| Refresh generated unmapped IPA review queue | PARTIAL (correction present on #426 head; current diagnostic pending) | Latest #426 head 682c3a5b562fb63dd99f8ed14fbb004372ff79ef contains 36 rows; CSV blob fc331b42bbfd31700892d1f7df04dcb8578461f5 matches the downloaded 36-row artifact. PRs #427/#429 closed as superseded, branches retained. Current multi-engine run 41797276965 still running; all other current-head checks listed in handoff passed. | Require current #426 multi-engine comparison, browser/native parity, SIGMORPHON portfolio and final artifact upload to pass before marking DONE_VERIFIED. |
+| Reconcile existing Korean PR stack | DONE_VERIFIED (inspection only) | #415 broad draft, #414 external smoke, #411 unmergeable RR/Hanja/UI scope, #371 stale/unmergeable benchmark, and #426 current stack inspected. #427/#429 closed as superseded without deleting branches. | Leave unrelated drafts/branches untouched. |
 
 **Evidence boundary:** no phonological rule, IPA gold label, Ukrainian target, or accuracy metric changed. Independent Korean IPA gold remains a separate research gate.
 
