@@ -519,3 +519,17 @@ The earlier self-review entry stating that no Important defect was identified is
 | C12 acoustic interpretation and NIKL item-level rights | BLOCKED | Source audio/metadata and item-specific rights evidence remain unavailable. |
 
 No g2pK source, dependency pin, or vendor blob was modified. PR #426 remains Draft/open, stacked on PR #425. No merge, release, deployment, force-push or branch deletion. Readiness remains research prototype, not research-certified or release-ready.
+
+
+## 2026-11-04 — R013 phrase-mode same-eojeol license regression
+
+**Current verified code/test head:** `02a72da6534b110d63810c497a6b7fba9b790a3e`.
+
+A fresh caller-path review found that the Python R013 license collector and application gate treated phrase mode as phrase-only: exact same-eojeol licenses were collected/applied only for `same_word` and `morpheme`, even though phrase mode should extend eligible boundaries rather than suppress valid within-eojeol rules.
+
+- RED test commit `873a8e980acc5e4a16d5c0d2c34afe8999f0fc6c`, System Verify [41848156604](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41848156604): the new test `test_r013_same_eojeol_license_is_retained_when_phrase_mode_is_enabled` failed as expected; `보일거라 생각한다` remained plain instead of licensed `보일꺼라`.
+- An initial partial implementation still failed because `word_exact_pair_contexts` retained the same_word/morpheme-only gate. The final fix added phrase mode to the exact word-context gate and kept the license collector scoped to supported modes.
+- Final System Verify [41849672939](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41849672939) PASS on `02a72da6534b110d63810c497a6b7fba9b790a3e`: Python **652 passed**, Browser **1,396/1,396**, production build and generated-page checks PASS.
+- The Browser already applied exact same-eojeol rules in sentence context; no Browser production change was needed. The Python phrase mode now matches that behavior while retaining exact pair/occurrence constraints.
+
+This is a software-behavior correction, not evidence that all C08 morphology or phrase prosody is solved. NIKL §27 pause conditions remain unobservable from plain text, and independent Korean IPA review remains outstanding.

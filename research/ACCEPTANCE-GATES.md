@@ -884,7 +884,7 @@ Exact-head verification: push run `41358504664` and PR run `41358508399` both pa
 | Refreshed multi-engine UGTPHON, queue cmp, Browser and Native/Browser parity | DONE_VERIFIED | Run 41797276965 / artifact 13306613436; all 17 steps PASS; queue 36 rows / 55 fragments / 0 missing contexts; 2,703 surface and 2,698 IPA occurrences equal across runtimes. |
 | SIGMORPHON lexical portfolio | DONE_VERIFIED as diagnostic | Same run; paired n=998, Native 358 exact and 14.5598% CER vs g2pK 353 exact and 14.8106% CER; exact McNemar p=0.0625. |
 | Independent IPA holdout | BLOCKED | 24-case packets prepared for two reviewers; annotations pending. |
-| R013 phrase-level `줄 것` and `많을 거` | DONE_VERIFIED for software behavior | Exact pair and negative controls pass Python/Browser System Verify 41843473006 on head `4fa02996aca22926902b1954c93a19037f0160f6`; prosodic pause remains unobservable in plain text. |
+| R013 phrase-level `줄 것` / `많을 거` and same-eojeol phrase-mode retention | DONE_VERIFIED for software behavior | Exact pair/index licenses, negative controls and phrase-mode same-eojeol regression pass System Verify 41849672939 on head `02a72da6534b110d63810c497a6b7fba9b790a3e` (Python 652; Browser 1,396/1,396; build/generated pages PASS). Prosodic pause remains unobservable in plain text. |
 | Independent Ukrainian target review, NIKL item-level rights, C12 primary evidence, historical 239-case adjudication | BLOCKED | External evidence/review remains required. |
 
 Original g2pK 0.9.4 remains unchanged and comparison-only.
@@ -906,7 +906,7 @@ R013 phrase implementation/tests: DONE_VERIFIED. IPA/prosody adjudication: PARTI
 
 ## 2026-11-04 — exact-head verification and discrepancy benchmark refresh
 
-**Verified branch head:** `9803eef502ea655319954520b984fe33049ffe8e` (PR #426; code/test tree includes the exact R013 connected-phrase implementation). This supersedes the earlier checkpoint that described the current multi-engine rerun as still in progress.
+**Verified branch head:** `02a72da6534b110d63810c497a6b7fba9b790a3e` (PR #426). System Verify 41849672939 PASS; Browser G2P 41849673226, paired Native/g2pK 41849673222, UGTPHON 41849673067, morphology consensus 41849673050, morphology smoke 41849673025 and extraction 41849672945 PASS. Multi-engine 41849673041 remains in progress.
 
 ### Exact-head software and runtime verification
 
@@ -1075,9 +1075,9 @@ The earlier self-review entry stating that no Important defect was identified is
 
 | Task | Status | Evidence / remaining acceptance |
 |---|---|---|
-| R013 `-ㄹ게` license must remain inside the exact eligible occurrence | DONE_VERIFIED | Red failure 41841891363; occurrence-indexed fix 3358b814; Python and Browser full verification on current head `4fa02996aca22926902b1954c93a19037f0160f6`, System Verify 41843473006 PASS, Browser 1,396/1,396. Independent Korean morphology/IPA review remains open. |
-| R013 explicit phrase pair licenses `줄 것` / `많을 거` | DONE_VERIFIED for software behavior | Exact adjacent-eojeol matching, Python phrase mode, Browser parity, positive and compact/punctuation negative controls; System Verify 41843473006 PASS on current head. Linguistic pause/cohesion remains conditional because the text API has no pause annotation. |
-| Multi-engine benchmark on the R013 occurrence-scope fix | PARTIAL / IN_PROGRESS | Current-head run 41843472619: multi-engine comparison, mismatch-queue export, same-occurrence Browser run and runtime parity completed; SIGMORPHON lexical-gold portfolio step 17 remains in progress, artifact upload pending. ByT5 and CharsiuG2P inference explicitly SKIPPED. |
+| R013 `-ㄹ게` license must remain inside the exact eligible occurrence | DONE_VERIFIED | Red failure 41841891363; occurrence-indexed fix 3358b814; phrase-mode same-eojeol regression added test-first (red 41848156604 on 873a8e980acc5e4a16d5c0d2c34afe8999f0fc6c); final fix on 02a72da6534b110d63810c497a6b7fba9b790a3e; System Verify 41849672939 PASS. |
+| R013 exact phrase and same-eojeol licenses in phrase mode | DONE_VERIFIED for software behavior | System Verify 41849672939 PASS on 02a72da6534b110d63810c497a6b7fba9b790a3e; exact adjacent eojeol and same-eojeol licenses both retained, with compact/punctuation negatives. Pause/cohesion still conditional. |
+| Multi-engine benchmark on current Kozak Kim head | PARTIAL / IN_PROGRESS | Completed artifact from 41843472619 (artifact 13330749031, SHA-256 4c0b22df3e964b6483c098b066497dbe5518ed13e6a55af919e41a1d8cbb357d); current exact-head rerun 41849673041 remains at step 13. |
 | Independent Korean IPA / Ukrainian target review | BLOCKED | Human reviewers and adjudication still absent. |
 | C12 acoustic interpretation and NIKL item-level rights | BLOCKED | Source audio/metadata and item-specific rights evidence remain unavailable. |
 

@@ -168,7 +168,7 @@ No runtime code or g2pK baseline code changed in this queue reconciliation. Rese
 | Native/Browser parity | DONE_VERIFIED | Same run: 2,703/2,703 surface parity; 2,698/2,698 IPA parity; no differences. |
 | SIGMORPHON lexical comparison | DONE_VERIFIED as diagnostic | Paired n=998; Native 358 exact / 14.5598% CER vs g2pK 353 exact / 14.8106% CER; exact McNemar p=0.0625. |
 | Blind IPA holdout | PARTIAL / BLOCKED | 24 cases packaged for reviewers A/B; no predictions or gold included; independent annotations pending. |
-| R013 explicit phrase boundaries `줄 것`, `많을 거` | PARTIAL / CI PENDING | Python and Browser exact-pair licenses and positive/negative tests added. Compact no-space tokens remain intentionally unlicensed. Requires exact-head Python/Browser CI. |
+| R013 exact phrase boundaries and same-eojeol licenses in phrase mode | DONE_VERIFIED for software behavior | Python phrase mode now retains exact same-eojeol R013 licenses as well as exact adjacent-eojeol licenses; test `test_r013_same_eojeol_license_is_retained_when_phrase_mode_is_enabled`. System Verify 41849672939 PASS on head `02a72da6534b110d63810c497a6b7fba9b790a3e`; Python 652 tests, Browser 1,396/1,396, build/generated pages PASS. Compact and punctuation-separated phrase controls remain negative. Prosodic pause and productive morphology remain outside the text-only contract. |
 
 The benchmark run predates the phrase-boundary code extension. Do not reuse its PASS as evidence for that new code.
 
@@ -288,9 +288,9 @@ The earlier self-review entry stating that no Important defect was identified is
 
 | Task | Status | Evidence / remaining acceptance |
 |---|---|---|
-| R013 `-ㄹ게` license must remain inside the exact eligible occurrence | DONE_VERIFIED | Red failure 41841891363; occurrence-indexed fix 3358b814; Python and Browser full verification on current head `4fa02996aca22926902b1954c93a19037f0160f6`, System Verify 41843473006 PASS, Browser 1,396/1,396. Independent Korean morphology/IPA review remains open. |
-| R013 explicit phrase pair licenses `줄 것` / `많을 거` | DONE_VERIFIED for software behavior | Exact adjacent-eojeol matching, Python phrase mode, Browser parity, positive and compact/punctuation negative controls; System Verify 41843473006 PASS on current head. Linguistic pause/cohesion remains conditional because the text API has no pause annotation. |
-| Multi-engine benchmark on the R013 occurrence-scope fix | PARTIAL / IN_PROGRESS | Current-head run 41843472619: multi-engine comparison, mismatch-queue export, same-occurrence Browser run and runtime parity completed; SIGMORPHON lexical-gold portfolio step 17 remains in progress, artifact upload pending. ByT5 and CharsiuG2P inference explicitly SKIPPED. |
+| R013 `-ㄹ게` license must remain inside the exact eligible occurrence | DONE_VERIFIED | Red failure 41841891363; occurrence-indexed fix 3358b814; current head `02a72da6534b110d63810c497a6b7fba9b790a3e`, System Verify 41849672939 PASS (Python 652, Browser 1,396/1,396, production build/generated pages). Independent Korean morphology/IPA review remains open. |
+| R013 exact phrase pair licenses `줄 것` / `많을 거` plus same-eojeol retention in phrase mode | DONE_VERIFIED for software behavior | Exact pair/index matching, punctuation/compact negative controls, and same-eojeol phrase-mode regression pass System Verify 41849672939 on `02a72da6534b110d63810c497a6b7fba9b790a3e`. Linguistic pause/cohesion remains conditional because the text API has no pause annotation. |
+| Multi-engine benchmark on current Kozak Kim code | PARTIAL / IN_PROGRESS | Latest completed run 41843472619, artifact 13330749031, SHA-256 4c0b22df3e964b6483c098b066497dbe5518ed13e6a55af919e41a1d8cbb357d; current exact-head rerun 41849673041 remains in step 13 (multi-engine comparison). ByT5 and CharsiuG2P inference SKIPPED. |
 | Independent Korean IPA / Ukrainian target review | BLOCKED | Human reviewers and adjudication still absent. |
 | C12 acoustic interpretation and NIKL item-level rights | BLOCKED | Source audio/metadata and item-specific rights evidence remain unavailable. |
 

@@ -417,3 +417,10 @@ The earlier self-review entry stating that no Important defect was identified is
 | C12 acoustic interpretation and NIKL item-level rights | BLOCKED | Source audio/metadata and item-specific rights evidence remain unavailable. |
 
 No g2pK source, dependency pin, or vendor blob was modified. PR #426 remains Draft/open, stacked on PR #425. No merge, release, deployment, force-push or branch deletion. Readiness remains research prototype, not research-certified or release-ready.
+
+
+## 2026-11-04 focused review correction — R013 phrase mode
+
+The earlier self-review did not cover the interaction between R013 same-eojeol licenses and Python `boundary_mode="phrase"`. A new integration regression exposed the defect; the test failed on red head `873a8e980acc5e4a16d5c0d2c34afe8999f0fc6c` (System Verify 41848156604), then passed after the final correction on `02a72da6534b110d63810c497a6b7fba9b790a3e` (System Verify 41849672939 PASS). Python suite: **652 passed**; Browser: **1,396/1,396**; production build/generated pages: PASS.
+
+The correction preserves exact same-eojeol licenses inside phrase mode. It does not widen the morphology inventory, infer unmarked word boundaries, or claim pause-sensitive accuracy. Independent linguistic review remains required. This remains an author self-review; PR #426 has no independent submitted review.

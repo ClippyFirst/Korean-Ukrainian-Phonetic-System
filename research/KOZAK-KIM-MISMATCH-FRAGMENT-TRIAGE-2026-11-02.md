@@ -310,3 +310,10 @@ The two pinned corpora are diagnostic annotations, not independently adjudicated
 - Remaining NIKL interaction, names/loans, Hanja, and regional/style coverage remain partial or unverified.
 
 **Readiness:** software and current branch CI are verified for this continuation; the overall system remains a **research prototype**, not research-certified or release-ready. Original g2pK 0.9.4 and vendored source remain unchanged and comparison-only.
+
+
+## 2026-11-04 completed paired benchmark refresh
+
+Latest completed artifact [41843472619](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41843472619), artifact 13330749031, SHA-256 `4c0b22df3e964b6483c098b066497dbe5518ed13e6a55af919e41a1d8cbb357d`. UGTPHON paired n=2,698: Kozak 53.0393% exact / 8.9920% CER; original g2pK 53.1134% / 9.2304%. SIGMORPHON paired n=998: Kozak 35.8717% / 14.5598%; g2pK 35.3707% / 14.8106%. Exact-match uncertainty on UGTPHON crosses zero; SIGMORPHON favours Kozak on exact and CER. Both are diagnostic annotations, not normative IPA gold. Native/Browser parity on the same UGTPHON occurrences is 2,703/2,703 surface and 2,698/2,698 IPA identical, with five shared abstentions.
+
+Exact-head rerun [41849673041](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41849673041) on `02a72da6534b110d63810c497a6b7fba9b790a3e` is still running its multi-engine comparison; this completed artifact is the prior reproducible snapshot, not a result from the rerun.

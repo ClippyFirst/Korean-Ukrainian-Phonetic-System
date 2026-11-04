@@ -489,3 +489,25 @@ The earlier self-review entry stating that no Important defect was identified is
 | C12 acoustic interpretation and NIKL item-level rights | BLOCKED | Source audio/metadata and item-specific rights evidence remain unavailable. |
 
 No g2pK source, dependency pin, or vendor blob was modified. PR #426 remains Draft/open, stacked on PR #425. No merge, release, deployment, force-push or branch deletion. Readiness remains research prototype, not research-certified or release-ready.
+
+
+## 2026-11-04 — completed paired diagnostic and training-readiness snapshot
+
+**Latest completed multi-engine artifact:** run [41843472619](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41843472619), artifact [13330749031](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41843472619/artifacts/13330749031), ZIP SHA-256 `4c0b22df3e964b6483c098b066497dbe5518ed13e6a55af919e41a1d8cbb357d`. Exact-head rerun on `02a72da6534b110d63810c497a6b7fba9b790a3e` is run [41849673041](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41849673041), still in progress at the multi-engine comparison step; no final result is claimed for that rerun.
+
+| Diagnostic set | Kozak Kim | Original g2pK 0.9.4 | Paired interpretation |
+|---|---:|---:|---|
+| UGTPHON, n=2,698 paired | 1,431 exact (53.0393%); CER 8.9920% | 1,433 exact (53.1134%); CER 9.2304% | g2pK exact point edge +0.0741 pp; paired exact 95% CI crosses zero (−0.0824 to +0.2840 pp). Kozak CER lower by 0.2384 pp; paired CI for g2pK-minus-Kozak CER +0.1392 to +0.3464 pp. |
+| SIGMORPHON 2021, n=998 paired | 358 exact (35.8717%); CER 14.5598% | 353 exact (35.3707%); CER 14.8106% | Kozak +0.5010 pp exact; paired 95% CI for g2pK-minus-Kozak exact −1.0020 to −0.1002 pp. Kozak CER lower by 0.2508 pp; paired CI +0.0986 to +0.4444 pp. |
+
+These are diagnostic corpus annotations, not independently adjudicated Korean IPA gold. Original g2pK output is rendered through the shared project IPA adapter, not an independent IPA encoder. Do not claim universal superiority or Ukrainian target accuracy.
+
+**Native/Browser parity:** 2,703/2,703 eligible surface occurrences identical; 2,698/2,698 scored raw IPA strings identical; both runtimes abstain on the same five. Shared profile contract is the same, but remains unadjudicated.
+
+**Research-only broad sensitivity profile:** UGTPHON native exact 2,333/2,698 (86.4715%), CER 2.1317%; SIGMORPHON native exact 696/998 (69.7395%), CER 6.1801%. These results depend on an explicitly lossy, unadjudicated normalization profile and must never replace strict scores.
+
+**Morphology consensus:** Kiwi + MeCab-Ko resolved one previously withheld token (`칡칡이`) only as `diagnostic_only_analyzer_morphology`; three unique words changed, with two higher edit distances, no exact-match gain and a small CER regression. No analyzer-derived license was promoted to production.
+
+**Training readiness:** 644 lexical rows, 46 additions, 24 frozen holdout forms, zero addition IPA rows explicitly marked independently adjudicated, zero holdout IPA gold. Supervised IPA training remains **not ready**. Keep the blind holdout prediction-free until two independent reviewers and adjudication are complete.
+
+**Full-text coverage gap:** the Browser master passage has 5,198 characters / 852 unique Hangul tokens, 322 lexical hits, 517 generic resolutions and 13 unresolved unique tokens. The strict whole-text output remains fail-closed (0 output characters, 29 issue occurrences); practical output also remains fail-closed (0 output characters, 16 issue occurrences). This is a real natural-text coverage blocker, not a build failure.

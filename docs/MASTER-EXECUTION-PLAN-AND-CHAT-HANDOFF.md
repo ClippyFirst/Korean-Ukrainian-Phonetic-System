@@ -5991,10 +5991,20 @@ The earlier self-review entry stating that no Important defect was identified is
 
 | Task | Status | Evidence / remaining acceptance |
 |---|---|---|
-| R013 `-ㄹ게` license must remain inside the exact eligible occurrence | DONE_VERIFIED | Red failure 41841891363; occurrence-indexed fix 3358b814; Python and Browser full verification on current head `4fa02996aca22926902b1954c93a19037f0160f6`, System Verify 41843473006 PASS, Browser 1,396/1,396. Independent Korean morphology/IPA review remains open. |
-| R013 explicit phrase pair licenses `줄 것` / `많을 거` | DONE_VERIFIED for software behavior | Exact adjacent-eojeol matching, Python phrase mode, Browser parity, positive and compact/punctuation negative controls; System Verify 41843473006 PASS on current head. Linguistic pause/cohesion remains conditional because the text API has no pause annotation. |
-| Multi-engine benchmark on the R013 occurrence-scope fix | PARTIAL / IN_PROGRESS | Current-head run 41843472619: multi-engine comparison, mismatch-queue export, same-occurrence Browser run and runtime parity completed; SIGMORPHON lexical-gold portfolio step 17 remains in progress, artifact upload pending. ByT5 and CharsiuG2P inference explicitly SKIPPED. |
+| R013 `-ㄹ게` license must remain inside the exact eligible occurrence | DONE_VERIFIED | Red 41841891363; occurrence-indexed fix 3358b814; latest head `02a72da6534b110d63810c497a6b7fba9b790a3e`, System Verify 41849672939 PASS (Python 652; Browser 1,396/1,396; build/generated pages). Independent morphology/IPA review remains open. |
+| R013 phrase and same-eojeol licenses in phrase mode | DONE_VERIFIED for software behavior | Exact pair/index matching, compact/punctuation negatives and same-eojeol phrase-mode regression pass System Verify 41849672939 on `02a72da6534b110d63810c497a6b7fba9b790a3e`. Pause/cohesion remains conditional. |
+| Multi-engine benchmark on current Kozak Kim head | PARTIAL / IN_PROGRESS | Completed prior artifact 41843472619 (13330749031, SHA-256 4c0b22df3e964b6483c098b066497dbe5518ed13e6a55af919e41a1d8cbb357d); current exact-head run 41849673041 is still in step 13. ByT5/CharsiuG2P skipped. |
 | Independent Korean IPA / Ukrainian target review | BLOCKED | Human reviewers and adjudication still absent. |
 | C12 acoustic interpretation and NIKL item-level rights | BLOCKED | Source audio/metadata and item-specific rights evidence remain unavailable. |
 
 No g2pK source, dependency pin, or vendor blob was modified. PR #426 remains Draft/open, stacked on PR #425. No merge, release, deployment, force-push or branch deletion. Readiness remains research prototype, not research-certified or release-ready.
+
+
+## 2026-11-04 continuation — phrase-mode R013 regression fixed
+
+The phrase-mode caller-path review found that exact same-eojeol R013 licenses were suppressed whenever Python `boundary_mode="phrase"`. Phrase mode must add licensed adjacent-eojeol contexts without disabling a valid exact eojeol rule.
+
+- Test-first RED: `873a8e980acc5e4a16d5c0d2c34afe8999f0fc6c`, System Verify 41848156604 failed on the new regression exactly as expected (`보일거라 생각한다` did not fortify).
+- GREEN: `02a72da6534b110d63810c497a6b7fba9b790a3e`; the same-eojeol license lookup now runs in `same_word`, `morpheme`, and `phrase` modes, while exact phrase licenses remain restricted to phrase mode and exact adjacent eojeol pairs.
+- Exact-head System Verify 41849672939 PASS: Python **652 passed**, Browser **1,396/1,396**, Vite production build and generated-page checks PASS. Browser G2P, paired Native/g2pK, UGTPHON, morphology consensus, morphology smoke and test-case extraction also PASS on this head.
+- This does not add productive morphology or infer pauses. NIKL §27's connected-speech condition remains an explicit limitation of plain-text conversion.
