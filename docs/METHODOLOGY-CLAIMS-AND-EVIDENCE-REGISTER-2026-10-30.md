@@ -323,3 +323,13 @@ Both corpus comparisons are diagnostic labels, not independent normative IPA gol
 | Standard Kozak Kim default behavior is unchanged by the new ablation option | DONE_VERIFIED for tested contract | Default remains `include_research_lexical=True`; System Verify and paired Native/g2pK run 41654557675 pass | Existing default lexical overlays remain active; no benchmark score change is claimed beyond the separately recorded paired run | That any research overlay is linguistically gold or suitable for training |
 
 The vendored g2pK Browser implementation is byte-identical to main at SHA `1e3705b9439c637f3442864cb3105e771dff2ed7`. The project-owned Python g2pK adapter excludes Kozak research-only rows; the raw multi-engine baseline continues to instantiate `G2p()` directly. Full multi-engine artifact review remains pending (run 41654557693).
+
+
+## 2026-11-04 — Kozak Kim / original g2pK paired diagnostic refresh
+
+| ID | Claim / status | Evidence | Supported interpretation | Not established |
+|---|---|---|---|---|
+| M-20 | Native Kozak Kim has lower paired CER than original g2pK 0.9.4 on pinned UGTPHON — DONE_VERIFIED as diagnostic | Exact-head run [41726881384](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41726881384), artifact `13276390247`; 2,698 paired scored occurrences | Native: 2,698/2,703 coverage, 1,431/2,698 exact (53.0393%), CER 8.9920%; g2pK: 2,703/2,703, 1,435 exact (53.0892%), CER 9.2285%. Paired g2pK-minus-Native exact delta +0.0741 pp (95% CI −0.0824 to +0.2840); paired CER delta +0.2384 pp (95% CI +0.1392 to +0.3464). | Normative IPA accuracy, independent IPA-engine parity, Ukrainian target quality or universal superiority. UGTPHON is noisy; g2pK Hangul surface uses the shared project IPA renderer. |
+| M-21 | Checked-in mismatch-review golden file is stale relative to exact-head export — PARTIAL | Same run: exporter found 36 unmapped-broad occurrences / 55 fragments, zero missing context lookups; `cmp` differs at byte 31,117 / line 14 against `research/kozak-kim-unmapped-mismatch-review-queue-2026-11-03.csv`. | Engine comparison completed and artifact uploaded, but workflow failed at golden-file reconciliation; downstream same-occurrence Browser/parity and SIGMORPHON jobs were skipped. | Do not treat this as an engine crash, accept the stale queue, or claim skipped downstream stages. Refresh requires row-level review and exact-head rerun. |
+
+Original g2pK remains the baseline; no upstream or vendored g2pK code was changed. All figures are diagnostic corpus-label comparisons only.
