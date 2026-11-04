@@ -6275,3 +6275,10 @@ The official NIKL metadata-only inventory was skipped by workflow configuration.
 7. Keep supervised neural training deferred until independently adjudicated IPA gold is available.
 
 **Readiness:** research prototype; not research-certified and not release-ready. The PR merge closes the documentation and owner-licensing decision, not the research acceptance gates.
+
+
+### Post-merge verification addendum — 2026-11-05
+
+- Documentation map local links verified: **12/12 targets fetched successfully** from `main`.
+- Branch search shows `main` and the merged PR head branch `docs/repository-audit-and-navigation-2026-11-04`; the latter is 5 commits behind `main`, 0 ahead. It is retained and was not deleted. No open PRs remain.
+- Latest inspected main commit at this verification point: `7b58f04f3cea75e5b3623bf303627a075aaf11cc`; audit/handoff maintenance commits can advance the branch after this point.
