@@ -152,6 +152,7 @@ def _surface_ipa(surface: str, source_text: str) -> dict[str, Any]:
             values = entry.get("ipa_syllables", "").split("|") if entry and not research_only else []
             diagnostic_only = bool(
                 entry
+                and not research_only
                 and entry.get("ipa_adjudication_status") == "diagnostic_only_unresolved_pronunciation"
             )
             exact_override = bool(

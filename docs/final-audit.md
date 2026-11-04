@@ -1,3 +1,11 @@
+## 2026-11-04 — g2pK baseline isolation consolidated for mainline (PR #433 pending)
+
+The Kozak Kim research-only lexical overlay is excluded from all three g2pK adapter paths: Hangul surface correction, project IPA override, and diagnostic-only status propagation. The adapter still permits ordinary source-backed NIKL controls and preserves the unresolved `삶의` warning. This avoids allowing Kozak research hypotheses to contaminate the independent g2pK comparison baseline.
+
+Tests cover the real `못잃어` research row, the source-backed `끌다` correction, synthetic `kozak-research-only` and `variant-aware-research` rows, and preservation of source-backed `삶의` uncertainty. The synthetic rows test adapter isolation only, not Korean pronunciation. The g2pK vendor implementation remains unchanged.
+
+Software verification on the underlying code/test snapshot passed: System Verify; Python 3.11/3.12/3.13; browser 1,345/1,345; optional g2pK 30/30 on Python 3.11 and 30/30 on Python 3.12; paired Native/g2pK diagnostic on 2,698 occurrences. The multi-engine neural jobs and official live NIKL inventory were skipped. The paired corpus is not normative IPA gold. Independent IPA adjudication, Ukrainian-target review, source-rights clearance and unresolved mismatch adjudication remain blockers; project readiness remains a research prototype.
+
 ## 2026-11-02 current continuation — PR #421
 
 ## 2026-11-02 — Kozak Kim cross-runtime evidence and parity continuation

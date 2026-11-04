@@ -45,7 +45,7 @@ def test_nikl_surface_override_corrects_an_unlicensed_external_mismatch(monkeypa
 
 
 
-def test_g2pk_baseline_does_not_consume_kozak_only_research_lexical_candidates(monkeypatch):
+def test_g2pk_baseline_does_not_apply_kozak_research_overlay_to_kkeulda(monkeypatch):
     class PassThroughG2p:
         def __call__(self, text, descriptive=False):
             return text
@@ -137,3 +137,84 @@ def test_g2pk_baseline_does_not_consume_variant_aware_research_lexical_candidate
     assert result["surface_hangul"] == "못잃어"
     assert result["ipa"]["lexical_overrides"] == []
     assert not any(rule["name"] == "sourced-lexical-surface-override" for rule in result["rules"])
+
+
+def test_g2pk_baseline_does_not_consume_variant_aware_research_lexical_candidates(monkeypatch):
+    class PassThroughG2p:
+        def __call__(self, text, descriptive=False):
+            return text
+
+    monkeypatch.setattr(g2pk_engine, "_ENGINE", PassThroughG2p())
+    result = g2pk_engine.phoneticize_with_g2pk("못잃어")
+
+    assert result["surface_hangul"] == "못잃어"
+    assert result["ipa"]["lexical_overrides"] == []
+    assert not any(
+        rule["name"] == "sourced-lexical-surface-override"
+        for rule in result["rules"]
+    )
+
+
+def test_g2pk_baseline_does_not_consume_kozak_only_research_lexical_candidates(monkeypatch):
+    from korean_ukrainian import pipeline
+
+    class PassThroughG2p:
+        def __call__(self, text, descriptive=False):
+            return text
+
+    monkeypatch.setitem(
+        pipeline.LEXICAL_PRONUNCIATIONS,
+        "가나다",
+        {
+            "input": "가나다",
+            "surface_hangul": "가나따",
+            "ipa_syllables": "x|y|z",
+            "source_url": "https://example.invalid/research-only-fixture",
+            "rule_notes": "Synthetic isolation fixture; not linguistic evidence.",
+            "confidence": "test-only",
+            "input_kind": "kozak-research-only",
+        },
+    )
+    monkeypatch.setattr(g2pk_engine, "_ENGINE", PassThroughG2p())
+    result = g2pk_engine.phoneticize_with_g2pk("가나다")
+
+    assert result["surface_hangul"] == "가나다"
+    assert result["ipa"]["lexical_overrides"] == []
+
+    # A research-only row whose Hangul surface already matches the external
+    # engine output must still not inject Kozak's project-derived IPA.
+    monkeypatch.setitem(
+        pipeline.LEXICAL_PRONUNCIATIONS,
+        "바나나",
+        {
+            "input": "바나나",
+            "surface_hangul": "바나나",
+            "ipa_syllables": "x|y|z",
+            "source_url": "https://example.invalid/research-only-ipa-fixture",
+            "rule_notes": "Synthetic isolation fixture; not linguistic evidence.",
+            "confidence": "test-only",
+            "input_kind": "kozak-research-only",
+            "ipa_adjudication_status": "diagnostic_only_unresolved_pronunciation",
+        },
+    )
+    ipa_only_result = g2pk_engine.phoneticize_with_g2pk("바나나")
+    assert ipa_only_result["surface_hangul"] == "바나나"
+    assert ipa_only_result["ipa"]["lexical_overrides"] == []
+    assert ipa_only_result["ipa"]["ipa"] != "x.y.z"
+    assert ipa_only_result["ipa"]["status"] != "diagnostic_only_unresolved_pronunciation"
+    assert ipa_only_result["ipa"]["word_analyses"][0]["status"] == "derived-from-surface"
+
+def test_g2pk_keeps_source_backed_diagnostic_only_ipa_status(monkeypatch):
+    class PassThroughG2p:
+        def __call__(self, text, descriptive=False):
+            return text
+
+    monkeypatch.setattr(g2pk_engine, "_ENGINE", PassThroughG2p())
+    result = g2pk_engine.phoneticize_with_g2pk("삶의")
+
+    # This is a source-backed NIKL variant with unresolved project IPA,
+    # not a Kozak-only research overlay; retain the diagnostic warning.
+    assert result["surface_hangul"] == "살믜"
+    assert result["ipa"]["is_diagnostic_only"] is True
+    assert result["ipa"]["status"] == "diagnostic_only_unresolved_pronunciation"
+    assert result["ipa"]["lexical_overrides"] == []
