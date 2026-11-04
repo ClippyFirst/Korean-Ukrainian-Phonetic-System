@@ -864,3 +864,15 @@ Exact-head verification: push run `41358504664` and PR run `41358508399` both pa
 | Independent Korean IPA, Ukrainian target, item-level rights, C12 and 239 mismatch adjudication | BLOCKED / TODO | Require independent reviewer submissions, rights evidence, primary phonetic evidence and exact-context adjudication. |
 
 **Disposition:** research prototype; not research-certified or release-ready. Original g2pK remains unchanged and comparison-only.
+
+
+## 2026-11-04 — mismatch-queue reconciliation gate (PR #426)
+
+| Gate | Status | Evidence / acceptance |
+|---|---|---|
+| Generated unmapped-broad queue reconciled with checked-in snapshot | DONE_VERIFIED as artifact reconciliation | Run 41794874090 / artifact 13305816579; 36 rows, 55 fragments, zero missing context lookups. Commit c0cbe3740e734c87d3202cca496b83d9603ea218 updates the snapshot from 43 to 36 rows. All 36 retained rows match the generated rows byte-for-byte by per-row hash. |
+| Disposition of seven removed rows | DONE_VERIFIED as queue triage, not linguistic adjudication | Five now broad-exact (1406, 1527, 2001, 2010, 2533); 868 retains mapped C06; 2562 retains mapped C11. No claim that mapped differences are accepted pronunciation. |
+| Exact-head multi-engine gate after refresh | IN_PROGRESS | Run 41797143756. Must complete exporter `cmp`, same-occurrence Browser, Native/Browser parity and SIGMORPHON portfolio, then inspect artifact. |
+| Independent Korean IPA and Ukrainian target review | BLOCKED | Requires independent qualified reviewers and adjudication; corpus annotations and cluster labels are not gold. |
+
+**Disposition:** the stale queue mismatch is reconciled; release/research certification gates remain open. Original g2pK is unchanged.
