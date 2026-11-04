@@ -1,3 +1,18 @@
+## 2026-11-04 — Kozak Kim mainline consolidation (MERGED)
+
+**Main commit:** `e628096e7d1a06ed355de27936c42fa732f4f6b6`. Merged PRs: #415, #416, #417, #419, #422, #423, #426 and #433. Cumulative PRs #422 and #426 superseded intermediate PRs #420/#421 and #424/#425 respectively; PR #433 superseded #432. Superseded PRs were closed; branches remain untouched for owner cleanup.
+
+| Acceptance item | State | Evidence |
+|---|---|---|
+| Kozak Kim IPA-first, cross-runtime, lexical and mismatch-triage stack | **MERGED** | PRs #415–#423 plus cumulative #426 merged in dependency order. |
+| Original g2pK 0.9.4 vendor baseline | **PRESERVED** | All 9 `src/vendor/g2pk/` files byte-identical to starting main. |
+| g2pK adapter isolation from Kozak research-only lexical overlays | **MERGED** | PR #433: filters research-only input kinds from surface, IPA and diagnostic-status paths; source-backed controls and `삶의` uncertainty remain. |
+| Post-merge software verification | **PASS** | System Verify `41887431814`; Python 3.11/3.12/3.13, browser, web, wheel, corpus audit and generated corpus passed. Browser PR-head suite 1,396/1,396; optional g2pK 31/31 on Python 3.11 and 31/31 on Python 3.12. |
+| Multi-engine comparison | **IN PROGRESS** | Run `41887431384`; no result claimed until completed. |
+| Independent linguistic / rights acceptance | **PARTIAL / BLOCKED** | Independent IPA adjudication, Ukrainian target review, item-level NIKL source-rights clearance and mismatch adjudication remain outstanding. |
+
+Unrelated open PRs #411 (RR/Hanja), #414 (external service smoke), and #371 (generic benchmark metrics) were left untouched because they are outside the Kozak Kim-only scope. No branch was deleted and no release was published.
+
 ## 2026-11-04 mainline consolidation — g2pK comparison isolation (PR #433 pending)
 
 | Requirement | State | Evidence |

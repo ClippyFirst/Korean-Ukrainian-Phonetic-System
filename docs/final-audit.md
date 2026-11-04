@@ -1,3 +1,13 @@
+## 2026-11-04 — Kozak Kim mainline consolidation audit (MERGED)
+
+The Kozak Kim continuation was consolidated into `main` at `e628096e7d1a06ed355de27936c42fa732f4f6b6`. Dependency order: #415 → #416 → #417 → #419 → #422 → #423 → #426 → #433. PR #422 carries the work formerly stacked in #420/#421; PR #426 carries #424/#425; PR #433 supersedes #432. The intermediate PRs were closed as superseded, not individually merged. Their branches remain intact for the repository owner to delete if desired.
+
+The original g2pK 0.9.4 vendor code was preserved exactly: all 9 files under `src/vendor/g2pk/` match the starting main tree. The Python g2pK adapter now filters `variant-aware-research` and `kozak-research-only` from surface, IPA and diagnostic-status overrides, while preserving source-backed NIKL overrides and the unresolved source-backed `삶의` warning. This is an adapter-isolation fix, not a change to g2pK itself or to Kozak Kim's production phonology.
+
+Post-merge System Verify `41887431814` passed, including Python 3.11/3.12/3.13, web, wheel install, teacher-corpus audit, generated corpus, browser regression/build and generated-page checks. Browser suite on PR #433 head: 1,396/1,396. Optional g2pK: 31 tests passed on Python 3.11 and 31 on Python 3.12. The multi-engine comparison run `41887431384` remained in progress at audit time. Official live NIKL metadata inventory, CharsiuG2P and ByT5 were skipped.
+
+This is not release acceptance. Independent IPA adjudication, Ukrainian-target review, item-level source-rights clearance and mismatch adjudication remain unresolved. The project remains a research prototype.
+
 ## 2026-11-04 — g2pK baseline isolation consolidated for mainline (PR #433 pending)
 
 The Kozak Kim research-only lexical overlay is excluded from all three g2pK adapter paths: Hangul surface correction, project IPA override, and diagnostic-only status propagation. The adapter still permits ordinary source-backed NIKL controls and preserves the unresolved `삶의` warning. This avoids allowing Kozak research hypotheses to contaminate the independent g2pK comparison baseline.
