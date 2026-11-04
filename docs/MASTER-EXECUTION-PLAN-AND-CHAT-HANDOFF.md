@@ -5760,3 +5760,10 @@ Inspected head: `6b0dd939ad55013361a95420135439bf5d469646`. Latest multi-engine 
 | Original g2pK baseline integrity | DONE_VERIFIED | Original 0.9.4 and vendored browser source unchanged; Kozak research lexical overlays excluded from baseline. |
 
 No merge, deployment, release, force-push or branch deletion. PR #426 and its preceding Kozak Kim stack remain open/unmerged. Repository remains a research prototype, not research-certified or release-ready.
+
+
+### Broad-candidate sensitivity result from artifact 13276390247
+
+The same 2,698 paired scored occurrences also have a separate, research-only Broad candidate sensitivity comparison: Native Kozak Kim 2,333/2,698 exact (86.4715%), CER 2.1317%; g2pK 2,312/2,698 exact (85.6931%), CER 2.3751%. Paired g2pK-minus-Native deltas: exact −0.7784 pp, CER +0.2434 pp. The report does not provide a paired CI for these Broad deltas, so do not imply inferential significance.
+
+This profile is `korean-broad-candidate-sensitivity-v1`, status `research-only-unadjudicated`. It removes syllable/word separators and selected quality/stress/aspiration distinctions and collapses several narrow allophones; it preserves stop aspiration, fortisness, length, unreleased codas and sibilant place. In this artifact, prediction-side feature-loss accounting includes 205 fricative-aspiration losses and 5,828 separator removals. Broad results are therefore sensitivity evidence, not a replacement for strict IPA scoring, not a normative transcription standard, and not evidence of Ukrainian target quality.
