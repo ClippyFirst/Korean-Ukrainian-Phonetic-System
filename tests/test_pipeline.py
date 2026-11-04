@@ -862,7 +862,12 @@ def test_r013_phrase_licenses_match_exact_adjacent_eojeol_pairs_inside_sentences
 
     # Explicit phrase mode still must not reconstruct spaces that were absent
     # in the source token. These compact UGTPHON forms remain unresolved.
-    for sentence in ("해줄것 같다", "많을거같이 보인다"):
+    for sentence in (
+        "해줄것 같다",
+        "많을거같이 보인다",
+        "해 줄, 것 같다",
+        "많을, 거 같이",
+    ):
         result = phoneticize_korean(sentence, boundary_mode="phrase")
         assert not any(
             rule.get("rule_id") == "R013" and rule.get("changed") is True

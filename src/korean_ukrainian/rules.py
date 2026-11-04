@@ -351,7 +351,9 @@ def _source_backed_rule_licenses(items, boundary_mode):
 
     if boundary_mode == "phrase":
         # Match complete adjacent eojeol pairs inside sentences, as the
-        # browser runtime does. This never infers hidden spaces in compact text.
+        # browser runtime does. Phrase mode represents connected speech; NIKL
+        # §27 does not fortify across a pause, which this text API cannot infer.
+        # This never infers hidden spaces in compact text.
         for left_word, right_word in zip(word_forms, word_forms[1:]):
             phrase_form = f"{left_word} {right_word}"
             pair = _NIKL_R013_PHRASE_LICENSES.get(phrase_form)
