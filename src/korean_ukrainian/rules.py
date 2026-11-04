@@ -646,7 +646,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             if len(parts)==4 and parts[1]==scope:
                 exact_pairs_by_word.setdefault(parts[2],set()).add(parts[3])
         word_exact_pair_contexts={}
-        if boundary_mode in {"same_word","morpheme"}:
+        if boundary_mode in {"same_word","morpheme","phrase"}:
             for i in range(len(items)-1):
                 word_form=word_form_by_index[i]
                 pair=f"{items[i].text}>{items[i+1].text}"
