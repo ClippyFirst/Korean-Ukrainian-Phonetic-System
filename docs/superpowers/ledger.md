@@ -626,3 +626,22 @@ The first attempt of multi-engine workflow run [41870455614](https://github.com/
 ### Final status correction — multi-engine run attempts
 
 Run `41870455614` was cancelled twice: attempt 1 while `Run multi-engine comparison` was active; attempt 2 during `Install the native engine, comparison dependencies, and eSpeak NG`. Neither attempt produced a final benchmark artifact. No new score is claimed. No further rerun was started because the repository already has a completed reproducible multi-engine artifact (`41851913351`, artifact `13337845603`, SHA-256 `7c0dce9cada1c15a22f99f18bea048b75f2df9b0133d9e87fcda3f95b82a484c`) on unchanged Kozak Kim production code. If a fresh comparison is needed, the next acceptance step is to diagnose why the Actions job is cancelled and then obtain a complete artifact; do not treat cancellation as a benchmark failure or success.
+
+
+## 2026-11-04 exact-head ledger — `e2131ad93dd58049aa68ccf1b88563acfe185ef5`
+
+| Work item | Status | Evidence / acceptance |
+|---|---|---|
+| Python regression, source/data integrity, browser regression and production build | DONE_VERIFIED | System Verify 41872601794; Browser 1,396/1,396; Python command and build/generated-page checks passed. |
+| Python/Browser surface + raw IPA parity | DONE_VERIFIED for pinned UGTPHON split | Run 41872601963 artifact 13347030495: 2,703/2,703 surface identical; 2,698/2,698 scored IPA identical; five shared abstentions. Broader profiles/splits remain outside this claim. |
+| Kozak Kim vs original g2pK diagnostic | DONE_VERIFIED as a paired diagnostic | Same artifact: UGTPHON paired n=2,698; SIGMORPHON paired n=998; lower Kozak CER on both, higher exact rate only on SIGMORPHON. No universal/normative accuracy claim. |
+| NIKL listed-rule and interaction coverage | PARTIAL | Exact listed examples and multiple interactions are regression-locked; the engine is not a full morphological parser and unknown morphology remains fail-closed. |
+| IPA profile contract / phonemic-vs-phonetic representation | PARTIAL | Broad profile IDs and levels match across runtimes; profile remains unadjudicated, and no shared structured segment/feature/boundary object or approved target-adapter gate exists. |
+| C12 [kx]/[kç] residual | BLOCKED for production change | 37 text/IPA rows, 29 tokens; no linked audio/speaker data; cited acoustic study lacks /ɯ,j/ context and [kx]/[kç] target notation. Need original recordings, annotation protocol, two independent Korean IPA reviews. |
+| 36-row unmapped Broad queue | PARTIAL / evidence-limited | Current generated and tracked queue share the same 36 occurrence IDs; every row remains unadjudicated and no-change pending evidence. |
+| Neural teacher / CharsiuG2P / ByT5 | DEFERRED / SKIPPED | Inference and pairing jobs skipped. Training audit reports zero independently adjudicated IPA additions and no holdout IPA gold. |
+| Names, loans, Hanja contextual readings, regional/style variation | TODO / PARTIAL | Existing separate side layers and lexical cases do not constitute broad contextual core-G2P coverage. Require sourced, balanced evaluation sets and independent review. |
+| Independent Ukrainian target review and NIKL item-level reuse rights | BLOCKED | No reviewed target gold; item-level KOGL/reuse marks remain unchecked for multiple NIKL entries. |
+| Release gate | BLOCKED | Research prototype only; independent Korean IPA holdout, Ukrainian target review, complete rights audit, and final deployment gates remain unmet. |
+
+No production phonology change was justified by the latest benchmark-only run. Keep the original g2pK baseline unchanged.

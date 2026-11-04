@@ -39,3 +39,16 @@ The new skill adds requirements generic software skills do not supply:
 ## Verification contract
 
 A structural contract test verifies the skill metadata and critical safeguards. It is not a linguistic-accuracy test. The skill is process guidance; it does not change runtime phonology, IPA, Ukrainian mappings, RR output, Hanja data, or service behavior.
+
+
+## Unlazy completion discipline — reviewed and adapted 2026-11-04
+
+**Additional upstream:** [Leonxlnx/unlazy](https://github.com/Leonxlnx/unlazy), reviewed at commit `16671491f6679ad9378f52604d3bc2415b4120c7` (MIT). No upstream code, gate checker, hooks, or skill text is copied.
+
+Adopted practices:
+- Every substantial outcome has an observable acceptance gate, an explicit command/oracle where automation can decide it, and a clearly named manual evidence gate where it cannot.
+- Review inherited commands and their scripts before execution; a successful command is evidence only for what its oracle actually measures.
+- Reverify after the final change on the exact commit; distinguish `DONE_VERIFIED`, `PARTIAL`, `TODO`, `BLOCKED`, and `DEFERRED`.
+- An abandoned or unavailable gate remains a handoff, never a success. The final report reconciles the original request, measured outcomes, skipped work, and remaining owners/evidence.
+
+**Repository-specific application:** reuse `research/ACCEPTANCE-GATES.md`, `docs/superpowers/ledger.md`, and the canonical master handoff instead of adding a second `GATES.md` or a generic gate-checker dependency. The current workflow already provides executable CI oracles; independent Korean IPA review, Ukrainian target review, source rights, and audio adjudication remain explicit manual gates. This avoids duplicate ledgers and avoids installing machine-specific hooks. The four-pass review discipline (complete implementation, domain-expert reread, correctness/integration/evidence hunt, low-cost polish) is applied to each coherent change batch.
