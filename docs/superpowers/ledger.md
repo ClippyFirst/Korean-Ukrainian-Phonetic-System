@@ -330,3 +330,12 @@ Final review (2026-11-03): self-review (no subagent tool available). Reviewed th
 - Python phrase-license lookup is now index-scoped to the exact adjacent word boundary, matching the Browser phrase map rather than accepting a syllable pair elsewhere in the sentence. Tests assert the license context and negative controls.
 - Baseline run 41797276965 / artifact 13306613436 passed all 17 steps, including queue cmp, same-occurrence Browser, 2,703 surface/2,698 IPA parity, and SIGMORPHON. That run predates the new phrase code; the phrase extension remains CI-pending.
 - No original g2pK source, adapter, or baseline data changed.
+
+## 2026-11-04 — R013 phrase license evidence and verification
+
+- Source basis: NIKL Standard Pronunciation Rule 27 (connected adnominal -(으)ㄹ + ㄱ/ㄷ/ㅂ/ㅅ/ㅈ fortition; pausing blocks it); official Q&A 310899 confirms colloquial `거` is a dependent noun equivalent to `것`.
+- Implementation: exact adjacent eojeol pair licenses `줄 것` and `많을 거`; Python phrase mode records exact pair index and trace context; Browser uses the same pair map. No hidden-space reconstruction. Browser punctuation and compact no-space forms are negative controls.
+- Phrase mode is a connected-speech assumption, not pause detection. No acoustic IPA claim is made.
+- Exact-head e29f756f System Verify [41806844422] PASS (Python regression/data integrity, Browser 1,395/1,395, Vite build); Browser G2P [41806844476], paired Native/g2pK [41806844324], UGTPHON [41806844305], morphology consensus [41806844379], extraction [41806844316], and morphology smoke [41806844503] PASS.
+- Multi-engine run [41806844311] was still in comparison at the checkpoint; do not mark it pass. Last completed full comparison is [41797276965] / artifact [13306613436].
+- Method: red-green tests, exact eojeol boundary modeling, explicit negative controls, and verification-before-completion. No wholesale copying from Superpowers, Matt Pocock Skills, or Ponytail; existing integrated phonetic-engineering skill remains canonical.
