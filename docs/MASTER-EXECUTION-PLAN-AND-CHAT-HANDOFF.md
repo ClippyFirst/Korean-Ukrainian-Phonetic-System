@@ -23,9 +23,9 @@
 - No independent Korean IPA gold, Ukrainian target adjudication, or accuracy claim is created by these engineering repairs. Korean remains a research prototype pending the human IPA and target-adjudication gates.
 
 
-**Starting main for this continuation:** `f0bd109a294fff9eca9037023653c5765eb17225`  
-**Current main after completed integration:** `ca6133890139f76c88253b2b1d0bbc3a6191601a`  
-**Working state:** all listed PRs merged; no uncommitted local checkout was available. GitHub branches/PRs and workflow evidence were inspected through the repository connector.
+**Starting main for this continuation:** `7bbbd7e7ce888a9c995bb70959e17858263c07a8`  
+**Current main after completed integration:** `340e34e70c726f3a07910a494272990e31658e65`  
+**Working state:** remote-only implementation and verification through GitHub repository/Actions access; no local checkout was available. PR #428 is merged; PR #427 is closed as superseded (branch retained); PR #429 and this documentation PR #430 are open. The pre-existing Korean research stack remains open and was not merged or deleted.
 
 ## Current task ledger
 
