@@ -1,5 +1,26 @@
 # Kozak Kim: discrepancy-driven phonology improvement — 2026-11-01
 
+## Latest discrepancy audit — five native abstentions, no safe rule expansion — 2026-11-02
+
+The exact-head multi-engine artifact `13129993707` reports five UGTPHON native abstentions. They are not a homogeneous rule opportunity and must not be collapsed into a general phonology patch.
+
+| Token | Guard | Evidence state | Decision |
+|---|---|---|---|
+| `칡칡이` | R002 liaison/neutralization | Exact morpheme boundary not established; external engine outputs are not gold. | Keep unresolved pending lexical/morphological or audio evidence. |
+| `쫒아내면` | R002 | Nonstandard `쫒-` spelling; silently correcting to `쫓-` would conflate orthographic correction with pronunciation. | Keep unresolved; do not normalize. |
+| `많앗구나유유유` | R003 ㅎ-coda deletion | Noisy/nonstandard form; exact ending boundary is not established. | Keep unresolved; no typo-wide or suffix-wide rule. |
+| `삶의` | IPA adjudication | NIKL MCFAQ 5716 directly attests Hangul readings `[살믜]` and `[살메]`; it does not provide IPA. The existing lexicon already carries project-derived `sal.mi` and `sal.me` candidates as provisional. | Preserve both variants and unresolved/diagnostic-only status until independent IPA review; withhold Ukrainian output. |
+| `무서웟어` | R002 liaison/neutralization | Nonstandard spelling and exact morpheme boundary are not established. | Keep unresolved; do not normalize to a standard spelling. |
+
+For `삶의`, the primary source is [NIKL MCFAQ 5716](https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5716&mn_id=217&pageIndex=225), which states that particle `의` may be pronounced [ㅢ] or [ㅔ], yielding `삶의[살믜]/[살메]`. The project IPA `sal.mi`/`sal.me` is derived from those Hangul surface forms, not directly transcribed by NIKL. The UGTPHON reference `sʰa̠ɭmi` is not an independent IPA adjudication and must not override the source-backed variants.
+
+**Rejected exploratory candidate:** `중심닮음` was not present in the paired discrepancy ledger or the five-item native-abstention audit. Draft PR #418 was therefore closed without merge; its branch remains preserved. Do not count this as an engine improvement.
+
+**Production decision:** no additional production phonology rule is justified by this audit. The existing abstention behavior is intentional and evidence-gated. The next real dependency is independent IPA adjudication for `삶의` and source/context evidence for the four morphophonological cases.
+
+**Regression guard:** `test_actual_native_abstentions_remain_fail_closed_without_exact_morphology` now asserts unresolved/diagnostic-only status and exact R002/R003 reasons for the four morphophonological tokens. The existing `삶의` test continues to verify [살믜]/[살메] and independent-IPA abstention. Exact-head push/PR system checks and extraction passed on `4225cea7`; browser tests remain 1,374/1,374.
+
+
 ## C01–C07 and C10 independent literature review — 2026-11-02
 
 The source search now has peer-reviewed phonetic evidence for the main profile disagreements. These sources adjudicate the *scope of plausible analyses*, not the exact realization of each UGTPHON sentence; no corpus-token IPA is fabricated.
