@@ -1218,7 +1218,7 @@ Run `41870455614` was cancelled twice: attempt 1 while `Run multi-engine compari
 
 ### Training readiness and scope
 - Training audit: 644 lexical rows, 46 addition rows, 24 frozen holdout cases, zero addition rows explicitly marked as independently adjudicated IPA, and zero holdout forms with IPA gold. Supervised IPA training is **not ready**.
-- Reviewer A/B holdout packets were generated without engine outputs; they remain awaiting independent annotation/adjudication.
+- Reviewer A/B holdout packets were generated without engine outputs; they remain awaiting independent annotation/adjudication. C01–C07 blind packets contain token/source-row IDs but lack licensed source utterance context and reviewer-sharing rights, so they are not yet ready for external scoring/dispatch. Issue #337 remains open without qualified submissions.
 - Original g2pK 0.9.4 remains pinned and unmodified. No g2pK vendor file or external baseline was changed.
 - Research readiness: comparative diagnostic evidence is materially stronger; independent IPA gold, independent Ukrainian target review, item-level NIKL reuse verification, C12 audio/prosody crosswalk, historical 239-case adjudication, and names/loans/Hanja/regional-style coverage remain open.
 - Release status: **research prototype**, not research-certified and not release-ready.
