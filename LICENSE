@@ -1,0 +1,121 @@
+CLIPPYFIRST PROJECT LICENSE — VERSION 1.0
+Copyright © 2026 Vitalii Volodymyrovych Tkachuk
+Authorial pseudonym and public author identity: ClippyFirst
+
+This is a custom, purpose-limited license for original project materials
+identified below. It is not an OSI-approved Open Source license and does not
+grant general permission to copy, modify, redistribute, host, or commercially
+exploit the technical implementation.
+
+1. AUTHOR AND COVERED MATERIALS
+
+The author is Vitalii Volodymyrovych Tkachuk, publishing under the authorial
+pseudonym ClippyFirst. "ClippyFirst", "Author", and "Licensor" refer to that
+same person.
+
+"Project Materials" means original source code, software, algorithms as
+expressed in copyrightable form, documentation, original research text,
+correspondence tables, datasets, annotations, examples, and other original
+content created by the Author and distributed as part of the Korean–Ukrainian
+Phonetic System repository or its official public website.
+
+This license applies only to rights the Author owns or is authorized to
+license. It does not replace or override third-party licenses, public-domain
+status, statutory exceptions, or rights held by other authors. In particular,
+vendored software, external dictionaries, corpora, source quotations, and
+third-party datasets remain subject to their own notices and terms.
+
+2. LIMITED SCIENTIFIC-RESEARCH PERMISSION
+
+The Author grants everyone a worldwide, non-exclusive, royalty-free,
+non-transferable permission to:
+
+(a) access and use the publicly available Project web service in its
+    intended user-facing manner;
+(b) display, quote, cite, discuss, and reproduce individual results produced
+    by that public service in scholarly research outputs and scientific
+    publications, including research websites;
+(c) consult, quote, analyse, and reproduce the Korean-to-Ukrainian
+    transliteration/correspondence table solely as part of genuine scientific
+    research; and
+(d) include reasonable excerpts of Project Materials in scholarly analysis
+    where necessary to explain, verify, or critique the research.
+
+These permissions require clear attribution to the Author and a reference to
+the original project. They do not permit presenting the Author's work as one's
+own, removing provenance, or implying the Author endorses the resulting work.
+
+Recommended attribution:
+"ClippyFirst (Vitalii Volodymyrovych Tkachuk), Korean–Ukrainian Phonetic
+System, 2026, https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System"
+
+Where a research output reproduces or adapts a substantial part of the table,
+it must identify the table as the ClippyFirst project table, cite the project,
+and describe any changes. This permission is purpose-limited; it is not a
+general licence to republish the table as a standalone product or dataset.
+
+3. TECHNICAL IMPLEMENTATION — PRIOR WRITTEN PERMISSION REQUIRED
+
+No permission is granted under this license to, without the Author's prior
+written permission:
+
+(a) copy, redistribute, publish, sublicense, or make available the Project's
+    source code or other technical implementation as a reusable component;
+(b) install, self-host, mirror, deploy, or operate a copy of the service or
+    backend outside the official public service;
+(c) integrate the implementation, code, API, modules, scripts, or technical
+    assets into another product, service, application, package, or platform;
+(d) modify, adapt, translate, port, or create a derivative technical
+    implementation from the Project Materials; or
+(e) use the Project's technical implementation to provide a competing or
+    third-party hosted service.
+
+Requests for technical use, integration, modification, redistribution,
+commercial use, or other permissions outside Section 2 must be addressed to
+the Author through the official GitHub profile:
+https://github.com/ClippyFirst
+
+A public repository's visibility does not itself grant permission to reuse
+its technical implementation. Viewing, reading, and ordinary interaction
+with the public website are not restricted.
+
+4. RIGHTS NOT EXPRESSLY GRANTED
+
+All rights in the Author's Project Materials not expressly granted in
+Section 2 are reserved by the Author, to the extent those rights exist under
+applicable law. No patent licence, trademark licence, endorsement, or right
+to use the ClippyFirst name, logo, or branding is granted by this license.
+
+5. THIRD-PARTY MATERIALS
+
+Third-party components and data are excluded from the permissions above
+except to the extent their own applicable terms independently allow use.
+Users must inspect and comply with the relevant third-party notices and
+licences. Nothing here narrows rights already granted by a third-party
+licence or applicable law.
+
+6. ATTRIBUTION, INTEGRITY, AND TERMINATION
+
+Attribution under Section 2 is a condition of the granted permission. If a
+user materially breaches this license, the permission terminates to the
+extent permitted by applicable law. The Author may separately grant written
+permissions or exceptions.
+
+7. NO WARRANTY
+
+The Project Materials and public service are provided "as is", without
+warranties or conditions of any kind, to the maximum extent permitted by
+applicable law. The Author is not liable for claims or damages arising from
+use of the Project Materials, except to the extent liability cannot lawfully
+be excluded.
+
+8. INTERPRETATION
+
+This license is intended to state the Author's permissions for the Project
+Materials; it does not remove rights that users have under mandatory law,
+including applicable quotation, research, educational, or other statutory
+exceptions. If a provision is unenforceable, the remaining provisions remain
+in effect to the extent permitted by law.
+
+For questions or written permission, contact ClippyFirst:
+https://github.com/ClippyFirst
