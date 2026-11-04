@@ -535,6 +535,9 @@ def test_c12_velar_coarticulation_source_is_cautionary_not_a_rewrite_license():
     assert acoustic["license_status"].startswith("CC-BY-4.0 verified")
     assert "burst duration" in acoustic["coverage"].lower()
     assert "does not report [kx]/[kç]" in acoustic["limitations_or_next_action"].lower()
+    assert "no /ɯ/ or /j/" in acoustic["limitations_or_next_action"].lower()
+    assert "study 1 uses /a/" in acoustic["limitations_or_next_action"].lower()
+    assert "study 2 uses /i,u,a,ʌ/" in acoustic["limitations_or_next_action"].lower()
     assert source["url"] == "https://doi.org/10.17959/sppm.2007.13.3.373"
     assert "abstract" in source["review_status"].lower()
     assert "underrepresented" in source["coverage"].lower()
@@ -557,6 +560,47 @@ def test_c12_velar_coarticulation_source_is_cautionary_not_a_rewrite_license():
     assert c12_cluster["status"] == "PARTIAL_GENERAL_ACOUSTIC_EVIDENCE_EXACT_C12_REVIEW_BLOCKED"
     assert "SRC-KCI-ITO-2007-MORPHEME-STRUCTURE" in c12_cluster["production_decision"] + c12_cluster["next_action"]
     assert "SRC-JIPA-SCHWEIZER-AHN-KWON-2026-SEOUL-STOPS" in c12_cluster["production_decision"] + c12_cluster["next_action"]
+
+    fragment_path = ROOT / "research" / "kozak-kim-mismatch-fragments-2026-11-02.csv"
+    with fragment_path.open("r", encoding="utf-8-sig", newline="") as stream:
+        fragment_reader = csv.DictReader(stream)
+        fragment_fields = fragment_reader.fieldnames or []
+        fragments = list(fragment_reader)
+    c12_rows = [
+        row for row in fragments
+        if "kʰ" in row["strict_kozak_ipa"]
+        and any(pattern in row["strict_reference_ipa"] for pattern in ("kxɯ", "kçi", "kçj"))
+    ]
+    assert len(c12_rows) == 37
+    assert len({row["token"] for row in c12_rows}) == 29
+    assert not any("audio" in field.lower() or "speaker" in field.lower() for field in fragment_fields)
+
+    pattern_counts = {"kxɯ_only": 0, "kçi_only": 0, "kçj_only": 0, "kxɯ_and_kçi": 0}
+    source_counts = {"multilexnorm2026": 0, "dc_inside": 0}
+    for row in c12_rows:
+        ipa = row["strict_reference_ipa"]
+        has_kxɯ = "kxɯ" in ipa
+        has_kçi = "kçi" in ipa
+        has_kçj = "kçj" in ipa
+        if has_kxɯ and has_kçi:
+            pattern_counts["kxɯ_and_kçi"] += 1
+        elif has_kxɯ:
+            pattern_counts["kxɯ_only"] += 1
+        elif has_kçi:
+            pattern_counts["kçi_only"] += 1
+        elif has_kçj:
+            pattern_counts["kçj_only"] += 1
+        else:
+            raise AssertionError(f"unclassified C12 occurrence: {row['occurrence_id']}")
+        source_id = row["source_row_id"]
+        if source_id.startswith("multilexnorm2026_"):
+            source_counts["multilexnorm2026"] += 1
+        elif source_id.startswith("dc_inside_"):
+            source_counts["dc_inside"] += 1
+        else:
+            raise AssertionError(f"unexpected C12 source namespace: {source_id}")
+    assert pattern_counts == {"kxɯ_only": 16, "kçi_only": 12, "kçj_only": 8, "kxɯ_and_kçi": 1}
+    assert source_counts == {"multilexnorm2026": 12, "dc_inside": 25}
     assert clusters["C04"]["unique_occurrences"] == "0"
     assert clusters["C04"]["edit_operations"] == "0"
 
