@@ -50,8 +50,8 @@ The README explicitly distinguishes the browser practical G2P path from the nati
 | Current-head CI | DONE_VERIFIED | Four latest `main` push workflows on `c4c3fdf` completed successfully: system verification, tests, master-table/research artifacts and Pages deployment. |
 | Existing architecture separation | DONE_VERIFIED (preserve) | Separate Python, browser, vendor, data, schema, research and target-rendering boundaries exist. |
 | IPA-first contract | DONE_VERIFIED (software contract) | README, architecture docs and regression tests describe/enforce the boundary; this does not prove every pronunciation or Ukrainian choice is linguistically correct. |
-| Documentation discoverability | PARTIAL → addressed in this branch | Added this documentation map and repository audit; the existing dated reports remain in place. |
-| README navigation | TODO → addressed in this branch | Add a concise link to the documentation map and audit rather than duplicating their contents. |
+| Documentation discoverability | DONE_VERIFIED on PR branch | Added the documentation map and repository audit; all referenced index targets were fetched successfully; PR checks passed. |
+| README navigation | DONE_VERIFIED on PR branch | Root README links to the documentation map and dated audit; both targets were fetched successfully. |
 | Root-level project license | BLOCKED | No root `LICENSE` file appears in the repository tree. Historical `MANIFEST.txt` explicitly says a root project license requires an owner decision. Do not choose a license on the owner's behalf. Third-party notices/licenses do not license the project itself. |
 | Package version consistency | TODO | `package.json` reports 1.0.0 while `pyproject.toml` reports 0.6.0. These may represent separate browser/Python release tracks, but no explicit versioning policy was found in the inspected entry points. Document or reconcile before tagging a unified release. |
 | Research evidence acceptance | BLOCKED / PARTIAL | Current handoff records independent Korean IPA review, Ukrainian target review and item-level source-rights review as outstanding; mismatch queues remain. |
@@ -121,3 +121,18 @@ These are software/automation results only. They do not close the independent IP
 ## 9. Scope of this change
 
 This documentation pass adds navigation and a verified snapshot. It intentionally does not modify phonological rules, lexical data, generated artifacts, third-party vendor code, benchmark outputs, licenses or historical audit contents.
+
+
+## 10. Documentation branch verification — 2026-11-04
+
+- Branch: `docs/repository-audit-and-navigation-2026-11-04`
+- PR: [#434](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/434)
+- Branch head: `17b57c4388b01ad4d0aabea745a6088c89ada87c`
+- Base at PR creation: `c4c3fdf59ebeae18ede0c7429964239b1eb2570d`
+- Compare result: 3 commits ahead, 0 behind; 3 files changed (193 additions, 0 deletions).
+- Referenced documentation targets in the new index: all fetched successfully from the branch.
+- PR Actions: Master table/research corpus artifacts #41918593824 — PASS; System Verify #41918593827 — PASS; tests #41918593914 — PASS.
+- PR state at audit completion: OPEN, mergeable; not merged. The integration branch `main` remains unchanged.
+- No local test commands were run in this environment. Verification above is GitHub Actions and remote file/commit inspection.
+
+This PR is documentation-only. The green software checks validate repository automation on this commit; they do not close the independent linguistic or licensing blockers listed above.
