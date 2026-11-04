@@ -77,7 +77,7 @@ Software regressions/build are verified. Broad score targets remain unmet. Runti
 | Strict IPA preservation | No evidence-backed distinctions collapsed | Strict scoring retained; broad sensitivity losses separately reported | PARTIAL — independent convention adjudication pending |
 | Independent IPA gold | Two independent reviews + adjudication | Frozen 24-item holdout and separate A/B templates prepared; no reviewer submissions yet | BLOCKED |
 
-The Browser normal-conversion metadata path has been corrected to report the explicitly selected broad profile; a Python/JavaScript normalizer parity test now checks shared edge cases and feature-loss ledgers. Both implementations are present, but the latest exact-head CI is still queued and these items remain PARTIAL until verified. The R013 change in this continuation is a narrowly scoped correction to the existing NIKL Q&A 330963-backed -ㄹ게 ending license, with positive and negative controls; it is not a new general phonological rule.
+The Browser normal-conversion metadata path has been corrected to report the explicitly selected broad profile; a Python/JavaScript normalizer parity test now checks shared edge cases and feature-loss ledgers. Both implementations are present, but the exact-head System Verify 41843473006 passed on 2026-11-04 and these items remain PARTIAL until verified. The R013 change in this continuation is a narrowly scoped correction to the existing NIKL Q&A 330963-backed -ㄹ게 ending license, with positive and negative controls; it is not a new general phonological rule.
 
 Do not use the old 93.81% Browser score as evidence of superiority: it came from `browser-legacy-contextual-v1`, whereas Native used `clippyfirst-korean-broad-v1`. The common-profile run is the only valid runtime comparison.
 
@@ -884,7 +884,7 @@ Exact-head verification: push run `41358504664` and PR run `41358508399` both pa
 | Refreshed multi-engine UGTPHON, queue cmp, Browser and Native/Browser parity | DONE_VERIFIED | Run 41797276965 / artifact 13306613436; all 17 steps PASS; queue 36 rows / 55 fragments / 0 missing contexts; 2,703 surface and 2,698 IPA occurrences equal across runtimes. |
 | SIGMORPHON lexical portfolio | DONE_VERIFIED as diagnostic | Same run; paired n=998, Native 358 exact and 14.5598% CER vs g2pK 353 exact and 14.8106% CER; exact McNemar p=0.0625. |
 | Independent IPA holdout | BLOCKED | 24-case packets prepared for two reviewers; annotations pending. |
-| R013 phrase-level `줄 것` and `많을 거` | IN_PROGRESS | Exact eojeol pair matching, Python phrase mode, Browser parity map and negative controls implemented; run exact-head tests before marking DONE_VERIFIED. |
+| R013 phrase-level `줄 것` and `많을 거` | DONE_VERIFIED for software behavior | Exact pair and negative controls pass Python/Browser System Verify 41843473006 on head `4fa02996aca22926902b1954c93a19037f0160f6`; prosodic pause remains unobservable in plain text. |
 | Independent Ukrainian target review, NIKL item-level rights, C12 primary evidence, historical 239-case adjudication | BLOCKED | External evidence/review remains required. |
 
 Original g2pK 0.9.4 remains unchanged and comparison-only.
@@ -1075,9 +1075,9 @@ The earlier self-review entry stating that no Important defect was identified is
 
 | Task | Status | Evidence / remaining acceptance |
 |---|---|---|
-| R013 `-ㄹ게` license must remain inside the exact eligible occurrence | DONE_VERIFIED | Red failure 41841891363; fix 3358b814; System Verify 41842288415; Browser regression 1,148 passed on exact head 648949a. |
-| R013 explicit phrase pair licenses `줄 것` / `많을 거` | DONE_VERIFIED for software behavior | Exact pair and negative controls pass Python/Browser CI; linguistic pause/cohesion remains conditional because the text API has no pause annotation. |
-| Multi-engine benchmark on the R013 occurrence-scope fix | PARTIAL / IN_PROGRESS | Run 41842288431 must complete all 17 steps; inspect refreshed queue, same-occurrence Browser parity, SIGMORPHON and artifact before updating comparative evidence. |
+| R013 `-ㄹ게` license must remain inside the exact eligible occurrence | DONE_VERIFIED | Red failure 41841891363; occurrence-indexed fix 3358b814; Python and Browser full verification on current head `4fa02996aca22926902b1954c93a19037f0160f6`, System Verify 41843473006 PASS, Browser 1,396/1,396. Independent Korean morphology/IPA review remains open. |
+| R013 explicit phrase pair licenses `줄 것` / `많을 거` | DONE_VERIFIED for software behavior | Exact adjacent-eojeol matching, Python phrase mode, Browser parity, positive and compact/punctuation negative controls; System Verify 41843473006 PASS on current head. Linguistic pause/cohesion remains conditional because the text API has no pause annotation. |
+| Multi-engine benchmark on the R013 occurrence-scope fix | PARTIAL / IN_PROGRESS | Current-head run 41843472619: multi-engine comparison, mismatch-queue export, same-occurrence Browser run and runtime parity completed; SIGMORPHON lexical-gold portfolio step 17 remains in progress, artifact upload pending. ByT5 and CharsiuG2P inference explicitly SKIPPED. |
 | Independent Korean IPA / Ukrainian target review | BLOCKED | Human reviewers and adjudication still absent. |
 | C12 acoustic interpretation and NIKL item-level rights | BLOCKED | Source audio/metadata and item-specific rights evidence remain unavailable. |
 

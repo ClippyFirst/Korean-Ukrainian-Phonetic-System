@@ -5991,9 +5991,9 @@ The earlier self-review entry stating that no Important defect was identified is
 
 | Task | Status | Evidence / remaining acceptance |
 |---|---|---|
-| R013 `-ㄹ게` license must remain inside the exact eligible occurrence | DONE_VERIFIED | Red failure 41841891363; fix 3358b814; System Verify 41842288415; Browser regression 1,148 passed on exact head 648949a. |
-| R013 explicit phrase pair licenses `줄 것` / `많을 거` | DONE_VERIFIED for software behavior | Exact pair and negative controls pass Python/Browser CI; linguistic pause/cohesion remains conditional because the text API has no pause annotation. |
-| Multi-engine benchmark on the R013 occurrence-scope fix | PARTIAL / IN_PROGRESS | Run 41842288431 must complete all 17 steps; inspect refreshed queue, same-occurrence Browser parity, SIGMORPHON and artifact before updating comparative evidence. |
+| R013 `-ㄹ게` license must remain inside the exact eligible occurrence | DONE_VERIFIED | Red failure 41841891363; occurrence-indexed fix 3358b814; Python and Browser full verification on current head `4fa02996aca22926902b1954c93a19037f0160f6`, System Verify 41843473006 PASS, Browser 1,396/1,396. Independent Korean morphology/IPA review remains open. |
+| R013 explicit phrase pair licenses `줄 것` / `많을 거` | DONE_VERIFIED for software behavior | Exact adjacent-eojeol matching, Python phrase mode, Browser parity, positive and compact/punctuation negative controls; System Verify 41843473006 PASS on current head. Linguistic pause/cohesion remains conditional because the text API has no pause annotation. |
+| Multi-engine benchmark on the R013 occurrence-scope fix | PARTIAL / IN_PROGRESS | Current-head run 41843472619: multi-engine comparison, mismatch-queue export, same-occurrence Browser run and runtime parity completed; SIGMORPHON lexical-gold portfolio step 17 remains in progress, artifact upload pending. ByT5 and CharsiuG2P inference explicitly SKIPPED. |
 | Independent Korean IPA / Ukrainian target review | BLOCKED | Human reviewers and adjudication still absent. |
 | C12 acoustic interpretation and NIKL item-level rights | BLOCKED | Source audio/metadata and item-specific rights evidence remain unavailable. |
 
