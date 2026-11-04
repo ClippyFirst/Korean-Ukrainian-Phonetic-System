@@ -459,3 +459,22 @@ Training gate: the latest readiness audit finds 644 unique lexical rows but zero
 - **PARTIAL:** multi-engine rerun 41637795800 remained in progress; no new artifact/score claimed. Existing raw-path artifact 13226589858 remains valid.
 - **BLOCKED:** independent Korean IPA adjudication, NIKL item-level reuse rights, Ukrainian target review, C12 acoustic/articulatory evidence, 239 mismatch occurrences, and adjudicated IPA gold for training.
 - **Disposition:** research prototype; not research-certified or release-ready. PR #424 remains Draft/open/unmerged.
+
+
+## 2026-11-05 — Mainline merge and next research execution batch
+
+**Integrated documentation work:** PR #434 is merged into `main` at merge commit `56318e8a293d6f92dc307256430279d386a77d33`. The repository audit/navigation, independent browser/Python versioning policy, and owner-approved custom ClippyFirst Project License are now part of main. The owner-approved licence permits attributed scientific use of public-service results and the Korean→Ukrainian table; technical reuse requires prior written permission. It is a custom, non-OSI-approved licence; third-party terms remain separate. See `LICENSE`, `docs/LICENSING-AND-PERMISSIONS.md`, and DEC-2026-007.
+
+**Current disposition:** partial research prototype; not research-certified or release-ready. Software CI passed on the exact PR head before merge, but no post-merge Actions result is claimed. The NIKL metadata-only inventory was skipped.
+
+### Next tasks, in dependency order
+1. **NIKL source rights and evidence inventory (BLOCKED/PARTIAL):** run the policy-compliant official inventory from an allowed network environment; inspect per-item KOGL markings and third-party ownership; repair incomplete/unstable source locators. The Standard Pronunciation Rules page previously returned HTTP 403 to automation. Do not infer blanket clearance from the site-wide policy.
+2. **Independent Korean IPA gold (BLOCKED):** restore licensed source utterance/context for reviewer packets; recruit two qualified independent reviewers; define the transcription convention; annotate and adjudicate the frozen holdout. Existing engine/corpus agreement is diagnostic, not normative gold.
+3. **Independent Ukrainian target review (BLOCKED):** freeze IPA inputs, compare the current target layer with Shchegel (2009), Kovalchuk (2011) and other admissible Ukrainian evidence; resolve disputed mappings with a separate reviewer and tests.
+4. **C12 source-context crosswalk (BLOCKED):** connect affected occurrences to source rows, utterances/audio, speaker, dialect, and prosodic environment. Do not add a production phonological rule until these data support it.
+5. **Historical 239-case reconciliation (PARTIAL/EVIDENCE-LIMITED):** recover occurrence/source identities and create a hash-pinned ledger with dataset/profile/engine versions, reference convention, context and adjudication. The 36-row Broad queue, 1,267 fragment rows, 13 cluster rows and 38 paired-discrepancy rows are different grains and are not substitutes.
+6. **Cross-runtime parity and coverage (PARTIAL):** extend rule-by-rule browser/Python/CLI/API parity beyond the pinned UGTPHON subset. The rule coverage matrix explicitly records that CLI/API per-rule outputs are not exhaustively enumerated and that several morphology-sensitive rules remain only partially independently reviewed. Resolve documented JS/Python divergences only with source-backed evidence.
+7. **Coverage expansion (TODO/PARTIAL):** close names, loanwords, Hanja, regional-style and other input coverage gaps with explicit source scope and negative controls.
+8. **Neural training (DEFERRED):** do not train or claim supervised IPA quality until independent adjudicated IPA gold exists and corpus rights are established.
+
+**Execution rule:** prioritize evidence acquisition and independent review before code changes. Promote only independently supported corrections into production; retain abstentions where evidence is insufficient. Each batch must update the source register, rule coverage, acceptance gates, tests and exact-head verification evidence.
