@@ -638,3 +638,18 @@ def test_c08_fixture_maps_all_eight_occurrences_without_promoting_hypotheses_to_
     assert all(case.get("morphology_evidence") for case in cases if case["source_row_id"] != "dc_inside_2024")
     assert any("not independently adjudicated normative IPA gold" in item for item in mapping["limitations"])
     assert any("No production phonology rule" in item for item in mapping["limitations"])
+
+def test_nikl_dictionary_noeun_length_attestation_is_not_lost_to_corpus_reference():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-NIKL-KRDICT-89917"]
+    assert "없는[엄ː는]" in source["coverage"]
+    assert "Hangul" in source["limitations_or_next_action"]
+    assert "not checked" in source["license_status"].lower()
+
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    result = phoneticize_korean("없는")
+    assert result["surface_hangul"] == "엄는"
+    # The official dictionary gives Hangul pronunciation, not IPA. This is
+    # the project's broad-IPA rendering of that attested vowel length.
+    assert result["ipa"]["ipa"] == "ʌːm.nɯn"
