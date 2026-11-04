@@ -1,23 +1,13 @@
-## Verification refresh — 2026-11-04: g2pK baseline isolation (PARTIAL)
-
-The verified code/test snapshot `047ecf2885281b0c5d579212439f36b6b815219d` passed System Verify [41879691726], tests matrix [41880371150] (Python 3.11/3.12/3.13, web, wheel install, teacher-corpus audit), and optional g2pK [41879691621] (29 tests each on Python 3.11 and 3.12).
-
-On pre-new-test branch snapshot `a92f1f6bdf492a57bd8304fc11d193313fde9fb3`, System Verify [41881763346], optional g2pK [41881763221], paired Native/g2pK [41881763151], external UGTPHON [41881763371], morphology consensus [41881763588], exhaustive register extraction [41881763551], and master-table artifacts [41881763224] passed. Python 3.11/3.12/3.13, web and wheel-install jobs passed in tests workflow [41881763484]; the teacher-corpus audit hit an external HTTP 503 and its retry was still running. Multi-engine runs were cancelled; CharsiuG2P and ByT5 were skipped. Official NIKL metadata inventory was skipped.
-
-Paired UGTPHON (n=2,698): native Kozak 53.0022% exact / 9.1697% CER; original g2pK 53.1134% exact / 9.2304% CER. Exact match favours g2pK by 0.1112 pp; CER favours Kozak by 0.0607 pp. This is noisy diagnostic evidence, not normative IPA gold.
-
-Current branch tip `a8781dbd134929fb3b65ac168c9ea8fee0bf57c7` has no `src/` differences from verified snapshot `047ecf2885281b0c5d579212439f36b6b815219d`; the only test-tree change is one new `삶의` regression to ensure source-backed diagnostic-only IPA status is preserved. This test has not yet run. TDD RED was not observed.
-
 ## Current continuation delta — 2026-11-04
 
 | Requirement | Current state | Evidence / next acceptance |
 |---|---|---|
-| Keep original g2pK comparison adapter isolated from Kozak research-only lexical candidates | **PARTIAL — PR #432** | Mainline Python adapter previously consumed the shared Kozak lexical table in surface, IPA and diagnostic-status paths. The PR excludes `variant-aware-research` and `kozak-research-only` at all three paths and adds focused regressions. Exact-head CI is queued; no pass is claimed. |
-| Preserve original g2pK implementation/vendor files | **DONE_VERIFIED for this branch diff** | Recursive Git-tree comparison: all 9 `src/vendor/g2pk/` files are byte-identical to main. The PR changes only `src/korean_ukrainian/g2pk_engine.py` and `tests/test_g2pk_engine.py` before this documentation update. |
-| Verify g2pK adapter parity and paired benchmark after the isolation fix | **TODO / CI QUEUED** | Await exact-head Python regression, wheel install, optional g2pK integration and paired Native/g2pK diagnostics. Do not claim local test execution; GitHub DNS is unavailable in the local environment. |
+| Keep original g2pK comparison adapter isolated from Kozak research-only lexical candidates | **DONE_VERIFIED on PR branch; not merged** | Python adapter excludes `variant-aware-research` and `kozak-research-only` from surface, IPA and diagnostic-status overlays. Real `못잃어` and synthetic fixtures cover the three paths; source-backed `삶의` retains its diagnostic-only IPA warning. Optional g2pK tests passed 30/30 on Python 3.11 and 30/30 on Python 3.12. |
+| Preserve original g2pK implementation/vendor files | **DONE_VERIFIED** | Recursive Git-tree comparison: all 9 `src/vendor/g2pk/` files are byte-identical to main. |
+| Verify Python/browser/runtime integration and paired baseline | **DONE_VERIFIED on PR branch** | System Verify, Python 3.11/3.12/3.13, browser 1,345/1,345, wheel install, teacher-corpus audit, optional g2pK, and paired Native/g2pK diagnostic all passed. |
+| Complete multi-engine diagnostic and independent linguistic review | **PARTIAL / evidence-limited** | Multi-engine benchmark still in progress; CharsiuG2P/ByT5 skipped. Official live NIKL inventory skipped. Independent IPA and Ukrainian-target gold remain external acceptance blockers. |
 
-This delta does not change Kozak Kim production phonology, IPA policy, Ukrainian targets or g2pK vendor code. It protects the independence of the comparison baseline. Overall readiness remains a research prototype pending independent IPA adjudication, Ukrainian-target review, source-rights clearance and unresolved mismatch adjudication.
-
+This delta does not change Kozak Kim production phonology, IPA policy or Ukrainian targets. It protects the independence of the g2pK comparison baseline. PR #432 remains Draft/open and unmerged; overall readiness remains a research prototype pending independent IPA adjudication, Ukrainian-target review, source-rights clearance and unresolved mismatch adjudication.
 # Initial specification → final implementation coverage
 
 Audit date: 2026-10-02

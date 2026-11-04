@@ -1,25 +1,14 @@
-## 2026-11-04 verification refresh — g2pK baseline isolation (PARTIAL)
-
-The verified code/test snapshot `047ecf2885281b0c5d579212439f36b6b815219d` passed System Verify [41879691726], full tests matrix [41880371150] (Python 3.11/3.12/3.13, web, wheel install and teacher-corpus audit), and optional g2pK [41879691621] (29 tests on each of Python 3.11 and 3.12).
-
-On the subsequent pre-new-test branch snapshot `a92f1f6bdf492a57bd8304fc11d193313fde9fb3`, System Verify [41881763346], optional g2pK [41881763221], paired Native/g2pK [41881763151], external UGTPHON [41881763371], morphology consensus [41881763588], exhaustive register extraction [41881763551], and master-table artifacts [41881763224] passed. The tests matrix [41881763484] passed Python 3.11/3.12/3.13, web and wheel install; its teacher-corpus audit failed due external HTTP 503 and was rerun, still in progress at last inspection. Multi-engine runs were cancelled; CharsiuG2P/ByT5 were skipped. Official NIKL metadata inventory was skipped.
-
-Paired UGTPHON (n=2,698) on the mainline snapshot: native Kozak 53.0022% exact / 9.1697% CER; g2pK 53.1134% exact / 9.2304% CER. Exact match favours g2pK by 0.1112 pp; CER favours Kozak by 0.0607 pp. This is noisy diagnostic evidence, not normative IPA gold.
-
-Current branch tip `a8781dbd134929fb3b65ac168c9ea8fee0bf57c7` has no `src/` changes against verified snapshot `047ecf2885281b0c5d579212439f36b6b815219d`; the only test-tree difference is one added regression that preserves the source-backed diagnostic-only IPA status for `삶의`. That new test has not yet run. TDD RED was not observed. No release-readiness claim follows from these software checks.
-
 ## Continuation audit — 2026-11-04: g2pK research-overlay isolation
 
-**Status: PARTIAL; PR #432 is Draft/open and exact-head CI is pending.**
+**Status: DONE_VERIFIED on PR branch; PR #432 remains Draft/open and unmerged.**
 
-The current-main Python g2pK adapter consumed the shared Kozak lexical table without filtering research-only input kinds. This could let a Kozak research candidate rewrite the adapter's external g2pK Hangul surface, inject Kozak-derived IPA, or leak a diagnostic-only status into the g2pK result. The narrow PR #432 adds a guard for `variant-aware-research` and `kozak-research-only` at each of those three boundaries, with a real `못잃어` regression and synthetic structural tests for the other paths.
+The mainline Python g2pK adapter previously consumed the shared Kozak lexical table without filtering research-only input kinds. This could rewrite the external g2pK Hangul surface, inject Kozak-derived IPA, or leak diagnostic-only status. The adapter now filters `variant-aware-research` and `kozak-research-only` at all three boundaries. It deliberately retains source-backed uncertainty: `삶의` remains marked diagnostic-only because its project IPA has not been independently adjudicated.
 
-No Korean phonological rule or Kozak Kim production output is changed. No g2pK source/vendor file is changed; all 9 files in `src/vendor/g2pk/` were verified byte-identical to the base `main` tree. The PR changes only the Python adapter and its tests.
+Regression evidence: real `못잃어`; synthetic surface/IPA/status isolation fixtures; source-backed `삶의` warning-preservation fixture. Optional g2pK integration passed 30 tests on Python 3.11 and 30 on Python 3.12. System Verify, full tests matrix, paired Native/g2pK and supporting diagnostics passed on the same code/test tree.
 
-The test-first commits did not receive a confirmed RED run because GitHub Actions remained queued; the implementation was applied without claiming that RED was observed. Latest exact-head System Verify, Python matrix, optional g2pK and paired benchmark jobs remain queued. Local execution is blocked by DNS resolution failure for GitHub, so no local test result is claimed.
+No Korean phonological rule or Kozak Kim production output is changed. No g2pK source/vendor file is changed; all 9 files in `src/vendor/g2pk/` are byte-identical to base `main`. The PR changes only the Python adapter, its tests, and the three canonical project documents. The same initial two-path isolation idea exists in stacked PR #424/#426; those branches are left untouched.
 
-**Acceptance remains open** until exact-head CI passes and the g2pK integration plus paired Native/g2pK diagnostic confirm that the external baseline is not affected by Kozak-only overlays. This is a baseline-integrity correction, not evidence that either engine is linguistically superior.
-
+The initial test-first RED run was not observed because its workflow stayed queued until after implementation. The official live NIKL metadata inventory was skipped. The multi-engine diagnostic remains in progress and neural comparison jobs were skipped. This is a verified software integrity fix, not evidence that either engine is universally superior.
 # Final audit — 2026-10-03
 
 ## Release status
