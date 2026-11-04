@@ -1,3 +1,14 @@
+## 2026-11-04 mainline consolidation — g2pK comparison isolation (PR #433 pending)
+
+| Requirement | State | Evidence |
+|---|---|---|
+| Keep original g2pK comparison engine independent from Kozak research-only candidates | **DONE_VERIFIED in consolidated PR** | Adapter filters `variant-aware-research` and `kozak-research-only` for surface, IPA and diagnostic-status paths. |
+| Preserve source-backed lexical controls and uncertainty | **DONE_VERIFIED in consolidated PR** | `끌다` source-backed correction remains separate; `삶의` diagnostic-only warning remains preserved. |
+| Regression coverage | **DONE_VERIFIED in consolidated PR** | Real `못잃어`; synthetic surface/IPA/status isolation; source-backed `삶의` warning preservation. |
+| Full linguistic superiority claim | **NOT ESTABLISHED** | Paired UGTPHON results are diagnostic and annotation-dependent; independent IPA/Ukrainian gold remains outstanding. |
+
+The upstream/vendor g2pK code is unchanged. This change protects the independence of the comparison adapter and does not modify Kozak Kim production phonology or Ukrainian target rules. Neural comparison jobs and live NIKL inventory were skipped; do not claim those gates passed.
+
 ## 2026-11-02 — Kozak Kim cross-runtime evidence and parity continuation
 
 **Scope:** Kozak Kim only. Original g2pK code and vendor files remain unchanged. No new general phonological rule was added.

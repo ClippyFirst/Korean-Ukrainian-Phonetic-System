@@ -1,3 +1,13 @@
+## 2026-11-04 — baseline isolation merged into Kozak Kim mainline (PR #433 pending)
+
+The Kozak Kim research lexicon is deliberately shared with adapters for data reuse, but research-only candidates are not evidence for the independent pinned g2pK 0.9.4 comparison engine. The Python adapter now excludes `variant-aware-research` and `kozak-research-only` rows from Hangul surface overrides, IPA overrides, and diagnostic-only status propagation. Source-backed NIKL lexical controls remain enabled, including unresolved source-backed warnings such as `삶의`.
+
+Regression coverage includes real `못잃어`, the source-backed `끌다` correction remaining outside the g2pK overlay, synthetic research-only surface/IPA/status isolation, and preservation of the source-backed `삶의` diagnostic warning. Synthetic fixtures are structural isolation tests, not linguistic evidence. The upstream/vendor g2pK implementation is unchanged; this is an adapter-boundary correction.
+
+The verified code/test snapshot `a8781dbd134929fb3b65ac168c9ea8fee0bf57c7` passed System Verify, the Python 3.11/3.12/3.13 and browser test matrix (1,345 browser tests), optional g2pK integration (30 tests on Python 3.11 and 30 on Python 3.12), and paired Native/g2pK UGTPHON diagnostic (2,698 paired occurrences). The latter is corpus-relative diagnostic evidence, not normative IPA gold or a claim of universal engine superiority. Official live NIKL inventory was skipped; CharsiuG2P/ByT5 neural jobs were skipped. TDD RED was not observed. Overall readiness remains a research prototype pending independent IPA adjudication, Ukrainian-target review, source-rights clearance and mismatch adjudication.
+
+PR #433 carries the final adapter-status guard and regression coverage onto the consolidated mainline. This note supersedes older handoff statements that the PR was unmerged; older sections remain historical records.
+
 # Current handoff — Kozak Kim continuation, 2026-11-03
 
 **Branch:** `research/kozak-kim-mismatch-fragment-triage-2026-11-02`  
