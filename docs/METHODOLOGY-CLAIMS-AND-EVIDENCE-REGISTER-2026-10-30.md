@@ -366,3 +366,16 @@ The phrase implementation deliberately does not promote unspaced corpus tokens `
 - Exact-head e29f756f System Verify [41806844422] PASS (Python regression/data integrity, Browser 1,395/1,395, Vite build); Browser G2P [41806844476], paired Native/g2pK [41806844324], UGTPHON [41806844305], morphology consensus [41806844379], extraction [41806844316], and morphology smoke [41806844503] PASS.
 - Multi-engine run [41806844311] was still in comparison at the checkpoint; do not mark it pass. Last completed full comparison is [41797276965] / artifact [13306613436].
 - Method: red-green tests, exact eojeol boundary modeling, explicit negative controls, and verification-before-completion. No wholesale copying from Superpowers, Matt Pocock Skills, or Ponytail; existing integrated phonetic-engineering skill remains canonical.
+
+
+## 2026-11-04 — C12 primary acoustic evidence refinement
+
+A relevant peer-reviewed primary source has now been identified and reviewed: Schweizer, Ahn & Kwon (2026), *Acoustic properties of Seoul Korean stops in phrase-initial and word-medial positions*, Journal of the International Phonetic Association 56, Article e6, DOI 10.1017/S002510032510087X. Cambridge Core identifies the article as Open Access under CC BY 4.0. The source is registered as `SRC-JIPA-SCHWEIZER-AHN-KWON-2026-SEOUL-STOPS`.
+
+The paper reports two datasets: a controlled production experiment with nine native Seoul-Gyeonggi speakers and a reading-corpus analysis of 15 female speakers from the NIKL 2005 Speech Corpus. It measures burst duration from stop release to voicing onset (or F2 onset for pre-voiced tokens), closure duration, voicing during closure, post-stop f0, F1 and H1*-H2*. It finds that the acoustic realization of the three-way stop contrast depends on prosodic position and other speaker/context factors; in word-medial contexts aspirated stops have longer release+aspiration burst durations than lax stops in the reported conditions.
+
+**Evidence boundary:** this is direct primary acoustic evidence for the general release/aspiration behavior of Seoul Korean stops. It is *not* direct evidence for the specific narrow strings `[kx]` or `[kç]`, does not report those as target transcriptions, and does not adjudicate the 37 C12 occurrences. It therefore improves the general acoustic evidence base but does not close the C12 acceptance gate.
+
+**Status:** PARTIAL — general acoustic evidence identified and source-registered; BLOCKED — exact [kx]/[kç] interpretation, source-audio crosswalk, dialect/prosodic conditioning and two independent Korean IPA reviews. No Kozak Kim production rule, IPA adapter, lexical entry or default profile was changed. The broad /kʰ/ category remains intact; any future [kx]/[kç] treatment must be a separately typed, evidence-backed narrow variant rather than a phonological replacement.
+
+The secondary Wiktionary note suggesting [kx] before /ɯ/ and [cç] before /i,j/ is not accepted as primary evidence: its footnote does not resolve to a traceable source in the retrieved page. It may be retained only as a search lead, not as a rule license.
