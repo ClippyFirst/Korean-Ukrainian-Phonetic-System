@@ -4,7 +4,8 @@ Research-grade, machine-readable framework for Korean → Ukrainian phonetic-gra
 
 ## Documentation and repository map
 
-- [Documentation index](docs/README.md) — canonical navigation for users, developers and researchers.\n- [Versioning policy](docs/VERSIONING-POLICY.md) — separate version streams for the private browser app and installable Python package.\n- [Documentation index](docs/README.md) — canonical navigation for users, developers and researchers.
+- [Documentation index](docs/README.md) — canonical navigation for users, developers and researchers.
+- [Versioning policy](docs/VERSIONING-POLICY.md) — separate version streams for the private browser app and installable Python package.
 - [Repository audit and structure (2026-11-04)](docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — verified repository inventory, CI snapshot, documentation ownership and remaining research/release gates.
 
 ## Public web service
