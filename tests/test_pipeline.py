@@ -871,3 +871,12 @@ def test_r013_phrase_licenses_match_exact_adjacent_eojeol_pairs_inside_sentences
             rule.get("rule_id") == "R013" and rule.get("changed") is True
             for rule in result["rules"]
         ), sentence
+
+
+def test_r013_attested_l_ge_license_does_not_leak_to_another_same_pair_in_sentence():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    # The first eojeol is a complete attested -ㄹ게 ending. The second contains
+    # the same adjacent syllables inside a longer eojeol and is not that ending.
+    result = phoneticize_korean("할게 할게다")
+    assert result["surface_hangul"] == "할께 할게다"
