@@ -74,6 +74,7 @@ def test_sourced_lexical_pronunciation_overrides_cover_known_exceptions():
         "맑다": "mak̚.t͈a",
         "밝기": "pal.k͈i",
         "닭고기": "tak̚.k͈o.ɡi",
+        "이중성": "iː.dʑuŋ.s͈ʌŋ",
     }
     for word, ipa in expected.items():
         result = phoneticize_korean(word)

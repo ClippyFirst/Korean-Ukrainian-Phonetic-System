@@ -6,8 +6,16 @@ import { renderExpectedIpa } from './render-expected-ipa.mjs';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexicalText = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
+const lexicalAdditionsText = readFileSync(new URL('../data/korean/lexical_additions_2026-10-15.csv', import.meta.url), 'utf8');
 const rows = parseCsv(lexicalText);
+const additions = parseCsv(lexicalAdditionsText);
 const engine = createEngine(canonical, lexicalText);
+function mergeLexicalCsv(base, extra) {
+  const header = base.split(/\r?\n/u).find(line => line.trim()) || '';
+  const body = (value) => value.split(/\r?\n/u).filter(line => line.trim() && !line.startsWith('input,'));
+  return [header, ...body(base), ...body(extra)].join('\n');
+}
+const researchEngine = createEngine(canonical, mergeLexicalCsv(lexicalText, lexicalAdditionsText));
 
 const allowedStatuses = new Set(['model-selected', 'provisional', 'surface-only']);
 
@@ -91,4 +99,23 @@ test('all surface-only lexical overrides still cross the IPA-to-Ukrainian bounda
     assert.equal(result.ukrainian, targetSyllables.join(''), row.input + ': Ukrainian output must be rendered from IPA');
     assert.equal(result.issues.length, 0, row.input + ': surface-only IPA should map without unresolved issues');
   }
+});
+
+
+test('NIKL Basic Dictionary exact 이중성 reading preserves long vowel and fortisness through IPA-first provisional target', () => {
+  const row = additions.find(item => item.input === '이중성');
+  assert.ok(row, 'dated lexical additions must include the exact NIKL 이중성 reading');
+  assert.equal(row.surface_hangul, '이중썽');
+  assert.equal(row.ipa_syllables, 'iː|dʑuŋ|s͈ʌŋ');
+  assert.equal(row.target_status, 'provisional');
+  assert.equal(row.input_kind, 'variant-aware-research');
+
+  const result = researchEngine.convert('이중성');
+  assert.equal(result.surfaceHangul, '이중썽');
+  assert.equal(result.ipa, renderExpectedIpa('이중성', row.ipa_syllables.split('|')));
+  assert.match(result.ipa, /iː/u, 'dictionary long vowel must remain in IPA');
+  assert.match(result.ipa, /s͈/u, 'dictionary fortis onset must remain in IPA');
+  assert.equal(result.ukrainian, '', 'unreviewed Ukrainian target must not become accepted output');
+  assert.equal(result.candidate_status, 'provisional');
+  assert.equal(result.candidate_ukrainian, row.target_syllables.split('|').join(''));
 });

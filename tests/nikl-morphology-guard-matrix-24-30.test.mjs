@@ -67,6 +67,25 @@ test('§24 exact-form stem-n/m ending licenses match the native engine without e
   );
 });
 
+test('§26: NIKL-dictionary-attested 출산 compounds retain exact Sino-Korean ㄹ+ㅅ fortition', () => {
+  for (const input of ['출산', '출산율', '출산하다', '비출산', '저출산']) {
+    const result = generic.convert(input);
+    assert.ok(
+      result.trace.some((item) => item.rules.includes('sino-korean-rieul-fortition-§26-exact-form')),
+      input + ': exact licensed 출>산 boundary must trigger §26',
+    );
+    assert.ok(result.ipa.includes('s͈'), input + ': following ㅅ must be fortis');
+  }
+
+  for (const input of ['비출고', '저출고']) {
+    const lookalike = generic.convert(input);
+    assert.ok(
+      !lookalike.trace.some((item) => item.rules.includes('sino-korean-rieul-fortition-§26-exact-form')),
+      input + ': an unlicensed lookalike must not inherit the 출산 license',
+    );
+  }
+});
+
 test('§27 punctuation-separated pause controls suppress adnominal fortition', () => {
   const connected = generic.convert('할 것을');
   assert.ok(connected.trace.some((item) => item.rules.includes('adnominal-r-fortition-§27')));
@@ -78,6 +97,26 @@ test('§27 punctuation-separated pause controls suppress adnominal fortition', (
       input + ': punctuation-separated material must not inherit the connected-phrase license',
     );
   }
+});
+
+test('§27: -ㄹ게 fortition requires the complete ending boundary, not a matching substring', () => {
+  for (const input of ['할게', '할게요', '다를게', '안타까울게']) {
+    const result = generic.convert(input);
+    assert.ok(
+      result.trace.some((item) => item.rules.includes('adnominal-l-fortition-§27-attested-l-ge')),
+      input + ': the complete -ㄹ게 ending must retain source-backed fortition',
+    );
+  }
+
+  // The UGTPHON discordant occurrence 올게이 contains the same Hangul
+  // substring but is not the -ㄹ게 ending. This is a rule-boundary control,
+  // not an independently adjudicated lexical pronunciation.
+  const substringOnly = generic.convert('올게이');
+  assert.ok(
+    !substringOnly.trace.some((item) => item.rules.includes('adnominal-l-fortition-§27-attested-l-ge')),
+    '올게이 must not inherit -ㄹ게 fortition from an internal substring',
+  );
+  assert.ok(!substringOnly.ipa.includes('k͈'), 'the unlicensed substring must not be fortisized');
 });
 
 test('§30: saisiot remains an exact lexical decision, not a generic ㅅ-final rewrite', () => {
@@ -109,4 +148,22 @@ test('§27: the explicitly listed adnominal phrase remains a narrow positive lic
     result.trace.some((item) => item.rules.includes('adnominal-r-fortition-§27')),
     'the exact listed phrase 할 것을 should use the explicit §27 phrase license',
   );
+});
+
+test('§26: source-derived 실시간 boundary applies Sino-Korean ㄹ+ㅅ fortition only at the licensed pair', () => {
+  const result = generic.convert('실시간');
+  assert.ok(
+    result.trace.some((item) => item.rules.includes('sino-korean-rieul-fortition-§26-exact-form')),
+    '실>시 is the licensed Sino-Korean ㄹ+ㅅ boundary',
+  );
+  assert.equal(result.surfaceHangul, '실씨간', '§26 must change only the licensed onset');
+  assert.ok(result.ipa.includes('ɕ͈i'), '§26 must preserve the fortis palatal sibilant in 실시간');
+
+  for (const input of ['실구간', '실가간']) {
+    const lookalike = generic.convert(input);
+    assert.ok(
+      !lookalike.trace.some((item) => item.rules.includes('sino-korean-rieul-fortition-§26-exact-form')),
+      input + ': a similar ㄹ+coda sequence must not inherit the exact 실시간 license',
+    );
+  }
 });

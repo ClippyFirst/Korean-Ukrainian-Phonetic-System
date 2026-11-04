@@ -28,7 +28,7 @@ RULE_META={
 "R009":("n-insertion","NIKL §29; official Standard Pronunciation Rules https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","high"),
 "R010":("stem-nm-fortition","NIKL §24","high"),
 "R011":("stem-lb-lt-fortition","NIKL §25","high"),
-"R012":("sino-korean-l-fortition","NIKL §26; Q&A qna_seq=330843 https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=330843","high"),
+"R012":("sino-korean-l-fortition","NIKL §26; Q&A qna_seq=330843; NIKL Basic Dictionary 출산[출싼]; NIKL lexical source 실시간(實時間)","high"),
 "R013":("adnominal-l-fortition","NIKL §27","high"),
 "R014":("compound-fortition","NIKL §28; official Standard Pronunciation Rules https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","high"),
 "R015":("saisiot-pronunciation","NIKL §30; official Standard Pronunciation Rules https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","high"),
@@ -200,6 +200,10 @@ _NIKL_R012_WORD_LICENSES = {
     "일시": "일>시", "갈증": "갈>증", "물질": "물>질", "발전": "발>전",
     "몰상식": "몰>상", "불세출": "불>세",
     "실수": "실>수",  # NIKL Online Q&A qna_seq=330843 confirms all listed homonyms [실쑤].
+    "출산": "출>산", "출산율": "출>산", "출산하다": "출>산",
+    "비출산": "출>산",  # Exact complete-token license for the corpus form; do not generalize to arbitrary internal ㄹ+ㅅ substrings. 출산 itself is dictionary-attested [출싼].
+    "저출산": "출>산",  # NIKL Basic Dictionary directly lists 저출산[저ː출싼].
+    "실시간": "실>시",  # NIKL lexical source records 실시간(實時間); §26 licenses this exact Sino-Korean boundary.
 }
 
 # Exact examples explicitly listed in NIKL §28 (fortition in compounds

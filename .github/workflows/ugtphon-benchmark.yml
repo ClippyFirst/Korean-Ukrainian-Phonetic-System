@@ -16,6 +16,10 @@ on:
       - ".github/workflows/ugtphon-benchmark.yml"
       - "src/korean_ukrainian/**"
       - "src/app/engine_convert.js"
+      - "src/app/engine_rules_ctx.js"
+      - "src/app/engine_rules_phrase.js"
+      - "src/app/engine_shared.js"
+      - "tests/nikl-morphology-guard-matrix-24-30.test.mjs"
       - "data/korean/**"
       - ".github/workflows/native-vs-g2pk-benchmark.yml"
 
