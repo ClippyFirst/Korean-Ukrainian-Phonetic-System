@@ -53,8 +53,8 @@ The README explicitly distinguishes the browser practical G2P path from the nati
 | Documentation discoverability | DONE_VERIFIED on PR branch | Added the documentation map and repository audit; all referenced index targets were fetched successfully; PR checks passed. |
 | README navigation | DONE_VERIFIED on PR branch | Root README links to the documentation map and dated audit; both targets were fetched successfully. |
 | Root-level project license | BLOCKED | No root `LICENSE` file appears in the repository tree. Historical `MANIFEST.txt` explicitly says a root project license requires an owner decision. Do not choose a license on the owner's behalf. Third-party notices/licenses do not license the project itself. |
-| Package version consistency | TODO | `package.json` reports 1.0.0 while `pyproject.toml` reports 0.6.0. These may represent separate browser/Python release tracks, but no explicit versioning policy was found in the inspected entry points. Document or reconcile before tagging a unified release. |
-| Research evidence acceptance | BLOCKED / PARTIAL | Current handoff records independent Korean IPA review, Ukrainian target review and item-level source-rights review as outstanding; mismatch queues remain. |
+| Package versioning | DONE_VERIFIED (policy documented; values unchanged) | `package.json` 1.0.0 is a private browser-app version; `pyproject.toml` 0.6.0 is the independently installable Python distribution version. Separate version streams are now the explicit prospective policy; see [versioning policy](VERSIONING-POLICY.md). Historical intent cannot be proven from current evidence. |
+| Research evidence acceptance | BLOCKED / PARTIAL | Independent Korean IPA review, Ukrainian target review and item-level source-rights review remain outstanding; the historical 239-case mismatch population is only partially traceable. |
 | Independent Korean IPA gold | BLOCKED | Requires two qualified independent reviewers and adjudication of the frozen holdout; no independent gold may be inferred from model agreement or benchmark corpus labels. |
 | NIKL item-level reuse rights | BLOCKED | Official metadata inventory was skipped in the latest relevant workflow evidence; item-level KOGL/reuse clearance is not established. |
 | Ukrainian target validation | BLOCKED | Requires independent phonetic/orthographic review and acceptance tests. |
@@ -136,3 +136,53 @@ This documentation pass adds navigation and a verified snapshot. It intentionall
 - No local test commands were run in this environment. Verification above is GitHub Actions and remote file/commit inspection.
 
 This PR is documentation-only. The green software checks validate repository automation on this commit; they do not close the independent linguistic or licensing blockers listed above.
+
+
+## 11. Focused resolution of the five requested findings — 2026-11-04
+
+### 11.1 Root project license — BLOCKED, correctly left unchanged
+
+- No root `LICENSE` is present in the inspected repository.
+- The Apache-2.0 notice under `public/LICENSES/` applies to the identified vendored browser dependency, not automatically to project-authored code, research data, documentation or the repository as a whole.
+- A project-wide license changes redistribution, modification and contribution permissions. No license was created or inferred. Acceptance requires the owner to choose the license and confirm its intended scope (code, data, documentation and any exclusions), then add the corresponding canonical license text and any required notices.
+
+### 11.2 Package versions — policy clarified, metadata unchanged
+
+- `package.json`: `1.0.0`, `private: true`, Vite/browser app.
+- `pyproject.toml`: `0.6.0`, installable Python distribution with a CLI entry point.
+- These are different artifacts with different distribution/runtime boundaries. They are now documented as independent version streams; no forced synchronization or metadata bump was made.
+- The files establish the distinct packaging roles, not the historical intention behind the original numbers. See [VERSIONING-POLICY.md](VERSIONING-POLICY.md).
+
+### 11.3 Independent scientific validation — BLOCKED
+
+- Korean source IPA and Ukrainian target adaptation are separate review questions.
+- Existing reviewer packet generation/validation and regression tests establish process integrity, not expert correctness.
+- Acceptance still requires two qualified independent Korean IPA reviewers, an explicit convention and adjudication record, followed by independent Ukrainian phonetic/orthographic review on frozen IPA inputs and suitable reader-evaluation evidence. No reviewer identities, credentials, submissions or approvals were fabricated.
+
+### 11.4 NIKL source rights — PARTIAL / BLOCKED at item level
+
+- The source register records an official site-wide reuse policy under Korean Copyright Act Article 24-2 unless a separate KOGL type is displayed.
+- The exact KOGL marking on the Standard Pronunciation Rules page and individual Q&A pages was not visually verified. The automated live inventory repeatedly encountered HTTP 403; the authorized local HTML import records that live-response/robots provenance was not checked.
+- Therefore, do not describe all NIKL-derived content as fully rights-cleared. Acceptance requires per-page/per-item marking checks (or written confirmation), mapping each retained/redistributed text excerpt to its source and permitted use, and updating the source register. A surface-form citation and a permission to reproduce source text are distinct.
+
+### 11.5 Historical 239 mismatch occurrences — PARTIAL / EVIDENCE-LIMITED
+
+- The append-only handoff records a historical population of 239 unmapped mismatch occurrences.
+- Later records explicitly state that the 36-row unmapped-Broad queue is **not** a resolution or substitute for the historical 239-case population. Some cluster/source memberships were not fully reconstructed; e.g. C08 records note missing source-row identities.
+- Keep the 239 population open. Do not treat the number as a fully materialized, current, one-row-per-occurrence canonical queue until the original benchmark artifact, source identity triples, profile and extraction version are reconciled.
+- Acceptance: recover or explicitly mark unrecoverable every historical occurrence ID; produce a hash-pinned occurrence ledger with source form, context, reference convention, engine/profile versions, mismatch category and provenance; adjudicate each item against admissible source evidence or retain it as unresolved. Only independently supported corrections may enter production, with positive and negative controls. No guessed repairs were made.
+
+## 12. External workflow/design references reviewed
+
+The four supplied repositories were reviewed as workflow and documentation references, not as code or license sources:
+
+- [unlazy](https://github.com/Leonxlnx/unlazy): useful pattern — acceptance ledger first, executable gates with exact evidence, parent re-verification and explicit abandonment rather than false completion.
+- [obra/superpowers](https://github.com/obra/superpowers): useful pattern — composable skills for specification, TDD, systematic debugging, verification-before-completion and branch finishing.
+- [mattpocock/skills](https://github.com/mattpocock/skills): useful pattern — small composable workflows, domain-model documentation, explicit specs/tickets and review before closing implementation.
+- [ponytail](https://github.com/DietrichGebert/ponytail): useful pattern — YAGNI/minimal-diff discipline while preserving tests, trust-boundary validation, data-loss handling and security.
+
+Applied selectively: retain the repository's existing research/acceptance registers and documentation structure; do not install or wholesale copy external agent frameworks. The project-specific evidence gates and linguistic architecture remain authoritative. These external repositories' own licenses do not grant rights over this repository.
+
+## 13. Current disposition
+
+Software/documentation work can be reviewed through PR #434. The five findings are not all technically closable in code: versioning policy is documented; root licensing, expert review, item-level rights and historical occurrence adjudication remain owner-/evidence-dependent. The repository remains a partial research prototype, not a research-certified or release-ready transcription standard.
