@@ -212,3 +212,26 @@ The green checks establish software and artifact consistency for the audited sna
 ## 2026-11-05 licensing decision update
 
 The earlier owner-blocked licensing finding above is superseded by the owner-approved policy implemented on the continuation branch. The author is Vitalii Volodymyrovych Tkachuk, publishing as **ClippyFirst**; the project began in 2026. See the root `LICENSE` and [licensing guide](LICENSING-AND-PERMISSIONS.md). The policy grants attributed scientific use of public-service results and the Korean-to-Ukrainian correspondence table, while technical reuse (copying/reusing code, self-hosting, integration, modification, porting and redistribution) requires prior written permission. This is a custom, purpose-limited licence, not an open-source licence. Existing third-party licences remain untouched. This update records the owner's intended terms; no independent legal opinion or cross-jurisdiction enforceability review has been performed.
+
+
+## 13. Post-merge state — 2026-11-05 (supersedes branch-era statements)
+
+PR [#434](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/434) was merged into `main` on 2026-11-05. Merge commit: `56318e8a293d6f92dc307256430279d386a77d33`. The merged PR head was `fbfe7f481fa0ac35264bf060fc8170d7310f3176`; its three principal workflow runs completed successfully before merge (tests, System Verify, and master table/research artifacts). PR #434 is closed/merged. A post-merge search returned no open pull requests.
+
+The owner-approved custom ClippyFirst Project License is now present on `main` at `LICENSE`; the explanatory guide is `docs/LICENSING-AND-PERMISSIONS.md`. Author identity: Vitalii Volodymyrovych Tkachuk, publishing as **ClippyFirst**; project start year 2026. Scientific use of public-service results and the Korean→Ukrainian correspondence table is permitted with attribution; technical reuse requires prior written permission. This is a custom, purpose-limited licence, not an OSI-approved open-source licence. Third-party materials retain their own terms. See DEC-2026-007.
+
+**Current readiness remains partial research prototype, not research-certified and not release-ready.** The merge closes repository navigation/version-policy/licensing documentation work only. It does not close scientific, source-rights or historical evidence gates.
+
+Current outstanding acceptance work:
+- independent Korean IPA review by qualified reviewers, with adjudication and frozen holdout evidence;
+- independent Ukrainian phonetic/orthographic target-layer review on frozen IPA inputs;
+- NIKL item-level KOGL/source-rights checks; official metadata inventory remains skipped/blocked in automation and the Standard Pronunciation Rules page previously returned HTTP 403;
+- C12 audio, speaker, dialect and prosodic crosswalk before any production rule change;
+- recovery/reconciliation and evidence-based adjudication of the historical 239 mismatch occurrences; the current 36-row Broad queue and other diagnostic ledgers are not substitutes;
+- remaining names, loanwords, Hanja and regional-style coverage gaps;
+- complete cross-runtime parity beyond the pinned UGTPHON subset, where the rule coverage matrix still identifies gaps;
+- supervised neural training remains deferred until independently adjudicated IPA gold exists.
+
+**Verification boundary:** exact-head GitHub Actions on PR head `fbfe7f481fa0ac35264bf060fc8170d7310f3176` passed: Python 3.11/3.12/3.13 tests, teacher-corpus audit, browser tests/build, wheel-install check, System Verify, and generated master-table/research-corpus checks. The official NIKL metadata-only inventory job was skipped, not passed. These runs validate software automation and artifacts, not independent linguistic correctness or item-level reuse rights. The connector did not return workflow runs associated with the merge commit itself; no post-merge Actions result is claimed here.
+
+No source/runtime code, linguistic production data, generated artifacts, third-party notices, or external branches were changed as part of the merge.
