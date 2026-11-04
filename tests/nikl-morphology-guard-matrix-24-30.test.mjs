@@ -222,7 +222,7 @@ test('§27 C08 source contexts: exact eojeol licenses apply inside full sentence
 
 test('§27 exact phrase licenses apply at adjacent eojeol pairs inside sentences only', () => {
   const cases = [
-    ['해 줄 것 같다', '껃'],
+    ['해 줄 것 같다', '껏'],
     ['많을 거 같이', '꺼'],
   ];
   for (const [input, surface] of cases) {

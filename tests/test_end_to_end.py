@@ -45,7 +45,7 @@ def test_nikl_27_c08_exact_same_word_and_phrase_licenses():
         assert any(
             trace["rule_id"] == "R013"
             and trace["changed"]
-            and trace["license_context"] == f"R013:adnominal_l:{text}:{pair}"
+            and trace["license_context"] == (f"R013:phrase:{text}:{pair}" if boundary_mode == "phrase" else f"R013:adnominal_l:{text}:{pair}")
             for trace in result["phonetics"]["rules"]
         )
 
