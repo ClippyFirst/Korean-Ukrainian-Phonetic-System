@@ -334,9 +334,10 @@ def _source_backed_rule_licenses(items, boundary_mode):
             licenses.add(f"R012:sino_ryeon:{word_form}:{pair}")
         # Phrase mode extends the boundary inventory; it must not disable
         # exact same-eojeol licenses that remain valid inside a sentence.
-        pair = _NIKL_R013_WORD_LICENSES.get(word_form)
-        if pair is not None:
-            licenses.add(f"R013:adnominal_l:{word_form}:{pair}")
+        if boundary_mode in {"same_word", "morpheme", "phrase"}:
+            pair = _NIKL_R013_WORD_LICENSES.get(word_form)
+            if pair is not None:
+                licenses.add(f"R013:adnominal_l:{word_form}:{pair}")
         pair = _NIKL_R009_WORD_LICENSES.get(word_form)
         if pair is not None:
             licenses.add(f"R009:word:{word_form}:{pair}")
