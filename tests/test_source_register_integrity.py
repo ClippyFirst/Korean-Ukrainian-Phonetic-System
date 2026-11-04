@@ -531,6 +531,10 @@ def test_c01_c07_and_c10_cluster_decisions_follow_the_reviewed_profile_evidence(
 def test_c12_velar_coarticulation_source_is_cautionary_not_a_rewrite_license():
     rows = {row["source_id"]: row for row in load_source_register()}
     source = rows["SRC-KCI-ITO-2007-MORPHEME-STRUCTURE"]
+    acoustic = rows["SRC-JIPA-SCHWEIZER-AHN-KWON-2026-SEOUL-STOPS"]
+    assert acoustic["license_status"].startswith("CC-BY-4.0 verified")
+    assert "burst duration" in acoustic["coverage"].lower()
+    assert "does not report [kx]/[kç]" in acoustic["limitations_or_next_action"].lower()
     assert source["url"] == "https://doi.org/10.17959/sppm.2007.13.3.373"
     assert "abstract" in source["review_status"].lower()
     assert "underrepresented" in source["coverage"].lower()
@@ -542,15 +546,17 @@ def test_c12_velar_coarticulation_source_is_cautionary_not_a_rewrite_license():
     c12 = next(line for line in triage.splitlines() if "`kx/kç → kʰ`" in line and "45 operations / 37 occurrences" in line and "No phonological rewrite" in line)
     assert "SRC-KCI-ITO-2007-MORPHEME-STRUCTURE" in c12
     assert "No phonological rewrite" in c12
-    assert "BLOCKED" in c12
+    assert "PARTIAL" in c12
+    assert "SRC-JIPA-SCHWEIZER-AHN-KWON-2026-SEOUL-STOPS" in c12
 
     with C08_CLUSTER_REGISTER.open("r", encoding="utf-8-sig", newline="") as stream:
         clusters = {row["cluster_id"]: row for row in csv.DictReader(stream)}
     c12_cluster = clusters["C12"]
     assert c12_cluster["unique_occurrences"] == "37"
     assert c12_cluster["edit_operations"] == "45"
-    assert c12_cluster["status"] == "BLOCKED_EVIDENCE_AND_IPA_REVIEW_REQUIRED"
+    assert c12_cluster["status"] == "PARTIAL_GENERAL_ACOUSTIC_EVIDENCE_EXACT_C12_REVIEW_BLOCKED"
     assert "SRC-KCI-ITO-2007-MORPHEME-STRUCTURE" in c12_cluster["production_decision"] + c12_cluster["next_action"]
+    assert "SRC-JIPA-SCHWEIZER-AHN-KWON-2026-SEOUL-STOPS" in c12_cluster["production_decision"] + c12_cluster["next_action"]
     assert clusters["C04"]["unique_occurrences"] == "0"
     assert clusters["C04"]["edit_operations"] == "0"
 
