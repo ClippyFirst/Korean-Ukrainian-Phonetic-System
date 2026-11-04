@@ -138,7 +138,7 @@ The current branch head `ab9a0ad7ea96e73c7fc76a8a97a3bf5f9ff16d38` passed system
 
 | Coverage area | Current status | Evidence / remaining acceptance |
 |---|---|---|
-| Native Kozak Kim vs original g2pK 0.9.4, pinned UGTPHON | DONE_VERIFIED as diagnostic only | Run 41726881384, artifact 13276390247; paired n=2,698. Native 53.0393% exact / 8.9920% CER; g2pK 53.0892% exact / 9.2285% CER. Exact delta CI crosses zero; Native CER advantage interval excludes zero. Not normative IPA gold. |
+| Native Kozak Kim vs original g2pK 0.9.4, pinned UGTPHON | DONE_VERIFIED as diagnostic only | Run 41726881384, artifact 13276390247; paired n=2,698. Native 1,431/2,698 exact (53.0393%) / CER 8.9920%; g2pK 1,433/2,698 exact (53.1134%) / CER 9.2304%. Paired exact delta +0.0741 pp (CI crosses zero); paired CER delta +0.2384 pp (g2pK higher; CI excludes zero). Raw g2pK full-coverage score is 1,435/2,703 exact (53.0892%) / CER 9.2285%; not paired. Not normative IPA gold. |
 | Mismatch-fragment export and checked-in review queue | PARTIAL | Exporter produced 36 unmapped-broad occurrences / 55 fragments with 0 missing context lookups, but `cmp` against `research/kozak-kim-unmapped-mismatch-review-queue-2026-11-03.csv` failed at byte 31,117 / line 14. Regenerate/review changed rows and rerun final golden check. |
 | Same-occurrence Browser Kozak Kim and Native/Browser parity in multi-engine run | TODO / BLOCKED_BY_UPSTREAM_GATE | Skipped after queue drift failure in run 41726881384; rerun on same exact head after reconciliation. |
 | SIGMORPHON multi-engine portfolio on latest head | TODO / BLOCKED_BY_UPSTREAM_GATE | Skipped after queue drift failure; no current-head score is claimed. |
