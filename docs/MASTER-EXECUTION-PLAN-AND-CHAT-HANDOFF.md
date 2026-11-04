@@ -6235,3 +6235,43 @@ A secondary Wiktionary entry decomposes `중심닮음` as `중심 + 닮- + -음`
 On the 1,907 unique UGTPHON words, Kiwi and MeCab-Ko have 80.5978% exact boundary-set agreement. Across 217 common observed rule events their boundary-presence agreement is 94.0092%. The two-analyzer consensus changes three unique words versus strict, newly resolves one (`칡칡이`), and withholds 24 unspaced phrase-boundary cases. It does not improve the diagnostic gold score: strict 53.0393% exact / 8.9920% CER; consensus 53.0196% exact / 9.0086% CER. Treat this as diagnostic morphology evidence, not production accuracy or gold segmentation. Keep exact licenses fail-closed.
 
 No production code change was justified by this drill-down. The next legitimate acceptance step is independent Korean morphological/IPA adjudication for the exact abstention and for the residual queue, not an engine-specific guess.
+
+
+## 2026-11-05 — PR #434 merged; current mainline handoff
+
+**Repository:** `ClippyFirst/Korean-Ukrainian-Phonetic-System`  
+**Merge:** PR [#434](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/434) successfully merged into `main`.  
+**Merge commit:** `56318e8a293d6f92dc307256430279d386a77d33`.  
+**PR head:** `fbfe7f481fa0ac35264bf060fc8170d7310f3176`.  
+**PR state:** closed/merged; open-PR search returned none.
+
+### What is now on main
+- Documentation navigation and repository audit.
+- Independent browser/Python versioning policy.
+- Owner-approved custom ClippyFirst Project License and licensing guide.
+- DEC-2026-007, acceptance-gate update, and README/index references.
+- Author: Vitalii Volodymyrovych Tkachuk; public authorial pseudonym: **ClippyFirst**; project start year: 2026.
+
+### License boundary
+Attributed scientific use of public-service results and the Korean→Ukrainian correspondence table is permitted. Copying/reusing code, self-hosting/mirroring, integration, modification, porting, redistribution and other technical reuse require the author's prior written permission. This custom licence is not OSI-approved/open source. Third-party Apache-2.0/BSD-3-Clause and other third-party materials retain their own terms. See root `LICENSE` and `docs/LICENSING-AND-PERMISSIONS.md`.
+
+### Verification actually observed
+On the exact PR head before merge, the following Actions workflows completed successfully:
+- Python tests on 3.11, 3.12 and 3.13;
+- teacher-corpus audit;
+- browser regression tests and build;
+- wheel build/install and IPA target data check;
+- System Verify (browser regression/build/generated pages and Python regression/data integrity);
+- master-table and research-corpus generation.
+The official NIKL metadata-only inventory was skipped by workflow configuration. The connector returned no workflow runs for the merge commit itself; do not claim a post-merge run.
+
+### Remaining blockers / next actionable work
+1. Obtain two qualified independent Korean IPA reviews and adjudicate the frozen holdout; existing test/corpus agreement is not normative gold.
+2. Obtain independent Ukrainian phonetic/orthographic review using frozen IPA inputs.
+3. Complete NIKL item-level KOGL/source-rights checks; the official metadata inventory is not complete and the Standard Pronunciation Rules page previously returned HTTP 403.
+4. Resolve C12 only after source-row/audio/speaker/dialect/prosody evidence is crosswalked; do not add speculative production rules.
+5. Recover and reconcile the historical 239 mismatch occurrences into a hash-pinned occurrence ledger; do not substitute the 36-row Broad queue or other differently-grained ledgers.
+6. Close remaining names/loanwords/Hanja/regional-style coverage gaps and cross-runtime parity gaps identified by the rule-coverage matrix.
+7. Keep supervised neural training deferred until independently adjudicated IPA gold is available.
+
+**Readiness:** research prototype; not research-certified and not release-ready. The PR merge closes the documentation and owner-licensing decision, not the research acceptance gates.
