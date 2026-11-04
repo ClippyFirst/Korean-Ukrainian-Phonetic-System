@@ -564,3 +564,22 @@ Run `41870455614` was cancelled twice: attempt 1 while `Run multi-engine compari
 - Original g2pK 0.9.4 remains pinned and unmodified. No g2pK vendor file or external baseline was changed.
 - Research readiness: comparative diagnostic evidence is materially stronger; independent IPA gold, independent Ukrainian target review, item-level NIKL reuse verification, C12 audio/prosody crosswalk, historical 239-case adjudication, and names/loans/Hanja/regional-style coverage remain open.
 - Release status: **research prototype**, not research-certified and not release-ready.
+
+
+## 2026-11-04 paired-discordance and abstention drill-down
+
+### Where the paired engines actually differ
+
+**UGTPHON (2,698 paired scored occurrences):** both exact 1,429; both non-exact 1,263; g2pK-only exact 4; Kozak-only exact 2; Kozak abstained on 5. All four g2pK-only exact occurrences are the same token `없는` repeated in the corpus. The two Kozak-only exact cases are `못잃어` and `인기`. The five abstentions are `칡칡이`, `쫒아내면`, `많앗구나유유유`, `삶의`, and `무서웟어`. Thus the four g2pK-only wins are not four independent lexical phenomena; they are a repeated annotation/convention case. No change to the native vowel-length or source-IPA policy is justified by these rows alone.
+
+**SIGMORPHON (998 paired scored occurrences):** both exact 353; both non-exact 640; Kozak-only exact 5; g2pK-only exact 0; one additional Kozak abstention on the 999-token eligible set. The five Kozak-only exact cases are `값어치`, `놓치다`, `많다`, `맛없다`, and `인기`. The single abstention is `중심닮음`, unresolved at R002 boundary `닮>음` pending exact morphological evidence.
+
+### `중심닮음` — researched, not promoted
+
+A secondary Wiktionary entry decomposes `중심닮음` as `중심 + 닮- + -음`, classifies it as a North Korean mathematical noun, and gives an IPA labelled SK Standard/Seoul that exactly matches the SIGMORPHON gold. Its page is user-edited and licensed CC BY-SA 4.0. Because the IPA exactly matches the test gold, it is not independent corroboration; the North Korean classification also leaves dialect/scope unresolved. NIKL §14 supports the general complex-coda resyllabification pattern when the vowel-initial ending/suffix boundary is established, but does not independently attest this exact term. The source is registered as secondary/research-only. Keep the production R002 abstention; no lexical row or exact production license is added.
+
+### Morphology consensus — no production promotion
+
+On the 1,907 unique UGTPHON words, Kiwi and MeCab-Ko have 80.5978% exact boundary-set agreement. Across 217 common observed rule events their boundary-presence agreement is 94.0092%. The two-analyzer consensus changes three unique words versus strict, newly resolves one (`칡칡이`), and withholds 24 unspaced phrase-boundary cases. It does not improve the diagnostic gold score: strict 53.0393% exact / 8.9920% CER; consensus 53.0196% exact / 9.0086% CER. Treat this as diagnostic morphology evidence, not production accuracy or gold segmentation. Keep exact licenses fail-closed.
+
+No production code change was justified by this drill-down. The next legitimate acceptance step is independent Korean morphological/IPA adjudication for the exact abstention and for the residual queue, not an engine-specific guess.

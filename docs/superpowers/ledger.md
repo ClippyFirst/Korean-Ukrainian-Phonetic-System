@@ -645,3 +645,13 @@ Run `41870455614` was cancelled twice: attempt 1 while `Run multi-engine compari
 | Release gate | BLOCKED | Research prototype only; independent Korean IPA holdout, Ukrainian target review, complete rights audit, and final deployment gates remain unmet. |
 
 No production phonology change was justified by the latest benchmark-only run. Keep the original g2pK baseline unchanged.
+
+
+### Additional paired-discordance review — 2026-11-04
+
+| Work item | Status | Evidence / acceptance |
+|---|---|---|
+| Explain g2pK-only exact wins on UGTPHON | DONE_VERIFIED as diagnostic categorization | All 4 g2pK-only exact occurrences are repeated `없는`; Kozak-only exact cases are `못잃어` and `인기`; 5 Kozak abstentions remain explicit. No general phonological conclusion from repeated rows. |
+| SIGMORPHON Kozak-only exact wins | DONE_VERIFIED as diagnostic categorization | Five: `값어치`, `놓치다`, `많다`, `맛없다`, `인기`; no g2pK-only exact among 998 paired occurrences. |
+| SIGMORPHON `중심닮음` R002 abstention | BLOCKED for production license | Wiktionary secondary source suggests `중심 + 닮- + -음`, but identifies a North Korean mathematical term; its IPA matches the SIGMORPHON gold and is not independent. Need independent Korean expert and suitable standard-language evidence. Source is registered research-only; no production lexical row added. |
+| Kiwi/MeCab morphology consensus | DEFERRED / diagnostic only | 80.5978% exact boundary-set agreement on 1,907 words; 94.0092% observed rule-event boundary agreement; 24 phrase boundaries withheld; no gold-score improvement. Do not switch production to analyzer consensus. |

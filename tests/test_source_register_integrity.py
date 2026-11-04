@@ -653,3 +653,17 @@ def test_nikl_dictionary_noeun_length_attestation_is_not_lost_to_corpus_referenc
     # The official dictionary gives Hangul pronunciation, not IPA. This is
     # the project's broad-IPA rendering of that attested vowel length.
     assert result["ipa"]["ipa"] == "ʌːm.nɯn"
+
+
+def test_wiktionary_central_similarity_is_secondary_and_cannot_license_production_ipa():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-WIKTIONARY-JUNGSIMDALMEUM"]
+    assert source["source_type"] == "secondary_lexical"
+    assert source["url"] == "https://en.wiktionary.org/wiki/중심닮음"
+    assert source["license_status"].startswith("CC BY-SA 4.0")
+    assert "중심 + 닮- + -음" in source["coverage"]
+    assert "North Korean" in source["coverage"]
+    assert "SK Standard/Seoul" in source["coverage"]
+    assert source["integration_status"] == "research_only_not_integrated"
+    assert "not independent confirmation" in source["limitations_or_next_action"]
+    assert "Do not copy" in source["limitations_or_next_action"]
