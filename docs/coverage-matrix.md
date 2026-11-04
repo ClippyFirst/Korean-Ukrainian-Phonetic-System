@@ -132,3 +132,17 @@ The current branch head `ab9a0ad7ea96e73c7fc76a8a97a3bf5f9ff16d38` passed system
 - Five UGTPHON native abstentions remain evidence-limited: `칡칡이`, `쫒아내면`, `많앗구나유유유`, `삶의`, `무서웟어`. `삶의` already has NIKL MCFAQ 5716 Hangul variants [살믜]/[살메] and provisional project IPA variants `sal.mi`/`sal.me`; independent IPA adjudication is still required. Do not promote the corpus IPA annotation to gold.
 - Added a fail-closed regression for the four R002/R003 native abstentions; the existing `삶의` test continues to protect its two NIKL surface variants and IPA-adjudication gate. Push/PR system verification and extraction pass on `4225cea7`; browser tests 1,374/1,374.
 - Readiness remains **research prototype**, not research-certified or release-ready. Independent Korean IPA review, C08/C09/C10 adjudication, NIKL item-level rights and Ukrainian target review remain open.
+
+
+## Kozak Kim continuation coverage update — 2026-11-04
+
+| Coverage area | Current status | Evidence / remaining acceptance |
+|---|---|---|
+| Native Kozak Kim vs original g2pK 0.9.4, pinned UGTPHON | DONE_VERIFIED as diagnostic only | Run 41726881384, artifact 13276390247; paired n=2,698. Native 53.0393% exact / 8.9920% CER; g2pK 53.0892% exact / 9.2285% CER. Exact delta CI crosses zero; Native CER advantage interval excludes zero. Not normative IPA gold. |
+| Mismatch-fragment export and checked-in review queue | PARTIAL | Exporter produced 36 unmapped-broad occurrences / 55 fragments with 0 missing context lookups, but `cmp` against `research/kozak-kim-unmapped-mismatch-review-queue-2026-11-03.csv` failed at byte 31,117 / line 14. Regenerate/review changed rows and rerun final golden check. |
+| Same-occurrence Browser Kozak Kim and Native/Browser parity in multi-engine run | TODO / BLOCKED_BY_UPSTREAM_GATE | Skipped after queue drift failure in run 41726881384; rerun on same exact head after reconciliation. |
+| SIGMORPHON multi-engine portfolio on latest head | TODO / BLOCKED_BY_UPSTREAM_GATE | Skipped after queue drift failure; no current-head score is claimed. |
+| Original g2pK baseline isolation | DONE_VERIFIED | Original g2pK 0.9.4 and vendored browser source unchanged; Kozak research lexical overlays excluded from the adapter. |
+| Independent Korean IPA and Ukrainian target acceptance | BLOCKED | Independent qualified reviewers/adjudication and separate Ukrainian target review/gold are absent. |
+
+The benchmark comparison is differential corpus evidence only. It does not establish universal Kozak Kim superiority, normative IPA accuracy, or Ukrainian output quality.
