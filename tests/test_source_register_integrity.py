@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import csv
 import json
+import re
 from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
 
@@ -11,6 +12,7 @@ SOURCE_REGISTER = ROOT / "research" / "SOURCE-REGISTER.csv"
 IPA_QUEUE = ROOT / "research" / "ipa-adjudication-queue.json"
 SURFACE_FIXTURE = ROOT / "tests" / "fixtures" / "g2pk-surface-regression.json"
 LEXICAL_DATA = ROOT / "data" / "korean" / "lexical_pronunciations.csv"
+C08_CLUSTER_REGISTER = ROOT / "research" / "KOZAK-KIM-MASS-MISMATCH-CLUSTERS-2026-11-01.csv"
 EXPECTED_COLUMNS = [
     "source_id",
     "source_type",
@@ -116,8 +118,11 @@ def test_ipa_queue_sources_keep_evidence_scope_and_item_license_uncertainty_expl
 
 
 def test_every_lexical_dataset_citation_has_a_source_register_identity():
-    with LEXICAL_DATA.open("r", encoding="utf-8-sig", newline="") as stream:
-        lexical_rows = list(csv.DictReader(stream))
+    lexical_paths = [LEXICAL_DATA, *sorted(LEXICAL_DATA.parent.glob("lexical_additions_*.csv"))]
+    lexical_rows = []
+    for path in lexical_paths:
+        with path.open("r", encoding="utf-8-sig", newline="") as stream:
+            lexical_rows.extend(csv.DictReader(stream))
     registered_rows = load_source_register()
     registered_identities = {source_identity(row["url"]) for row in registered_rows}
     cited_identities = {
@@ -247,3 +252,203 @@ def test_2026_11_01_g2p_sources_keep_scope_and_license_provenance_explicit():
     assert "CC BY-SA" in ugtphon["license_status"]
     assert "UGT" in ugtphon["limitations_or_next_action"]
 
+
+
+def test_c08_context_fixture_restores_all_eight_source_rows_without_importing_ipa_gold():
+    fixture_path = ROOT / "tests" / "fixtures" / "kozak-kim-c08-source-contexts.json"
+    fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert fixture["source_revision"] == "ef0d5a09c2ea1874c7206020f875cbd9cfea2f54"
+    assert fixture["source_license"].startswith("Apache-2.0")
+    cases = fixture["cases"]
+    assert {case["source_row_id"] for case in cases} == {
+        "multilexnorm2026_1953", "multilexnorm2026_1979", "dc_inside_2024",
+        "multilexnorm2026_1916", "multilexnorm2026_2011", "dc_inside_2186",
+        "dc_inside_2266", "dc_inside_2557",
+    }
+    assert all(case["input"] in case["source_sentence"] for case in cases)
+    assert all("ipa" not in case and "expected_ipa" not in case for case in cases)
+    mapping = fixture["cluster_occurrence_mapping"]
+    assert mapping["status"] == "ALL_EIGHT_SOURCE_ROWS_MAPPED_WITH_FIVE_HIGH_CONFIDENCE_RECONSTRUCTIONS"
+    assert len(mapping["reconstructed_ids"]) == 5
+    assert "original one-off C08 cluster extraction table" in " ".join(mapping["limitations"])
+    registered = {row["source_id"] for row in load_source_register()}
+    for case in cases:
+        evidence_ids = set(case.get("morphology_evidence", [])) | set(case.get("rule_evidence", []))
+        evidence_ids |= set(case.get("pronunciation_evidence", {}).get("source_ids", []))
+        assert evidence_ids <= registered, case["source_row_id"]
+    unresolved = next(case for case in cases if case["source_row_id"] == "dc_inside_2024")
+    assert unresolved["status"] == "UNRESOLVED_EXACT_LEXICAL_PRONUNCIATION"
+    supported = next(case for case in cases if case["source_row_id"] == "multilexnorm2026_1953")
+    assert supported["pronunciation_evidence"]["source_ids"] == ["SRC-NIKL-QNA-307960"]
+    assert "exact corpus token" in supported["pronunciation_evidence"]["scope"]
+
+
+def test_c08_morphology_sources_are_registered_with_limited_claim_scope():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    for source_id, qna_id in [
+        ("SRC-NIKL-QNA-313481", "313481"),
+        ("SRC-NIKL-QNA-333044", "333044"),
+    ]:
+        source = rows[source_id]
+        assert f"qna_seq={qna_id}" in source["url"]
+        assert "dependent noun" in source["coverage"].lower()
+        assert "pronunciation" in source["limitations_or_next_action"].lower()
+        assert "ipa" in source["limitations_or_next_action"].lower()
+        assert "item-level" in source["license_status"].lower()
+    dependent_su = rows["SRC-NIKL-QNA-307960"]
+    assert "qna_seq=307960" in dependent_su["url"]
+    assert "[쑤]" in dependent_su["coverage"]
+    assert "appears to contain a typo" in dependent_su["limitations_or_next_action"].lower()
+    assert "item-level" in dependent_su["license_status"].lower()
+
+    geo_source = rows["SRC-NIKL-QNA-310899"]
+    assert "qna_seq=310899" in geo_source["url"]
+    assert "dependent noun" in geo_source["coverage"]
+    assert "colloquial" in geo_source["coverage"]
+    assert "does not independently attest pronunciation" in geo_source["contribution_expected"]
+
+    rule27 = rows["SRC-NIKL-QNA-317798"]
+    assert "qna_seq=317798" in rule27["url"]
+    assert "할 것을[할꺼슬]" in rule27["coverage"]
+    assert "할 수는[할쑤는]" in rule27["coverage"]
+    assert "broken off" in rule27["coverage"]
+    assert "not exact-token IPA" in rule27["contribution_expected"]
+
+    su = rows["SRC-NIKL-QNA-331601"]
+    assert "qna_seq=331601" in su["url"]
+    assert "알 수 없는[알쑤엄는]" in su["coverage"]
+    assert "Does not attest the exact corpus token" in su["limitations_or_next_action"]
+
+    pdf = rows["SRC-NIKL-EDU-2021-DEPENDENT-SI"]
+    assert "not used as production evidence" in pdf["limitations_or_next_action"].lower()
+
+
+def test_c08_cluster_cites_only_active_registered_nikl_qna_sources():
+    with C08_CLUSTER_REGISTER.open("r", encoding="utf-8-sig", newline="") as stream:
+        cluster_rows = list(csv.DictReader(stream))
+    c08 = next(row for row in cluster_rows if row["cluster_id"] == "C08")
+    c08_text = " ".join(c08.values())
+    cited_ids = set(re.findall(r"SRC-NIKL-QNA-\d+", c08_text))
+    registered_ids = {row["source_id"] for row in load_source_register()}
+
+    assert cited_ids, "C08 must use explicit, traceable NIKL source-register IDs"
+    assert cited_ids <= registered_ids, "C08 cites a source absent from the active register"
+    assert {
+        "SRC-NIKL-QNA-317798",
+        "SRC-NIKL-QNA-310899",
+        "SRC-NIKL-QNA-331601",
+    } <= cited_ids
+    assert not re.search(r"\b(?:335204|336313)\b", c08_text), (
+        "unretrieved provisional Q&A references must not remain in the active C08 evidence row"
+    )
+
+
+def test_c08_analyzer_cross_check_is_recorded_as_diagnostic_not_gold():
+    fixture_path = ROOT / "tests" / "fixtures" / "kozak-kim-c08-source-contexts.json"
+    fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+    cross_check = fixture["morphology_analyzer_cross_check"]
+    assert cross_check["run_id"] == "41353171166"
+    assert cross_check["status"] == "DIAGNOSTIC_ONLY_NOT_GOLD"
+    cases = cross_check["target_cases"]
+    assert cases["multilexnorm2026_1953"]["status"] == "PARTIAL_AGREEMENT_ON_TARGET_BOUNDARY"
+    assert cases["multilexnorm2026_1979"]["status"] == "ANALYZER_DISAGREEMENT_ON_SI_BOUNDARY"
+    assert cases["dc_inside_2024"]["status"] == "ANALYZER_DISAGREEMENT_ON_LEXICAL_VS_SUFFIX_SEGMENTATION"
+    assert any("majority vote" in item for item in cross_check["limitations"])
+
+
+
+
+def test_c05_front_rounded_vowel_diphthongization_has_independent_corroboration_without_globalizing_it():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-SNU-LEE-2017-KOREAN-VOWEL-CONTRAST"]
+    assert "diphthongization" in source["coverage"]
+    assert "/y, ø/" in source["coverage"]
+    assert "does not establish a universal" in source["limitations_or_next_action"]
+    assert "CC BY-NC 4.0" in source["license_status"]
+
+
+def test_c09_length_discrepancies_have_exact_dictionary_surface_evidence():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    expected = {
+        "SRC-KRDICT-ENG-58161": ("사람[사ː람]", "ParaWordNo=58161"),
+        "SRC-KRDICT-ENG-29712": ("모르다[모ː르다]", "ParaWordNo=29712"),
+        "SRC-KRDICT-ENG-89445": ("알다[알ː다]", "ParaWordNo=89445"),
+        "SRC-KRDICT-AR-GWESUNG": ("괴성[괴ː성 듣기/궤ː성 듣기]", "krdict.korean.go.kr"),
+    }
+    for source_id, (attestation, locator) in expected.items():
+        source = rows[source_id]
+        assert attestation in source["coverage"]
+        assert locator in source["url"]
+        assert any(term in source["limitations_or_next_action"] for term in ("Hangul", "Korean bracket notation"))
+        assert "IPA" in source["limitations_or_next_action"]
+        assert "item-level" in source["license_status"].lower()
+    rule14 = rows["SRC-NIKL-PRON"]
+    assert "§14" in rule14["coverage"]
+    assert "없어[업ː써]" in rule14["coverage"]
+    no_length = rows["SRC-KRDICT-ENG-89445"]
+    assert "알다[알ː다]" in no_length["coverage"]
+
+
+
+
+def test_c09_dictionary_length_is_not_a_guarantee_of_contemporary_surface_duration():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-KCI-KIM-PARK-2019-VOWEL-LENGTH"]
+    assert "only a limited number of subjects" in source["coverage"]
+    assert "1%" in source["coverage"]
+    assert "not a guarantee" in source["contribution_expected"]
+    assert "does not overturn official dictionary entries" in source["limitations_or_next_action"]
+
+
+def test_c01_c07_allophone_profile_research_is_registered_with_bounded_scope():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    expected = {
+        "SRC-PLSA-KOREAN-LIQUID-2021": ("retroflex", "pauses"),
+        "SRC-CAMBRIDGE-KOREAN-IPA": ("[ç]", "[x]", "[p̚]"),
+        "SRC-KCI-KANG-LEE-2019-H": ("Seoul", "Gwangju"),
+        "SRC-KCI-CHOI-OH-2014-N-PALATALIZATION": ("늬", "[ɲi]"),
+        "SRC-KCI-YUN-2005-KOREAN-GLIDES": ("[ɥ]", "front vowel"),
+    }
+    for source_id, terms in expected.items():
+        source = rows[source_id]
+        assert all(term in source["coverage"] for term in terms), source_id
+        assert "not" in source["limitations_or_next_action"].lower(), source_id
+        if source_id == "SRC-PLSA-KOREAN-LIQUID-2021":
+            assert "CC-BY-4.0 verified" in source["license_status"]
+        else:
+            assert "item-level" in source["license_status"].lower(), source_id
+
+
+def test_c10_seoul_korean_prosody_sources_do_not_license_word_level_stress():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-SAGE-BAEK-2022-KOREAN-PROSODY"]
+    assert "not having lexical prominence/stress" in source["coverage"]
+    assert "Accentual Phrase" in source["coverage"]
+    assert "not every Korean dialect" in source["limitations_or_next_action"]
+
+
+
+def test_c01_c07_and_c10_cluster_decisions_follow_the_reviewed_profile_evidence():
+    with C08_CLUSTER_REGISTER.with_name("KOZAK-KIM-MASS-MISMATCH-CLUSTERS-2026-11-01.csv").open(
+        "r", encoding="utf-8-sig", newline=""
+    ) as stream:
+        clusters = {row["cluster_id"]: row for row in csv.DictReader(stream)}
+    expected_sources = {
+        "C01": "SRC-PLSA-KOREAN-LIQUID-2021",
+        "C02": "SRC-CAMBRIDGE-KOREAN-IPA",
+        "C03": "SRC-KCI-CHOI-OH-2014-N-PALATALIZATION",
+        "C05": "SRC-KCI-YUN-2005-KOREAN-GLIDES",
+        "C06": "SRC-CAMBRIDGE-KOREAN-IPA",
+        "C07": "SRC-PLSA-KOREAN-LIQUID-2021",
+        "C10": "SRC-SAGE-BAEK-2022-KOREAN-PROSODY",
+        "C09": "SRC-KCI-KIM-PARK-2019-VOWEL-LENGTH",
+    }
+    for cluster_id, source_id in expected_sources.items():
+        row = clusters[cluster_id]
+        assert source_id in row["production_decision"] + row["next_action"]
+        assert row["status"] not in {"DONE_VERIFIED", "PASS"}
+    assert "SRC-SNU-LEE-2017-KOREAN-VOWEL-CONTRAST" in clusters["C05"]["production_decision"] + clusters["C05"]["next_action"]
+    assert "IPA_CONVENTION_REVIEW_REQUIRED" == clusters["C04"]["status"]
+    assert "do not mark English-style primary lexical stress" in clusters["C10"]["production_decision"]
+    assert clusters["C09"]["status"] == "SOURCE_LENGTH_IMPLEMENTED_7_FORMS_IPA_REVIEW_PENDING"
+    assert "all seven named forms" in clusters["C09"]["production_decision"].lower()

@@ -80,3 +80,32 @@ def test_compact_user_text_does_not_silently_invent_word_boundaries():
         assert spaced_result["pronunciation_status"] != "unresolved", spaced
         assert spaced_result["ipa_is_diagnostic_only"] is False, spaced
         assert " " in spaced_result["surface_hangul"], spaced
+
+
+
+def test_broad_seoul_korean_ipa_does_not_add_english_style_lexical_stress():
+    # Seoul Korean prominence is organized at prosodic-phrase level, not as
+    # English-style lexical stress. Phrase tones/boundaries are a separate layer.
+    for word in ("사람", "많이", "괴성", "모르다", "대한민국"):
+        result = phoneticize_korean(word)
+        assert result["ipa"]["ipa_profile_level"] == "broad"
+        assert "ˈ" not in result["ipa"]["ipa"], word
+
+
+
+def test_c09_source_backed_people_and_moreuda_keep_lexical_length_in_broad_ipa():
+    expected = {
+        "사람": ("사람", "saː.ɾam"),
+        "모르다": ("모르다", "moː.ɾɯ.da"),
+        "괴성": ("괴성", "køː.sʌŋ"),
+    }
+    for word, (surface, ipa) in expected.items():
+        result = phoneticize_korean(word)
+        assert result["surface_hangul"] == surface
+        assert result["ipa"]["ipa"] == ipa
+        assert result["ipa"]["level"] == "broad"
+        assert result["ipa_status"] == "provisional"
+        assert result["pronunciation_status"] == "provisional"
+        assert result["unresolved_contexts"] == []
+    gweseong = phoneticize_korean("괴성")
+    assert gweseong["ipa"]["lexical_alternatives"][0]["ipa"] == "kweː.sʌŋ"

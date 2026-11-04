@@ -119,3 +119,38 @@ test('NIKL Basic Dictionary exact 이중성 reading preserves long vowel and for
   assert.equal(result.candidate_status, 'provisional');
   assert.equal(result.candidate_ukrainian, row.target_syllables.split('|').join(''));
 });
+
+
+
+test('C09 NIKL dictionary length attestations enter the Kozak Kim IPA-first lexical adapter', () => {
+  const expected = {
+    '사람': { ipa: 'saː|ɾam', target: 'са|рам', source: 'ParaWordNo=58161' },
+    '모르다': { ipa: 'moː|ɾɯ|da', target: 'мо|ри|да', source: 'ParaWordNo=29712' },
+    '괴성': { ipa: 'køː|sʌŋ', target: 'кве|сон', source: 'krdict.korean.go.kr', alternate: 'kweː|sʌŋ' },
+  };
+  for (const [word, item] of Object.entries(expected)) {
+    const row = additions.find(entry => entry.input === word);
+    assert.ok(row, word + ': dated C09 lexical addition is required');
+    assert.equal(row.surface_hangul, word);
+    assert.equal(row.ipa_syllables, item.ipa);
+    assert.equal(row.target_syllables, item.target);
+    assert.equal(row.target_status, 'provisional');
+    assert.equal(row.input_kind, 'variant-aware-research');
+    assert.ok(row.source_url.includes(item.source), word + ': exact NIKL dictionary locator');
+    assert.match(row.rule_notes, /Hangul pronunciation.*(?:not IPA|rather than IPA)/u);
+    const result = researchEngine.convert(word);
+    assert.equal(result.surfaceHangul, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, item.ipa.split('|')));
+    assert.match(result.ipa, /ː/u, word + ': preserve dictionary-attested length');
+    assert.equal(result.ukrainian, '', word + ': do not accept provisional Ukrainian target');
+    assert.equal(result.target_status, 'provisional');
+    assert.equal(result.candidate_status, 'provisional');
+    assert.equal(result.candidate_ukrainian, item.target.split('|').join(''));
+    if (item.alternate) {
+      assert.equal(row.alternate_ipa_syllables, item.alternate);
+      assert.equal(row.alternate_surface_hangul, word);
+      assert.equal(result.variants.length, 1);
+      assert.equal(result.variants[0].ipa, renderExpectedIpa(word, item.alternate.split('|')));
+    }
+  }
+});
