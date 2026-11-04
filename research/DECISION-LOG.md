@@ -98,3 +98,17 @@ Record consequential linguistic, data, architecture, testing, licensing, and rel
 - **Affected files:** `package.json`, `pyproject.toml`, `docs/VERSIONING-POLICY.md`.
 - **Validation/tests:** metadata and package roles inspected; no version value changed. Exact-head CI remains required for any future metadata/runtime change.
 - **Revisit when:** the project adopts one unified release artifact or changes the browser package's private/public distribution status.
+
+
+## DEC-2026-007 — Adopt ClippyFirst purpose-limited project licence
+- **Date:** 2026-11-05
+- **Status:** accepted by project owner; implementation committed on the documentation/licensing continuation branch, pending PR review and merge.
+- **Author identity:** Vitalii Volodymyrovych Tkachuk, publishing under the authorial pseudonym **ClippyFirst**. Project start year: 2026.
+- **Context/problem:** The repository had no root project licence. The owner wants scientific reuse of published service results and the Korean-to-Ukrainian correspondence table, while retaining control over reuse of the technical implementation.
+- **Decision:** Apply one custom ClippyFirst Project License to original project materials controlled by the author. Permit ordinary use of the official public web service and attributed use, quotation, citation and scholarly reproduction of individual service results and the correspondence table solely for genuine scientific research. Require the author's prior written permission for source-code reuse, self-hosting, mirroring, integration, modification, porting, redistribution, or other technical reuse not expressly granted.
+- **Attribution:** Credit “ClippyFirst (Vitalii Volodymyrovych Tkachuk)” and link to the repository. Substantial table reproduction/adaptation must identify the project table and disclose changes.
+- **Third-party boundary:** The custom licence does not override vendored Apache-2.0 software, BSD-3-Clause Hanja data, external corpora, dictionaries, or other third-party rights; their own terms remain applicable.
+- **Consequences and trade-offs:** This is a custom, purpose-limited licence and is not an OSI-approved open-source licence. It is not compatible with workflows requiring unrestricted open-source reuse. The licence states the author's intended permissions only for rights the author controls; legal enforceability of table/data restrictions and jurisdiction-specific effects have not been independently assessed.
+- **Affected files:** `LICENSE`, `docs/LICENSING-AND-PERMISSIONS.md`, `README.md`, `docs/README.md`, `docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md`, `research/ACCEPTANCE-GATES.md`.
+- **Validation:** File presence, links, scope wording and third-party carve-outs must be checked on the final branch head; no code/runtime behaviour is changed by this policy update.
+- **Revisit when:** The owner changes scientific-use scope, wants commercial/institutional licensing, accepts third-party contributions under additional terms, or requests a standard open-source licence.
