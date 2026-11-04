@@ -1,3 +1,18 @@
+## 2026-11-04 — g2pK baseline isolation from Kozak research overlays (PARTIAL)
+
+**Scope:** Kozak Kim comparison integrity only. g2pK 0.9.4 remains the unchanged comparison engine; no original/vendor g2pK source was modified.
+
+- Starting default-branch commit: `607dccb46fd83d7bd70245c165dbd9fe6dfd3af9`.
+- Dedicated continuation branch: `fix/kozak-baseline-research-overlay-isolation-2026-11-04`; Draft PR [#432](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/432), based directly on `main`.
+- Root cause: the Python g2pK adapter read Kozak's shared lexical table. Research-only rows could leak into (1) Hangul surface overrides, (2) IPA overrides, and (3) diagnostic-only status metadata. The adapter now excludes `variant-aware-research` and `kozak-research-only` from all three paths. Ordinary source-backed non-research controls remain available.
+- Regressions: real `못잃어` plus synthetic structural fixtures independently cover surface replacement, IPA injection when the external surface already matches, and diagnostic-status leakage. Synthetic fixtures are not linguistic evidence.
+- Code/test snapshot: `047ecf2885281b0c5d579212439f36b6b815219d`. The recursive tree comparison found all 9 files under `src/vendor/g2pk/` byte-identical to `main`; only `src/korean_ukrainian/g2pk_engine.py` and `tests/test_g2pk_engine.py` changed before this documentation update.
+- **TDD RED not verified:** test-first commits were pushed, but their GitHub Actions runs remained queued until after the first implementation commit. Do not report an observed RED result.
+- **Exact-head verification pending:** latest test matrix, System Verify, optional g2pK integration and paired benchmark runs are queued; no PASS is claimed. Local `git ls-remote` failed because this environment could not resolve `github.com`; no local pytest/npm command is claimed.
+- Disposition of overlapping unmerged work: the same minimal two-path isolation idea exists in the stacked PR #424/#426 line. PR #432 ports only this narrow baseline guard to current `main`, adds the diagnostic-status guard and focused tests, and leaves the stacked branches untouched. No merge, release, deployment or branch deletion.
+
+**Acceptance:** mark DONE_VERIFIED only after exact-head Python regression/data-integrity, wheel install, optional g2pK integration, and paired Native/g2pK diagnostics pass. Confirm the paired benchmark remains reproducible and that no Kozak research-only candidate is consumed by the external adapter. Overall linguistic readiness remains research prototype, not release-ready.
+
 # Full benchmark integration, methodology evidence and readiness — 2026-10-31
 
 

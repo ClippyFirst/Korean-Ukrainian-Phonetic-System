@@ -1,3 +1,15 @@
+## Continuation audit — 2026-11-04: g2pK research-overlay isolation
+
+**Status: PARTIAL; PR #432 is Draft/open and exact-head CI is pending.**
+
+The current-main Python g2pK adapter consumed the shared Kozak lexical table without filtering research-only input kinds. This could let a Kozak research candidate rewrite the adapter's external g2pK Hangul surface, inject Kozak-derived IPA, or leak a diagnostic-only status into the g2pK result. The narrow PR #432 adds a guard for `variant-aware-research` and `kozak-research-only` at each of those three boundaries, with a real `못잃어` regression and synthetic structural tests for the other paths.
+
+No Korean phonological rule or Kozak Kim production output is changed. No g2pK source/vendor file is changed; all 9 files in `src/vendor/g2pk/` were verified byte-identical to the base `main` tree. The PR changes only the Python adapter and its tests.
+
+The test-first commits did not receive a confirmed RED run because GitHub Actions remained queued; the implementation was applied without claiming that RED was observed. Latest exact-head System Verify, Python matrix, optional g2pK and paired benchmark jobs remain queued. Local execution is blocked by DNS resolution failure for GitHub, so no local test result is claimed.
+
+**Acceptance remains open** until exact-head CI passes and the g2pK integration plus paired Native/g2pK diagnostic confirm that the external baseline is not affected by Kozak-only overlays. This is a baseline-integrity correction, not evidence that either engine is linguistically superior.
+
 # Final audit — 2026-10-03
 
 ## Release status

@@ -1,3 +1,13 @@
+## Current continuation delta — 2026-11-04
+
+| Requirement | Current state | Evidence / next acceptance |
+|---|---|---|
+| Keep original g2pK comparison adapter isolated from Kozak research-only lexical candidates | **PARTIAL — PR #432** | Mainline Python adapter previously consumed the shared Kozak lexical table in surface, IPA and diagnostic-status paths. The PR excludes `variant-aware-research` and `kozak-research-only` at all three paths and adds focused regressions. Exact-head CI is queued; no pass is claimed. |
+| Preserve original g2pK implementation/vendor files | **DONE_VERIFIED for this branch diff** | Recursive Git-tree comparison: all 9 `src/vendor/g2pk/` files are byte-identical to main. The PR changes only `src/korean_ukrainian/g2pk_engine.py` and `tests/test_g2pk_engine.py` before this documentation update. |
+| Verify g2pK adapter parity and paired benchmark after the isolation fix | **TODO / CI QUEUED** | Await exact-head Python regression, wheel install, optional g2pK integration and paired Native/g2pK diagnostics. Do not claim local test execution; GitHub DNS is unavailable in the local environment. |
+
+This delta does not change Kozak Kim production phonology, IPA policy, Ukrainian targets or g2pK vendor code. It protects the independence of the comparison baseline. Overall readiness remains a research prototype pending independent IPA adjudication, Ukrainian-target review, source-rights clearance and unresolved mismatch adjudication.
+
 # Initial specification → final implementation coverage
 
 Audit date: 2026-10-02
