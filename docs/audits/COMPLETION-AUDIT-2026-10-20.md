@@ -1,15 +1,16 @@
 # Completion audit — Korean-to-Ukrainian Phonetic System
 
-## 2026-11-04 CI repair checkpoint
+
+
+## 2026-11-04 CI repair checkpoint (superseding update)
 
 | Task | Status | Evidence | Acceptance |
 |---|---|---|---|
-| Restore missing UGTPHON surface benchmark module on main | PARTIAL (PR #428; code + regression checks pass) | Exact module blob `25d0b2054b7d12208d282cbe04197f3ff248b7c1` restored; PR head `cd824c361062fbd0a39cdd9f2efbf698348fee5b`; Verify `41795308197` PASS; matrix `41795308362` PASS across Python 3.11/3.12/3.13, web, wheel and teacher audit; artifact build `41795308356` PASS. | Merge only after exhaustive register extraction `41795308312` succeeds and PR remains clean. |
-| Refresh generated unmapped IPA review queue | PARTIAL (PR #427; exact-head workflow pending) | Compared artifact from run `41726881384`; removed stale occurrences `868`, `1406`, `1527`, `2001`, `2010`, `2533`, `2562`; current queue contains 36 ordered occurrence IDs. | Multi-engine rerun `41794474070` must succeed; PR #427 must remain mergeable into #426 branch. |
-| Reconcile existing Korean PR stack | DONE_VERIFIED (inspection only) | #415, #414, #411, #371 and stacked #426/#425/#424/#423/#422/#421/#420/#419/#417/#416 inspected. #415 is broad draft despite passing checks; #411/#371 are unmergeable/stale; #414 is separate external smoke. | Leave unrelated branches and PRs untouched; do not merge broad/draft changes merely to repair the narrow CI issue. |
+| Restore missing UGTPHON surface benchmark module on main | DONE_VERIFIED | PR #428 merged as `340e34e70c726f3a07910a494272990e31658e65`; post-merge Verify `41795765027` PASS; tests `41795764853` PASS (Python 3.11/3.12/3.13, web, wheel, teacher audit); master artifacts `41795764897` PASS; Pages deploy `41795764838` PASS; exhaustive register extraction `41795516445` PASS on PR head. | Closed. No production phonology/IPA labels changed. |
+| Refresh generated unmapped IPA review queue | PARTIAL (PR #429 on latest #426 head) | Exact-head source run `41726881384` produced 36 rows; seven stale IDs removed. PR #427 closed as superseded when base advanced. Replacement PR #429 head `20b1efb4214537b7b40c18d169c63743039683b0`; Verify `41795979788` and push verify `41795973920` PASS; multi-engine run `41795979739` still running. | Require multi-engine output parity, artifact checksum, browser/native parity and SIGMORPHON comparison to pass on the latest #426 head before merge. |
+| Reconcile existing Korean PR stack | DONE_VERIFIED (inspection only) | #415 broad draft (26 files, checks pass), #414 external smoke, #411 unmergeable RR/Hanja/UI scope, #371 stale/unmergeable benchmark; #426 stack and #429 narrow follow-up inspected. #427 closed superseded, branch retained. | Keep unrelated drafts/branches untouched; do not merge broad changes merely to fix the main CI regression. |
 
-**Evidence boundary:** no phonological rule, IPA gold label, Ukrainian output, or accuracy metric was changed. The missing benchmark module and its test contract are restored only. Independent Korean IPA gold remains a separate research gate.
-
+**Evidence boundary:** no phonological rule, IPA gold label, Ukrainian target, or accuracy metric changed. Independent Korean IPA gold remains a separate research gate.
 
 **Date:** 2026-10-20  
 **Audited baseline:** `main` at `8641dac4002f951d391682062ba134894e4198d7`  
