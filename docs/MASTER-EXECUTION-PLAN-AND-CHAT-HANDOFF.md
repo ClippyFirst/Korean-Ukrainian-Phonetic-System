@@ -2,6 +2,15 @@
 
 **Working branch:** `research/236-candidate-review-2026-11-05` (the only working branch for this task). **PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436), draft/open. The reconstructed historical baseline remains **236 occurrence rows**; no rows were deleted.
 
+### New glide-context evidence review: 27 lenis-sibilant occurrences remain open
+
+- Added Kang (2009), *A Phonetic Account of Korean Affricates: Neutralization with a Palatal Glide* (KCI article ART001319180), to the source register and the dedicated [sibilant-glide scope review](../research/KOREAN-SIBILANT-GLIDE-SCOPE-REVIEW-2026-11-05.md).
+- The accessible abstract reports acoustic and identification differences for Korean alveolar fricatives followed by /j/, but omits the tested following vowel sequence, speaker count, effect size and a categorical narrow IPA outcome.
+- Kang (2010) S019 supports only /i, ye, ya/; its abstract reports a distinct spectral pattern for /yu, yo/. S020 describes labio-palatalized coarticulation with high-front plus rounding, not a deterministic [ɕ] transcription.
+- Therefore ID 606 (/jo/) and 26 /jʌ/ occurrences remain `NOT_INDIVIDUALLY_ADJUDICATED`. This is new negative/scope evidence, not a new resolution. No production or benchmark changes.
+- Regression coverage now asserts that all 27 out-of-scope lenis-sibilant occurrences remain unadjudicated.
+
+
 ### Additional negative evidence for unresolved ID 606 (`쇼`)
 
 - NIKL Online Q&A 332662 (question 2026-06-21; answer 2026-06-22) says foreign-word pronunciation is not separately standardized and that the Standard Korean Language Dictionary does not list a standard pronunciation for `쇼`; it advises pronouncing according to Hangul spelling.
@@ -18,7 +27,7 @@ NIKL Online Q&A 328785 (2026-04-03) states that the phonological shape in Rule 2
 
 ### CI correction: source-register CSV quoting
 
-The first exact-head `tests` run after adding NIKL Q&A 332662 and 328785 failed because commas in the two new `limitations_or_next_action` fields were not CSV-quoted (rows 207–208 parsed as 14 and 13 columns). The rows were reconstructed and quoted; the source register now has 207 data rows, each with exactly 12 columns. The generator pin was updated to the current adjudication blob and the generated 236-row CSV basis for occurrence 78 was regenerated. Source-rights tests now expect the actual distribution: 3 item-level licenses, 1 not applicable, 180 REVIEW_REQUIRED and 23 MANUAL_CLASSIFICATION_REQUIRED.
+The first exact-head `tests` run after adding NIKL Q&A 332662 and 328785 failed because commas in the two new `limitations_or_next_action` fields were not CSV-quoted (rows 207–208 parsed as 14 and 13 columns). The rows were reconstructed and quoted; the source register now has 208 data rows, each with exactly 12 columns. A citation-only Kang (2009) source record is included; item-level reuse terms remain unassessed, so the source-rights queue has 181 REVIEW_REQUIRED and 23 MANUAL_CLASSIFICATION_REQUIRED records (204 open in total). The generator pin was updated to the current adjudication blob and the generated 236-row CSV basis for occurrence 78 was regenerated. Source-rights tests now expect the actual distribution: 3 item-level licenses, 1 not applicable, 180 REVIEW_REQUIRED and 23 MANUAL_CLASSIFICATION_REQUIRED.
 
 **Exact-head CI on `785ee15473f83de3583c1d470a4ce477bd8575ab`:** tests run 42105728062 passed Python 3.11/3.12/3.13, web, wheel-install and teacher-corpus-audit. Verify run 42105728208 passed Python regression/data integrity and browser regression/build. Corpus generation 42105728193, extraction 42105728166, pinned UGTPHON 42105728184, paired native/g2pk 42105728267 and morphology consensus 42105728074 passed. Multi-engine IPA diagnostic 42105728130 is still in progress. Charsiu train-dev, ByT5/Charsiu inference and NIKL metadata-only jobs were skipped by policy. Local pytest/npm were not run.
 
