@@ -753,4 +753,4 @@ def test_nikl_rule_29_and_renpa_sense_sources_are_registered():
     assert "qna_seq=322807" in renpa["url"]
     assert "連敗" in renpa["coverage"]
     assert "연패²(連霸)" in renpa["coverage"]
-    assert "does not give a pronunciation" in renpa["limitations_or_next_action"]
+    assert "Does not give a pronunciation" in renpa["limitations_or_next_action"]
