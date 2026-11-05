@@ -1,35 +1,40 @@
-## 2026-11-05 — Independent evidence update: seven confirmed, ten named abstentions
+## 2026-11-05 — Independent evidence update: eight confirmed, ten named evidence-limited abstentions
 
-**Branch:** research/236-candidate-review-2026-11-05 (single continuing working branch). **PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436), draft/open. The reconstructed 236-row baseline is retained unchanged.
+**Branch:** `research/236-candidate-review-2026-11-05` (single continuing working branch). **PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436), draft/open. The reconstructed 236-row baseline is retained unchanged.
 
 ### Current disposition
 
-- **Seven RULE_CONFIRMED_STANDARD_VARIANT occurrences:** IDs 341 (그놈의), 1140 (출산), 1406 (팔자걸음), 1527 (보일거라), 2001 (물가로), 2010 (혐오증), and 2533 (안할듯).
-- **24 ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW; 205 NOT_INDIVIDUALLY_ADJUDICATED; zero pending RETAIN.** Thus 229 occurrences remain unresolved. Historical membership is reconstructed from pinned replay, not proven original-selector membership.
-- ID 78 (오조오억배) was returned to ABSTAIN. NIKL Rule 4 says ㅓ is a monophthong, but this does not rule out a separate glide or transitional interval in a V.V sequence. The literature search found variable Korean glide formation/insertion and possible /w/ insertion after /o,u/ (Shin 2013; Im 2011), plus acoustic work on Korean VV sequences and glides (Kang 2013; Suh & Hwang 2016; Hyun & Lee 2015). No located abstract directly tests 오조오억배 or /o.ʌ/ in this numeral compound; the comparator's /j/ remains unadjudicated pending token audio or independent Korean IPA review.
+- **Eight RULE_CONFIRMED_STANDARD_VARIANT occurrences:** IDs 341 (그놈의), 1140 (출산), 1406 (팔자걸음), 1527 (보일거라), 2001 (물가로), 2010 (혐오증), 2490 (머리속에 → 머릿속에), and 2533 (안할듯).
+- **24 ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW; 204 NOT_INDIVIDUALLY_ADJUDICATED; zero pending RETAIN.** Thus 228 occurrences remain unresolved. Historical membership is reconstructed from pinned replay, not proven original-selector membership.
+- ID 2490: the source sentence uses 머리속에 in the figurative sense 'in one's mind'. Korean-language professor Kim Nam-mi explicitly attests 머릿속[머리쏙]. The comparator's /s͈/ is supported for this exact lexical form; Kozak /s/ is not. The corpus spelling omits the standard 사이시옷. Expert lexical attestation only; no audio/IPA reviewer or production change.
+- ID 78 (오조오억배) remains ABSTAIN. The 2025 full-text study Kim & Hong tests 기억–기역 and 보안–보완 within-word vowel sequences, not 오억 or numeral compounds; its 보완 analysis emphasizes longer preservation of /o/ rounding rather than a clearly independent /w/ gesture. No located study directly tests the candidate's /o.ʌ/ numeral boundary.
 - ID 341: NIKL Rule 5 supports [e] as an accepted genitive-particle 의 variant; context is 그놈의.
 - ID 1140: NIKL Basic Dictionary directly lists 출산[출싼], upgrading the historical provisional R012 RETAIN; exact lexical attestation only.
 - ID 1406: NIKL Basic Dictionary lists 팔자[팔짜]; Rule 26 licenses ㄹ+ㅈ fortition in this Sino-Korean morpheme.
-- ID 1527: 보일거라 parses as 보일 거라 생각하는 건가; adnominal 보이-ㄹ precedes dependent noun 거 (것). NIKL Q&A 310899 confirms 거 as a dependent noun; Rule 27 and the official parallel 할 것을[할꺼슬] support fortition in the connected construction. No general ㄹ+ㄱ rewrite is inferred.
+- ID 1527: 보일거라 parses as 보일 거라 생각하는건가; adnominal 보이-ㄹ precedes dependent noun 거 (것). Rule 27 and official parallel 할 것을[할꺼슬] support fortition in the connected construction. No general ㄹ+ㄱ rewrite is inferred.
 - ID 2001: official NIKL educational material lists 물가[물까] in the price sense and contrasts 결과[결과]. Exact lexical license only.
 - ID 2010: NIKL Basic Dictionary lists 혐오증[혀모쯩]. Exact lexical license only.
 - ID 2533: Rule 27 commentary explicitly gives 할 듯하다[할뜨타다]; 안할듯 parses as 안 하-ㄹ + 듯. Connected adnominal construction only.
 - IDs 257, 813 and 853 (체험): remain abstained; 험 contains ㅓ, so the Rule 5 diphthong argument for ㅕ does not apply. IDs 813 and 853 repeat in one source row.
-- IDs 293, 538 and 1206 (sibilant cases): remain abstained; NIKL Hangul surface readings do not decide broad IPA [s] vs [ɕ], and IPA-Dict is broadly phonemic.
+- IDs 293, 538 and 1206 (sibilant cases): remain abstained; Hangul readings do not decide broad IPA [s] vs [ɕ]. Newly reviewed acoustic literature is context- and speaker-sensitive; it does not adjudicate these exact recordings.
 - IDs 1816, 1843 and 1870 (연전연패): remain abstained; n-insertion is variable and no word-specific evidence was found. Repeated occurrences in one source row are not independent speakers.
-- These are normative rule/lexical adjudications, not token-specific acoustic IPA gold. No production IPA, Ukrainian target, benchmark gold, or runtime rule changed.
+- These are normative rule/lexical/expert-reference adjudications, not token-specific acoustic IPA gold. No production IPA, Ukrainian target, benchmark gold, or runtime rule changed.
 
 ### Evidence and verification
 
-- NIKL Standard Pronunciation Rules 4, 5, 26 and 27; Shin (2013), Im (2011), Kang (2013), Kim & Hong (2025, DOI 10.30961/lr.2025.61.1.1; abstract unavailable), Suh & Hwang (2016, DOI 10.1159/000444189), Hyun & Lee (2015, DOI 10.15811/JKL.2015..75.002); NIKL Basic Dictionary entries for 출산, 팔자 and 혐오증; official NIKL educational examples for 물가 and Rule 27; NIKL Q&A 310899 and 317798; Jun (2015), DOI 10.1017/S0952675715000275.
-- ID 78 is recorded as an evidence-limited abstention; ID 1527 is a Rule 27 confirmation. The generated candidate ledger preserves the original ID 78 abstention rationale.
-- Generator input SHA must match the latest context-adjudication blob; the checked-in CSV must equal deterministic generator output.
-- GitHub Actions exact-head checks are pending for the latest update. Local pytest/npm are not run in this connector-only session.
-- Research readiness remains partial; no production or release gate is claimed complete.
+- NIKL Standard Pronunciation Rules 4, 5, 26 and 27; NIKL Basic Dictionary entries for 출산, 팔자 and 혐오증; official NIKL educational examples for 물가 and Rule 27; NIKL Q&A 310899 and 317798.
+- Kim Nam-mi (2017), *Donga Ilbo*, explicitly attests 머릿속[머리쏙] and explains the 사이시옷 spelling; this is an expert lexical/normative reference, not an acoustic experiment.
+- Kim & Hong (2025), full text: DOI 10.30961/lr.2025.61.1.1; tested 기억–기역 and 보안–보완 only, not 오억/numeral compounds.
+- Holliday (2012), DOI 10.13064/KSSS.2012.4.1.067; Schertz & Kang (2022), DOI 10.1075/kl.16001.sch; Kong & Kang (2021), DOI 10.13064/KSSS.2021.13.1.037. These studies do not independently adjudicate the three exact sibilant tokens.
+- Jun (2015), *Korean n-insertion: a mismatch between data and learning*, DOI 10.1017/S0952675715000275, supports variable n-insertion and does not itemize 연전연패.
+- These eight are normative rule/lexical/expert-reference confirmations, not token-specific acoustic IPA gold. No individual speaker recording has been independently adjudicated.
+- The generator pins the adjudication register blob; the checked-in candidate CSV must equal deterministic generator output. GitHub Actions exact-head verification is required after these commits. Local pytest/npm were not run in this connector-only session.
+
+**Current interpretation:** baseline inventory 236; eight source-supported standard-form adjudications; active unresolved occurrences 228. Overall readiness remains a partial research prototype, not research-certified or release-ready.
 
 ---
 
-# Latest exact-head evidence — 2026-11-03
+ Latest exact-head evidence — 2026-11-03
 
 **Current branch HEAD:** dd450179d26380658f264fd88a21ef9724c13225  
 **Code/test tree:** 5c775dfa6b6a969c320f47c1420c75ffa645e369 (the later commit updates the research audit register and PR documentation only).  
