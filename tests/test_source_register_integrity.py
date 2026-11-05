@@ -736,7 +736,7 @@ def test_jeonggweon_exact_dictionary_and_nikl_kwon_morpheme_sources_are_register
     assert dictionary["url"] == "https://www.kpedia.jp/w/6291"
     assert "정꿘" in dictionary["coverage"]
     assert "政權" in dictionary["coverage"]
-    assert "item-level reuse terms not verified" in dictionary["license_status"]
+    assert "Item-level reuse terms not verified" in dictionary["license_status"]
     nikl = rows["SRC-NIKL-QNA-335292"]
     assert "qna_seq=335292" in nikl["url"]
     assert "인권[인꿘]" in nikl["coverage"]
