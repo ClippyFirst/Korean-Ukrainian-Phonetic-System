@@ -1,5 +1,5 @@
 from __future__ import annotations
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from .phonology import Syllable, split_coda
 from .soft_morphology import soft_formal_licenses, merge_licenses, mark_heuristic_trace
 
