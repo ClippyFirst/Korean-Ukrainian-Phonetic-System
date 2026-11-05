@@ -105,3 +105,16 @@ def test_reconstructed_239_candidate_snapshot_and_current_disposition_crosswalk(
 
     # Count only verified FIX overlaps as resolved; RETAIN and ABSTAIN remain open.
     assert len(set(candidate_ids) - fixed_ids) == 236
+
+
+def test_current_2026_11_05_unmapped_queue_is_versioned_separately_from_historical_ledger():
+    historical = _rows(ROOT / "research/kozak-kim-unmapped-mismatch-review-queue-2026-11-03.csv")
+    current = _rows(ROOT / "research/kozak-kim-unmapped-mismatch-review-queue-2026-11-05.csv")
+    historical_by_id = {row["occurrence_id"]: row for row in historical}
+    current_by_id = {row["occurrence_id"]: row for row in current}
+    assert len(historical) == 36
+    assert len(current) == 32
+    assert set(historical_by_id) - set(current_by_id) == {"37", "704", "2018", "2031"}
+    assert set(current_by_id).issubset(historical_by_id)
+    for occurrence_id, row in current_by_id.items():
+        assert row == historical_by_id[occurrence_id]
