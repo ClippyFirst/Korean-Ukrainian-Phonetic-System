@@ -76,3 +76,19 @@ A direct count over the pinned 1,267-row export (blob `552139f72e3b0cbd32bf3dd83
 Neither 3 nor 12 reproduces 239. More importantly, the row-level union cannot tell whether a row containing a mapped family also contains one or more separately unmapped Broad edit operations. Therefore the 239 criterion (“at least one fragment not mapped to C01–C10”) cannot be reconstructed from this CSV column. This is a reproducibility finding, not a redefinition of the historical 239 population.
 
 **Disposition unchanged:** do not select 239 IDs from the 1,267 rows by approximation. The missing input is the original per-fragment C01–C10 assignment snapshot or the exact executable selection predicate that produced the 239-member set. Once recovered, it must select exactly 239 unique occurrence IDs before context joins and individual decisions are populated.
+
+## Full Broad-mismatch evidence superset — 2026-11-05
+
+The pinned 2,703-occurrence report and pinned UGTPHON test split have now been joined occurrence-by-occurrence. The result is [the 370-row Broad-mismatch context ledger](kozak-kim-broad-mismatch-context-ledger-2026-11-05.csv).
+
+- Source mismatch export: `research/kozak-kim-mismatch-fragments-2026-11-02.csv` at historical HEAD `4f3f307c5bb056bce3b0aedc8ab07e0010eaa695`, blob `552139f72e3b0cbd32bf3dd83ad4bf5bc59238a7`.
+- Exactly 370 rows have `broad_edit_distance > 0` and unique occurrence IDs.
+- All 370 occurrence IDs were replay-joined against the pinned UGTPHON token traversal; source row ID, canonical token and exact token index matched. Every row has full sentence text, canonical sentence and phoneme annotation.
+- The ledger pins benchmark artifact/report hashes, engine source commit/blob, Broad IPA profile/version, sensitivity profile/version/blob, both normalizer source blobs, UGTPHON commit/blob and Apache-2.0 metadata.
+- Each row is explicitly `ABSTAIN` / `EVIDENCE_LIMITED_DIAGNOSTIC_ONLY`: a mismatch score is not independent pronunciation adjudication and does not authorize a production fix.
+- `historical_239_membership` is deliberately `UNRESOLVED_NO_HISTORICAL_ASSIGNMENT_SNAPSHOT`. The 370-row superset is not falsely presented as the 239-member historical cohort.
+
+Regression coverage: `tests/test_kozak_broad_mismatch_context_ledger.py` asserts row count, unique IDs, context availability, token-index bounds, decision state and every pinned provenance field.
+
+This closes the context/provenance recovery for the full Broad-mismatch superset, but it does **not** close the 239-member historical selection or independent linguistic review. The missing acceptance input remains the historical C01–C10 per-fragment assignment snapshot or an executable selection predicate that reproduces exactly 239 stable occurrence IDs.
+
