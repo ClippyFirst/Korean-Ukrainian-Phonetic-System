@@ -1051,3 +1051,30 @@ def test_nikl_basic_dictionary_70041_preserves_initial_length_in_dae_han_min_guk
     assert result["ipa"]["ipa"] == "teː.han.min.ɡuk̚"
     assert result["ipa"]["status"] == "provisional"
     assert result["ipa"]["is_diagnostic_only"] is False
+
+
+def test_section_27_ugtphon_same_eojeol_contexts_use_exact_form_licenses():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    expected = {
+        "해줄것": "줄>것",
+        "많을거같이": "을>거",
+        "내릴수있는": "릴>수",
+        "존중시킬수도있지만": "킬>수",
+    }
+    for word, pair in expected.items():
+        result = phoneticize_korean(word)
+        trace = next(
+            item for item in result["rules"]
+            if item.get("rule_id") == "R013"
+        )
+        assert trace["changed"], word
+        assert trace["license_context"] == f"R013:adnominal_l:{word}:{pair}", word
+
+    # The map is exact-form gated; do not infer productive morphology for
+    # unreviewed neighboring strings merely because they contain ㄹ+plain onset.
+    unlicensed = phoneticize_korean("많을거같은")
+    assert not any(
+        item.get("rule_id") == "R013" and item.get("changed")
+        for item in unlicensed["rules"]
+    )

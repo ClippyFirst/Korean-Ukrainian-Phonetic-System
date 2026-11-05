@@ -217,7 +217,10 @@ const NIKL_27_ADNOMINAL_PHRASES=new Map([
 const NIKL_27_ADNOMINAL_FORMS=new Map([
   ['무고일수도있다는','일>수'],['했을시','을>시'],
   // NIKL §27: 할 듯하다[할뜨타다]; Q&A 310899 confirms colloquial 거 = 것; exact UGTPHON contexts.
-  ['보일거라','일>거'],['없을듯','을>듯'],['안할듯','할>듯']
+  ['보일거라','일>거'],['없을듯','을>듯'],['안할듯','할>듯'],
+  // Restored Apache-2.0 UGTPHON Korean contexts; rule 27 licenses only these full eojeols.
+  ['해줄것','줄>것'],['많을거같이','을>거'],
+  ['내릴수있는','릴>수'],['존중시킬수도있지만','킬>수']
 ]);
 const NIKL_29_PHRASE_INSERTION=new Map([
   ['한 일',{onset:'ㄴ'}],['옷 입다',{coda:'ㄴ',onset:'ㄴ'}],

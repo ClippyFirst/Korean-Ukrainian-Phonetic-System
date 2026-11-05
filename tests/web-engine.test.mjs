@@ -417,3 +417,20 @@ test('Korean fortis consonants remain doubled in Ukrainian output', () => {
   const cases = [['k͈', 'кк'], ['t͈', 'тт'], ['p͈', 'пп'], ['s͈', 'сс'], ['tɕ͈', 'чч']];
   for (const [ipa, expected] of cases) assert.equal(ipaSyllableToUkrainian(ipa).text, expected, ipa);
 });
+
+
+test('NIKL §27 context-restored same-eojeol forms are licensed only in Kozak Kim', () => {
+  const exactForms = ['해줄것', '많을거같이', '내릴수있는', '존중시킬수도있지만'];
+  for (const word of exactForms) {
+    const result = engine.convert(word);
+    assert.ok(
+      result.trace.some(item => item.rules.includes('adnominal-r-fortition-§27-exact-form')),
+      word + ': exact same-eojeol morphology license must be traced'
+    );
+  }
+  const unlicensed = engine.convert('많을거같은');
+  assert.ok(
+    !unlicensed.trace.some(item => item.rules.includes('adnominal-r-fortition-§27-exact-form')),
+    'unreviewed neighboring form must not inherit the exact-form license'
+  );
+});

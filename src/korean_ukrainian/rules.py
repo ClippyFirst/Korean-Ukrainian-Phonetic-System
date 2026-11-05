@@ -237,6 +237,17 @@ _NIKL_R013_WORD_LICENSES = {
     "보일거라": "일>거",
     "없을듯": "을>듯",
     "안할듯": "할>듯",
+    # Restored UGTPHON ko/test.json contexts (Apache-2.0 Korean subset):
+    # multilexnorm2026_1916: 해줄것 = 해 주-ㄹ 것 (줄>것).
+    # multilexnorm2026_2011: 많을거같이 = 많-을 거 (을>거); Q&A 310899
+    # confirms colloquial 거 is a dependent noun.
+    # dc_inside_2266: 내릴수있는 = 내리-ㄹ 수 (릴>수);
+    # 존중시킬수도있지만 = 존중시키-ㄹ 수 (킬>수).
+    # §27 supplies the rule; UGTPHON IPA is a comparator, not normative gold.
+    "해줄것": "줄>것",
+    "많을거같이": "을>거",
+    "내릴수있는": "릴>수",
+    "존중시킬수도있지만": "킬>수",
     # Do not infer from -ㄹ alone: many other corpus tokens remain unlicensed.
 }
 
