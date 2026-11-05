@@ -246,21 +246,22 @@ def test_nikl_exact_lexical_fortition_adjudicates_water_price_compound_only():
 
 def test_nikl_surface_sources_do_not_override_broad_profile_sibilant_convention():
     rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
-    expected = {
-        "293": ("실수", "SRC-NIKL-QNA-330843", "[실쑤]"),
-        "538": ("멋있어", "SRC-NIKL-QNA-306166", "[머시써]"),
-        "1206": ("싫어서", "SRC-NIKL-QNA-313981", "[시러서]"),
-    }
-    for occurrence_id, (token, source_id, pronunciation) in expected.items():
+    for occurrence_id in ("293", "1206"):
         row = rows[occurrence_id]
-        assert row["token"] == token
-        expected_disposition = "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW" if occurrence_id == "538" else "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
-        assert row["candidate_disposition"] == expected_disposition
-        assert source_id in row["candidate_disposition_basis"]
-        assert pronunciation in row["candidate_disposition_basis"]
-        assert "SRC-IPA-DICT-KO" in row["candidate_disposition_basis"]
-        assert row["prior_individual_reason_code"] == "HANGUL_SURFACE_EVIDENCE_NOT_IPA"
-        assert row["prior_independent_ipa_review_status"].startswith("NIKL_Hangul_surface_attestation_only")
+        assert row["candidate_disposition"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
+        assert row["prior_individual_reason_code"] == "LENIS_SIBILANT_BROAD_PROFILE_CONVENTION"
+        assert "source [ɕ] vs project broad /s/" in row["candidate_disposition_basis"]
+        assert "Kang (2010)" in row["candidate_disposition_basis"]
+        assert "token-specific acoustic IPA review was not performed" in row["candidate_disposition_basis"]
+
+    row = rows["538"]
+    assert row["token"] == "멋있어"
+    assert row["candidate_disposition"] == "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW"
+    assert "SRC-NIKL-QNA-306166" in row["candidate_disposition_basis"]
+    assert "[머시써]" in row["candidate_disposition_basis"]
+    assert "SRC-IPA-DICT-KO" in row["candidate_disposition_basis"]
+    assert row["prior_individual_reason_code"] == "HANGUL_SURFACE_EVIDENCE_NOT_IPA"
+    assert row["prior_independent_ipa_review_status"].startswith("NIKL_Hangul_surface_attestation_only")
 
 
 def test_nikl_dictionary_fortis_affricate_confirms_hyeomojeung_only():
