@@ -6489,3 +6489,15 @@ Current main at verification: `d68cb09e12eb8b71b264775f2cf7ac6e9c2a51c5` (reposi
 - Pages deployment `42000327385` — PASS.
 
 The 36-row queue disposition register is complete as a record: 4 FIX, 1 provisional RETAIN, 31 individually reasoned ABSTAIN. The 31 ABSTAIN rows now also pin their benchmark run `41797143671`, engine run-head `c0cbe3740e734c87d3202cca496b83d9603ea218`, artifact `13305479036` (ZIP SHA-256 `37a4b15ade1a1422a62b47eb634c032badef1412e217d7c57979cf418264a7fa`), report SHA-256 `f489139efbd00cab293e14c437bdab992de95477194fb1f2b5164aafacf16560`, normalizer script blob `5a1ea3c2e99ba20303122bb124a6aaec22e56ad2`, Broad profile blob `e13086f0fd98ce9564326ff50b0458c27392932`, and UGTPHON test split blob `59380491d5a797308c475f7d0007dcf6c4be00af`. Python `RuleTrace` per-occurrence provenance (`applied_occurrences`, `license_contexts`) is implemented and covered by the exact-head test workflow. The historical 239 artifact has been recovered and hash-pinned; the exact 239-member predicate / fragment-to-C01–C10 assignment snapshot remains the sole blocker to producing a valid 239-row ledger. The project remains a partial research prototype, not research-certified or release-ready.
+
+## 2026-11-05 — 31-row provenance recovery
+
+The 31-row abstention register's formerly unknown Kozak engine and normalizer provenance has now been recovered from the exact benchmark run that produced the refreshed 36-row queue:
+
+- Workflow run `41797143671`, head/engine code commit `c0cbe3740e734c87d3202cca496b83d9603ea218`.
+- Browser diagnostic artifact `13305479036`, ZIP SHA-256 `37a4b15ade1a1422a62b47eb634c032badef1412e217d7c57979cf418264a7fa`; contained report SHA-256 `f489139efbd00cab293e14c437bdab992de95477194fb1f2b5164aafacf16560`.
+- Benchmark/normalizer source `scripts/benchmark_kozak_kim_browser.mjs` blob `5a1ea3c2e99ba20303122bb124a6aaec22e56ad2`; Broad sensitivity profile `korean-broad-candidate-sensitivity-v1@1` blob `e13086f0fd98ce9564326ff50b0458c27392932`.
+- Pinned UGTPHON Korean test split Git blob `59380491d5a797308c475f7d0007dcf6c4be00af` at commit `ef0d5a09c2ea1874c7206020f875cbd9cfea2f54`.
+
+All 31 rows now carry these pins in dedicated columns; `kozak_engine_commit`, `kozak_profile` and `normalizer_version` no longer claim unrecovered provenance. The regression test asserts the exact run, artifact/report digests, source blobs and engine/profile versions. This strengthens reproducibility; the 31 dispositions remain evidence-limited `ABSTAIN` decisions, not independent Korean IPA judgments. The historical 239 membership blocker is unchanged.
+
