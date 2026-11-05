@@ -1,5 +1,5 @@
 /**
- * Browser adapter for the pinned JavaScript port of g2pK.
+ * Browser adapter for the vendored JavaScript port of g2pK.
  *
  * Contract: original Hangul → raw g2pK surface spelling → project IPA
  * adapter → Ukrainian target mapped from that IPA.
