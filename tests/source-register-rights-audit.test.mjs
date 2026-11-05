@@ -56,11 +56,11 @@ test('real source register is structurally valid and unresolved rights remain vi
   const csv = readFileSync(new URL('../research/SOURCE-REGISTER.csv', import.meta.url), 'utf8');
   const report = auditSourceRegister(csv);
   assert.equal(report.structuralErrorCount, 0, JSON.stringify(report.structuralErrors));
-  assert.equal(report.sourceRegisterRows, 196);
+  assert.equal(report.sourceRegisterRows, 197);
   assert.deepEqual(report.rightsClassificationCounts, {
     ITEM_LEVEL_LICENSE_RECORDED: 3,
     NOT_APPLICABLE_RECORDED: 1,
-    REVIEW_REQUIRED: 172,
+    REVIEW_REQUIRED: 173,
     MANUAL_CLASSIFICATION_REQUIRED: 20,
   });
   assert.ok(report.rightsClassificationCounts.REVIEW_REQUIRED > 0);
