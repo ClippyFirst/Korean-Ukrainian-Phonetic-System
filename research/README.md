@@ -83,3 +83,10 @@ The 36-row narrow Broad queue now has explicit row-level dispositions: four exac
 Python `RuleTrace` now exposes per-occurrence `applied_occurrences` and `license_contexts` (including matched source license, source pair, word form, index and before/after state); the original scalar `license_context` remains for compatibility.
 
 The full historical **239** population remains separate and BLOCKED: the original exact 239 membership and historical run artifact are not encoded in the current 1,267-fragment export or 36-row queue. A complete hash-pinned ledger still requires the original benchmark occurrence artifact or an exact reproducible reconstruction with its historical engine commit, normalizer, profile and source contexts. No placeholder or synthetic 239-row ledger has been represented as complete.
+
+
+## 2026-11-05 — recovered historical benchmark source artifact
+
+The original 2026-11-02 multi-engine benchmark artifact has now been recovered and pinned in [the historical-239 recovery manifest](kozak-kim-historical-239-recovery-manifest-2026-11-05.md): workflow run `41471244424`, run-head `4f3f307c5bb056bce3b0aedc8ab07e0010eaa695`, artifact `13156351613`, SHA-256 `749ac9a2b9db96c1e27828919afe05ef4320e35ca6a91ab2038c1ff3e9d04c69`. It contains the full 2,703-occurrence ten-engine report, the pinned UGTPHON source revision, the native and broad profile IDs, normalization contract and upstream engine pins.
+
+This closes the *artifact recovery* part of the 239 task, but not the 239-row ledger. The tracked 1,267-row mismatch export does not preserve a per-fragment C01–C10 assignment or an explicit historical-239 membership flag. The original selection predicate/assignment snapshot must be reproduced and shown to yield exactly 239 stable IDs before source contexts and individual decisions can be joined. Do not force a 239-row selection from the aggregate count.
