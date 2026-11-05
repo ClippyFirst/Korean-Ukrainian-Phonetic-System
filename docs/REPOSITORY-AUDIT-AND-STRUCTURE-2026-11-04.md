@@ -706,7 +706,7 @@ The 2026-11-04 main-branch audit snapshot above remains historical and unchanged
 - The reconstructed 236-occurrence candidate baseline remains intact.
 - Current disposition: 15 exact standard-form/rule confirmations; 181 bounded profile/variation reconciliations; 12 ABSTAIN pending independent IPA review; 28 not individually adjudicated. Thus 196 are dispositioned and 40 remain unresolved.
 - None of the 236 has independent speaker-level acoustic IPA gold. No production IPA, Ukrainian target, or benchmark gold was changed.
-- Source register now contains 207 entries; 3 item-level licenses, 1 not applicable, 182 rights-review required, 21 manual-classification required; 203 remain open.
+- Source register now contains 207 entries; 3 item-level licenses, 1 not applicable, 180 rights-review required, 23 manual-classification required; 203 remain open.
 - NIKL Q&A 332662 is negative evidence for `쇼`: no standardized foreign-word pronunciation entry and no IPA gold. NIKL Q&A 328785 is a Rule 29 negative control: phonological shape alone does not guarantee n-insertion.
 - Kim & Hong (2025) full-text scope was corrected in the case adjudication: /iə~ijə/ and /oa~owa/ within-word pairs do not test /o.ʌ/ or numeral compounds.
 - A CI run on the preceding head exposed malformed CSV quoting in two newly added source-register rows. The rows have been corrected and all 207 records were reparsed as exactly 12 columns. A fresh exact-head CI run on the corrected head is still required; do not mark the latest batch fully verified.
