@@ -15,10 +15,10 @@ def test_reconstructed_236_review_ledger_has_exact_membership_and_statuses():
     assert len(rows) == 236
     assert len({row["occurrence_id"] for row in rows}) == 236
     assert Counter(row["candidate_disposition"] for row in rows) == {
-        "NOT_INDIVIDUALLY_ADJUDICATED": 53,
+        "NOT_INDIVIDUALLY_ADJUDICATED": 30,
         "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 19,
         "RULE_CONFIRMED_STANDARD_VARIANT": 11,
-        "PROFILE_CONVENTION_MISMATCH_CONFIRMED": 153,
+        "PROFILE_CONVENTION_MISMATCH_CONFIRMED": 176,
     }
     assert all(row["historical_membership_confidence"] ==
         "RECONSTRUCTED_CANDIDATE_NOT_ORIGINAL_MEMBERSHIP_PROOF" for row in rows)
@@ -499,3 +499,21 @@ def test_genitive_ui_particle_does_not_take_noninitial_lexical_i_variant():
     assert "not [i]" in row["candidate_disposition_basis"]
     assert "SRC-NIKL-QNA-335190" in row["candidate_disposition_basis"]
     assert "The separate lenis" in row["candidate_disposition_basis"]
+
+
+def test_fortis_sibilant_place_symbol_pairs_are_profile_only_not_acoustic_gold():
+    rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
+    resolved_ids = ["48","96","355","477","481","539","551","604","857","1090","1169","1554","1557","1684","1807","1834","1861","2116","2134","2464","2583","2586","2611"]
+    for occurrence_id in resolved_ids:
+        row = rows[occurrence_id]
+        assert row["candidate_disposition"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
+        assert "Fortis phonological /s͈/" in row["candidate_disposition_basis"]
+        assert "not token-specific acoustic IPA gold" in row["candidate_disposition_basis"]
+        assert "SRC-KIM-2021-EPG-KOREAN-FRICATIVES" in row["candidate_disposition_basis"]
+        assert "SRC-KON-2021-SIBILANT-AGE-GENDER" in row["candidate_disposition_basis"]
+        assert row["prior_independent_ipa_review_status"].endswith("token_specific_acoustic_IPA_review_not_performed")
+    mixed = rows["1288"]
+    assert mixed["candidate_disposition"] == "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW"
+    assert "ɕ͈" in mixed["broad_mismatch_fragments"]
+    assert "ɕ" in mixed["broad_mismatch_fragments"]
+    assert "t" in mixed["broad_mismatch_fragments"]
