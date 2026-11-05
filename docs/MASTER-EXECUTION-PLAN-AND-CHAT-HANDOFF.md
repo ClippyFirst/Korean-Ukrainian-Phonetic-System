@@ -6,7 +6,7 @@ The corrected crosswalk finds 157/184 lenis `ɕ→s` edits context-compatible wi
 
 The historical 36-row `...2026-11-03.csv` queue was restored unchanged because the 31-row abstention register pins it. The current rerun's 32-row output is versioned separately as `...2026-11-05.csv`; the multi-engine workflow now compares against that file. The current 236-case ledger remains independent from both queue artifacts.
 
-Run 42019876519 / artifact 13411253960 completed all ten engine comparisons, but the job failed at the final `cmp` because it compared the 32-row new output to the 36-row historical CSV. Its native vs g2pk results were effectively tied (53.0393% vs 53.0892% exact; CER 8.9660% vs 9.2285%); no engine change is justified. Training readiness remains false: zero independent IPA gold rows and zero IPA labels in the 24-item holdout. The exact-head CI rerun after the queue split and sibilant-scope correction is pending.
+Run 42019876519 / artifact 13411253960 completed all ten engine comparisons, but the job failed at the final `cmp` because it compared the 32-row new output to the 36-row historical CSV. Its native vs g2pk paired results on 2,698 shared tokens were 1,431/2,698 (53.0393%) vs 1,433/2,698 (53.1134%) exact; paired CER was 8.9660% vs 9.2285%. Exact delta +0.0741 percentage points; CER worsens +0.2644 percentage points. No engine change is justified. Training readiness remains false: zero independent IPA gold rows and zero IPA labels in the 24-item holdout. The exact-head CI rerun after the queue split and sibilant-scope correction is pending.
 
 ## 2026-11-05 — 236-candidate review, S018 source correction and exact-head handoff
 
