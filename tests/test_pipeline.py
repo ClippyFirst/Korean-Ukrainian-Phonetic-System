@@ -905,3 +905,37 @@ def test_r013_attested_l_ge_license_does_not_leak_to_another_same_pair_in_senten
     # the same adjacent syllables inside a longer eojeol and is not that ending.
     result = phoneticize_korean("할게 할게다")
     assert result["surface_hangul"] == "할께 할게다"
+
+
+def test_context_adjudication_ledger_forms_apply_in_full_ugtphon_sentences():
+    import csv
+    from pathlib import Path
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    ledger_path = (
+        Path(__file__).resolve().parents[1]
+        / "research"
+        / "kozak-kim-context-adjudication-2026-11-05.csv"
+    )
+    with ledger_path.open(encoding="utf-8", newline="") as handle:
+        rows = list(csv.DictReader(handle))
+
+    for row in rows:
+        if row["decision"] != "FIX_EXACT_FORM_LICENSE":
+            continue
+        source_sentence = row["full_context"]
+        safe_sentence = "".join(
+            char for char in source_sentence
+            if char.isspace() or "가" <= char <= "힣"
+        )
+        assert row["token"] in safe_sentence
+        result = phoneticize_korean(safe_sentence)
+        expected_context = (
+            f"R013:adnominal_l:{row['token']}:{row['licensed_pair']}"
+        )
+        assert any(
+            trace.get("rule_id") == "R013"
+            and trace.get("changed") is True
+            and trace.get("license_context") == expected_context
+            for trace in result["rules"]
+        ), row["source_row_id"] + ":" + row["token"]

@@ -214,3 +214,18 @@ def test_g2pk_does_not_import_nikl_lexical_readings_or_unresolved_status(monkeyp
     assert result["ipa"]["status"] == "ipa-derived-from-g2pk-surface-form"
     assert result["ipa"]["lexical_overrides"] == []
     assert result["ipa"]["word_analyses"][0]["status"] == "derived-from-surface"
+
+
+def test_g2pk_python_baseline_does_not_apply_kozak_nikl_r013_exact_forms(monkeypatch):
+    class G2pPassThrough:
+        def __call__(self, text, descriptive=False):
+            return text
+
+    monkeypatch.setattr(g2pk_engine, "_ENGINE", G2pPassThrough())
+    for word in ("해줄것", "많을거같이", "내릴수있는", "존중시킬수도있지만"):
+        result = g2pk_engine.phoneticize_with_g2pk(word)
+        assert result["surface_hangul"] == word
+        assert result["ipa"]["lexical_overrides"] == []
+        assert [rule["name"] for rule in result["rules"]] == [
+            "external-g2pK-pronunciation"
+        ]

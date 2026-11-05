@@ -14,7 +14,7 @@ const adapter = createG2pWebAdapter(engine);
 const rawPort = new G2pBrowser();
 const options = { descriptive: false, verbose: false, groupVowels: false, toSyl: true };
 
-const sourceBackedCases = ['값어치', '넓죽하다', '넓둥글다', '넓적하다', '읽고', '싫어서', '수많은'];
+const sourceBackedCases = ['값어치', '넓죽하다', '넓둥글다', '넓적하다', '읽고', '싫어서', '수많은', '해줄것', '많을거같이', '내릴수있는', '존중시킬수도있지만'];
 
 test('ordinary g2pK preserves raw port surfaces and never applies Kozak Kim NIKL overlays', () => {
   for (const input of sourceBackedCases) {
