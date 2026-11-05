@@ -5,7 +5,7 @@
 ### Current disposition
 
 - **Eight RULE_CONFIRMED_STANDARD_VARIANT occurrences:** IDs 341 (그놈의), 1140 (출산), 1406 (팔자걸음), 1527 (보일거라), 2001 (물가로), 2010 (혐오증), 2490 (머리속에 → 머릿속에), and 2533 (안할듯).
-- **24 ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW; 204 NOT_INDIVIDUALLY_ADJUDICATED; zero pending RETAIN.** Thus 228 occurrences remain unresolved. Historical membership is reconstructed from pinned replay, not proven original-selector membership.
+- **23 ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW; 205 NOT_INDIVIDUALLY_ADJUDICATED; zero pending RETAIN.** Thus 228 occurrences remain unresolved. Historical membership is reconstructed from pinned replay, not proven original-selector membership.
 - ID 2490: the source sentence uses 머리속에 in the figurative sense 'in one's mind'. Korean-language professor Kim Nam-mi explicitly attests 머릿속[머리쏙]. The comparator's /s͈/ is supported for this exact lexical form; Kozak /s/ is not. The corpus spelling omits the standard 사이시옷. Expert lexical attestation only; no audio/IPA reviewer or production change.
 - ID 78 (오조오억배) remains ABSTAIN. The 2025 full-text study Kim & Hong tests 기억–기역 and 보안–보완 within-word vowel sequences, not 오억 or numeral compounds; its 보완 analysis emphasizes longer preservation of /o/ rounding rather than a clearly independent /w/ gesture. No located study directly tests the candidate's /o.ʌ/ numeral boundary.
 - ID 341: NIKL Rule 5 supports [e] as an accepted genitive-particle 의 variant; context is 그놈의.
