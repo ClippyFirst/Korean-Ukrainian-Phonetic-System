@@ -6520,3 +6520,8 @@ This confirms the historical baseline and 370 Broad-mismatch superset, but does 
 
 **Ledger:** `research/kozak-kim-historical-239-recovery-manifest-2026-11-05.md` now records the recovered baseline, hashes, failed reproduction boundary and exact acceptance input. Status remains `BLOCKED` until the original per-fragment assignment snapshot or exact executable predicate is recovered. Do not infer the 239 IDs from aggregate counts, and do not substitute the 370-row context superset.
 
+
+## 2026-11-05 continuation — repair 31-row Broad-profile provenance hash
+
+A follow-up integrity check found that `broad_profile_blob_sha` in all 31 rows of `research/kozak-kim-31-row-individual-abstentions-2026-11-05.csv` had been truncated to 39 hex characters. Corrected all 31 values to the full 40-character Git blob SHA-1 `e13086f0fd98ce9564326ff50b0458c27392932f` and updated `tests/test_kozak_31_abstention_ledger.py` to assert the full value. This repairs provenance metadata only; it does not change any decision, source context, IPA, or runtime behavior. Exact-head CI/status checks were not returned for the connector-created commit; do not claim the updated test passed until a workflow runs on this head.
+
