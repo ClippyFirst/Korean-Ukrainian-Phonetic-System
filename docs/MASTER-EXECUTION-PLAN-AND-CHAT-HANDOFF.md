@@ -1,78 +1,34 @@
-## 2026-11-05 — Independent evidence update: four confirmed cases, three IPA abstentions
+## 2026-11-05 — Independent evidence update: seven confirmed cases, three IPA abstentions
 
 **Branch:** `research/236-candidate-review-2026-11-05` (same working branch; no parallel branch created). **PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436), still draft/open. This entry supersedes earlier same-day interim counts while preserving the original 236-row baseline.
 
 ### Adjudication outcome
 
-- The baseline inventory remains 236 rows. **Four occurrences are now `RULE_CONFIRMED_STANDARD_VARIANT`: IDs 341 (`그놈의`), 1140 (`출산`), 2001 (`물가로`) and 2010 (`혐오증`).** The active unresolved count is **232**.
-- **ID 341 — `그놈의`:** NIKL Rule 5 distinguishes non-initial lexical `의` [i] from genitive-particle `의` [e] (an accepted variant alongside [ɯi]). The canonical context uses the genitive particle, so the comparator [e] is normatively supported and Kozak [i] is not the rule's listed particle variant.
-- **ID 1140 — `출산`:** NIKL Basic Dictionary directly gives `출산[출싼]`; Kozak's fortis `s͈` is supported and the IPA-Dict comparator omits it. This upgrades the historical provisional RETAIN; the original RETAIN rationale remains preserved in prior-disposition fields.
-- **ID 2001 — `물가로`:** NIKL educational PDF gives `물가[물까]` in the price sense and contrasts `결과[결과]`; Kozak's `ɡ` is not supported. Exact lexical license only.
-- **ID 2010 — `혐오증`:** NIKL Basic Dictionary gives `혐오증[혀모쯩]`; the fortis affricate in the comparator is supported and Kozak's lenis `dʑ` is not. Exact lexical license only.
-- **IDs 293 (`실수`), 538 (`멋있어`) and 1206 (`싫어서`) are deliberately not counted as resolved.** NIKL Q&A sources attest Hangul surface readings, but Hangul bracket notation does not distinguish [s] from [ɕ]. The source register identifies IPA-Dict Korean as a broadly phonemic lexicon, so it would be unjustified to label its [ɕ] as merely narrow. The three are now explicit ABSTAINs pending independent IPA annotation or token-level audio.
-- Current counts: 208 no individual disposition; 24 ABSTAIN pending independent IPA review; zero pending RETAIN; four rule-confirmed standard forms/variants. Historical 236 membership remains reconstructed, not original-selector proof.
-- The three repeated `연전연패` occurrences (IDs 1816, 1843, 1870) remain abstained because n-insertion is variable and no word-specific pronunciation evidence was found. They share one source row and are not independent speaker/audio samples.
-- The context-adjudication register records the four resolutions and the explicit abstentions. The generator now consumes both rule-confirmed and evidence-limited abstention decisions, while preserving historical ABSTAIN/RETAIN rationale. The generated CSV and regression expectations are updated.
+- The baseline inventory remains 236 rows. **Seven occurrences are now `RULE_CONFIRMED_STANDARD_VARIANT`: IDs 257, 341, 813, 853, 1140, 2001 and 2010.** The active unresolved count is **229**.
+- **IDs 257 (`문화체험공간`), 813 (`사전체험`) and 853 (`만듬사전체험때`):** NIKL Standard Pronunciation Rule 5 requires `ㅕ` to be a diphthong; the exception concerns `져/쪄/쳐` after `ㅈ/ㅉ/ㅊ`, not `ㅎ` in `체험`. The source comparator retains /j/; Kozak drops it. IDs 813 and 853 are repeated occurrences in one source row, not independent speakers.
+- **ID 341 (`그놈의`):** NIKL Rule 5 distinguishes non-initial lexical `의` [i] from genitive-particle `의` [e] (an accepted variant alongside [ɯi]). The canonical context uses the genitive particle, so the comparator [e] is normatively supported and Kozak [i] is not the rule's listed particle variant.
+- **ID 1140 (`출산`):** NIKL Basic Dictionary directly gives `출산[출싼]`; Kozak's fortis `s͈` is supported and the IPA-Dict comparator omits it. This upgrades the historical provisional RETAIN; the original rationale remains preserved.
+- **ID 2001 (`물가로`):** NIKL educational PDF gives `물가[물까]` in the price sense and contrasts `결과[결과]`; Kozak's `ɡ` is not supported. Exact lexical license only.
+- **ID 2010 (`혐오증`):** NIKL Basic Dictionary gives `혐오증[혀모쯩]`; the fortis affricate in the comparator is supported and Kozak's lenis `dʑ` is not. Exact lexical license only.
+- **IDs 293 (`실수`), 538 (`멋있어`) and 1206 (`싫어서`) remain ABSTAIN.** NIKL Q&A sources attest Hangul surface readings, but Hangul bracket notation does not decide [s] versus [ɕ]. IPA-Dict Korean is broadly phonemic, so its [ɕ] cannot be assumed narrow. These require independent IPA annotation or token-level audio.
+- Current counts: 208 no individual disposition; 21 ABSTAIN pending independent IPA review; zero pending RETAIN; seven rule-confirmed standard forms/variants. Historical 236 membership remains reconstructed, not original-selector proof.
+- The three repeated `연전연패` occurrences (IDs 1816, 1843, 1870) remain abstained because n-insertion is variable and no word-specific pronunciation evidence was found.
+- The context-adjudication register records all seven resolutions and the explicit abstentions. The generator consumes both rule-confirmed and evidence-limited abstention decisions, preserving historical ABSTAIN/RETAIN rationale. The generated CSV and regression expectations are updated.
 - No production phonology, IPA gold, Ukrainian target, or benchmark baseline changed.
 
 ### Evidence and verification
 
-- Official NIKL Standard Pronunciation Rule 5 and Q&A 334585; NIKL Basic Dictionary entries for 출산 and 혐오증; NIKL educational PDF example (25) for 물가[물까].
+- Official NIKL Standard Pronunciation Rule 5: `ㅕ` is a diphthong; its listed monophthongization exception concerns `져/쪄/쳐` after `ㅈ/ㅉ/ㅊ`. Rule 5 also covers genitive-particle `의`.
+- NIKL Basic Dictionary entries for 출산 and 혐오증; NIKL educational PDF example (25) for 물가[물까].
 - NIKL Q&A 330843, 306166 and 313981 provide Hangul surface evidence only; they do not resolve the [s]/[ɕ] IPA symbol difference.
 - Jun (2015), *Korean n-insertion: a mismatch between data and learning*, DOI 10.1017/S0952675715000275, supports variable n-insertion and does not itemize 연전연패.
-- These are normative lexical/rule confirmations, not token-specific acoustic IPA gold. No individual speaker's recording has been independently adjudicated.
+- These are normative rule/lexical confirmations, not token-specific acoustic IPA gold. No individual speaker's recording has been independently adjudicated.
 - GitHub Actions exact-head verification is required after these commits. Local pytest/npm were not run in this connector-only session.
 
-**Current interpretation:** baseline inventory 236; four rule-supported standard-form adjudications; active unresolved occurrences 232. Overall readiness remains a partial research prototype, not research-certified or release-ready.
+**Current interpretation:** baseline inventory 236; seven rule-supported standard-form adjudications; active unresolved occurrences 229. Overall readiness remains a partial research prototype, not research-certified or release-ready.
 
 ---
-2026-11-05 — S018/S019 scope correction and queue artifact split
-
-The primary Cambridge PDF was re-read at page 31. Lee (1993) classifies /s/ among fortis /p,t,k,c,s/ in that description; the earlier claim that this directly supports modern lenis /s/ was wrong. The source register and code comments now state this limitation. S019 (Kang 2010) is the lenis acoustic-coarticulation source; its abstract covers /i, ye, ya/ and notes a distinct spectral pattern for /yu, yo/. Broad optional [ɕ] and narrow [ɕʰ] candidates are restricted to ㅣ, ㅖ, ㅑ; other /j/ nuclei are not generalized. The broad canonical [s], default target path and Ukrainian output are unchanged.
-
-The corrected crosswalk finds 157/184 lenis `ɕ→s` edits context-compatible with S019's /i, ye, ya/ abstract (156 occurrences). Of the 27 out-of-scope edits, ID 606 `쇼` (/yo/) is a separate possible S027 high-front-plus-round context; S027 describes labio-palatalized spectra but no canonical IPA symbol. The other 26 remain outside both reviewed abstract scopes. The 24 fortis `ɕ͈→s͈` operations remain separate. Independent Korean IPA review is still required.
-
-The historical 36-row `...2026-11-03.csv` queue was restored unchanged because the 31-row abstention register pins it. The current rerun's 32-row output is versioned separately as `...2026-11-05.csv`; the multi-engine workflow now compares against that file. The current 236-case ledger remains independent from both queue artifacts.
-
-Run 42019876519 / artifact 13411253960 completed all ten engine comparisons, but the job failed at the final `cmp` because it compared the 32-row new output to the 36-row historical CSV. Its native vs g2pk paired results on 2,698 shared tokens were 1,431/2,698 (53.0393%) vs 1,433/2,698 (53.1134%) exact; paired CER was 8.9660% vs 9.2285%. Exact delta +0.0741 percentage points; CER worsens +0.2644 percentage points. No engine change is justified. Training readiness remains false: zero independent IPA gold rows and zero IPA labels in the 24-item holdout. The exact-head CI rerun after the queue split and sibilant-scope correction is pending.
-
-## 2026-11-05 — 236-candidate review, S018 source correction and exact-head handoff
-
-**Starting main:** `043754498f3ad8a17aa6c13b5f643b197536da8a`. **Working branch:** `research/236-candidate-review-2026-11-05`. **Draft PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436). This entry supersedes earlier statements that no reconstructed 239-ID cohort or 236-row source-context inventory exists; it does not claim historical membership is proven or the 236 are linguistically resolved.
-
-### Outcome
-
-- A pinned pre-C11/C12 Broad-only aggregate replay yields 239 unique IDs and all 239 join to the 370-row Broad-mismatch context superset.
-- Three already implemented exact-form FIX overlaps (37, 704, 2031) are excluded. The resulting 236-row review inventory is generated by `scripts/build_kozak_236_candidate_review.py` and stored at `research/kozak-kim-236-candidate-review-2026-11-05.csv`; explanatory review at the adjacent Markdown file.
-- Disposition: 213 not individually adjudicated, 22 existing ABSTAIN overlaps, one provisional RETAIN (1140, 출산). RETAIN and ABSTAIN do not count as solved.
-- The 236 rows contain 254 Broad edit operations across 24 signatures: 184 lenis ɕ→s, 24 fortis ɕ͈→s͈, plus 46 operations in other signatures. The 24 fortis operations are outside the documented lenis-only C11 optional variant and must be reviewed separately.
-- The inherited C04 tag occurs on 206 rows but is stale: the current cluster register has zero C04 residuals after reclassification to C12. The review ledger labels these inherited cluster tags as historical-only.
-- The 236 rows cover 151 distinct token strings, 110 source rows and 168 source-row/token pairs. Repeated occurrences must not be counted as independent evidence.
-
-### Bibliographic correction
-
-Cambridge's primary record identifies the S018 IPA illustration as Hyun Bok Lee, *Korean*, Journal of the International Phonetic Association 23(1), June 1993, pp. 28–31, DOI 10.1017/S0025100300004758. The old catalog said 1999; the research source register had incorrectly named Sohn (2008). The catalog, source register, C11/C02/C01/C07 references and Python profile comment were corrected on PR #436. This is bibliographic correction only; exact-token IPA remains unadjudicated and reuse rights remain citation-only/unassessed.
-
-### Verification history
-
-- PR #436 first head `51b7bce8dcf8fd7bac1bf87193e220dd48233ead`: Python 3.11/3.12/3.13, browser regression/build, wheel-install, teacher-corpus audit, web and artifact workflows passed.
-- Intermediate head `c7d95e64082a45e13c062c78c977e347d72fcbfc`: Python tests failed on three implementation/test synchronization issues; Browser passed. Fixes were committed afterward. Check the newest PR head before claiming full verification.
-- Local pytest/npm were not run; GitHub Actions is the available test environment. Official NIKL metadata-only workflow is skipped, not passed.
-
-### Next work and acceptance
-
-1. Confirm latest PR #436 exact-head CI and merge only after the full relevant matrix passes.
-2. Confirm the replayed 239 IDs against the original historical selector/list if recoverable; otherwise retain RECONSTRUCTED_CANDIDATE status.
-3. Individually or defensibly group the 236 cases with exact source/context, reviewer provenance, broad-vs-narrow convention, and negative controls. Keep all unsupported cases abstained.
-4. Review the 24 fortis sibilant operations separately from lenis C11; review the expanded /j/-initial contexts against primary source scope.
-5. Do not modify production IPA, Ukrainian target, or benchmark gold until independent IPA adjudication is complete. Then run a fresh post-fix multi-engine benchmark.
-6. Continue C12 audio/speaker/prosody crosswalk, NIKL item-level rights and capture authenticity, Ukrainian target review, and rule-level runtime parity.
-
-**Readiness:** partial research prototype, not research-certified and not release-ready. No release, merge, branch deletion, or external setting change was performed.
-
----
-
-## 2026-11-05 — Owner-approved ClippyFirst project licence
+# 2026-11-05 — Owner-approved ClippyFirst project licence
 
 **Branch:** `docs/repository-audit-and-navigation-2026-11-04`  
 **Decision:** DEC-2026-007. The project owner confirmed that Vitalii Volodymyrovych Tkachuk publishes this project under the authorial pseudonym **ClippyFirst**, and that the project began in 2026.
