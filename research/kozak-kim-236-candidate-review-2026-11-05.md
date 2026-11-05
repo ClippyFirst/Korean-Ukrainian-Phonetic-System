@@ -103,7 +103,7 @@ Edit operations are grapheme-cluster alignments over normalized IPA strings, not
 
 ## Review gates
 
-No new phonological rule, IPA override, Ukrainian target, or production behavior is confirmed by this pass. The Ukrainian target layer must remain downstream of independently adjudicated IPA.
+No canonical broad IPA, phonemic output, Ukrainian target, or production-default phonological rule was changed by this pass. The research-only optional [ɕ] variant and partial narrow-profile candidate list were conservatively narrowed to Kang (2010)'s explicit /i, ye, ya/ contexts; they are not categorical claims. The Ukrainian target layer remains downstream of independently adjudicated IPA.
 
 For each occurrence or defensibly grouped token/context family, record:
 1. exact token/context identity, including morpheme, eojeol and prosodic boundaries;
@@ -146,3 +146,14 @@ The generator now verifies Git object IDs for all four input snapshots before re
 The repository's S018 entry and research source register had inconsistent metadata for the Cambridge Korean IPA illustration. Cambridge identifies **Hyun Bok Lee**, *Korean*, JIPA **23(1), June 1993, pp. 28–31** (online 6 February 2009), DOI 10.1017/S0025100300004758. Bibliographic metadata is corrected. A separate page-level review found that Lee classifies /s/ among fortis sounds, so S018 does **not** directly license the modern lenis /s/ C11 hypothesis. S019 (Kang 2010) is the relevant lenis acoustic-coarticulation source, but only its /i, ye, ya/ contexts are covered by the abstract. This citation is not an audio source for any UGTPHON occurrence.
 
 Kang (2010)'s KCI abstract supports context-dependent acoustic coarticulation before /i, ye, ya/ and reports materially different spectral patterns before /yu, yo/. Kong and Kang (2020)'s KCI abstract reports preliminary speaker-related spectral differences. These sources support a context- and speaker-sensitive review, not an unconditional [ɕ] rewrite for every /j/-initial nucleus or a blanket fortis mapping. Two independent IPA reviews and item-level context adjudication remain required.
+
+
+## 2026-11-05 current multi-engine and training-readiness checkpoint
+
+The complete ten-engine diagnostic at run 42019876519 / artifact 13411253960 (artifact ZIP SHA-256 `bd5d4bc605a692858477984ba44539612270b8f90fc3d9c1a8e737f86557d5ca`) completed the comparison step over 2,703 eligible occurrences; 2,698 were shared scored tokens for paired comparisons. The job's only failure was the final generated-queue `cmp`: the new 32-row output was compared with the old 36-row historical file. That historical file is now restored and preserved; the current 32-row output is separately versioned as `research/kozak-kim-unmapped-mismatch-review-queue-2026-11-05.csv`. The workflow's comparison target has been changed to the versioned file.
+
+The paired Native/g2pk result on the 2,698 shared tokens is Native 1,431/2,698 (53.0393%), g2pk 1,433/2,698 (53.1134%); paired CER 8.9660% vs 9.2285%. The +0.0741 percentage-point exact-match delta accompanies a +0.2644 percentage-point CER regression. This does not justify switching engines. Full ten-engine results and adapter limitations are recorded in [the current repository audit](../../docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md#22-2026-11-05--primary-source-scope-correction-queue-versioning-and-exact-head-revalidation).
+
+The artifact's training-readiness report records 644 lexical rows, 46 additions and a 24-case frozen holdout, but zero independently adjudicated IPA gold labels in additions and zero holdout IPA gold labels. `supervised_ipa_training_ready=false`. Reviewer A/B packets contain the same 24 source cases and no engine outputs; they are blank and prohibit tuning use. Independent Korean IPA annotation is therefore still the next evidence gate, not model training.
+
+At the latest code/test checkpoint, Python 3.11/3.12/3.13, browser tests/build, wheel install, teacher-corpus audit, paired UGTPHON and core system verification passed. The updated multi-engine rerun was still in progress; CharsiuG2P, ByT5 and official NIKL metadata jobs were skipped by policy, not passed. Exact-head results must be read again after the current documentation commits.
