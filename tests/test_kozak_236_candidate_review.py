@@ -18,7 +18,7 @@ def test_reconstructed_236_review_ledger_has_exact_membership_and_statuses():
         "NOT_INDIVIDUALLY_ADJUDICATED": 27,
         "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 18,
         "RULE_CONFIRMED_STANDARD_VARIANT": 11,
-        "PROFILE_CONVENTION_MISMATCH_CONFIRMED": 179,
+        "PROFILE_CONVENTION_MISMATCH_CONFIRMED": 180,
     }
     assert all(row["historical_membership_confidence"] ==
         "RECONSTRUCTED_CANDIDATE_NOT_ORIGINAL_MEMBERSHIP_PROOF" for row in rows)
