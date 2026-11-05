@@ -3,6 +3,7 @@
 from __future__ import annotations
 import argparse
 import csv
+import hashlib
 import json
 from collections import Counter
 from pathlib import Path
@@ -19,6 +20,23 @@ FIXES = {
     2031: ("dc_inside_2266", "내릴수있는"),
 }
 RETAIN_ID = 1140
+# Git object IDs pin the exact source snapshots used to reconstruct this queue.
+# A changed input requires an explicit review and a deliberate pin update.
+PINNED_INPUT_GIT_BLOB_SHA = {
+    IDS_PATH: "f46f6760dde844a3e7cf9abe00dc74969f45eca8",
+    SUPERSET_PATH: "e6c4843bbb9f1e3eb83527698880d4d60184c333",
+    ABSTENTION_PATH: "de838dcdc247e1846e0e633766135b3a902f436b",
+    ADJUDICATION_PATH: "6e05846a0aebdfc7297d070275051679d884f3c8",
+}
+
+def verify_git_blob(path: Path, expected_sha: str) -> None:
+    payload = path.read_bytes()
+    header = f"blob {len(payload)}\\0".encode("ascii")
+    actual_sha = hashlib.sha1(header + payload).hexdigest()
+    if actual_sha != expected_sha:
+        raise ValueError(
+            f"Pinned input drift for {path.name}: expected Git blob {expected_sha}, got {actual_sha}"
+        )
 
 def read_csv(path: Path) -> list[dict[str, str]]:
     with path.open(encoding="utf-8-sig", newline="") as handle:
@@ -27,7 +45,9 @@ def read_csv(path: Path) -> list[dict[str, str]]:
 def build_rows(root: Path = ROOT) -> list[dict[str, str]]:
     def p(path: Path) -> Path:
         return root / path.relative_to(ROOT)
-    ids_lines = IDS_PATH.read_text(encoding="utf-8").splitlines()
+    for source_path, expected_sha in PINNED_INPUT_GIT_BLOB_SHA.items():
+        verify_git_blob(p(source_path), expected_sha)
+    ids_lines = p(IDS_PATH).read_text(encoding="utf-8").splitlines()
     candidate_ids = [int(value) for value in ids_lines[1].split(",") if value]
     if len(candidate_ids) != 239 or len(set(candidate_ids)) != 239:
         raise ValueError("Expected 239 unique reconstructed candidate IDs")

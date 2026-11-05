@@ -116,6 +116,9 @@ External UGTPHON, paired-engine, morphology, artifact generation, Python 3.11/3.
 
 **Interpretation:** keep engine comparisons and explicit abstentions. These scores do not decide whether ɕ/s or ɕ͈/s͈ is correct for any individual candidate. No production phonological rule or Ukrainian target change is authorized.
 
+
+The generator now verifies Git object IDs for all four input snapshots before reading them: candidate-ID list `f46f6760dde844a3e7cf9abe00dc74969f45eca8`, 370-row context superset `e6c4843bbb9f1e3eb83527698880d4d60184c333`, 31-row abstention register `de838dcdc247e1846e0e633766135b3a902f436b`, and context-adjudication register `6e05846a0aebdfc7297d070275051679d884f3c8`. A changed input now fails closed until the snapshot pin is deliberately reviewed and updated.
+
 ## Reproducibility
 
 - Generator: scripts/build_kozak_236_candidate_review.py
