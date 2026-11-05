@@ -1,3 +1,21 @@
+## 2026-11-05 — Current evidence adjudication: 163 dispositioned, 73 open
+
+**Baseline:** 236 reconstructed candidate occurrences, all retained. **Current disposition:** 10 `RULE_CONFIRMED_STANDARD_VARIANT`, 153 `PROFILE_CONVENTION_MISMATCH_CONFIRMED`, 20 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW`, and 53 `NOT_INDIVIDUALLY_ADJUDICATED`. Thus 163 are dispositioned and **73 remain unresolved**. The 153 profile cases are not token-specific acoustic confirmations; no case in this queue has independent speaker-level acoustic IPA gold.
+
+**Ten exact rule/lexical cases:** 341 `그놈의`; 826 `유사성`; 1140 `출산`; 1406 `팔자걸음`; 1527 `보일거라`; 2001 `물가로`; 2010 `혐오증`; 2092 `출시미정에`; 2490 `머리속에` → standard `머릿속에`; 2533 `안할듯`. Each is supported by exact NIKL standard/dictionary/educational evidence or the recorded expert lexical attestation, scoped to the exact form and morphology. No productive rule is generalized beyond the documented environment.
+
+**153 profile-convention cases:** 147 lenis-sibilant `ɕ→s` occurrences in the research-supported /i, ye, ya/ environments; three Rule 13 resyllabification contexts (475, 2392, 2667); and three earlier lexical/profile cases (520, 2307, 2562). These close the benchmark discrepancy as broad-vs-narrow profile or exact engine-rule reconciliation; they do not claim that a specific recording contains [ɕ]. Kang's lenis /s/ findings are not transferred to fortis /s͈/.
+
+**Full-text glide evidence reviewed 2026-11-05:** Kim & Hong (2025) [Kim25e], DOI 10.30961/lr.2025.61.1.1, tests 기억–기역 and 보안–보완 with 10 male speakers, not 체험, 오억, or numeral compounds. Its transition segmentation is not an independent diagnostic for a phonological glide; the 보완 difference is attributed mainly to longer preservation of /o/ rounding. Kang (2010) [Kan10b], DOI 10.3765/BLS.V36I1.3910, examines directly adjacent VV sequences; /i+ʌ/ and /u+ʌ/ have optional glide descriptions, but its nonce-word experiment measures duration and does not establish a categorical glide rule. It does not test /e.hʌ/ in 체험, where /h/ separates the vowels.
+
+**Retained abstentions:** ID 78 `오조오억배` (no direct study of this numeral sequence); IDs 257, 813, 853 `체험` (`험` contains ㅓ, not ㅕ; Rule 5's ㅕ argument does not apply); IDs 1816, 1843, 1870 `연전연패` (variable n-insertion, no item-specific evidence); sibilant cases outside the exact lenis contexts; and any source-Hangul-only case where the IPA contrast cannot be settled.
+
+**Interpretation:** 10 normatively supported lexical/rule resolutions + 153 transcription-profile reconciliations; not 163 acoustic gold labels. No production IPA, Ukrainian target, benchmark gold, or runtime rule changed. Full current details and source evidence are in the master handoff's current snapshot and the generated 236-row ledger.
+
+---
+
+## Previous snapshot (superseded)
+
 ## 2026-11-05 — 159 evidence-supported resolutions (nine standard-form, 150 profile-convention)
 
 **Current status:** the reconstructed baseline remains **236 occurrence rows**. Nine are `RULE_CONFIRMED_STANDARD_VARIANT`: **IDs 341, 826, 1140, 1406, 1527, 2001, 2010, 2490 and 2533**. A further **150 occurrences** are `PROFILE_CONVENTION_MISMATCH_CONFIRMED`: three earlier lexical/profile cases (IDs 2562, 520 and 2307) plus **147 lenis-sibilant occurrences across 106 exact source-row/token families**. The active unresolved count is **77**: 57 without individual disposition and 20 abstained pending independent IPA review. All 236 original rows remain in the ledger.
