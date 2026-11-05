@@ -284,7 +284,7 @@ def test_nikl_dictionary_attestation_upgrades_provisional_chulsan_retain():
     assert row["prior_independent_ipa_review_status"] == "independent_Korean_review_pending"
 
 
-def test_nikl_rule_5_does_not_apply_to_hyeom_with_vowel_ㅓ():
+def test_nikl_rule_5_does_not_apply_to_heom_in_cheheom():
     rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
     expected = {
         "257": "문화체험공간",
