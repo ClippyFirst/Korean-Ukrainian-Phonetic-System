@@ -6329,3 +6329,41 @@ The four requested upstream repositories were inspected at the pinned revisions 
 - Branch state remains `main` plus one stale merged docs branch (17 behind, 0 ahead); no open PRs; issue #337 remains open. Main is not protected. The branch-delete action was unavailable, and no new branch was created.
 
 **Final disposition:** documentation/navigation and deployment checks are green; research prototype is still not research-certified or release-ready. Open gates: clean NIKL recapture and page/item rights; independent Korean IPA reviewers; independent Ukrainian target review; C12 source/audio/speaker/prosody crosswalk; historical 239-case reconciliation; cross-runtime parity and remaining lexical/orthographic coverage. Neural training remains deferred until adjudicated IPA gold and corpus rights are available.
+
+
+## 2026-11-05 — engine-isolation continuation and repository audit
+
+**Starting main:** `b573fec6fe6761f54a6cc02e02169db477c34455`. **Verified implementation/test head:** `1869b8936c17077ac4fde308644d8588c132404c`. **Documentation commits before this handoff refresh:** `0c6fb7f0148fae8daa597b368a442a71481fb1b3` and `f26601b0206c209f231396d630dbd69b039ee029`.
+
+### Completed
+
+- Enforced the owner-directed NIKL boundary: NIKL R001–R016 and exact-form/morphological licenses are exclusive to Kozak Kim. Removed the previously inherited NIKL surface, lexical IPA, length, variant and diagnostic overlays from the browser and Python g2pK adapters. The vendored g2pK code was not modified.
+- Added regression tests that compare the g2pK adapter with the raw pinned port and show a source-backed exception in Kozak Kim while g2pK remains untouched.
+- Preserved the existing user-supplied `한국어 어문 규범.htm`; no new NIKL snapshot or duplicate rule matrix was created.
+- Updated repository structure, architecture, g2pK integration contract, public README/methodology copy, documentation index, research README/roadmap/acceptance gates/decision log, agent skill, current audit and this handoff.
+
+### Verification
+
+- Browser: 1,393/1,393 PASS.
+- Python 3.11/3.12/3.13: PASS; wheel install and teacher-corpus audit PASS.
+- System Verify: browser regression/build and Python data integrity PASS. Live NIKL metadata inventory SKIPPED.
+- Master table/research artifact generation: PASS.
+- Browser G2P integration: PASS on the immediately preceding implementation head; subsequent change corrected only a Python test expectation.
+- Pages deployment on 1869b: PASS, including live Playwright smoke with a 1,443-character Korean passage.
+- Local npm/pytest were not run because this connector session could not clone the repository. Do not describe remote CI as local test execution.
+
+### Historical mismatch status
+
+The 239 historical Broad-v2 occurrences remain PARTIAL / EVIDENCE-LIMITED, not 239 confirmed software defects. The archived fragment export has 1,266 data rows, the later unmapped review queue has 36 data rows, and the 13 cluster / 38 paired-discrepancy artifacts have different grains. A complete hash-pinned 239-case occurrence/context ledger and expert adjudication are still required. Do not force outputs or tests to match a corpus convention without source-level evidence.
+
+### Remaining blockers
+
+1. Build the complete 239-occurrence ledger with stable IDs, full source context, exact engine/profile/normalizer versions, evidence, reviewer decisions and a fix/retain/abstain disposition per case.
+2. Recruit two qualified independent Korean IPA reviewers and adjudicate the frozen holdout.
+3. Obtain independent Ukrainian target review.
+4. Resolve C12 source/speaker/context/acoustic crosswalk.
+5. Verify NIKL capture authenticity and item-level reuse rights; live inventory remains skipped/blocked.
+6. Continue cross-runtime parity and names/loanwords/Hanja/regional coverage only where evidence supports changes.
+7. Keep neural training deferred until independent IPA gold and corpus rights exist.
+
+**Disposition:** software engine isolation is verified; the repository remains a partial research prototype, not research-certified or release-ready.

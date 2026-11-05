@@ -344,3 +344,58 @@ The default branch now includes the structure/architecture documentation, README
 The branch search still returns `main` and the stale merged `docs/repository-audit-and-navigation-2026-11-04` ref; comparison at the verified head showed the stale ref 17 commits behind and 0 ahead. No open PRs remain; issue #337 is still open for independent Korean IPA reviewer recruitment. Main is reported unprotected. No new branch was created; the connected GitHub actions did not expose a branch-delete operation, so exact one-ref branch hygiene remains incomplete.
 
 **Readiness:** deployment pipeline is green at d7c4, but the project remains a partial research prototype, not research-certified or release-ready. Independent Korean IPA gold, Ukrainian target review, NIKL page/item rights, clean NIKL capture authenticity, C12 context, historical 239-case reconciliation and remaining coverage/parity gates remain open.
+
+
+## 16. 2026-11-05 — full repository continuation, NIKL isolation and 239-case status
+
+### Starting point and repository inventory
+
+- Starting main head: `b573fec6fe6761f54a6cc02e02169db477c34455` (2026-11-05 07:19:50 UTC).
+- Verified implementation/test head: `1869b8936c17077ac4fde308644d8588c132404c`.
+- Documentation commits: `0c6fb7f0148fae8daa597b368a442a71481fb1b3` and `f26601b0206c209f231396d630dbd69b039ee029`; this audit/handoff refresh follows them.
+- Branch inventory: `main` only; open PRs: 0. No new branch was created, preserving the requested single-branch repository state.
+- Recursive tree: 798 entries (files plus directories); `docs/` 145 entries; `tests/` 392 entries; `scripts/` 62 entries; `schemas/` 14 entries; 18 GitHub Actions workflows.
+- Recent merged work was reconciled against main, including PR #434 (documentation/licensing/navigation) and PR #433 (g2pK/Kozak separation). No open PR was left unreviewed.
+- The audit reviewed the recursive path inventory, existing architecture and structure guides, master handoff, acceptance gates, roadmap, source/rule matrices, NIKL and Kozak Kim discrepancy registers, g2pK integration boundary, core rule/phonology/IPA adapters, key test suites, CI workflows, recent PRs and recent commits. This is an evidence-based whole-tree audit, not a claim of manual line-by-line review of all 798 tree entries.
+
+### NIKL scope correction — DONE_VERIFIED
+
+The owner instruction is now enforced: NIKL R001–R016 and exact-form/morphological licenses belong exclusively to Kozak Kim. Earlier g2pK adapters had inherited a narrow NIKL overlay (browser exact-form surface corrections, lexical length/variant handling, and Python sourced surface/IPA/diagnostic lexical overrides). Those overlays made the ordinary g2pK path dependent on Kozak Kim evidence.
+
+- `src/app/g2pk_web.js`: removed NIKL surface correction map, lexical-length overlay and variant overlay. The browser adapter now passes the raw pinned g2pK surface to the IPA/target adapter.
+- `src/korean_ukrainian/g2pk_engine.py`: removed sourced lexical surface and IPA overrides. IPA is derived only from g2pK's returned surface; no Kozak Kim diagnostic lexical status is imported.
+- `src/vendor/g2pk/`: unchanged; upstream attribution and Apache-2.0 notices remain intact.
+- Kozak Kim NIKL rule implementations and canonical evidence data remain in `src/app/engine_rules_ctx.js`, `src/korean_ukrainian/rules.py`, `data/korean/rules.csv`, and existing rule/lexical evidence registers. No second NIKL capture was created and the supplied `한국어 어문 규범.htm` was not overwritten.
+- Regression tests enforce raw g2pK parity and demonstrate that a source-backed exception is applied by Kozak Kim but not by g2pK.
+
+### Exact-head verification at implementation/test head 1869b893
+
+- Tests workflow [41988633305](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41988633305) — PASS: browser suite 1,393/1,393; Python 3.11, 3.12 and 3.13; wheel install; teacher-corpus audit.
+- System Verify [41988633224](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41988633224) — PASS: browser regression/build and Python regression/data integrity. Live NIKL metadata-only inventory — SKIPPED, not counted as a pass.
+- Master table and research artifacts [41988633308](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41988633308) — PASS.
+- Browser G2P integration [41988508104](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41988508104) — PASS on the immediately preceding implementation head; the subsequent commit only corrected a Python test expectation for broad IPA rendering.
+- Pages deployment [41988633299](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41988633299) — PASS, including deploy and live Playwright smoke. The live smoke exercised the 1,443-character Korean passage and reported g2pK status; it verifies deployed interaction, not normative pronunciation accuracy.
+- Local npm/pytest were not run: the connector environment could not clone the repository, so code verification was performed through GitHub Actions.
+
+### Historical 239 mismatch occurrences — PARTIAL / EVIDENCE-LIMITED
+
+The historical 239 Broad-v2 mismatches are not 239 confirmed production defects. The archived `research/kozak-kim-mismatch-fragments-2026-11-02.csv` has 1,266 data rows; the later `research/kozak-kim-unmapped-mismatch-review-queue-2026-11-03.csv` has 36 data rows. The 13 cluster rows and 38 paired-discrepancy rows are other grains. These artifacts must not be merged by row count or treated as interchangeable.
+
+The 36-row queue has source row identifiers and context lookup status, but it is not the full historical 239-case adjudication ledger. The repository still lacks a single hash-pinned 239-occurrence ledger containing stable occurrence IDs, full source context, engine/profile/normalizer versions, reference conventions, phonological analysis, evidence links, reviewer decisions and production action. A mismatch can be caused by IPA convention, length, morphology, dialect, corpus annotation, or an engine defect. No mass rewrite of outputs or expected tests was made. Acceptance requires an explicit fix/retain/abstain decision for every occurrence with source context and negative controls.
+
+### Task ledger
+
+| Task | Status | Evidence / remaining criterion |
+|---|---|---|
+| Repository tree, architecture, recent PRs/commits, branch and CI inventory | DONE_VERIFIED | 798-entry tree; main-only branch inventory; no open PRs; merged PRs #434/#433 and related historical changes reconciled. |
+| NIKL rules R001–R016 in Kozak Kim | DONE_VERIFIED / PARTIAL COVERAGE | Implementations and finite example tests exist in Python/browser Kozak Kim. Rule coverage matrix still records JS/Python divergences and incomplete CLI/API per-rule parity; independent phonologist review is partial. |
+| No NIKL overlays in g2pK adapters | DONE_VERIFIED | Both adapters changed; browser/Python regression tests and exact-head CI pass. Vendored upstream code unchanged. |
+| Reuse existing local NIKL HTML, no new snapshot | DONE_VERIFIED | Existing file and 30-article inventory retained. Live crawl skipped/HTTP 403; page/item reuse rights and pristine capture authenticity remain BLOCKED. |
+| Historical 239-case reconciliation | PARTIAL / EVIDENCE-LIMITED | Historical count and separate artifacts documented; complete hash-pinned occurrence/context ledger and adjudication still TODO/BLOCKED. |
+| Documentation/navigation/handoff | DONE_VERIFIED | Architecture, g2pK boundary, README, repository structure, index, audit, roadmap, acceptance gates, decision log, agent skill and master handoff updated in place. |
+| Independent Korean IPA gold | BLOCKED | Two qualified independent reviewers and adjudication required. |
+| Ukrainian target validation | BLOCKED | Independent Ukrainian phonetic/orthographic review required. |
+| C12 source/speaker/context/acoustic crosswalk | BLOCKED | Missing validated evidence/crosswalk. |
+| Neural training | DEFERRED | Wait for adjudicated IPA gold and corpus rights. |
+
+**Readiness:** partial research prototype, not research-certified or release-ready. Software and engine-isolation gates pass; historical mismatch adjudication, independent Korean IPA gold, Ukrainian target review, C12 evidence and NIKL rights/authenticity remain open.
