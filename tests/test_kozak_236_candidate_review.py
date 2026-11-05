@@ -320,3 +320,16 @@ def test_nikl_rule_27_confirms_connected_anhaldeut():
     assert "할 듯하다[할뜨타다]" in row["candidate_disposition_basis"]
     assert "SRC-NIKL-QNA-317798" in row["candidate_disposition_basis"]
     assert "pause can license the plain consonant" in row["candidate_disposition_basis"]
+
+
+def test_nikl_rule_27_adjudicates_boileul_geora_exact_morphosyntactic_context():
+    rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
+    row = rows["1527"]
+    assert row["token"] == "보일거라"
+    assert "보일거라 생각하는건가" in row["source_context_text"]
+    assert row["candidate_disposition"] == "RULE_CONFIRMED_STANDARD_VARIANT"
+    assert "NIKL Standard Pronunciation Rule 27" in row["candidate_disposition_basis"]
+    assert "보일 거라" in row["candidate_disposition_basis"]
+    assert "할 것을 [할꺼슬]" in row["candidate_disposition_basis"]
+    assert "no general ㄹ+ㄱ rewrite" in row["candidate_disposition_basis"]
+    assert row["prior_independent_ipa_review_status"] == "NOT_PERFORMED"
