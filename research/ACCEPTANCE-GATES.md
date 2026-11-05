@@ -1346,3 +1346,15 @@ The documentation/source-register corrections are now verified on `main` at `d7c
 | Python per-occurrence license provenance | PARTIAL | `RuleTrace.license_context` is scalar per rule pass; a multi-license sentence can retain only the last context. Add per-occurrence context arrays before treating sentence-level trace as exhaustive. |
 
 **Readiness remains partial research prototype.** Passing regression tests and applying four exact rule corrections do not establish independent IPA gold or release readiness.
+
+
+## 2026-11-05 follow-up — 31 row-level abstentions and Python trace provenance
+
+| Gate | Status | Evidence / acceptance |
+|---|---|---|
+| Current 36-row Broad queue dispositions | PARTIAL / ROW-LEVEL DISPOSITIONS RECORDED | Four exact R013 corrections, one provisional R012 retain, and 31 individually recorded `ABSTAIN` decisions in [the 31-row register](kozak-kim-31-row-individual-abstentions-2026-11-05.csv). The abstentions are evidence-status decisions, not expert phonetic judgments. |
+| 31-row queue membership and pinning | DONE_VERIFIED (register integrity) | Register is a one-to-one subset of the pinned 36-row queue; it records source row IDs, UGTPHON commit, queue blob SHA, Broad-v2 comparator, project broad profile, and explicitly marks unrecovered historical engine/normalizer versions. |
+| Python per-occurrence RuleTrace | DONE_VERIFIED (software provenance contract) | RuleTrace retains backward-compatible scalar `license_context` and adds `license_contexts` plus `applied_occurrences` with source span, pair, eojeol, syllable index, matched license, before/after state, rule citation, confidence and status. Sentence-level R013 cases with multiple licenses are tested. |
+| Complete historical 239-occurrence ledger | BLOCKED / EVIDENCE-LIMITED | The tracked 1,267-row fragment export, 36-row Broad queue, 13 clusters and 38 paired rows do not encode the exact historical 239 membership. The historical engine commit, normalizer version and full contexts for every occurrence are not recoverable from these artifacts alone. Acceptance requires the original 2026-11-02 benchmark occurrence artifact or an equivalent reproducible reconstruction pinned to its original report, source split and runner. No synthetic 239-row ledger has been created. |
+
+**Interpretation:** all 36 rows in the current narrow queue now have a recorded disposition (four fixes, one provisional retain, 31 abstentions). This does **not** complete or stand in for the separate historical 239-occurrence population, and it does not constitute independent Korean IPA adjudication.
