@@ -6434,3 +6434,39 @@ The complete 239-occurrence ledger has **not** been completed. The tracked 1,267
 - GitHub Actions exact-head verification for this continuation is pending at the time this addendum was authored. Do not claim these new tests passed until the run for the final commit completes.
 - Local Python/npm execution remains unavailable in this connector-only environment.
 - Research readiness remains **partial research prototype**, not research-certified or release-ready.
+
+
+## 2026-11-05 — superseding evidence recovery and exact-head verification
+
+This entry supersedes the earlier statement in this continuation that the original benchmark artifact itself was not recoverable. It **has now been recovered**; the remaining blocker is the reproducible membership predicate for the historical 239 subset.
+
+### Recovered 2026-11-02 artifact
+
+- Workflow run: [41471244424](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41471244424)
+- Run head: `4f3f307c5bb056bce3b0aedc8ab07e0010eaa695`
+- Artifact ID: `13156351613`
+- Artifact SHA-256: `749ac9a2b9db96c1e27828919afe05ef4320e35ca6a91ab2038c1ff3e9d04c69`
+- Contains `multi-engine-ipa-report.json`: 2,703 eligible token occurrences across ten engine occurrence ledgers.
+- Pins UGTPHON Korean test split at `ef0d5a09c2ea1874c7206020f875cbd9cfea2f54`, Native IPA profile `clippyfirst-korean-broad-v1@1`, broad sensitivity profile `korean-broad-candidate-sensitivity-v1@1`, normalizer `benchmark_ugtphon_ko.normalize_ipa`, and g2pK 0.9.4.
+- The accompanying [recovery manifest](../research/kozak-kim-historical-239-recovery-manifest-2026-11-05.md) records artifact digest, source and profile metadata, plus the exact acceptance conditions.
+
+The same historical commit's mismatch export is 1,267 occurrence rows (blob SHA `552139f72e3b0cbd32bf3dd83ad4bf5bc59238a7`). It does not preserve the exact 239 membership or the complete per-fragment C01–C10 assignment snapshot. The 239 count in the dated triage narrative is therefore not enough to choose 239 stable IDs. The full 239-row ledger remains BLOCKED until the original selection predicate/assignment snapshot is recovered or exactly reproduced from the pinned report. No arbitrary subset is substituted.
+
+### Exact-head software verification
+
+The Python trace implementation and tests were verified on code commit `84c85940fa8d8f040870a135193a923dc4b52c36`:
+
+- Tests workflow [41995127918](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41995127918): PASS — Python 3.11, 3.12, 3.13; wheel install; teacher-corpus audit; browser tests/build.
+- System Verify [41995127917](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41995127917): PASS — Browser regression/build and Python regression/data integrity. Live NIKL metadata-only inventory was SKIPPED, not passed.
+- Research artifacts [41995127984](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41995127984): PASS — master table/corpus artifact generation.
+- Pages run [41995127901](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41995127901): Python matrices and browser/static build PASS; deployment job was CANCELLED after subsequent commits triggered a newer workflow. This is not a deployment PASS for the final documentation head.
+
+An initial trace test exposed collateral adjacency being reported as a second R013 application; the trace now records only the right-onset boundary actually changed by R013. A prior missing dataclass-field import was also fixed. The final code-head runs above passed after both corrections.
+
+### Current state and remaining work
+
+- Current queue: 4 exact R013 fixes + 1 provisional `출산` retain + 31 individually recorded evidence-limited `ABSTAIN` decisions = 36/36 row dispositions. See `research/kozak-kim-31-row-individual-abstentions-2026-11-05.csv`.
+- Python `RuleTrace`: per-occurrence `applied_occurrences` and `license_contexts` are implemented and tested; legacy scalar `license_context` remains compatible.
+- Historical 239: source artifact recovered and hash-pinned; exact 239 membership, full selected-row context ledger and 239 individual decisions remain TODO/BLOCKED on the missing historical selection predicate/fragment assignment snapshot.
+- Independent Korean IPA review, Ukrainian target review, C12 audio/speaker/prosody crosswalk, item-level NIKL rights/authenticity, and the full post-fix UGTPHON benchmark remain open.
+- Overall readiness remains **partial research prototype**, not research-certified or release-ready.
