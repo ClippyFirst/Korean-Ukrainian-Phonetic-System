@@ -1,16 +1,18 @@
 # 236-candidate adjudication addendum — 2026-11-05
 
-This addendum records the latest evidence decisions on the single working branch `research/236-candidate-review-2026-11-05`. It supplements the existing review and handoff; the reconstructed baseline remains 236 occurrence rows.
+> This file began as an interim snapshot. The current canonical status is maintained in [the candidate review](kozak-kim-236-candidate-review-2026-11-05.md) and [the master handoff](../docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md); the earlier 10/153/20/53 figures below are historical and superseded.
 
-## Current counts
+## Current status — after ID 545 lexical review
 
-- 10 `RULE_CONFIRMED_STANDARD_VARIANT`
-- 153 `PROFILE_CONVENTION_MISMATCH_CONFIRMED`
-- 20 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW`
-- 53 `NOT_INDIVIDUALLY_ADJUDICATED`
-- 73 active unresolved occurrences (20 abstentions + 53 without individual disposition)
+- 12 `RULE_CONFIRMED_STANDARD_VARIANT`
+- 181 `PROFILE_CONVENTION_MISMATCH_CONFIRMED`
+- 15 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW`
+- 28 `NOT_INDIVIDUALLY_ADJUDICATED`
+- **43 active unresolved occurrences**; all 236 baseline rows remain retained.
 
-The 236-row historical membership is still reconstructed from pinned replay, not proof of the original selector's membership. Profile-convention closures are not token-specific acoustic IPA gold.
+**New exact lexical case:** ID 545 `정권(政權)` is now rule/lexical-confirmed for the exact political noun. Kpedia gives `정권[정꿘]`; NIKL Q&A 335292 explains fortition associated with the Sino-Korean morpheme `권(權)` but warns that individual items must be checked in dictionaries. This exact entry supports only this occurrence; no productive `-권` rule or speaker-specific IPA gold is claimed. Historical ABSTAIN rationale remains preserved.
+
+Historical 236-row membership is reconstructed from pinned replay, not proof of original selector membership. Profile-convention closures are not token-specific acoustic IPA gold.
 
 ## New profile-convention resolutions
 
