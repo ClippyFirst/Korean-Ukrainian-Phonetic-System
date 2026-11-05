@@ -59,3 +59,20 @@ Do not fabricate 239 placeholder rows, infer membership from the count alone, or
 - Once membership is reproducible, join each selected `source_row_id` to the pinned dataset and add context hash/locator, engine/profile/normalizer provenance, mismatch fragments, decision, rationale, evidence, reviewer and decision timestamp.
 
 **Current conclusion:** benchmark source evidence is recovered and hash-pinned; the historical 239 membership and per-occurrence decisions remain evidence-limited. The 31-row current queue abstention register is a separate deliverable and must not be substituted for this ledger.
+
+## Reconstruction attempt — exporter semantics and negative result (2026-11-05)
+
+The recovered ZIP was downloaded from artifact `13156351613` and its SHA-256 was independently recomputed as `749ac9a2b9db96c1e27828919afe05ef4320e35ca6a91ab2038c1ff3e9d04c69`. The `multi-engine-ipa-report.json` contains 2,703 occurrence records in each of ten engine ledgers.
+
+The historical exporter source was fetched at the pinned run-head commit `4f3f307c5bb056bce3b0aedc8ab07e0010eaa695` (blob `7a983e4b2ac3585d5b16516acfad4aa8a6895520`). Its `candidate_clusters()` function labels the concatenation of all supplied edit fragments, while `build_rows()` passes **strict plus Broad** fragments together and stores only the occurrence-level union in `candidate_clusters`. It does not store a label for each individual Broad edit operation.
+
+A direct count over the pinned 1,267-row export (blob `552139f72e3b0cbd32bf3dd83ad4bf5bc59238a7`) gives:
+
+- 1,267 exported occurrence rows;
+- 370 rows with non-zero Broad-profile distance;
+- 3 rows whose occurrence-level union is exactly `UNMAPPED_REQUIRES_REVIEW`;
+- 12 Broad-mismatch rows whose union contains no C01–C10 label (some carry later C11/C12 labels).
+
+Neither 3 nor 12 reproduces 239. More importantly, the row-level union cannot tell whether a row containing a mapped family also contains one or more separately unmapped Broad edit operations. Therefore the 239 criterion (“at least one fragment not mapped to C01–C10”) cannot be reconstructed from this CSV column. This is a reproducibility finding, not a redefinition of the historical 239 population.
+
+**Disposition unchanged:** do not select 239 IDs from the 1,267 rows by approximation. The missing input is the original per-fragment C01–C10 assignment snapshot or the exact executable selection predicate that produced the 239-member set. Once recovered, it must select exactly 239 unique occurrence IDs before context joins and individual decisions are populated.
