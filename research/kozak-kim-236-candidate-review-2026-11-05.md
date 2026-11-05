@@ -62,6 +62,10 @@ The provisional RETAIN is occurrence 1140 (`출산`, source row `dc_inside_2107`
 
 The lenis and fortis sibilant families are separate review strata. C11's optional [ɕ] candidate is lenis-only; the 24 fortis operations cannot inherit that decision. The remaining 46 operations span 22 heterogeneous signatures (stop voicing/fortition differences, segment deletions/insertions, vowel quality/length and other sibilant mappings). These are not one productive rule and must be reviewed against their own exact environments.
 
+## Repetition and source-weighting audit
+
+The 236 occurrences resolve to **151 unique token spellings** across **110 source rows**. A total of **135 token spellings occur once**; the remaining repeated forms are clustered, with the largest counts: 아끼셔 (22), 스시녀들은 (15), 시중도 (14), 신안 (10), 시발 (7), 훨씬 (6), 병신 (4). Source-row concentration is also uneven: one row contributes 30 candidate occurrences, another 22, and another 10. These are repeated observations from source text, not independent speakers or independent acoustic samples. The 236 count is a candidate-occurrence count only; group by exact token, source row, audio/speaker identity, context and transcription convention before evidence weighting.
+
 ## Mismatch profile
 
 The inherited export cluster field carries C11 on 207 of the 236 rows and a historical C04 tag on 206 rows. **The C04 tag is stale:** the current cluster register reports zero C04 residual occurrences and reclassifies the former aspirated-velar set under C12. The 206 inherited C04 labels must not be read as a current classification or as 206 live C04 errors. The review CSV therefore names this field historical_export_cluster_labels_descriptive_only.
