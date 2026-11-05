@@ -78,7 +78,7 @@ The 36-row queue now has complete recorded dispositions: four exact-form R013 fi
 
 ## 2026-11-05 follow-up — queue dispositions and trace provenance
 
-The 36-row narrow Broad queue now has explicit row-level dispositions: four exact R013 fixes, one provisional R012 retain (`출산`), and 31 evidence-limited abstentions in [the individual decision register](kozak-kim-31-row-individual-abstentions-2026-11-05.csv). Each abstention records the occurrence/source-row locator, pinned UGTPHON commit, reference and engine profile labels, the queue blob SHA, and a row-specific reason. Historical engine commit and normalizer version are explicitly marked unrecovered rather than guessed. These are conservative production decisions, not independent IPA judgments.
+The 36-row narrow Broad queue now has explicit row-level dispositions: four exact R013 fixes, one provisional R012 retain (`출산`), and 31 evidence-limited abstentions in [the individual decision register](kozak-kim-31-row-individual-abstentions-2026-11-05.csv). Each abstention records the occurrence/source-row locator, pinned UGTPHON commit, reference and engine profile labels, the queue blob SHA, and a row-specific reason. The Kozak engine run-head is pinned to `c0cbe3740e734c87d3202cca496b83d9603ea218`; the normalizer script, Broad sensitivity profile, benchmark run/artifact/report digests, and UGTPHON dataset Git blob are now pinned per row in the expanded register. These are conservative production decisions, not independent IPA judgments.
 
 Python `RuleTrace` now exposes per-occurrence `applied_occurrences` and `license_contexts` (including matched source license, source pair, word form, index and before/after state); the original scalar `license_context` remains for compatibility.
 
