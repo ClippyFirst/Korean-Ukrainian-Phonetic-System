@@ -762,3 +762,21 @@ def test_nikl_show_loanword_qna_is_registered_as_negative_evidence_only():
     assert "쇼" in row["coverage"]
     assert "no standard pronunciation entry" in row["contribution_expected"]
     assert "does not decide IPA [s] vs [ɕ]" in row["limitations_or_next_action"]
+
+
+def test_nikl_rule_29_qna_variability_is_registered_as_negative_control():
+    row = {item["source_id"]: item for item in load_source_register()}["SRC-NIKL-QNA-328785"]
+    assert "qna_seq=328785" in row["url"]
+    assert "does not guarantee n-insertion in every case" in row["limitations_or_next_action"]
+    assert "lexical-semantic status" in row["limitations_or_next_action"]
+    assert "does not attest 홍콩영화 or 한국여자" in row["limitations_or_next_action"]
+
+
+def test_kim_hong_2025_full_text_scope_does_not_license_o_eo_glide():
+    row = {item["source_id"]: item for item in load_source_register()}[
+        "SRC-KIM-HONG-2025-HIATUS-TRANSITIONS-GLIDES"
+    ]
+    assert row["url"] == "https://doi.org/10.30961/lr.2025.61.1.1"
+    assert "10 men aged 27–35" in row["authority_or_role"]
+    assert "Within-word vowel sequences in 기억–기역 and 보안–보완" in row["coverage"]
+    assert "no numeral compound or /o.ʌ/ target" in row["limitations_or_next_action"]
