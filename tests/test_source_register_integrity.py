@@ -741,3 +741,16 @@ def test_jeonggweon_exact_dictionary_and_nikl_kwon_morpheme_sources_are_register
     assert "qna_seq=335292" in nikl["url"]
     assert "인권[인꿘]" in nikl["coverage"]
     assert "does not itself attest 정권" in nikl["contribution_expected"]
+
+
+def test_nikl_rule_29_and_renpa_sense_sources_are_registered():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    rule = rows["SRC-NIKL-QNA-327019"]
+    assert "qna_seq=327019" in rule["url"]
+    assert "Rule 29" in rule["coverage"]
+    assert "[붙임 2]" in rule["coverage"]
+    renpa = rows["SRC-NIKL-QNA-322807"]
+    assert "qna_seq=322807" in renpa["url"]
+    assert "連敗" in renpa["coverage"]
+    assert "연패²(連霸)" in renpa["coverage"]
+    assert "does not give a pronunciation" in renpa["limitations_or_next_action"]
