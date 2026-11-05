@@ -1,8 +1,9 @@
-## 2026-11-05 — Eight independently source-supported standard-form adjudications
+## 2026-11-05 — Nine independently source-supported standard-form adjudications
 
-**Current status:** the reconstructed baseline remains **236 occurrence rows**. Eight are now `RULE_CONFIRMED_STANDARD_VARIANT`: **IDs 341, 1140, 1406, 1527, 2001, 2010, 2490 and 2533**. The active unresolved count is **228**: 205 without individual disposition and 23 abstained pending independent IPA review. All 236 original rows remain in the ledger.
+**Current status:** the reconstructed baseline remains **236 occurrence rows**. Nine are now `RULE_CONFIRMED_STANDARD_VARIANT`: **IDs 341, 826, 1140, 1406, 1527, 2001, 2010, 2490 and 2533**. The active unresolved count is **227**: 205 without individual disposition and 22 abstained pending independent IPA review. All 236 original rows remain in the ledger.
 
 - **ID 78 — 오조오억배 remains ABSTAIN.** NIKL Rule 4 classifies ㅓ as a monophthong, but that does not exclude a separate glide or transitional interval in a V.V sequence. The 2025 full-text study by Kim & Hong tests 기억–기역 and 보안–보완 within-word sequences, not 오억 or numeral compounds; for 보완 it attributes the distinction mainly to longer preserved /o/ rounding rather than a clearly separate /w/ gesture. No located study tests 오조오억배 or the exact /o.ʌ/ numeral boundary. Keep pending token audio or independent Korean IPA review.
+- **ID 826 — 유사성:** the official NIKL Korean Basic Dictionary entry 70710 directly gives `유사성[유ː사썽]`. The context is `장르의 유사성`; the comparator's /s͈/ matches the official fortis reading, while Kozak's /s/ does not. Exact lexical attestation only; no general `-성` fortition rule is inferred.
 - **ID 2490 — 머리속에:** the context '포지션을 머리속에 집어넣고서' uses the figurative lexical item 머릿속 ('in one's mind'). Korean-language professor Kim Nam-mi explicitly attests 머릿속[머리쏙]. The comparator's /s͈/ matches this exact lexical form; Kozak's /s/ does not. This is an exact lexical attestation, not a productive rule for arbitrary 머리+속 sequences. The corpus spelling lacks the standard 사이시옷; no token audio or acoustic IPA review was performed.
 - **ID 341 — 그놈의:** NIKL Standard Pronunciation Rule 5 distinguishes non-initial lexical 의 (where [i] is permitted) from the genitive particle 의 (where [e] is an accepted variant alongside [ɯi]). The canonical context makes 의 the genitive particle. The comparator's [e] is normatively supported; Kozak's [i] is not the rule's listed particle variant.
 - **ID 1140 — 출산:** NIKL Basic Dictionary directly lists 출산[출싼]. Kozak's fortis s͈ matches; the IPA-Dict comparator omits fortis. This upgrades the historical provisional RETAIN for R012. Exact lexical attestation only.
@@ -17,7 +18,7 @@
 - Current disposition counts: **205** NOT_INDIVIDUALLY_ADJUDICATED, **23** ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW, **0** pending RETAIN, and **8** RULE_CONFIRMED_STANDARD_VARIANT. Historical membership remains reconstructed, not proven.
 - These are normative rule/lexical/expert-reference confirmations, not token-specific acoustic IPA gold. No production IPA, Ukrainian target, benchmark gold, or runtime rule changed.
 
-**Additional research evidence:** Kim & Hong (2025), full text reviewed, DOI 10.30961/lr.2025.61.1.1; Holliday (2012), DOI 10.13064/KSSS.2012.4.1.067; Schertz & Kang (2022), DOI 10.1075/kl.16001.sch; Kong & Kang (2021), DOI 10.13064/KSSS.2021.13.1.037; Kim Nam-mi (2017), expert column in *Donga Ilbo* on 머릿속[머리쏙].
+**Additional research evidence:** Kim & Hong (2025), full text reviewed, DOI 10.30961/lr.2025.61.1.1; Holliday (2012), DOI 10.13064/KSSS.2012.4.1.067; Schertz & Kang (2022), DOI 10.1075/kl.16001.sch; Kong & Kang (2021), DOI 10.13064/KSSS.2021.13.1.037; Kim Nam-mi (2017), expert column in *Donga Ilbo* on 머릿속[머리쏙]; official NIKL Basic Dictionary entry 70710 for 유사성[유ː사썽].
 
  Scope and result
 
