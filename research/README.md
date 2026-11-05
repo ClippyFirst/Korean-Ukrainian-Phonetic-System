@@ -28,7 +28,7 @@ Current evidence gaps:
 - obtain independent Ukrainian phonetic/orthographic target review on frozen IPA inputs;
 - finish rule-level parity across browser, Python, CLI, and API where the current rule coverage matrix says it is incomplete;
 - crosswalk C12 mismatch rows to source utterances, audio, speakers, dialect and prosodic context before any production change;
-- reconcile the historical 239 Broad-v2 mismatch occurrences. This is a historical diagnostic population, not 239 confirmed production defects. The archived 1,266-row fragment export, 36-row current unmapped queue, 13 cluster rows, and 38 paired-discrepancy rows have different grains and are not interchangeable. A complete hash-pinned 239-occurrence ledger with source-context crosswalk, exact IPA profile, provenance and adjudication is still missing; do not mass-change production outputs or expected tests to force corpus agreement.
+- reconcile the historical 239 Broad-v2 mismatch occurrences. This is a historical diagnostic population, not 239 confirmed production defects. The archived 1,267-row fragment export, 36-row current unmapped queue, 13 cluster rows, and 38 paired-discrepancy rows have different grains and are not interchangeable. A complete hash-pinned 239-occurrence ledger with source-context crosswalk, exact IPA profile, provenance and adjudication is still missing; do not mass-change production outputs or expected tests to force corpus agreement.
 - close remaining names, loanwords, Hanja and regional-style coverage gaps;
 - retain exact-head CI and deployment smoke evidence for each release candidate.
 
