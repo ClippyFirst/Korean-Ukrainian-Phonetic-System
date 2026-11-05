@@ -15,10 +15,10 @@ def test_reconstructed_236_review_ledger_has_exact_membership_and_statuses():
     assert len(rows) == 236
     assert len({row["occurrence_id"] for row in rows}) == 236
     assert Counter(row["candidate_disposition"] for row in rows) == {
-        "NOT_INDIVIDUALLY_ADJUDICATED": 30,
+        "NOT_INDIVIDUALLY_ADJUDICATED": 28,
         "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 19,
         "RULE_CONFIRMED_STANDARD_VARIANT": 11,
-        "PROFILE_CONVENTION_MISMATCH_CONFIRMED": 176,
+        "PROFILE_CONVENTION_MISMATCH_CONFIRMED": 178,
     }
     assert all(row["historical_membership_confidence"] ==
         "RECONSTRUCTED_CANDIDATE_NOT_ORIGINAL_MEMBERSHIP_PROOF" for row in rows)
@@ -517,3 +517,15 @@ def test_fortis_sibilant_place_symbol_pairs_are_profile_only_not_acoustic_gold()
     assert "ɕ͈" in mixed["broad_mismatch_fragments"]
     assert "ɕ" in mixed["broad_mismatch_fragments"]
     assert "t" in mixed["broad_mismatch_fragments"]
+
+
+def test_two_additional_liaison_lenis_sibilants_are_profile_only():
+    rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
+    for occurrence_id, token in [("49", "무슨뜻임"), ("143", "멋있노")]:
+        row = rows[occurrence_id]
+        assert row["token"] == token
+        assert row["candidate_disposition"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
+        assert row["prior_individual_reason_code"] == "LENIS_SIBILANT_BROAD_PROFILE_CONVENTION"
+        assert "after resyllabification" in row["candidate_disposition_basis"]
+        assert "Kang (2010, S019)" in row["candidate_disposition_basis"]
+        assert row["prior_independent_ipa_review_status"].endswith("token_specific_acoustic_IPA_review_not_performed")
