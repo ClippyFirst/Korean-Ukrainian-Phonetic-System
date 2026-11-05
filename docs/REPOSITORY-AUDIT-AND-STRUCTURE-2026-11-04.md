@@ -444,3 +444,11 @@ The complete hash-pinned 239-occurrence ledger with full context, engine/profile
 - The external workflow/skill references `obra/superpowers`, `mattpocock/skills`, and `DietrichGebert/ponytail` were retained as design references. The existing `.agents/skills/phonetic-engineering/SKILL.md` was extended; no third-party repository was copied wholesale.
 
 **Readiness:** partial research prototype; software tests pass, but research certification and release readiness are not established.
+
+
+## 2026-11-05 follow-up — per-occurrence provenance and 31 row dispositions
+
+- The 31 previously undecided rows in the current 36-row queue now have individual `ABSTAIN` records in `research/kozak-kim-31-row-individual-abstentions-2026-11-05.csv`. Together with the four exact R013 fixes and provisional `출산` retain, this closes the *disposition-recording* gap for the narrow 36-row queue. It does not supply independent IPA gold or imply phonetic correctness.
+- The new register pins the 36-row queue blob and UGTPHON source commit. It explicitly records the historical Kozak engine commit and normalizer version as unrecovered. Source row IDs are locators into the pinned dataset; full source utterances are not copied into this register.
+- Python `RuleTrace` now includes `applied_occurrences` and `license_contexts`, preserving each changed pair's word form, syllable index, matched license, source citation, confidence, status and before/after state. The legacy scalar `license_context` is retained for compatibility.
+- The historical 239 population remains BLOCKED: the tracked 1,267 fragment export and 36-row queue have different grains and do not establish the exact 239 membership. The original benchmark occurrence artifact or an exact reconstruction at the historical engine/profile/normalizer is still required. No fabricated ledger was added.
