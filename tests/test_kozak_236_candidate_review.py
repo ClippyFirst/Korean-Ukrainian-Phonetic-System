@@ -15,8 +15,8 @@ def test_reconstructed_236_review_ledger_has_exact_membership_and_statuses():
     assert len(rows) == 236
     assert len({row["occurrence_id"] for row in rows}) == 236
     assert Counter(row["candidate_disposition"] for row in rows) == {
-        "NOT_INDIVIDUALLY_ADJUDICATED": 27,
-        "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 18,
+        "NOT_INDIVIDUALLY_ADJUDICATED": 28,
+        "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 17,
         "RULE_CONFIRMED_STANDARD_VARIANT": 11,
         "PROFILE_CONVENTION_MISMATCH_CONFIRMED": 180,
     }
