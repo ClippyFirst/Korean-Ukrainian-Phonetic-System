@@ -26,7 +26,7 @@ PINNED_INPUT_GIT_BLOB_SHA = {
     IDS_PATH: "f46f6760dde844a3e7cf9abe00dc74969f45eca8",
     SUPERSET_PATH: "e6c4843bbb9f1e3eb83527698880d4d60184c333",
     ABSTENTION_PATH: "de838dcdc247e1846e0e633766135b3a902f436b",
-    ADJUDICATION_PATH: "6e05846a0aebdfc7297d070275051679d884f3c8",
+    ADJUDICATION_PATH: "02fc9fbc93ae5f7c2308b587fdbb5bfdf26d588a",
 }
 
 def verify_git_blob(path: Path, expected_sha: str) -> None:
@@ -67,8 +67,8 @@ def build_rows(root: Path = ROOT) -> list[dict[str, str]]:
     abstentions = read_csv(p(ABSTENTION_PATH))
     abstention_by_id = {int(row["occurrence_id"]): row for row in abstentions}
     adjudications = read_csv(p(ADJUDICATION_PATH))
-    retain_adjudication = next((row for row in adjudications
-        if row["source_row_id"] == retain["source_row_id"] and row["token"] == retain["token"]), None)
+    adjudication_by_key = {(row["source_row_id"], row["token"]): row for row in adjudications}
+    retain_adjudication = adjudication_by_key.get((retain["source_row_id"], retain["token"]))
     if retain_adjudication is None:
         raise ValueError("Missing source-backed RETAIN record for occurrence 1140")
     remaining = [value for value in candidate_ids if value not in FIXES]
@@ -88,7 +88,14 @@ def build_rows(root: Path = ROOT) -> list[dict[str, str]]:
     for candidate_id in remaining:
         row = source_by_id[candidate_id]
         abstention = abstention_by_id.get(candidate_id)
-        if abstention:
+        case_adjudication = adjudication_by_key.get((row["source_row_id"], row["token"]))
+        if case_adjudication and case_adjudication["decision"] == "RULE_CONFIRMED_STANDARD_VARIANT":
+            disposition = "RULE_CONFIRMED_STANDARD_VARIANT"
+            basis = case_adjudication["notes"]
+            reason = abstention["reason_code"] if abstention else ""
+            rationale = abstention["individual_rationale"] if abstention else ""
+            ipa_status = abstention["independent_ipa_review_status"] if abstention else "NOT_PERFORMED"
+        elif abstention:
             disposition = "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW"
             basis = "Existing 31-row individual-abstention ledger; one of 22 cohort overlaps."
             reason = abstention["reason_code"]
