@@ -1,12 +1,12 @@
-## 2026-11-05 — Independent evidence update: twelve resolved, ten named evidence-limited abstentions
+## 2026-11-05 — Independent evidence update: 159 resolved, 20 abstained
 
 **Branch:** `research/236-candidate-review-2026-11-05` (single continuing working branch). **PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436), draft/open. The reconstructed 236-row baseline is retained unchanged.
 
 ### Current disposition
 
 - **Nine RULE_CONFIRMED_STANDARD_VARIANT occurrences:** IDs 341 (그놈의), 826 (유사성), 1140 (출산), 1406 (팔자걸음), 1527 (보일거라), 2001 (물가로), 2010 (혐오증), 2490 (머리속에 → 머릿속에), and 2533 (안할듯).
-- **Three PROFILE_CONVENTION_MISMATCH_CONFIRMED occurrences:** ID 2562 (정신병자네) is closed by the exact NIKL §28/R014 license `신>병` plus broad-vs-narrow `/s/` convention; IDs 520 and 2307 (없다) are closed as `/ɘː/` vs `/ʌː/` IPA-profile differences. For 없다, NIKL Basic Dictionary attests `없다[업ː따]` (length, not IPA) and Lee (1993), JIPA p.31, uses `/ʌː/` in the long-vowel inventory; the existing engine regression retains `ʌːp̚.t͈a`. IDs 520 and 2307 are repeated lexical types in separate source rows, not independent speaker evidence. None is token-specific acoustic IPA gold.
-- **22 ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW; 202 NOT_INDIVIDUALLY_ADJUDICATED; zero pending RETAIN.** Thus **224 occurrences remain unresolved**. Historical membership is reconstructed from pinned replay, not proven original-selector membership.
+- **150 PROFILE_CONVENTION_MISMATCH_CONFIRMED occurrences:** three earlier lexical/profile cases (IDs 2562, 520, 2307) plus 147 lenis-sibilant cases across 106 source-row/token families. The 147 have only `ɕ→s` mismatches in Hangul ㅅ+ㅣ/ㅖ/ㅑ contexts. The project broad profile keeps /s/ canonical and offers [ɕ] as a research-only optional variant; Kang (2010) supports coarticulation but not a categorical realization. These are profile-convention resolutions, not token-specific acoustic IPA gold. The 147 include IDs 293 and 1206, previously abstained; ID538 remains abstained because its mismatch is not in the supported lenis context. Of 157 context-compatible lenis operations, 148 are closed; nine co-occur with other mismatches and remain open. The 27 lenis operations outside those contexts and all 24 fortis `ɕ͈→s͈` operations remain unresolved.
+- **20 ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW; 57 NOT_INDIVIDUALLY_ADJUDICATED; zero pending RETAIN.** Thus **77 occurrences remain unresolved**. Historical membership is reconstructed from pinned replay, not proven original-selector membership.
 - ID 826: the official NIKL Korean Basic Dictionary entry 70710 directly gives 유사성[유ː사썽]. In 장르의 유사성 the source /s͈/ matches this exact lexical reading, while Kozak /s/ does not. This does not establish a productive -성 rule.
 - ID 2490: the source sentence uses 머리속에 in the figurative sense 'in one's mind'. Korean-language professor Kim Nam-mi explicitly attests 머릿속[머리쏙]. The comparator's /s͈/ is supported for this exact lexical form; Kozak /s/ is not. The corpus spelling omits the standard 사이시옷. Expert lexical attestation only; no audio/IPA reviewer or production change.
 - ID 78 (오조오억배) remains ABSTAIN. The 2025 full-text study Kim & Hong tests 기억–기역 and 보안–보완 within-word vowel sequences, not 오억 or numeral compounds; its 보완 analysis emphasizes longer preservation of /o/ rounding rather than a clearly independent /w/ gesture. No located study directly tests the candidate's /o.ʌ/ numeral boundary.
@@ -20,7 +20,7 @@
 - IDs 257, 813 and 853 (체험): remain abstained; 험 contains ㅓ, so the Rule 5 diphthong argument for ㅕ does not apply. IDs 813 and 853 repeat in one source row.
 - IDs 293, 538 and 1206 (sibilant cases): remain abstained; Hangul readings do not decide broad IPA [s] vs [ɕ]. Newly reviewed acoustic literature is context- and speaker-sensitive; it does not adjudicate these exact recordings.
 - IDs 1816, 1843 and 1870 (연전연패): remain abstained; n-insertion is variable and no word-specific evidence was found. Repeated occurrences in one source row are not independent speakers.
-- These are normative rule/lexical/expert-reference adjudications plus three broad-IPA profile-convention resolutions, not token-specific acoustic IPA gold. No production IPA, Ukrainian target, benchmark gold, or runtime rule changed.
+- These are nine normative rule/lexical/expert-reference adjudications plus 150 broad-IPA profile-convention resolutions, not token-specific acoustic IPA gold. No production IPA, Ukrainian target, benchmark gold, or runtime rule changed.
 
 ### Evidence and verification
 
@@ -32,7 +32,7 @@
 - These nine are normative rule/lexical/expert-reference confirmations, not token-specific acoustic IPA gold. No individual speaker recording has been independently adjudicated.
 - The generator pins the adjudication register blob; the checked-in candidate CSV must equal deterministic generator output. GitHub Actions exact-head verification is required after these commits. Local pytest/npm were not run in this connector-only session.
 
-**Current interpretation:** baseline inventory 236; nine standard-form adjudications plus three profile-convention resolutions; active unresolved occurrences 224. Overall readiness remains a partial research prototype, not research-certified or release-ready.
+**Current interpretation:** baseline inventory 236; nine standard-form adjudications plus 150 profile-convention resolutions; active unresolved occurrences 77. Overall readiness remains a partial research prototype, not research-certified or release-ready.
 
 ---
 
