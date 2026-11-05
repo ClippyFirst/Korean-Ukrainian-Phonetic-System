@@ -16,6 +16,10 @@ The source register records a full-text review of Kim & Hong (2025): ten men age
 
 NIKL Online Q&A 328785 (2026-04-03) states that the phonological shape in Rule 29 is not sufficient to predict n-insertion in every compound/derivative; the lexical-semantic status of the following element matters. It discusses `못난이` and `예쁜이`, not the exact candidates. Thus `홍콩영화들` (ID 643) and `한국여자로` (IDs 1805/1832/1859) remain unresolved: the former's compound status and the latter's phrase/prosodic grouping are not established by text alone. Source `SRC-NIKL-QNA-328785` added to the source register. This does not reduce the 40 unresolved occurrences.
 
+### CI correction: source-register CSV quoting
+
+The first exact-head `tests` run after adding NIKL Q&A 332662 and 328785 failed because commas in the two new `limitations_or_next_action` fields were not CSV-quoted (rows 207–208 parsed as 14 and 13 columns). Both rows have now been reconstructed and quoted; the source register was reparsed and all 207 data rows have exactly 12 columns. The web test suite and Python source-register integrity failures on the preceding head were caused by this single malformed-CSV defect. The wheel-install and teacher-corpus-audit jobs passed on that preceding head; Python 3.11/3.12 were cancelled. A fresh exact-head CI run is still required before marking the correction verified.
+
 ### Current ledger
 
 - **15 `RULE_CONFIRMED_STANDARD_VARIANT`:** IDs 341 (`그놈의`), 826 (`유사성`), 1140 (`출산`), 1406 (`팔자걸음`), 1527 (`보일거라`), 2001 (`물가로`), 2010 (`혐오증`), 2092 (`출시미정에`), 2490 (`머리속에` → `머릿속에`), 2533 (`안할듯`), 1610 (`자신의`), 545 (`정권`, `政權`), and 1816, 1843 and 1870 (`연전연패`). ID 545 is supported by Kpedia's exact lexical entry `정권[정꿘]`, corroborated by NIKL Q&A 335292 on the Sino-Korean morpheme `권(權)`. IDs 1816/1843/1870 are repeated occurrences of one compound family; NIKL Rule 29 licenses n-insertion in `연전(連戰)+연패(連敗)`, and NIKL Q&A 322807 confirms the 連敗 sense. Jun (2015) still limits claims about natural-speech realization. These are standard lexical/rule readings, not speaker-level acoustic IPA gold.
