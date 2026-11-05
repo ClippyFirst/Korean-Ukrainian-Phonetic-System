@@ -618,7 +618,7 @@ A pinned comparison of [Superpowers](https://github.com/obra/superpowers), [Matt
 | Ukrainian target | BLOCKED | Separate review after Korean IPA adjudication |
 | NIKL item rights/capture | BLOCKED / PARTIAL | Item-level terms and clean capture provenance |
 
-No production rule, target mapping, release, deployment or branch deletion was performed.
+No production-default phonological rule, canonical broad IPA reading, or Ukrainian target mapping was promoted. This branch does narrow the research-only optional [ɕ] variant and selectable partial narrow profile to the /i, ye, ya/ contexts supported by the reviewed Kang (2010) abstract; this is a deliberate research-profile scope correction with regression coverage, not a categorical pronunciation claim. No release, deployment or branch deletion was performed.
 
 
 ## 22. 2026-11-05 — primary-source scope correction, queue versioning and exact-head revalidation
