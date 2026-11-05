@@ -36,6 +36,10 @@ def test_nikl_27_c08_exact_same_word_and_phrase_licenses():
         ("안할듯", "same_word", "할>듯", "t͈ɯ"),
         ("무고일 수도", "phrase", "일>수", "s͈u"),
         ("했을 시", "phrase", "을>시", "͈i"),
+        ("해줄것", "same_word", "줄>것", "k͈ʌ"),
+        ("많을거같이", "same_word", "을>거", "k͈ʌ"),
+        ("내릴수있는", "same_word", "릴>수", "s͈u"),
+        ("존중시킬수도있지만", "same_word", "킬>수", "s͈u"),
     ]
     # Python broad IPA renders the palatalized fricative as /s/ before /i/;
     # assert the fortis diacritic rather than imposing the browser narrow profile.
@@ -52,7 +56,7 @@ def test_nikl_27_c08_exact_same_word_and_phrase_licenses():
     # Exact morphology only: this does not authorize a suffix-wide -성 rule,
     # the unrelated connective ending -ㄹ지, or reconstructed C08 contexts whose
     # segmentation/prosody has only conditional evidence.
-    for text in ["유사성", "했을지", "해줄것", "많을거같이", "없을거같이", "내릴수있는"]:
+    for text in ["유사성", "했을지", "없을거같이"]:
         result = transliterate_korean(text)
         assert not any(
             trace["rule_id"] == "R013" and trace["changed"]

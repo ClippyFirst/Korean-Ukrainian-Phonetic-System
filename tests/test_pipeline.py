@@ -265,10 +265,19 @@ def test_source_attested_ipa_discrepancy_forms_use_exact_licensed_nikl_rules():
         for rule in none["rules"]
     )
 
-    for word in ("많을거같이", "해줄것"):
+    exact_forms = {
+        "많을거같이": "을>거",
+        "해줄것": "줄>것",
+        "내릴수있는": "릴>수",
+        "존중시킬수도있지만": "킬>수",
+    }
+    for word, pair in exact_forms.items():
         result = phoneticize_korean(word)
-        assert not any(
-            rule.get("rule_id") == "R013" and rule.get("status") == "established"
+        assert any(
+            rule.get("rule_id") == "R013"
+            and rule.get("status") == "established"
+            and rule.get("changed") is True
+            and rule.get("license_context") == f"R013:adnominal_l:{word}:{pair}"
             for rule in result["rules"]
         ), word
 
@@ -305,8 +314,9 @@ def test_source_backed_eojeol_licenses_apply_inside_sentences_without_substring_
         ), sentence
 
     no_space_generalization = [
-        ("많을거같이 보인다", "많을거같이"),
-        ("해줄것 같다", "해줄것"),
+        ("많을거같은 보인다", "많을거같은"),
+        ("내릴수있다", "내릴수있다"),
+        ("존중시킬수있다", "존중시킬수있다"),
         ("유사성은 있다", "유사성"),
     ]
     for sentence, token in no_space_generalization:
@@ -873,15 +883,17 @@ def test_r013_phrase_licenses_match_exact_adjacent_eojeol_pairs_inside_sentences
             for rule in result["rules"]
         ), sentence
 
-    # Explicit phrase mode still must not reconstruct spaces that were absent
-    # in the source token. These compact UGTPHON forms remain unresolved.
-    for sentence in (
-        "해줄것 같다",
-        "많을거같이 보인다",
+    # The source-context-backed same-eojeol licenses remain exact-form gated
+    # even when the surrounding sentence is processed in phrase mode.
+    for sentence, token, pair in (
+        ("해줄것 같다", "해줄것", "줄>것"),
+        ("많을거같이 보인다", "많을거같이", "을>거"),
     ):
         result = phoneticize_korean(sentence, boundary_mode="phrase")
-        assert not any(
-            rule.get("rule_id") == "R013" and rule.get("changed") is True
+        assert any(
+            rule.get("rule_id") == "R013"
+            and rule.get("changed") is True
+            and rule.get("license_context") == f"R013:adnominal_l:{token}:{pair}"
             for rule in result["rules"]
         ), sentence
 
