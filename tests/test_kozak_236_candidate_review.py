@@ -414,3 +414,40 @@ def test_two_eopda_occurrences_are_profile_mismatches_not_acoustic_gold():
 
     current = phoneticize_korean("없다")
     assert current["ipa"]["ipa"] == "ʌːp̚.t͈a"
+
+
+def test_lenis_sibilant_profile_mismatches_are_limited_to_supported_high_front_contexts():
+    import json
+
+    rows = MODULE.build_rows(ROOT)
+    scoped = [
+        row for row in rows
+        if row["candidate_disposition"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
+        and row["prior_individual_reason_code"] == "LENIS_SIBILANT_BROAD_PROFILE_CONVENTION"
+    ]
+    assert len(scoped) == 147
+    for row in scoped:
+        fragments = json.loads(row["broad_mismatch_fragments"])
+        assert fragments
+        assert all(
+            fragment["op"] == "S"
+            and fragment["reference_fragment"] == "ɕ"
+            and fragment["kozak_fragment"] == "s"
+            for fragment in fragments
+        ), row["occurrence_id"]
+        supported = 0
+        for char in row["token"]:
+            if not ("가" <= char <= "힣"):
+                continue
+            syllable = ord(char) - 0xAC00
+            onset = syllable // 588
+            nucleus = (syllable % 588) // 28
+            if onset == 9 and nucleus in {2, 19, 20}:  # ㅅ + ㅑ/ㅖ/ㅣ
+                supported += 1
+        assert supported == len(fragments), row["occurrence_id"]
+        assert row["prior_independent_ipa_review_status"] == "profile_convention_adjudicated; token_specific_acoustic_IPA_review_not_performed"
+
+    by_id = {row["occurrence_id"]: row for row in rows}
+    assert by_id["293"]["candidate_disposition"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
+    assert by_id["1206"]["candidate_disposition"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
+    assert by_id["538"]["candidate_disposition"] == "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW"
