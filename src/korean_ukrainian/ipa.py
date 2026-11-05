@@ -169,9 +169,10 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
                 "vowels":[f"ㅎ [{alternate_initial}]"],
             })
 
-    # S018 and S019 document lenis /s/ as [ɕ] before /i/ and selected
-    # /j/-initial diphthongs. This remains optional in broad IPA;
-    # fortis /s͈/ is deliberately not rewritten on this evidence.
+    # S018 (Lee 1993, p.31) explicitly describes lenis /s/ as [ɕ] before
+    # /i/ or any diphthong beginning [j]. Kang (2010) reports different
+    # spectra for /yu, yo/ vs /ya, ye/; keep the variant optional and do not
+    # extend the source claim to fortis /s͈/.
     palatal_sibilant_nuclei={"ㅣ","ㅑ","ㅒ","ㅕ","ㅖ","ㅛ","ㅠ"}
     for i,syllable in enumerate(items):
         if syllable.onset=="ㅅ" and syllable.nucleus in palatal_sibilant_nuclei and rendered[i].startswith("s"):
@@ -180,7 +181,7 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
             variants.append({
                 "syllable_indices":[i],
                 "ipa":render_syllable_sequence(items,alternate),
-                "note":"Optional [ɕ] allophone of lenis /s/ before /i/ or a Lee (1993)-described /j/-initial diphthong; broad canonical /s/ is preserved.",
+                "note":"Optional [ɕ] allophone of lenis /s/ before /i/ or a diphthong beginning [j] (S018, Lee 1993, p.31); broad canonical /s/ is preserved.",
                 "vowels":["ㅅ [ɕ]"],
             })
     # S018: /h/ may be [ɸ] between voiced sounds. Here this is a

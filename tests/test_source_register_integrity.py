@@ -478,7 +478,7 @@ def test_c01_c07_allophone_profile_research_is_registered_with_bounded_scope():
     rows = {row["source_id"]: row for row in load_source_register()}
     expected = {
         "SRC-PLSA-KOREAN-LIQUID-2021": ("retroflex", "pauses"),
-        "SRC-CAMBRIDGE-KOREAN-IPA": ("[ç]", "[x]", "[p̚]"),
+        "SRC-CAMBRIDGE-KOREAN-IPA": ("[ç]", "[x]", "[p̚]", "[ɕ]", "diphthong beginning [j]"),
         "SRC-KCI-KANG-LEE-2019-H": ("Seoul", "Gwangju"),
         "SRC-KCI-CHOI-OH-2014-N-PALATALIZATION": ("늬", "[ɲi]"),
         "SRC-KCI-YUN-2005-KOREAN-GLIDES": ("[ɥ]", "front vowel"),
@@ -683,3 +683,11 @@ def test_s018_korean_ipa_source_matches_cambridge_primary_bibliographic_metadata
     assert "Hyun Bok Lee" in cambridge["title_or_project"]
     assert "June 1993" in cambridge["version_or_date"]
     assert "Sohn (2008)" not in cambridge["title_or_project"]
+
+
+def test_s018_page_31_sibilant_scope_is_explicitly_lenis_only():
+    source = {row["source_id"]: row for row in load_source_register()}["SRC-CAMBRIDGE-KOREAN-IPA"]
+    assert "page 31" in source["review_status"]
+    assert "diphthong beginning [j]" in source["coverage"]
+    assert "/s/" in source["coverage"]
+    assert "fortis /s͈/" in source["limitations_or_next_action"]

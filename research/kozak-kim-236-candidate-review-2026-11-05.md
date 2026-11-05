@@ -32,6 +32,14 @@ The 370-row superset joins to the pinned UGTPHON Korean test split at commit ef0
 - **1 RETAIN:** occurrence 1140 (출산) provisionally retains the existing source-backed R012 form. Independent Korean IPA review is pending; RETAIN is not completed adjudication.
 - **213 not individually adjudicated:** no occurrence-specific disposition was found in the current narrow review registers. The 370-row context ledger's default ABSTAIN / EVIDENCE_LIMITED_DIAGNOSTIC_ONLY is a safe no-change baseline, not an individual review result.
 
+## S018 page-level source check and 236-case Hangul environment crosswalk
+
+Cambridge's primary PDF was inspected directly: Lee (1993), printed p.31, states that /s/ is realized as an alveolopalatal fricative [ɕ] when followed by /i/ or a diphthong beginning [j]. The same sentence describes /z/; it does not describe fortis /s͈/. The PDF's p.31 transcription is Seoul Korean. This source supports the lenis C11 environment, not a blanket fortis rewrite or token-level audio adjudication.
+
+A deterministic Hangul decomposition crosswalk was added to the candidate regression. It counts onset ㅅ before /i/ or a /j/-initial diphthong and coda ㅅ resyllabified before a vowel-initial syllable in the same token. For the 183 candidate rows containing lenis `ɕ→s`, the crosswalk finds 184 lenis source environments: 184 edit operations across 110 token strings and 91 source rows. The two-operation row is `신라시절` (ID 103). `실시간` (ID 551) has one lenis operation plus a separate fortis `ɕ͈→s͈` operation in the same high-front context; that fortis segment is not licensed by S018. A second fortis case, `했을시` (ID 481), is also in a high-front context but remains outside S018's lenis /s/ statement. The full 24-operation fortis stratum remains separately unresolved.
+
+This verifies source-environment compatibility for the 184 lenis edit operations. It does **not** independently confirm the 184 token pronunciations, dialect/speaker realization, corpus annotation, or Ukrainian target. The 22 ABSTAIN rows and 213 rows without individual disposition remain open as recorded.
+
 ## Case-level triage interpretation — review, not confirmation
 
 The 236 rows have been reviewed structurally by occurrence identity, source context, prior disposition, edit signature and provenance. This is a case-family triage, not independent pronunciation adjudication.
