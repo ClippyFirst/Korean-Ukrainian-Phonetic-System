@@ -438,7 +438,7 @@ def test_lenis_sibilant_profile_mismatches_are_limited_to_supported_high_front_c
             for fragment in fragments
         ), row["occurrence_id"]
         supported = 0
-        for char in row["token"]:
+        for char_index, char in enumerate(row["token"]):
             if not ("가" <= char <= "힣"):
                 continue
             syllable = ord(char) - 0xAC00
@@ -448,7 +448,7 @@ def test_lenis_sibilant_profile_mismatches_are_limited_to_supported_high_front_c
                 supported += 1
             coda = syllable % 28
             if coda == 19:
-                next_index = row["token"].index(char) + 1
+                next_index = char_index + 1
                 if next_index < len(row["token"]):
                     next_char = row["token"][next_index]
                     if "가" <= next_char <= "힣":
