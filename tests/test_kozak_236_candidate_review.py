@@ -22,6 +22,7 @@ def test_reconstructed_236_review_ledger_has_exact_membership_and_statuses():
         "RECONSTRUCTED_CANDIDATE_NOT_ORIGINAL_MEMBERSHIP_PROOF" for row in rows)
     assert all(row["source_context_text"] and row["source_context_canonical"] and
         row["source_context_phonemes"] for row in rows)
+    assert all("historical_export_cluster_labels_descriptive_only" in row for row in rows)
     assert all(row["candidate_selection_method"] ==
         "PRE_C11_C12_BROAD_ONLY_AGGREGATE_C01_C10_REPLAY" for row in rows)
 

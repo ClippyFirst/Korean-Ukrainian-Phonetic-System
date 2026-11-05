@@ -34,9 +34,9 @@ The 370-row superset joins to the pinned UGTPHON Korean test split at commit ef0
 
 ## Mismatch profile
 
-The 236 rows contain 207 occurrences carrying the current descriptive C11 sibilant-place/profile-boundary label and 206 carrying the current descriptive C04 aspiration-symbol/segmentation label. These are overlapping labels from a later classification layer, not the historical selector and not per-edit phonological diagnoses.
+The inherited export cluster field carries C11 on 207 of the 236 rows and a historical C04 tag on 206 rows. **The C04 tag is stale:** the current cluster register reports zero C04 residual occurrences and reclassifies the former aspirated-velar set under C12. The 206 inherited C04 labels must not be read as a current classification or as 206 live C04 errors. The review CSV therefore names this field historical_export_cluster_labels_descriptive_only.
 
-The largest individual Broad edit signatures are 184 ɕ→s operations and 24 ɕ͈→s͈ operations. Other differences include ɕ→ʑ, ɕ͈→ʑ, vowel quality/length, fortis-vs-lenis stops, nasal insertion/deletion, glide loss and liquid/nasal realization.
+The largest individual Broad edit signatures are 184 ɕ→s operations and 24 ɕ͈→s͈ operations. The latter are fortis-marked; the documented C11 optional variant is lenis /s/ only and explicitly excludes fortis ㅆ. These 24 operations therefore require a separate review stratum and cannot be treated as covered by the lenis C11 implementation. Other differences include ɕ→ʑ, ɕ͈→ʑ, vowel quality/length, fortis-vs-lenis stops, nasal insertion/deletion, glide loss and liquid/nasal realization.
 
 The strongest aggregate signal is a transcription-profile / sibilant-place question, not evidence for hundreds of independent productive sound-change rules. Repeated forms are material: 아끼셔 occurs 22 times, 스시녀들은 15, 시중도 14 and 신안 10. Occurrence-level repetitions must be grouped by source row, token, speaker/audio and annotation convention before counting independent evidence.
 
@@ -62,3 +62,10 @@ For each occurrence or defensibly grouped token/context family, record:
 - Output: research/kozak-kim-236-candidate-review-2026-11-05.csv
 - Regression: tests/test_kozak_236_candidate_review.py
 - Inputs: the 239-ID candidate snapshot, 370-row context superset, 31-row abstention register and context-adjudication register.
+
+
+## Primary-source check and bibliographic correction
+
+The repository's S018 entry and research source register had inconsistent metadata for the Cambridge Korean IPA illustration. Cambridge's primary page identifies **Hyun Bok Lee**, *Korean*, Journal of the International Phonetic Association **23(1), June 1993, pp. 28–31**, DOI 10.1017/S0025100300004758. The repository had recorded Lee (1999) in data/korean/sources.csv and misattributed the Cambridge source-register row to Sohn (2008). Both metadata records and the C11/C02/C01/C07 references have been corrected to Lee (1993). This citation is not an audio source for any UGTPHON occurrence.
+
+Kang (2010)'s KCI abstract supports context-dependent acoustic coarticulation before /i, ye, ya/ and reports materially different spectral patterns before /yu, yo/. Kong and Kang (2020)'s KCI abstract reports a preliminary 32-speaker Seoul study, with palatalized variants noted before /i/ and speaker-related spectral differences. These sources support a context- and speaker-sensitive review, not an unconditional [ɕ] rewrite for every /j/-initial nucleus or a blanket fortis mapping. Two independent IPA reviews and item-level context adjudication remain required.

@@ -667,3 +667,19 @@ def test_wiktionary_central_similarity_is_secondary_and_cannot_license_productio
     assert source["integration_status"] == "research_only_not_integrated"
     assert "not independent confirmation" in source["limitations_or_next_action"]
     assert "Do not copy" in source["limitations_or_next_action"]
+
+
+def test_s018_korean_ipa_source_matches_cambridge_primary_bibliographic_metadata():
+    with DATA_SOURCE_CATALOG.open("r", encoding="utf-8-sig", newline="") as stream:
+        catalog = {row["source_id"]: row for row in csv.DictReader(stream)}
+    s018 = catalog["S018"]
+    assert s018["author_or_organization"] == "Hyun Bok Lee"
+    assert s018["year"] == "1993"
+    assert s018["locator"] == "Journal of the International Phonetic Association 23(1) pp. 28–31"
+    assert s018["url"] == "https://doi.org/10.1017/S0025100300004758"
+
+    register = {row["source_id"]: row for row in load_source_register()}
+    cambridge = register["SRC-CAMBRIDGE-KOREAN-IPA"]
+    assert "Hyun Bok Lee" in cambridge["title_or_project"]
+    assert "June 1993" in cambridge["version_or_date"]
+    assert "Sohn (2008)" not in cambridge["title_or_project"]
