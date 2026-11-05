@@ -640,3 +640,8 @@ PR [#347](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/3
 | Rows with a non-empty expected fragment | 2,598 |
 
 The dimension-hint counts are multi-label and must not be summed as if they partition cases. The queue remains a triage aid: all 5,286 rows require case-level review, and none is tied to an exact-head observed result. Raw literals are not gold; no IPA/Ukrainian correctness is established. **Status remains PARTIAL INVENTORY.**
+
+
+## 2026-11-05 current verification status
+
+At exact PR head `f2b30e3e64b42fed4ce9a857f76399df87559a12`, the initial browser/web run found three stale assertions (CSV quoting and source-register row/classification counts); they were corrected and the failed jobs rerun. The full tests workflow passed (Python 3.11/3.12/3.13, wheel install, teacher audit, web); system verification passed browser regression/build and Python/data integrity; master corpus artifact generation passed. Multi-engine and three external diagnostic workflows remained in progress at last check. Skipped CharsiuG2P, ByT5 and NIKL inventory jobs remain explicitly unavailable, not passed. Linguistic adjudication remains BLOCKED on qualified independent Korean IPA review.

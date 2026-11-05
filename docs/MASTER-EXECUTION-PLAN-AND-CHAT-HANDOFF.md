@@ -6644,3 +6644,16 @@ Working branch `research/236-candidate-review-2026-11-05`; draft PR #436. At hea
 - Pinned review of Superpowers, Matt Pocock skills and Ponytail is in `docs/ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-05.md`. All three reviewed snapshots are MIT; no third-party code/assets were copied. Adopt requirements clarification, TDD, debugging, exact-head verification, composable procedures and transparent benchmarks; retain project-specific linguistic gates.
 
 Next: inspect completed multi-engine artifact; verify original 239 selector if recoverable; group repeated cases by token/source/context/profile; adjudicate lenis and fortis sibilants separately; only then review Ukrainian targets and rerun post-fix benchmarks. Resolve NIKL item rights and capture authenticity. Repository remains a partial research prototype, not research-certified or release-ready.
+
+
+## 2026-11-05 exact-head CI repair and current verification — f2b30e3e64b42fed4ce9a857f76399df87559a12
+
+The first exact-head run exposed three stale browser-suite assertions, not production-code failures:
+
+1. The NIKL Q&A register test expected a quoted CSV first field, while the canonical source register serializes this row with an unquoted first field. The test now matches the actual canonical CSV row prefix and continues to assert the exact URL, contrast, and rights caveats.
+2. The source-register rights audit expected 178 rows and 9 manual-classification cases. The current source register contains 179 rows and 10 manual-classification cases after adding the separately reviewed Korean IPA source. Expected counts were updated; rights remain open, not cleared.
+3. The CLI row-count assertion was updated from 178 to 179.
+
+Failed browser/web jobs were rerun rather than ignored. At exact head above, these workflows passed: **tests** (Python 3.11/3.12/3.13, wheel install, teacher-corpus audit, web suite), **Verify Korean–Ukrainian system** (browser regression/build and Python regression/data integrity), and **Master table and research corpus artifacts** (corpus generation). The PR's Python/data integrity checks also pass.
+
+The multi-engine diagnostic, external UGTPHON diagnostic, paired native/g2pk comparison and Kiwi/MeCab morphology consensus were still running at the last check. CharsiuG2P, ByT5 and official NIKL metadata inventory remain skipped by explicit workflow policy; they are not passes. No local shell execution was performed in this connector-only session. The PR remains open and unmerged pending the diagnostic run completion and final exact-head review.

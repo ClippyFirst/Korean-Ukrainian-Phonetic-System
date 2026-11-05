@@ -676,3 +676,16 @@ No production-default IPA, Ukrainian target, release, deployment or branch merge
 ### Additional separate S027 context
 
 A second Kang (2010) KCI paper is now registered as S027: *Korean Sibilant /s/ before a High Front and a Round Segment* (Phonetics and Speech Sciences 2(4):59–65; [KCI](https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001509195)). Its abstract describes a distinct labio-palatalized spectral pattern when a high-front and a round segment occur within the same syllable. The KCI article page states CC BY-NC 3.0 Unported; the repository records attribution/noncommercial terms and does not redistribute the PDF. Of the 27 lenis edits outside S019's /i, ye, ya/ set, occurrence 606 (`쇼`, /yo/) is a possible S027-context case. The abstract does not specify a canonical segmental IPA symbol, so this does not authorize [ɕ] or [ɕʷ] as a deterministic output. The other 26 edits remain outside the two reviewed abstract scopes. S027 is citation-only; full text, acoustic measurements and item-level pronunciation adjudication remain outstanding.
+
+
+## 2026-11-05 exact-head CI repair and current verification — f2b30e3e64b42fed4ce9a857f76399df87559a12
+
+The first exact-head run exposed three stale browser-suite assertions, not production-code failures:
+
+1. The NIKL Q&A register test expected a quoted CSV first field, while the canonical source register serializes this row with an unquoted first field. The test now matches the actual canonical CSV row prefix and continues to assert the exact URL, contrast, and rights caveats.
+2. The source-register rights audit expected 178 rows and 9 manual-classification cases. The current source register contains 179 rows and 10 manual-classification cases after adding the separately reviewed Korean IPA source. Expected counts were updated; rights remain open, not cleared.
+3. The CLI row-count assertion was updated from 178 to 179.
+
+Failed browser/web jobs were rerun rather than ignored. At exact head above, these workflows passed: **tests** (Python 3.11/3.12/3.13, wheel install, teacher-corpus audit, web suite), **Verify Korean–Ukrainian system** (browser regression/build and Python regression/data integrity), and **Master table and research corpus artifacts** (corpus generation). The PR's Python/data integrity checks also pass.
+
+The multi-engine diagnostic, external UGTPHON diagnostic, paired native/g2pk comparison and Kiwi/MeCab morphology consensus were still running at the last check. CharsiuG2P, ByT5 and official NIKL metadata inventory remain skipped by explicit workflow policy; they are not passes. No local shell execution was performed in this connector-only session. The PR remains open and unmerged pending the diagnostic run completion and final exact-head review.

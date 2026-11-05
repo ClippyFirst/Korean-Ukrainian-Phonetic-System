@@ -161,3 +161,8 @@ The paired Native/g2pk result on the 2,698 shared tokens is Native 1,431/2,698 (
 The artifact's training-readiness report records 644 lexical rows, 46 additions and a 24-case frozen holdout, but zero independently adjudicated IPA gold labels in additions and zero holdout IPA gold labels. `supervised_ipa_training_ready=false`. Reviewer A/B packets contain the same 24 source cases and no engine outputs; they are blank and prohibit tuning use. Independent Korean IPA annotation is therefore still the next evidence gate, not model training.
 
 At the latest code/test checkpoint, Python 3.11/3.12/3.13, browser tests/build, wheel install, teacher-corpus audit, paired UGTPHON and core system verification passed. The updated multi-engine rerun was still in progress; CharsiuG2P, ByT5 and official NIKL metadata jobs were skipped by policy, not passed. Exact-head results must be read again after the current documentation commits.
+
+
+## Latest exact-head verification
+
+At `f2b30e3e64b42fed4ce9a857f76399df87559a12`, CI exposed and then fixed three stale test expectations caused by the current canonical source-register CSV (unquoted first field, 179 rows, 10 manual-classification rows). The rerun passed the full tests workflow including Python 3.11/3.12/3.13, wheel install, teacher-corpus audit and web; system verification passed browser regression/build and Python regression/data integrity; master corpus artifact generation passed. The multi-engine, external UGTPHON, paired-engine and morphology diagnostics were still in progress at the last check. CharsiuG2P, ByT5 and NIKL metadata jobs are skipped by policy, not passed. No local pytest/npm was run here.
