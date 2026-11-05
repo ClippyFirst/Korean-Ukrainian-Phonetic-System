@@ -369,4 +369,4 @@ def test_nikl_dictionary_confirms_exact_yusaseong_fortis_sibilant():
     assert row["candidate_disposition"] == "RULE_CONFIRMED_STANDARD_VARIANT"
     assert "gives the pronunciation [유ː사썽]" in row["candidate_disposition_basis"]
     assert "SRC-NIKL-KRDICT-YUSASEONG" in row["candidate_disposition_basis"]
-    assert "no productive fortition rule for the suffix -성" in row["candidate_disposition_basis"]
+    assert "It does not establish a productive fortition rule for the suffix -성" in row["candidate_disposition_basis"]
