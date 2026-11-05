@@ -1,12 +1,12 @@
-## 2026-11-05 — Independent evidence update: eight confirmed, nine named abstentions
+## 2026-11-05 — Independent evidence update: seven confirmed, ten named abstentions
 
 **Branch:** research/236-candidate-review-2026-11-05 (single continuing working branch). **PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436), draft/open. The reconstructed 236-row baseline is retained unchanged.
 
 ### Current disposition
 
-- **Eight RULE_CONFIRMED_STANDARD_VARIANT occurrences:** IDs 78 (오조오억배), 341 (그놈의), 1140 (출산), 1406 (팔자걸음), 1527 (보일거라), 2001 (물가로), 2010 (혐오증), and 2533 (안할듯).
-- **23 ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW; 205 NOT_INDIVIDUALLY_ADJUDICATED; zero pending RETAIN.** Thus 228 occurrences remain unresolved. Historical membership is reconstructed from pinned replay, not proven original-selector membership.
-- ID 78: NIKL Rule 4 classifies ㅓ as a monophthong; the orthographic form 오억 contains ㅓ, not ㅕ. The IPA-Dict-derived Broad comparator inserts /j/ before /ʌ/; the standard broad form preserves the written monophthong. This is normative evidence only, not a claim about transient speaker-specific transitions.
+- **Seven RULE_CONFIRMED_STANDARD_VARIANT occurrences:** IDs 341 (그놈의), 1140 (출산), 1406 (팔자걸음), 1527 (보일거라), 2001 (물가로), 2010 (혐오증), and 2533 (안할듯).
+- **24 ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW; 205 NOT_INDIVIDUALLY_ADJUDICATED; zero pending RETAIN.** Thus 229 occurrences remain unresolved. Historical membership is reconstructed from pinned replay, not proven original-selector membership.
+- ID 78 (오조오억배) was returned to ABSTAIN. NIKL Rule 4 says ㅓ is a monophthong, but this does not rule out a separate glide or transitional interval in a V.V sequence. The literature search found variable Korean glide formation/insertion and possible /w/ insertion after /o,u/ (Shin 2013; Im 2011), plus acoustic work on Korean VV sequences and glides (Kang 2013; Suh & Hwang 2016; Hyun & Lee 2015). No located abstract directly tests 오조오억배 or /o.ʌ/ in this numeral compound; the comparator's /j/ remains unadjudicated pending token audio or independent Korean IPA review.
 - ID 341: NIKL Rule 5 supports [e] as an accepted genitive-particle 의 variant; context is 그놈의.
 - ID 1140: NIKL Basic Dictionary directly lists 출산[출싼], upgrading the historical provisional R012 RETAIN; exact lexical attestation only.
 - ID 1406: NIKL Basic Dictionary lists 팔자[팔짜]; Rule 26 licenses ㄹ+ㅈ fortition in this Sino-Korean morpheme.
@@ -21,8 +21,8 @@
 
 ### Evidence and verification
 
-- NIKL Standard Pronunciation Rules 4, 5, 26 and 27; NIKL Basic Dictionary entries for 출산, 팔자 and 혐오증; official NIKL educational examples for 물가 and Rule 27; NIKL Q&A 310899 and 317798; Jun (2015), DOI 10.1017/S0952675715000275.
-- ID 78 and ID 1527 are recorded in the context-adjudication CSV and generated candidate ledger. Regression tests cover the monophthong and dependent-noun cases.
+- NIKL Standard Pronunciation Rules 4, 5, 26 and 27; Shin (2013), Im (2011), Kang (2013), Kim & Hong (2025, DOI 10.30961/lr.2025.61.1.1; abstract unavailable), Suh & Hwang (2016, DOI 10.1159/000444189), Hyun & Lee (2015, DOI 10.15811/JKL.2015..75.002); NIKL Basic Dictionary entries for 출산, 팔자 and 혐오증; official NIKL educational examples for 물가 and Rule 27; NIKL Q&A 310899 and 317798; Jun (2015), DOI 10.1017/S0952675715000275.
+- ID 78 is recorded as an evidence-limited abstention; ID 1527 is a Rule 27 confirmation. The generated candidate ledger preserves the original ID 78 abstention rationale.
 - Generator input SHA must match the latest context-adjudication blob; the checked-in CSV must equal deterministic generator output.
 - GitHub Actions exact-head checks are pending for the latest update. Local pytest/npm are not run in this connector-only session.
 - Research readiness remains partial; no production or release gate is claimed complete.
