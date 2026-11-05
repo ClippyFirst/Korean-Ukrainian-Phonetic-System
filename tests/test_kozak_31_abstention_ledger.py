@@ -31,6 +31,10 @@ def test_all_31_unresolved_broad_queue_rows_have_individual_abstentions():
         assert row["corpus_commit"] == "ef0d5a09c2ea1874c7206020f875cbd9cfea2f54"
         assert row["queue_blob_sha"] == "fc331b42bbfd31700892d1f7df04dcb8578461f5"
         assert row["kozak_engine_commit"] == "c0cbe3740e734c87d3202cca496b83d9603ea218"
+        assert row["kozak_profile"] == (
+            "clippyfirst-korean-broad-v1@1 (benchmark run 41797143671; "
+            "engine commit c0cbe3740e734c87d3202cca496b83d9603ea218)"
+        )
         assert row["normalizer_version"] == (
             "normalizeIpa+normalizeIpaBroadCandidateWithLoss@"
             "5a1ea3c2e99ba20303122bb124a6aaec22e56ad2; "
