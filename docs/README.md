@@ -45,7 +45,7 @@ This page is the entry point for project documentation. It distinguishes current
 - `schemas/` — machine-readable JSON schemas.
 - `scripts/` — generators, importers, audits, benchmarks and research tooling.
 - `tests/` — Python and browser tests, fixtures and corpora.
-- `research/` — active research records, evidence queues, decisions, source register and acceptance gates.
+- `research/` — active research records, evidence queues, decisions, source register and acceptance gates; the current 31-row abstention register records row-level production dispositions for the 36-row Broad queue.
 - `docs/` — architecture, methodology, user/developer guidance, audit reports and execution history; use [the structure guide](REPOSITORY-STRUCTURE.md) and this index rather than guessing from filenames.
 - `.github/workflows/` — CI, benchmark, corpus, Pages and research workflows.
 - `public/` — static assets and third-party notices/licenses.
