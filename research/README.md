@@ -73,7 +73,7 @@ Using the pinned `naver-ai/UGTPHON:ko/test.json` source at commit `ef0d5a09c2ea1
 
 One additional queue item, `출산` (UGTPHON row `dc_inside_2107`), is **retained under the existing Kozak Kim R012 / NIKL §26 license** pending independent review: the Broad-v2 comparator omits fortis /s͈/, but that alone is not sufficient reason to remove a source-backed rule. The full user-generated context is not duplicated in the ledger because it contains profanity; the pinned row ID is retained.
 
-The 36-row queue therefore has four implemented exact-form corrections, one provisional retain decision, and 31 rows not individually adjudicated in this pass. The complete hash-pinned 239-occurrence/context ledger is still missing, and the full post-fix UGTPHON benchmark has not been rerun. Do not claim that all 239 are fixed or that old benchmark metrics measure the new code.
+The 36-row queue now has complete recorded dispositions: four exact-form R013 fixes, one provisional R012 retain (`출산`), and 31 individually reasoned `ABSTAIN` decisions. These are conservative production dispositions, not independent IPA judgments. The full hash-pinned 239-occurrence/context ledger remains blocked on exact historical membership and fragment-to-C01–C10 assignment; the 36-row queue is not a substitute. The full post-fix UGTPHON benchmark has not been rerun. Do not claim that all 239 are fixed or that old benchmark metrics measure the new code.
 
 
 ## 2026-11-05 follow-up — queue dispositions and trace provenance
@@ -82,7 +82,7 @@ The 36-row narrow Broad queue now has explicit row-level dispositions: four exac
 
 Python `RuleTrace` now exposes per-occurrence `applied_occurrences` and `license_contexts` (including matched source license, source pair, word form, index and before/after state); the original scalar `license_context` remains for compatibility.
 
-The full historical **239** population remains separate and BLOCKED: the original exact 239 membership and historical run artifact are not encoded in the current 1,267-fragment export or 36-row queue. A complete hash-pinned ledger still requires the original benchmark occurrence artifact or an exact reproducible reconstruction with its historical engine commit, normalizer, profile and source contexts. No placeholder or synthetic 239-row ledger has been represented as complete.
+The full historical **239** population remains separate and BLOCKED. The original 2026-11-02 multi-engine artifact has been recovered and hash-pinned (run `41471244424`, artifact `13156351613`, SHA-256 `749ac9a2b9db96c1e27828919afe05ef4320e35ca6a91ab2038c1ff3e9d04c69`; run-head `4f3f307c5bb056bce3b0aedc8ab07e0010eaa695`). It contains 2,703 stable occurrence records per engine and pins the UGTPHON source revision, Native IPA profile, Broad sensitivity profile, normalization code snapshot and g2pK 0.9.4. What remains unrecovered is the exact 239-member ID set or a reproducible historical per-fragment C01–C10 assignment/selection predicate. The 1,267-row fragment export and 36-row current queue do not encode that membership. Do not select an arbitrary subset or create placeholder rows.
 
 
 ## 2026-11-05 — recovered historical benchmark source artifact
@@ -92,3 +92,9 @@ The original 2026-11-02 multi-engine benchmark artifact has now been recovered a
 This closes the *artifact recovery* part of the 239 task, but not the 239-row ledger. The tracked 1,267-row mismatch export does not preserve a per-fragment C01–C10 assignment or an explicit historical-239 membership flag. The original selection predicate/assignment snapshot must be reproduced and shown to yield exactly 239 stable IDs before source contexts and individual decisions can be joined. Do not force a 239-row selection from the aggregate count.
 
 The 31 current-queue abstention rationales now identify each occurrence, source row and its concrete unmatched Broad edit(s); all 31 decisions remain conservative evidence-status abstentions, not independent IPA judgments. The recovered historical benchmark ZIP has been hash-verified, but inspection of the pinned exporter shows that its stored cluster labels are only occurrence-level unions over strict plus Broad edits. The union cannot reconstruct the historical per-fragment C01–C10 membership predicate; see the recovery manifest for the exact negative reconstruction counts and remaining acceptance condition.
+
+## 2026-11-05 verification refresh — current `main`
+
+Current `main` is `d68cb09e12eb8b71b264775f2cf7ac6e9c2a51c5` (single branch; no open PRs). Exact-head GitHub Actions on this commit: tests `42000327552` PASS (Python 3.11/3.12/3.13, wheel install, teacher-corpus audit, browser tests); System Verify `42000327509` PASS (Python and browser tests/build; live NIKL metadata-only inventory SKIPPED); master/research artifacts `42000327383` PASS; Pages deployment `42000327385` PASS. These checks validate software and generated artifacts, not independent IPA correctness, Ukrainian target quality, or source-item rights.
+
+The narrow 36-row queue's disposition register is complete (4 FIX, 1 provisional RETAIN, 31 ABSTAIN); the five source-context adjudication rows are separately recorded in `kozak-kim-context-adjudication-2026-11-05.csv`. Python `RuleTrace` per-occurrence `applied_occurrences` and `license_contexts` are implemented and covered by the verified test suite. The historical 239-row ledger remains BLOCKED solely on exact 239 membership / historical fragment assignment reconstruction; the recovered artifact itself is no longer missing.
