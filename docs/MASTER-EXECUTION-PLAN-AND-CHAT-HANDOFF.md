@@ -1,4 +1,4 @@
-## 2026-11-05 — Independent evidence update: four confirmed cases, six evidence-limited abstentions
+## 2026-11-05 — Independent evidence update: four confirmed cases, nine named evidence-limited abstentions
 
 **Branch:** `research/236-candidate-review-2026-11-05` (same working branch; no parallel branch created). **PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436), still draft/open. This entry supersedes earlier same-day interim counts while preserving the original 236-row baseline.
 
