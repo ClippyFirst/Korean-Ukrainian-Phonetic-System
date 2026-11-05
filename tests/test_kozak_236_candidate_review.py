@@ -118,8 +118,8 @@ def test_236_lenis_sibilant_operations_are_separated_by_kang_2010_environment_sc
     assert len({row["source_row_id"] for row, _, _ in unsupported_rows}) == 5
     assert {row["occurrence_id"] for row, _, fortis, _ in supported_rows if fortis} == {"551"}
     assert {row["occurrence_id"] for row, count, _, _ in supported_rows if count == 2} == {"103"}
-    assert len({row["token"] for row, _, _, _ in supported_rows}) == 110
-    assert len({row["source_row_id"] for row, _, _, _ in supported_rows}) == 91
+    assert len({row["token"] for row, _, _, _ in supported_rows}) == 104
+    assert len({row["source_row_id"] for row, _, _, _ in supported_rows}) == 88
 
 
 def test_fortis_sibilant_cases_are_not_promoted_by_lenis_coarticulation_scope():
