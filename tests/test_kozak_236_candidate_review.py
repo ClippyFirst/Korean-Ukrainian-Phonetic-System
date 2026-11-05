@@ -15,10 +15,10 @@ def test_reconstructed_236_review_ledger_has_exact_membership_and_statuses():
     assert len(rows) == 236
     assert len({row["occurrence_id"] for row in rows}) == 236
     assert Counter(row["candidate_disposition"] for row in rows) == {
-        "NOT_INDIVIDUALLY_ADJUDICATED": 205,
+        "NOT_INDIVIDUALLY_ADJUDICATED": 204,
         "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 24,
         "RETAIN_PENDING_INDEPENDENT_IPA_REVIEW": 0,
-        "RULE_CONFIRMED_STANDARD_VARIANT": 7,
+        "RULE_CONFIRMED_STANDARD_VARIANT": 8,
     }
     assert all(row["historical_membership_confidence"] ==
         "RECONSTRUCTED_CANDIDATE_NOT_ORIGINAL_MEMBERSHIP_PROOF" for row in rows)
@@ -333,4 +333,17 @@ def test_nikl_rule_27_adjudicates_boileul_geora_exact_morphosyntactic_context():
     assert "할 것을 [할꺼슬]" in row["candidate_disposition_basis"]
     assert "no general ㄹ+ㄱ rewrite" in row["candidate_disposition_basis"]
     assert "SRC-NIKL-QNA-310899" in row["candidate_disposition_basis"]
+    assert row["prior_independent_ipa_review_status"] == "NOT_PERFORMED"
+
+
+def test_nikl_rule_4_rejects_unlicensed_y_glide_in_oeok():
+    rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
+    row = rows["78"]
+    assert row["token"] == "오조오억배"
+    assert "오억" in row["source_context_text"]
+    assert row["candidate_disposition"] == "RULE_CONFIRMED_STANDARD_VARIANT"
+    assert "Standard Pronunciation Rule 4" in row["candidate_disposition_basis"]
+    assert "ㅓ is a monophthong" in row["candidate_disposition_basis"]
+    assert "not 역 with ㅕ" in row["candidate_disposition_basis"]
+    assert "no source-supported /j/ phoneme" in row["candidate_disposition_basis"]
     assert row["prior_independent_ipa_review_status"] == "NOT_PERFORMED"
