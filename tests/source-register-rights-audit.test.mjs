@@ -56,12 +56,12 @@ test('real source register is structurally valid and unresolved rights remain vi
   const csv = readFileSync(new URL('../research/SOURCE-REGISTER.csv', import.meta.url), 'utf8');
   const report = auditSourceRegister(csv);
   assert.equal(report.structuralErrorCount, 0, JSON.stringify(report.structuralErrors));
-  assert.equal(report.sourceRegisterRows, 180);
+  assert.equal(report.sourceRegisterRows, 182);
   assert.deepEqual(report.rightsClassificationCounts, {
     ITEM_LEVEL_LICENSE_RECORDED: 3,
     NOT_APPLICABLE_RECORDED: 1,
-    REVIEW_REQUIRED: 166,
-    MANUAL_CLASSIFICATION_REQUIRED: 10,
+    REVIEW_REQUIRED: 167,
+    MANUAL_CLASSIFICATION_REQUIRED: 11,
   });
   assert.ok(report.rightsClassificationCounts.REVIEW_REQUIRED > 0);
   assert.ok(report.rightsClassificationCounts.MANUAL_CLASSIFICATION_REQUIRED > 0);
@@ -85,6 +85,8 @@ test('real source register is structurally valid and unresolved rights remain vi
   assert.ok(unresolvedIds.has('SRC-NIKL-EDU-2021-DEPENDENT-SI'));
   assert.ok(unresolvedIds.has('SRC-KCI-ITO-2007-MORPHEME-STRUCTURE'));
   assert.ok(unresolvedIds.has('SRC-NIKL-QNA-319525'));
+  assert.ok(unresolvedIds.has('SRC-NIKL-QNA-334585'));
+  assert.ok(unresolvedIds.has('SRC-JUN15'));
   assert.ok(unresolvedIds.has('SRC-NIKL-KRDICT-62281'));
   assert.ok(unresolvedIds.has('SRC-NIKL-EDU-MOSKVA'));
   assert.ok(unresolvedIds.has('SRC-NIKL-KRDICT-82835'));
@@ -99,7 +101,7 @@ test('CLI reports structure by default and keeps strict rights acceptance blocke
   const normal = spawnSync(process.execPath, [script, '--json'], { cwd: process.cwd(), encoding: 'utf8' });
   assert.equal(normal.status, 0, normal.stderr);
   const report = JSON.parse(normal.stdout);
-  assert.equal(report.sourceRegisterRows, 180);
+  assert.equal(report.sourceRegisterRows, 182);
   assert.equal(report.structuralErrorCount, 0);
   assert.ok(report.itemLevelRightsNotClosed.length > 0);
 
