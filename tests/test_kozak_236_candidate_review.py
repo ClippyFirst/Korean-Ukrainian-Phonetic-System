@@ -224,12 +224,12 @@ def test_nikl_rule_5_adjudicates_genitive_ui_variant_without_claiming_acoustic_g
     assert row["prior_independent_ipa_review_status"] == "NOT_PERFORMED"
 
 
-def test_n_insertion_candidates_remain_abstained_without_word_specific_evidence():
+def test_n_insertion_candidates_are_resolved_by_nikl_rule_29_compound_evidence():
     rows = MODULE.build_rows(ROOT)
     selected = [row for row in rows if row["occurrence_id"] in {"1816", "1843", "1870"}]
     assert len(selected) == 3
     assert {row["token"] for row in selected} == {"연전연패"}
-    assert all(row["candidate_disposition"] == "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW" for row in selected)
+    assert all(row["candidate_disposition"] == "RULE_CONFIRMED_STANDARD_VARIANT" for row in selected)
 
 
 def test_nikl_exact_lexical_fortition_adjudicates_water_price_compound_only():
