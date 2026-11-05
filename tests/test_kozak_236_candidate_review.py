@@ -115,6 +115,15 @@ def test_fortis_sibilant_cases_are_not_promoted_by_s018_lenis_scope():
     assert fortis_context_ids == {"481", "551"}
 
 
+def _has_orthographic_fortis_onset(token: str) -> bool:
+    for char in token:
+        codepoint = ord(char)
+        if 0xAC00 <= codepoint <= 0xD7A3:
+            onset_index = (codepoint - 0xAC00) // (21 * 28)
+            if _HANGUL_ONSETS[onset_index] == "ㅆ":
+                return True
+    return False
+
 def _has_lateral_triggered_sibilant_fortition(token: str) -> bool:
     syllables = []
     for char in token:
@@ -144,7 +153,7 @@ def test_24_fortis_sibilant_operations_are_separate_orthographic_or_coda_trigger
         if not count:
             continue
         fortis_rows.append(row)
-        if "ㅆ" in row["token"]:
+        if _has_orthographic_fortis_onset(row["token"]):
             orthographic_fortis_ops += count
         elif _has_lateral_triggered_sibilant_fortition(row["token"]):
             coda_triggered_ops += count
