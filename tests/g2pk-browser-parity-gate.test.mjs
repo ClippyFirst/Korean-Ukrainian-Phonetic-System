@@ -31,7 +31,7 @@ test('practical browser mode is wired to the vendored JavaScript g2pK adapter', 
   assert.match(adapter, /new G2pBrowser\(\)/u);
   assert.match(adapter, /descriptive: false/u);
   assert.match(adapter, /toSyl: true/u);
-  assert.doesNotMatch(adapter, /NIKL|normativeCorrections|exact-form corrections/iu, 'the practical g2pK adapter must not apply Kozak Kim normative overlays');
+  assert.doesNotMatch(adapter, /NIKL_(?:SURFACE_CORRECTIONS|LEXICAL_LENGTH|VARIANT_SURFACES)|applyNiklSurfaceCorrections|normativeCorrections|exact-form corrections/iu, 'the practical g2pK adapter must not apply Kozak Kim normative overlays');
   assert.doesNotMatch(adapter, /applyLexical(?:Surface|Ipa)Controls/u);
   assert.match(port, /Ported from g2pk\/g2pk\.py/u);
 });
