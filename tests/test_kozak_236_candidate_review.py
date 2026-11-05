@@ -256,12 +256,12 @@ def test_nikl_surface_sources_do_not_override_broad_profile_sibilant_convention(
 
     row = rows["538"]
     assert row["token"] == "멋있어"
-    assert row["candidate_disposition"] == "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW"
-    assert "SRC-NIKL-QNA-306166" in row["candidate_disposition_basis"]
+    assert row["candidate_disposition"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
+    assert "NIKL Q&A 306166" in row["candidate_disposition_basis"]
     assert "[머시써]" in row["candidate_disposition_basis"]
-    assert "SRC-IPA-DICT-KO" in row["candidate_disposition_basis"]
-    assert row["prior_individual_reason_code"] == "HANGUL_SURFACE_EVIDENCE_NOT_IPA"
-    assert row["prior_independent_ipa_review_status"].startswith("NIKL_Hangul_surface_attestation_only")
+    assert "Kang (2010)" in row["candidate_disposition_basis"]
+    assert row["prior_individual_reason_code"] == "LENIS_SIBILANT_BROAD_PROFILE_CONVENTION"
+    assert row["prior_independent_ipa_review_status"] == "profile_convention_adjudicated; token_specific_acoustic_IPA_review_not_performed"
 
 
 def test_nikl_dictionary_fortis_affricate_confirms_hyeomojeung_only():
@@ -444,8 +444,19 @@ def test_lenis_sibilant_profile_mismatches_are_limited_to_supported_high_front_c
             syllable = ord(char) - 0xAC00
             onset = syllable // 588
             nucleus = (syllable % 588) // 28
-            if onset == 9 and nucleus in {2, 19, 20}:  # ㅅ + ㅑ/ㅖ/ㅣ
+            if onset == 9 and nucleus in {2, 19, 20}:  # onset ㅅ + ㅑ/ㅖ/ㅣ
                 supported += 1
+            coda = syllable % 28
+            if coda == 19:
+                next_index = row["token"].index(char) + 1
+                if next_index < len(row["token"]):
+                    next_char = row["token"][next_index]
+                    if "가" <= next_char <= "힣":
+                        next_syllable = ord(next_char) - 0xAC00
+                        next_onset = next_syllable // 588
+                        next_nucleus = (next_syllable % 588) // 28
+                        if next_onset == 11 and next_nucleus in {2, 19, 20}:  # coda ㅅ resyllabified before ㅑ/ㅖ/ㅣ
+                            supported += 1
         assert supported == len(fragments), row["occurrence_id"]
         assert row["prior_independent_ipa_review_status"] == "profile_convention_adjudicated; token_specific_acoustic_IPA_review_not_performed"
 
@@ -530,7 +541,7 @@ def test_two_additional_liaison_lenis_sibilants_are_profile_only():
         assert row["candidate_disposition"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
         assert row["prior_individual_reason_code"] == "LENIS_SIBILANT_BROAD_PROFILE_CONVENTION"
         assert "optional coarticulation" in row["candidate_disposition_basis"]
-        assert "Kang (2010, S019)" in row["candidate_disposition_basis"]
+        assert "Kang (2010)" in row["candidate_disposition_basis"]
         assert row["prior_independent_ipa_review_status"].endswith("token_specific_acoustic_IPA_review_not_performed")
 
 
@@ -543,7 +554,7 @@ def test_first_romance_n_insertion_remains_prosody_limited_abstention():
     assert "[천녀내]" in row["candidate_disposition_basis"]
     assert "[첟#여내]" in row["candidate_disposition_basis"]
     assert "no spacing/prosody/audio annotation" in row["candidate_disposition_basis"]
-    assert "SRC-NIKL-QNA-316146" in row["candidate_disposition_basis"]
+    assert "NIKL Q&A 316146" in row["candidate_disposition_basis"]
 
 
 def test_mid_front_vowel_merger_is_profile_only_for_june_daero():
