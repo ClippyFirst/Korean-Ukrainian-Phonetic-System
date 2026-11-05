@@ -34,6 +34,12 @@ def test_all_31_unresolved_broad_queue_rows_have_individual_abstentions():
         assert row["normalizer_version"] == "NOT_RECOVERED_FROM_HISTORICAL_QUEUE"
         assert row["individual_rationale"]
         assert row["reason_code"]
+        assert row["occurrence_id"] in row["individual_rationale"]
+        assert row["source_row_id"] in row["individual_rationale"]
+
+    # Each disposition explains the concrete unmatched fragment(s) for its row;
+    # the common reason code does not substitute for occurrence-specific rationale.
+    assert len({row["individual_rationale"] for row in ledger}) == 31
 
 
 def test_31_row_abstentions_do_not_claim_to_be_the_historical_239_population():
