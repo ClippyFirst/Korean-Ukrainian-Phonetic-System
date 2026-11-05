@@ -319,4 +319,4 @@ def test_nikl_rule_27_confirms_connected_anhaldeut():
     assert "Rule 27" in row["candidate_disposition_basis"]
     assert "할 듯하다[할뜨타다]" in row["candidate_disposition_basis"]
     assert "SRC-NIKL-QNA-317798" in row["candidate_disposition_basis"]
-    assert "a pause can license the plain consonant" in row["candidate_disposition_basis"]
+    assert "pause can license the plain consonant" in row["candidate_disposition_basis"]
