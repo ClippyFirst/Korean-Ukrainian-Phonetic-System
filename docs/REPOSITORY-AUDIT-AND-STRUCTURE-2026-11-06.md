@@ -99,5 +99,5 @@ The repository did not need a wholesale directory redesign. It needed a clear ro
 - PR: [#437](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/437), open, not merged.
 - Diff: 13 files across five commits (see the PR's current diff statistics).
 - Research PR #436 and its branch were not modified.
-- The two earlier verification attempts failed on newly added structural assertions/regex syntax; those defects were corrected, and the exact final head passed run 42119824485. They are retained here as implementation history, not hidden.
+- The two earlier verification attempts failed on newly added structural assertions/regex syntax; those defects were corrected, and the exact content head passed run 42120139297. They are retained here as implementation history, not hidden.
 - Merge and any future physical documentation-directory migration remain unperformed. The current PR is ready for human review, subject to normal repository review/merge policy.
