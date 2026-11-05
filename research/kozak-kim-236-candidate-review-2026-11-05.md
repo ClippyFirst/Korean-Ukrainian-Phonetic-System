@@ -8,6 +8,8 @@
 
 **Full-text glide evidence reviewed 2026-11-05:** Kim & Hong (2025) [Kim25e], DOI 10.30961/lr.2025.61.1.1, tests 기억–기역 and 보안–보완 with 10 male speakers, not 체험, 오억, or numeral compounds. Its transition segmentation is not an independent diagnostic for a phonological glide; the 보완 difference is attributed mainly to longer preservation of /o/ rounding. Kang (2010) [Kan10b], DOI 10.3765/BLS.V36I1.3910, examines directly adjacent VV sequences; /i+ʌ/ and /u+ʌ/ have optional glide descriptions, but its nonce-word experiment measures duration and does not establish a categorical glide rule. It does not test /e.hʌ/ in 체험, where /h/ separates the vowels.
 
+- Kim et al. (2021) [Kim21c], DOI 10.12963/csd.21815, full text reviewed. EPG on five speakers finds more posterior medial-groove row for /s*/ before /i/ than /a/ descriptively, but RMG was excluded from statistical testing and the paper does not classify tokens as [ɕ͈] versus [s͈]. Thus all 24 fortis `ɕ͈→s͈` operations remain unresolved; lenis /s/ evidence is not transferred to fortis /s͈/.
+
 **Retained abstentions:** ID 78 `오조오억배` (no direct study of this numeral sequence); IDs 257, 813, 853 `체험` (`험` contains ㅓ, not ㅕ; Rule 5's ㅕ argument does not apply); IDs 1816, 1843, 1870 `연전연패` (variable n-insertion, no item-specific evidence); sibilant cases outside the exact lenis contexts; and any source-Hangul-only case where the IPA contrast cannot be settled.
 
 **Interpretation:** 10 normatively supported lexical/rule resolutions + 153 transcription-profile reconciliations; not 163 acoustic gold labels. No production IPA, Ukrainian target, benchmark gold, or runtime rule changed. Full current details and source evidence are in the master handoff's current snapshot and the generated 236-row ledger.
