@@ -385,7 +385,7 @@ def test_mental_patient_occurrence_is_closed_by_exact_r014_and_broad_profile_evi
     assert "정신병자[정신뼝자]" in row["candidate_disposition_basis"]
     assert "R014:compound:정신병자네:신>병" in row["candidate_disposition_basis"]
     assert "keeps lenis /s/ canonical" in row["candidate_disposition_basis"]
-    assert "not a demonstrated phonemic error" in row["candidate_disposition_basis"]
+    assert "not a categorical phoneme change" in row["candidate_disposition_basis"]
 
     current = phoneticize_korean("정신병자네")
     assert current["surface_hangul"] == "정신뼝자네"
