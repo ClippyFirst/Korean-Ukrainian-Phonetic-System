@@ -410,7 +410,7 @@ def test_two_eopda_occurrences_are_profile_mismatches_not_acoustic_gold():
         assert "Lee (1993)" in row["candidate_disposition_basis"]
         assert "/ʌː/" in row["candidate_disposition_basis"]
         assert "/ɘː/" in row["candidate_disposition_basis"]
-        assert "not a token-specific acoustic adjudication" in row["candidate_disposition_basis"]
+        assert "not as a token-specific acoustic adjudication" in row["candidate_disposition_basis"]
 
     current = phoneticize_korean("없다")
     assert current["ipa"]["ipa"] == "ʌːp̚.t͈a"
