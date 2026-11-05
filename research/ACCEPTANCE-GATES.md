@@ -1,3 +1,25 @@
+# 2026-11-05 — Current 236-candidate evidence gate (supersedes earlier interim counts)
+
+**Working branch:** `research/236-candidate-review-2026-11-05` (single continuation branch). **Draft PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436). The historical 236-row occurrence baseline remains intact.
+
+| Disposition | Occurrences | Meaning |
+|---|---:|---|
+| `RULE_CONFIRMED_STANDARD_VARIANT` | 15 | Exact official rule or lexical standard-form evidence; not speaker-specific audio |
+| `PROFILE_CONVENTION_MISMATCH_CONFIRMED` | 181 | Exact bounded broad/narrow profile or documented-variation reconciliation; not speaker-specific narrow IPA |
+| `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW` | 12 | Evidence is insufficient to choose an individual IPA realization |
+| `NOT_INDIVIDUALLY_ADJUDICATED` | 28 | Individual evidence review remains incomplete |
+| **Total** | **236** | All rows retained for provenance |
+
+**196/236 are dispositioned; 40/236 remain unresolved.** None of the 236 has independent speaker-level acoustic IPA gold. Do not describe the 181 profile cases as independent pronunciation confirmations. The three `연전연패` occurrences (1816/1843/1870) are one source-row/token family, not three independent speakers. The historical 236 membership is reconstructed from pinned replay, not proven original-selector membership.
+
+**Current source register:** 207 records; 3 item-level licenses, 1 not applicable, 182 rights-review required, and 21 manual-classification required (203 remain open). New official negative controls are registered for NIKL Q&A 332662 (`쇼`: no standardized foreign-word pronunciation/IPA gold) and Q&A 328785 (Rule 29 phonological shape alone does not guarantee n-insertion). Kim & Hong (2025) full-text scope is corrected: within-word /iə~ijə/ and /oa~owa/ pairs, not the candidate's /o.ʌ/ numeral boundary.
+
+**Evidence constraints:** no production phonology, IPA gold, Ukrainian target, or benchmark gold changed. IDs 643 (`홍콩영화들`) and 1805/1832/1859 (`한국여자로`) remain open because Rule 29 needs exact lexical/morphological and phrase/prosodic licensing; the official negative control says the segmental shape alone is insufficient. ID 78 (`오조오억배`) remains ABSTAIN because the full-text hiatus study does not test /o.ʌ/ or numeral compounds. ID 606 (`쇼`) remains unadjudicated because NIKL supplies no standard pronunciation entry and no narrow IPA.
+
+**Verification:** the preceding exact-head CI run failed in the web and Python 3.13 suites because two newly added source-register rows had unquoted commas; Python 3.11/3.12 jobs were cancelled. The defect is fixed: all 207 source-register rows now parse as exactly 12 columns. Wheel-install and teacher-corpus-audit passed on the preceding head; corpus generation/extraction passed. **A fresh exact-head CI run on the corrected current head is not yet visible.** Local pytest/npm were not run. CharsiuG2P/ByT5/metadata-only jobs are skipped by policy, not passed.
+
+---
+
 ## 2026-11-05 exact-head continuation — 236-candidate review and comparator status
 
 **PR #436 head:** `169e008bd0aabee34efe05385bcc5f6179f4cc70`. The reproducible 236-row inventory and bibliographic correction are covered by exact-head regressions. Python 3.11/3.12/3.13, browser regression/build, wheel install, teacher-corpus audit, web, paired UGTPHON, pinned UGTPHON, Kiwi/MeCab morphology, corpus generation, external IPA diagnostic, research artifacts and test-case extraction passed. The multi-engine IPA comparison remains in progress. CharsiuG2P, ByT5 and official NIKL metadata-only jobs were skipped by policy; they are not passes. Local pytest/npm were not run.
