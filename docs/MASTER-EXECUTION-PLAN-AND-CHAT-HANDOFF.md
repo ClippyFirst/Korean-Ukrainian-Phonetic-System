@@ -6,8 +6,8 @@
 
 - **11 `RULE_CONFIRMED_STANDARD_VARIANT`:** IDs 341 (그놈의), 826 (유사성), 1140 (출산), 1406 (팔자걸음), 1527 (보일거라), 2001 (물가로), 2010 (혐오증), 2092 (출시미정에), 2490 (머리속에 → 머릿속에), and 2533 (안할듯). These are exact official NIKL rule/dictionary attestations or the recorded exact expert lexical attestation; they do not establish token-specific acoustic IPA gold.
 - **153 `PROFILE_CONVENTION_MISMATCH_CONFIRMED`:** 147 lenis-sibilant occurrences (`ɕ→s`) in the supported /i, ye, ya/ contexts; three Rule 13 liaison contexts (IDs 475, 2392, 2667); and three earlier lexical/profile cases (IDs 520, 2307, 2562). These are broad/narrow transcription-profile or exact engine-rule reconciliations, not proof that a speaker produced a particular narrow [ɕ] token.
-- **20 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW` and 52 `NOT_INDIVIDUALLY_ADJUDICATED`: 72 active unresolved occurrences.** Zero pending RETAIN. Historical 236 membership is reconstructed from pinned replay, not proven original-selector membership.
-- Therefore 164/236 are dispositioned (10 normative lexical/rule cases + 153 profile-convention cases); **73/236 remain unresolved**. Do not describe 163 as 163 independently acoustically confirmed pronunciations.
+- **19 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW` and 53 `NOT_INDIVIDUALLY_ADJUDICATED`: 72 active unresolved occurrences.** Zero pending RETAIN. Historical 236 membership is reconstructed from pinned replay, not proven original-selector membership.
+- Therefore 164/236 are dispositioned (11 normative lexical/rule cases + 153 profile-convention cases); **72/236 remain unresolved**. Do not describe 163 as 163 independently acoustically confirmed pronunciations.
 
 ### Rule/lexical resolutions
 
@@ -21,6 +21,7 @@
 - ID 2092 `출시미정에`: exact Sino-Korean 출시 (出市); Rule 26 and corroborating lexical [출씨] evidence.
 - ID 2490 `머리속에`: figurative lexical item is standard 머릿속[머리쏙], attested by Korean-language professor Kim Nam-mi; no general 머리+속 rule.
 - ID 2533 `안할듯`: Rule 27; 안 하-ㄹ + dependent noun 듯; connected reading, with pause caveat.
+- ID 1610 `자신의`: exact context is noun 자신 + genitive particle 의. Official NIKL Q&A 335190 says particle 의 is [ɯi] by principle or [e] by permission and explicitly excludes [i]. The comparator `ɰi` matches the principal form; Kozak `i` is not the particle's standard variant. The separate `ɕ→s` in 자신 before /i/ is a broad-profile difference only.
 - ID 1610 `자신의`: exact context is noun 자신 + genitive particle 의. Official NIKL Q&A 335190 states that the particle is [ɯi] by principle or [e] by permission and explicitly says it is not [i]. The comparator `ɰi` is compatible with principal [ɯi]; Kozak `i` is not the particle's standard variant. The separate lenis `ɕ→s` in 자신 before /i/ is a profile-convention difference, not a second phonemic error.
 
 ### New full-text literature review and abstentions retained
