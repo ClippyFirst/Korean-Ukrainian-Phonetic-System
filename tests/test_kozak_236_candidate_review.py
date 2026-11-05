@@ -507,7 +507,7 @@ def test_fortis_sibilant_place_symbol_pairs_are_profile_only_not_acoustic_gold()
     for occurrence_id in resolved_ids:
         row = rows[occurrence_id]
         assert row["candidate_disposition"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
-        assert "Fortis phonological /s͈/" in row["candidate_disposition_basis"]
+        assert "phonological fortis /s͈/ is retained" in row["candidate_disposition_basis"]
         assert "not token-specific acoustic IPA gold" in row["candidate_disposition_basis"]
         assert "SRC-KIM-2021-EPG-KOREAN-FRICATIVES" in row["candidate_disposition_basis"]
         assert "SRC-KON-2021-SIBILANT-AGE-GENDER" in row["candidate_disposition_basis"]
