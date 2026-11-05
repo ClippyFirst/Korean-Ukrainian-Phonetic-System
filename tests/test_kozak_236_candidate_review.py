@@ -345,5 +345,5 @@ def test_nikl_rule_4_rejects_unlicensed_y_glide_in_oeok():
     assert "Standard Pronunciation Rule 4" in row["candidate_disposition_basis"]
     assert "ㅓ is a monophthong" in row["candidate_disposition_basis"]
     assert "not 역 with ㅕ" in row["candidate_disposition_basis"]
-    assert "no source-supported /j/ phoneme" in row["candidate_disposition_basis"]
+    assert "No standard rule or lexical evidence retrieved licenses a phonemic /j/ insertion" in row["candidate_disposition_basis"]
     assert row["prior_independent_ipa_review_status"] == "NOT_PERFORMED"
