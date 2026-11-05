@@ -1,3 +1,19 @@
+## 2026-11-05 follow-up — context-restored mismatch corrections
+
+**Verified implementation/test head:** `be65ee71b9d3f224876875830b30be856f96126f`.
+
+- **DONE_VERIFIED — four NIKL §27 exact-form corrections:** `해줄것` (`줄>것`), `많을거같이` (`을>거`), `내릴수있는` (`릴>수`), and `존중시킬수도있지만` (`킬>수`). Each is licensed only as an exact same-eojeol form with recovered UGTPHON context; no productive suffix-wide rule was introduced.
+- **DONE_VERIFIED — context/evidence tests:** Python tests verify each exact license and full source sentence; browser tests verify the same Kozak Kim rule; Python/browser g2pK tests confirm these NIKL licenses do not leak into the independent g2pK baseline.
+- **PARTIAL — 36-row current review queue:** four exact-form fixes, one provisional retain decision for `출산` under existing R012 / NIKL §26, and 31 rows not individually adjudicated in this pass. See `research/kozak-kim-context-adjudication-2026-11-05.csv`.
+- **PARTIAL / EVIDENCE-LIMITED — historical 239:** this was a pre-C11/C12 count relative to C01–C10, not a current unresolved-defect count. Later clusters reclassified large subsets. A complete occurrence-level ledger with all source contexts and fix/retain/abstain decisions is still absent.
+- **BLOCKED — full post-fix benchmark:** the 2,703-record multi-engine report and 1,266-row fragment export are historical artifacts; no full UGTPHON benchmark was rerun on `be65ee7`. Do not reuse old scores as post-fix metrics.
+- **PARTIAL — trace granularity:** Python `RuleTrace` currently stores one scalar `license_context` per rule pass. For a sentence with multiple R013 licenses, the IPA output is tested for all changes and each form is tested in isolation, but the scalar trace may expose only the last context. Per-occurrence license-context arrays remain a follow-up.
+- **DEFERRED / BLOCKED — independent review:** independent Korean IPA adjudication, Ukrainian target review, C12 context/acoustic crosswalk, and NIKL reuse-rights/authenticity remain open.
+
+**Execution rule:** apply only exact, source-supported NIKL environments in Kozak Kim; keep g2pK unmodified; treat Broad-v2 as a comparator rather than normative gold; preserve abstentions for the remaining cases.
+
+---
+
 ## 2026-11-05 — NIKL scope isolation and historical mismatch gate
 
 **Verified implementation/test head:** `1869b8936c17077ac4fde308644d8588c132404c` (documentation continuation follows).

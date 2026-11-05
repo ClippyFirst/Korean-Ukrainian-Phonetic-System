@@ -123,3 +123,13 @@ Record consequential linguistic, data, architecture, testing, licensing, and rel
 - **Consequences:** ordinary g2pK output can differ from NIKL even where a source-backed Kozak Kim form is available. This is intentional; it is not a claim that g2pK is normatively correct. Compare the engines as separate systems and label the reference convention.
 - **Validation:** browser suite 1,393/1,393 PASS; Python 3.11/3.12/3.13, wheel installation, teacher-corpus audit, system verification and master artifacts PASS at implementation/test head `1869b8936c17077ac4fde308644d8588c132404c`. Live NIKL inventory was SKIPPED.
 - **Revisit/acceptance:** before changing this boundary, obtain explicit owner direction and add a separate engine/profile rather than silently reintroducing NIKL overlays into g2pK.
+
+
+## 2026-11-05 — exact NIKL §27 forms recovered from UGTPHON context
+
+- **Decision:** add four exact same-eojeol R013 licenses to Kozak Kim only: `해줄것` (`줄>것`), `많을거같이` (`을>거`), `내릴수있는` (`릴>수`), and `존중시킬수도있지만` (`킬>수`).
+- **Evidence:** full contexts recovered from `naver-ai/UGTPHON:ko/test.json` at pinned commit `ef0d5a09c2ea1874c7206020f875cbd9cfea2f54`; source registry `SRC-UGTPHON-EMNLP-2026`. NIKL Standard Pronunciation Rule §27 supplies the rule; NIKL Q&A 310899 confirms colloquial `거` as a dependent noun. UGTPHON IPA remains a comparator, not normative gold.
+- **Scope:** exact-form gates only; no generalization to arbitrary `ㄹ + plain onset` strings. No changes to vendored g2pK or either g2pK adapter.
+- **Verification:** Python isolated-form and full-context tests, browser rule tests, negative controls, and Python/browser g2pK isolation tests pass on implementation/test head `be65ee71b9d3f224876875830b30be856f96126f`.
+- **Separate retain decision:** `출산` (row `dc_inside_2107`) remains under the existing R012 / NIKL §26 license pending independent review. Do not remove fortition solely to match a single Broad-v2 annotation.
+- **Limit:** the historical 239 count is pre-C11/C12; the current 36-row queue is narrower. Four fixes and one provisional retain do not complete the 239-case adjudication. The full post-fix benchmark was not rerun.

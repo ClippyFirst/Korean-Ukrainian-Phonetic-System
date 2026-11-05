@@ -1331,3 +1331,18 @@ The documentation/source-register corrections are now verified on `main` at `d7c
 | C12 context and source rights | BLOCKED | Reconstruct speaker/context/acoustic crosswalk and complete item-level source-rights review. |
 
 **Readiness:** partial research prototype. Green software CI and engine-isolation tests do not certify pronunciation accuracy or release readiness.
+
+
+## 2026-11-05 follow-up — historical mismatch work
+
+| Gate | Status | Evidence / acceptance |
+|---|---|---|
+| Four context-restored NIKL §27 forms | DONE_VERIFIED | Exact-form licenses for `해줄것`, `많을거같이`, `내릴수있는`, `존중시킬수도있지만`; Python, browser, full-context and negative-control tests pass on `be65ee7`. |
+| g2pK isolation for new forms | DONE_VERIFIED | Browser raw-port parity and Python pass-through tests confirm no Kozak Kim NIKL overlay enters either g2pK adapter. |
+| `출산` mismatch | PARTIAL / RETAIN | Existing R012 / NIKL §26 fortis license retained; UGTPHON broad comparator omits fortis. Independent Korean review required before final adjudication. |
+| Current 36-row queue | PARTIAL | Four exact-form corrections, one provisional retain, 31 rows not individually adjudicated in this pass. |
+| Historical 239 occurrences | PARTIAL / EVIDENCE-LIMITED | 239 was the historical pre-C11/C12 population relative to C01–C10, not the current open-defect count. Complete occurrence-level context ledger is still missing. |
+| Full post-fix UGTPHON benchmark | BLOCKED / NOT RUN | Historical 2,703-record report is pre-fix. Re-run the complete benchmark on the new code before reporting updated rates. |
+| Python per-occurrence license provenance | PARTIAL | `RuleTrace.license_context` is scalar per rule pass; a multi-license sentence can retain only the last context. Add per-occurrence context arrays before treating sentence-level trace as exhaustive. |
+
+**Readiness remains partial research prototype.** Passing regression tests and applying four exact rule corrections do not establish independent IPA gold or release readiness.

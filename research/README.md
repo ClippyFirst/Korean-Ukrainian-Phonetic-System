@@ -63,3 +63,14 @@ The RR audit view is being developed in [PR #354](https://github.com/ClippyFirst
 NIKL R001–R016 and their exact-form licenses belong exclusively to Kozak Kim. The ordinary browser and optional Python g2pK adapters now preserve raw g2pK surfaces and derive IPA without Kozak Kim NIKL or lexical overlays. This restores a genuinely independent comparison baseline; see `docs/G2PK-INTEGRATION-2026-10-15.md` and the current repository audit.
 
 The historical 239 Broad-v2 mismatch occurrences remain PARTIAL / EVIDENCE-LIMITED. They are not 239 proven engine bugs. The 36-row unmapped queue is a later, narrower extraction; the 1,266-row fragment export is a different occurrence/fragment grain. Each candidate correction needs the original source context, profile/normalization provenance, a defensible Korean pronunciation analysis, and a negative control before production promotion.
+
+
+## 2026-11-05 follow-up — context-recovered R013 cases
+
+The historical **239** figure is the 2026-11-02 population of Broad-v2 mismatch occurrences whose fragments had not yet been assigned to C01–C10 candidate families. It is not the current count of unresolved production defects. Subsequent cluster work (including C11 and C12) reclassified substantial portions; the later **36-row** unmapped review queue is a narrower extraction and has a different grain. Do not treat 239, 36, 1,266 fragment rows, 13 cluster rows, or 38 paired-discrepancy rows as interchangeable.
+
+Using the pinned `naver-ai/UGTPHON:ko/test.json` source at commit `ef0d5a09c2ea1874c7206020f875cbd9cfea2f54`, four exact same-eojeol forms now have source-context-backed NIKL §27 licenses in Kozak Kim only: `해줄것`, `많을거같이`, `내릴수있는`, and `존중시킬수도있지만`. The context/decision register is [`kozak-kim-context-adjudication-2026-11-05.csv`](kozak-kim-context-adjudication-2026-11-05.csv). The UGTPHON Broad-v2 IPA is a comparator, not normative gold; the NIKL rule supplies the phonological basis. Browser/Python tests cover the exact forms, full source sentences, negative controls, and g2pK isolation.
+
+One additional queue item, `출산` (UGTPHON row `dc_inside_2107`), is **retained under the existing Kozak Kim R012 / NIKL §26 license** pending independent review: the Broad-v2 comparator omits fortis /s͈/, but that alone is not sufficient reason to remove a source-backed rule. The full user-generated context is not duplicated in the ledger because it contains profanity; the pinned row ID is retained.
+
+The 36-row queue therefore has four implemented exact-form corrections, one provisional retain decision, and 31 rows not individually adjudicated in this pass. The complete hash-pinned 239-occurrence/context ledger is still missing, and the full post-fix UGTPHON benchmark has not been rerun. Do not claim that all 239 are fixed or that old benchmark metrics measure the new code.

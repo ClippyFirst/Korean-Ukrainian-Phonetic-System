@@ -366,3 +366,16 @@ Source register: `SRC-NIKL-KRDICT-89917`; catalog: `S026`; mass cluster: C13; pa
 - Independent Korean IPA review, independent Ukrainian target review, item-level NIKL rights, C12 source audio/speaker/prosodic crosswalk, historical 239-case adjudication, and names/loans/Hanja/regional-style coverage remain open.
 - Research-only neural inference remains deferred/skipped.
 - Readiness remains **research prototype**, not research-certified or release-ready.
+
+
+## 2026-11-05 follow-up — reclassification and context-backed corrections
+
+The 239 count above is historical: it counted Broad-v2 occurrences with mismatch fragments not assigned to C01–C10 at the 2026-11-02 snapshot. Subsequent C11/C12 and related cluster work reclassified large portions; the later 36-row unmapped queue is a narrower extract. These counts describe different snapshots and grains, not 239 currently proven defects.
+
+The pinned UGTPHON Korean test split was fetched at commit `ef0d5a09c2ea1874c7206020f875cbd9cfea2f54` (Apache-2.0 per the Korean subset README metadata). Four exact same-eojeol contexts now have R013 / NIKL §27 licenses in Kozak Kim: `해줄것`, `많을거같이`, `내릴수있는`, and `존중시킬수도있지만`. The source contexts, Broad-v2 comparator values, prior outputs, licensed syllable pairs and decisions are in `kozak-kim-context-adjudication-2026-11-05.csv`. No equivalent rule or lexical overlay was added to g2pK.
+
+The `출산` case (row `dc_inside_2107`) is provisionally retained under the existing R012 / NIKL §26 license: the corpus comparator omits fortis /s͈/, but a single Broad-v2 reference is not sufficient to overturn the NIKL-backed form. Independent Korean review is still required.
+
+**Current queue disposition:** 4 exact-form corrections implemented; 1 provisional retain; 31 of the 36 rows remain without an individual fix/retain/abstain adjudication. The full historical 239-occurrence ledger with stable IDs, full context, exact profile/version provenance and reviewer decisions is still TODO. The 2,703-record multi-engine report is pre-fix; the full benchmark has not been rerun on the new code. Do not describe old scores as post-fix metrics.
+
+**Known trace limitation:** Python `RuleTrace` has one scalar `license_context` per rule pass. When a sentence contains multiple licensed R013 forms, IPA output and isolated exact-form tests cover each correction, but the sentence-level trace may retain only the last license context. Per-occurrence provenance is a follow-up requirement.
