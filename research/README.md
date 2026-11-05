@@ -109,3 +109,8 @@ The narrow 36-row queue's disposition register is complete (4 FIX, 1 provisional
 ### Historical 239 baseline refinement — 2026-11-05
 
 The pre-C11/C12 benchmark artifact and C01–C10 aggregate cluster snapshot have been recovered and hash-pinned. The missing item is narrower than previously stated: not the benchmark or baseline, but the per-fragment assignment snapshot / executable selection predicate required to reproduce exactly 239 unique occurrence IDs. See the [updated recovery manifest](kozak-kim-historical-239-recovery-manifest-2026-11-05.md). Do not replace this historical cohort with the 370-row Broad context superset.
+
+
+### 31-row provenance correction — 2026-11-05
+
+The 31-row abstention ledger's Broad profile blob SHA was found truncated to 39 characters. All 31 rows and the regression expectation now use the complete 40-character SHA-1 `e13086f0fd98ce9564326ff50b0458c27392932f`. This changes provenance metadata only, not linguistic decisions or runtime behavior. Exact-head CI for the connector-created commit remains unverified.
