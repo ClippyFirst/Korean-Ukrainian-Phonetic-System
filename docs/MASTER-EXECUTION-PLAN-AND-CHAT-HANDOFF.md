@@ -8,6 +8,10 @@
 - This is useful negative evidence: there is no official standard IPA form to promote to benchmark gold. It does not decide whether a particular speaker's /s/ before /j/ is realized with a narrow [ɕ], and it supplies no token audio. ID 606 therefore remains among the 28 `NOT_INDIVIDUALLY_ADJUDICATED`; the unresolved total stays **40**, and no candidate is removed on this evidence.
 - Source record `SRC-NIKL-QNA-332662` is now in `research/SOURCE-REGISTER.csv`; item-level KOGL marking remains unverified.
 
+### NIKL Rule 29 negative control for unresolved n-insertion candidates
+
+NIKL Online Q&A 328785 (2026-04-03) states that the phonological shape in Rule 29 is not sufficient to predict n-insertion in every compound/derivative; the lexical-semantic status of the following element matters. It discusses `못난이` and `예쁜이`, not the exact candidates. Thus `홍콩영화들` (ID 643) and `한국여자로` (IDs 1805/1832/1859) remain unresolved: the former's compound status and the latter's phrase/prosodic grouping are not established by text alone. Source `SRC-NIKL-QNA-328785` added to the source register. This does not reduce the 40 unresolved occurrences.
+
 ### Current ledger
 
 - **15 `RULE_CONFIRMED_STANDARD_VARIANT`:** IDs 341 (`그놈의`), 826 (`유사성`), 1140 (`출산`), 1406 (`팔자걸음`), 1527 (`보일거라`), 2001 (`물가로`), 2010 (`혐오증`), 2092 (`출시미정에`), 2490 (`머리속에` → `머릿속에`), 2533 (`안할듯`), 1610 (`자신의`), 545 (`정권`, `政權`), and 1816, 1843 and 1870 (`연전연패`). ID 545 is supported by Kpedia's exact lexical entry `정권[정꿘]`, corroborated by NIKL Q&A 335292 on the Sino-Korean morpheme `권(權)`. IDs 1816/1843/1870 are repeated occurrences of one compound family; NIKL Rule 29 licenses n-insertion in `연전(連戰)+연패(連敗)`, and NIKL Q&A 322807 confirms the 連敗 sense. Jun (2015) still limits claims about natural-speech realization. These are standard lexical/rule readings, not speaker-level acoustic IPA gold.
