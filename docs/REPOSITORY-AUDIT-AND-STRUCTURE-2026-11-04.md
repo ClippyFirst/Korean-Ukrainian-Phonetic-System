@@ -466,3 +466,11 @@ The complete hash-pinned 239-occurrence ledger with full context, engine/profile
 - Historical 239: benchmark artifact recovered and SHA-256 verified; exact 239-member selection predicate / per-fragment C01–C10 assignment snapshot remains BLOCKED. The 1,267-row mismatch-fragment export, 36-row current queue, 13 cluster rows and 38 paired rows are different grains and cannot be substituted. No synthetic 239-row ledger or unsupported linguistic decisions were created.
 
 **Readiness:** partial research prototype. Software CI and Pages deployment are green on this head, but research certification and release readiness remain blocked by the exact historical 239 reconstruction, independent Korean IPA adjudication, independent Ukrainian target review, item-level NIKL rights/authenticity, C12 audio/speaker/prosody evidence, and a post-fix full UGTPHON benchmark.
+
+
+## 2026-11-05 continuation — historical 239 evidence refinement
+
+Recovered the exact pre-C11/C12 snapshot: benchmark run `41453407662`, artifact `13148075070`, code head `e7933ae4a67c94f0f69b4747d8e388aa082fc347`, report SHA-256 `8c25e630ca828719b269aeb84c8037d9c40f881a0f15c2e4ddf9d427edffa0f9`, and C01–C10 aggregate table blob `275e5d162f3357e94fccd5024ec693fcf223cecd`. This corrects the blocker description: the historical baseline is recovered, but the 239-member occurrence set is not. The cluster table has no per-occurrence/per-fragment assignments; the later export stores only an occurrence-level cluster union across strict and Broad fragments. The historical predicate cannot be replayed exactly, so no 239 IDs or decisions were fabricated. See the updated [239 recovery manifest](../research/kozak-kim-historical-239-recovery-manifest-2026-11-05.md).
+
+**Status:** historical 239 membership `BLOCKED`; 370-row Broad context superset `DONE_VERIFIED`; overall readiness remains partial research prototype.
+
