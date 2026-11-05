@@ -121,6 +121,7 @@ def test_236_lenis_sibilant_operations_are_separated_by_kang_2010_environment_sc
     assert sum(item[2] for item in supported_rows) == 1
     assert sum(len(item[3]) for item in supported_rows) == 158
     assert len(unsupported_rows) == 27
+    assert all(row["candidate_disposition"] == "NOT_INDIVIDUALLY_ADJUDICATED" for row, _, _ in unsupported_rows)
     assert sum(item[1] for item in unsupported_rows) == 27
     assert sum(item[2] for item in unsupported_rows) == 0
     assert {row["occurrence_id"] for row, _, _ in unsupported_rows} == {
