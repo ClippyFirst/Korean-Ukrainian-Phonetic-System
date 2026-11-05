@@ -1,6 +1,6 @@
 # Repository structure and ownership guide
 
-**Snapshot:** 2026-11-05, audit continuation from main code/test head `1869b8936c17077ac4fde308644d8588c132404c`. This guide describes the observed tree and stable ownership boundaries; it is not a claim that every file has been independently reviewed line by line.
+**Snapshot:** 2026-11-05, verified code/test head `be65ee71b9d3f224876875830b30be856f96126f`. This guide describes the observed tree and stable ownership boundaries; it is not a claim that every file has been independently reviewed line by line.
 
 ## What this repository contains
 
@@ -102,3 +102,8 @@ The project already has domain-specific skills in `.agents/skills/` and an integ
 ## NIKL rule ownership boundary
 
 NIKL Standard Pronunciation Rules R001–R016 and exact-form/morphological licenses are implemented in Kozak Kim's research/native rule modules (`src/app/engine_rules_ctx.js`, `src/korean_ukrainian/rules.py`, canonical `data/korean/rules.csv`, and `research/RULE-COVERAGE.csv`). The browser and Python g2pK adapters are isolated baselines: they preserve raw g2pK surface output and derive IPA without Kozak Kim NIKL rule, lexical surface, or IPA overlays. Do not move NIKL licenses into `src/vendor/g2pk/` or either g2pK adapter. The existing user-supplied `한국어 어문 규범.htm` is retained; this continuation does not create a fresh NIKL snapshot.
+
+
+## Current mismatch evidence register
+
+`research/kozak-kim-context-adjudication-2026-11-05.csv` records four context-restored NIKL §27 exact-form corrections and one provisional R012 retain decision. It is a narrow decision register, not the complete historical 239-occurrence ledger. The original NIKL HTML capture remains in place; no new snapshot was created. NIKL rules remain exclusive to Kozak Kim; g2pK remains an independent baseline.

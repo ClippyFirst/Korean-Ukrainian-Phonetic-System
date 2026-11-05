@@ -399,3 +399,43 @@ The 36-row queue has source row identifiers and context lookup status, but it is
 | Neural training | DEFERRED | Wait for adjudicated IPA gold and corpus rights. |
 
 **Readiness:** partial research prototype, not research-certified or release-ready. Software and engine-isolation gates pass; historical mismatch adjudication, independent Korean IPA gold, Ukrainian target review, C12 evidence and NIKL rights/authenticity remain open.
+
+
+## 17. 2026-11-05 — context-recovered R013 corrections and 239-case clarification
+
+### Implementation/test head and verification
+
+- Latest verified implementation/test head: `be65ee71b9d3f224876875830b30be856f96126f`.
+- Follow-up research status and acceptance documentation commit: `774e5ca8fca4bf4ad788c47aedaf09668259c2da`; repository navigation/handoff refresh follows.
+- Tests workflow [41991611882](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41991611882) — PASS: browser suite 1,394/1,394; Python 3.11/3.12/3.13; wheel install; teacher-corpus audit.
+- System Verify [41991611839](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41991611839) — PASS: browser regression/build and Python regression/data integrity. Live NIKL metadata-only inventory — SKIPPED.
+- Master table/research artifacts [41991611903](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41991611903) — PASS.
+- Pages deployment [41991611809](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41991611809) — Python matrices and browser/static build PASS; deploy step was still in progress at the time of this record.
+- Local npm/pytest were not run because this connector session could not clone the repository. All stated code checks are remote GitHub Actions results.
+
+### Four source-context-backed R013 fixes — DONE_VERIFIED
+
+The pinned UGTPHON Korean test split at `naver-ai/UGTPHON@ef0d5a09c2ea1874c7206020f875cbd9cfea2f54` provides the original sentence contexts. Four exact same-eojeol licenses were added to both Kozak Kim Python and browser rule inventories under NIKL §27:
+
+| Form | Exact licensed syllable pair | Context row |
+|---|---|---|
+| `해줄것` | `줄>것` | `multilexnorm2026_1916` |
+| `많을거같이` | `을>거` | `multilexnorm2026_2011` |
+| `내릴수있는` | `릴>수` | `dc_inside_2266` |
+| `존중시킬수도있지만` | `킬>수` | `dc_inside_2266` |
+
+The source/decision register is `research/kozak-kim-context-adjudication-2026-11-05.csv`. Python and browser tests verify exact-form behavior, full source-sentence output, negative controls, and g2pK isolation. No NIKL license was added to the g2pK adapters or vendored g2pK.
+
+### Historical 239 and current 36-row queue
+
+The 239 figure is the 2026-11-02 historical population of Broad-v2 mismatch occurrences not assigned to C01–C10 at that snapshot. Subsequent C11/C12 and related cluster work reclassified substantial portions; it is not a current count of 239 proven defects. The later 36-row queue is a narrower extraction. Of those 36 rows, four exact R013 forms are now fixed, one `출산` row is provisionally retained under the existing R012 / NIKL §26 license pending independent review, and 31 rows remain without an individual fix/retain/abstain decision.
+
+The complete hash-pinned 239-occurrence ledger with full context, engine/profile/normalizer provenance and reviewer decisions is still missing. The 2,703-record multi-engine report and 1,266-row fragment export are historical pre-fix artifacts; no full post-fix UGTPHON benchmark was rerun. Do not report historical metrics as post-fix results.
+
+### Remaining evidence and provenance limits
+
+- Independent Korean IPA review, Ukrainian target review, C12 source/speaker/context/acoustic crosswalk, and NIKL item-level reuse rights/authenticity remain BLOCKED.
+- The Python `RuleTrace` currently exposes one scalar `license_context` per rule pass. When several exact R013 licenses occur in one sentence, output is tested for each change and isolated-form tests verify each license, but the scalar trace may retain only the last context. Per-occurrence license-context arrays remain a follow-up.
+- The external workflow/skill references `obra/superpowers`, `mattpocock/skills`, and `DietrichGebert/ponytail` were retained as design references. The existing `.agents/skills/phonetic-engineering/SKILL.md` was extended; no third-party repository was copied wholesale.
+
+**Readiness:** partial research prototype; software tests pass, but research certification and release readiness are not established.

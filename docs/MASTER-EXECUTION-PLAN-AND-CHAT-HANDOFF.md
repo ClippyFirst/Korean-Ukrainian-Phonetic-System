@@ -6367,3 +6367,41 @@ The 239 historical Broad-v2 occurrences remain PARTIAL / EVIDENCE-LIMITED, not 2
 7. Keep neural training deferred until independent IPA gold and corpus rights exist.
 
 **Disposition:** software engine isolation is verified; the repository remains a partial research prototype, not research-certified or release-ready.
+
+
+## 2026-11-05 follow-up — context-backed R013 fixes and current mismatch status
+
+**Verified code/test head:** `be65ee71b9d3f224876875830b30be856f96126f`.
+
+### Completed and verified
+
+- Added four exact NIKL §27 same-eojeol licenses to Kozak Kim only: `해줄것`, `많을거같이`, `내릴수있는`, `존중시킬수도있지만`.
+- Restored their full source contexts from the pinned UGTPHON Korean test split and added the decision/evidence register `research/kozak-kim-context-adjudication-2026-11-05.csv`.
+- Added Python and browser tests for exact forms, full sentence output and negative controls. Added explicit Python/browser g2pK tests to ensure no NIKL or Kozak Kim overlay leaks into the independent baseline.
+- Retained `출산` under the existing R012 / NIKL §26 license pending independent Korean review; do not change it just to match a single Broad-v2 comparator annotation.
+- Updated rule coverage, research README/roadmap/acceptance/decision log, historical mismatch triage, repository audit and this handoff.
+
+### Verification on be65ee7
+
+- Tests workflow [41991611882](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41991611882) PASS: browser 1,394/1,394; Python 3.11/3.12/3.13; wheel install; teacher-corpus audit.
+- System Verify [41991611839](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41991611839) PASS: browser regression/build and Python regression/data integrity; live NIKL inventory SKIPPED.
+- Master artifacts [41991611903](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41991611903) PASS.
+- Pages deployment [41991611809](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41991611809): Python matrices and browser/static build PASS; deploy was still running at handoff time.
+- Local npm/pytest not run: connector environment could not clone repository.
+
+### Historical 239 status
+
+The 239 count is historical and relative to the pre-C11/C12 cluster snapshot, not the current unresolved-defect count. The later 36-row queue is narrower: four exact R013 fixes, one provisional R012 retain, and 31 rows still lacking individual adjudication. A complete 239-occurrence ledger is still TODO. The full post-fix UGTPHON benchmark was not rerun; old reports must not be treated as new metrics.
+
+### Remaining blockers
+
+1. Build the complete hash-pinned 239-occurrence ledger and adjudicate every case with source context, profile/version provenance and a fix/retain/abstain decision.
+2. Independently review the four R013 forms and the provisional `출산` retain; recruit two qualified Korean IPA reviewers for the gold set.
+3. Adjudicate the remaining 31 current queue rows; resolve profile/annotation differences and exact morphology before changing code.
+4. Re-run the full UGTPHON benchmark on the post-fix code and publish new metrics.
+5. Obtain independent Ukrainian target review.
+6. Resolve C12 source/speaker/context/acoustic crosswalk and NIKL item-level rights/authenticity.
+7. Improve Python rule trace granularity: one scalar `license_context` per rule pass can hide earlier licenses in a multi-license sentence.
+8. Keep neural training deferred until independent IPA gold and corpus rights exist.
+
+**Disposition:** software engine isolation and four exact R013 fixes are verified; repository remains a partial research prototype, not research-certified or release-ready.
