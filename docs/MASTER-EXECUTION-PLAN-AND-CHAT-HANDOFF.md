@@ -17,6 +17,15 @@
 - This is useful negative evidence: there is no official standard IPA form to promote to benchmark gold. It does not decide whether a particular speaker's /s/ before /j/ is realized with a narrow [ɕ], and it supplies no token audio. ID 606 therefore remains among the 28 `NOT_INDIVIDUALLY_ADJUDICATED`; the unresolved total stays **40**, and no candidate is removed on this evidence.
 - Source record `SRC-NIKL-QNA-332662` is now in `research/SOURCE-REGISTER.csv`; item-level KOGL marking remains unverified.
 
+### Long-vowel profile evidence boundary for ID 1885 (`대한민국`)
+
+- The occurrence differs only in long-vowel quality: reference `ɛː` versus Kozak `eː`.
+- Lee & Cho (2021) and Eychenne & Jang (2015) support group-level /ɛ/–/e/ merger or weak distinction, but cannot identify this token's speaker or realization.
+- Kang, Yoon & Han (2015) analyzed 373,733 word-initial vowel tokens from 118 Seoul speakers and includes underlying long /ɛ/ and /e/ tokens; however, its model is about duration and it does not test the quality merger separately in long vowels.
+- Counterevidence: Chung (2022) argues the phonemic contrast is not fully merged; Lee (2023) reports residual F2 differences by syllable position and gender.
+- With no speaker identity, token audio, or long-vowel-specific independent IPA annotation, ID 1885 remains `NOT_INDIVIDUALLY_ADJUDICATED`. This is a documented evidence limit, not a new closure; the 236 baseline and 40 open occurrences are unchanged.
+- Source records added: `SRC-KANG-2015-VOWEL-LENGTH-MERGER`, `SRC-CHUNG-2022-MID-FRONT-PHONEMIC-STATUS`, and `SRC-LEE-2023-REVISITING-MID-FRONT-MERGER`.
+
 ### Full-text hiatus-study scope correction for ID 78
 
 The source register records a full-text review of Kim & Hong (2025): ten men aged 27–35, within-word pairs `기억–기역` and `보안–보완`, everyday/careful speech, and F1/F2 trajectories plus timing, pitch and intensity. The tested contrasts are /iə~ijə/ and /oa~owa/; the study does not test /o.ʌ/, `오억`, or numeral/word-boundary compounds. The comparator's /j/ in `오조오억배` therefore remains unresolved; this is not a basis to delete it or confirm it. The adjudication now cites `SRC-KIM-HONG-2025-HIATUS-TRANSITIONS-GLIDES` and retains ABSTAIN.
