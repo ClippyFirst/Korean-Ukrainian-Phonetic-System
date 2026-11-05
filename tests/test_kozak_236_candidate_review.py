@@ -529,3 +529,15 @@ def test_two_additional_liaison_lenis_sibilants_are_profile_only():
         assert "after resyllabification" in row["candidate_disposition_basis"]
         assert "Kang (2010, S019)" in row["candidate_disposition_basis"]
         assert row["prior_independent_ipa_review_status"].endswith("token_specific_acoustic_IPA_review_not_performed")
+
+
+def test_first_romance_n_insertion_remains_prosody_limited_abstention():
+    rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
+    row = rows["2215"]
+    assert row["token"] == "첫연애실패후"
+    assert row["candidate_disposition"] == "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW"
+    assert "no fixed standard pronunciation" in row["candidate_disposition_basis"]
+    assert "[천녀내]" in row["candidate_disposition_basis"]
+    assert "[첟#여내]" in row["candidate_disposition_basis"]
+    assert "prosodic grouping" in row["candidate_disposition_basis"]
+    assert "SRC-NIKL-QNA-316146" in row["candidate_disposition_basis"]
