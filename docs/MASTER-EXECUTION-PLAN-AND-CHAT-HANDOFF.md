@@ -5,7 +5,7 @@
 ### Current disposition
 
 - **Eight RULE_CONFIRMED_STANDARD_VARIANT occurrences:** IDs 78 (오조오억배), 341 (그놈의), 1140 (출산), 1406 (팔자걸음), 1527 (보일거라), 2001 (물가로), 2010 (혐오증), and 2533 (안할듯).
-- **24 ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW; 204 NOT_INDIVIDUALLY_ADJUDICATED; zero pending RETAIN.** Thus 228 occurrences remain unresolved. Historical membership is reconstructed from pinned replay, not proven original-selector membership.
+- **23 ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW; 205 NOT_INDIVIDUALLY_ADJUDICATED; zero pending RETAIN.** Thus 228 occurrences remain unresolved. Historical membership is reconstructed from pinned replay, not proven original-selector membership.
 - ID 78: NIKL Rule 4 classifies ㅓ as a monophthong; the orthographic form 오억 contains ㅓ, not ㅕ. The IPA-Dict-derived Broad comparator inserts /j/ before /ʌ/; the standard broad form preserves the written monophthong. This is normative evidence only, not a claim about transient speaker-specific transitions.
 - ID 341: NIKL Rule 5 supports [e] as an accepted genitive-particle 의 variant; context is 그놈의.
 - ID 1140: NIKL Basic Dictionary directly lists 출산[출싼], upgrading the historical provisional R012 RETAIN; exact lexical attestation only.
