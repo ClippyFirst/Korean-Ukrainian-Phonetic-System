@@ -62,7 +62,7 @@ The RR audit view is being developed in [PR #354](https://github.com/ClippyFirst
 
 NIKL R001–R016 and their exact-form licenses belong exclusively to Kozak Kim. The ordinary browser and optional Python g2pK adapters now preserve raw g2pK surfaces and derive IPA without Kozak Kim NIKL or lexical overlays. This restores a genuinely independent comparison baseline; see `docs/G2PK-INTEGRATION-2026-10-15.md` and the current repository audit.
 
-The historical 239 Broad-v2 mismatch occurrences remain PARTIAL / EVIDENCE-LIMITED. They are not 239 proven engine bugs. The 36-row unmapped queue is a later, narrower extraction; the 1,266-row fragment export is a different occurrence/fragment grain. Each candidate correction needs the original source context, profile/normalization provenance, a defensible Korean pronunciation analysis, and a negative control before production promotion.
+The historical 239 Broad-v2 mismatch occurrences remain PARTIAL / EVIDENCE-LIMITED. They are not 239 proven engine bugs. The 36-row unmapped queue is a later, narrower extraction; the 1,267-row fragment export is a different occurrence/fragment grain. Each candidate correction needs the original source context, profile/normalization provenance, a defensible Korean pronunciation analysis, and a negative control before production promotion.
 
 
 ## 2026-11-05 follow-up — context-recovered R013 cases
