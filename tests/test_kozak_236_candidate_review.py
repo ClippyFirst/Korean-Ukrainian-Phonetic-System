@@ -15,10 +15,10 @@ def test_reconstructed_236_review_ledger_has_exact_membership_and_statuses():
     assert len(rows) == 236
     assert len({row["occurrence_id"] for row in rows}) == 236
     assert Counter(row["candidate_disposition"] for row in rows) == {
-        "NOT_INDIVIDUALLY_ADJUDICATED": 212,
+        "NOT_INDIVIDUALLY_ADJUDICATED": 208,
         "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 21,
-        "RETAIN_PENDING_INDEPENDENT_IPA_REVIEW": 1,
-        "RULE_CONFIRMED_STANDARD_VARIANT": 2,
+        "RETAIN_PENDING_INDEPENDENT_IPA_REVIEW": 0,
+        "RULE_CONFIRMED_STANDARD_VARIANT": 7,
     }
     assert all(row["historical_membership_confidence"] ==
         "RECONSTRUCTED_CANDIDATE_NOT_ORIGINAL_MEMBERSHIP_PROOF" for row in rows)
@@ -242,3 +242,32 @@ def test_nikl_exact_lexical_fortition_adjudicates_water_price_compound_only():
     assert "SRC-NIKL-EDU-MOSKVA" in row["candidate_disposition_basis"]
     assert "not a productive ㄹ+ㄱ rule" in row["candidate_disposition_basis"]
     assert row["prior_independent_ipa_review_status"] == "NOT_PERFORMED"
+
+
+def test_nikl_surface_sources_resolve_four_exact_broad_profile_cases():
+    rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
+    expected = {
+        "293": ("실수", "SRC-NIKL-QNA-330843", "[실쑤]"),
+        "538": ("멋있어", "SRC-NIKL-QNA-306166", "[머시써]"),
+        "1206": ("싫어서", "SRC-NIKL-QNA-313981", "[시러서]"),
+        "2010": ("혐오증", "SRC-NIKL-KRDICT-HYEMO", "[혀모쯩]"),
+    }
+    for occurrence_id, (token, source_id, pronunciation) in expected.items():
+        row = rows[occurrence_id]
+        assert row["token"] == token
+        assert row["candidate_disposition"] == "RULE_CONFIRMED_STANDARD_VARIANT"
+        assert source_id in row["candidate_disposition_basis"]
+        assert pronunciation in row["candidate_disposition_basis"]
+        assert row["prior_independent_ipa_review_status"] == "NOT_PERFORMED"
+
+
+def test_nikl_dictionary_attestation_upgrades_provisional_chulsan_retain():
+    rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
+    row = rows["1140"]
+    assert row["token"] == "출산"
+    assert row["candidate_disposition"] == "RULE_CONFIRMED_STANDARD_VARIANT"
+    assert "출산[출싼]" in row["candidate_disposition_basis"]
+    assert "SRC-NIKL-DIC-CHULSAN" in row["candidate_disposition_basis"]
+    assert row["prior_individual_reason_code"] == "SOURCE_BACKED_R012_RETAIN_PENDING_INDEPENDENT_REVIEW"
+    assert row["prior_individual_rationale"].startswith("The current Kozak Kim rule inventory")
+    assert row["prior_independent_ipa_review_status"] == "independent_Korean_review_pending"
