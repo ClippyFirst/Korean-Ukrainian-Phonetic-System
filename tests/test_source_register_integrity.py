@@ -716,3 +716,15 @@ def test_kong_kang_2020_sibilant_source_records_speaker_and_vowel_scope():
     assert "speaker-variable" in source["contribution_expected"]
     assert "Abstract-only" in source["limitations_or_next_action"]
     assert "no audio for the 236 UGTPHON items" in source["limitations_or_next_action"]
+
+
+def test_sung_cho_2010_distinguishes_korean_sibilants_from_english_categories():
+    source = {row["source_id"]: row for row in load_source_register()}[
+        "SRC-SUNG-CHO-2010-KOREAN-ENGLISH-SIBILANTS"
+    ]
+    assert source["url"] == "https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001486421"
+    assert "lax/tense" in source["coverage"]
+    assert "center of gravity" in source["coverage"]
+    assert "distinctness" in source["coverage"]
+    assert "not provide item-level modern IPA decisions" in source["contribution_expected"]
+    assert "item-level reuse terms not assessed" in source["license_status"]
