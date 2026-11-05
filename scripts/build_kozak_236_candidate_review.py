@@ -26,7 +26,7 @@ PINNED_INPUT_GIT_BLOB_SHA = {
     IDS_PATH: "f46f6760dde844a3e7cf9abe00dc74969f45eca8",
     SUPERSET_PATH: "e6c4843bbb9f1e3eb83527698880d4d60184c333",
     ABSTENTION_PATH: "de838dcdc247e1846e0e633766135b3a902f436b",
-    ADJUDICATION_PATH: "4c1a8baffa533b0a4ab35d0bdedbdac1f610b198",
+    ADJUDICATION_PATH: "a78a27e3940303f185799ce5c36a02e7b81f604c",
 }
 
 def verify_git_blob(path: Path, expected_sha: str) -> None:
@@ -103,7 +103,7 @@ def build_rows(root: Path = ROOT) -> list[dict[str, str]]:
         elif case_adjudication and case_adjudication["decision"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED":
             disposition = "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
             basis = case_adjudication["notes"]
-            reason = "BROAD_VS_NARROW_PROFILE_CONVENTION_MISMATCH"
+            reason = ("LENIS_SIBILANT_BROAD_PROFILE_CONVENTION" if case_adjudication["rule_id"] == "LENIS_SIBILANT_BROAD_PROFILE_CONVENTION" else "BROAD_VS_NARROW_PROFILE_CONVENTION_MISMATCH")
             rationale = case_adjudication["notes"]
             ipa_status = case_adjudication["independent_review_status"]
         elif case_adjudication and case_adjudication["decision"] == "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW":
