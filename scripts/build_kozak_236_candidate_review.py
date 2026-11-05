@@ -26,7 +26,7 @@ PINNED_INPUT_GIT_BLOB_SHA = {
     IDS_PATH: "f46f6760dde844a3e7cf9abe00dc74969f45eca8",
     SUPERSET_PATH: "e6c4843bbb9f1e3eb83527698880d4d60184c333",
     ABSTENTION_PATH: "de838dcdc247e1846e0e633766135b3a902f436b",
-    ADJUDICATION_PATH: "62cb2043e196b4f4971ebbbd5de769dc8978f801",
+    ADJUDICATION_PATH: "0ae3e95a3c96bd73ac97812c84a3afb2f23ce037",
 }
 
 def verify_git_blob(path: Path, expected_sha: str) -> None:
@@ -100,6 +100,12 @@ def build_rows(root: Path = ROOT) -> list[dict[str, str]]:
                 retain_adjudication["notes"] if candidate_id == RETAIN_ID else "")
             ipa_status = abstention["independent_ipa_review_status"] if abstention else (
                 retain_adjudication["independent_review_status"] if candidate_id == RETAIN_ID else "NOT_PERFORMED")
+        elif case_adjudication and case_adjudication["decision"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED":
+            disposition = "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
+            basis = case_adjudication["notes"]
+            reason = "BROAD_VS_NARROW_PROFILE_CONVENTION_MISMATCH"
+            rationale = case_adjudication["notes"]
+            ipa_status = case_adjudication["independent_review_status"]
         elif case_adjudication and case_adjudication["decision"] == "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW":
             disposition = "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW"
             basis = case_adjudication["notes"]
