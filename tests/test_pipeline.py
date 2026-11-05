@@ -934,10 +934,44 @@ def test_context_adjudication_ledger_forms_apply_in_full_ugtphon_sentences():
         assert expected_fragment in result["ipa"]["ipa"], (
             row["source_row_id"] + ":" + row["token"]
         )
-        # A sentence-level RuleTrace currently stores one license_context
-        # string for the whole R013 pass; isolated-form tests above verify
-        # each exact license key independently.
+        trace = next(
+            trace for trace in result["rules"] if trace.get("rule_id") == "R013"
+        )
+        assert trace["changed"], row["source_row_id"] + ":" + row["token"]
+        expected_context = f"R013:adnominal_l:{row['token']}:{row['licensed_pair']}"
+        assert expected_context in trace["license_contexts"], (
+            row["source_row_id"] + ":" + row["token"],
+            trace["license_contexts"],
+        )
         assert any(
-            trace.get("rule_id") == "R013" and trace.get("changed") is True
-            for trace in result["rules"]
+            item["word_form"] == row["token"]
+            and item["pair"] == row["licensed_pair"]
+            and expected_context in item["license_contexts"]
+            for item in trace["applied_occurrences"]
         ), row["source_row_id"] + ":" + row["token"]
+
+
+def test_r013_rule_trace_preserves_multiple_exact_licenses_per_sentence():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    sentence = (
+        "상대를 존중하는 것은 합리적이고 타당한 논리로 "
+        "존중시킬수도있지만 저런 물리적 힘이 있음에도 "
+        "자기를 공격하지않는 그런곳에서도 나오는 존중이 엄청나게 크다고함 "
+        "힘에 의해 내릴수있는 어떤 갑질 논리가 아닌곳에서 처음 신뢰가 시작된다고함"
+    )
+    result = phoneticize_korean(sentence)
+    trace = next(item for item in result["rules"] if item["rule_id"] == "R013")
+    expected = {
+        "R013:adnominal_l:존중시킬수도있지만:킬>수",
+        "R013:adnominal_l:내릴수있는:릴>수",
+    }
+    assert expected.issubset(set(trace["license_contexts"]))
+    by_word = {
+        item["word_form"]: item
+        for item in trace["applied_occurrences"]
+        if item["word_form"] in {"존중시킬수도있지만", "내릴수있는"}
+    }
+    assert set(by_word) == {"존중시킬수도있지만", "내릴수있는"}
+    assert by_word["존중시킬수도있지만"]["pair"] == "킬>수"
+    assert by_word["내릴수있는"]["pair"] == "릴>수"
