@@ -56,11 +56,11 @@ test('real source register is structurally valid and unresolved rights remain vi
   const csv = readFileSync(new URL('../research/SOURCE-REGISTER.csv', import.meta.url), 'utf8');
   const report = auditSourceRegister(csv);
   assert.equal(report.structuralErrorCount, 0, JSON.stringify(report.structuralErrors));
-  assert.equal(report.sourceRegisterRows, 200);
+  assert.equal(report.sourceRegisterRows, 201);
   assert.deepEqual(report.rightsClassificationCounts, {
     ITEM_LEVEL_LICENSE_RECORDED: 3,
     NOT_APPLICABLE_RECORDED: 1,
-    REVIEW_REQUIRED: 175,
+    REVIEW_REQUIRED: 176,
     MANUAL_CLASSIFICATION_REQUIRED: 21,
   });
   assert.ok(report.rightsClassificationCounts.REVIEW_REQUIRED > 0);
@@ -94,6 +94,7 @@ test('real source register is structurally valid and unresolved rights remain vi
   assert.ok(unresolvedIds.has('SRC-NIKL-KRDICT-HYEMO'));
   assert.ok(unresolvedIds.has('SRC-NIKL-KRDICT-89917'));
   assert.ok(unresolvedIds.has('SRC-WIKTIONARY-JUNGSIMDALMEUM'));
+  assert.ok(unresolvedIds.has('SRC-NIKL-LOANWORD-GAME-2005'));
 });
 
 test('CLI reports structure by default and keeps strict rights acceptance blocked', () => {
@@ -101,7 +102,7 @@ test('CLI reports structure by default and keeps strict rights acceptance blocke
   const normal = spawnSync(process.execPath, [script, '--json'], { cwd: process.cwd(), encoding: 'utf8' });
   assert.equal(normal.status, 0, normal.stderr);
   const report = JSON.parse(normal.stdout);
-  assert.equal(report.sourceRegisterRows, 200);
+  assert.equal(report.sourceRegisterRows, 201);
   assert.equal(report.structuralErrorCount, 0);
   assert.ok(report.itemLevelRightsNotClosed.length > 0);
 
