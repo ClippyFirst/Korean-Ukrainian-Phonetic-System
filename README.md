@@ -8,6 +8,7 @@ Research-grade, machine-readable framework for Korean → Ukrainian phonetic-gra
 - [Versioning policy](docs/VERSIONING-POLICY.md) — separate version streams for the private browser app and installable Python package.
 - [Repository structure guide](docs/REPOSITORY-STRUCTURE.md) — current component map, data ownership, runtime entry points, development commands and safe navigation.
 - [Repository audit and structure — latest 2026-11-05 addendum](docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — dated audit snapshots and the current exact-head status.
+- [Engineering workflow reference audit](docs/ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-05.md) — pinned comparison of Superpowers, Matt Pocock skills and Ponytail; project-specific adoption decisions.
 
 ## Author, licensing and permissions
 

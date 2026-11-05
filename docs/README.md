@@ -7,15 +7,16 @@ This page is the entry point for project documentation. It distinguishes current
 1. [Project README](../README.md) — product overview, installation entry points, public service, runtime modes and limitations.
 2. [Repository structure guide](REPOSITORY-STRUCTURE.md) — current component map, data ownership, runtime entry points, development commands and safe navigation.
 3. [Repository audit and structure](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — dated snapshots; latest addendum 2026-11-05, including engine isolation and historical mismatch blockers.
-4. [Versioning policy](VERSIONING-POLICY.md) — independent browser and Python release streams.
-5. [Architecture](architecture.md) — concise system architecture.
-6. [Methodology](methodology.md) — linguistic and engineering methodology.
-7. [Ukrainian target layer](ukrainian-target-layer.md) — IPA-to-Ukrainian mapping contract.
-8. [Research index](../research/README.md) — active research programme and evidence workflow.
-9. [Research master directive](../research/MASTER-DIRECTIVE.md) — non-negotiable research and implementation constraints.
-10. [Acceptance gates](../research/ACCEPTANCE-GATES.md) — research and release acceptance criteria.
-11. [Decision log](../research/DECISION-LOG.md) — append-only consequential decisions.
-12. [Master execution plan and handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) — detailed historical execution record; use the newest dated section, not an old snapshot.
+4. [Engineering workflow reference audit](ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-05.md) — review of the three supplied repositories and explicit adoption decisions.
+5. [Versioning policy](VERSIONING-POLICY.md) — independent browser and Python release streams.
+6. [Architecture](architecture.md) — concise system architecture.
+7. [Methodology](methodology.md) — linguistic and engineering methodology.
+8. [Ukrainian target layer](ukrainian-target-layer.md) — IPA-to-Ukrainian mapping contract.
+9. [Research index](../research/README.md) — active research programme and evidence workflow.
+10. [Research master directive](../research/MASTER-DIRECTIVE.md) — non-negotiable research and implementation constraints.
+11. [Acceptance gates](../research/ACCEPTANCE-GATES.md) — research and release acceptance criteria.
+12. [Decision log](../research/DECISION-LOG.md) — append-only consequential decisions.
+13. [Master execution plan and handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) — detailed historical execution record; use the newest dated section, not an old snapshot.
 
 - [Licensing and permissions](LICENSING-AND-PERMISSIONS.md) — author identity, scientific-use permissions, technical permission boundary and third-party licence scope.
 

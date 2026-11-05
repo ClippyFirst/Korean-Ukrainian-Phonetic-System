@@ -6620,3 +6620,17 @@ Exact-head checks on the PR head:
 - No post-fix multi-engine benchmark was run; the recovery PR changes only research metadata/tests and does not claim updated phonetic benchmark scores.
 
 Current research disposition remains: **239 reconstructed candidate IDs; 3 verified FIX overlaps; 236 candidate cases still unresolved**. RETAIN and ABSTAIN do not decrement the remaining count. Historical membership is still PARTIAL pending confirmation of the original aggregate selector; no independent IPA or Ukrainian-target gold is claimed.
+
+
+
+## 2026-11-05 — exact-head comparator review and workflow references
+
+Working branch `research/236-candidate-review-2026-11-05`; draft PR #436. At head `44c9b08f20d3099ce57a2ba9b7a478c4ed0388d3`, Python regression/data integrity, browser regression/build, Python 3.11/3.12/3.13, wheel install, web, teacher corpus audit, corpus generation, paired UGTPHON, external UGTPHON IPA, morphology consensus, artifact generation and exhaustive test extraction passed. Multi-engine IPA comparison remained in progress. CharsiuG2P, ByT5 and official NIKL metadata checks were skipped, not passed. Local pytest/npm were not run.
+
+- UGTPHON external IPA: 2,698 scored, 1,431 exact (53.0393%), CER 8.966%, five unresolved, no engine errors; non-normative and convention-sensitive.
+- Native vs g2pk paired: 2,698 shared tokens; 53.0393% vs 53.1134% exact, but CER 8.966% vs 9.2304%. This does not select a production engine.
+- Kiwi + MeCab-Ko: three unique words changed IPA/status, one newly resolved, four unresolved, 24 phrase boundaries withheld. Morphology is not pronunciation gold.
+- Raw-surface retrieval: 22/722 noncanonical hits (3.0471%), zero canonical hits and no potential canonical false rewrites.
+- Pinned review of Superpowers, Matt Pocock skills and Ponytail is in `docs/ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-05.md`. All three reviewed snapshots are MIT; no third-party code/assets were copied. Adopt requirements clarification, TDD, debugging, exact-head verification, composable procedures and transparent benchmarks; retain project-specific linguistic gates.
+
+Next: inspect completed multi-engine artifact; verify original 239 selector if recoverable; group repeated cases by token/source/context/profile; adjudicate lenis and fortis sibilants separately; only then review Ukrainian targets and rerun post-fix benchmarks. Resolve NIKL item rights and capture authenticity. Repository remains a partial research prototype, not research-certified or release-ready.

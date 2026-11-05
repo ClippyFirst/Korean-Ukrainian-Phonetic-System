@@ -591,3 +591,31 @@ The Cambridge primary record identifies S018 as Hyun Bok Lee, *Korean*, Journal 
 | Neural teacher training | DEFERRED | Requires independent IPA gold and corpus-rights clearance |
 
 **Readiness:** partial research prototype; not research-certified and not release-ready. No release, deployment, branch protection, external setting, branch deletion, or merge was performed.
+
+
+## 21. 2026-11-05 — workflow references and comparator evidence
+
+A pinned comparison of [Superpowers](https://github.com/obra/superpowers), [Matt Pocock skills](https://github.com/mattpocock/skills) and [Ponytail](https://github.com/DietrichGebert/ponytail) is recorded in [ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-05.md](ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-05.md). All inspected snapshots have MIT licences; no code, skill text, artwork or benchmark data were copied. Adopted practices: requirements clarification, TDD, systematic debugging, exact-head verification, small composable procedures and benchmark transparency. Existing linguistic matrices remain canonical.
+
+### Exact-head comparator evidence (PR #436, 44c9b08f20d3099ce57a2ba9b7a478c4ed0388d3)
+
+- UGTPHON: 2,698 scored, 1,431 exact (53.0393%), CER 8.966%, five unresolved, zero engine errors; non-normative and convention-sensitive.
+- Native vs g2pk paired: 2,698 shared; exact 53.0393% vs 53.1134%, but CER 8.966% vs 9.2304%. Near-tie; no production engine decision.
+- Kiwi/MeCab consensus: 2,703 occurrences, 1,907 unique words; three words changed IPA/status, one newly resolved, four unresolved, 24 phrase-boundary cases withheld.
+- Raw-surface retrieval: 3,140 attempted, 2,639 scored; 22/722 noncanonical hits, no canonical hits or potential canonical false rewrites.
+- Python versions, browser, wheel, corpus, paired UGTPHON, morphology, external IPA and artifact jobs passed. Multi-engine IPA comparison was still in progress. CharsiuG2P, ByT5 and NIKL metadata checks were skipped, not passed.
+
+### Task ledger
+
+| Item | Status | Remaining acceptance |
+|---|---|---|
+| 236-row inventory | DONE_VERIFIED as reproducible inventory | Not linguistic confirmation |
+| External comparator diagnostics | PARTIAL | Multi-engine run still pending; skipped engines remain unavailable |
+| Historical 239 membership | PARTIAL / EVIDENCE-LIMITED | Original selector/member list absent |
+| 213 unadjudicated rows | TODO / BLOCKED | Independent IPA decisions with exact context/provenance |
+| 22 ABSTAIN + 1 RETAIN | BLOCKED | Independent IPA review; neither closes a case |
+| 24 fortis sibilant operations | BLOCKED | Separate review; not covered by lenis-only C11 |
+| Ukrainian target | BLOCKED | Separate review after Korean IPA adjudication |
+| NIKL item rights/capture | BLOCKED / PARTIAL | Item-level terms and clean capture provenance |
+
+No production rule, target mapping, release, deployment or branch deletion was performed.

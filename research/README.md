@@ -3,6 +3,8 @@
 Status: research prototype; repository documentation, versioning policy and owner-approved custom licence are integrated into main. Scientific certification and release readiness remain blocked by independent IPA/Ukrainian review, NIKL item-level rights, C12 evidence, historical mismatch reconciliation and remaining coverage/parity work.
 Last updated: 2026-11-05.
 
+See [engineering workflow reference audit](../docs/ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-05.md) for the pinned review of the three supplied repositories and project-specific adoption decisions.
+
 This directory is the durable source of truth for research planning, evidence tracking, implementation coverage, decisions, and release acceptance. Continue work from these files rather than relying on chat history.
 
 ## Start here

@@ -85,6 +85,21 @@ For each occurrence or defensibly grouped token/context family, record:
 
 **Acceptance:** every occurrence needs a traceable individual or explicitly grouped decision with source/reviewer provenance; repeated occurrences must not be counted as independent confirmations; unresolved cases remain explicit abstentions. This inventory alone does not meet that linguistic acceptance gate.
 
+
+
+## Current external diagnostics — PR #436 exact head 44c9b08f20d3099ce57a2ba9b7a478c4ed0388d3
+
+These are research-only comparators, not adjudications of the 236 candidates or normative Korean pronunciation gold.
+
+- **UGTPHON IPA diagnostic** (run 42015760365, artifact 13409167367): 275 rows, 2,698 scored tokens, 1,431 exact (53.0393%), CER 8.966%, five unresolved, zero engine errors; 437 non-Hangul/multitoken items skipped. The report warns that IPA-Dict conventions may differ from the project's broad IPA profile and token scoring loses sentence prosody/cross-token context.
+- **Native engine vs g2pk paired comparison** (run 42015759158, artifact 13409610917): 2,698 shared tokens. Native: 1,431 exact (53.0393%), CER 8.966%; g2pk plus the repository segment-IPA renderer: 1,433 exact (53.1134%), CER 9.2304%. Exact rate improves by 0.0741 percentage points while CER worsens by 0.2644 points. This near-tie on noisy data does not justify changing the production engine.
+- **Kiwi + MeCab-Ko morphology consensus** (run 42015759037, artifact 13409132597): 2,703 occurrences / 1,907 unique Hangul words; three words changed IPA/status, one newly resolved, four unresolved and 24 withheld for unspaced phrase-boundary ambiguity. The report describes morphology as candidate support, not gold segmentation/pronunciation.
+- **Raw-surface retrieval** (run 42015760365, artifact 13409845420): 3,140 attempted, 2,639 scored, 84.0446% coverage, 51.6484% exact among scored, 43.4076% coverage-adjusted exact, CER 9.811%. Train-only retrieval hits 22/722 noncanonical tokens (3.0471%), zero canonical tokens, and reports zero potential canonical false rewrites. This is limited retrieval, not candidate closure.
+
+External UGTPHON, paired-engine, morphology, artifact generation, Python 3.11/3.12/3.13, browser regression/build, wheel install and corpus audit passed. Multi-engine IPA comparison job 127206409326 in run 42015758991 was still running at the last check. CharsiuG2P, ByT5 and official NIKL metadata checks were skipped, not passed. Local pytest/npm were not run in this connector-only session.
+
+**Interpretation:** keep engine comparisons and explicit abstentions. These scores do not decide whether ɕ/s or ɕ͈/s͈ is correct for any individual candidate. No production phonological rule or Ukrainian target change is authorized.
+
 ## Reproducibility
 
 - Generator: scripts/build_kozak_236_candidate_review.py
