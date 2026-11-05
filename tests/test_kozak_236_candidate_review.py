@@ -267,7 +267,7 @@ def test_nikl_dictionary_fortis_affricate_confirms_hyeomojeung_only():
     row = rows["2010"]
     assert row["token"] == "혐오증"
     assert row["candidate_disposition"] == "RULE_CONFIRMED_STANDARD_VARIANT"
-    assert "혐오증[혀모쯩]" in row["candidate_disposition_basis"]
+    assert "혐오증(嫌惡症)[혀모쯩]" in row["candidate_disposition_basis"]
     assert "SRC-NIKL-KRDICT-HYEMO" in row["candidate_disposition_basis"]
     assert row["prior_independent_ipa_review_status"] == "NOT_PERFORMED"
 
