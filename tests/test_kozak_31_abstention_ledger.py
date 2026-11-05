@@ -55,7 +55,7 @@ def test_all_31_unresolved_broad_queue_rows_have_individual_abstentions():
             "f489139efbd00cab293e14c437bdab992de95477194fb1f2b5164aafacf16560"
         )
         assert row["normalizer_script_blob_sha"] == "5a1ea3c2e99ba20303122bb124a6aaec22e56ad2"
-        assert row["broad_profile_blob_sha"] == "e13086f0fd98ce9564326ff50b0458c27392932"
+        assert row["broad_profile_blob_sha"] == "e13086f0fd98ce9564326ff50b0458c27392932f"
         assert row["source_dataset_git_blob_sha"] == "59380491d5a797308c475f7d0007dcf6c4be00af"
         assert row["individual_rationale"]
         assert row["reason_code"]
