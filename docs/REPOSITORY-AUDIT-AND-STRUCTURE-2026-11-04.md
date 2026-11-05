@@ -697,3 +697,18 @@ The multi-engine diagnostic, external UGTPHON diagnostic, paired native/g2pk com
 - **Source registry:** 180 records. Rights checks remain open (the current browser rights-audit test expects 166 REVIEW_REQUIRED and 10 MANUAL_CLASSIFICATION_REQUIRED); this is not a rights clearance.
 - **Exact code/evidence head:** 52586302f305dfd2b81184cef81f0c68def0c4f2. Python 3.11/3.12/3.13, wheel install, teacher audit, web, Python regression/data integrity, browser regression/build, corpus generation and exhaustive extraction passed. External UGTPHON IPA, paired native/g2pk and morphology consensus diagnostics passed. Multi-engine IPA comparison run 42029149673 remains in progress; do not claim a result until its artifact is published. CharsiuG2P, ByT5, Charsiu train/dev and NIKL metadata-only jobs were skipped by workflow policy.
 - **No linguistic promotion:** the research-only optional [ɕ] variant and partial narrow-profile candidate scope are limited to /i, ye, ya/ contexts; canonical broad [s], phonemic output and Ukrainian target mapping are unchanged. The 24 fortis ɕ͈→s͈ operations remain a separate unresolved stratum.
+
+
+## 2026-11-05 continuation — 236-candidate evidence gate
+
+The 2026-11-04 main-branch audit snapshot above remains historical and unchanged. Subsequent work continued on the single branch `research/236-candidate-review-2026-11-05`, Draft PR #436, without merging or creating a parallel branch.
+
+- The reconstructed 236-occurrence candidate baseline remains intact.
+- Current disposition: 15 exact standard-form/rule confirmations; 181 bounded profile/variation reconciliations; 12 ABSTAIN pending independent IPA review; 28 not individually adjudicated. Thus 196 are dispositioned and 40 remain unresolved.
+- None of the 236 has independent speaker-level acoustic IPA gold. No production IPA, Ukrainian target, or benchmark gold was changed.
+- Source register now contains 207 entries; 3 item-level licenses, 1 not applicable, 182 rights-review required, 21 manual-classification required; 203 remain open.
+- NIKL Q&A 332662 is negative evidence for `쇼`: no standardized foreign-word pronunciation entry and no IPA gold. NIKL Q&A 328785 is a Rule 29 negative control: phonological shape alone does not guarantee n-insertion.
+- Kim & Hong (2025) full-text scope was corrected in the case adjudication: /iə~ijə/ and /oa~owa/ within-word pairs do not test /o.ʌ/ or numeral compounds.
+- A CI run on the preceding head exposed malformed CSV quoting in two newly added source-register rows. The rows have been corrected and all 207 records were reparsed as exactly 12 columns. A fresh exact-head CI run on the corrected head is still required; do not mark the latest batch fully verified.
+- The previous failed run's wheel-install and teacher-corpus-audit jobs passed; web and Python 3.13 failed due to the malformed CSV; Python 3.11/3.12 were cancelled. Local pytest/npm were not run.
+
