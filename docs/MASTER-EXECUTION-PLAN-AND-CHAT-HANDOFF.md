@@ -6478,3 +6478,14 @@ An initial trace test exposed collateral adjacency being reported as a second R0
 - Inspected the historical exporter at run-head `4f3f307c5bb056bce3b0aedc8ab07e0010eaa695`. It combines strict and Broad edits before assigning an occurrence-level union label; it does not preserve per-fragment Broad C01–C10 assignments. The pinned 1,267-row export yields 370 Broad mismatches, only 3 rows labelled exactly `UNMAPPED_REQUIRES_REVIEW`, and 12 Broad mismatches whose union has no C01–C10 label. These counts do not reproduce 239 and cannot identify rows with a mixture of mapped and unmapped fragments.
 - The historical 239 ledger therefore remains `BLOCKED` on the missing original per-fragment assignment snapshot or exact selection predicate. No arbitrary 239-ID selection, context join or invented engine/normalizer provenance was made.
 - Verification after the preceding trace work and current documentation changes is available on final head `d384113af47a1c52faef1633a3a3860040ba8325`: tests `41995587043`, System Verify `41995587134`, master/research artifacts `41995587153`, and Pages deployment `41995587046` all completed successfully. The current rationale/test/doc refinements were committed after that head; exact-head CI must be rerun before claiming those refinements verified.
+
+## 2026-11-05 — exact-main verification refresh
+
+Current main at verification: `d68cb09e12eb8b71b264775f2cf7ac6e9c2a51c5` (repository branch inventory contains `main` only; no open PRs). Exact-head workflows:
+
+- Tests `42000327552` — PASS: Python 3.11/3.12/3.13, wheel installation, teacher-corpus audit and browser tests.
+- System Verify `42000327509` — PASS: Python regression/data integrity and browser regression/build. Live NIKL metadata-only inventory — SKIPPED by workflow condition; not a pass.
+- Master/research artifacts `42000327383` — PASS.
+- Pages deployment `42000327385` — PASS.
+
+The 36-row queue disposition register is complete as a record: 4 FIX, 1 provisional RETAIN, 31 individually reasoned ABSTAIN. Python `RuleTrace` per-occurrence provenance (`applied_occurrences`, `license_contexts`) is implemented and covered by the exact-head test workflow. The historical 239 artifact has been recovered and hash-pinned; the exact 239-member predicate / fragment-to-C01–C10 assignment snapshot remains the sole blocker to producing a valid 239-row ledger. The project remains a partial research prototype, not research-certified or release-ready.
