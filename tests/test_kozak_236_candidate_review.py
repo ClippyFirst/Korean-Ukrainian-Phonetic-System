@@ -16,9 +16,9 @@ def test_reconstructed_236_review_ledger_has_exact_membership_and_statuses():
     assert len({row["occurrence_id"] for row in rows}) == 236
     assert Counter(row["candidate_disposition"] for row in rows) == {
         "NOT_INDIVIDUALLY_ADJUDICATED": 208,
-        "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 21,
+        "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 24,
         "RETAIN_PENDING_INDEPENDENT_IPA_REVIEW": 0,
-        "RULE_CONFIRMED_STANDARD_VARIANT": 7,
+        "RULE_CONFIRMED_STANDARD_VARIANT": 4,
     }
     assert all(row["historical_membership_confidence"] ==
         "RECONSTRUCTED_CANDIDATE_NOT_ORIGINAL_MEMBERSHIP_PROOF" for row in rows)
@@ -284,7 +284,7 @@ def test_nikl_dictionary_attestation_upgrades_provisional_chulsan_retain():
     assert row["prior_independent_ipa_review_status"] == "independent_Korean_review_pending"
 
 
-def test_nikl_rule_5_preserves_yeo_diphthong_after_h_in_three_candidates():
+def test_nikl_rule_5_does_not_apply_to_hyeom_with_vowel_ㅓ():
     rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
     expected = {
         "257": "문화체험공간",
@@ -294,9 +294,8 @@ def test_nikl_rule_5_preserves_yeo_diphthong_after_h_in_three_candidates():
     for occurrence_id, token in expected.items():
         row = rows[occurrence_id]
         assert row["token"] == token
-        assert row["candidate_disposition"] == "RULE_CONFIRMED_STANDARD_VARIANT"
-        assert "Standard Pronunciation Rule 5" in row["candidate_disposition_basis"]
-        assert "ㅕ is pronounced as a diphthong" in row["candidate_disposition_basis"]
-        assert "SRC-NIKL-PRON" in row["candidate_disposition_basis"]
-        assert row["prior_individual_reason_code"]
+        assert row["candidate_disposition"] == "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW"
+        assert "체험 is 체 + 험" in row["candidate_disposition_basis"]
+        assert "ㅓ, not ㅕ" in row["candidate_disposition_basis"]
+        assert row["prior_individual_reason_code"] == "UNMAPPED_FRAGMENT_AND_NO_INDEPENDENT_IPA_GOLD"
         assert row["prior_independent_ipa_review_status"] == "NOT_PERFORMED"
