@@ -488,3 +488,14 @@ def test_nikl_rule_26_confirms_exact_chulsi_fortis_in_release_candidate():
     assert "SRC-KPEDIA-CHULSI" in row["candidate_disposition_basis"]
     assert "Kozak's plain /s/ omits fortis" in row["candidate_disposition_basis"]
 
+
+
+def test_genitive_ui_particle_does_not_take_noninitial_lexical_i_variant():
+    rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
+    row = rows["1610"]
+    assert row["token"] == "자신의"
+    assert row["candidate_disposition"] == "RULE_CONFIRMED_STANDARD_VARIANT"
+    assert "genitive particle" in row["candidate_disposition_basis"]
+    assert "not [i]" in row["candidate_disposition_basis"]
+    assert "SRC-NIKL-QNA-335190" in row["candidate_disposition_basis"]
+    assert "The separate lenis" in row["candidate_disposition_basis"]
