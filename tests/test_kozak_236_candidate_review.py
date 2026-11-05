@@ -15,9 +15,9 @@ def test_reconstructed_236_review_ledger_has_exact_membership_and_statuses():
     assert len(rows) == 236
     assert len({row["occurrence_id"] for row in rows}) == 236
     assert Counter(row["candidate_disposition"] for row in rows) == {
-        "NOT_INDIVIDUALLY_ADJUDICATED": 205,
+        "NOT_INDIVIDUALLY_ADJUDICATED": 204,
         "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 24,
-        "RULE_CONFIRMED_STANDARD_VARIANT": 7,
+        "RULE_CONFIRMED_STANDARD_VARIANT": 8,
     }
     assert all(row["historical_membership_confidence"] ==
         "RECONSTRUCTED_CANDIDATE_NOT_ORIGINAL_MEMBERSHIP_PROOF" for row in rows)
@@ -347,3 +347,15 @@ def test_nikl_rule_4_alone_does_not_adjudicate_oeok_hiatus_glide():
     assert "token audio or independent Korean IPA review" in row["candidate_disposition_basis"]
     assert row["prior_individual_reason_code"] == "UNMAPPED_FRAGMENT_AND_NO_INDEPENDENT_IPA_GOLD"
     assert row["prior_independent_ipa_review_status"] == "NOT_PERFORMED"
+
+
+def test_expert_attested_meoritsok_confirms_exact_saisiot_lexeme():
+    rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
+    row = rows["2490"]
+    assert row["token"] == "머리속에"
+    assert "포지션을 머리속에 집어넣고서" in row["source_context_text"]
+    assert row["candidate_disposition"] == "RULE_CONFIRMED_STANDARD_VARIANT"
+    assert "머릿속[머리쏙]" in row["candidate_disposition_basis"]
+    assert "figurative lexical meaning" in row["candidate_disposition_basis"]
+    assert "SRC-KIMNAMMI-2017-DONGA-MEORISSOK" in row["candidate_disposition_basis"]
+    assert "not a controlled acoustic study" in row["candidate_disposition_basis"]
