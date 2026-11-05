@@ -6408,3 +6408,29 @@ The 239 count is historical and relative to the pre-C11/C12 cluster snapshot, no
 
 
 **Audit/handoff documentation refresh:** `eba384fba0a201837cdb3b657ced4f376ae84fdd`. The subsequent inventory-count correction and final verification are recorded in the repository commit history and final run report.
+
+
+## 2026-11-05 — 31 queue-row decisions and Python per-occurrence trace
+
+**Starting main for this continuation:** `68a64c3a625dd5b0f2a3dcaa5d129f9024f3df2c`.
+
+### Completed in this continuation
+
+- Added `research/kozak-kim-31-row-individual-abstentions-2026-11-05.csv`: exactly 31 unique rows, matching the 36-row unmapped-Broad queue after excluding the four exact R013 corrections (occurrence IDs 37, 704, 2018, 2031) and the provisional `출산` retain (1140).
+- Every one of the 31 rows has an individual `ABSTAIN` decision, row-specific rationale/reason code, source-row locator, pinned UGTPHON commit `ef0d5a09c2ea1874c7206020f875cbd9cfea2f54`, queue Git blob SHA `fc331b42bbfd31700892d1f7df04dcb8578461f5`, and profile/comparator labels. The historical Kozak engine commit and normalizer version are explicitly `NOT_RECOVERED_FROM_HISTORICAL_QUEUE`; they were not guessed.
+- These 31 decisions mean no production change is justified by the current evidence. They are not expert pronunciation judgments and do not claim the existing output is correct. Full utterance text is addressable by pinned source row locator but is not duplicated in this decision file.
+- Python `RuleTrace` now retains the legacy scalar `license_context` and adds `license_contexts` and `applied_occurrences`. Each changed adjacent source pair records application ID, syllable index, source span, eojeol, pair, matched exact license contexts, rule citation, confidence, status and before/after state. This preserves both R013 licenses when they occur in the same sentence.
+- Added tests for 31-row queue coverage/identity and for multiple R013 exact licenses in one sentence. Updated the full-context test to assert the per-occurrence trace rather than accepting a generic R013 pass.
+
+### Historical 239 — still blocked, not silently approximated
+
+The complete 239-occurrence ledger has **not** been completed. The tracked 1,267-row fragment export, 36-row current Broad queue, 13 cluster rows and 38 paired-discrepancy rows are different grains and cannot reconstruct the historical population by themselves. The original 2026-11-02 occurrence artifact (or exact reproducible inputs), historical Kozak engine commit, normalizer version and full source contexts/profile metadata for every occurrence are not currently recoverable from the tracked files inspected in this continuation. No synthetic 239-row ledger or fabricated engine provenance was created.
+
+**Acceptance criterion for the remaining 239 task:** recover the original benchmark occurrence artifact or reproduce the population at its exact historical source split, engine commit, reference profile and normalizer; then produce 239 unique stable occurrence IDs with source row/context locator and hash, engine/profile/normalizer versions, reference/prediction outputs, evidence links and one explicit `fix / retain / abstain` decision per occurrence. Independent IPA adjudication remains a separate reviewer gate.
+
+### Verification status
+
+- Repository writes were made on the existing `main` branch; no new branch was created.
+- GitHub Actions exact-head verification for this continuation is pending at the time this addendum was authored. Do not claim these new tests passed until the run for the final commit completes.
+- Local Python/npm execution remains unavailable in this connector-only environment.
+- Research readiness remains **partial research prototype**, not research-certified or release-ready.
