@@ -690,4 +690,4 @@ def test_s018_page_31_does_not_license_modern_lenis_sibilant_rule():
     assert "page 31" in source["review_status"]
     assert "diphthong beginning [j]" in source["coverage"]
     assert "classifies /s/ among fortis sounds" in source["coverage"]
-    assert "does not license a lenis /s/ rule" in source["limitations_or_next_action"]
+    assert "does not license a modern lenis /s/ rule" in source["limitations_or_next_action"]
