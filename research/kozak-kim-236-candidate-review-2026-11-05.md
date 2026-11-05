@@ -40,6 +40,12 @@ A deterministic Hangul decomposition crosswalk was added to the candidate regres
 
 This verifies source-environment compatibility for the 184 lenis edit operations. It does **not** independently confirm the 184 token pronunciations, dialect/speaker realization, corpus annotation, or Ukrainian target. The 22 ABSTAIN rows and 213 rows without individual disposition remain open as recorded.
 
+
+
+### Fortis stratum triage
+
+The 24 `ɕ͈→s͈` operations are now separated by orthographic source: 22 are on forms containing orthographic ㅆ (15 distinct token strings); two are coda-triggered fortition of ㅅ after ㄹ, in `했을시` (ID 481) and `실시간` (ID 551). The latter two share a high-front /i/ environment with the lenis candidates but are fortis outputs; S018 p.31 does not describe fortis /s͈/. The 24 operations cover 17 token strings and 19 source rows. They remain a separate, unresolved stratum and cannot inherit C11's lenis decision.
+
 ## Case-level triage interpretation — review, not confirmation
 
 The 236 rows have been reviewed structurally by occurrence identity, source context, prior disposition, edit signature and provenance. This is a case-family triage, not independent pronunciation adjudication.
