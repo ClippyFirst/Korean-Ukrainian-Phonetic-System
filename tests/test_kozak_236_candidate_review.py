@@ -18,6 +18,7 @@ def test_reconstructed_236_review_ledger_has_exact_membership_and_statuses():
         "NOT_INDIVIDUALLY_ADJUDICATED": 205,
         "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 22,
         "RULE_CONFIRMED_STANDARD_VARIANT": 9,
+        "PROFILE_CONVENTION_MISMATCH_CONFIRMED": 1,
     }
     assert all(row["historical_membership_confidence"] ==
         "RECONSTRUCTED_CANDIDATE_NOT_ORIGINAL_MEMBERSHIP_PROOF" for row in rows)
@@ -370,3 +371,28 @@ def test_nikl_dictionary_confirms_exact_yusaseong_fortis_sibilant():
     assert "gives the pronunciation [유ː사썽]" in row["candidate_disposition_basis"]
     assert "SRC-NIKL-KRDICT-YUSASEONG" in row["candidate_disposition_basis"]
     assert "It does not establish a productive fortition rule for the suffix -성" in row["candidate_disposition_basis"]
+
+
+def test_mental_patient_occurrence_is_closed_by_exact_r014_and_broad_profile_evidence():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
+    row = rows["2562"]
+    assert row["token"] == "정신병자네"
+    assert row["candidate_disposition"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
+    assert "정신병자[정신뼝자]" in row["candidate_disposition_basis"]
+    assert "R014:compound:정신병자네:신>병" in row["candidate_disposition_basis"]
+    assert "broad /s/ canonical" in row["candidate_disposition_basis"]
+    assert "not a demonstrated phonemic error" in row["candidate_disposition_basis"]
+
+    current = phoneticize_korean("정신병자네")
+    assert current["surface_hangul"] == "정신뼝자네"
+    assert any(
+        rule.get("rule_id") == "R014"
+        and rule.get("changed") is True
+        and rule.get("license_context") == "R014:compound:정신병자네:신>병"
+        for rule in current["rules"]
+    )
+    assert "p͈" in current["ipa"]["ipa"]
+    assert "b" not in current["ipa"]["ipa"]
+    assert any("ɕ" in variant["ipa"] for variant in current["ipa"]["variants"])
