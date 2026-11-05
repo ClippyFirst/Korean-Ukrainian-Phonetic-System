@@ -381,7 +381,13 @@ def _source_backed_rule_licenses(items, boundary_mode):
 class RuleTrace:
     rule_id:str; name:str; changed:bool; before:list[dict]; after:list[dict]; status:str; confidence:str; source:str
     license_context:str|None=None
-    def to_dict(self): return self.__dict__.copy()
+    applied_occurrences:list[dict]=field(default_factory=list)
+    license_contexts:list[str]=field(default_factory=list)
+    def to_dict(self):
+        result=self.__dict__.copy()
+        result["applied_occurrences"]=[dict(item) for item in self.applied_occurrences]
+        result["license_contexts"]=list(self.license_contexts)
+        return result
 
 def _snap(items): return [x.to_dict() for x in items]
 
@@ -793,7 +799,58 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
         source="NIKL §27; official Q&A https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=330963"
         confidence="high"
     status=("conditional-disabled" if conditional_disabled and not changed else ("partially-conditional" if conditional_disabled else ("established" if changed or rule_id not in {"R009","R010","R011","R012","R013","R014","R015","R016"} else "conditional-nochange")))
-    return RuleTrace(rule_id,name,changed,before,_snap(items),status,confidence,source,license_context)
+    after=_snap(items)
+    # Preserve the legacy pass-level license_context for API compatibility,
+    # but add one provenance record for every changed adjacent source pair.
+    # A single rule pass can license several independent eojeol occurrences;
+    # never collapse those into the last scalar context.
+    applied_occurrences=[]
+    context_candidates=set(x for x in licenses if x.startswith(rule_id+":"))
+    if license_context:
+        context_candidates.update(x for x in license_context.split(";") if x)
+    for i in range(len(items)-1):
+        left_before,right_before=before[i],before[i+1]
+        left_after,right_after=after[i],after[i+1]
+        changed_fields=("onset","nucleus","coda")
+        left_changed=any(left_before.get(k)!=left_after.get(k) for k in changed_fields)
+        right_changed=any(right_before.get(k)!=right_after.get(k) for k in changed_fields)
+        if not (left_changed or right_changed):
+            continue
+        pair=f"{left_before['text']}>{right_before['text']}"
+        word_form=word_form_by_index[i]
+        matched_contexts=[]
+        for candidate in sorted(context_candidates):
+            parts=candidate.split(":",3)
+            if len(parts)==4 and parts[0]==rule_id and parts[3]==pair:
+                if parts[2] in {word_form,full_form}:
+                    matched_contexts.append(candidate)
+            elif candidate.startswith(f"{rule_id}:attested_l_ge_ending:") and candidate.endswith(f":{pair}"):
+                if word_form in candidate or full_form in candidate:
+                    matched_contexts.append(candidate)
+        # A changed pair without an exact license still carries its normative
+        # rule citation and an explicit null license, not fabricated evidence.
+        applied_occurrences.append({
+            "application_id":f"{rule_id}:{i}:{pair}",
+            "rule_id":rule_id,
+            "syllable_index":i,
+            "source_span":left_before["text"]+right_before["text"],
+            "word_form":word_form,
+            "pair":pair,
+            "license_contexts":matched_contexts,
+            "rule_source":source,
+            "confidence":confidence,
+            "status":status,
+            "before":{
+                "left":{"onset":left_before.get("onset"),"nucleus":left_before.get("nucleus"),"coda":left_before.get("coda")},
+                "right":{"onset":right_before.get("onset"),"nucleus":right_before.get("nucleus"),"coda":right_before.get("coda")},
+            },
+            "after":{
+                "left":{"onset":left_after.get("onset"),"nucleus":left_after.get("nucleus"),"coda":left_after.get("coda")},
+                "right":{"onset":right_after.get("onset"),"nucleus":right_after.get("nucleus"),"coda":right_after.get("coda")},
+            },
+        })
+    applied_contexts=sorted({context for item in applied_occurrences for context in item["license_contexts"]})
+    return RuleTrace(rule_id,name,changed,before,after,status,confidence,source,license_context,applied_occurrences,applied_contexts)
 
 def apply_ordered_rules(
     items: list[Syllable],
