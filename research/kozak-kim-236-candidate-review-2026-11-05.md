@@ -1,6 +1,6 @@
 ## 2026-11-05 — Eight independently supported standard-form adjudications
 
-**Current status:** the reconstructed baseline remains **236 occurrence rows**. Eight are now RULE_CONFIRMED_STANDARD_VARIANT: **IDs 78, 341, 1140, 1406, 1527, 2001, 2010 and 2533**. The active unresolved count is **228**: 204 without individual disposition and 24 abstained pending independent IPA review. All 236 original rows remain in the ledger.
+**Current status:** the reconstructed baseline remains **236 occurrence rows**. Eight are now RULE_CONFIRMED_STANDARD_VARIANT: **IDs 78, 341, 1140, 1406, 1527, 2001, 2010 and 2533**. The active unresolved count is **228**: 205 without individual disposition and 23 abstained pending independent IPA review. All 236 original rows remain in the ledger.
 
 - **ID 78 — 오조오억배:** NIKL Standard Pronunciation Rule 4 classifies ㅓ as a monophthong; Rule 5 separately identifies ㅕ among the diphthongs. The spelling 오억 contains ㅓ, not ㅕ. The Broad comparator inserts /j/ before /ʌ/, while Kozak preserves the written monophthong. No standard rule or lexical evidence licenses a phonemic /j/ in this form. This resolves the normative broad-IPA mismatch only; token audio would be needed to exclude a transient speaker-specific transition.
 - **ID 341 — 그놈의:** NIKL Standard Pronunciation Rule 5 distinguishes non-initial lexical 의 (where [i] is permitted) from the genitive particle 의 (where [e] is an accepted variant alongside [ɯi]). The canonical context makes 의 the genitive particle. The comparator's [e] is normatively supported; Kozak's [i] is not the rule's listed particle variant.
@@ -13,7 +13,7 @@
 - **IDs 257 (문화체험공간), 813 (사전체험) and 853 (만듬사전체험때) remain ABSTAIN.** The proposed Rule 5 argument was rejected: 체험 is 체+험, and 험 contains ㅓ, not ㅕ. Rule 5 therefore does not establish that the comparator's /j/ is phonemic. Independent IPA annotation or token-level audio is required; IDs 813 and 853 are repeated tokens in one source row.
 - **IDs 293 (실수), 538 (멋있어) and 1206 (싫어서) remain ABSTAIN.** NIKL Q&A sources attest Hangul surface readings, but Hangul bracket notation cannot decide [s] versus [ɕ]. IPA-Dict Korean is broadly phonemic, so its [ɕ] cannot be presumed to be a narrow allophone.
 - **IDs 1816, 1843 and 1870 — 연전연패 — remain ABSTAIN.** Rule 29 is relevant to n-insertion, but Jun (2015) documents variability and does not provide item-specific evidence. Three repetitions in one source row are not independent speakers or acoustic confirmations.
-- Current disposition counts: **204** NOT_INDIVIDUALLY_ADJUDICATED, **24** ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW, **0** pending RETAIN, and **8** RULE_CONFIRMED_STANDARD_VARIANT. Historical membership remains reconstructed, not proven.
+- Current disposition counts: **205** NOT_INDIVIDUALLY_ADJUDICATED, **23** ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW, **0** pending RETAIN, and **8** RULE_CONFIRMED_STANDARD_VARIANT. Historical membership remains reconstructed, not proven.
 - These are normative rule/lexical confirmations, not token-specific acoustic IPA gold. No production IPA, Ukrainian target, benchmark gold, or runtime rule changed.
 
 **Sources:** NIKL Standard Pronunciation Rules 4, 5, 26 and 27; NIKL Basic Dictionary entries for 출산, 팔자 and 혐오증; official NIKL educational examples for 물가 and Rule 27; NIKL Q&A 310899 and 317798; Jun (2015), DOI 10.1017/S0952675715000275.
@@ -50,7 +50,7 @@ The 370-row superset joins to the pinned UGTPHON Korean test split at commit ef0
 - **3 FIX overlaps:** IDs 37 (해줄것), 704 (많을거같이) and 2031 (내릴수있는) have exact-form R013 licenses already implemented in Kozak Kim. The separate fourth R013 fix, occurrence 2018 (존중시킬수도있지만), is outside this reconstructed cohort. The three are excluded from the 236.
 - **22 ABSTAIN overlaps:** these have individual rationale rows in the 31-row abstention register. They remain unresolved; ABSTAIN is not resolution and does not decrement the count.
 - **One historical RETAIN upgraded:** occurrence 1140 (출산) is now a rule-confirmed exact lexical form under the NIKL dictionary entry; the prior R012 rationale remains preserved.
-- **Current individual dispositions:** 24 ABSTAIN, eight rule-confirmed, zero pending RETAIN, and 204 without individual disposition. The 370-row context ledger's default ABSTAIN / EVIDENCE_LIMITED_DIAGNOSTIC_ONLY remains a safe no-change baseline, not an individual review result.
+- **Current individual dispositions:** 23 ABSTAIN, eight rule-confirmed, zero pending RETAIN, and 205 without individual disposition. The 370-row context ledger's default ABSTAIN / EVIDENCE_LIMITED_DIAGNOSTIC_ONLY remains a safe no-change baseline, not an individual review result.
 
 ## S018/S019 page-level source check and 236-case Hangul environment crosswalk
 
