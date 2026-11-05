@@ -4,10 +4,16 @@
 
 ### Current ledger
 
-- **11 `RULE_CONFIRMED_STANDARD_VARIANT`:** IDs 341 (`그놈의`), 826 (`유사성`), 1140 (`출산`), 1406 (`팔자걸음`), 1527 (`보일거라`), 2001 (`물가로`), 2010 (`혐오증`), 2092 (`출시미정에`), 2490 (`머리속에` → `머릿속에`), 2533 (`안할듯`), and 1610 (`자신의`). Each is supported by exact NIKL rule/dictionary/educational evidence or an exact expert lexical attestation; none is speaker-level acoustic IPA gold.
+- **12 `RULE_CONFIRMED_STANDARD_VARIANT`:** IDs 341 (`그놈의`), 826 (`유사성`), 1140 (`출산`), 1406 (`팔자걸음`), 1527 (`보일거라`), 2001 (`물가로`), 2010 (`혐오증`), 2092 (`출시미정에`), 2490 (`머리속에` → `머릿속에`), 2533 (`안할듯`), 1610 (`자신의`), and 545 (`정권`, `政權`). ID 545 is supported by Kpedia's exact lexical entry `정권[정꿘]`, corroborated by NIKL Q&A 335292 on the Sino-Korean morpheme `권(權)`; this is exact lexical evidence, not a general `-권` rule or speaker-level acoustic IPA gold. The other cases retain their existing exact scopes.
 - **181 `PROFILE_CONVENTION_MISMATCH_CONFIRMED`:** 150 lenis `ɕ→s` occurrences in the scoped /i, ye, ya/ contexts (including 49 and 143, where ㅅ is resyllabified before /i/); 23 fortis `ɕ͈→s͈` place-symbol pairs; three Rule 13 resyllabification cases (475, 2392, 2667); three earlier lexical/profile cases (520, 2307, 2562); ID 2462 (`주는대로`, ㅐ /ɛ/ vs comparator /e/); ID 2170 (`게임`, NIKL-attested variation [께임] ~ [게임]); and ID 538 (`멋있어`, exact NIKL surface variant plus lenis /s/ coarticulation context). These are exact, bounded profile/variation reconciliations, not claims about an individual recording's narrow realization.
-- **16 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW` + 28 `NOT_INDIVIDUALLY_ADJUDICATED` = 44 active unresolved occurrences.** Zero pending RETAIN. Historical membership remains reconstructed from pinned replay, not proven original-selector membership.
-- Therefore **192/236 are dispositioned** (11 normative/exact lexical cases + 181 profile/variation cases); **44/236 remain unresolved**. Do not describe the 180 profile cases as independent pronunciation confirmations.
+- **15 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW` + 28 `NOT_INDIVIDUALLY_ADJUDICATED` = 43 active unresolved occurrences.** Zero pending RETAIN. Historical membership remains reconstructed from pinned replay, not proven original-selector membership.
+- Therefore **193/236 are dispositioned** (12 normative/exact lexical cases + 181 profile/variation cases); **43/236 remain unresolved**. Do not describe the 180 profile cases as independent pronunciation confirmations.
+
+### New exact lexical resolution: ID 545 `정권`
+
+- The corpus context uses the political noun `정권(政權)`. Kpedia's exact entry gives `정권[정꿘]` (political-power sense), matching the comparator's fortis /k͈/ rather than Kozak's lenis /ɡ/.
+- Official NIKL Q&A 335292 explains that fortition may be a lexical property of Sino-Korean `권(權)`, citing `소유-권[소ː유꿘]`, `인권[인꿘]` and `감찰-권[감찰꿘]`. It explicitly says individual words are not governed by a general rule and directs readers to dictionary pronunciation; it is corroboration, not the exact-word attestation.
+- This closes only ID 545. It is not token-specific audio or independent IPA gold. The original ABSTAIN rationale and `NOT_PERFORMED` acoustic-review status remain preserved; no production rule, Ukrainian target or benchmark gold changed.
 
 ### New independent source: ID 2170 `게임`
 
@@ -31,7 +37,7 @@
 
 ### Retained abstentions and unadjudicated families
 
-- **16 ABSTAIN:** IDs 78 (`오조오억배`), 257 (`문화체험공간`), 545 (`정권`), 643 (`홍콩영화들`), 813 (`사전체험`), 853 (`만듬사전체험때`), 899 (`자기이입하네`), 1219 (elongated UGC token ending `정액싸고`), 1288 (mixed long sexual-vocabulary token), 1805/1832/1859 (`한국여자로`), 1816/1843/1870 (`연전연패`), and 2215 (`첫연애실패후`). Their unresolved features include vowel-glide insertion, item-specific n-insertion/prosody, and multiple mixed IPA differences; no rule is inferred from Hangul spelling alone.
+- **15 ABSTAIN:** IDs 78 (`오조오억배`), 257 (`문화체험공간`), 643 (`홍콩영화들`), 813 (`사전체험`), 853 (`만듬사전체험때`), 899 (`자기이입하네`), 1219 (elongated UGC token ending `정액싸고`), 1288 (mixed long sexual-vocabulary token), 1805/1832/1859 (`한국여자로`), 1816/1843/1870 (`연전연패`), and 2215 (`첫연애실패후`). Their unresolved features include vowel-glide insertion, item-specific n-insertion/prosody, and multiple mixed IPA differences; no rule is inferred from Hangul spelling alone.
 - **28 not individually adjudicated:** IDs 606 (`쇼`), 843 (`모션어디서`), 1155/1157 (`뿌셔우우` variants), 1414–1477 (22 repeated `아끼셔` occurrences in one source row), 1885 (`대한민국`, /ɛː/ vs /eː/), and 2489 (`포지션을`, /ɕ/ before /jʌ/). The 22 `아끼셔` repetitions are one source-row/token family, not 22 independent speakers. Reviewed studies do not license broadening /i, ye, ya/ findings to /jʌ/ or /jo/.
 - Full-text literature review: Kim & Hong (2025) [Kim25e] and Kang (2010) [Kan10b] do not establish categorical glide insertion for `체험` or `오조오억배`; Kim et al. (2021) [Kim21c] and Kong & Kang (2021) [Kon21] support context-dependent sibilant variation but not token-specific narrow IPA. Jun (2015) [Jun14] documents variable n-insertion; it does not supply item-specific evidence for `연전연패`.
 
