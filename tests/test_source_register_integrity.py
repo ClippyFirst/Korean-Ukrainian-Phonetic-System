@@ -754,3 +754,11 @@ def test_nikl_rule_29_and_renpa_sense_sources_are_registered():
     assert "連敗" in renpa["coverage"]
     assert "연패²(連霸)" in renpa["coverage"]
     assert "Does not give a pronunciation" in renpa["limitations_or_next_action"]
+
+
+def test_nikl_show_loanword_qna_is_registered_as_negative_evidence_only():
+    row = {item["source_id"]: item for item in load_source_register()}["SRC-NIKL-QNA-332662"]
+    assert "qna_seq=332662" in row["url"]
+    assert "쇼" in row["coverage"]
+    assert "no standard pronunciation entry" in row["contribution_expected"]
+    assert "does not decide IPA [s] vs [ɕ]" in row["limitations_or_next_action"]
