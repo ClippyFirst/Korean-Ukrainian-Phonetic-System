@@ -18,7 +18,7 @@ def test_reconstructed_236_review_ledger_has_exact_membership_and_statuses():
         "NOT_INDIVIDUALLY_ADJUDICATED": 204,
         "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 22,
         "RULE_CONFIRMED_STANDARD_VARIANT": 9,
-        "PROFILE_CONVENTION_MISMATCH_CONFIRMED": 1,
+        "PROFILE_CONVENTION_MISMATCH_CONFIRMED": 3,
     }
     assert all(row["historical_membership_confidence"] ==
         "RECONSTRUCTED_CANDIDATE_NOT_ORIGINAL_MEMBERSHIP_PROOF" for row in rows)
@@ -396,3 +396,21 @@ def test_mental_patient_occurrence_is_closed_by_exact_r014_and_broad_profile_evi
     assert "p͈" in current["ipa"]["ipa"]
     assert "b" not in current["ipa"]["ipa"]
     assert any("ɕ" in variant["ipa"] for variant in current["ipa"]["variants"])
+
+
+def test_two_eopda_occurrences_are_profile_mismatches_not_acoustic_gold():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
+    for occurrence_id in ("520", "2307"):
+        row = rows[occurrence_id]
+        assert row["token"] == "없다"
+        assert row["candidate_disposition"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
+        assert "없다[업ː따]" in row["candidate_disposition_basis"]
+        assert "Lee (1993)" in row["candidate_disposition_basis"]
+        assert "/ʌː/" in row["candidate_disposition_basis"]
+        assert "/ɘː/" in row["candidate_disposition_basis"]
+        assert "not a token-specific acoustic adjudication" in row["candidate_disposition_basis"]
+
+    current = phoneticize_korean("없다")
+    assert current["ipa"]["ipa"] == "ʌːp̚.t͈a"
