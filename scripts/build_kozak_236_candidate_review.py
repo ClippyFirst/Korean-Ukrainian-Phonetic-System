@@ -31,7 +31,7 @@ PINNED_INPUT_GIT_BLOB_SHA = {
 
 def verify_git_blob(path: Path, expected_sha: str) -> None:
     payload = path.read_bytes()
-    header = f"blob {len(payload)}\\0".encode("ascii")
+    header = f"blob {len(payload)}\0".encode("ascii")
     actual_sha = hashlib.sha1(header + payload).hexdigest()
     if actual_sha != expected_sha:
         raise ValueError(
