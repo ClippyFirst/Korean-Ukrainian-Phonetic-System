@@ -36,7 +36,36 @@ The 370-row superset joins to the pinned UGTPHON Korean test split at commit ef0
 
 The inherited export cluster field carries C11 on 207 of the 236 rows and a historical C04 tag on 206 rows. **The C04 tag is stale:** the current cluster register reports zero C04 residual occurrences and reclassifies the former aspirated-velar set under C12. The 206 inherited C04 labels must not be read as a current classification or as 206 live C04 errors. The review CSV therefore names this field historical_export_cluster_labels_descriptive_only.
 
-The largest individual Broad edit signatures are 184 ɕ→s operations and 24 ɕ͈→s͈ operations. The latter are fortis-marked; the documented C11 optional variant is lenis /s/ only and explicitly excludes fortis ㅆ. These 24 operations therefore require a separate review stratum and cannot be treated as covered by the lenis C11 implementation. Other differences include ɕ→ʑ, ɕ͈→ʑ, vowel quality/length, fortis-vs-lenis stops, nasal insertion/deletion, glide loss and liquid/nasal realization.
+The 236 rows contain **254 edit operations across 24 signatures**. The table gives operations and the number of distinct occurrence IDs containing each signature; occurrence counts overlap because one occurrence may have multiple edit operations.
+
+| Broad edit signature | Operations | Occurrences |
+|---|---:|---:|
+| ɕ → s | 184 | 183 |
+| ɕ͈ → s͈ | 24 | 24 |
+| t → d | 6 | 4 |
+| n → ∅ | 5 | 5 |
+| j → ∅ | 4 | 4 |
+| ɕ → ʑ | 4 | 2 |
+| k͈ → ɡ | 3 | 3 |
+| ŋ → ∅ | 3 | 3 |
+| n → ɡ | 3 | 3 |
+| ɘː → ʌː | 2 | 2 |
+| s͈ → s | 2 | 2 |
+| ɕ͈ → ʑ | 2 | 2 |
+| e → i | 1 | 1 |
+| ∅ → i | 1 | 1 |
+| s → s͈ | 1 | 1 |
+| k → ɡ | 1 | 1 |
+| ɰ → ∅ | 1 | 1 |
+| ɛː → eː | 1 | 1 |
+| ɕ͈ → s | 1 | 1 |
+| k͈ → k | 1 | 1 |
+| n → s | 1 | 1 |
+| e → ɛ | 1 | 1 |
+| t͈ → d | 1 | 1 |
+| p͈ → b | 1 | 1 |
+
+The 184 ɕ→s operations are lenis /s/ versus [ɕ] candidates. The 24 ɕ͈→s͈ operations are fortis-marked; the documented C11 optional variant is lenis /s/ only and explicitly excludes fortis ㅆ. Those 24 operations therefore require a separate review stratum and cannot be treated as covered by the lenis C11 implementation. Other differences include ɕ→ʑ, ɕ͈→ʑ, vowel quality/length, fortis-vs-lenis stops, nasal insertion/deletion, glide loss and liquid/nasal realization.
 
 The strongest aggregate signal is a transcription-profile / sibilant-place question, not evidence for hundreds of independent productive sound-change rules. Repeated forms are material: 아끼셔 occurs 22 times, 스시녀들은 15, 시중도 14 and 신안 10. Occurrence-level repetitions must be grouped by source row, token, speaker/audio and annotation convention before counting independent evidence.
 
