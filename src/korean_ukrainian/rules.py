@@ -816,6 +816,11 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
         right_changed=any(right_before.get(k)!=right_after.get(k) for k in changed_fields)
         if not (left_changed or right_changed):
             continue
+        # R013 changes only the right-hand onset at the licensed boundary.
+        # The same syllable is also the left neighbor of the next pair; do not
+        # misreport that collateral adjacency as a second rule application.
+        if rule_id=="R013" and right_before.get("onset")==right_after.get("onset"):
+            continue
         pair=f"{left_before['text']}>{right_before['text']}"
         word_form=word_form_by_index[i]
         matched_contexts=[]
