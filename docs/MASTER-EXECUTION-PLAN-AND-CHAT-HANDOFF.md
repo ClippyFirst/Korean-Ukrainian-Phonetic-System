@@ -6405,3 +6405,6 @@ The 239 count is historical and relative to the pre-C11/C12 cluster snapshot, no
 8. Keep neural training deferred until independent IPA gold and corpus rights exist.
 
 **Disposition:** software engine isolation and four exact R013 fixes are verified; repository remains a partial research prototype, not research-certified or release-ready.
+
+
+**Audit/handoff documentation refresh:** `eba384fba0a201837cdb3b657ced4f376ae84fdd`. The subsequent inventory-count correction and final verification are recorded in the repository commit history and final run report.

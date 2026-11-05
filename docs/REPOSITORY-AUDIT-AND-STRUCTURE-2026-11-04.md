@@ -406,12 +406,17 @@ The 36-row queue has source row identifiers and context lookup status, but it is
 ### Implementation/test head and verification
 
 - Latest verified implementation/test head: `be65ee71b9d3f224876875830b30be856f96126f`.
-- Follow-up research status and acceptance documentation commit: `774e5ca8fca4bf4ad788c47aedaf09668259c2da`; repository navigation/handoff refresh follows.
+- Follow-up research status and acceptance documentation commit: `774e5ca8fca4bf4ad788c47aedaf09668259c2da`; repository navigation/handoff refresh committed in `eba384fba0a201837cdb3b657ced4f376ae84fdd`.
 - Tests workflow [41991611882](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41991611882) — PASS: browser suite 1,394/1,394; Python 3.11/3.12/3.13; wheel install; teacher-corpus audit.
 - System Verify [41991611839](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41991611839) — PASS: browser regression/build and Python regression/data integrity. Live NIKL metadata-only inventory — SKIPPED.
 - Master table/research artifacts [41991611903](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41991611903) — PASS.
 - Pages deployment [41991611809](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41991611809) — Python matrices and browser/static build PASS; deploy step was still in progress at the time of this record.
 - Local npm/pytest were not run because this connector session could not clone the repository. All stated code checks are remote GitHub Actions results.
+
+### Final repository inventory at the documentation snapshot
+
+- Recursive tree: **799 entries**; `docs/` 144 entries; `tests/` 388 files; `scripts/` 61 files; `schemas/` 13 files; 18 workflows; 163 Markdown files.
+- Branches: `main` only. Open PRs: 0.
 
 ### Four source-context-backed R013 fixes — DONE_VERIFIED
 

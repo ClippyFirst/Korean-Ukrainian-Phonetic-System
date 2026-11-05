@@ -1,12 +1,12 @@
 # Repository structure and ownership guide
 
-**Snapshot:** 2026-11-05, verified code/test head `be65ee71b9d3f224876875830b30be856f96126f`. This guide describes the observed tree and stable ownership boundaries; it is not a claim that every file has been independently reviewed line by line.
+**Snapshot:** 2026-11-05, verified code/test head `be65ee71b9d3f224876875830b30be856f96126f`; documentation and audit addenda committed through `eba384fba0a201837cdb3b657ced4f376ae84fdd`. This guide describes the observed tree and stable ownership boundaries; it is not a claim that every file has been independently reviewed line by line.
 
 ## What this repository contains
 
 A Python research package, a browser-based practical/research application, Korean phonology and lexical datasets, a Korean-to-Ukrainian IPA target layer, reproducible research tooling, and a public GitHub Pages service.
 
-The recursive Git tree contained **798 entries** (files plus directories), including **163 Markdown files**, **388 test files**, **61 scripts**, **18 GitHub Actions workflows**, and **13 schemas**. The current documentation tree contains 144 entries. These are point-in-time inventory counts; see the latest audit addendum for the exact head and CI snapshot.
+The recursive Git tree contained **799 entries** (files plus directories), including **163 Markdown files**, **388 test files**, **61 scripts**, **18 GitHub Actions workflows**, and **13 schemas**. The current documentation tree contains 144 entries. These are point-in-time inventory counts; see the latest audit addendum for the exact head and CI snapshot.
 
 ## Top-level map
 
