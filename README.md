@@ -295,6 +295,7 @@ The durable project plan, evidence registers, rule-coverage matrix, architecture
 - [Rule-to-implementation coverage matrix](research/RULE-COVERAGE.csv)
 - [Architecture decision log](research/DECISION-LOG.md)
 - [Release acceptance gates](research/ACCEPTANCE-GATES.md)
+- [236-candidate occurrence review](research/kozak-kim-236-candidate-review-2026-11-05.md) — reconstructed historical cohort, per-case provenance and evidence-limited disposition.
 
 The initial Phase 0 reconstruction is substantially complete for the current mainline: current CI covers browser tests/build, Python 3.11/3.12/3.13, corpus artifacts and system verification. Remaining acceptance gaps and their evidence are tracked in the handoff, completion audit, and research/ACCEPTANCE-GATES.md.
 

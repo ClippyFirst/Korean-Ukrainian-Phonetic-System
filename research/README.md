@@ -28,7 +28,7 @@ Current evidence gaps:
 - obtain independent Ukrainian phonetic/orthographic target review on frozen IPA inputs;
 - finish rule-level parity across browser, Python, CLI, and API where the current rule coverage matrix says it is incomplete;
 - crosswalk C12 mismatch rows to source utterances, audio, speakers, dialect and prosodic context before any production change;
-- reconcile the historical 239 Broad-v2 mismatch occurrences. This is a historical diagnostic population, not 239 confirmed production defects. The archived 1,267-row fragment export, 36-row current unmapped queue, 13 cluster rows, and 38 paired-discrepancy rows have different grains and are not interchangeable. A complete hash-pinned 239-occurrence ledger with source-context crosswalk, exact IPA profile, provenance and adjudication is still missing; do not mass-change production outputs or expected tests to force corpus agreement.
+- confirm the original historical 239 membership predicate or original member list. A pinned replay now yields 239 reconstructed candidate IDs and the 236 remaining occurrences are materialized in a context-linked review ledger on draft PR #436. Historical identity remains PARTIAL, and the 236 are not yet individually adjudicated; do not mass-change production outputs or expected tests to force corpus agreement.
 - close remaining names, loanwords, Hanja and regional-style coverage gaps;
 - retain exact-head CI and deployment smoke evidence for each release candidate.
 
@@ -95,9 +95,9 @@ The 31 current-queue abstention rationales now identify each occurrence, source 
 
 ## 2026-11-05 verification refresh — current `main`
 
-Current `main` is `d68cb09e12eb8b71b264775f2cf7ac6e9c2a51c5` (single branch; no open PRs). Exact-head GitHub Actions on this commit: tests `42000327552` PASS (Python 3.11/3.12/3.13, wheel install, teacher-corpus audit, browser tests); System Verify `42000327509` PASS (Python and browser tests/build; live NIKL metadata-only inventory SKIPPED); master/research artifacts `42000327383` PASS; Pages deployment `42000327385` PASS. These checks validate software and generated artifacts, not independent IPA correctness, Ukrainian target quality, or source-item rights.
+Current `main` is `043754498f3ad8a17aa6c13b5f643b197536da8a`. Draft PR #436 is the only open PR and carries the 236-candidate review branch; the merged PR #435 source branch is retained. Exact-head GitHub Actions on this commit: tests `42000327552` PASS (Python 3.11/3.12/3.13, wheel install, teacher-corpus audit, browser tests); System Verify `42000327509` PASS (Python and browser tests/build; live NIKL metadata-only inventory SKIPPED); master/research artifacts `42000327383` PASS; Pages deployment `42000327385` PASS. These checks validate software and generated artifacts, not independent IPA correctness, Ukrainian target quality, or source-item rights.
 
-The narrow 36-row queue's disposition register is complete (4 FIX, 1 provisional RETAIN, 31 ABSTAIN); the five source-context adjudication rows are separately recorded in `kozak-kim-context-adjudication-2026-11-05.csv`. Python `RuleTrace` per-occurrence `applied_occurrences` and `license_contexts` are implemented and covered by the verified test suite. The historical 239-row ledger remains BLOCKED solely on exact 239 membership / historical fragment assignment reconstruction; the recovered artifact itself is no longer missing.
+The narrow 36-row queue's disposition register is complete (4 FIX, 1 provisional RETAIN, 31 ABSTAIN); the five source-context adjudication rows are separately recorded in `kozak-kim-context-adjudication-2026-11-05.csv`. Python `RuleTrace` per-occurrence `applied_occurrences` and `license_contexts` are implemented and covered by the verified test suite. A replay now yields 239 reconstructed candidate IDs and a 236-row context-linked review ledger is proposed in PR #436. The original historical selector/member list remains unproven, and 236 individual IPA decisions remain outstanding.
 
 ### Historical Broad mismatch recovery
 
@@ -173,3 +173,12 @@ Exact-head checks on the PR head:
 - No post-fix multi-engine benchmark was run; the recovery PR changes only research metadata/tests and does not claim updated phonetic benchmark scores.
 
 Current research disposition remains: **239 reconstructed candidate IDs; 3 verified FIX overlaps; 236 candidate cases still unresolved**. RETAIN and ABSTAIN do not decrement the remaining count. Historical membership is still PARTIAL pending confirmation of the original aggregate selector; no independent IPA or Ukrainian-target gold is claimed.
+
+
+## 2026-11-05 — 236-candidate review and source correction
+
+A hash-pinned pre-C11/C12 Broad-only aggregate replay yields 239 unique candidate IDs from the 370-row context superset. Three exact-form FIX overlaps (37, 704, 2031) are excluded, leaving 236 candidate occurrences. The occurrence ledger and reproducible generator are proposed in [draft PR #436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436): 213 have no individual disposition in the current narrow registers, 22 overlap the 31-row ABSTAIN register, and one (1140, 출산) is a provisional RETAIN. RETAIN/ABSTAIN do not decrement the unresolved count.
+
+The 236 rows carry 254 Broad edit operations across 24 signatures; 184 are lenis ɕ→s and 24 are fortis ɕ͈→s͈. The latter are not covered by the lenis-only C11 optional variant. The inherited C04 label on 206 rows is stale: current C04 has zero residual occurrences after reclassification to C12. The new ledger names inherited labels as historical only.
+
+The Cambridge S018 bibliography is corrected on the PR branch to Hyun Bok Lee (1993), JIPA 23(1), pp. 28–31, not Lee (1999)/Sohn (2008). No runtime phonological rule or Ukrainian target was changed. PR #436 exact-head CI is pending at the latest branch update; earlier intermediate test failures were fixed, and the next CI result must be checked before marking this batch DONE_VERIFIED.

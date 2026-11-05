@@ -538,3 +538,55 @@ Exact-head checks on the PR head:
 - No post-fix multi-engine benchmark was run; the recovery PR changes only research metadata/tests and does not claim updated phonetic benchmark scores.
 
 Current research disposition remains: **239 reconstructed candidate IDs; 3 verified FIX overlaps; 236 candidate cases still unresolved**. RETAIN and ABSTAIN do not decrement the remaining count. Historical membership is still PARTIAL pending confirmation of the original aggregate selector; no independent IPA or Ukrainian-target gold is claimed.
+
+
+## 20. 2026-11-05 — 236-candidate review and whole-repository continuation
+
+### Starting state and repository inventory
+
+- Starting default-branch commit: `043754498f3ad8a17aa6c13b5f643b197536da8a` (`main`).
+- Recursive tree: 806 entries (767 files), 164 Markdown files, 390 test files, 62 scripts, 18 workflows and 13 schemas; `docs/` contains 140 files and `research/` 49.
+- PR #435 (239-ID replay) and PR #434 (documentation/navigation) were merged. The retained PR #435 source branch was not deleted. This continuation created `research/236-candidate-review-2026-11-05` and draft PR #436; no existing branch or PR was force-pushed, deleted, or modified.
+- The architecture, IPA-first target boundary, independent g2pK baseline, vendored-code boundary, canonical data ownership, schema/test contracts and existing research registers were inspected. No phonological production rule or Ukrainian target mapping was changed.
+
+### 236-case review outcome
+
+The pinned pre-C11/C12 Broad-only aggregate replay yields 239 unique candidate IDs and joins all 239 to the 370-row context superset. Three existing exact-form FIX overlaps (37, 704, 2031) are excluded, leaving 236 candidate occurrences. The new CSV and deterministic generator are proposed in PR #436.
+
+| Review disposition | Count | Meaning |
+|---|---:|---|
+| No individual disposition in current narrow registers | 213 | Not individually adjudicated; no decision inferred |
+| Existing ABSTAIN overlap | 22 | Evidence-limited and unresolved |
+| Provisional RETAIN | 1 | Occurrence 1140 (`출산`), independent review pending |
+| **Total** | **236** | Candidate occurrences, not confirmed pronunciation defects |
+
+The rows represent 151 distinct token strings, 110 source rows/contexts and 168 source-row/token pairs. They contain 254 Broad edit operations across 24 signatures. The two largest signatures are 184 lenis `ɕ → s` operations and 24 fortis `ɕ͈ → s͈` operations. The latter are not covered by the lenis-only C11 optional variant and require separate review. The inherited C04 label on 206 rows is stale: the current cluster register has zero C04 residuals after the former aspirated-velar group was reclassified to C12. The new ledger explicitly labels inherited cluster values as historical-only.
+
+The replay's 239 membership remains PARTIAL: the original historical selector/member list was not preserved. The 236 inventory is a reproducible review queue, not linguistic confirmation. Two independent Korean IPA reviews, exact source convention/context, and separate Ukrainian target review are still required. The full post-fix multi-engine benchmark has not been rerun.
+
+### Source-register correction
+
+The Cambridge primary record identifies S018 as Hyun Bok Lee, *Korean*, Journal of the International Phonetic Association 23(1), June 1993, pp. 28–31, DOI 10.1017/S0025100300004758. The prior data catalog entry had year 1999 and the research source-register entry incorrectly attributed the Cambridge article to Sohn (2008). PR #436 corrects the catalog, source register, C11/C02/C01/C07 research references, and Python profile comment, with a bibliographic regression. This is a metadata correction only; it does not adjudicate individual pronunciations or clear reuse rights.
+
+### Verification and intermediate failures
+
+- Initial PR #436 head `51b7bce8dcf8fd7bac1bf87193e220dd48233ead`: Python 3.11/3.12/3.13, browser regression/build, wheel install, teacher-corpus audit, web and generated artifacts **PASS**.
+- Intermediate head `c7d95e64082a45e13c062c78c977e347d72fcbfc`: Python tests **FAIL** on three issues: the ledger field rename had not reached the generator/CSV, source-register coverage text had dropped existing [ç]/[x]/[p̚] assertions, and the S018 catalog correction had not yet been committed. Browser tests passed. These were corrected in subsequent commits; exact latest PR-head rerun must be inspected before marking the batch DONE_VERIFIED.
+- GitHub Actions is the available verification surface in this connector-only session; local pytest/npm were not executed. The official NIKL metadata-only job remains skipped by workflow policy and is not a pass.
+
+### Task ledger
+
+| Work item | Status | Acceptance / blocker |
+|---|---|---|
+| Repository structure, source ownership, runtime boundaries, tests/workflows inventory | DONE_VERIFIED as a focused structural audit | 806-entry tree and canonical guides inspected; not every source file was read line by line |
+| 236-row review inventory and generator | PARTIAL pending exact-head CI | Verify generator/CSV parity and 236/213/22/1 counts on latest PR head |
+| Historical 239 identity | PARTIAL / EVIDENCE-LIMITED | Recover original selector/member list or prove replay matches historical triage |
+| Individual IPA adjudication | BLOCKED | Two independent qualified Korean IPA reviewers, source convention and exact context needed |
+| Fortis sibilant sub-stratum | BLOCKED | 24 `ɕ͈ → s͈` operations need evidence separate from lenis C11 |
+| C12 audio/speaker/prosody crosswalk | BLOCKED | Current source ledger lacks audio and speaker metadata |
+| Ukrainian target validation | BLOCKED | Independent Ukrainian phonetic/orthographic review on adjudicated IPA inputs |
+| NIKL item-level rights / clean capture authenticity | BLOCKED / PARTIAL | Page/item KOGL terms and pristine capture remain unverified |
+| Full post-fix benchmark and remaining parity/coverage | TODO / PARTIAL | Run after evidence-backed changes; do not compare historical scores as post-fix metrics |
+| Neural teacher training | DEFERRED | Requires independent IPA gold and corpus-rights clearance |
+
+**Readiness:** partial research prototype; not research-certified and not release-ready. No release, deployment, branch protection, external setting, branch deletion, or merge was performed.

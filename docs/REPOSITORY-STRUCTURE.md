@@ -1,12 +1,12 @@
 # Repository structure and ownership guide
 
-**Snapshot:** 2026-11-05, verified code/test head `be65ee71b9d3f224876875830b30be856f96126f`; documentation and audit addenda committed through `eba384fba0a201837cdb3b657ced4f376ae84fdd`. This guide describes the observed tree and stable ownership boundaries; it is not a claim that every file has been independently reviewed line by line.
+**Snapshot:** 2026-11-05, default-branch `main` at `043754498f3ad8a17aa6c13b5f643b197536da8a`; current review branch `research/236-candidate-review-2026-11-05` is tracked by draft PR #436. This guide describes the observed tree and stable ownership boundaries; it is not a claim that every file has been independently reviewed line by line.
 
 ## What this repository contains
 
 A Python research package, a browser-based practical/research application, Korean phonology and lexical datasets, a Korean-to-Ukrainian IPA target layer, reproducible research tooling, and a public GitHub Pages service.
 
-The recursive Git tree contained **799 entries** (files plus directories), including **163 Markdown files**, **388 test files**, **61 scripts**, **18 GitHub Actions workflows**, and **13 schemas**. The current documentation tree contains 144 entries. These are point-in-time inventory counts; see the latest audit addendum for the exact head and CI snapshot.
+The recursive Git tree contained **806 entries** (767 files plus directories), including **164 Markdown files**, **390 test files**, **62 scripts**, **18 GitHub Actions workflows**, and **13 schemas**. The documentation tree contains 140 files and the research tree 49 files. These are point-in-time inventory counts; see the latest audit addendum for the exact head and CI snapshot.
 
 ## Top-level map
 
@@ -92,7 +92,7 @@ The project already has domain-specific skills in `.agents/skills/` and an integ
 
 ## Known audit boundaries at this snapshot
 
-- `main` is the default branch and is the only branch currently returned by the branch inventory. No open PRs were found at the audit snapshot.
+- `main` is the default branch. The branch inventory also contains the retained PR #435 source branch and active PR #436 review branch; PR #436 is the only open PR at this snapshot. The merged PR #435 branch is preserved, not deleted.
 - The main branch was reported as unprotected by GitHub repository metadata. No branch-protection or ruleset settings were changed.
 - The latest exact-head CI before this continuation passed browser/Python regression, build, generated artifacts and Pages deployment. This continuation adds a fresh exact-head verification; see the audit addendum.
 - The NIKL local HTML inventory is structurally complete (30/30) but page-level reuse terms and capture authenticity are not established.
@@ -106,4 +106,4 @@ NIKL Standard Pronunciation Rules R001–R016 and exact-form/morphological licen
 
 ## Current mismatch evidence register
 
-`research/kozak-kim-context-adjudication-2026-11-05.csv` records four context-restored NIKL §27 exact-form corrections and one provisional R012 retain decision. It is a narrow decision register, not the complete historical 239-occurrence ledger. The original NIKL HTML capture remains in place; no new snapshot was created. NIKL rules remain exclusive to Kozak Kim; g2pK remains an independent baseline.
+`research/kozak-kim-context-adjudication-2026-11-05.csv` records four context-restored NIKL §27 exact-form corrections and one provisional R012 retain decision. The reconstructed 239-ID cohort and 236-row source-context review inventory are documented in `research/kozak-kim-236-candidate-review-2026-11-05.csv` (draft PR #436); historical membership is still partial and the 236 are not individually IPA-adjudicated. The original NIKL HTML capture remains in place; no new snapshot was created. NIKL rules remain exclusive to Kozak Kim; g2pK remains an independent baseline.

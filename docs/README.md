@@ -45,7 +45,7 @@ This page is the entry point for project documentation. It distinguishes current
 - `schemas/` — machine-readable JSON schemas.
 - `scripts/` — generators, importers, audits, benchmarks and research tooling.
 - `tests/` — Python and browser tests, fixtures and corpora.
-- `research/` — active research records, evidence queues, decisions, source register and acceptance gates; see the [31-row queue abstention register](../research/kozak-kim-31-row-individual-abstentions-2026-11-05.csv) and [historical 239 artifact-recovery manifest](../research/kozak-kim-historical-239-recovery-manifest-2026-11-05.md).
+- `research/` — active research records, evidence queues, decisions, source register and acceptance gates; see the [31-row queue abstention register](../research/kozak-kim-31-row-individual-abstentions-2026-11-05.csv) and [historical 239 artifact-recovery manifest](../research/kozak-kim-historical-239-recovery-manifest-2026-11-05.md), plus the [236-candidate review note](../research/kozak-kim-236-candidate-review-2026-11-05.md) and [occurrence ledger](../research/kozak-kim-236-candidate-review-2026-11-05.csv).
 - `docs/` — architecture, methodology, user/developer guidance, audit reports and execution history; use [the structure guide](REPOSITORY-STRUCTURE.md) and this index rather than guessing from filenames.
 - `.github/workflows/` — CI, benchmark, corpus, Pages and research workflows.
 - `public/` — static assets and third-party notices/licenses.

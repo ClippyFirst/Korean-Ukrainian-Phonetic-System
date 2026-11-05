@@ -1,4 +1,6 @@
-# 2026-11-02 acceptance-gate update — Kozak Kim only
+# 2026-11-05 acceptance-gate update — 236-candidate review
+
+## 2026-11-02 acceptance-gate update — Kozak Kim only
 
 ## 2026-11-02 — Kozak Kim cross-runtime evidence and parity continuation
 
