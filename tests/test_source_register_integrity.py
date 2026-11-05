@@ -728,3 +728,16 @@ def test_sung_cho_2010_distinguishes_korean_sibilants_from_english_categories():
     assert "distinctness" in source["coverage"]
     assert "not provide item-level modern IPA decisions" in source["contribution_expected"]
     assert "item-level reuse terms not assessed" in source["license_status"]
+
+
+def test_jeonggweon_exact_dictionary_and_nikl_kwon_morpheme_sources_are_registered():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    dictionary = rows["SRC-KPEDIA-JEONGGWON"]
+    assert dictionary["url"] == "https://www.kpedia.jp/w/6291"
+    assert "정꿘" in dictionary["coverage"]
+    assert "政權" in dictionary["coverage"]
+    assert "item-level reuse terms not verified" in dictionary["license_status"]
+    nikl = rows["SRC-NIKL-QNA-335292"]
+    assert "qna_seq=335292" in nikl["url"]
+    assert "인권[인꿘]" in nikl["coverage"]
+    assert "does not itself attest 정권" in nikl["contribution_expected"]
