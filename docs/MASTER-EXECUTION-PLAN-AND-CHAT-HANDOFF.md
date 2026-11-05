@@ -1,30 +1,34 @@
-## 2026-11-05 — Independent evidence update: two rule-backed resolutions
+## 2026-11-05 — Independent evidence update: seven NIKL-backed adjudications
 
 **Branch:** `research/236-candidate-review-2026-11-05` (same working branch; no parallel branch created). **PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436), still draft/open. This entry supersedes the initial 236-candidate disposition counts below while preserving the original baseline.
 
 ### Adjudication outcome
 
-- The baseline review inventory remains 236 rows. **Two occurrences are now `RULE_CONFIRMED_STANDARD_VARIANT`: ID 341 (`그놈의`) and ID 2001 (`물가로`)**. The active unresolved count is **234**.
-- **ID 341 — `그놈의`:** NIKL Standard Pronunciation Rule 5 distinguishes non-initial lexical `의` (where [i] is permitted) from the genitive particle `의` (where [e] is an accepted variant alongside the principal [ɯi]). The canonical context makes `의` the genitive particle. The source comparator [e] is normatively supported; Kozak [i] is not the rule's listed particle variant. Raw surface `그노믜` normalizes to canonical `그놈의`. This closes the standard-variant mismatch only; it is not an acoustic judgment of the individual speaker.
-- **ID 2001 — `물가로`:** the official NIKL Moscow educational PDF explicitly gives `물가[물까]` in the sense “price of goods” and contrasts `결과[결과]`. The source says these fortitions are irregular and must be learned individually. The candidate context is the price sense; `로` attaches to `물가` without changing the lexical fortis onset. This supports the comparator's `k͈` over Kozak's `ɡ`. It is an exact lexical license, not a general `ㄹ+ㄱ` rule.
-- Current counts: 212 no individual disposition; 21 prior ABSTAIN cases remain unresolved; one provisional RETAIN remains pending independent IPA review; two rule-confirmed standard variants. Historical 236 membership remains reconstructed, not original-selector proof.
-- The three repeated `연전연패` occurrences (IDs 1816, 1843, 1870) remain abstained. NIKL Rule 29 is relevant, but Jun (2015) finds n-insertion variable and does not provide item-specific evidence for this word; the complete underlying word list is unavailable. The three repeats share one source row and are not independent speaker/audio samples.
-- The context-adjudication register records both resolutions and the explicit n-insertion abstention. The generator consumes rule-confirmed adjudications, preserves historical disposition fields, and pins the updated adjudication-register Git blob. The generated CSV and regression expectations are updated.
+- The baseline review inventory remains 236 rows. **Seven occurrences are now `RULE_CONFIRMED_STANDARD_VARIANT`: IDs 293, 341, 538, 1140, 1206, 2001 and 2010.** The active unresolved count is **229**.
+- **ID 293 — `실수`:** NIKL Q&A 330843 says all listed homonymous forms are `[실쑤]`; raw surface `실쑤` and Kozak broad `sils͈u` match. IPA-Dict [ɕ] is treated only as a possible narrow allophonic notation; the case closes the Broad-vs-narrow notation mismatch.
+- **ID 341 — `그놈의`:** NIKL Rule 5 distinguishes non-initial lexical `의` [i] from genitive-particle `의` [e] (an accepted variant alongside [ɯi]). The canonical context uses the genitive particle, so the comparator [e] is normatively supported and Kozak [i] is not the listed particle variant.
+- **ID 538 — `멋있어`:** NIKL Q&A 306166 accepts both `[머디써]` and `[머시써]`; raw surface `머시써` selects the latter and Kozak broad output matches. The comparator [ɕ] remains a possible narrow allophone; this is a broad-vs-narrow notation adjudication.
+- **ID 1140 — `출산`:** NIKL Basic Dictionary directly gives `출산[출싼]`; Kozak's fortis `s͈` is supported and the IPA-Dict comparator omits it. This upgrades the historical provisional RETAIN; the original RETAIN rationale remains preserved in the output's prior-disposition fields.
+- **ID 1206 — `싫어서`:** NIKL Q&A 313981 directly gives `싫어서[시러서]`; the raw surface and Kozak broad output match, while [ɕ] is treated as possible narrow allophony.
+- **ID 2001 — `물가로`:** NIKL educational PDF gives `물가[물까]` in the price sense and contrasts `결과[결과]`; Kozak's `ɡ` is not supported. Exact lexical license only.
+- **ID 2010 — `혐오증`:** NIKL Basic Dictionary gives `혐오증[혀모쯩]`; the fortis affricate in the comparator is supported and Kozak's lenis `dʑ` is not. Exact lexical license only.
+- Current counts: 208 no individual disposition; 21 prior ABSTAIN cases remain unresolved; zero pending RETAIN; seven rule-confirmed standard forms/variants. Historical 236 membership remains reconstructed, not original-selector proof.
+- The three repeated `연전연패` occurrences (IDs 1816, 1843, 1870) remain abstained because n-insertion is variable and no word-specific pronunciation evidence was found. They share one source row and are not independent speaker/audio samples.
+- The context-adjudication register records all seven decisions and the explicit n-insertion abstention. The generator preserves historical ABSTAIN/RETAIN rationale, consumes current rule-confirmed adjudications, and pins the updated register blob. The generated CSV and regression expectations are updated.
 - No production phonology, IPA gold, Ukrainian target, or benchmark baseline changed.
 
 ### Evidence and verification
 
-- Official NIKL Standard Pronunciation Rule 5 and NIKL online Q&A 334585 were checked on 2026-11-05.
-- The official NIKL educational PDF's example (25)(a) gives `물가[물까]` (“price of goods”) and the negative control `결과[결과]`; its text explicitly warns that these cases are irregular.
-- Jun (2015), *Korean n-insertion: a mismatch between data and learning*, DOI 10.1017/S0952675715000275, was checked through the paper abstract and available PDF extraction. It supports variable n-insertion but does not itemize `연전연패`.
-- These are normative/lexical confirmations, not token-specific acoustic IPA gold. No individual speaker's recording has been independently adjudicated.
+- Official NIKL Q&A 330843, 306166 and 313981; NIKL Standard Pronunciation Rule 5 and Q&A 334585; NIKL Basic Dictionary entries for 출산 and 혐오증; official NIKL educational PDF example (25) for 물가[물까].
+- Jun (2015), *Korean n-insertion: a mismatch between data and learning*, DOI 10.1017/S0952675715000275, supports variable n-insertion and does not itemize 연전연패.
+- These are normative lexical/rule confirmations, not token-specific acoustic IPA gold. No individual speaker's recording has been independently adjudicated.
 - GitHub Actions exact-head verification is required after these commits. Local pytest/npm were not run in this connector-only session.
 
-**Current interpretation:** baseline inventory 236; two rule-supported resolved standard-variant occurrences; active unresolved occurrences 234. Overall readiness remains a partial research prototype, not research-certified or release-ready.
+**Current interpretation:** baseline inventory 236; seven rule-supported standard-form/variant adjudications; active unresolved occurrences 229. Overall readiness remains a partial research prototype, not research-certified or release-ready.
 
 ---
 
-# 2026-11-05 — S018/S019 scope correction and queue artifact split
+ 2026-11-05 — S018/S019 scope correction and queue artifact split
 
 The primary Cambridge PDF was re-read at page 31. Lee (1993) classifies /s/ among fortis /p,t,k,c,s/ in that description; the earlier claim that this directly supports modern lenis /s/ was wrong. The source register and code comments now state this limitation. S019 (Kang 2010) is the lenis acoustic-coarticulation source; its abstract covers /i, ye, ya/ and notes a distinct spectral pattern for /yu, yo/. Broad optional [ɕ] and narrow [ɕʰ] candidates are restricted to ㅣ, ㅖ, ㅑ; other /j/ nuclei are not generalized. The broad canonical [s], default target path and Ukrainian output are unchanged.
 
