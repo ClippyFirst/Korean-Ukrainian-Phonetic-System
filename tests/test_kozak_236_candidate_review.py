@@ -367,6 +367,6 @@ def test_nikl_dictionary_confirms_exact_yusaseong_fortis_sibilant():
     assert row["token"] == "유사성"
     assert "장르의 유사성" in row["source_context_text"]
     assert row["candidate_disposition"] == "RULE_CONFIRMED_STANDARD_VARIANT"
-    assert "유사성[유ː사썽]" in row["candidate_disposition_basis"]
+    assert "gives the pronunciation [유ː사썽]" in row["candidate_disposition_basis"]
     assert "SRC-NIKL-KRDICT-YUSASEONG" in row["candidate_disposition_basis"]
     assert "no productive fortition rule for the suffix -성" in row["candidate_disposition_basis"]
