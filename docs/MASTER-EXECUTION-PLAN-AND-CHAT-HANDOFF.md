@@ -18,7 +18,9 @@ NIKL Online Q&A 328785 (2026-04-03) states that the phonological shape in Rule 2
 
 ### CI correction: source-register CSV quoting
 
-The first exact-head `tests` run after adding NIKL Q&A 332662 and 328785 failed because commas in the two new `limitations_or_next_action` fields were not CSV-quoted (rows 207–208 parsed as 14 and 13 columns). Both rows have now been reconstructed and quoted; the source register was reparsed and all 207 data rows have exactly 12 columns. The web test suite and Python source-register integrity failures on the preceding head were caused by this single malformed-CSV defect. The wheel-install and teacher-corpus-audit jobs passed on that preceding head; Python 3.11/3.12 were cancelled. A fresh exact-head CI run is still required before marking the correction verified.
+The first exact-head `tests` run after adding NIKL Q&A 332662 and 328785 failed because commas in the two new `limitations_or_next_action` fields were not CSV-quoted (rows 207–208 parsed as 14 and 13 columns). The rows were reconstructed and quoted; the source register now has 207 data rows, each with exactly 12 columns. The generator pin was updated to the current adjudication blob and the generated 236-row CSV basis for occurrence 78 was regenerated. Source-rights tests now expect the actual distribution: 3 item-level licenses, 1 not applicable, 180 REVIEW_REQUIRED and 23 MANUAL_CLASSIFICATION_REQUIRED.
+
+**Exact-head CI on `785ee15473f83de3583c1d470a4ce477bd8575ab`:** tests run 42105728062 passed Python 3.11/3.12/3.13, web, wheel-install and teacher-corpus-audit. Verify run 42105728208 passed Python regression/data integrity and browser regression/build. Corpus generation 42105728193, extraction 42105728166, pinned UGTPHON 42105728184, paired native/g2pk 42105728267 and morphology consensus 42105728074 passed. Multi-engine IPA diagnostic 42105728130 is still in progress. Charsiu train-dev, ByT5/Charsiu inference and NIKL metadata-only jobs were skipped by policy. Local pytest/npm were not run.
 
 ### Current ledger
 
