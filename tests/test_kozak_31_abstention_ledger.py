@@ -87,8 +87,8 @@ def test_repeated_source_tokens_keep_occurrence_specific_token_positions():
 def test_reconstructed_239_candidate_snapshot_and_current_disposition_crosswalk():
     snapshot = ROOT / "research/kozak-kim-historical-239-candidate-ids-2026-11-05.txt"
     lines = [line.strip() for line in snapshot.read_text(encoding="utf-8").splitlines() if line.strip()]
-    payload = next(line.split(":", 1)[1].strip() for line in lines if line.startswith("Candidate occurrence IDs"))
-    candidate_ids = payload.split(",")
+    header_index = next(i for i, line in enumerate(lines) if line.startswith("Candidate occurrence IDs"))
+    candidate_ids = lines[header_index + 1].split(",")
     assert len(candidate_ids) == 239
     assert len(set(candidate_ids)) == 239
 
