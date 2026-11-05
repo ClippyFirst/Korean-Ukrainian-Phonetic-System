@@ -1,3 +1,16 @@
+## 2026-11-05 regression additions — reconstructed 236-candidate review inventory
+
+The research-only 236-candidate ledger adds two focused regression surfaces:
+
+- `tests/test_kozak_236_candidate_review.py` checks the 239-ID replay joins to the pinned 370-row context superset, three known FIX overlaps are excluded, exactly 236 unique occurrences remain, dispositions are 213 not individually adjudicated / 22 ABSTAIN / 1 provisional RETAIN, source context/provenance fields are populated, and the checked-in CSV matches the deterministic generator.
+- `tests/test_source_register_integrity.py::test_s018_korean_ipa_source_matches_cambridge_primary_bibliographic_metadata` checks S018's corrected Hyun Bok Lee (1993) citation and the matching Cambridge source-register row.
+
+These tests validate inventory reproducibility and bibliographic identity only. They do **not** adjudicate the 236 pronunciations, certify IPA-Dict/Broad-v2 as gold, validate Ukrainian targets, or license a production phonological change. The 236 remain a research review queue, not 236 confirmed defects.
+
+**Exact-head verification snapshot:** on PR #436 head `7b2f1dc72b0e7e21ac86d720ca3606d3a6e442ee`, Python 3.11/3.12/3.13 and browser regression/build passed; additional web, artifact, teacher and paired-corpus workflows were still running at the last check. Confirm the final PR head's complete check matrix before marking the batch DONE_VERIFIED. Local pytest/npm were not run in this connector-only session. The semantic test-case register remains PARTIAL INVENTORY and independent IPA/Ukrainian review remains BLOCKED.
+
+---
+
 ## 2026-11-02 regression additions — Kozak Kim only
 
 The following tests were added and verified in GitHub Actions; no existing expectation was weakened:
