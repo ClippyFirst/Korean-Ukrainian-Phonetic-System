@@ -180,7 +180,7 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
             variants.append({
                 "syllable_indices":[i],
                 "ipa":render_syllable_sequence(items,alternate),
-                "note":"Optional [ɕ] allophone of lenis /s/ before /i/ or a Lee (1999)-described /j/-initial diphthong; broad canonical /s/ is preserved.",
+                "note":"Optional [ɕ] allophone of lenis /s/ before /i/ or a Lee (1993)-described /j/-initial diphthong; broad canonical /s/ is preserved.",
                 "vowels":["ㅅ [ɕ]"],
             })
     # S018: /h/ may be [ɸ] between voiced sounds. Here this is a
