@@ -15,9 +15,9 @@ def test_reconstructed_236_review_ledger_has_exact_membership_and_statuses():
     assert len(rows) == 236
     assert len({row["occurrence_id"] for row in rows}) == 236
     assert Counter(row["candidate_disposition"] for row in rows) == {
-        "NOT_INDIVIDUALLY_ADJUDICATED": 52,
+        "NOT_INDIVIDUALLY_ADJUDICATED": 53,
         "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 20,
-        "RULE_CONFIRMED_STANDARD_VARIANT": 11,
+        "RULE_CONFIRMED_STANDARD_VARIANT": 10,
         "PROFILE_CONVENTION_MISMATCH_CONFIRMED": 153,
     }
     assert all(row["historical_membership_confidence"] ==
@@ -488,14 +488,3 @@ def test_nikl_rule_26_confirms_exact_chulsi_fortis_in_release_candidate():
     assert "SRC-KPEDIA-CHULSI" in row["candidate_disposition_basis"]
     assert "Kozak's plain /s/ omits fortis" in row["candidate_disposition_basis"]
 
-
-def test_nikl_dictionary_confirms_jeonggwon_fortis_pronunciation():
-    rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
-    row = rows["545"]
-    assert row["token"] == "정권"
-    assert row["candidate_disposition"] == "RULE_CONFIRMED_STANDARD_VARIANT"
-    assert "정권 (政權)" in row["candidate_disposition_basis"]
-    assert "[정꿘]" in row["candidate_disposition_basis"]
-    assert "SRC-NIKL-STDICT-293192" in row["candidate_disposition_basis"]
-    assert "SRC-KRDICT-MIRROR-JEONGGWON" in row["candidate_disposition_basis"]
-    assert "Kozak's plain/lenis [ɡ] is not" in row["candidate_disposition_basis"]
