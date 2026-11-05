@@ -465,7 +465,7 @@ def test_lenis_sibilant_profile_mismatches_are_limited_to_supported_high_front_c
     assert by_id["1206"]["candidate_disposition"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
     assert by_id["538"]["candidate_disposition"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
     assert by_id["538"]["prior_individual_reason_code"] == "LENIS_SIBILANT_BROAD_PROFILE_CONVENTION"
-    assert "SRC-NIKL-QNA-306166" in by_id["538"]["candidate_disposition_basis"]
+    assert "NIKL Q&A 306166" in by_id["538"]["candidate_disposition_basis"]
     assert "not token-specific IPA gold" in by_id["538"]["candidate_disposition_basis"]
 
 
