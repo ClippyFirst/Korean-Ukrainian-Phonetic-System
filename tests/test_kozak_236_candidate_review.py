@@ -16,8 +16,9 @@ def test_reconstructed_236_review_ledger_has_exact_membership_and_statuses():
     assert len({row["occurrence_id"] for row in rows}) == 236
     assert Counter(row["candidate_disposition"] for row in rows) == {
         "NOT_INDIVIDUALLY_ADJUDICATED": 213,
-        "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 22,
+        "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 21,
         "RETAIN_PENDING_INDEPENDENT_IPA_REVIEW": 1,
+        "RULE_CONFIRMED_STANDARD_VARIANT": 1,
     }
     assert all(row["historical_membership_confidence"] ==
         "RECONSTRUCTED_CANDIDATE_NOT_ORIGINAL_MEMBERSHIP_PROOF" for row in rows)
@@ -210,3 +211,22 @@ def test_24_fortis_sibilant_operations_are_separate_orthographic_or_coda_trigger
     assert coda_triggered_ids == {"481", "551"}
     assert len({row["token"] for row in fortis_rows}) == 17
     assert len({row["source_row_id"] for row in fortis_rows}) == 19
+
+
+def test_nikl_rule_5_adjudicates_genitive_ui_variant_without_claiming_acoustic_gold():
+    rows = MODULE.build_rows(ROOT)
+    row = next(item for item in rows if item["occurrence_id"] == "341")
+    assert row["token"] == "그놈의"
+    assert row["candidate_disposition"] == "RULE_CONFIRMED_STANDARD_VARIANT"
+    assert "Standard Pronunciation Rule 5" in row["candidate_disposition_basis"]
+    assert "SRC-NIKL-QNA-334585" in row["candidate_disposition_basis"]
+    assert row["prior_individual_reason_code"] == "UNMAPPED_FRAGMENT_AND_NO_INDEPENDENT_IPA_GOLD"
+    assert row["prior_independent_ipa_review_status"] == "NOT_PERFORMED"
+
+
+def test_n_insertion_candidates_remain_abstained_without_word_specific_evidence():
+    rows = MODULE.build_rows(ROOT)
+    selected = [row for row in rows if row["occurrence_id"] in {"1816", "1843", "1870"}]
+    assert len(selected) == 3
+    assert {row["token"] for row in selected} == {"연전연패"}
+    assert all(row["candidate_disposition"] == "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW" for row in selected)
