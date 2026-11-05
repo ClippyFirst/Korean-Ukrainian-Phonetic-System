@@ -1,3 +1,16 @@
+## 2026-11-05 — First independent rule-backed candidate adjudication
+
+**Current status:** the historical baseline remains **236 occurrence rows** for provenance. One occurrence (ID **341**, `그놈의`) is now `RULE_CONFIRMED_STANDARD_VARIANT` under the official NIKL Standard Pronunciation Rule 5. The active unresolved count is therefore **235**, not 236. The original row is retained; it is not deleted from the evidence ledger.
+
+- **ID 341 — `그놈의`:** the canonical context is `그놈의 짱개타령`; `의` is the genitive particle. NIKL Rule 5 distinguishes non-initial lexical `의` (where [i] is permitted) from the genitive particle `의` (where [e] is an accepted variant alongside the principal [ɯi]). The source comparator's [e] is normatively supported; Kozak's [i] is not the rule's listed particle variant. The historical ABSTAIN is superseded only for this standard-variant mismatch. The raw surface spelling is `그노믜`; the pinned canonical token is `그놈의`. This is normative confirmation, **not** a claim that the speaker's audio was independently heard or acoustically adjudicated.
+- The current disposition counts are: 213 `NOT_INDIVIDUALLY_ADJUDICATED`, 21 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW`, one `RETAIN_PENDING_INDEPENDENT_IPA_REVIEW`, and one `RULE_CONFIRMED_STANDARD_VARIANT`. Historical membership remains reconstructed, not proven.
+- **IDs 1816, 1843, 1870 — `연전연패`:** remain abstained. NIKL Rule 29 is relevant to n-insertion, but Jun (2015) finds n-insertion variable and does not provide item-specific evidence for `연전연패`; the full word list is unavailable. Three repetitions in one source row are three corpus occurrences, not three independent speakers or acoustic confirmations.
+- No production IPA, Ukrainian target, benchmark gold, or runtime rule was changed. The evidence register records both the one rule-backed resolution and the n-insertion non-closure.
+
+**Sources:** NIKL Standard Pronunciation Rule 5 and official Q&A 334585; Jun (2015), DOI 10.1017/S0952675715000275. The source register and context-adjudication register contain the exact evidence and limitations.
+
+---
+
 # 236-candidate review ledger — 2026-11-05
 
 ## Scope and result
