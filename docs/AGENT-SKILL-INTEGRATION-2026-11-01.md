@@ -18,8 +18,6 @@ The following public skill repositories were inspected at the pinned upstream re
 | DietrichGebert/ponytail | ponytail-audit | Audit the whole repository and real data flow for correctness, risk, load, tests, and unnecessary complexity. | [96608e0](https://github.com/DietrichGebert/ponytail/tree/96608e078b2d5ea607c5c3b8b5a54d1c1fba6846/skills/ponytail-audit) |
 | DietrichGebert/ponytail | ponytail-review | Review changed code together with callers, tests, and runtime path; prioritize correctness and lean design. | [96608e0](https://github.com/DietrichGebert/ponytail/tree/96608e078b2d5ea607c5c3b8b5a54d1c1fba6846/skills/ponytail-review) |
 
-| mattpocock/skills | code-review | Separate specification compliance from engineering-quality review. | [4ae2317](https://github.com/mattpocock/skills/tree/4ae2317ddb22b046e26455e4f9c9b3aaaf62212d/skills/engineering/code-review) |
-| mattpocock/skills | research | Trace claims to primary sources and save cited findings in the existing research/documentation structure. | [4ae2317](https://github.com/mattpocock/skills/tree/4ae2317ddb22b046e26455e4f9c9b3aaaf62212d/skills/engineering/research) |
 
 ## Deliberate exclusions
 
