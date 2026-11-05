@@ -1,8 +1,8 @@
-## 2026-11-05 — Eight independently supported standard-form adjudications
+## 2026-11-05 — Seven independently supported standard-form adjudications
 
-**Current status:** the reconstructed baseline remains **236 occurrence rows**. Eight are now RULE_CONFIRMED_STANDARD_VARIANT: **IDs 78, 341, 1140, 1406, 1527, 2001, 2010 and 2533**. The active unresolved count is **228**: 205 without individual disposition and 23 abstained pending independent IPA review. All 236 original rows remain in the ledger.
+**Current status:** the reconstructed baseline remains **236 occurrence rows**. Seven are now RULE_CONFIRMED_STANDARD_VARIANT: **IDs 341, 1140, 1406, 1527, 2001, 2010 and 2533**. The active unresolved count is **229**: 205 without individual disposition and 24 abstained pending independent IPA review. All 236 original rows remain in the ledger.
 
-- **ID 78 — 오조오억배:** NIKL Standard Pronunciation Rule 4 classifies ㅓ as a monophthong; Rule 5 separately identifies ㅕ among the diphthongs. The spelling 오억 contains ㅓ, not ㅕ. The Broad comparator inserts /j/ before /ʌ/, while Kozak preserves the written monophthong. No standard rule or lexical evidence licenses a phonemic /j/ in this form. This resolves the normative broad-IPA mismatch only; token audio would be needed to exclude a transient speaker-specific transition.
+- **ID 78 — 오조오억배 remains ABSTAIN.** NIKL Rule 4 classifies ㅓ as a monophthong, but that does not exclude a separate glide or transitional interval in a V.V sequence. The literature review found variable /j/ formation/insertion and possible /w/ insertion after a syllable ending in /o/ or /u/ (Shin 2013; Im 2011), plus acoustic studies of Korean VV sequences and prevocalic glides (Kang 2013; Suh & Hwang 2016; Hyun & Lee 2015). None directly tests 오조오억배 or the exact /o.ʌ/ numeral boundary; the available abstracts do not adjudicate the comparator's /j/. Keep pending token audio or independent Korean IPA review.
 - **ID 341 — 그놈의:** NIKL Standard Pronunciation Rule 5 distinguishes non-initial lexical 의 (where [i] is permitted) from the genitive particle 의 (where [e] is an accepted variant alongside [ɯi]). The canonical context makes 의 the genitive particle. The comparator's [e] is normatively supported; Kozak's [i] is not the rule's listed particle variant.
 - **ID 1140 — 출산:** NIKL Basic Dictionary directly lists 출산[출싼]. Kozak's fortis s͈ matches; the IPA-Dict comparator omits fortis. This upgrades the historical provisional RETAIN for R012. Exact lexical attestation only.
 - **ID 1406 — 팔자걸음:** NIKL Basic Dictionary lists 팔자[팔짜]; Rule 26 licenses ㄹ+ㅈ fortition in Sino-Korean words. The candidate contains this exact Sino-Korean morpheme.
@@ -16,7 +16,7 @@
 - Current disposition counts: **205** NOT_INDIVIDUALLY_ADJUDICATED, **23** ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW, **0** pending RETAIN, and **8** RULE_CONFIRMED_STANDARD_VARIANT. Historical membership remains reconstructed, not proven.
 - These are normative rule/lexical confirmations, not token-specific acoustic IPA gold. No production IPA, Ukrainian target, benchmark gold, or runtime rule changed.
 
-**Sources:** NIKL Standard Pronunciation Rules 4, 5, 26 and 27; NIKL Basic Dictionary entries for 출산, 팔자 and 혐오증; official NIKL educational examples for 물가 and Rule 27; NIKL Q&A 310899 and 317798; Jun (2015), DOI 10.1017/S0952675715000275.
+**Sources:** NIKL Standard Pronunciation Rules 4, 5, 26 and 27; Shin (2013), Im (2011), Kang (2013), Kim & Hong (2025, DOI 10.30961/lr.2025.61.1.1), Suh & Hwang (2016, DOI 10.1159/000444189), Hyun & Lee (2015, DOI 10.15811/JKL.2015..75.002); NIKL Basic Dictionary entries for 출산, 팔자 and 혐오증; official NIKL educational examples for 물가 and Rule 27; NIKL Q&A 310899 and 317798; Jun (2015), DOI 10.1017/S0952675715000275.
 
 ---
 
