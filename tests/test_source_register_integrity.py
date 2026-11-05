@@ -800,3 +800,17 @@ def test_kim_2021_fortis_study_separates_profile_bookkeeping_from_token_acoustic
     assert "not an independent confirmation of a speaker's phone" in source["contribution_expected"]
     assert "profile-convention bookkeeping only" in source["integration_status"]
     assert "only /i, a, u/ contexts" in source["limitations_or_next_action"]
+
+
+def test_long_vowel_and_counterevidence_sources_bound_1885_adjudication():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    length = rows["SRC-KANG-2015-VOWEL-LENGTH-MERGER"]
+    assert "118 Seoul speakers" in length["coverage"]
+    assert "does not directly test the quality merger separately in long vowels" in length["contribution_expected"]
+    assert "does not analyze F1/F2 quality of long /ɛ/ vs /e/ separately" in length["limitations_or_next_action"]
+    phonemic = rows["SRC-CHUNG-2022-MID-FRONT-PHONEMIC-STATUS"]
+    assert "have not fully merged" in phonemic["coverage"]
+    assert "Counterevidence" in phonemic["contribution_expected"]
+    positional = rows["SRC-LEE-2023-REVISITING-MID-FRONT-MERGER"]
+    assert "significant F2 differences by syllable position" in positional["coverage"]
+    assert "Counterevidence" in positional["contribution_expected"]
