@@ -474,3 +474,8 @@ Recovered the exact pre-C11/C12 snapshot: benchmark run `41453407662`, artifact 
 
 **Status:** historical 239 membership `BLOCKED`; 370-row Broad context superset `DONE_VERIFIED`; overall readiness remains partial research prototype.
 
+
+
+## 2026-11-05 continuation — 31-row provenance hash correction
+
+Integrity review found a 39-character truncated `broad_profile_blob_sha` repeated across the 31-row individual-abstention CSV. All 31 rows now carry the full 40-character Git blob SHA-1 `e13086f0fd98ce9564326ff50b0458c27392932f`; the regression expectation was corrected to the same full value. This was a metadata/test correction only. No pronunciation or decision changed. The latest connector-created commit returned no GitHub status checks; exact-head test verification remains pending.
