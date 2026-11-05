@@ -26,7 +26,7 @@ PINNED_INPUT_GIT_BLOB_SHA = {
     IDS_PATH: "f46f6760dde844a3e7cf9abe00dc74969f45eca8",
     SUPERSET_PATH: "e6c4843bbb9f1e3eb83527698880d4d60184c333",
     ABSTENTION_PATH: "de838dcdc247e1846e0e633766135b3a902f436b",
-    ADJUDICATION_PATH: "efa10c0582d890317b9174ed3c0d463d786eed75",
+    ADJUDICATION_PATH: "f413efe62f1a7164c41a608aa763eb18c883bae6",
 }
 
 def verify_git_blob(path: Path, expected_sha: str) -> None:
@@ -103,7 +103,7 @@ def build_rows(root: Path = ROOT) -> list[dict[str, str]]:
         elif case_adjudication and case_adjudication["decision"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED":
             disposition = "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
             basis = ("Broad IPA profile mismatch: source [ɕ] vs project broad /s/ in ㅅ+ㅣ/ㅖ/ㅑ; Kang (2010) supports optional coarticulation, not a categorical rule. Full evidence is in the context-adjudication register; token-specific acoustic IPA review was not performed." if case_adjudication["rule_id"] == "LENIS_SIBILANT_BROAD_PROFILE_CONVENTION" else case_adjudication["notes"])
-            reason = ("LENIS_SIBILANT_BROAD_PROFILE_CONVENTION" if case_adjudication["rule_id"] == "LENIS_SIBILANT_BROAD_PROFILE_CONVENTION" else ("BROAD_IPA_VOWEL_SYMBOL_PROFILE_MISMATCH" if case_adjudication["rule_id"].startswith("PROFILE-CONVENTION-MISMATCH: long ㅓ") else "BROAD_VS_NARROW_PROFILE_CONVENTION_MISMATCH"))
+            reason = ("LENIS_SIBILANT_BROAD_PROFILE_CONVENTION" if case_adjudication["rule_id"] == "LENIS_SIBILANT_BROAD_PROFILE_CONVENTION" else ("BROAD_IPA_VOWEL_SYMBOL_PROFILE_MISMATCH" if case_adjudication["rule_id"].startswith(("PROFILE-CONVENTION-MISMATCH: long ㅓ", "PROFILE-CONVENTION-MISMATCH: ㅐ/ㅔ merger")) else "BROAD_VS_NARROW_PROFILE_CONVENTION_MISMATCH"))
             rationale = basis
             ipa_status = case_adjudication["independent_review_status"]
         elif case_adjudication and case_adjudication["decision"] == "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW":
