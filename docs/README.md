@@ -5,16 +5,17 @@ This page is the entry point for project documentation. It distinguishes current
 ## Start here
 
 1. [Project README](../README.md) — product overview, installation entry points, public service, runtime modes and limitations.
-2. [Repository audit and structure](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — current repository inventory, verified state, documentation policy and outstanding gates.
-3. [Versioning policy](VERSIONING-POLICY.md) — independent browser and Python release streams.
-4. [Architecture](architecture.md) — concise system architecture.
-5. [Methodology](methodology.md) — linguistic and engineering methodology.
-6. [Ukrainian target layer](ukrainian-target-layer.md) — IPA-to-Ukrainian mapping contract.
-7. [Research index](../research/README.md) — active research programme and evidence workflow.
-8. [Research master directive](../research/MASTER-DIRECTIVE.md) — non-negotiable research and implementation constraints.
-9. [Acceptance gates](../research/ACCEPTANCE-GATES.md) — research and release acceptance criteria.
-10. [Decision log](../research/DECISION-LOG.md) — append-only consequential decisions.
-11. [Master execution plan and handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) — detailed historical execution record; use the newest dated section, not an old snapshot.
+2. [Repository structure guide](REPOSITORY-STRUCTURE.md) — current component map, data ownership, runtime entry points, development commands and safe navigation.
+3. [Repository audit and structure](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — dated audit snapshots and latest superseding repository-state addendum.
+4. [Versioning policy](VERSIONING-POLICY.md) — independent browser and Python release streams.
+5. [Architecture](architecture.md) — concise system architecture.
+6. [Methodology](methodology.md) — linguistic and engineering methodology.
+7. [Ukrainian target layer](ukrainian-target-layer.md) — IPA-to-Ukrainian mapping contract.
+8. [Research index](../research/README.md) — active research programme and evidence workflow.
+9. [Research master directive](../research/MASTER-DIRECTIVE.md) — non-negotiable research and implementation constraints.
+10. [Acceptance gates](../research/ACCEPTANCE-GATES.md) — research and release acceptance criteria.
+11. [Decision log](../research/DECISION-LOG.md) — append-only consequential decisions.
+12. [Master execution plan and handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) — detailed historical execution record; use the newest dated section, not an old snapshot.
 
 - [Licensing and permissions](LICENSING-AND-PERMISSIONS.md) — author identity, scientific-use permissions, technical permission boundary and third-party licence scope.
 
@@ -45,7 +46,7 @@ This page is the entry point for project documentation. It distinguishes current
 - `scripts/` — generators, importers, audits, benchmarks and research tooling.
 - `tests/` — Python and browser tests, fixtures and corpora.
 - `research/` — active research records, evidence queues, decisions, source register and acceptance gates.
-- `docs/` — architecture, methodology, user/developer guidance, audit reports and execution history.
+- `docs/` — architecture, methodology, user/developer guidance, audit reports and execution history; use [the structure guide](REPOSITORY-STRUCTURE.md) and this index rather than guessing from filenames.
 - `.github/workflows/` — CI, benchmark, corpus, Pages and research workflows.
 - `public/` — static assets and third-party notices/licenses.
 

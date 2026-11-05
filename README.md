@@ -6,7 +6,8 @@ Research-grade, machine-readable framework for Korean → Ukrainian phonetic-gra
 
 - [Documentation index](docs/README.md) — canonical navigation for users, developers and researchers.
 - [Versioning policy](docs/VERSIONING-POLICY.md) — separate version streams for the private browser app and installable Python package.
-- [Repository audit and structure (2026-11-04)](docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — verified repository inventory, CI snapshot, documentation ownership and remaining research/release gates.
+- [Repository structure guide](docs/REPOSITORY-STRUCTURE.md) — current component map, data ownership, runtime entry points, development commands and safe navigation.
+- [Repository audit and structure (2026-11-04)](docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — dated audit snapshots and the latest superseding repository-state addendum.
 
 ## Author, licensing and permissions
 
@@ -62,6 +63,10 @@ Added eight official examples from the attached note to Rule 29, including `들�
 
 - [Audit report](docs/rule29-liquid-assimilation-audit-2026-10-10.md)
 - [Regression test](tests/adversarial-rule29-liquid-assimilation-2026-10-10.test.mjs)
+
+### NIKL local source capture (2026-11-05)
+
+The repository contains the user-supplied local HTML capture `한국어 어문 규범.htm`. The metadata-only manifest records a complete structural inventory of the 30 articles in Part 2, `표준 발음법`; see [the capture and inventory report](docs/NIKL-LOCAL-CAPTURE-AND-INVENTORY-2026-10-24.md). This is a local-file import, not a live HTTP fetch. The per-page KOGL/reuse marking remains unverified, and the saved HTML contains a likely extension-injected `deepl-input-controller` node; do not treat the capture as a verified pristine server response or redistribute its contents on that basis.
 
 ## Benchmark review after renderer integration (2026-10-24)
 

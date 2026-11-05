@@ -242,3 +242,80 @@ No source/runtime code, linguistic production data, generated artifacts, third-p
 - Documentation map local links: **12/12 targets fetched successfully** from `main` on 2026-11-05.
 - Branch search returns `main` plus the merged PR head branch `docs/repository-audit-and-navigation-2026-11-04`. The latter is **behind main, with no unique commits**; it is a stale merged branch, not an open PR. It was deliberately left untouched; no branch deletion was performed.
 - Main has since advanced through post-merge audit, handoff and research-status maintenance commits. Inspect the live default-branch HEAD before starting the next task.
+
+
+## 14. Whole-repository audit refresh — 2026-11-05 (supersedes stale snapshot fields above)
+
+### Scope and method
+
+This refresh re-inspected the live default-branch metadata, recursive Git tree, README, documentation index, architecture, package metadata, primary runtime entry points, NIKL collector/parser/workflow, source register, acceptance gates, roadmap, local HTML capture and manifest, local agent skills, recent PR/branch/issue state, and exact-head Actions runs. The whole tree was inventoried, but this was not a line-by-line review of all 797 entries; deep inspection concentrated on runtime boundaries, data/source provenance, build/test configuration, NIKL capture and documentation ownership. No phonological production code or linguistic data was changed.
+
+### Current repository snapshot
+
+| Item | Verified state |
+|---|---|
+| Default branch / starting HEAD | `main` / `c1feae5fcc9e743ac7fba660221ad229b4ccf2ff` |
+| Recursive Git tree | 797 entries (files + directories); 162 Markdown files |
+| Major inventories | 391 test files; 61 scripts; 18 workflows; 13 schemas; 178 source-register rows (134 NIKL-related rows) |
+| Branches returned | `main` plus `docs/repository-audit-and-navigation-2026-11-04`; the latter is 14 commits behind and 0 ahead (no unique commits) |
+| Open PRs | 0 |
+| Open issues | #337 — recruit two independent Korean phonetics reviewers for the 삶의 broad-IPA gate |
+| Main branch protection | GitHub repository metadata reports `protected=false`; no protection/ruleset settings were changed |
+| Runtime versions | Browser package `1.0.0` (private; Node >=22.12); Python distribution `0.6.0` (Python >=3.11) |
+| Project classification | Python research package + browser app + GitHub Pages service + evidence corpus/tooling |
+
+The old 2026-11-04 inventory and branch claims earlier in this document are historical snapshots. The current counts and refs in this section supersede them. The stale merged docs branch was left untouched; the connected GitHub actions available in this session did not expose branch deletion. No additional branch was created for this documentation pass, in order to avoid making the requested single-mainline situation worse.
+
+### Architecture and ownership confirmed
+
+The system has separate browser and Python runtimes, a pinned third-party browser G2P implementation, canonical Korean/IPA/target data, schemas, research tooling, and a dedicated evidence workflow. The intended data path remains Korean orthography → structure/morphology → Korean phonology → surface/typed IPA → Ukrainian target adaptation → Ukrainian orthography. RR and Hanja remain side layers. The browser practical G2P path is not claimed to be morphology-identical to Python g2pK; the Python native pipeline and optional g2pK backend remain explicit choices. See the new [repository structure guide](REPOSITORY-STRUCTURE.md) and expanded [architecture](architecture.md).
+
+### NIKL local HTML: new evidence and remaining caveats
+
+The user-supplied root file `한국어 어문 규범.htm` is present at Git blob `c6b5aedf7774a0238ff58cfe51457f6975ca1b36` (212,730 Unicode characters). It contains the `제2부 표준 발음법` section and headings for all 30 articles. The existing metadata-only manifest records local import time `2026-10-24T07:25:44.993Z`, source byte count 322,678 and SHA-256 `11dccd3c6eafb5167a6f448c2ccb5fc45fd698c5b2d1570ed3d1e5c177fa7a1e`; inventory is 30/30, with zero missing, duplicate, unexpected or incomplete articles. The local inventory workflow passed in [run 40072018648](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40072018648), and schema/reproducibility passed in [run 40072283788](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40072283788).
+
+Important distinctions:
+- This is a local HTML import, not a live HTTP retrieval: HTTP status and retrieval time are null, and robots policy is explicitly `not_checked_local_import`.
+- The manifest says `termsReview=not_assessed`. The NIKL site-wide Article 24-2 policy is recorded in the source register, but the page-specific KOGL mark and item-level reuse terms remain unverified.
+- The saved HTML ends with a `deepl-input-controller` element after `</body>` (two DeepL marker occurrences were found). This appears to be an injected browser-extension element. The file also references 17 relative CSS/JS/image assets that are not present in the repository. The text parser can still inventory the article content, but this is not a pristine, self-contained visual archive. Preserve this artifact and arrange a clean recapture with translation extensions disabled before making stronger authenticity claims.
+- The parser's scope is only Part 2, Standard Pronunciation Rules, articles 1–30. It must not be described as a complete inventory of every section of the broader page.
+
+Technical inventory is `DONE_VERIFIED`; capture authenticity is `PARTIAL`; page-level rights are `BLOCKED/PENDING`; independent article/subparagraph/example adjudication remains open. See [NIKL capture report](NIKL-LOCAL-CAPTURE-AND-INVENTORY-2026-10-24.md).
+
+### Current-head CI and deployment
+
+On exact main head `c1feae5fcc9e743ac7fba660221ad229b4ccf2ff`:
+- [Tests](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41924144853) — PASS.
+- [System verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41924144998) — PASS.
+- [Master table and research corpus artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41924144992) — PASS.
+- [GitHub Pages deployment](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41924144861) — FAIL at the deploy step. The Python 3.11/3.12/3.13 matrix and browser tests/build jobs in that workflow passed. The deployment log remained at `updating_pages` for approximately eight minutes, then timed out and cancelled deployment ID `c1feae5fcc9e743ac7fba660221ad229b4ccf2ff`. The observed failure is in the Pages deployment wait, not in the build/test jobs; the precise platform-side cause is not established. No public-site smoke test ran after a successful deployment in that run.
+
+No local npm/pytest commands were executed in this connector-only audit. Do not report local clean-install reproduction as passed.
+
+### Upstream agent workflow review
+
+The supplied repositories were inspected as process references at the revisions already recorded in [agent-skill integration](AGENT-SKILL-INTEGRATION-2026-11-01.md): unlazy (`16671491...`), Superpowers (`2ce8aa1...`), Matt Pocock skills (`4ae2317...`) and Ponytail (`96608e0...`). Their useful patterns are already represented by the existing repository-local skills and acceptance process: observable gates; red/green tests; root-cause debugging; fresh verification; specification-vs-standards review; and concrete, risk-first whole-repository audits. No upstream source code or skill text was copied, and no overlapping generic skill or second gate ledger was added.
+
+### Task ledger
+
+| Workstream | Status | Evidence / remaining acceptance |
+|---|---|---|
+| Mainline integration / open PRs | DONE_VERIFIED | No open PRs; recent merged PRs #434, #433, #431, #428, #426, #423 and #422 integrated. |
+| Literal one-branch state | PARTIAL | Main is the only active integration line, but one stale merged docs branch remains (14 behind, 0 ahead); branch deletion was not available through the connected action surface. |
+| Documentation discoverability / ownership | DONE_VERIFIED after this update | Root README, docs index, repository structure guide and architecture now identify canonical locations and runtime ownership. |
+| Runtime and data architecture | DONE_VERIFIED as documented contract | Python/browser entry points and canonical data boundaries inspected; this is not a claim that every code path is independently linguistically correct. |
+| NIKL local article inventory | DONE_VERIFIED | Existing local HTML parser and manifest: 30/30, reproducible workflow pass. |
+| NIKL capture authenticity | PARTIAL | DeepL extension marker present; 17 referenced local assets absent. Clean recapture and byte/hash comparison required. |
+| NIKL item-level rights | BLOCKED/PENDING | Page-specific KOGL mark and Q&A item-level terms not verified. |
+| Python/browser/system tests | DONE_VERIFIED on exact head | Current main test, verify and artifact workflows pass. |
+| GitHub Pages deployment | BLOCKED / PLATFORM-OBSERVED | Latest deploy job timed out while Pages remained `updating_pages`; retry and successful public smoke test required. |
+| Main branch protection | TODO / OWNER-SETTING | Metadata reports unprotected main. Decide and configure branch protection/rulesets outside this code/documentation change. |
+| Independent Korean IPA gold | BLOCKED | Two qualified reviewers and adjudication of frozen holdout required; issue #337 is open. |
+| Independent Ukrainian target review | BLOCKED | Separate expert review on frozen IPA inputs required. |
+| C12 audio/speaker/prosody and historical 239 mismatch reconciliation | BLOCKED / PARTIAL | Recover source context and occurrence-level identity before production rule changes. |
+| Cross-runtime parity and coverage gaps | PARTIAL | Continue rule-by-rule parity and names/loans/Hanja/regional coverage with evidence-backed regressions. |
+| Supervised neural G2P training | DEFERRED | Wait for independently adjudicated IPA gold and corpus-rights clearance. |
+
+### Files changed by this audit refresh
+
+The accompanying commit updates navigation, repository structure/architecture guidance, current audit/handoff, NIKL capture notes and source-register status. It does not change production phonology, IPA mappings, lexical data, generated artifacts, vendor code, package versions, license terms or external GitHub settings.

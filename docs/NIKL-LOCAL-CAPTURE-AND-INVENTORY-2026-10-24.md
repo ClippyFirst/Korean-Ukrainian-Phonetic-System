@@ -56,3 +56,31 @@ Before using individual passages as normative evidence, a human reviewer must sp
 The v1 inventory's `title` field duplicated the full normative clause text even though the manifest described itself as metadata-only. Schema v2 corrects that mismatch: `title` now contains only the article label (`제N항`); `normativeTextSha256` and `normativeCharCount` fingerprint the clause wording without retaining it; `textSha256` and `normalizedCharCount` fingerprint the larger source block from one article heading up to the next, explicitly including the page's official explanatory commentary and examples. `sourceUnitScope` makes that distinction machine-checkable. The raw HTML remains the source artifact; no article body is copied into the manifest.
 
 This is a metadata/provenance correction, not a linguistic review. The page's commentary can contain interpretations and examples that must not be mistaken for the normative clause itself. The capture-authenticity and reuse-terms questions remain open, and a human spot-check is still required before using a specific passage as adjudicated linguistic evidence.
+
+
+## 2026-11-05 audit addendum — repository-held capture inspected
+
+The repository-held `한국어 어문 규범.htm` was re-opened directly from `main` during the 2026-11-05 audit.
+
+- Git blob SHA: `c6b5aedf7774a0238ff58cfe51457f6975ca1b36`.
+- File length: 212,730 Unicode characters.
+- The page contains the `제2부 표준 발음법` section and the expected article headings `제1항` through `제30항`. The collector is scoped to those 30 articles only; the broader page also contains other regulation sections.
+- The committed metadata-only manifest records `retrievalMode=local-html-import`, `importedAt=2026-10-24T07:25:44.993Z`, `responseBytes=322678`, SHA-256 `11dccd3c6eafb5167a6f448c2ccb5fc45fd698c5b2d1570ed3d1e5c177fa7a1e`, and 30/30 complete articles.
+- [Local inventory run 40072018648](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40072018648) and [schema/reproducibility run 40072283788](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40072283788) both completed successfully.
+
+### Capture-quality observation
+The saved file contains a `deepl-input-controller` custom element appended after the closing `</body>` tag (two DeepL marker occurrences were found). This is consistent with browser-extension injection. The HTML also references 17 relative CSS/JavaScript/image assets that are not stored alongside it in this repository. Therefore:
+
+- the article text can be parsed and the 30-item inventory is reproducible;
+- the saved file is not a self-contained visual page archive;
+- the raw file should not be described as a byte-for-byte pristine NIKL server response until a clean recapture is compared;
+- do not strip the marker or rewrite the source file in place, because that would change the captured-byte hash. Preserve this evidence and make any clean recapture a separately identified artifact.
+
+### Current status split
+- Structural inventory of this local file: **DONE_VERIFIED** (30/30, reproducible manifest).
+- Authenticity/pristine capture: **PARTIAL** (extension marker found; clean recapture required).
+- Live HTTP retrieval and robots check: **BLOCKED / NOT CLAIMED** (local import has null HTTP status and `not_checked_local_import`).
+- Page-level KOGL marking and item-level reuse terms: **BLOCKED / NOT ASSESSED** (`termsReview=not_assessed`). The site-wide NIKL Article 24-2 policy does not by itself establish the exact page-level marking or rights in third-party embedded materials.
+- Full linguistic adjudication of all article examples/commentary: **PARTIAL**; the inventory parser is not a phonological expert review.
+
+The parser and workflow remain metadata-only by default. Do not commit extracted full article text or redistribute it until page-specific terms have been checked.

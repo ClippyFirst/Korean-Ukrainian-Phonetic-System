@@ -19,10 +19,11 @@ This directory is the durable source of truth for research planning, evidence tr
 11. [Release acceptance gates](ACCEPTANCE-GATES.md) — evidence required before a release is accepted.
 
 ## Current state — 2026-11-05
-The repository audit/navigation, independent browser/Python version policy, and owner-approved ClippyFirst Project License have been merged into `main` via PR #434 (merge commit `56318e8a293d6f92dc307256430279d386a77d33`). The repository remains a **partial research prototype**, not research-certified or release-ready. Software CI on the exact PR head passed, but those checks do not establish linguistic correctness or source-item reuse rights. The official NIKL metadata-only inventory was skipped; it must not be described as passed.
+The repository audit/navigation, independent browser/Python version policy, and owner-approved ClippyFirst Project License have been merged into `main` via PR #434 (merge commit `56318e8a293d6f92dc307256430279d386a77d33`). The repository remains a **partial research prototype**, not research-certified or release-ready. Software CI on the current main head passed for tests, system verification and generated artifacts, but the Pages deployment timed out; these checks do not establish linguistic correctness or source-item reuse rights. Distinguish the blocked live NIKL HTTP crawl from the already completed local-HTML metadata inventory: the repository-held capture parses 30/30 Standard Pronunciation Rules articles and its schema/reproducibility workflow passed, while page-level KOGL rights and pristine capture authenticity remain unresolved.
 
 Current evidence gaps:
-- complete a network-enabled, policy-compliant NIKL item inventory and inspect per-item KOGL markings/source ownership; the Standard Pronunciation Rules page previously returned HTTP 403 to automation;
+- cleanly recapture the NIKL page with translation/browser extensions disabled, preserve the new file as a separately identified source artifact, and compare its byte hash; the current local HTML inventory is 30/30 but contains a likely injected DeepL controller and 17 referenced assets are absent;
+- inspect the page-specific KOGL mark and item-level reuse terms for the Standard Pronunciation Rules page and cited Q&A/dictionary items; live automated HTTP access remains blocked (HTTP 403), and local import does not verify robots or rights;
 - obtain independent Korean IPA review and adjudication from qualified reviewers on a frozen holdout;
 - obtain independent Ukrainian phonetic/orthographic target review on frozen IPA inputs;
 - finish rule-level parity across browser, Python, CLI, and API where the current rule coverage matrix says it is incomplete;

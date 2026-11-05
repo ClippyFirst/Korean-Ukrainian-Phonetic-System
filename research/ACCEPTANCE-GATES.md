@@ -1273,3 +1273,29 @@ The exact PR head `fbfe7f481fa0ac35264bf060fc8170d7310f3176` passed Python 3.11/
 **Current project disposition: partial research prototype; not research-certified and not release-ready.** Remaining gates: independent Korean IPA gold/adjudication; independent Ukrainian target review; NIKL item-level KOGL/source-rights review; C12 audio/speaker/prosody crosswalk; hash-pinned reconciliation/adjudication of the historical 239 mismatch occurrences; remaining names/loanwords/Hanja/regional-style coverage; full cross-runtime parity where the rule-coverage matrix remains incomplete. Neural training remains deferred until independently adjudicated IPA gold exists.
 
 The custom licence is purpose-limited and not OSI-approved/open source. Scientific use of public-service results and the Korean→Ukrainian correspondence table is permitted with attribution; technical reuse requires prior written permission. Third-party terms remain separate. See root `LICENSE`, `docs/LICENSING-AND-PERMISSIONS.md`, and DEC-2026-007.
+
+
+## 2026-11-05 — whole-repository audit and current NIKL/Pages evidence
+
+**Snapshot:** main `c1feae5fcc9e743ac7fba660221ad229b4ccf2ff`; see [repository audit addendum](../docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) and [structure guide](../docs/REPOSITORY-STRUCTURE.md).
+
+### Current exact-head software checks
+- Tests workflow [41924144853](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41924144853): PASS.
+- System verification [41924144998](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41924144998): PASS.
+- Master table/research artifacts [41924144992](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41924144992): PASS.
+- Pages deployment [41924144861](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41924144861): FAIL at deploy. Python matrix and browser tests/build passed; the deployment status remained `updating_pages` for about eight minutes, then timed out and cancelled. No successful deployment or public smoke test is claimed for this run. The observed fault is in the Pages deployment wait; root platform cause remains unconfirmed.
+- No local npm/pytest commands were executed in the audit session.
+
+### NIKL status split — do not collapse into one gate
+- **Local metadata inventory: DONE_VERIFIED.** `한국어 어문 규범.htm` parses the 30 articles of `제2부 표준 발음법`; manifest inventory is 30/30 with no missing/duplicate/unexpected/incomplete records. Local inventory run [40072018648](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40072018648) and schema/reproducibility run [40072283788](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40072283788) passed.
+- **Capture authenticity: PARTIAL.** The saved HTML contains a `deepl-input-controller` node after `</body>` and references 17 relative assets not stored in the repository. Preserve this artifact; obtain a separate clean recapture with extensions disabled and compare exact-byte hashes.
+- **Live HTTP/robots: BLOCKED / NOT CLAIMED.** Manifest is `local-html-import`; HTTP status/retrieval time are null and robots is `not_checked_local_import`.
+- **Page/item reuse rights: BLOCKED/PENDING.** The site-wide NIKL Article 24-2 policy is registered, but page-specific KOGL markings and item-level Q&A/dictionary terms remain unverified. Do not treat public accessibility or the local file as permission to redistribute source text.
+- **Linguistic review: PARTIAL.** A 30-article inventory is not expert adjudication of every clause, subparagraph, example, commentary passage, Korean surface reading, IPA or Ukrainian target.
+
+### Repository governance
+- Main is reported as unprotected by repository metadata; no external setting was changed. Decide whether to configure branch protection/rulesets.
+- A stale merged docs branch remains 14 commits behind and 0 ahead; no branch deletion action was available. No new branch was created for the documentation pass.
+- Issue #337 remains open for independent Korean phonetics reviewer recruitment.
+
+**Readiness:** partial research prototype; not research-certified or release-ready. Software automation passes do not close independent Korean IPA review, Ukrainian target review, source rights, C12 acoustic/context evidence or historical mismatch reconciliation.

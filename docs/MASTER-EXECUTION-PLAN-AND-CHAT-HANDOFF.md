@@ -6282,3 +6282,37 @@ The official NIKL metadata-only inventory was skipped by workflow configuration.
 - Documentation map local links verified: **12/12 targets fetched successfully** from `main`.
 - Branch search shows `main` and the merged PR head branch `docs/repository-audit-and-navigation-2026-11-04`; the latter is behind `main`, with no unique commits. It is retained and was not deleted. No open PRs remain.
 - Main subsequently advanced through audit/handoff maintenance commits; inspect live `main` for the current HEAD before continuing.
+
+
+## 2026-11-05 — Full repository audit and documentation refresh
+
+**Starting main HEAD:** `c1feae5fcc9e743ac7fba660221ad229b4ccf2ff`.  
+**Scope:** recursive tree inventory; README/docs/architecture; Python and browser entry points; package metadata; schemas/data/scripts/tests/workflows map; NIKL crawler, local HTML, manifest and source register; agent skills; branches, PRs, issue and current-head CI. This was a whole-tree inventory with targeted deep inspection, not a line-by-line review of all 797 entries.
+
+### Current state
+- 797 recursive tree entries; 162 Markdown files; 391 tests; 61 scripts; 18 workflows; 13 schemas; 178 source-register rows (134 NIKL-related).
+- No open PRs. Open issue #337 remains the independent Korean phonetics reviewer recruitment task.
+- `main` plus one stale merged documentation branch remain. The stale branch is 14 commits behind and 0 ahead. No new branch was created. The connector exposed no branch-delete action, so the stale ref was not deleted.
+- Main is reported as unprotected by repository metadata; no external settings changed.
+- Root README, documentation index, architecture guide and new repository structure guide now give clear ownership/navigation without moving historical paths.
+
+### NIKL local capture status
+The repository-held `한국어 어문 규범.htm` parses to 30/30 Standard Pronunciation Rules articles. The metadata-only manifest records local import, 322,678 source bytes and SHA-256 `11dccd3c6eafb5167a6f448c2ccb5fc45fd698c5b2d1570ed3d1e5c177fa7a1e`; local inventory and reproducibility workflows passed (runs 40072018648 and 40072283788). It is not a live fetch. The file includes a likely extension-injected `deepl-input-controller` after `</body>` and references 17 local assets absent from the repo; recapture cleanly with extensions disabled before claiming a pristine archival capture. The page-specific KOGL mark remains unchecked; `termsReview=not_assessed`. Inventory completeness does not establish item-level reuse rights or linguistic adjudication.
+
+### Current exact-head CI
+At starting head `c1feae5...`: tests #41924144853 PASS; system verify #41924144998 PASS; master table/corpus #41924144992 PASS. Pages deploy #41924144861 FAIL: build/test jobs passed, but deploy remained `updating_pages` for about eight minutes and timed out; no post-deploy public smoke was run. This is recorded as a deployment blocker, not a code-build failure. No local npm/pytest commands were run in this session.
+
+### Upstream skill review
+The four requested upstream repositories were inspected at the pinned revisions recorded in `docs/AGENT-SKILL-INTEGRATION-2026-11-01.md`. Their useful process patterns are already integrated into the existing four project-local skills and acceptance gates. No upstream code/text was copied and no duplicate skill/gate framework was introduced.
+
+### Next genuine blockers
+1. Clean NIKL HTML recapture and source/page rights verification; keep local inventory status separate from reuse permission.
+2. Retry Pages deployment and complete live public smoke checks.
+3. Resolve branch hygiene: remove the stale merged docs branch if the owner still requires exactly one branch; the current connector has no branch-delete operation.
+4. Decide whether to enable branch protection/rulesets for main.
+5. Recruit two independent Korean IPA reviewers (issue #337), then adjudicate the frozen holdout.
+6. Obtain independent Ukrainian target review on frozen IPA inputs.
+7. Recover C12 audio/speaker/prosody context and reconcile the historical 239 mismatches before production rules change.
+8. Close cross-runtime parity and names/loans/Hanja/regional coverage gaps; keep neural training deferred until adjudicated IPA gold and corpus rights exist.
+
+**Disposition:** documentation and repository navigation are now in a substantially clearer state. The system remains a partial research prototype, not research-certified or release-ready. See `docs/REPOSITORY-STRUCTURE.md`, the latest addendum in `docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md`, `research/ACCEPTANCE-GATES.md` and `research/ROADMAP.md`.
