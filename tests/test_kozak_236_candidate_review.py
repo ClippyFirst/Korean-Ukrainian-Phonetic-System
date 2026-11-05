@@ -553,3 +553,15 @@ def test_mid_front_vowel_merger_is_profile_only_for_june_daero():
     assert "no statistically significant production F1/F2 difference" in row["candidate_disposition_basis"]
     assert "token-specific acoustic IPA gold" in row["candidate_disposition_basis"]
     assert row["prior_independent_ipa_review_status"].endswith("token_specific_acoustic_IPA_review_not_performed")
+
+
+def test_mid_front_vowel_merger_is_profile_only_for_june_daero():
+    rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
+    row = rows["2462"]
+    assert row["token"] == "주는대로"
+    assert row["candidate_disposition"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
+    assert row["prior_individual_reason_code"] == "BROAD_IPA_VOWEL_SYMBOL_PROFILE_MISMATCH"
+    assert "ㅐ→ɛ" in row["candidate_disposition_basis"]
+    assert "no statistically significant production F1/F2 difference" in row["candidate_disposition_basis"]
+    assert "token-specific acoustic IPA gold" in row["candidate_disposition_basis"]
+    assert row["prior_independent_ipa_review_status"].endswith("token_specific_acoustic_IPA_review_not_performed")
