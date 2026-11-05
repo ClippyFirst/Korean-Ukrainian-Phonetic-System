@@ -15,10 +15,10 @@ def test_reconstructed_236_review_ledger_has_exact_membership_and_statuses():
     assert len(rows) == 236
     assert len({row["occurrence_id"] for row in rows}) == 236
     assert Counter(row["candidate_disposition"] for row in rows) == {
-        "NOT_INDIVIDUALLY_ADJUDICATED": 206,
+        "NOT_INDIVIDUALLY_ADJUDICATED": 205,
         "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 24,
         "RETAIN_PENDING_INDEPENDENT_IPA_REVIEW": 0,
-        "RULE_CONFIRMED_STANDARD_VARIANT": 6,
+        "RULE_CONFIRMED_STANDARD_VARIANT": 7,
     }
     assert all(row["historical_membership_confidence"] ==
         "RECONSTRUCTED_CANDIDATE_NOT_ORIGINAL_MEMBERSHIP_PROOF" for row in rows)
@@ -332,4 +332,5 @@ def test_nikl_rule_27_adjudicates_boileul_geora_exact_morphosyntactic_context():
     assert "보일 거라" in row["candidate_disposition_basis"]
     assert "할 것을 [할꺼슬]" in row["candidate_disposition_basis"]
     assert "no general ㄹ+ㄱ rewrite" in row["candidate_disposition_basis"]
+    assert "SRC-NIKL-QNA-310899" in row["candidate_disposition_basis"]
     assert row["prior_independent_ipa_review_status"] == "NOT_PERFORMED"
