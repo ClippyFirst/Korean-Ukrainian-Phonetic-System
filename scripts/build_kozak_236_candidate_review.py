@@ -26,7 +26,7 @@ PINNED_INPUT_GIT_BLOB_SHA = {
     IDS_PATH: "f46f6760dde844a3e7cf9abe00dc74969f45eca8",
     SUPERSET_PATH: "e6c4843bbb9f1e3eb83527698880d4d60184c333",
     ABSTENTION_PATH: "de838dcdc247e1846e0e633766135b3a902f436b",
-    ADJUDICATION_PATH: "29fccec2eaa75a73726c41f570baf5ef3b8508e5",
+    ADJUDICATION_PATH: "1f9bcbbd329935a8a53a8c24ae01a14531e73fb2",
 }
 
 def verify_git_blob(path: Path, expected_sha: str) -> None:
