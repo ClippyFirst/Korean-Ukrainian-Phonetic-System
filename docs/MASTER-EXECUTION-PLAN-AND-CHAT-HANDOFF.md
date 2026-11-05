@@ -8,6 +8,10 @@
 - This is useful negative evidence: there is no official standard IPA form to promote to benchmark gold. It does not decide whether a particular speaker's /s/ before /j/ is realized with a narrow [ɕ], and it supplies no token audio. ID 606 therefore remains among the 28 `NOT_INDIVIDUALLY_ADJUDICATED`; the unresolved total stays **40**, and no candidate is removed on this evidence.
 - Source record `SRC-NIKL-QNA-332662` is now in `research/SOURCE-REGISTER.csv`; item-level KOGL marking remains unverified.
 
+### Full-text hiatus-study scope correction for ID 78
+
+The source register records a full-text review of Kim & Hong (2025): ten men aged 27–35, within-word pairs `기억–기역` and `보안–보완`, everyday/careful speech, and F1/F2 trajectories plus timing, pitch and intensity. The tested contrasts are /iə~ijə/ and /oa~owa/; the study does not test /o.ʌ/, `오억`, or numeral/word-boundary compounds. The comparator's /j/ in `오조오억배` therefore remains unresolved; this is not a basis to delete it or confirm it. The adjudication now cites `SRC-KIM-HONG-2025-HIATUS-TRANSITIONS-GLIDES` and retains ABSTAIN.
+
 ### NIKL Rule 29 negative control for unresolved n-insertion candidates
 
 NIKL Online Q&A 328785 (2026-04-03) states that the phonological shape in Rule 29 is not sufficient to predict n-insertion in every compound/derivative; the lexical-semantic status of the following element matters. It discusses `못난이` and `예쁜이`, not the exact candidates. Thus `홍콩영화들` (ID 643) and `한국여자로` (IDs 1805/1832/1859) remain unresolved: the former's compound status and the latter's phrase/prosodic grouping are not established by text alone. Source `SRC-NIKL-QNA-328785` added to the source register. This does not reduce the 40 unresolved occurrences.
