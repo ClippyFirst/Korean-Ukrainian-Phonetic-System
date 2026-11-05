@@ -105,7 +105,7 @@ def build_rows(root: Path = ROOT) -> list[dict[str, str]]:
             basis = ("Broad IPA profile mismatch: source [ɕ] vs project broad /s/ in ㅅ+ㅣ/ㅖ/ㅑ; Kang (2010) supports optional coarticulation, not a categorical rule. Full evidence is in the context-adjudication register; token-specific acoustic IPA review was not performed." if case_adjudication["rule_id"] == "LENIS_SIBILANT_BROAD_PROFILE_CONVENTION" else case_adjudication["notes"])
             reason = (
                 "LENIS_SIBILANT_BROAD_PROFILE_CONVENTION"
-                if case_adjudication["rule_id"] == "LENIS_SIBILANT_BROAD_PROFILE_CONVENTION"
+                if case_adjudication["rule_id"] in {"LENIS_SIBILANT_BROAD_PROFILE_CONVENTION", "NIKL-QNA-306166-RESYLLABIFIED-LENIS-SIBILANT"}
                 else "SOURCE_ATTESTED_LOANWORD_PRONUNCIATION_VARIATION"
                 if case_adjudication["rule_id"] == "NIKL-LOANWORD-GAME-2005-ATTESTED-PRONUNCIATION-VARIATION"
                 else "BROAD_IPA_VOWEL_SYMBOL_PROFILE_MISMATCH"
