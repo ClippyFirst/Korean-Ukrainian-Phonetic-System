@@ -791,3 +791,12 @@ def test_kang_2009_glide_abstract_is_registered_with_exact_scope_limits():
     assert "not proof of [ɕ]" in source["contribution_expected"]
     assert "item-level reuse terms not assessed" in source["license_status"]
     assert "does not identify the tested /jV/ vowel sequence" in source["limitations_or_next_action"]
+
+
+def test_kim_2021_fortis_study_separates_profile_bookkeeping_from_token_acoustic_gold():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-KIM-2021-EPG-KOREAN-FRICATIVES"]
+    assert "24 fortis mismatch operations remain unresolved at the token-acoustic IPA level" in source["contribution_expected"]
+    assert "not an independent confirmation of a speaker's phone" in source["contribution_expected"]
+    assert "profile-convention bookkeeping only" in source["integration_status"]
+    assert "only /i, a, u/ contexts" in source["limitations_or_next_action"]
