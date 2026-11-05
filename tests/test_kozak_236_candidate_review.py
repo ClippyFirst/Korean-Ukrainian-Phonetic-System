@@ -602,6 +602,6 @@ def test_jeonggweon_uses_exact_dictionary_attestation_with_nikl_morpheme_corrobo
     assert "정꿘" in row["candidate_disposition_basis"]
     assert "SRC-KPEDIA-JEONGGWON" in row["candidate_disposition_basis"]
     assert "SRC-NIKL-QNA-335292" in row["candidate_disposition_basis"]
-    assert "no productive rule" in row["candidate_disposition_basis"]
+    assert "does not establish a productive rule" in row["candidate_disposition_basis"]
     assert row["prior_individual_reason_code"] == "UNMAPPED_FRAGMENT_AND_NO_INDEPENDENT_IPA_GOLD"
     assert row["prior_independent_ipa_review_status"] == "NOT_PERFORMED"
