@@ -57,7 +57,7 @@ test('new agent documentation uses valid local Markdown links', () => {
     ['docs/README.md', docsIndex],
   ];
   for (const [source, content] of pages) {
-    for (const [, href] of content.matchAll(/\\[[^\\]]+\\]\\(([^)]+)\\)/gu)) {
+    for (const [, href] of content.matchAll(/\[[^\]]+\]\(([^)]+)\)/gu)) {
       if (/^(?:https?:|mailto:|#)/u.test(href)) continue;
       const local = decodeURIComponent(href.split('#', 1)[0]);
       if (!local) continue;

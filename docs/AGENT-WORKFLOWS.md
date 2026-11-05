@@ -71,6 +71,14 @@ Not every documentation or configuration edit has a meaningful failing test. In 
 
 Use the narrowest skill that owns the work. Combine skills when a task crosses boundaries; do not duplicate their instructions into a new master prompt.
 
+## Core transformation contract
+
+For any Korean-to-Ukrainian pronunciation work, preserve the actual project pipeline:
+
+`Korean source orthography → structural and supported morphological analysis → Korean phonology → IPA or typed uncertainty → Ukrainian target adaptation → Ukrainian practical orthography`.
+
+Do not create a parallel Hangul-to-Ukrainian shortcut. Keep RR and Hanja as side layers, and keep Kozak Kim/NIKL research rules separate from the independent g2pK comparison adapters.
+
 ## Evidence and implementation are separate states
 
 Use the project's task vocabulary:

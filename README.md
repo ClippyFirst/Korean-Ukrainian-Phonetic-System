@@ -5,10 +5,16 @@ Research-grade, machine-readable framework for Korean → Ukrainian phonetic-gra
 ## Documentation and repository map
 
 - [Documentation index](docs/README.md) — canonical navigation for users, developers and researchers.
+- [Agent workflows](docs/AGENT-WORKFLOWS.md) — task routing, repository-local skills, evidence/verification lifecycle and upstream practice decisions.
+- [Agent instructions](AGENTS.md) — repository-wide entry contract and skill router.
 - [Versioning policy](docs/VERSIONING-POLICY.md) — separate version streams for the private browser app and installable Python package.
 - [Repository structure guide](docs/REPOSITORY-STRUCTURE.md) — current component map, data ownership, runtime entry points, development commands and safe navigation.
 - [Repository audit and structure — 2026-11-06](docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md) — current documentation/agent-workflow audit, repository map and branch/PR snapshot.
 - [Previous repository audit — 2026-11-04](docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — historical audit and earlier exact-head status.
+
+## Development and agent workflows
+
+Contributors and coding agents should start with [AGENTS.md](AGENTS.md), then use the [agent workflow guide](docs/AGENT-WORKFLOWS.md) to select the maintained skill and canonical research/engineering record. The guide adapts selected practices from Superpowers, Matt Pocock's skills and Ponytail without copying or vendoring their implementations.
 
 ## Author, licensing and permissions
 
