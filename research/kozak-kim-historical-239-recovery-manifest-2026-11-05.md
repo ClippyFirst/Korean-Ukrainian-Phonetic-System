@@ -92,3 +92,40 @@ Regression coverage: `tests/test_kozak_broad_mismatch_context_ledger.py` asserts
 
 This closes the context/provenance recovery for the full Broad-mismatch superset, but it does **not** close the 239-member historical selection or independent linguistic review. The missing acceptance input remains the historical C01–C10 per-fragment assignment snapshot or an executable selection predicate that reproduces exactly 239 stable occurrence IDs.
 
+
+## Pre-C11/C12 baseline recovery — 2026-11-05 continuation
+
+A further historical source snapshot has now been recovered. This narrows the blocker: the old aggregate cluster baseline and its benchmark artifact exist, but the per-fragment membership assignment needed to materialize the 239 IDs does not.
+
+### Recovered pre-C11/C12 snapshot
+
+| Field | Verified value |
+|---|---|
+| Baseline code head | `e7933ae4a67c94f0f69b4747d8e388aa082fc347` |
+| Benchmark workflow run | [41453407662](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41453407662) |
+| Benchmark artifact | [13148075070](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41453407662/artifacts/13148075070) |
+| Downloaded ZIP SHA-256 | `075ceff080decbb142492448c9344816bfb53f1e87fe563826668d037c053b89` |
+| Report | `multi-engine-ipa-report.json` |
+| Report SHA-256 | `8c25e630ca828719b269aeb84c8037d9c40f881a0f15c2e4ddf9d427edffa0f9` |
+| Eligible occurrences | 2,703 |
+| Broad sensitivity mismatches | 370 |
+| Cluster snapshot | `research/KOZAK-KIM-MASS-MISMATCH-CLUSTERS-2026-11-01.csv` |
+| Cluster snapshot Git blob | `275e5d162f3357e94fccd5024ec693fcf223cecd` |
+
+The recovered cluster CSV contains exactly the pre-C11/C12 C01–C10 aggregate rows. It records counts, operations, representative forms, classifications, decisions and next actions. It does **not** contain per-occurrence IDs or per-fragment assignments. In that snapshot C04 is still the 37-occurrence / 45-operation aspiration cluster; later work split that question into a separate C12 profile analysis and corrected C04 to a zero-residual IPA-convention item.
+
+### Reproducibility test and conclusion
+
+The historical triage text defines the 239 as Broad-mismatch occurrences containing at least one fragment not mapped to C01–C10. The recovered C01–C10 CSV is only an aggregate summary. The later 1,267-row fragment export stores the strict and Broad edit-fragment arrays but stores only one occurrence-level union in `candidate_clusters`; it does not store a cluster assignment on each individual Broad edit operation. The exporter also combines strict and Broad fragments when constructing that union. Consequently, neither the old cluster CSV nor the later row-level union provides enough information to decide, for each Broad mismatch occurrence, whether at least one of its individual Broad fragments was outside C01–C10.
+
+The old artifact itself contains 2,703 engine occurrences and confirms the 370 Broad-mismatch superset, but it does not contain the historical C01–C10 fragment-assignment snapshot or a saved 239-ID member list. The 239 aggregate is therefore corroborated as a historical claim in the triage narrative, but its exact member set remains **not independently reproducible**. No candidate set has been promoted to the 239 ledger, and no 239 rows have been synthesized from the count.
+
+### Exact remaining acceptance input
+
+Recover one of:
+
+1. the original pre-C11/C12 per-fragment assignment table keyed by stable occurrence ID and Broad edit-operation index; or
+2. the exact versioned executable predicate and all source data used to produce the historical 239 count, such that a clean replay returns exactly 239 unique IDs.
+
+Then verify the selected IDs against the 2,703-occurrence report, join their UGTPHON contexts, and adjudicate each independently. Until then, the 370-row context ledger remains an evidence superset, not the historical 239 cohort.
+
