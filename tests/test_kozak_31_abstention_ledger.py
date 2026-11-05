@@ -82,3 +82,26 @@ def test_repeated_source_tokens_keep_occurrence_specific_token_positions():
         row = by_id[occurrence_id]
         assert int(row["source_token_index"]) == token_index
         assert token_index in json.loads(row["source_token_index_candidates"])
+
+
+def test_reconstructed_239_candidate_snapshot_and_current_disposition_crosswalk():
+    snapshot = ROOT / "research/kozak-kim-historical-239-candidate-ids-2026-11-05.txt"
+    lines = [line.strip() for line in snapshot.read_text(encoding="utf-8").splitlines() if line.strip()]
+    payload = next(line.split(":", 1)[1].strip() for line in lines if line.startswith("Candidate occurrence IDs"))
+    candidate_ids = payload.split(",")
+    assert len(candidate_ids) == 239
+    assert len(set(candidate_ids)) == 239
+
+    # Three verified exact-form FIX decisions overlap the reconstructed candidate set.
+    fixed_ids = {"37", "704", "2031"}
+    assert fixed_ids.issubset(set(candidate_ids))
+    # The fourth exact-form fix is outside the candidate set; RETAIN is not a FIX.
+    assert "2018" not in set(candidate_ids)
+    assert "1140" in set(candidate_ids)
+
+    abstentions = _rows(ROOT / "research/kozak-kim-31-row-individual-abstentions-2026-11-05.csv")
+    abstention_ids = {row["occurrence_id"] for row in abstentions}
+    assert len(abstention_ids & set(candidate_ids)) == 22
+
+    # Count only verified FIX overlaps as resolved; RETAIN and ABSTAIN remain open.
+    assert len(set(candidate_ids) - fixed_ids) == 236
