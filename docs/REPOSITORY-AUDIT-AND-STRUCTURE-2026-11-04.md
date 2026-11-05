@@ -571,15 +571,16 @@ The Cambridge primary record identifies S018 as Hyun Bok Lee, *Korean*, Journal 
 ### Verification and intermediate failures
 
 - Initial PR #436 head `51b7bce8dcf8fd7bac1bf87193e220dd48233ead`: Python 3.11/3.12/3.13, browser regression/build, wheel install, teacher-corpus audit, web and generated artifacts **PASS**.
-- Intermediate head `c7d95e64082a45e13c062c78c977e347d72fcbfc`: Python tests **FAIL** on three issues: the ledger field rename had not reached the generator/CSV, source-register coverage text had dropped existing [ç]/[x]/[p̚] assertions, and the S018 catalog correction had not yet been committed. Browser tests passed. These were corrected in subsequent commits; exact latest PR-head rerun must be inspected before marking the batch DONE_VERIFIED.
-- GitHub Actions is the available verification surface in this connector-only session; local pytest/npm were not executed. The official NIKL metadata-only job remains skipped by workflow policy and is not a pass.
+- Intermediate head `c7d95e64082a45e13c062c78c977e347d72fcbfc`: Python tests **FAIL** on three issues (field rename not propagated, source-register coverage assertions removed, S018 catalog year not yet corrected); Browser passed. All three were corrected and the signature regression was added.
+- Implementation/test head `e253de40d97135ad5e61ba7e49546e2d4641b0a1`: Python 3.11/3.12/3.13, Browser regression/build, wheel install, teacher-corpus audit, paired UGTPHON, research artifacts, external UGTPHON, exhaustive test-case extraction, system verification and morphology consensus **PASS**. The multi-engine diagnostic was **CANCELLED** after a subsequent branch update, not passed. NIKL metadata-only and Charsiu inference were **SKIPPED**.
+- Latest documentation-only head `2877027d557d4ee725ac63f6a4d990c7e9e6702b`: system verification **PASS** for Python and Browser; NIKL inventory **SKIPPED**. Local pytest/npm were not executed.
 
 ### Task ledger
 
 | Work item | Status | Acceptance / blocker |
 |---|---|---|
 | Repository structure, source ownership, runtime boundaries, tests/workflows inventory | DONE_VERIFIED as a focused structural audit | 806-entry tree and canonical guides inspected; not every source file was read line by line |
-| 236-row review inventory and generator | PARTIAL pending exact-head CI | Verify generator/CSV parity and 236/213/22/1 counts on latest PR head |
+| 236-row review inventory and generator | DONE_VERIFIED as a derived inventory | Generator/CSV parity, 236/213/22/1 dispositions, 254/24 signature counts and historical C11/C04 label counts passed on implementation/test head e253de4; latest docs-only head system verification passed |
 | Historical 239 identity | PARTIAL / EVIDENCE-LIMITED | Recover original selector/member list or prove replay matches historical triage |
 | Individual IPA adjudication | BLOCKED | Two independent qualified Korean IPA reviewers, source convention and exact context needed |
 | Fortis sibilant sub-stratum | BLOCKED | 24 `ɕ͈ → s͈` operations need evidence separate from lenis C11 |
