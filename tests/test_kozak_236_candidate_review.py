@@ -15,9 +15,9 @@ def test_reconstructed_236_review_ledger_has_exact_membership_and_statuses():
     assert len(rows) == 236
     assert len({row["occurrence_id"] for row in rows}) == 236
     assert Counter(row["candidate_disposition"] for row in rows) == {
-        "NOT_INDIVIDUALLY_ADJUDICATED": 28,
+        "NOT_INDIVIDUALLY_ADJUDICATED": 27,
         "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 16,
-        "RULE_CONFIRMED_STANDARD_VARIANT": 11,
+        "RULE_CONFIRMED_STANDARD_VARIANT": 12,
         "PROFILE_CONVENTION_MISMATCH_CONFIRMED": 181,
     }
     assert all(row["historical_membership_confidence"] ==
@@ -592,3 +592,16 @@ def test_nikl_documents_both_loanword_game_onset_variants_without_selecting_toke
     assert "does not choose which variant the corpus speaker actually produced" in row["candidate_disposition_basis"]
     assert "SRC-NIKL-LOANWORD-GAME-2005" in row["candidate_disposition_basis"]
     assert row["prior_independent_ipa_review_status"].endswith("token_specific_acoustic_IPA_review_not_performed")
+
+
+def test_jeonggweon_uses_exact_dictionary_attestation_with_nikl_morpheme_corroboration():
+    rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
+    row = rows["545"]
+    assert row["token"] == "정권"
+    assert row["candidate_disposition"] == "RULE_CONFIRMED_STANDARD_VARIANT"
+    assert "정꿘" in row["candidate_disposition_basis"]
+    assert "SRC-KPEDIA-JEONGGWON" in row["candidate_disposition_basis"]
+    assert "SRC-NIKL-QNA-335292" in row["candidate_disposition_basis"]
+    assert "no productive rule" in row["candidate_disposition_basis"]
+    assert row["prior_individual_reason_code"] == "UNMAPPED_FRAGMENT_AND_NO_INDEPENDENT_IPA_GOLD"
+    assert row["prior_independent_ipa_review_status"] == "NOT_PERFORMED"
