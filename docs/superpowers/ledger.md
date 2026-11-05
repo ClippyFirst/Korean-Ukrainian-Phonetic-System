@@ -1,3 +1,56 @@
+# 2026-11-05 task ledger — reconstructed 236-candidate review and repository audit
+
+## 2026-11-05 — 236-candidate review, S018 source correction and documentation continuation
+
+**Starting default branch:** `main` at `043754498f3ad8a17aa6c13b5f643b197536da8a`.  
+**Working branch:** `research/236-candidate-review-2026-11-05`.  
+**Draft PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436).  
+**Latest recorded PR head when this ledger entry was written:** `e253de40d97135ad5e61ba7e49546e2d4641b0a1`.
+
+### Task ledger
+
+| Work item | Status | Evidence / acceptance |
+|---|---|---|
+| Reconstruct 239 candidate IDs | PARTIAL / EVIDENCE-LIMITED | A pinned pre-C11/C12 Broad-only aggregate replay yields 239 unique IDs and all 239 join to the pinned 370-row context superset. Original historical selector/member list is not preserved, so historical identity is not proven. |
+| Materialize 236 remaining occurrences | DONE_VERIFIED as a derived inventory; latest exact-head CI pending | Exclude existing exact-form FIX overlaps 37, 704, 2031. Deterministic generator, 236-row CSV, source context, IPA comparator strings and provenance are in PR #436. |
+| Individual disposition coverage | PARTIAL | 213 have no individual disposition in current narrow registers; 22 overlap the 31-row ABSTAIN register; one is provisional RETAIN (1140, 출산). ABSTAIN and RETAIN are not solved cases. |
+| Broad mismatch-family triage | DONE_VERIFIED as a descriptive snapshot | 254 edit operations across 24 signatures: 184 lenis ɕ→s and 24 fortis ɕ͈→s͈. Fortis operations are not covered by the lenis-only C11 optional variant. |
+| Historical cluster-label interpretation | DONE_VERIFIED as a data-quality finding | The inherited C04 tag appears on 206 candidate rows but is stale; current C04 has zero residual occurrences after the former aspirated-velar set moved to C12. The new ledger labels inherited tags as historical-only. |
+| Cambridge S018 bibliography | DONE_VERIFIED as metadata correction on PR branch; exact-head CI pending | Corrected to Hyun Bok Lee, JIPA 23(1), June 1993, pp. 28–31, first published online 6 February 2009. The prior catalog year 1999 and source-register attribution Sohn (2008) were incorrect. |
+| Runtime IPA / Ukrainian behavior | DONE_VERIFIED as unchanged by this batch | Only source comments, research records, generated review inventory, tests and documentation changed. No phonological production rule, IPA gold, or Ukrainian target mapping changed. |
+| Independent Korean IPA adjudication | BLOCKED | Two independent qualified reviewers, exact source convention and per-token/context evidence are required. |
+| Fortis sibilant review | BLOCKED | Review the 24 ɕ͈→s͈ operations separately from lenis C11; do not inherit the lenis optional variant. |
+| Expanded /j/-initial C11 contexts | PARTIAL / EVIDENCE-LIMITED | Kang (2010) reports different spectral patterns before /yu, /yo/ versus /ya, /ye/; Kong & Kang (2020) report palatalized variants before /i/ in a preliminary 32-speaker Seoul study. The full Lee article's exact environments still need page-level reread. |
+| C12 audio/speaker/prosody crosswalk | BLOCKED | The current context ledger lacks source audio and speaker metadata. |
+| Ukrainian target review | BLOCKED | Requires independent Ukrainian phonetic/orthographic review on adjudicated IPA inputs. |
+| NIKL item-level reuse rights / capture authenticity | BLOCKED / PARTIAL | Site-wide policy is recorded; exact page/item KOGL markings and pristine original capture authenticity remain unverified. |
+| Post-adjudication benchmark | TODO | Run only after evidence-backed IPA decisions; PR-triggered comparative diagnostics are not normative accuracy. |
+| Neural teacher training | DEFERRED | Requires independent IPA gold and corpus-rights clearance. |
+
+### 236-case inventory
+
+The 236 candidate occurrences cover 151 distinct token strings, 110 source rows/contexts and 168 source-row/token pairs. The full operation-signature distribution and source-context rows are in `research/kozak-kim-236-candidate-review-2026-11-05.md` and the adjacent CSV. The rows are occurrence-level diagnostics, not 236 independent lexical or phonological defects. Repeated forms must be grouped before evidence is counted.
+
+### Source correction
+
+Cambridge's primary bibliographic record identifies S018 as Hyun Bok Lee's *Korean*, JIPA 23(1), June 1993, pp. 28–31, first published online 6 February 2009. The repository's S018 catalog year and Cambridge source-register attribution were inconsistent; PR #436 corrects both, the cited research records and the Python profile comment, with a bibliographic regression. This does not establish per-token IPA or reuse rights.
+
+### Verification history and commands
+
+- PR #436 initial head `51b7bce8dcf8fd7bac1bf87193e220dd48233ead`: Python 3.11/3.12/3.13, Browser regression/build, wheel install, teacher-corpus audit, web and generated-artifact workflows **PASS**.
+- Intermediate head `c7d95e64082a45e13c062c78c977e347d72fcbfc`: Python tests **FAIL** on three synchronization issues (field rename not yet propagated, source-register coverage text had lost existing assertions, and S018 catalog year had not yet been updated); Browser passed. These issues were corrected in later commits.
+- Head `7b2f1dc72b0e7e21ac86d720ca3606d3a6e442ee`: Python 3.11/3.12/3.13 and Browser regression/build **PASS**; research corpus artifacts, external UGTPHON diagnostic, exhaustive test-case extraction, system verification, paired native/g2pk diagnostic and morphology consensus **PASS**; multi-engine diagnostic was still running at last inspection. Official NIKL metadata-only and Charsiu inference jobs were **SKIPPED**, not passed.
+- Latest head `e253de40d97135ad5e61ba7e49546e2d4641b0a1`: the added exact signature-count regression triggered a fresh CI run; exact-head Python/Browser results must be inspected before marking the whole PR batch DONE_VERIFIED.
+- Local pytest/npm were not run in this connector-only session. GitHub Actions is the available execution environment.
+
+### Acceptance
+
+The 236-row inventory is complete as a reproducible review queue, not as a linguistic adjudication. Closure requires traceable individual or defensibly grouped decisions, source and reviewer provenance, explicit broad/narrow profile conventions, negative controls, and separately reviewed Ukrainian targets. Unsupported cases remain abstentions.
+
+**Readiness:** partial research prototype, not research-certified and not release-ready. No release, merge, branch deletion, force-push, or external setting change was performed.
+
+---
+
 # 2026-11-02 task ledger — Kozak Kim cross-runtime continuation
 
 ## 2026-11-02 — Kozak Kim cross-runtime evidence and parity continuation
