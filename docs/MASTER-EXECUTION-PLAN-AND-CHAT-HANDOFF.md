@@ -1,53 +1,34 @@
-## 2026-11-05 — Independent evidence update: seven confirmed cases, three IPA abstentions
+## 2026-11-05 — Independent evidence update: four confirmed cases, six evidence-limited abstentions
 
 **Branch:** `research/236-candidate-review-2026-11-05` (same working branch; no parallel branch created). **PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436), still draft/open. This entry supersedes earlier same-day interim counts while preserving the original 236-row baseline.
 
 ### Adjudication outcome
 
-- The baseline inventory remains 236 rows. **Seven occurrences are now `RULE_CONFIRMED_STANDARD_VARIANT`: IDs 257, 341, 813, 853, 1140, 2001 and 2010.** The active unresolved count is **229**.
-- **IDs 257 (`문화체험공간`), 813 (`사전체험`) and 853 (`만듬사전체험때`):** NIKL Standard Pronunciation Rule 5 requires `ㅕ` to be a diphthong; the exception concerns `져/쪄/쳐` after `ㅈ/ㅉ/ㅊ`, not `ㅎ` in `체험`. The source comparator retains /j/; Kozak drops it. IDs 813 and 853 are repeated occurrences in one source row, not independent speakers.
+- The baseline inventory remains 236 rows. **Four occurrences are now `RULE_CONFIRMED_STANDARD_VARIANT`: IDs 341 (`그놈의`), 1140 (`출산`), 2001 (`물가로`) and 2010 (`혐오증`).** The active unresolved count is **232**.
+- **IDs 257 (`문화체험공간`), 813 (`사전체험`) and 853 (`만듬사전체험때`) remain ABSTAIN.** A proposed Rule 5 justification was rejected after orthographic re-check: `체험` is `체+험`; `험` contains `ㅓ`, not `ㅕ`. Therefore the standard diphthong rule does not establish the source's /j/ as phonemic. Independent IPA annotation or token-level audio is required. IDs 813 and 853 are repeated occurrences in one source row.
 - **ID 341 (`그놈의`):** NIKL Rule 5 distinguishes non-initial lexical `의` [i] from genitive-particle `의` [e] (an accepted variant alongside [ɯi]). The canonical context uses the genitive particle, so the comparator [e] is normatively supported and Kozak [i] is not the rule's listed particle variant.
 - **ID 1140 (`출산`):** NIKL Basic Dictionary directly gives `출산[출싼]`; Kozak's fortis `s͈` is supported and the IPA-Dict comparator omits it. This upgrades the historical provisional RETAIN; the original rationale remains preserved.
 - **ID 2001 (`물가로`):** NIKL educational PDF gives `물가[물까]` in the price sense and contrasts `결과[결과]`; Kozak's `ɡ` is not supported. Exact lexical license only.
 - **ID 2010 (`혐오증`):** NIKL Basic Dictionary gives `혐오증[혀모쯩]`; the fortis affricate in the comparator is supported and Kozak's lenis `dʑ` is not. Exact lexical license only.
 - **IDs 293 (`실수`), 538 (`멋있어`) and 1206 (`싫어서`) remain ABSTAIN.** NIKL Q&A sources attest Hangul surface readings, but Hangul bracket notation does not decide [s] versus [ɕ]. IPA-Dict Korean is broadly phonemic, so its [ɕ] cannot be assumed narrow. These require independent IPA annotation or token-level audio.
-- Current counts: 208 no individual disposition; 21 ABSTAIN pending independent IPA review; zero pending RETAIN; seven rule-confirmed standard forms/variants. Historical 236 membership remains reconstructed, not original-selector proof.
+- Current counts: 208 no individual disposition; 24 ABSTAIN pending independent IPA review; zero pending RETAIN; four rule-confirmed standard forms/variants. Historical 236 membership remains reconstructed, not original-selector proof.
 - The three repeated `연전연패` occurrences (IDs 1816, 1843, 1870) remain abstained because n-insertion is variable and no word-specific pronunciation evidence was found.
-- The context-adjudication register records all seven resolutions and the explicit abstentions. The generator consumes both rule-confirmed and evidence-limited abstention decisions, preserving historical ABSTAIN/RETAIN rationale. The generated CSV and regression expectations are updated.
+- The context-adjudication register records the four resolutions and all evidence-limited abstentions. The generator consumes rule-confirmed and abstain decisions while preserving historical ABSTAIN/RETAIN rationale. The generated CSV and regression expectations are updated.
 - No production phonology, IPA gold, Ukrainian target, or benchmark baseline changed.
 
 ### Evidence and verification
 
-- Official NIKL Standard Pronunciation Rule 5: `ㅕ` is a diphthong; its listed monophthongization exception concerns `져/쪄/쳐` after `ㅈ/ㅉ/ㅊ`. Rule 5 also covers genitive-particle `의`.
+- Official NIKL Standard Pronunciation Rule 5: `ㅕ` is a diphthong, but this rule does not apply to `체험`, whose second syllable `험` contains `ㅓ`; the proposed /j/ closure was therefore rejected.
 - NIKL Basic Dictionary entries for 출산 and 혐오증; NIKL educational PDF example (25) for 물가[물까].
 - NIKL Q&A 330843, 306166 and 313981 provide Hangul surface evidence only; they do not resolve the [s]/[ɕ] IPA symbol difference.
 - Jun (2015), *Korean n-insertion: a mismatch between data and learning*, DOI 10.1017/S0952675715000275, supports variable n-insertion and does not itemize 연전연패.
-- These are normative rule/lexical confirmations, not token-specific acoustic IPA gold. No individual speaker's recording has been independently adjudicated.
+- These are normative lexical/rule confirmations, not token-specific acoustic IPA gold. No individual speaker's recording has been independently adjudicated.
 - GitHub Actions exact-head verification is required after these commits. Local pytest/npm were not run in this connector-only session.
 
-**Current interpretation:** baseline inventory 236; seven rule-supported standard-form adjudications; active unresolved occurrences 229. Overall readiness remains a partial research prototype, not research-certified or release-ready.
+**Current interpretation:** baseline inventory 236; four rule-supported standard-form adjudications; active unresolved occurrences 232. Overall readiness remains a partial research prototype, not research-certified or release-ready.
 
 ---
-# 2026-11-05 — Owner-approved ClippyFirst project licence
-
-**Branch:** `docs/repository-audit-and-navigation-2026-11-04`  
-**Decision:** DEC-2026-007. The project owner confirmed that Vitalii Volodymyrovych Tkachuk publishes this project under the authorial pseudonym **ClippyFirst**, and that the project began in 2026.
-
-A single custom, purpose-limited licence has been added for original project materials controlled by the author:
-- Root `LICENSE`: author identity, scope, scientific-use permission, technical-use restriction, attribution, third-party carve-outs and warranty terms.
-- `docs/LICENSING-AND-PERMISSIONS.md`: practical explanation and recommended attribution.
-- `README.md` and `docs/README.md`: public discovery and navigation.
-- Repository audit, acceptance-gate register and decision log updated; DEC-2026-007 records the owner decision.
-
-**Permission boundary:** ordinary use of the official public web service is allowed. Individual service results may be displayed, quoted, cited and reproduced in scientific research outputs and research websites with attribution. The Korean→Ukrainian correspondence/transliteration table may be consulted, analysed, quoted and reproduced solely for genuine scientific research with attribution. Substantial reproduction/adaptation must identify the ClippyFirst table and disclose changes. Copying/reusing source code, self-hosting/mirroring, integration, modification, porting, redistribution or other technical reuse requires the author's prior written permission via [ClippyFirst on GitHub](https://github.com/ClippyFirst).
-
-**Important scope boundary:** this is a custom licence, not an OSI-approved open-source licence. It applies only to rights the author owns or is authorized to license. Vendored Apache-2.0 code, BSD-3-Clause Hanja data, external corpora, dictionaries and other third-party materials retain their own terms. The wording records the owner's intended permissions; it is not an independent legal opinion or cross-jurisdiction enforceability assessment.
-
-**Verification still required:** fetch every changed file from the final branch head, confirm exact links and that third-party notices remain unchanged, inspect the PR diff and run relevant repository checks. No runtime code or generated artifacts were changed. The PR is not merged; `main` remains untouched.
-
----
-
-## 2026-11-04 — Kozak Kim stack consolidated into main (MERGED)
+# 2026-11-04 — Kozak Kim stack consolidated into main (MERGED)
 
 **Current main:** `e628096e7d1a06ed355de27936c42fa732f4f6b6` (merge of PR #433). Starting main: `607dccb46fd83d7bd70245c165dbd9fe6dfd3af9`.
 
