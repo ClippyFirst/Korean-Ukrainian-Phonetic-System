@@ -780,3 +780,14 @@ def test_kim_hong_2025_full_text_scope_does_not_license_o_eo_glide():
     assert "10 men aged 27–35" in row["authority_or_role"]
     assert "Within-word vowel sequences in 기억–기역 and 보안–보완" in row["coverage"]
     assert "no numeral compound or /o.ʌ/ target" in row["limitations_or_next_action"]
+
+
+def test_kang_2009_glide_abstract_is_registered_with_exact_scope_limits():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-KANG-2009-PALATAL-GLIDE"]
+    assert source["url"] == "https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001319180"
+    assert "when followed by palatal glide /j/" in source["coverage"]
+    assert "no specific following vowel" in source["coverage"]
+    assert "not proof of [ɕ]" in source["contribution_expected"]
+    assert "item-level reuse terms not assessed" in source["license_status"]
+    assert "does not identify the tested /jV/ vowel sequence" in source["limitations_or_next_action"]
