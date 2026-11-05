@@ -702,3 +702,17 @@ def test_s027_kang_round_segment_source_is_not_collapsed_into_simple_palatalizat
     assert "does not specify a canonical segmental IPA symbol" in source["limitations_or_next_action"]
     assert "S019" in source["limitations_or_next_action"]
     assert "CC BY-NC 3.0 Unported" in source["license_status"]
+
+
+def test_kong_kang_2020_sibilant_source_records_speaker_and_vowel_scope():
+    source = {row["source_id"]: row for row in load_source_register()}[
+        "SRC-KONG-KANG-2020-SEOUL-SIBILANTS"
+    ]
+    assert source["url"] == "https://kci.go.kr/kciportal/landing/article.kci?arti_id=ART002585434"
+    assert "32 young adults" in source["coverage"]
+    assert "17 women, 15 men" in source["coverage"]
+    assert "seven monophthong contexts" in source["coverage"]
+    assert "before /i/" in source["coverage"]
+    assert "speaker-variable" in source["contribution_expected"]
+    assert "Abstract-only" in source["limitations_or_next_action"]
+    assert "no audio for the 236 UGTPHON items" in source["limitations_or_next_action"]
