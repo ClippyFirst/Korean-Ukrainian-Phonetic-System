@@ -6568,3 +6568,19 @@ The fourth exact R013 fix, occurrence `2018` (`존중시킬수도있지만`), is
 - Next acceptance: confirm that the original 239 triage used this aggregate Broad-only pre-C11/C12 selector, or recover the original selector/member list; then preserve the 239-row candidate crosswalk and adjudicate the remaining 236 individually.
 - No runtime phonological rule was changed in this recovery pass. The full post-fix benchmark has not been rerun. No independent IPA decision is inferred from the benchmark label.
 
+
+
+## Exact-head CI and merge record — 2026-11-05
+
+The reconstructed candidate snapshot and its regression crosswalk were merged to `main` through PR [#435](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/435), merge commit `98e450f1fb90e920d2b372ab3098b000d34de2e2`. PR head before merge: `f4064bb998343f587ee769259059db7202dc121f`.
+
+Exact-head checks on the PR head:
+- System Verify [42009815364](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42009815364): **PASS** — Python regression/data integrity and Browser regression/build. Official NIKL metadata inventory: **SKIPPED**.
+- Tests [42009822625](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42009822625): **PASS** — Python 3.11, 3.12, 3.13; web tests; teacher-corpus audit; clean wheel installation.
+- Master/research corpus artifacts [42009822802](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42009822802): **PASS**.
+- Exhaustive test-case register extraction [42009822726](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42009822726): **PASS**.
+- The first test run on pre-correction PR head `6037ed553b199b5091542064eba4121aff99ceff` exposed a test-parser defect (the test read the header line instead of the following comma-separated ID line). The parser was corrected in `f4064bb998343f587ee769259059db7202dc121f`; the exact-head rerun above passed.
+- Local pytest/npm were not run in this connector-only session. GitHub Actions supplied the verification evidence.
+- No post-fix multi-engine benchmark was run; the recovery PR changes only research metadata/tests and does not claim updated phonetic benchmark scores.
+
+Current research disposition remains: **239 reconstructed candidate IDs; 3 verified FIX overlaps; 236 candidate cases still unresolved**. RETAIN and ABSTAIN do not decrement the remaining count. Historical membership is still PARTIAL pending confirmation of the original aggregate selector; no independent IPA or Ukrainian-target gold is claimed.
