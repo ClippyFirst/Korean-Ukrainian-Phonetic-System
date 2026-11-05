@@ -114,3 +114,46 @@ The pre-C11/C12 benchmark artifact and C01–C10 aggregate cluster snapshot have
 ### 31-row provenance correction — 2026-11-05
 
 The 31-row abstention ledger's Broad profile blob SHA was found truncated to 39 characters. All 31 rows and the regression expectation now use the complete 40-character SHA-1 `e13086f0fd98ce9564326ff50b0458c27392932f`. This changes provenance metadata only, not linguistic decisions or runtime behavior. Exact-head CI for the connector-created commit remains unverified.
+
+
+## Reconstructed 239-case candidate replay — 2026-11-05
+
+A replay of the pinned pre-C11/C12 benchmark now yields a **239-ID candidate set**. This is a material narrowing of the earlier recovery blocker, but it is deliberately not labelled the original historical membership snapshot: the original selector/list was not preserved, and the recovered replay is a candidate interpretation of the triage note.
+
+### Exact replay inputs
+
+- Baseline code head: `e7933ae4a67c94f0f69b4747d8e388aa082fc347`.
+- Workflow run / artifact: [41453407662](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41453407662) / [13148075070](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41453407662/artifacts/13148075070).
+- Artifact ZIP SHA-256: `075ceff080decbb142492448c9344816bfb53f1e87fe563826668d037c053b89`.
+- Report SHA-256: `8c25e630ca828719b269aeb84c8037d9c40f881a0f15c2e4ddf9d427edffa0f9`.
+- Historical classifier source: `scripts/export_kozak_kim_mismatch_fragments.py` at commit `8c335dd7031bdae59b3ef7db715b54f0fdc9bcd5`, blob `e0bb7f32d5b320d468e0bdcab0ed134c7a3278ec`.
+- Candidate ID snapshot: [`kozak-kim-historical-239-candidate-ids-2026-11-05.txt`](kozak-kim-historical-239-candidate-ids-2026-11-05.txt).
+
+### Replayed rule and result
+
+For each Native scored occurrence with Broad edit distance greater than zero, the Broad reference/prediction pair was aligned using the historical NFC-plus-combining-mark grapheme aligner. The **Broad fragments only** were concatenated and passed to the pre-C11/C12 aggregate C01-C10 classifier. An occurrence was selected only when that aggregate classifier returned `UNMAPPED_REQUIRES_REVIEW` and no C01-C10 label.
+
+- Broad mismatch superset: **370** occurrences.
+- Reconstructed candidate set: **239** unique occurrence IDs, **111** source rows, **154** unique tokens.
+- The replay exactly reproduces the historical aggregate count of 239.
+- This is an occurrence-level aggregate selector, not a per-fragment selector. The later per-fragment classifier returns **269** occurrences with at least one individually unmapped Broad edit. These populations must not be conflated.
+- Therefore the earlier prose saying that the historical 239 necessarily meant “at least one individual fragment was unmapped” was too strong. The replay supports the narrower aggregate interpretation above; the original selection implementation remains unproven.
+
+### Crosswalk to decisions already recorded
+
+| Current disposition | Candidate IDs | Interpretation |
+|---|---:|---|
+| `FIX` | **3** | IDs `37`, `704`, `2031` overlap the four exact R013 fixes in the 36-row queue. Their exact source-context licenses are implemented in Kozak Kim and covered by the merged PR #426 verification. |
+| `RETAIN` | **1** | ID `1140` (`출산`) is a provisional R012 retain, still awaiting independent Korean IPA review; it is not counted as solved. |
+| `ABSTAIN` | **22** | These IDs overlap the individually reasoned 31-row abstention ledger; they remain unresolved pending evidence/review. |
+| No individual disposition | **213** | Candidate rows without a row-specific fix/retain/abstain decision in the current narrow queue. |
+
+The fourth exact R013 fix, occurrence `2018` (`존중시킬수도있지만`), is outside this reconstructed candidate set because its historical Broad fragments already receive C02/C04 aggregate labels. Thus **3 of the 239 candidates have verified exact-form fixes**, leaving **236 candidate cases not yet resolved** (213 undecided + 22 abstentions + 1 provisional retain). This is a crosswalk against the old benchmark, not a claim that a post-fix full benchmark now has exactly 236 mismatches.
+
+### Status and acceptance boundary
+
+- Historical 239 membership: **PARTIAL** — a hash-pinned replay yields exactly 239 stable candidate IDs, but the original saved ID list/predicate is absent, so historical identity is not yet independently proven.
+- Candidate remaining count: **236**, after subtracting only the three verified FIX overlaps. RETAIN and ABSTAIN do not decrement the unresolved count.
+- Next acceptance: confirm that the original 239 triage used this aggregate Broad-only pre-C11/C12 selector, or recover the original selector/member list; then preserve the 239-row candidate crosswalk and adjudicate the remaining 236 individually.
+- No runtime phonological rule was changed in this recovery pass. The full post-fix benchmark has not been rerun. No independent IPA decision is inferred from the benchmark label.
+
