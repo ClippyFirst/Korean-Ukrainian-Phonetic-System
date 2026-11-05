@@ -1,5 +1,6 @@
 import csv
 import importlib.util
+import json
 from collections import Counter
 from pathlib import Path
 
@@ -31,3 +32,19 @@ def test_checked_in_ledger_matches_reproducible_generator():
     with OUTPUT.open(encoding="utf-8", newline="") as handle:
         actual = list(csv.DictReader(handle))
     assert actual == expected
+
+def test_236_broad_edit_signature_inventory_and_historical_tags_are_stable():
+    rows = MODULE.build_rows(ROOT)
+    operations = Counter()
+    for row in rows:
+        for item in json.loads(row["broad_mismatch_fragments"]):
+            signature = f'{item["op"]}|{item.get("reference_fragment") or "∅"}→{item.get("kozak_fragment") or "∅"}'
+            operations[signature] += 1
+    assert sum(operations.values()) == 254
+    assert len(operations) == 24
+    assert operations["S|ɕ→s"] == 184
+    assert operations["S|ɕ͈→s͈"] == 24
+
+    historical = [row["historical_export_cluster_labels_descriptive_only"].split(";") for row in rows]
+    assert sum(any(label.startswith("C11") for label in labels) for labels in historical) == 207
+    assert sum(any(label.startswith("C04") for label in labels) for labels in historical) == 206
