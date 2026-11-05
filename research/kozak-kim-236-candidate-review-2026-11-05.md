@@ -50,7 +50,7 @@ The 370-row superset joins to the pinned UGTPHON Korean test split at commit ef0
 - **3 FIX overlaps:** IDs 37 (해줄것), 704 (많을거같이) and 2031 (내릴수있는) have exact-form R013 licenses already implemented in Kozak Kim. The separate fourth R013 fix, occurrence 2018 (존중시킬수도있지만), is outside this reconstructed cohort. The three are excluded from the 236.
 - **22 ABSTAIN overlaps:** these have individual rationale rows in the 31-row abstention register. They remain unresolved; ABSTAIN is not resolution and does not decrement the count.
 - **One historical RETAIN upgraded:** occurrence 1140 (출산) is now a rule-confirmed exact lexical form under the NIKL dictionary entry; the prior R012 rationale remains preserved.
-- **Current individual dispositions:** 24 ABSTAIN, seven rule-confirmed, zero pending RETAIN, and 205 without individual disposition. The 370-row context ledger's default ABSTAIN / EVIDENCE_LIMITED_DIAGNOSTIC_ONLY remains a safe no-change baseline, not an individual review result.
+- **Current individual dispositions:** 24 ABSTAIN, eight rule-confirmed, zero pending RETAIN, and 204 without individual disposition. The 370-row context ledger's default ABSTAIN / EVIDENCE_LIMITED_DIAGNOSTIC_ONLY remains a safe no-change baseline, not an individual review result.
 
 ## S018/S019 page-level source check and 236-case Hangul environment crosswalk
 
