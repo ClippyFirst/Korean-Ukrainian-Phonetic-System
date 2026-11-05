@@ -244,7 +244,7 @@ def test_nikl_exact_lexical_fortition_adjudicates_water_price_compound_only():
     assert row["prior_independent_ipa_review_status"] == "NOT_PERFORMED"
 
 
-def test_nikl_hangul_surface_sources_do_not_adjudicate_broad_ipa_sibilant_symbol():
+def test_nikl_surface_sources_do_not_override_broad_profile_sibilant_convention():
     rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
     expected = {
         "293": ("실수", "SRC-NIKL-QNA-330843", "[실쑤]"),
@@ -254,7 +254,8 @@ def test_nikl_hangul_surface_sources_do_not_adjudicate_broad_ipa_sibilant_symbol
     for occurrence_id, (token, source_id, pronunciation) in expected.items():
         row = rows[occurrence_id]
         assert row["token"] == token
-        assert row["candidate_disposition"] == "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW"
+        expected_disposition = "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW" if occurrence_id == "538" else "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
+        assert row["candidate_disposition"] == expected_disposition
         assert source_id in row["candidate_disposition_basis"]
         assert pronunciation in row["candidate_disposition_basis"]
         assert "SRC-IPA-DICT-KO" in row["candidate_disposition_basis"]
@@ -382,7 +383,7 @@ def test_mental_patient_occurrence_is_closed_by_exact_r014_and_broad_profile_evi
     assert row["candidate_disposition"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
     assert "정신병자[정신뼝자]" in row["candidate_disposition_basis"]
     assert "R014:compound:정신병자네:신>병" in row["candidate_disposition_basis"]
-    assert "broad /s/ canonical" in row["candidate_disposition_basis"]
+    assert "broad profile /s/ canonical" in row["candidate_disposition_basis"]
     assert "not a demonstrated phonemic error" in row["candidate_disposition_basis"]
 
     current = phoneticize_korean("정신병자네")
