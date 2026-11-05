@@ -6501,3 +6501,13 @@ The 31-row abstention register's formerly unknown Kozak engine and normalizer pr
 
 All 31 rows now carry these pins in dedicated columns; `kozak_engine_commit`, `kozak_profile` and `normalizer_version` no longer claim unrecovered provenance. The full UGTPHON source text, canonical sentence, phoneme annotation and occurrence-specific token index are embedded per row; repeated tokens in the same source row were disambiguated by benchmark occurrence order and asserted in tests. The regression test asserts the exact run, artifact/report digests, source blobs and engine/profile versions. This strengthens reproducibility; the 31 dispositions remain evidence-limited `ABSTAIN` decisions, not independent Korean IPA judgments. The historical 239 membership blocker is unchanged.
 
+## 2026-11-05 — 370-row Broad mismatch evidence ledger
+
+A full context/provenance superset has been added at `research/kozak-kim-broad-mismatch-context-ledger-2026-11-05.csv`. It contains exactly 370 unique Broad-profile mismatch occurrences from the hash-pinned 2026-11-02 benchmark. All 370 were joined by the benchmark's eligible-token traversal to the pinned UGTPHON revision; source row ID, token and token index match, and full sentence/canonical/phoneme context is embedded. Each row pins benchmark artifact/report hashes, engine source commit/blob, IPA profile/version, Broad sensitivity profile/version/blob, normalizer source blobs and corpus commit/blob/license.
+
+All 370 are explicitly `ABSTAIN` / `EVIDENCE_LIMITED_DIAGNOSTIC_ONLY`; the ledger does not turn benchmark differences into claims of wrong pronunciation. `historical_239_membership` remains explicitly unresolved. The 370-row superset is not a substitute for the requested 239-row historical cohort.
+
+Regression: `tests/test_kozak_broad_mismatch_context_ledger.py` verifies row count, unique IDs, context fields, token-index bounds, disposition and exact provenance pins.
+
+**Remaining blocker:** recover the original C01–C10 per-fragment assignment snapshot or a versioned predicate that deterministically selects exactly 239 unique occurrence IDs. Then produce the exact 239-row ledger and independent `FIX / RETAIN / ABSTAIN` adjudications. The 370-row superset provides the source context and pinned provenance needed once membership is settled.
+
