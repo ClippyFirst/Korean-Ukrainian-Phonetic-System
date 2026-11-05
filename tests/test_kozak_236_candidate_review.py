@@ -251,7 +251,7 @@ def test_nikl_surface_sources_do_not_override_broad_profile_sibilant_convention(
         assert row["candidate_disposition"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
         assert row["prior_individual_reason_code"] == "LENIS_SIBILANT_BROAD_PROFILE_CONVENTION"
         assert "source [ɕ] vs project broad /s/" in row["candidate_disposition_basis"]
-        assert "Kang (2010, S019)" in row["candidate_disposition_basis"]
+        assert "Kang (2010)" in row["candidate_disposition_basis"]
         assert "token-specific acoustic IPA review was not performed" in row["candidate_disposition_basis"]
 
     row = rows["538"]
@@ -259,7 +259,7 @@ def test_nikl_surface_sources_do_not_override_broad_profile_sibilant_convention(
     assert row["candidate_disposition"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
     assert "NIKL Q&A 306166" in row["candidate_disposition_basis"]
     assert "[머시써]" in row["candidate_disposition_basis"]
-    assert "Kang (2010)" in row["candidate_disposition_basis"]
+    assert "Kang (2010, S019)" in row["candidate_disposition_basis"]
     assert row["prior_individual_reason_code"] == "LENIS_SIBILANT_BROAD_PROFILE_CONVENTION"
     assert row["prior_independent_ipa_review_status"] == "profile_convention_adjudicated; token_specific_acoustic_IPA_review_not_performed"
 
