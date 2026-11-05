@@ -1,17 +1,22 @@
-## 2026-11-05 — Current 236-candidate adjudication snapshot (supersedes earlier counts)
+## 2026-11-05 — Current 236-candidate adjudication snapshot (single-branch continuation)
 
-**Working branch:** `research/236-candidate-review-2026-11-05` (single continuing branch). **PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436), draft/open. The reconstructed historical baseline remains **236 occurrence rows**; no rows were deleted.
+**Working branch:** `research/236-candidate-review-2026-11-05` (the only working branch for this task). **PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436), draft/open. The reconstructed historical baseline remains **236 occurrence rows**; no rows were deleted.
 
 ### Current ledger
 
-- **11 `RULE_CONFIRMED_STANDARD_VARIANT`:** IDs 341 (그놈의), 826 (유사성), 1140 (출산), 1406 (팔자걸음), 1527 (보일거라), 2001 (물가로), 2010 (혐오증), 2092 (출시미정에), 2490 (머리속에 → 머릿속에), and 2533 (안할듯), and 1610 (자신의). These are exact official NIKL rule/dictionary attestations or the recorded exact expert lexical attestation; they do not establish token-specific acoustic IPA gold.
-- **176 `PROFILE_CONVENTION_MISMATCH_CONFIRMED`:** 147 lenis-sibilant occurrences (`ɕ→s`) in the supported /i, ye, ya/ contexts; 23 fortis `ɕ͈→s͈` place-symbol pairs; three Rule 13 liaison contexts (IDs 475, 2392, 2667); and three earlier lexical/profile cases (IDs 520, 2307, 2562). These are broad/narrow transcription-profile or exact engine-rule reconciliations, not proof that a speaker produced a particular narrow [ɕ] token.
-- **19 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW` and 30 `NOT_INDIVIDUALLY_ADJUDICATED`: 49 active unresolved occurrences.** Zero pending RETAIN. Historical 236 membership is reconstructed from pinned replay, not proven original-selector membership.
-- Therefore 187/236 are dispositioned (11 normative lexical/rule cases + 176 profile-convention cases); **49/236 remain unresolved**. Do not describe 187 as 187 independently acoustically confirmed pronunciations.
+- **11 `RULE_CONFIRMED_STANDARD_VARIANT`:** IDs 341 (`그놈의`), 826 (`유사성`), 1140 (`출산`), 1406 (`팔자걸음`), 1527 (`보일거라`), 2001 (`물가로`), 2010 (`혐오증`), 2092 (`출시미정에`), 2490 (`머리속에` → `머릿속에`), 2533 (`안할듯`), and 1610 (`자신의`). Each is supported by exact NIKL rule/dictionary/educational evidence or an exact expert lexical attestation; none is speaker-level acoustic IPA gold.
+- **180 `PROFILE_CONVENTION_MISMATCH_CONFIRMED`:** 149 lenis `ɕ→s` occurrences in the scoped /i, ye, ya/ contexts (including 49 and 143, where ㅅ is resyllabified before /i/); 23 fortis `ɕ͈→s͈` place-symbol pairs; three Rule 13 resyllabification cases (475, 2392, 2667); three earlier lexical/profile cases (520, 2307, 2562); ID 2462 (`주는대로`, ㅐ /ɛ/ vs comparator /e/); and ID 2170 (`게임`, NIKL-attested variation [께임] ~ [게임]). These are exact, bounded profile/variation reconciliations, not claims about an individual recording's narrow realization.
+- **17 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW` + 28 `NOT_INDIVIDUALLY_ADJUDICATED` = 45 active unresolved occurrences.** Zero pending RETAIN. Historical membership remains reconstructed from pinned replay, not proven original-selector membership.
+- Therefore **191/236 are dispositioned** (11 normative/exact lexical cases + 180 profile/variation cases); **45/236 remain unresolved**. Do not describe the 180 profile cases as independent pronunciation confirmations.
+
+### New independent source: ID 2170 `게임`
+
+- The National Institute of Korean Language's official 2005 usage column [외래어의 s 발음](https://www.korean.go.kr/nkview/nknews/200512/89_6.html) explicitly lists `게임[께임]` among loanwords commonly pronounced with a fortis initial, then describes contemporary announcer speech shifting from `[께임]` toward `[게임]`.
+- The candidate's IPA-Dict-derived `/k͈eim/` and the project's broad `/keim/` therefore correspond to two variants documented by the same official source. This closes only the exact broad-profile discrepancy for `게임`; it does **not** choose which variant the corpus speaker produced. The source is qualitative and from 2005; no token audio or speaker metadata exists. No production rule, Ukrainian target, or benchmark gold changed.
 
 ### Rule/lexical resolutions
 
-- ID 341 `그놈의`: NIKL Rule 5; genitive-particle 의 allows [e] as an accepted variant, unlike non-initial lexical 의.
+- ID 341 `그놈의`: NIKL Rule 5; genitive-particle 의 permits [e], unlike non-initial lexical 의.
 - ID 826 `유사성`: NIKL Basic Dictionary 70710 gives 유사성[유ː사썽]; exact lexical fortis.
 - ID 1140 `출산`: NIKL Basic Dictionary gives 출산[출싼]; exact lexical fortis.
 - ID 1406 `팔자걸음`: dictionary 팔자[팔짜] plus Rule 26 in the exact Sino-Korean morpheme 팔자.
@@ -23,23 +28,22 @@
 - ID 2533 `안할듯`: Rule 27; 안 하-ㄹ + dependent noun 듯; connected reading, with pause caveat.
 - ID 1610 `자신의`: exact context is noun 자신 + genitive particle 의. Official NIKL Q&A 335190 says particle 의 is [ɯi] by principle or [e] by permission and explicitly excludes [i]. The comparator `ɰi` matches the principal form; Kozak `i` is not the particle's standard variant. The separate `ɕ→s` in 자신 before /i/ is a broad-profile difference only.
 
-### New full-text literature review and abstentions retained
+### Retained abstentions and unadjudicated families
 
-- Kim & Hong (2025), *Between Transitions and Glides* [Kim25e], full text reviewed. Its 10 male Seoul Korean speakers read 기억–기역 and 보안–보완, not 체험, 오억, or numeral compounds. Its acoustic segmentation locates transition intervals but does not independently classify them as phonological glides; 보완's contrast is attributed mainly to longer preservation of /o/ rounding, not a clearly independent /w/ gesture. It supplies no direct evidence for ID 78 `오조오억배`.
-- Kim et al. (2021) [Kim21c], DOI 10.12963/csd.21815, full text reviewed: EPG on five speakers shows a descriptive posterior RMG pattern for /s*/ before /i/, but RMG was excluded from statistical testing and the study does not classify tokens as [ɕ͈] versus [s͈]. Kong & Kang (2021) [Kon21], DOI 10.13064/KSSS.2021.13.1.037, analyzes 39 Seoul adults and finds age/gender place-fronting effects limited to particular /i, a/ and word-position contexts; it does not test /jʌ/ or provide categorical narrow IPA. These support 23 exact [ɕ͈]↔/s͈/ pairs as profile-convention discrepancies only, not token-level acoustic confirmations. ID 1288 remains open because additional unrelated `t→d` and `ɕ→ʑ` edits occur in the same row. Lenis findings are not transferred to fortis.
-- Kang (2010), *Position and Height Asymmetries in Hiatus Resolution* [Kan10b], full text reviewed. It studies directly adjacent VV sequences; /i+ʌ/ and /u+ʌ/ can have optional glide outputs in descriptive data, but its experiment measures duration in nonce words and does not establish a categorical glide rule. `체험` has /e.hʌ/ with /h/ between the vowels, so it is not the experimental VV context. This reinforces ABSTAIN for IDs 257, 813 and 853.
-- ID 78 `오조오억배` remains ABSTAIN: no direct study of this numeral compound or exact /o.ʌ/ boundary; token audio or independent Korean IPA review required.
-- IDs 257, 813, 853 `체험` remain ABSTAIN: `험` has ㅓ, not ㅕ; the earlier Rule 5 diphthong argument was inapplicable. /j/ versus coarticulatory transition remains unresolved.
-- IDs 1816, 1843, 1870 `연전연패` remain ABSTAIN: n-insertion is variable and no item-specific evidence was found; repeated tokens in one source row are not independent speakers.
-- IDs 293, 538, 1206 and the unresolved fortis-sibilant strata remain evidence-limited where the source is Hangul-only or the evidence concerns lenis /s/ but the mismatch is fortis /s͈/. Do not transfer Kang's lenis findings to fortis sibilants.
+- **17 ABSTAIN:** IDs 78 (`오조오억배`), 257 (`문화체험공간`), 538 (`멋있어`), 545 (`정권`), 643 (`홍콩영화들`), 813 (`사전체험`), 853 (`만듬사전체험때`), 899 (`자기이입하네`), 1219 (elongated UGC token ending `정액싸고`), 1288 (mixed long sexual-vocabulary token), 1805/1832/1859 (`한국여자로`), 1816/1843/1870 (`연전연패`), and 2215 (`첫연애실패후`). Their unresolved features include vowel-glide insertion, item-specific n-insertion/prosody, and multiple mixed IPA differences; no rule is inferred from Hangul spelling alone.
+- **28 not individually adjudicated:** IDs 606 (`쇼`), 843 (`모션어디서`), 1155/1157 (`뿌셔우우` variants), 1414–1477 (22 repeated `아끼셔` occurrences in one source row), 1885 (`대한민국`, /ɛː/ vs /eː/), and 2489 (`포지션을`, /ɕ/ before /jʌ/). The 22 `아끼셔` repetitions are one source-row/token family, not 22 independent speakers. Reviewed studies do not license broadening /i, ye, ya/ findings to /jʌ/ or /jo/.
+- Full-text literature review: Kim & Hong (2025) [Kim25e] and Kang (2010) [Kan10b] do not establish categorical glide insertion for `체험` or `오조오억배`; Kim et al. (2021) [Kim21c] and Kong & Kang (2021) [Kon21] support context-dependent sibilant variation but not token-specific narrow IPA. Jun (2015) [Jun14] documents variable n-insertion; it does not supply item-specific evidence for `연전연패`.
 
-### Verification status
+### Source rights and verification
 
-- Latest source/test correction: the Rule 13 profile assertions now match the exact wording in the adjudication notes. The immediately preceding exact-head run failed on two stale test-string assertions (not a code/linguistic failure); the assertions were corrected and a new head was pushed. **The new head's full CI rerun is still required; do not claim it passed.**
-- Previously successful checks remain evidence only for their own earlier commit; skipped Charsiu and metadata-only checks are not passes. Local pytest/npm were not run in this connector-only session.
-- No production IPA, Ukrainian target, benchmark gold, or runtime rule changed as a result of this research update.
+- Source register now has **201 entries**: 3 item-level licenses recorded, 1 not applicable, 176 requiring rights review, and 21 requiring manual classification (197 open). The new NIKL usage article is citation-only; item/page reuse terms were not separately assessed.
+- Last available exact-head CI (commit `650aae09f451360cfcaab63f70e3df72c6fc0f1a`) failed on stale expectations: lenis profile count 147 vs actual 149; two stale Python explanation strings; source-register counts 197/196 vs actual 200. Those expectations were corrected; the source register has since grown to 201 with the new citation-only source and tests were updated again. **No exact-head CI result exists yet for the current branch head; do not claim tests passed.**
+- Earlier independent jobs on prior commits passed some diagnostics; skipped Charsiu/ByT5 and metadata-only jobs remain skipped, not passed. Local pytest/npm were not run in this connector-only session.
+- No production IPA, Ukrainian target, benchmark gold, or runtime rule changed.
 
-**Readiness:** still a partial research prototype, not research-certified or release-ready. The 73 open occurrences require exact source/audio crosswalks and independent IPA review; all token-specific acoustic IPA gold remains unadjudicated.
+**Readiness:** partial research prototype, not research-certified or release-ready. The remaining 45 rows require item-specific evidence and/or independent Korean IPA/audio review. No speaker-level acoustic IPA gold has been produced for this queue.
+
+---
 
 ---
 Latest exact-head evidence — 2026-11-03
