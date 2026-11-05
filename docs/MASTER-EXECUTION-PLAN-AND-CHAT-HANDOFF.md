@@ -1,109 +1,36 @@
-## 2026-11-05 — Independent evidence update: four confirmed cases, nine named evidence-limited abstentions
+## 2026-11-05 — Independent evidence update: six confirmed cases, evidence-limited abstentions
 
 **Branch:** `research/236-candidate-review-2026-11-05` (same working branch; no parallel branch created). **PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436), still draft/open. This entry supersedes earlier same-day interim counts while preserving the original 236-row baseline.
 
 ### Adjudication outcome
 
-- The baseline inventory remains 236 rows. **Four occurrences are now `RULE_CONFIRMED_STANDARD_VARIANT`: IDs 341 (`그놈의`), 1140 (`출산`), 2001 (`물가로`) and 2010 (`혐오증`).** The active unresolved count is **232**.
-- **IDs 257 (`문화체험공간`), 813 (`사전체험`) and 853 (`만듬사전체험때`) remain ABSTAIN.** A proposed Rule 5 justification was rejected after orthographic re-check: `체험` is `체+험`; `험` contains `ㅓ`, not `ㅕ`. Therefore the standard diphthong rule does not establish the source's /j/ as phonemic. Independent IPA annotation or token-level audio is required. IDs 813 and 853 are repeated occurrences in one source row.
-- **ID 341 (`그놈의`):** NIKL Rule 5 distinguishes non-initial lexical `의` [i] from genitive-particle `의` [e] (an accepted variant alongside [ɯi]). The canonical context uses the genitive particle, so the comparator [e] is normatively supported and Kozak [i] is not the rule's listed particle variant.
+- The baseline inventory remains 236 rows. **Six occurrences are now `RULE_CONFIRMED_STANDARD_VARIANT`: IDs 341, 1140, 1406, 2001, 2010 and 2533.** The active unresolved count is **230**.
+- **ID 1406 (`팔자걸음`):** NIKL Basic Dictionary gives `팔자[팔짜]`; Rule 26 licenses ㄹ+ㅈ fortition in Sino-Korean morphemes. The exact morpheme `팔자` occurs inside the candidate, supporting the source's fortis affricate rather than Kozak's lenis one.
+- **ID 2533 (`안할듯`):** NIKL Rule 27 requires fortition after `-(으)ㄹ` before ㄱ/ㄷ/ㅂ/ㅅ/ㅈ and its commentary explicitly gives `할 듯하다[할뜨타다]`. The candidate is `안 하-ㄹ + 듯`; the source's fortis ㄷ is supported. A pause can license the plain consonant, so this is a standard connected-reading decision, not audio confirmation.
+- **ID 341 (`그놈의`):** NIKL Rule 5 distinguishes non-initial lexical `의` [i] from genitive-particle `의` [e] (an accepted variant alongside [ɯi]). The canonical context uses the genitive particle.
 - **ID 1140 (`출산`):** NIKL Basic Dictionary directly gives `출산[출싼]`; Kozak's fortis `s͈` is supported and the IPA-Dict comparator omits it. This upgrades the historical provisional RETAIN; the original rationale remains preserved.
 - **ID 2001 (`물가로`):** NIKL educational PDF gives `물가[물까]` in the price sense and contrasts `결과[결과]`; Kozak's `ɡ` is not supported. Exact lexical license only.
 - **ID 2010 (`혐오증`):** NIKL Basic Dictionary gives `혐오증[혀모쯩]`; the fortis affricate in the comparator is supported and Kozak's lenis `dʑ` is not. Exact lexical license only.
-- **IDs 293 (`실수`), 538 (`멋있어`) and 1206 (`싫어서`) remain ABSTAIN.** NIKL Q&A sources attest Hangul surface readings, but Hangul bracket notation does not decide [s] versus [ɕ]. IPA-Dict Korean is broadly phonemic, so its [ɕ] cannot be assumed narrow. These require independent IPA annotation or token-level audio.
-- Current counts: 208 no individual disposition; 24 ABSTAIN pending independent IPA review; zero pending RETAIN; four rule-confirmed standard forms/variants. Historical 236 membership remains reconstructed, not original-selector proof.
+- **IDs 257, 813, 853 (`체험`), 293 (`실수`), 538 (`멋있어`), and 1206 (`싫어서`) remain ABSTAIN.** The first three were not closed because `험` contains `ㅓ`, not `ㅕ`, so Rule 5 does not establish the comparator's /j/. The latter three have Hangul surface attestations, but those do not decide [s] versus [ɕ] and IPA-Dict is broadly phonemic.
+- **ID 1527 (`보일거라`) remains open:** `거` is a dependent noun and Rule 27 may apply after `-(으)ㄹ`, but prosodic connection is not recoverable from the text. Keep pending audio/prosodic evidence.
+- Current counts: 206 no individual disposition; 24 ABSTAIN pending independent IPA review; zero pending RETAIN; six rule-confirmed standard forms/variants. Historical 236 membership remains reconstructed, not original-selector proof.
 - The three repeated `연전연패` occurrences (IDs 1816, 1843, 1870) remain abstained because n-insertion is variable and no word-specific pronunciation evidence was found.
-- The context-adjudication register records the four resolutions and all evidence-limited abstentions. The generator consumes rule-confirmed and abstain decisions while preserving historical ABSTAIN/RETAIN rationale. The generated CSV and regression expectations are updated.
+- The context-adjudication register records all six resolutions and evidence-limited abstentions. The generator preserves historical ABSTAIN/RETAIN rationale. The generated CSV and regression expectations are updated.
 - No production phonology, IPA gold, Ukrainian target, or benchmark baseline changed.
 
 ### Evidence and verification
 
-- Official NIKL Standard Pronunciation Rule 5: `ㅕ` is a diphthong, but this rule does not apply to `체험`, whose second syllable `험` contains `ㅓ`; the proposed /j/ closure was therefore rejected.
-- NIKL Basic Dictionary entries for 출산 and 혐오증; NIKL educational PDF example (25) for 물가[물까].
+- Official NIKL Standard Pronunciation Rules 5, 26 and 27; Rule 26 applies to Sino-Korean ㄹ+ㄷ/ㅅ/ㅈ, and Rule 27 covers `-(으)ㄹ` plus a following lenis obstruent, with an explicit `할 듯하다[할뜨타다]` example.
+- NIKL Basic Dictionary entries for 출산, 팔자 and 혐오증; NIKL educational PDF example (25) for 물가[물까].
 - NIKL Q&A 330843, 306166 and 313981 provide Hangul surface evidence only; they do not resolve the [s]/[ɕ] IPA symbol difference.
+- NIKL Q&A 310899 confirms `거` is a dependent noun, but without prosody the `보일거라` case remains open.
 - Jun (2015), *Korean n-insertion: a mismatch between data and learning*, DOI 10.1017/S0952675715000275, supports variable n-insertion and does not itemize 연전연패.
-- These are normative lexical/rule confirmations, not token-specific acoustic IPA gold. No individual speaker's recording has been independently adjudicated.
+- These are normative rule/lexical confirmations, not token-specific acoustic IPA gold. No individual speaker's recording has been independently adjudicated.
 - GitHub Actions exact-head verification is required after these commits. Local pytest/npm were not run in this connector-only session.
 
-**Current interpretation:** baseline inventory 236; four rule-supported standard-form adjudications; active unresolved occurrences 232. Overall readiness remains a partial research prototype, not research-certified or release-ready.
+**Current interpretation:** baseline inventory 236; six rule-supported standard-form adjudications; active unresolved occurrences 230. Overall readiness remains a partial research prototype, not research-certified or release-ready.
 
 ---
-# 2026-11-04 — Kozak Kim stack consolidated into main (MERGED)
-
-**Current main:** `e628096e7d1a06ed355de27936c42fa732f4f6b6` (merge of PR #433). Starting main: `607dccb46fd83d7bd70245c165dbd9fe6dfd3af9`.
-
-Merged Kozak Kim PRs in dependency order: #415 (`28acc10`), #416 (`aaf1375`), #417 (`1f2baab`), #419 (`a771b3d`), #422 (`f32e121`), #423 (`7cfced5`), #426 (`7e24dbc`), and #433 (`e628096`). PR #420/#421 were superseded by cumulative #422; PR #424/#425 by cumulative #426; PR #432 by mainline consolidation PR #433. Those superseded PRs are closed, not merged separately. Their branches were not deleted.
-
-**Baseline invariant:** original g2pK 0.9.4 vendor implementation remains unchanged; all 9 files under `src/vendor/g2pk/` are byte-identical between starting main and consolidated main. The Python application adapter now blocks Kozak-only `variant-aware-research` and `kozak-research-only` entries from surface, IPA and diagnostic-status overrides while retaining source-backed NIKL controls and source-backed uncertainty (`삶의`). Kozak Kim production phonology was not changed by this final baseline-isolation guard.
-
-**Mainline verification:** post-merge System Verify `41887431814` **PASS**; Python 3.11/3.12/3.13, web, wheel-install, teacher-corpus audit, generated corpus and browser regression/build checks passed. Browser suite on PR #433 code head: **1,396/1,396**. Optional g2pK integration: **31 passed** on Python 3.11 and 31 on Python 3.12. Paired Native/g2pK and morphology consensus workflows completed successfully. Official live NIKL metadata inventory, CharsiuG2P and ByT5 jobs were **SKIPPED**, not passed. Multi-engine IPA comparison run `41887431384` was still **IN PROGRESS** at this handoff refresh; do not claim a result from it.
-
-**Disposition:** the Kozak Kim implementation stack and baseline-isolation correction are merged into `main`. This does not make the system release-ready: independent IPA adjudication, Ukrainian-target review, item-level source-rights clearance, unresolved mismatch adjudication and completion of the current multi-engine diagnostic remain outstanding. Overall status remains a research prototype. No branch deletion or release was performed.
-
-## 2026-11-04 — baseline isolation merged into Kozak Kim mainline (PR #433 pending)
-
-The Kozak Kim research lexicon is deliberately shared with adapters for data reuse, but research-only candidates are not evidence for the independent pinned g2pK 0.9.4 comparison engine. The Python adapter now excludes `variant-aware-research` and `kozak-research-only` rows from Hangul surface overrides, IPA overrides, and diagnostic-only status propagation. Source-backed NIKL lexical controls remain enabled, including unresolved source-backed warnings such as `삶의`.
-
-Regression coverage includes real `못잃어`, the source-backed `끌다` correction remaining outside the g2pK overlay, synthetic research-only surface/IPA/status isolation, and preservation of the source-backed `삶의` diagnostic warning. Synthetic fixtures are structural isolation tests, not linguistic evidence. The upstream/vendor g2pK implementation is unchanged; this is an adapter-boundary correction.
-
-The verified code/test snapshot `a8781dbd134929fb3b65ac168c9ea8fee0bf57c7` passed System Verify, the Python 3.11/3.12/3.13 and browser test matrix (1,345 browser tests), optional g2pK integration (30 tests on Python 3.11 and 30 on Python 3.12), and paired Native/g2pK UGTPHON diagnostic (2,698 paired occurrences). The latter is corpus-relative diagnostic evidence, not normative IPA gold or a claim of universal engine superiority. Official live NIKL inventory was skipped; CharsiuG2P/ByT5 neural jobs were skipped. TDD RED was not observed. Overall readiness remains a research prototype pending independent IPA adjudication, Ukrainian-target review, source-rights clearance and mismatch adjudication.
-
-PR #433 carries the final adapter-status guard and regression coverage onto the consolidated mainline. This note supersedes older handoff statements that the PR was unmerged; older sections remain historical records.
-
-# Current handoff — Kozak Kim continuation, 2026-11-03
-
-**Branch:** `research/kozak-kim-mismatch-fragment-triage-2026-11-02`  
-**Last verified full branch head:** `c8d26da8851c7b02d060f17802d79b44a46c7cb9` (the handoff refresh below is documentation-only).  
-**Production algorithm code tree:** `5c775dfa6b6a969c320f47c1420c75ffa645e369`; all subsequent changes are source-register, research-test, or documentation updates.  
-**PR:** [#423](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/423), Draft / open / unmerged; stacked on #422.  
-**Scope:** Kozak Kim only. Original g2pK 0.9.4 and vendor files remain unchanged. No merge, release, deployment, force-push, or branch deletion.
-
-> This is the canonical continuation note. Older dated sections below are historical snapshots; where they conflict with this section or the 2026-11-03 continuation correction, the newer evidence and statuses supersede them.
-
-## Exact-head verification — 2026-11-03
-
-Full system Verify [41611695345](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41611695345) on head `c8d26da8851c7b02d060f17802d79b44a46c7cb9`: **PASS**. Python regression/data integrity: **624 tests passed**. Browser regression: **1,389 passed, 0 failed**. Vite public-page build and generated-page checks: **PASS**. Official NIKL metadata-only source inventory: **SKIPPED**. The C08 negative controls for five reconstructed/uncertain contexts also passed: no R013 fortition was inferred for `해줄것`, `많을거같이`, `보일거라`, `내릴수있는`, or `안할듯`.
-
-Additional diagnostics on the same production algorithm tree (later commits changed only source-register/test/docs):
-- Browser G2P integration [41610752163](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41610752163): **PASS**.
-- External UGTPHON diagnostic [41610752125](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41610752125): **PASS**.
-- Paired Native/g2pK [41610752064](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41610752064): **PASS**.
-- Morphology consensus [41610752140](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41610752140): **PASS**.
-- Test-case extraction [41610752041](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41610752041): **PASS**.
-- Multi-engine UGTPHON/SIGMORPHON and Native/Browser parity: latest fully inspected successful artifact remains run [41535300358](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300358), artifact [13184368365](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300358/artifacts/13184368365). Later rerun attempts were cancelled by concurrent PR-head updates; production algorithm files were unchanged. Do not report a newer multi-engine run as passed.
-- Charsiu train/dev review queue and CharsiuG2P/ByT5 inference: **SKIPPED**.
-
-Two test-only failures before this pass were traced to stale source-register assertions (outdated rights counts and missing explicit §15 wording). Both were corrected; the final full-system run above passed. The new C08 integrity test passed as part of the 624 Python tests.
-
-## Current source-backed research deltas
-
-- C12: Ito (2007) is abstract-only lexical-distribution context. It does not establish acoustic [kx]/[kç], exact-token IPA, or authorize `kx/kç → kʰ`. C12 remains BLOCKED; no production rewrite.
-- C08: all eight source rows are mapped in the pinned fixture; three independently recovered and five high-confidence reconstructions. Seven have conditional morphology/Rule §27 leads; `유사성` remains unresolved. No exact-token IPA gold and no new production rule.
-- NIKL Q&A 319525 attests `맛없다[마덥따]` under §15. This is Korean Hangul surface evidence, not IPA. On one paired SIGMORPHON native-only exact case, Kozak Kim's surface-derived form matches while untouched g2pK's differs; no general `맛+vowel` rule is licensed.
-- C04 is IPA aspiration-symbol/segmentation convention (0 residual occurrences); C02 is /h/ realization. Earlier C04-/h/ labels in the historical triage narrative are corrected below.
-
-## Current task ledger
-
-| Item | Status | Acceptance / blocker |
-|---|---|---|
-| C11 [ɕ], C05 [y]/[wi]/[ɥi], C01/C07 [ɭ], C02 [ɸ] | PARTIAL | Source-scoped candidates and regression/parity checks; two independent IPA reviewers and item-level adjudication still needed. |
-| C06 unreleased coda, C09 lexical length | DONE_VERIFIED (preservation decisions) | Preserve source-supported detail; do not fit corpus omissions. |
-| C04 aspiration notation | TODO / policy review | Zero residual occurrences; define source/profile symbol-versus-segment convention, no sound-change rewrite. |
-| C08 fortition cases | PARTIAL | Eight mapped; 3 recovered + 5 reconstructed; seven conditional rule leads; `유사성` unresolved; independent IPA/prosody adjudication and original extraction recovery pending. |
-| C12 `kx/kç → kʰ` | BLOCKED | Exact-environment primary acoustic/articulatory evidence and independent IPA adjudication absent. |
-| Native/Browser parity | DONE_VERIFIED for production algorithm tree 5c775 | 2,703 surface and 2,698 scored IPA occurrences identical. |
-| Full system exact-head CI | DONE_VERIFIED | Run 41611695345: 624 Python, 1,389 Browser, build and generated pages pass. |
-| Independent Korean IPA gold | BLOCKED | Two qualified independent reviewers and adjudication. |
-| NIKL item-level reuse rights | BLOCKED | Written rights determination; metadata inventory skipped. |
-| Ukrainian target adaptation | BLOCKED | Independent target review and acceptance tests. |
-| 239 unmapped occurrences | TODO | Sentence/morphology/source adjudication. |
-| CharsiuG2P / ByT5 | DEFERRED | Inference skipped; no results. |
-| Release readiness | DEFERRED | Research prototype; not release-ready or research-certified. |
-
-
----
-
-
 ## Latest exact-head evidence — 2026-11-03
 
 **Current branch HEAD:** dd450179d26380658f264fd88a21ef9724c13225  
