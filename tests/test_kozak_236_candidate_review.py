@@ -130,6 +130,17 @@ def test_236_lenis_sibilant_operations_are_separated_by_kang_2010_environment_sc
     }
     assert len({row["token"] for row, _, _ in unsupported_rows}) == 6
     assert len({row["source_row_id"] for row, _, _ in unsupported_rows}) == 5
+    # ID 606 (쇼 /yo/) is outside S019's /i, ye, ya/ set but is a
+    # separate high-front + round candidate under Kang's second 2010 abstract.
+    round_candidates = [
+        (row, _kang2010_round_sibilant_contexts(row["token"]))
+        for row, _, _ in unsupported_rows
+        if _kang2010_round_sibilant_contexts(row["token"])
+    ]
+    assert [(row["occurrence_id"], row["token"], contexts) for row, contexts in round_candidates] == [
+        ("606", "쇼", ["쇼"])
+    ]
+    assert len(unsupported_rows) - len(round_candidates) == 26
     assert {row["occurrence_id"] for row, _, fortis, _ in supported_rows if fortis} == {"551"}
     assert {row["occurrence_id"] for row, count, _, _ in supported_rows if count == 2} == {"103"}
     assert len({row["token"] for row, _, _, _ in supported_rows}) == 104
