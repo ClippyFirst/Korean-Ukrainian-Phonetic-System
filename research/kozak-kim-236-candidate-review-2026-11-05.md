@@ -18,7 +18,10 @@
 
 **Retained abstentions:** ID 78 `오조오억배` (no direct study of this numeral sequence); IDs 257, 813, 853 `체험` (`험` contains ㅓ, not ㅕ; Rule 5's ㅕ argument does not apply); IDs 1816, 1843, 1870 `연전연패` (variable n-insertion, no item-specific evidence); sibilant cases outside the exact lenis contexts; and any source-Hangul-only case where the IPA contrast cannot be settled.
 
-**Interpretation:** 10 normatively supported lexical/rule resolutions + 153 transcription-profile reconciliations; not 163 acoustic gold labels. No production IPA, Ukrainian target, benchmark gold, or runtime rule changed. Full current details and source evidence are in the master handoff's current snapshot and the generated 236-row ledger.
+**Interpretation:** 10 normatively supported lexical/rule resolutions + 153 transcription-profile reconciliations; not 163 acoustic gold labels. No production IPA, Ukrainian target, benchmark gold, or runtime rule changed.
+
+**Reproducibility/verification status (current branch head 6d1555e):** the ledger retains 236 rows and counts 11 rule-confirmed, 178 profile-convention, 19 abstentions, and 28 not individually adjudicated (47 unresolved). The generator's adjudication SHA pin equals the current adjudication-register blob. A field-level comparison of all profile-derived and abstention-derived rows found zero drift; all 11 rule-confirmed rows' basis strings match their adjudication-register notes. Regression tests were updated for IDs 49, 143, and 2215. GitHub Actions has no run/status for this connector-created head, and local test execution remains blocked by unavailable GitHub network access; **the latest tests are not claimed as passed**.
+ Full current details and source evidence are in the master handoff's current snapshot and the generated 236-row ledger.
 
 ---
 
