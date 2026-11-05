@@ -88,7 +88,7 @@ def build_rows(root: Path = ROOT) -> list[dict[str, str]]:
             ipa_status = "NOT_PERFORMED"
         item = {field: row.get(field, "") for field in source_fields}
         item.update({
-            "current_cluster_labels_descriptive_only": row["candidate_clusters"],
+            "historical_export_cluster_labels_descriptive_only": row["candidate_clusters"],
             "source_ledger_default_decision": row["decision"],
             "source_ledger_default_status": row["decision_status"],
             "source_ledger_default_rationale": row["decision_rationale"],
