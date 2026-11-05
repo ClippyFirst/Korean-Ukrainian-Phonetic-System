@@ -1,6 +1,6 @@
 ## 2026-11-05 — Current evidence adjudication: 190 dispositioned, 46 open
 
-**Baseline:** 236 reconstructed candidate occurrences, all retained. **Current disposition:** 11 `RULE_CONFIRMED_STANDARD_VARIANT`, 179 `PROFILE_CONVENTION_MISMATCH_CONFIRMED`, 19 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW`, and 27 `NOT_INDIVIDUALLY_ADJUDICATED`. Thus 190 are dispositioned and **46 remain unresolved**. The 178 profile cases are not token-specific acoustic confirmations; no case in this queue has independent speaker-level acoustic IPA gold.
+**Baseline:** 236 reconstructed candidate occurrences, all retained. **Current disposition:** 11 `RULE_CONFIRMED_STANDARD_VARIANT`, 179 `PROFILE_CONVENTION_MISMATCH_CONFIRMED`, 18 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW`, and 28 `NOT_INDIVIDUALLY_ADJUDICATED`. Thus 190 are dispositioned and **46 remain unresolved**. The 178 profile cases are not token-specific acoustic confirmations; no case in this queue has independent speaker-level acoustic IPA gold.
 
 **Eleven exact rule/lexical cases:** 341 `그놈의`; 826 `유사성`; 1140 `출산`; 1406 `팔자걸음`; 1527 `보일거라`; 2001 `물가로`; 2010 `혐오증`; 2092 `출시미정에`; 2490 `머리속에` → standard `머릿속에`; 2533 `안할듯`; and 1610 `자신의`. Each is supported by exact NIKL standard/dictionary/educational evidence or the recorded expert lexical attestation, scoped to the exact form and morphology. No productive rule is generalized beyond the documented environment.
 
