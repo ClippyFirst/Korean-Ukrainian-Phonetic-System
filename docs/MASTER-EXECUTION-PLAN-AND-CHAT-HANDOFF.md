@@ -1,36 +1,34 @@
-## 2026-11-05 — Independent evidence update: seven confirmed cases, nine named evidence-limited abstentions
+## 2026-11-05 — Independent evidence update: eight confirmed, nine named abstentions
 
-**Branch:** `research/236-candidate-review-2026-11-05` (same working branch; no parallel branch created). **PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436), still draft/open. This entry supersedes earlier same-day interim counts while preserving the original 236-row baseline.
+**Branch:** research/236-candidate-review-2026-11-05 (single continuing working branch). **PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436), draft/open. The reconstructed 236-row baseline is retained unchanged.
 
-### Adjudication outcome
+### Current disposition
 
-- The baseline inventory remains 236 rows. **Seven occurrences are now `RULE_CONFIRMED_STANDARD_VARIANT`: IDs 2533, 341, 1140, 1406, 1527, 2001 and 2010.** The active unresolved count is **229**.
-- **ID 1406 (`팔자걸음`):** NIKL Basic Dictionary gives `팔자[팔짜]`; Rule 26 licenses ㄹ+ㅈ fortition in Sino-Korean morphemes. The exact morpheme `팔자` occurs inside the candidate, supporting the source's fortis affricate rather than Kozak's lenis one.
-- **ID 2533 (`안할듯`):** NIKL Rule 27 requires fortition after `-(으)ㄹ` before ㄱ/ㄷ/ㅂ/ㅅ/ㅈ and its commentary explicitly gives `할 듯하다[할뜨타다]`. The candidate is `안 하-ㄹ + 듯`; the source's fortis ㄷ is supported. A pause can license the plain consonant, so this is a standard connected-reading decision, not audio confirmation.
-- **ID 1527 (`보일거라`):** NIKL Q&A 310899 confirms `거` is a dependent noun; Rule 27 applies after adnominal `-(으)ㄹ`. The exact parse `보이-ㄹ + 거` supports fortis /k͈/ in the standard connected reading. A pause-separated form may be lenis; no token audio is available.
-- **ID 341 (`그놈의`):** NIKL Rule 5 distinguishes non-initial lexical `의` [i] from genitive-particle `의` [e] (an accepted variant alongside [ɯi]). The canonical context uses the genitive particle.
-- **ID 1140 (`출산`):** NIKL Basic Dictionary directly gives `출산[출싼]`; Kozak's fortis `s͈` is supported and the IPA-Dict comparator omits it. This upgrades the historical provisional RETAIN; the original rationale remains preserved.
-- **ID 2001 (`물가로`):** NIKL educational PDF gives `물가[물까]` in the price sense and contrasts `결과[결과]`; Kozak's `ɡ` is not supported. Exact lexical license only.
-- **ID 2010 (`혐오증`):** NIKL Basic Dictionary gives `혐오증[혀모쯩]`; the fortis affricate in the comparator is supported and Kozak's lenis `dʑ` is not. Exact lexical license only.
-- **IDs 257, 813, 853 (`체험`), 293 (`실수`), 538 (`멋있어`) and 1206 (`싫어서`) remain ABSTAIN.** The first three were not closed because `험` contains `ㅓ`, not `ㅕ`, so Rule 5 does not establish the comparator's /j/. The latter three have Hangul surface attestations, but those do not decide [s] versus [ɕ] and IPA-Dict is broadly phonemic.
-- Current counts: 205 no individual disposition; 24 ABSTAIN pending independent IPA review; zero pending RETAIN; seven rule-confirmed standard forms/variants. Historical 236 membership remains reconstructed, not original-selector proof.
-- The three repeated `연전연패` occurrences (IDs 1816, 1843, 1870) remain abstained because n-insertion is variable and no word-specific pronunciation evidence was found.
-- The context-adjudication register records all seven resolutions and evidence-limited abstentions. The generator preserves historical ABSTAIN/RETAIN rationale. The generated CSV and regression expectations are updated.
-- No production phonology, IPA gold, Ukrainian target, or benchmark baseline changed.
+- **Eight RULE_CONFIRMED_STANDARD_VARIANT occurrences:** IDs 78 (오조오억배), 341 (그놈의), 1140 (출산), 1406 (팔자걸음), 1527 (보일거라), 2001 (물가로), 2010 (혐오증), and 2533 (안할듯).
+- **24 ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW; 204 NOT_INDIVIDUALLY_ADJUDICATED; zero pending RETAIN.** Thus 228 occurrences remain unresolved. Historical membership is reconstructed from pinned replay, not proven original-selector membership.
+- ID 78: NIKL Rule 4 classifies ㅓ as a monophthong; the orthographic form 오억 contains ㅓ, not ㅕ. The IPA-Dict-derived Broad comparator inserts /j/ before /ʌ/; the standard broad form preserves the written monophthong. This is normative evidence only, not a claim about transient speaker-specific transitions.
+- ID 341: NIKL Rule 5 supports [e] as an accepted genitive-particle 의 variant; context is 그놈의.
+- ID 1140: NIKL Basic Dictionary directly lists 출산[출싼], upgrading the historical provisional R012 RETAIN; exact lexical attestation only.
+- ID 1406: NIKL Basic Dictionary lists 팔자[팔짜]; Rule 26 licenses ㄹ+ㅈ fortition in this Sino-Korean morpheme.
+- ID 1527: 보일거라 parses as 보일 거라 생각하는 건가; adnominal 보이-ㄹ precedes dependent noun 거 (것). NIKL Q&A 310899 confirms 거 as a dependent noun; Rule 27 and the official parallel 할 것을[할꺼슬] support fortition in the connected construction. No general ㄹ+ㄱ rewrite is inferred.
+- ID 2001: official NIKL educational material lists 물가[물까] in the price sense and contrasts 결과[결과]. Exact lexical license only.
+- ID 2010: NIKL Basic Dictionary lists 혐오증[혀모쯩]. Exact lexical license only.
+- ID 2533: Rule 27 commentary explicitly gives 할 듯하다[할뜨타다]; 안할듯 parses as 안 하-ㄹ + 듯. Connected adnominal construction only.
+- IDs 257, 813 and 853 (체험): remain abstained; 험 contains ㅓ, so the Rule 5 diphthong argument for ㅕ does not apply. IDs 813 and 853 repeat in one source row.
+- IDs 293, 538 and 1206 (sibilant cases): remain abstained; NIKL Hangul surface readings do not decide broad IPA [s] vs [ɕ], and IPA-Dict is broadly phonemic.
+- IDs 1816, 1843 and 1870 (연전연패): remain abstained; n-insertion is variable and no word-specific evidence was found. Repeated occurrences in one source row are not independent speakers.
+- These are normative rule/lexical adjudications, not token-specific acoustic IPA gold. No production IPA, Ukrainian target, benchmark gold, or runtime rule changed.
 
 ### Evidence and verification
 
-- Official NIKL Standard Pronunciation Rules 5, 26 and 27; Rule 26 applies to Sino-Korean ㄹ+ㄷ/ㅅ/ㅈ, and Rule 27 covers `-(으)ㄹ` plus a following lenis obstruent, with an explicit `할 듯하다[할뜨타다]` example.
-- NIKL Q&A 310899 confirms `거` is a dependent noun and colloquial form of `것`; Rule 27 plus this morphological evidence supports the standard connected reading of `보일 거라`, with a pause caveat.
-- NIKL Basic Dictionary entries for 출산, 팔자 and 혐오증; NIKL educational PDF example (25) for 물가[물까].
-- NIKL Q&A 330843, 306166 and 313981 provide Hangul surface evidence only; they do not resolve the [s]/[ɕ] IPA symbol difference.
-- Jun (2015), *Korean n-insertion: a mismatch between data and learning*, DOI 10.1017/S0952675715000275, supports variable n-insertion and does not itemize 연전연패.
-- These are normative rule/lexical confirmations, not token-specific acoustic IPA gold. No individual speaker's recording has been independently adjudicated.
-- GitHub Actions exact-head verification is required after these commits. Local pytest/npm were not run in this connector-only session.
-
-**Current interpretation:** baseline inventory 236; seven rule-supported standard-form adjudications; active unresolved occurrences 229. Overall readiness remains a partial research prototype, not research-certified or release-ready.
+- NIKL Standard Pronunciation Rules 4, 5, 26 and 27; NIKL Basic Dictionary entries for 출산, 팔자 and 혐오증; official NIKL educational examples for 물가 and Rule 27; NIKL Q&A 310899 and 317798; Jun (2015), DOI 10.1017/S0952675715000275.
+- ID 78 and ID 1527 are recorded in the context-adjudication CSV and generated candidate ledger. Regression tests cover the monophthong and dependent-noun cases.
+- Generator input SHA must match the latest context-adjudication blob; the checked-in CSV must equal deterministic generator output.
+- GitHub Actions exact-head checks are pending for the latest update. Local pytest/npm are not run in this connector-only session.
+- Research readiness remains partial; no production or release gate is claimed complete.
 
 ---
+
 # Latest exact-head evidence — 2026-11-03
 
 **Current branch HEAD:** dd450179d26380658f264fd88a21ef9724c13225  
