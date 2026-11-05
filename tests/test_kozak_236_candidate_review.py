@@ -16,9 +16,9 @@ def test_reconstructed_236_review_ledger_has_exact_membership_and_statuses():
     assert len({row["occurrence_id"] for row in rows}) == 236
     assert Counter(row["candidate_disposition"] for row in rows) == {
         "NOT_INDIVIDUALLY_ADJUDICATED": 208,
-        "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 24,
+        "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 21,
         "RETAIN_PENDING_INDEPENDENT_IPA_REVIEW": 0,
-        "RULE_CONFIRMED_STANDARD_VARIANT": 4,
+        "RULE_CONFIRMED_STANDARD_VARIANT": 7,
     }
     assert all(row["historical_membership_confidence"] ==
         "RECONSTRUCTED_CANDIDATE_NOT_ORIGINAL_MEMBERSHIP_PROOF" for row in rows)
@@ -282,3 +282,21 @@ def test_nikl_dictionary_attestation_upgrades_provisional_chulsan_retain():
     assert row["prior_individual_reason_code"] == "SOURCE_BACKED_R012_RETAIN_PENDING_INDEPENDENT_REVIEW"
     assert row["prior_individual_rationale"].startswith("The current Kozak Kim rule inventory")
     assert row["prior_independent_ipa_review_status"] == "independent_Korean_review_pending"
+
+
+def test_nikl_rule_5_preserves_yeo_diphthong_after_h_in_three_candidates():
+    rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
+    expected = {
+        "257": "문화체험공간",
+        "813": "사전체험",
+        "853": "만듬사전체험때",
+    }
+    for occurrence_id, token in expected.items():
+        row = rows[occurrence_id]
+        assert row["token"] == token
+        assert row["candidate_disposition"] == "RULE_CONFIRMED_STANDARD_VARIANT"
+        assert "Standard Pronunciation Rule 5" in row["candidate_disposition_basis"]
+        assert "ㅕ is pronounced as a diphthong" in row["candidate_disposition_basis"]
+        assert "SRC-NIKL-PRON" in row["candidate_disposition_basis"]
+        assert row["prior_individual_reason_code"]
+        assert row["prior_independent_ipa_review_status"] == "NOT_PERFORMED"
