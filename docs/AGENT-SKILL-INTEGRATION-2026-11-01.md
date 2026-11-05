@@ -10,13 +10,17 @@ The following public skill repositories were inspected at the pinned upstream re
 
 | Source | Selected skill | Why it fits | Pinned upstream revision |
 |---|---|---|---|
-| obra/superpowers | test-driven-development | Require a test that fails for the intended defect before implementation; keep the fix minimal. | [2ce8aa1](https://github.com/obra/superpowers/tree/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b/skills/test-driven-development) |
+| obra/superpowers | test-driven-development | Require a test that fails for the intended defect before implementation; keep the fix minimal. | [22f0b46](https://github.com/obra/superpowers/tree/22f0b463e7a5e579904dd6211a520321035526f7/skills/test-driven-development) |
 | obra/superpowers | systematic-debugging | Trace root cause and full data flow instead of patching symptoms in a multi-stage phonetic pipeline. | [2ce8aa1](https://github.com/obra/superpowers/tree/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b/skills/systematic-debugging) |
 | obra/superpowers | verification-before-completion | Require fresh exact-head test/build evidence before reporting completion. | [2ce8aa1](https://github.com/obra/superpowers/tree/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b/skills/verification-before-completion) |
 | mattpocock/skills | code-review | Separate specification compliance from engineering-standard review. | [4ae2317](https://github.com/mattpocock/skills/tree/4ae2317ddb22b046e26455e4f9c9b3aaaf62212d/skills/engineering/code-review) |
 | mattpocock/skills | research | Trace claims to primary sources and store evidence in the repository. | [4ae2317](https://github.com/mattpocock/skills/tree/4ae2317ddb22b046e26455e4f9c9b3aaaf62212d/skills/engineering/research) |
 | DietrichGebert/ponytail | ponytail-audit | Audit the whole repository and real data flow for correctness, risk, load, tests, and unnecessary complexity. | [96608e0](https://github.com/DietrichGebert/ponytail/tree/96608e078b2d5ea607c5c3b8b5a54d1c1fba6846/skills/ponytail-audit) |
 | DietrichGebert/ponytail | ponytail-review | Review changed code together with callers, tests, and runtime path; prioritize correctness and lean design. | [96608e0](https://github.com/DietrichGebert/ponytail/tree/96608e078b2d5ea607c5c3b8b5a54d1c1fba6846/skills/ponytail-review) |
+
+| obra/superpowers | verification-before-completion | Require fresh exact-head evidence before completion/commit/PR claims. | [22f0b46](https://github.com/obra/superpowers/tree/22f0b463e7a5e579904dd6211a520321035526f7/skills/verification-before-completion) |
+| mattpocock/skills | code-review | Separate specification compliance from engineering-quality review. | [4ae2317](https://github.com/mattpocock/skills/tree/4ae2317ddb22b046e26455e4f9c9b3aaaf62212d/skills/engineering/code-review) |
+| mattpocock/skills | research | Trace claims to primary sources and save cited findings in the existing research/documentation structure. | [4ae2317](https://github.com/mattpocock/skills/tree/4ae2317ddb22b046e26455e4f9c9b3aaaf62212d/skills/engineering/research) |
 
 ## Deliberate exclusions
 
@@ -52,3 +56,24 @@ Adopted practices:
 - An abandoned or unavailable gate remains a handoff, never a success. The final report reconciles the original request, measured outcomes, skipped work, and remaining owners/evidence.
 
 **Repository-specific application:** reuse `research/ACCEPTANCE-GATES.md`, `docs/superpowers/ledger.md`, and the canonical master handoff instead of adding a second `GATES.md` or a generic gate-checker dependency. The current workflow already provides executable CI oracles; independent Korean IPA review, Ukrainian target review, source rights, and audio adjudication remain explicit manual gates. This avoids duplicate ledgers and avoids installing machine-specific hooks. The four-pass review discipline (complete implementation, domain-expert reread, correctness/integration/evidence hunt, low-cost polish) is applied to each coherent change batch.
+
+
+## Repository-wide workflow integration — reviewed 2026-11-06
+
+The three requested upstream repositories were re-inspected at their current default-branch revisions on 2026-11-06:
+
+- Superpowers: `22f0b463e7a5e579904dd6211a520321035526f7`.
+- Matt Pocock's skills: `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d`.
+- Ponytail: `96608e078b2d5ea607c5c3b8b5a54d1c1fba6846`.
+
+The repository now exposes a root [`AGENTS.md`](../AGENTS.md) router and a human-facing [agent workflow guide](AGENT-WORKFLOWS.md). The general workflows are repository-specific adaptations:
+
+- `engineering-change`: task framing, test-first behavior changes, root-cause debugging, minimal complete implementation and exact verification;
+- `repository-audit`: risk-first whole-repository mapping and concrete, evidence-backed findings;
+- `change-review`: fixed-base review on separate specification/evidence and engineering-quality axes.
+
+The four existing domain skills remain the authorities for Korean phonology, NIKL evidence, rule coverage and source capture. This is intentional layering, not replacement.
+
+No upstream skill file, prompt, hook, plugin, code or benchmark harness was copied. The upstream repositories' MIT licensing does not make their benchmark figures applicable to this project and does not remove the need to preserve the ClippyFirst project licence and third-party data notices. The project does not adopt external issue-tracker setup, mandatory subagent orchestration, Ponytail savings claims, or a blanket line-count minimization objective.
+
+The new structural contract test checks the root router, skill paths, core IPA-first safeguards and navigation. It verifies repository organization only; it is not a linguistic-quality test.

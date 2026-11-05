@@ -1,17 +1,18 @@
 # Repository structure and ownership guide
 
-**Snapshot:** 2026-11-05, verified code/test head `be65ee71b9d3f224876875830b30be856f96126f`; documentation and audit addenda committed through `eba384fba0a201837cdb3b657ced4f376ae84fdd`. This guide describes the observed tree and stable ownership boundaries; it is not a claim that every file has been independently reviewed line by line.
+**Snapshot:** 2026-11-06, based on default-branch HEAD `043754498f3ad8a17aa6c13b5f643b197536da8a`; the agent-workflow documentation branch adds a root router, three general skills and a human-facing workflow guide. This guide maps stable ownership; it is not a claim that every file has been independently reviewed line by line. This guide describes the observed tree and stable ownership boundaries; it is not a claim that every file has been independently reviewed line by line.
 
 ## What this repository contains
 
 A Python research package, a browser-based practical/research application, Korean phonology and lexical datasets, a Korean-to-Ukrainian IPA target layer, reproducible research tooling, and a public GitHub Pages service.
 
-The recursive Git tree contained **799 entries** (files plus directories), including **163 Markdown files**, **388 test files**, **61 scripts**, **18 GitHub Actions workflows**, and **13 schemas**. The current documentation tree contains 144 entries. These are point-in-time inventory counts; see the latest audit addendum for the exact head and CI snapshot.
+After this documentation change, the expected recursive inventory is **816 entries** (774 files plus 42 directories), including **170 Markdown files**, **391 test files**, **62 scripts**, **18 GitHub Actions workflows**, and **13 schemas**. The `docs/` subtree contains 142 files and the repository-local skill catalogue contains seven `SKILL.md` files. These are point-in-time path counts, not measures of implementation or research completeness; verify the exact final tree on the branch head.
 
 ## Top-level map
 
 | Path | Responsibility | Editing rule |
 |---|---|---|
+| `AGENTS.md` | Repository-wide agent entry contract and skill router | Keep routing aligned with `.agents/skills/` and `docs/AGENT-WORKFLOWS.md` |
 | `src/korean_ukrainian/` | Python domain logic, pipeline, IPA renderer, CLI/API and research adapters | Change with focused Python tests; preserve IPA-first target flow |
 | `src/app/`, `src/main.js`, `src/styles/` | Browser application and JS engine | Change with browser regressions and production build |
 | `src/vendor/g2pk/` | Pinned third-party browser G2P code | Do not patch as if it were project-authored; preserve upstream provenance and licence |
@@ -22,7 +23,7 @@ The recursive Git tree contained **799 entries** (files plus directories), inclu
 | `tests/` | Python and browser regression suites, fixtures and corpora | Fixtures are not automatically gold labels |
 | `research/` | Source register, rule coverage, acceptance gates, decisions, reviewer queues and discrepancy ledgers | Canonical research status; update existing registers, do not create parallel ledgers |
 | `docs/` | Stable guidance, dated audits, research notes, user/developer docs and handoff | Use the documentation index; keep historical links stable |
-| `.agents/skills/` | Four repository-specific agent skills: NIKL evidence audit, NIKL crawler, rule coverage and phonetic engineering | Extend existing skills rather than copying generic upstream workflows |
+| `.agents/skills/` | Seven repository-local skills: four domain-specific phonetic/NIKL skills and three general engineering/change-review/repository-audit skills | Route through root `AGENTS.md`; extend the owning skill rather than copying generic upstream workflows |
 | `.github/workflows/` | Tests, verification, generated artifacts, research jobs and Pages deployment | Inspect path filters, permissions, skip policies and exact-head results |
 | `public/` | Static assets and third-party notices/licences | Third-party terms remain independent |
 | `reports/` | Generated audit summaries and metadata-only manifests | Regenerate from canonical inputs; do not hand-edit generated outputs |
@@ -72,19 +73,12 @@ Runtime requirements are Node.js `>=22.12.0` and Python `>=3.11`. Optional extra
 
 ## Agent workflow references
 
-The four supplied upstream repositories were reviewed as process references, not as code or text to copy:
-
-- [unlazy](https://github.com/Leonxlnx/unlazy): observable acceptance gates, explicit command oracles, and honest handoff for unmet manual gates.
-- [Superpowers](https://github.com/obra/superpowers): red/green TDD, systematic root-cause debugging and verification before completion claims.
-- [Matt Pocock's skills](https://github.com/mattpocock/skills): separate specification compliance from engineering-standard review; trace research claims to primary sources.
-- [Ponytail](https://github.com/DietrichGebert/ponytail): risk-first whole-repository audit, real data-flow tracing, concrete reproducible findings and smallest effective fixes.
-
-The project already has domain-specific skills in `.agents/skills/` and an integration record in [AGENT-SKILL-INTEGRATION-2026-11-01.md](AGENT-SKILL-INTEGRATION-2026-11-01.md). Do not add overlapping generic skills or a second gate ledger without a demonstrated gap.
+The current task router, skill catalogue, lifecycle and upstream decision record live in [AGENT-WORKFLOWS.md](AGENT-WORKFLOWS.md), rooted by [`AGENTS.md`](../AGENTS.md). The three requested upstream projects—[Superpowers](https://github.com/obra/superpowers), [Matt Pocock's skills](https://github.com/mattpocock/skills) and [Ponytail](https://github.com/DietrichGebert/ponytail)—are used as process references only. Selected practices are adapted to this repository's research, licensing and runtime boundaries; upstream skills, hooks, plugins, code and benchmark claims are not copied. The historical integration decisions remain in [AGENT-SKILL-INTEGRATION-2026-11-01.md](AGENT-SKILL-INTEGRATION-2026-11-01.md).
 
 ## Safe structural evolution
 
 - Do not bulk-move dated reports or rename data files during a documentation pass: many tests, scripts, fixtures and historical links may depend on stable paths.
-- Add a canonical index entry before introducing a new guide.
+- Add a canonical index entry before introducing a new guide or skill; keep root `AGENTS.md`, the skill catalogue and the structural contract test in sync.
 - Keep one canonical source register, one rule coverage matrix, one acceptance-gate register, and one append-only handoff.
 - Keep generated data generated; change the source and generator, then verify no drift.
 - Preserve third-party code, data and attribution boundaries.
@@ -92,7 +86,7 @@ The project already has domain-specific skills in `.agents/skills/` and an integ
 
 ## Known audit boundaries at this snapshot
 
-- `main` is the default branch and is the only branch currently returned by the branch inventory. No open PRs were found at the audit snapshot.
+- `main` is the default branch. At the 2026-11-06 audit snapshot, research branches and draft PR #436 were active; see `REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md` for exact refs. Do not treat an open research PR as merged mainline behavior.
 - The main branch was reported as unprotected by GitHub repository metadata. No branch-protection or ruleset settings were changed.
 - The latest exact-head CI before this continuation passed browser/Python regression, build, generated artifacts and Pages deployment. This continuation adds a fresh exact-head verification; see the audit addendum.
 - The NIKL local HTML inventory is structurally complete (30/30) but page-level reuse terms and capture authenticity are not established.
