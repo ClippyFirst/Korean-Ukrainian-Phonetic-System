@@ -472,7 +472,7 @@ def test_rule_13_resyllabified_lenis_sibilants_are_profile_not_phonemic_mismatch
         assert "copular" in row["candidate_disposition_basis"]
         assert "Rule 13" in row["candidate_disposition_basis"]
         assert "Kang (2010)" in row["candidate_disposition_basis"]
-        assert "not evidence of a phonemic error" in row["candidate_disposition_basis"]
+        assert "not a demonstrated phonemic error" in row["candidate_disposition_basis"]
         assert row["prior_independent_ipa_review_status"].endswith("token_specific_acoustic_IPA_review_not_performed")
 
 
