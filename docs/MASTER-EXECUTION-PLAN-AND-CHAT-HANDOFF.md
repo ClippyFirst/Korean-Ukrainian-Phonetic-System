@@ -6511,3 +6511,12 @@ Regression: `tests/test_kozak_broad_mismatch_context_ledger.py` verifies row cou
 
 **Remaining blocker:** recover the original C01–C10 per-fragment assignment snapshot or a versioned predicate that deterministically selects exactly 239 unique occurrence IDs. Then produce the exact 239-row ledger and independent `FIX / RETAIN / ABSTAIN` adjudications. The 370-row superset provides the source context and pinned provenance needed once membership is settled.
 
+
+## 2026-11-05 continuation — pre-C11/C12 historical baseline recovered
+
+The earlier 239-recovery blocker is now more precisely scoped. Recovered the pre-C11/C12 benchmark artifact [13148075070](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41453407662/artifacts/13148075070) from run `41453407662`, code head `e7933ae4a67c94f0f69b4747d8e388aa082fc347`. Downloaded ZIP SHA-256: `075ceff080decbb142492448c9344816bfb53f1e87fe563826668d037c053b89`; report SHA-256: `8c25e630ca828719b269aeb84c8037d9c40f881a0f15c2e4ddf9d427edffa0f9`. The matching pre-C11/C12 C01–C10 aggregate cluster table is blob `275e5d162f3357e94fccd5024ec693fcf223cecd`.
+
+This confirms the historical baseline and 370 Broad-mismatch superset, but does not provide 239 member IDs. The old cluster table stores aggregate counts and representative examples only; the later 1,267-row mismatch export stores a row-level union of cluster labels across strict + Broad fragments, not an assignment for each Broad edit operation. Therefore the historical definition (“at least one fragment not mapped to C01–C10”) cannot be replayed exactly from these surviving files. The 239 count remains a corroborated historical narrative, not a reproduced cohort.
+
+**Ledger:** `research/kozak-kim-historical-239-recovery-manifest-2026-11-05.md` now records the recovered baseline, hashes, failed reproduction boundary and exact acceptance input. Status remains `BLOCKED` until the original per-fragment assignment snapshot or exact executable predicate is recovered. Do not infer the 239 IDs from aggregate counts, and do not substitute the 370-row context superset.
+
