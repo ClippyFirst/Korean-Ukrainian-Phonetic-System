@@ -32,7 +32,7 @@ The 370-row superset joins to the pinned UGTPHON Korean test split at commit ef0
 - **1 RETAIN:** occurrence 1140 (출산) provisionally retains the existing source-backed R012 form. Independent Korean IPA review is pending; RETAIN is not completed adjudication.
 - **213 not individually adjudicated:** no occurrence-specific disposition was found in the current narrow review registers. The 370-row context ledger's default ABSTAIN / EVIDENCE_LIMITED_DIAGNOSTIC_ONLY is a safe no-change baseline, not an individual review result.
 
-## S018 page-level source check and 236-case Hangul environment crosswalk
+## S018/S019 page-level source check and 236-case Hangul environment crosswalk
 
 [Cambridge's primary PDF](https://www.cambridge.org/core/services/aop-cambridge-core/content/view/07312FF2A7409D9C71A4FE83E12AA54D/S0025100300004758a.pdf/korean.pdf) was inspected directly: Lee (1993), printed p.31, describes /s/ as [ɕ] before /i/ or a diphthong beginning [j]. However, the same page explicitly classifies /s/ among the fortis sounds (/p,t,k,c,s/). Its [ɕ] statement therefore cannot be transferred to modern lenis /s/ without reconciling the source's phonological inventory and transcription conventions; nor does it directly adjudicate modern /s͈/. S018 remains useful for its separately scoped Seoul /h/, /l/ and release descriptions.
 
@@ -44,7 +44,7 @@ The full 24-operation fortis `ɕ͈→s͈` stratum remains separately unresolved.
 
 ### Fortis stratum triage
 
-The 24 `ɕ͈→s͈` operations are now separated by orthographic source: 22 are on forms containing orthographic ㅆ (15 distinct token strings); two are coda-triggered fortition of ㅅ after ㄹ, in `했을시` (ID 481) and `실시간` (ID 551). The latter two share a high-front /i/ environment with the lenis candidates but are fortis outputs; S018 p.31 does not describe fortis /s͈/. The 24 operations cover 17 token strings and 19 source rows. They remain a separate, unresolved stratum and cannot inherit C11's lenis decision.
+The 24 `ɕ͈→s͈` operations are now separated by orthographic source: 22 are on forms containing orthographic ㅆ (15 distinct token strings); two are coda-triggered fortition of ㅅ after ㄹ, in `했을시` (ID 481) and `실시간` (ID 551). The latter two share a high-front /i/ environment with lenis candidates but are fortis outputs. Lee's /s/ is classified as fortis in his own inventory, but that category cannot be mapped directly to modern /s͈/ without reconciling transcription conventions; neither S018 nor S019 independently adjudicates these modern fortis tokens. The 24 operations cover 17 token strings and 19 source rows. They remain a separate, unresolved stratum and cannot inherit C11's lenis decision.
 
 ## Case-level triage interpretation — review, not confirmation
 

@@ -77,7 +77,7 @@ def _kang2010_hangul_sibilant_contexts(token: str) -> list[tuple[str, str]]:
             contexts.append(("onset", char))
         if coda == "ㅅ" and index + 1 < len(syllables):
             following = syllables[index + 1]
-            if following is not None and following[1] == "ㅇ" and following[2] in _S018_NUCLEI:
+            if following is not None and following[1] == "ㅇ" and following[2] in _KANG_2010_NUCLEI:
                 contexts.append(("liaison", char + following[0]))
     return contexts
 
