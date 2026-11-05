@@ -1,74 +1,23 @@
-## 2026-11-05 — Six independently supported standard-form adjudications
+## 2026-11-05 — Seven independently supported standard-form adjudications
 
-**Current status:** the historical baseline remains **236 occurrence rows** for provenance. Six occurrences are now `RULE_CONFIRMED_STANDARD_VARIANT` under exact official NIKL rule or lexical evidence: **IDs 341 (`그놈의`), 1140 (`출산`), 1406 (`팔자걸음`), 2001 (`물가로`), 2010 (`혐오증`), and 2533 (`안할듯`)**. The active unresolved count is **230**. All original rows remain in the ledger.
+**Current status:** the reconstructed baseline remains **236 occurrence rows**. Seven are now RULE_CONFIRMED_STANDARD_VARIANT: **IDs 341, 1140, 1406, 1527, 2001, 2010 and 2533**. The active unresolved count is **229**: 205 without individual disposition and 24 abstained pending independent IPA review. All 236 original rows remain in the ledger.
 
-- **ID 341 — `그놈의`:** NIKL Standard Pronunciation Rule 5 distinguishes non-initial lexical `의` (where [i] is permitted) from the genitive particle `의` (where [e] is an accepted variant alongside the principal [ɯi]). The canonical context makes `의` the genitive particle. The source comparator's [e] is normatively supported; Kozak's [i] is not the rule's listed particle variant.
-- **ID 1140 — `출산`:** NIKL Basic Dictionary directly lists `출산[출싼]`. Kozak's fortis `s͈` matches; the IPA-Dict comparator omits fortis. This upgrades the historical provisional RETAIN for R012. It is an exact lexical attestation, not a general ㄹ+ㅅ rule.
-- **ID 1406 — `팔자걸음`:** NIKL Basic Dictionary lists `팔자[팔짜]`; Rule 26 licenses fortition of ㄷ/ㅅ/ㅈ after ㄹ in Sino-Korean morphemes. The exact morpheme `팔자` occurs inside `팔자걸음`, supporting fortis `tɕ͈` rather than Kozak's lenis `dʑ`. This is not a general ㄹ+ㅈ rule outside Sino-Korean morphemes.
-- **ID 2001 — `물가로`:** an official NIKL educational PDF explicitly lists `물가[물까]` in the price sense and contrasts `결과[결과]` as a negative control. The source supports fortis `k͈`, not Kozak's `ɡ`. This is an exact lexical license, not a productive ㄹ+ㄱ rule.
-- **ID 2010 — `혐오증`:** the official NIKL Basic Dictionary lists `혐오증[혀모쯩]`. The standard form supports the fortis affricate `tɕ͈`; Kozak's `dʑ` is lenis/voiced. This is an exact lexical license, not a general rule for all `-증` words.
-- **ID 2533 — `안할듯`:** Rule 27 requires fortition after the adnominal ending `-(으)ㄹ` before ㄱ/ㄷ/ㅂ/ㅅ/ㅈ; its commentary explicitly gives `할 듯하다[할뜨타다]`. The candidate parses as `안 하-ㄹ + 듯`, supporting fortis `t͈` rather than Kozak's lenis `d`. A pause can license the plain consonant, so the decision is limited to the standard connected reading and is not acoustic proof.
-- **IDs 257 (`문화체험공간`), 813 (`사전체험`) and 853 (`만듬사전체험때`) remain ABSTAIN.** The proposed Rule 5 justification was rejected: `체험` is `체+험`, and `험` contains `ㅓ`, not `ㅕ`. Rule 5's diphthong provision therefore does not establish that the comparator's /j/ is phonemic. The source /j/ discrepancy needs independent IPA or token-level audio evidence. IDs 813 and 853 are repeated tokens in one source row, not independent speakers.
-- **IDs 293 (`실수`), 538 (`멋있어`), and 1206 (`싫어서`) remain ABSTAIN.** NIKL Q&A sources confirm their Hangul surface readings, but Hangul bracket notation cannot decide [s] versus [ɕ]. The source register identifies IPA-Dict Korean as a broadly phonemic lexicon, so its [ɕ] cannot be presumed to be a narrow allophone.
-- **ID 1527 (`보일거라`) remains unadjudicated:** NIKL Q&A confirms `거` is a dependent noun and Rule 27 may apply after `-(으)ㄹ`, but the source text does not establish the prosodic connection required for fortition. Keep open pending audio or independent prosodic evidence.
-- Current disposition counts: 206 `NOT_INDIVIDUALLY_ADJUDICATED`, 24 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW`, zero pending RETAIN, and six `RULE_CONFIRMED_STANDARD_VARIANT`. Historical membership remains reconstructed, not proven.
-- **IDs 1816, 1843, 1870 — `연전연패`:** remain abstained. NIKL Rule 29 is relevant to n-insertion, but Jun (2015) finds n-insertion variable and does not provide item-specific evidence for `연전연패`; the full underlying word list is unavailable.
-- None of these decisions supplies token-specific acoustic IPA gold. No production IPA, Ukrainian target, benchmark gold, or runtime rule was changed.
+- **ID 341 — 그놈의:** NIKL Standard Pronunciation Rule 5 distinguishes non-initial lexical 의 (where [i] is permitted) from the genitive particle 의 (where [e] is an accepted variant alongside [ɯi]). The canonical context makes 의 the genitive particle. The comparator's [e] is normatively supported; Kozak's [i] is not the rule's listed particle variant.
+- **ID 1140 — 출산:** NIKL Basic Dictionary directly lists 출산[출싼]. Kozak's fortis s͈ matches; the IPA-Dict comparator omits fortis. This upgrades the historical provisional RETAIN for R012. Exact lexical attestation only.
+- **ID 1406 — 팔자걸음:** NIKL Basic Dictionary lists 팔자[팔짜]; Rule 26 licenses ㄹ+ㅈ fortition in Sino-Korean words. The candidate contains this exact Sino-Korean morpheme. No generalized ㄹ+ㅈ rule outside Rule 26's scope is inferred.
+- **ID 1527 — 보일거라:** the context parses as 보일 거라 생각하는 건가: adnominal 보이-ㄹ followed by dependent noun 거 (colloquial 것). Rule 27 licenses fortition after adnominal -(으)ㄹ; NIKL's parallel example is 할 것을[할꺼슬]. The comparator's /k͈/ is supported over Kozak's /ɡ/ for this exact morphosyntactic context. The source text's missing spaces are not treated as proof of a general ㄹ+ㄱ rule.
+- **ID 2001 — 물가로:** an official NIKL educational PDF explicitly lists 물가[물까] in the price sense and contrasts 결과[결과] as a negative control. The source supports fortis k͈, not Kozak's ɡ. Exact lexical license only, not a productive ㄹ+ㄱ rule.
+- **ID 2010 — 혐오증:** NIKL Basic Dictionary lists 혐오증[혀모쯩]. The standard form supports the fortis affricate tɕ͈; Kozak's lenis dʑ is unsupported. Exact lexical license only.
+- **ID 2533 — 안할듯:** Rule 27 requires fortition after adnominal -(으)ㄹ before ㄱ/ㄷ/ㅂ/ㅅ/ㅈ; its commentary explicitly gives 할 듯하다[할뜨타다]. The candidate parses as 안 하-ㄹ + 듯; NIKL Q&A 317798 supports the relevant connected construction. This does not generalize to every ㄹ+ㄷ sequence or pause-separated speech.
+- **IDs 257 (문화체험공간), 813 (사전체험) and 853 (만듬사전체험때) remain ABSTAIN.** The proposed Rule 5 argument was rejected: 체험 is 체+험, and 험 contains ㅓ, not ㅕ. Rule 5 therefore does not establish that the comparator's /j/ is phonemic. Independent IPA annotation or token-level audio is required; IDs 813 and 853 are repeated tokens in one source row.
+- **IDs 293 (실수), 538 (멋있어) and 1206 (싫어서) remain ABSTAIN.** NIKL Q&A sources attest Hangul surface readings, but Hangul bracket notation cannot decide [s] versus [ɕ]. IPA-Dict Korean is broadly phonemic, so its [ɕ] cannot be presumed to be a narrow allophone.
+- **IDs 1816, 1843 and 1870 — 연전연패 — remain ABSTAIN.** Rule 29 is relevant to n-insertion, but Jun (2015) documents variability and does not provide item-specific evidence. Three repetitions in one source row are not independent speakers or acoustic confirmations.
+- Current disposition counts: **205** NOT_INDIVIDUALLY_ADJUDICATED, **24** ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW, **0** pending RETAIN, and **7** RULE_CONFIRMED_STANDARD_VARIANT. Historical membership remains reconstructed, not proven.
+- These are normative rule/lexical confirmations, not token-specific acoustic IPA gold. No production IPA, Ukrainian target, benchmark gold, or runtime rule changed.
 
-**Sources:** NIKL Standard Pronunciation Rules 5, 26 and 27; NIKL Q&A 334585 and 317798; NIKL dictionary entries for `출산`, `팔자`, and `혐오증`; NIKL educational PDF example (25) for `물가[물까]`; NIKL Q&A 330843, 306166 and 313981 (surface-only, not IPA adjudication); Jun (2015), DOI 10.1017/S0952675715000275.
-
----
-6-11-05 — Four independently supported standard-form adjudications
-
-**Current status:** the historical baseline remains **236 occurrence rows** for provenance. Four occurrences are now `RULE_CONFIRMED_STANDARD_VARIANT` under exact official NIKL rule or lexical evidence: **IDs 341 (`그놈의`), 1140 (`출산`), 2001 (`물가로`), and 2010 (`혐오증`)**. The active unresolved count is **232**. All original rows remain in the ledger.
-
-- **ID 341 — `그놈의`:** NIKL Standard Pronunciation Rule 5 distinguishes non-initial lexical `의` (where [i] is permitted) from the genitive particle `의` (where [e] is an accepted variant alongside the principal [ɯi]). The canonical context makes `의` the genitive particle. The source comparator's [e] is normatively supported; Kozak's [i] is not the rule's listed particle variant.
-- **ID 1140 — `출산`:** NIKL Basic Dictionary directly lists `출산[출싼]`. Kozak's fortis `s͈` matches; the IPA-Dict comparator omits fortis. This upgrades the historical provisional RETAIN for R012. It is an exact lexical attestation, not a general ㄹ+ㅅ rule.
-- **ID 2001 — `물가로`:** an official NIKL educational PDF explicitly lists `물가[물까]` in the price sense and contrasts `결과[결과]` as a negative control. The source supports fortis `k͈`, not Kozak's `ɡ`. This is an exact lexical license, not a productive ㄹ+ㄱ rule.
-- **ID 2010 — `혐오증`:** the official NIKL Basic Dictionary lists `혐오증[혀모쯩]`. The standard form supports the fortis affricate `tɕ͈`; Kozak's `dʑ` is lenis/voiced. This is an exact lexical license, not a general rule for all `-증` words.
-- **IDs 257 (`문화체험공간`), 813 (`사전체험`) and 853 (`만듬사전체험때`) remain ABSTAIN.** The proposed Rule 5 argument was rejected: `체험` is `체+험`, and `험` contains `ㅓ`, not `ㅕ`. Rule 5's diphthong provision therefore does not establish that the comparator's /j/ is phonemic. The source /j/ discrepancy needs independent IPA or token-level audio evidence. IDs 813 and 853 are repeated tokens in one source row, not independent speakers.
-- **IDs 293 (`실수`), 538 (`멋있어`), and 1206 (`싫어서`) remain ABSTAIN.** NIKL Q&A sources confirm their Hangul surface readings, but Hangul bracket notation cannot decide [s] versus [ɕ]. The source register identifies IPA-Dict Korean as a broadly phonemic lexicon, so its [ɕ] cannot be presumed to be a narrow allophone. These three cases need independent IPA adjudication or token-level audio.
-- Current disposition counts: 208 `NOT_INDIVIDUALLY_ADJUDICATED`, 24 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW`, zero pending RETAIN, and four `RULE_CONFIRMED_STANDARD_VARIANT`. Historical membership remains reconstructed, not proven.
-- **IDs 1816, 1843, 1870 — `연전연패`:** remain abstained. NIKL Rule 29 is relevant to n-insertion, but Jun (2015) finds n-insertion variable and does not provide item-specific evidence for `연전연패`; the full underlying word list is unavailable. Three repetitions in one source row are not independent speakers or acoustic confirmations.
-- None of these decisions supplies token-specific acoustic IPA gold. No production IPA, Ukrainian target, benchmark gold, or runtime rule was changed.
-
-**Sources:** NIKL Standard Pronunciation Rule 5 and Q&A 334585; NIKL dictionary entries for `출산` and `혐오증`; NIKL educational PDF example (25) for `물가[물까]`; NIKL Q&A 330843, 306166 and 313981 (surface-only, not IPA adjudication); Jun (2015), DOI 10.1017/S0952675715000275.
+**Sources:** NIKL Standard Pronunciation Rules 5, 26 and 27; NIKL Basic Dictionary entries for 출산, 팔자 and 혐오증; NIKL educational PDF examples for 물가 and Rule 27; NIKL Q&A 317798 and registered sources for evidence-limited abstentions; Jun (2015), DOI 10.1017/S0952675715000275.
 
 ---
-6-11-05 — Seven independently supported standard-form adjudications
-
-**Current status:** the historical baseline remains **236 occurrence rows** for provenance. Seven occurrences are now `RULE_CONFIRMED_STANDARD_VARIANT` under exact official NIKL rule or lexical evidence: **IDs 257, 341, 813, 853, 1140, 2001, and 2010**. The active unresolved count is **229**. All original rows remain in the ledger.
-
-- **IDs 257 (`문화체험공간`), 813 (`사전체험`) and 853 (`만듬사전체험때`):** NIKL Standard Pronunciation Rule 5 says `ㅕ` is a diphthong. Its monophthongization exception concerns `져/쪄/쳐` after `ㅈ/ㅉ/ㅊ`, not `ㅎ` plus `ㅕ` in `체험`. The source comparator preserves /j/ after ㅎ; Kozak omits it. The rule supports retaining /j/ in Broad-v2. IDs 813 and 853 are two repeated tokens in one source row, not independent speaker samples.
-- **ID 341 — `그놈의`:** NIKL Standard Pronunciation Rule 5 distinguishes non-initial lexical `의` (where [i] is permitted) from the genitive particle `의` (where [e] is an accepted variant alongside the principal [ɯi]). The canonical context makes `의` the genitive particle. The source comparator's [e] is normatively supported; Kozak's [i] is not the rule's listed particle variant.
-- **ID 1140 — `출산`:** NIKL Basic Dictionary directly lists `출산[출싼]`. Kozak's fortis `s͈` matches; the IPA-Dict comparator omits fortis. This upgrades the historical provisional RETAIN for R012. It is an exact lexical attestation, not a general ㄹ+ㅅ rule.
-- **ID 2001 — `물가로`:** an official NIKL educational PDF explicitly lists `물가[물까]` in the price sense and contrasts `결과[결과]` as a negative control. The source supports fortis `k͈`, not Kozak's `ɡ`. This is an exact lexical license, not a productive ㄹ+ㄱ rule.
-- **ID 2010 — `혐오증`:** the official NIKL Basic Dictionary lists `혐오증[혀모쯩]`. The standard form supports the fortis affricate `tɕ͈`; Kozak's `dʑ` is lenis/voiced. This is an exact lexical license, not a general rule for all `-증` words.
-- **IDs 293 (`실수`), 538 (`멋있어`), and 1206 (`싫어서`) remain ABSTAIN.** NIKL Q&A sources confirm their Hangul surface readings, but Hangul bracket notation cannot decide [s] versus [ɕ]. The source register identifies IPA-Dict Korean as a broadly phonemic lexicon, so its [ɕ] cannot be presumed to be a narrow allophone. These three cases need independent IPA adjudication or token-level audio.
-- Current disposition counts: 208 `NOT_INDIVIDUALLY_ADJUDICATED`, 21 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW`, zero pending RETAIN, and seven `RULE_CONFIRMED_STANDARD_VARIANT`. Historical membership remains reconstructed, not proven.
-- **IDs 1816, 1843, 1870 — `연전연패`:** remain abstained. NIKL Rule 29 is relevant to n-insertion, but Jun (2015) finds n-insertion variable and does not provide item-specific evidence for `연전연패`; the full underlying word list is unavailable. Three repetitions in one source row are not independent speakers or acoustic confirmations.
-- None of these decisions supplies token-specific acoustic IPA gold. No production IPA, Ukrainian target, benchmark gold, or runtime rule was changed.
-
-**Sources:** NIKL Standard Pronunciation Rule 5 (diphthong rule and `의` variants); NIKL dictionary entries for `출산` and `혐오증`; NIKL educational PDF example (25) for `물가[물까]`; NIKL Q&A 334585, 330843, 306166 and 313981 (surface-only for sibilant cases); Jun (2015), DOI 10.1017/S0952675715000275.
-
----
-6-11-05 — Four independently supported standard-form adjudications
-
-**Current status:** the historical baseline remains **236 occurrence rows** for provenance. Four occurrences are now `RULE_CONFIRMED_STANDARD_VARIANT` under exact official NIKL rule or lexical evidence: **IDs 341 (`그놈의`), 1140 (`출산`), 2001 (`물가로`), and 2010 (`혐오증`)**. The active unresolved count is **232**. All original rows remain in the ledger.
-
-- **ID 341 — `그놈의`:** NIKL Standard Pronunciation Rule 5 distinguishes non-initial lexical `의` (where [i] is permitted) from the genitive particle `의` (where [e] is an accepted variant alongside the principal [ɯi]). The canonical context makes `의` the genitive particle. The source comparator's [e] is normatively supported; Kozak's [i] is not the rule's listed particle variant.
-- **ID 1140 — `출산`:** NIKL Basic Dictionary directly lists `출산[출싼]`. Kozak's fortis `s͈` matches; the IPA-Dict comparator omits fortis. This upgrades the historical provisional RETAIN for R012. It is an exact lexical attestation, not a general ㄹ+ㅅ rule.
-- **ID 2001 — `물가로`:** an official NIKL educational PDF explicitly lists `물가[물까]` in the price sense and contrasts `결과[결과]` as a negative control. The source supports fortis `k͈`, not Kozak's `ɡ`. This is an exact lexical license, not a productive ㄹ+ㄱ rule.
-- **ID 2010 — `혐오증`:** the official NIKL Basic Dictionary lists `혐오증[혀모쯩]`. The standard form supports the fortis affricate `tɕ͈`; Kozak's `dʑ` is lenis/voiced. This is an exact lexical license, not a general rule for all `-증` words.
-- **IDs 293 (`실수`), 538 (`멋있어`), and 1206 (`싫어서`) remain ABSTAIN.** NIKL Q&A sources confirm their Hangul surface readings, but Hangul bracket notation cannot decide [s] versus [ɕ]. The source register identifies IPA-Dict Korean as a broadly phonemic lexicon, so its [ɕ] cannot be presumed to be a narrow allophone. These three cases need independent IPA adjudication or token-level audio, not a surface-only inference.
-- Current disposition counts: 208 `NOT_INDIVIDUALLY_ADJUDICATED`, 24 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW`, zero pending RETAIN, and four `RULE_CONFIRMED_STANDARD_VARIANT`. Historical membership remains reconstructed, not proven.
-- **IDs 1816, 1843, 1870 — `연전연패`:** remain abstained. NIKL Rule 29 is relevant to n-insertion, but Jun (2015) finds n-insertion variable and does not provide item-specific evidence for `연전연패`; the full underlying word list is unavailable. Three repetitions in one source row are not independent speakers or acoustic confirmations.
-- None of these decisions supplies token-specific acoustic IPA gold. No production IPA, Ukrainian target, benchmark gold, or runtime rule was changed.
-
-**Sources:** NIKL Standard Pronunciation Rule 5 and Q&A 334585; NIKL dictionary entries for `출산` and `혐오증`; NIKL educational PDF example (25) for `물가[물까]`; NIKL Q&A 330843, 306166 and 313981 (surface-only, not IPA adjudication); Jun (2015), DOI 10.1017/S0952675715000275.
-
----
-36-candidate review ledger — 2026-11-05
 
 ## Scope and result
 
@@ -99,8 +48,8 @@ The 370-row superset joins to the pinned UGTPHON Korean test split at commit ef0
 
 - **3 FIX overlaps:** IDs 37 (해줄것), 704 (많을거같이) and 2031 (내릴수있는) have exact-form R013 licenses already implemented in Kozak Kim. The separate fourth R013 fix, occurrence 2018 (존중시킬수도있지만), is outside this reconstructed cohort. The three are excluded from the 236.
 - **22 ABSTAIN overlaps:** these have individual rationale rows in the 31-row abstention register. They remain unresolved; ABSTAIN is not resolution and does not decrement the count.
-- **1 RETAIN:** occurrence 1140 (출산) provisionally retains the existing source-backed R012 form. Independent Korean IPA review is pending; RETAIN is not completed adjudication.
-- **213 not individually adjudicated:** no occurrence-specific disposition was found in the current narrow review registers. The 370-row context ledger's default ABSTAIN / EVIDENCE_LIMITED_DIAGNOSTIC_ONLY is a safe no-change baseline, not an individual review result.
+- **One historical RETAIN upgraded:** occurrence 1140 (출산) is now a rule-confirmed exact lexical form under the NIKL dictionary entry; the prior R012 rationale remains preserved.
+- **Current individual dispositions:** 24 ABSTAIN, seven rule-confirmed, zero pending RETAIN, and 205 without individual disposition. The 370-row context ledger's default ABSTAIN / EVIDENCE_LIMITED_DIAGNOSTIC_ONLY remains a safe no-change baseline, not an individual review result.
 
 ## S018/S019 page-level source check and 236-case Hangul environment crosswalk
 
