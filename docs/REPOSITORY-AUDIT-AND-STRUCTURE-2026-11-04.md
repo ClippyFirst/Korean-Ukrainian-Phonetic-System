@@ -652,7 +652,7 @@ Run 42019876519, artifact 13411253960 (SHA-256 `bd5d4bc605a692858477984ba4453961
 | eSpeak NG | 220 / 2,703 | 8.1391% | 33.6101% |
 | phonemize 2.0.1 | 1,150 / 2,703 | 42.5453% | 14.3531% |
 
-Native/g2pk paired difference on 2,698 shared tokens: native exact 53.0393%, g2pk 53.0892%; native CER 8.9660%, g2pk 9.2285%. The exact-match delta is negligible and the CER direction differs. The report documents shared renderer/normalization and other comparability limitations; it is diagnostic, not gold. The dataset is user-generated, the Broad profile is non-normative, and no engine score licenses a production rule or Ukrainian target.
+Native/g2pk paired difference on 2,698 shared tokens: native exact 1,431/2,698 (53.0393%), g2pk exact 1,433/2,698 (53.1134%); paired CER 8.9660% vs 9.2285%. The exact-match delta is +0.0741 percentage points, while CER worsens by +0.2644 percentage points. The report documents shared renderer/normalization and other comparability limitations; it is diagnostic, not gold. The dataset is user-generated, the Broad profile is non-normative, and no engine score licenses a production rule or Ukrainian target.
 
 ### Training-readiness gate
 
