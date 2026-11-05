@@ -16,8 +16,8 @@ def test_reconstructed_236_review_ledger_has_exact_membership_and_statuses():
     assert len({row["occurrence_id"] for row in rows}) == 236
     assert Counter(row["candidate_disposition"] for row in rows) == {
         "NOT_INDIVIDUALLY_ADJUDICATED": 205,
-        "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 23,
-        "RULE_CONFIRMED_STANDARD_VARIANT": 8,
+        "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 22,
+        "RULE_CONFIRMED_STANDARD_VARIANT": 9,
     }
     assert all(row["historical_membership_confidence"] ==
         "RECONSTRUCTED_CANDIDATE_NOT_ORIGINAL_MEMBERSHIP_PROOF" for row in rows)
@@ -359,3 +359,14 @@ def test_expert_attested_meoritsok_confirms_exact_saisiot_lexeme():
     assert "figurative lexical meaning" in row["candidate_disposition_basis"]
     assert "SRC-KIMNAMMI-2017-DONGA-MEORISSOK" in row["candidate_disposition_basis"]
     assert "not a controlled acoustic study" in row["candidate_disposition_basis"]
+
+
+def test_nikl_dictionary_confirms_exact_yusaseong_fortis_sibilant():
+    rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
+    row = rows["826"]
+    assert row["token"] == "유사성"
+    assert "장르의 유사성" in row["source_context_text"]
+    assert row["candidate_disposition"] == "RULE_CONFIRMED_STANDARD_VARIANT"
+    assert "유사성[유ː사썽]" in row["candidate_disposition_basis"]
+    assert "SRC-NIKL-KRDICT-YUSASEONG" in row["candidate_disposition_basis"]
+    assert "no productive fortition rule for the suffix -성" in row["candidate_disposition_basis"]
