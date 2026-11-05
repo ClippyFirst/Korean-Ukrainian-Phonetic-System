@@ -15,10 +15,10 @@ def test_reconstructed_236_review_ledger_has_exact_membership_and_statuses():
     assert len(rows) == 236
     assert len({row["occurrence_id"] for row in rows}) == 236
     assert Counter(row["candidate_disposition"] for row in rows) == {
-        "NOT_INDIVIDUALLY_ADJUDICATED": 213,
+        "NOT_INDIVIDUALLY_ADJUDICATED": 212,
         "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 21,
         "RETAIN_PENDING_INDEPENDENT_IPA_REVIEW": 1,
-        "RULE_CONFIRMED_STANDARD_VARIANT": 1,
+        "RULE_CONFIRMED_STANDARD_VARIANT": 2,
     }
     assert all(row["historical_membership_confidence"] ==
         "RECONSTRUCTED_CANDIDATE_NOT_ORIGINAL_MEMBERSHIP_PROOF" for row in rows)
@@ -230,3 +230,15 @@ def test_n_insertion_candidates_remain_abstained_without_word_specific_evidence(
     assert len(selected) == 3
     assert {row["token"] for row in selected} == {"연전연패"}
     assert all(row["candidate_disposition"] == "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW" for row in selected)
+
+
+def test_nikl_exact_lexical_fortition_adjudicates_water_price_compound_only():
+    rows = MODULE.build_rows(ROOT)
+    row = next(item for item in rows if item["occurrence_id"] == "2001")
+    assert row["token"] == "물가로"
+    assert row["candidate_disposition"] == "RULE_CONFIRMED_STANDARD_VARIANT"
+    assert "물가[물까]" in row["candidate_disposition_basis"]
+    assert "결과[결과]" in row["candidate_disposition_basis"]
+    assert "SRC-NIKL-EDU-MOSKVA" in row["candidate_disposition_basis"]
+    assert "not a productive ㄹ+ㄱ rule" in row["candidate_disposition_basis"]
+    assert row["prior_independent_ipa_review_status"] == "NOT_PERFORMED"
