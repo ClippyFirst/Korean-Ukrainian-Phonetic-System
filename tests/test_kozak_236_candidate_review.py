@@ -572,6 +572,7 @@ def test_nikl_documents_both_loanword_game_onset_variants_without_selecting_toke
     row = rows["2170"]
     assert row["token"] == "게임"
     assert row["candidate_disposition"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
+    assert row["prior_individual_reason_code"] == "SOURCE_ATTESTED_LOANWORD_PRONUNCIATION_VARIATION"
     assert "[께임]" in row["candidate_disposition_basis"]
     assert "[게임]" in row["candidate_disposition_basis"]
     assert "does not choose which variant the corpus speaker actually produced" in row["candidate_disposition_basis"]
