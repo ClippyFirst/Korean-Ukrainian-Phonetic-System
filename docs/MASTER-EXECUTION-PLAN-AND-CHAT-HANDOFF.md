@@ -1,42 +1,46 @@
-## 2026-11-05 — Independent evidence update: 159 resolved, 20 abstained
+## 2026-11-05 — Current 236-candidate adjudication snapshot (supersedes earlier counts)
 
-**Branch:** `research/236-candidate-review-2026-11-05` (single continuing working branch). **PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436), draft/open. The reconstructed 236-row baseline is retained unchanged.
+**Working branch:** `research/236-candidate-review-2026-11-05` (single continuing branch). **PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436), draft/open. The reconstructed historical baseline remains **236 occurrence rows**; no rows were deleted.
 
-### Current disposition
+### Current ledger
 
-- **Nine RULE_CONFIRMED_STANDARD_VARIANT occurrences:** IDs 341 (그놈의), 826 (유사성), 1140 (출산), 1406 (팔자걸음), 1527 (보일거라), 2001 (물가로), 2010 (혐오증), 2490 (머리속에 → 머릿속에), and 2533 (안할듯).
-- **150 PROFILE_CONVENTION_MISMATCH_CONFIRMED occurrences:** three earlier lexical/profile cases (IDs 2562, 520, 2307) plus 147 lenis-sibilant cases across 106 source-row/token families. The 147 have only `ɕ→s` mismatches in Hangul ㅅ+ㅣ/ㅖ/ㅑ contexts. The project broad profile keeps /s/ canonical and offers [ɕ] as a research-only optional variant; Kang (2010) supports coarticulation but not a categorical realization. These are profile-convention resolutions, not token-specific acoustic IPA gold. The 147 include IDs 293 and 1206, previously abstained; ID538 remains abstained because its mismatch is not in the supported lenis context. Of 157 context-compatible lenis operations, 148 are closed; nine co-occur with other mismatches and remain open. The 27 lenis operations outside those contexts and all 24 fortis `ɕ͈→s͈` operations remain unresolved.
-- **20 ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW; 57 NOT_INDIVIDUALLY_ADJUDICATED; zero pending RETAIN.** Thus **77 occurrences remain unresolved**. Historical membership is reconstructed from pinned replay, not proven original-selector membership.
-- ID 826: the official NIKL Korean Basic Dictionary entry 70710 directly gives 유사성[유ː사썽]. In 장르의 유사성 the source /s͈/ matches this exact lexical reading, while Kozak /s/ does not. This does not establish a productive -성 rule.
-- ID 2490: the source sentence uses 머리속에 in the figurative sense 'in one's mind'. Korean-language professor Kim Nam-mi explicitly attests 머릿속[머리쏙]. The comparator's /s͈/ is supported for this exact lexical form; Kozak /s/ is not. The corpus spelling omits the standard 사이시옷. Expert lexical attestation only; no audio/IPA reviewer or production change.
-- ID 78 (오조오억배) remains ABSTAIN. The 2025 full-text study Kim & Hong tests 기억–기역 and 보안–보완 within-word vowel sequences, not 오억 or numeral compounds; its 보완 analysis emphasizes longer preservation of /o/ rounding rather than a clearly independent /w/ gesture. No located study directly tests the candidate's /o.ʌ/ numeral boundary.
-- ID 341: NIKL Rule 5 supports [e] as an accepted genitive-particle 의 variant; context is 그놈의.
-- ID 1140: NIKL Basic Dictionary directly lists 출산[출싼], upgrading the historical provisional R012 RETAIN; exact lexical attestation only.
-- ID 1406: NIKL Basic Dictionary lists 팔자[팔짜]; Rule 26 licenses ㄹ+ㅈ fortition in this Sino-Korean morpheme.
-- ID 1527: 보일거라 parses as 보일 거라 생각하는건가; adnominal 보이-ㄹ precedes dependent noun 거 (것). Rule 27 and official parallel 할 것을[할꺼슬] support fortition in the connected construction. No general ㄹ+ㄱ rewrite is inferred.
-- ID 2001: official NIKL educational material lists 물가[물까] in the price sense and contrasts 결과[결과]. Exact lexical license only.
-- ID 2010: NIKL Basic Dictionary lists 혐오증[혀모쯩]. Exact lexical license only.
-- ID 2533: Rule 27 commentary explicitly gives 할 듯하다[할뜨타다]; 안할듯 parses as 안 하-ㄹ + 듯. Connected adnominal construction only.
-- IDs 257, 813 and 853 (체험): remain abstained; 험 contains ㅓ, so the Rule 5 diphthong argument for ㅕ does not apply. IDs 813 and 853 repeat in one source row.
-- IDs 293, 538 and 1206 (sibilant cases): remain abstained; Hangul readings do not decide broad IPA [s] vs [ɕ]. Newly reviewed acoustic literature is context- and speaker-sensitive; it does not adjudicate these exact recordings.
-- IDs 1816, 1843 and 1870 (연전연패): remain abstained; n-insertion is variable and no word-specific evidence was found. Repeated occurrences in one source row are not independent speakers.
-- These are nine normative rule/lexical/expert-reference adjudications plus 150 broad-IPA profile-convention resolutions, not token-specific acoustic IPA gold. No production IPA, Ukrainian target, benchmark gold, or runtime rule changed.
+- **10 `RULE_CONFIRMED_STANDARD_VARIANT`:** IDs 341 (그놈의), 826 (유사성), 1140 (출산), 1406 (팔자걸음), 1527 (보일거라), 2001 (물가로), 2010 (혐오증), 2092 (출시미정에), 2490 (머리속에 → 머릿속에), and 2533 (안할듯). These are exact official NIKL rule/dictionary attestations or the recorded exact expert lexical attestation; they do not establish token-specific acoustic IPA gold.
+- **153 `PROFILE_CONVENTION_MISMATCH_CONFIRMED`:** 147 lenis-sibilant occurrences (`ɕ→s`) in the supported /i, ye, ya/ contexts; three Rule 13 liaison contexts (IDs 475, 2392, 2667); and three earlier lexical/profile cases (IDs 520, 2307, 2562). These are broad/narrow transcription-profile or exact engine-rule reconciliations, not proof that a speaker produced a particular narrow [ɕ] token.
+- **20 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW` and 53 `NOT_INDIVIDUALLY_ADJUDICATED`: 73 active unresolved occurrences.** Zero pending RETAIN. Historical 236 membership is reconstructed from pinned replay, not proven original-selector membership.
+- Therefore 163/236 are dispositioned (10 normative lexical/rule cases + 153 profile-convention cases); **73/236 remain unresolved**. Do not describe 163 as 163 independently acoustically confirmed pronunciations.
 
-### Evidence and verification
+### Rule/lexical resolutions
 
-- NIKL Standard Pronunciation Rules 4, 5, 26 and 27; NIKL Basic Dictionary entries for 출산, 팔자, 혐오증 and 유사성; official NIKL educational examples for 물가 and Rule 27; NIKL Q&A 310899 and 317798.
-- Kim Nam-mi (2017), *Donga Ilbo*, explicitly attests 머릿속[머리쏙] and explains the 사이시옷 spelling; this is an expert lexical/normative reference, not an acoustic experiment.
-- Kim & Hong (2025), full text: DOI 10.30961/lr.2025.61.1.1; tested 기억–기역 and 보안–보완 only, not 오억/numeral compounds.
-- Holliday (2012), DOI 10.13064/KSSS.2012.4.1.067; Schertz & Kang (2022), DOI 10.1075/kl.16001.sch; Kong & Kang (2021), DOI 10.13064/KSSS.2021.13.1.037. These studies do not independently adjudicate the three exact sibilant tokens.
-- Jun (2015), *Korean n-insertion: a mismatch between data and learning*, DOI 10.1017/S0952675715000275, supports variable n-insertion and does not itemize 연전연패.
-- These nine are normative rule/lexical/expert-reference confirmations, not token-specific acoustic IPA gold. No individual speaker recording has been independently adjudicated.
-- The generator pins the adjudication register blob; the checked-in candidate CSV must equal deterministic generator output. GitHub Actions exact-head verification is required after these commits. Local pytest/npm were not run in this connector-only session.
+- ID 341 `그놈의`: NIKL Rule 5; genitive-particle 의 allows [e] as an accepted variant, unlike non-initial lexical 의.
+- ID 826 `유사성`: NIKL Basic Dictionary 70710 gives 유사성[유ː사썽]; exact lexical fortis.
+- ID 1140 `출산`: NIKL Basic Dictionary gives 출산[출싼]; exact lexical fortis.
+- ID 1406 `팔자걸음`: dictionary 팔자[팔짜] plus Rule 26 in the exact Sino-Korean morpheme 팔자.
+- ID 1527 `보일거라`: 보이-ㄹ + dependent noun 거; Rule 27 and NIKL parallel 할 것을[할꺼슬]; connected construction only.
+- ID 2001 `물가로`: official NIKL educational material gives price-sense 물가[물까] and contrasts 결과[결과]; lexical item only.
+- ID 2010 `혐오증`: NIKL Basic Dictionary gives 혐오증[혀모쯩]; exact lexical fortis.
+- ID 2092 `출시미정에`: exact Sino-Korean 출시 (出市); Rule 26 and corroborating lexical [출씨] evidence.
+- ID 2490 `머리속에`: figurative lexical item is standard 머릿속[머리쏙], attested by Korean-language professor Kim Nam-mi; no general 머리+속 rule.
+- ID 2533 `안할듯`: Rule 27; 안 하-ㄹ + dependent noun 듯; connected reading, with pause caveat.
 
-**Current interpretation:** baseline inventory 236; nine standard-form adjudications plus 150 profile-convention resolutions; active unresolved occurrences 77. Overall readiness remains a partial research prototype, not research-certified or release-ready.
+### New full-text literature review and abstentions retained
+
+- Kim & Hong (2025), *Between Transitions and Glides* [Kim25e], full text reviewed. Its 10 male Seoul Korean speakers read 기억–기역 and 보안–보완, not 체험, 오억, or numeral compounds. Its acoustic segmentation locates transition intervals but does not independently classify them as phonological glides; 보완's contrast is attributed mainly to longer preservation of /o/ rounding, not a clearly independent /w/ gesture. It supplies no direct evidence for ID 78 `오조오억배`.
+- Kang (2010), *Position and Height Asymmetries in Hiatus Resolution* [Kan10b], full text reviewed. It studies directly adjacent VV sequences; /i+ʌ/ and /u+ʌ/ can have optional glide outputs in descriptive data, but its experiment measures duration in nonce words and does not establish a categorical glide rule. `체험` has /e.hʌ/ with /h/ between the vowels, so it is not the experimental VV context. This reinforces ABSTAIN for IDs 257, 813 and 853.
+- ID 78 `오조오억배` remains ABSTAIN: no direct study of this numeral compound or exact /o.ʌ/ boundary; token audio or independent Korean IPA review required.
+- IDs 257, 813, 853 `체험` remain ABSTAIN: `험` has ㅓ, not ㅕ; the earlier Rule 5 diphthong argument was inapplicable. /j/ versus coarticulatory transition remains unresolved.
+- IDs 1816, 1843, 1870 `연전연패` remain ABSTAIN: n-insertion is variable and no item-specific evidence was found; repeated tokens in one source row are not independent speakers.
+- IDs 293, 538, 1206 and the unresolved fortis-sibilant strata remain evidence-limited where the source is Hangul-only or the evidence concerns lenis /s/ but the mismatch is fortis /s͈/. Do not transfer Kang's lenis findings to fortis sibilants.
+
+### Verification status
+
+- Latest source/test correction: the Rule 13 profile assertions now match the exact wording in the adjudication notes. The immediately preceding exact-head run failed on two stale test-string assertions (not a code/linguistic failure); the assertions were corrected and a new head was pushed. **The new head's full CI rerun is still required; do not claim it passed.**
+- Previously successful checks remain evidence only for their own earlier commit; skipped Charsiu and metadata-only checks are not passes. Local pytest/npm were not run in this connector-only session.
+- No production IPA, Ukrainian target, benchmark gold, or runtime rule changed as a result of this research update.
+
+**Readiness:** still a partial research prototype, not research-certified or release-ready. The 73 open occurrences require exact source/audio crosswalks and independent IPA review; all token-specific acoustic IPA gold remains unadjudicated.
 
 ---
-
- Latest exact-head evidence — 2026-11-03
+Latest exact-head evidence — 2026-11-03
 
 **Current branch HEAD:** dd450179d26380658f264fd88a21ef9724c13225  
 **Code/test tree:** 5c775dfa6b6a969c320f47c1420c75ffa645e369 (the later commit updates the research audit register and PR documentation only).  
