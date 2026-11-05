@@ -98,3 +98,9 @@ The 31 current-queue abstention rationales now identify each occurrence, source 
 Current `main` is `d68cb09e12eb8b71b264775f2cf7ac6e9c2a51c5` (single branch; no open PRs). Exact-head GitHub Actions on this commit: tests `42000327552` PASS (Python 3.11/3.12/3.13, wheel install, teacher-corpus audit, browser tests); System Verify `42000327509` PASS (Python and browser tests/build; live NIKL metadata-only inventory SKIPPED); master/research artifacts `42000327383` PASS; Pages deployment `42000327385` PASS. These checks validate software and generated artifacts, not independent IPA correctness, Ukrainian target quality, or source-item rights.
 
 The narrow 36-row queue's disposition register is complete (4 FIX, 1 provisional RETAIN, 31 ABSTAIN); the five source-context adjudication rows are separately recorded in `kozak-kim-context-adjudication-2026-11-05.csv`. Python `RuleTrace` per-occurrence `applied_occurrences` and `license_contexts` are implemented and covered by the verified test suite. The historical 239-row ledger remains BLOCKED solely on exact 239 membership / historical fragment assignment reconstruction; the recovered artifact itself is no longer missing.
+
+### Historical Broad mismatch recovery
+
+- [370-row full-context, hash-pinned Broad mismatch ledger](kozak-kim-broad-mismatch-context-ledger-2026-11-05.csv): all broad-profile mismatch occurrences from the pinned 2026-11-02 report, joined to exact UGTPHON sentence/token context and engine/profile/normalizer provenance. All are conservatively `ABSTAIN` pending independent adjudication.
+- [Historical 239 recovery manifest](kozak-kim-historical-239-recovery-manifest-2026-11-05.md): explains why the 370-row evidence superset must not be confused with the historical 239-member cohort.
+
