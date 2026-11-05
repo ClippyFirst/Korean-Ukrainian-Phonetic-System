@@ -61,7 +61,7 @@ test('real source register is structurally valid and unresolved rights remain vi
     ITEM_LEVEL_LICENSE_RECORDED: 3,
     NOT_APPLICABLE_RECORDED: 1,
     REVIEW_REQUIRED: 165,
-    MANUAL_CLASSIFICATION_REQUIRED: 9,
+    MANUAL_CLASSIFICATION_REQUIRED: 10,
   });
   assert.ok(report.rightsClassificationCounts.REVIEW_REQUIRED > 0);
   assert.ok(report.rightsClassificationCounts.MANUAL_CLASSIFICATION_REQUIRED > 0);
@@ -99,7 +99,7 @@ test('CLI reports structure by default and keeps strict rights acceptance blocke
   const normal = spawnSync(process.execPath, [script, '--json'], { cwd: process.cwd(), encoding: 'utf8' });
   assert.equal(normal.status, 0, normal.stderr);
   const report = JSON.parse(normal.stdout);
-  assert.equal(report.sourceRegisterRows, 178);
+  assert.equal(report.sourceRegisterRows, 179);
   assert.equal(report.structuralErrorCount, 0);
   assert.ok(report.itemLevelRightsNotClosed.length > 0);
 

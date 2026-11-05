@@ -31,7 +31,7 @@ test('NIKL §10 넓죽하다 and §1 읽고 divergences remain explicit rather t
 
 test('the official Q&A source register records the lexical contrast 칡과[칙꽈] versus 읽고[일꼬]', () => {
   const rows = csvRows(sourceRegister);
-  const row = rows.find(line => line.startsWith('"SRC-NIKL-QNA-321743",'));
+  const row = rows.find(line => line.startsWith('SRC-NIKL-QNA-321743,'));
   assert.ok(row, 'exact NIKL Q&A source row must be registered');
   assert.ok(row.includes(qnaUrl), 'source row must contain the stable official Q&A URL');
   assert.ok(row.includes('칡과[칙꽈] versus 읽고[일꼬]'), 'source row must preserve both contrasting surface forms');
