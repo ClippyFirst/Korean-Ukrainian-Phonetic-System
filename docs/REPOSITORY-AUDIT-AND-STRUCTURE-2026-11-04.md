@@ -671,3 +671,8 @@ The same artifact's training-readiness audit reports 644 lexical rows, zero dupl
 - Supervised IPA training: BLOCKED; no independently adjudicated IPA gold and frozen holdout annotations absent.
 
 No production-default IPA, Ukrainian target, release, deployment or branch merge was performed.
+
+
+### Additional separate S027 context
+
+A second Kang (2010) KCI paper is now registered as S027: *Korean Sibilant /s/ before a High Front and a Round Segment* (Phonetics and Speech Sciences 2(4):59–65; [KCI](https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001509195)). Its abstract describes a distinct labio-palatalized spectral pattern when a high-front and a round segment occur within the same syllable. Of the 27 lenis edits outside S019's /i, ye, ya/ set, occurrence 606 (`쇼`, /yo/) is a possible S027-context case. The abstract does not specify a canonical segmental IPA symbol, so this does not authorize [ɕ] or [ɕʷ] as a deterministic output. The other 26 edits remain outside the two reviewed abstract scopes. S027 is citation-only; full text, acoustic measurements and item-level pronunciation adjudication remain outstanding.

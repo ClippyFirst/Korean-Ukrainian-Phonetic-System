@@ -81,6 +81,20 @@ def _kang2010_hangul_sibilant_contexts(token: str) -> list[tuple[str, str]]:
                 contexts.append(("liaison", char + following[0]))
     return contexts
 
+
+def _kang2010_round_sibilant_contexts(token: str) -> list[str]:
+    contexts = []
+    for char in token:
+        codepoint = ord(char)
+        if not 0xAC00 <= codepoint <= 0xD7A3:
+            continue
+        offset = codepoint - 0xAC00
+        onset = _HANGUL_ONSETS[offset // (21 * 28)]
+        nucleus = _HANGUL_NUCLEI[(offset % (21 * 28)) // 28]
+        if onset == "ㅅ" and nucleus in {"ㅛ", "ㅠ"}:
+            contexts.append(char)
+    return contexts
+
 def test_236_lenis_sibilant_operations_are_separated_by_kang_2010_environment_scope():
     rows = MODULE.build_rows(ROOT)
     supported_rows = []

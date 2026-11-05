@@ -691,3 +691,13 @@ def test_s018_page_31_does_not_license_modern_lenis_sibilant_rule():
     assert "diphthong beginning [j]" in source["coverage"]
     assert "classifies /s/ among fortis sounds" in source["coverage"]
     assert "does not license a modern lenis /s/ rule" in source["limitations_or_next_action"]
+
+
+def test_s027_kang_round_segment_source_is_not_collapsed_into_simple_palatalization():
+    source = {row["source_id"]: row for row in load_source_register()}[
+        "SRC-KANG-2010-KOREAN-SIBILANT-ROUND-SEGMENT"
+    ]
+    assert "high-front and a round segment" in source["coverage"]
+    assert "labio-palatalized spectral pattern" in source["coverage"]
+    assert "does not specify a canonical segmental IPA symbol" in source["limitations_or_next_action"]
+    assert "S019" in source["limitations_or_next_action"]

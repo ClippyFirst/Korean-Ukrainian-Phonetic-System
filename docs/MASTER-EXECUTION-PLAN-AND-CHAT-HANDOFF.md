@@ -2,7 +2,7 @@
 
 The primary Cambridge PDF was re-read at page 31. Lee (1993) classifies /s/ among fortis /p,t,k,c,s/ in that description; the earlier claim that this directly supports modern lenis /s/ was wrong. The source register and code comments now state this limitation. S019 (Kang 2010) is the lenis acoustic-coarticulation source; its abstract covers /i, ye, ya/ and notes a distinct spectral pattern for /yu, yo/. Broad optional [ɕ] and narrow [ɕʰ] candidates are restricted to ㅣ, ㅖ, ㅑ; other /j/ nuclei are not generalized. The broad canonical [s], default target path and Ukrainian output are unchanged.
 
-The corrected crosswalk finds 157/184 lenis `ɕ→s` edits context-compatible with the Kang abstract (156 occurrences); 27 edits/occurrences in six token strings and five source rows lie outside the cited contexts. The 24 fortis `ɕ͈→s͈` operations remain separate. Independent Korean IPA review is still required.
+The corrected crosswalk finds 157/184 lenis `ɕ→s` edits context-compatible with S019's /i, ye, ya/ abstract (156 occurrences). Of the 27 out-of-scope edits, ID 606 `쇼` (/yo/) is a separate possible S027 high-front-plus-round context; S027 describes labio-palatalized spectra but no canonical IPA symbol. The other 26 remain outside both reviewed abstract scopes. The 24 fortis `ɕ͈→s͈` operations remain separate. Independent Korean IPA review is still required.
 
 The historical 36-row `...2026-11-03.csv` queue was restored unchanged because the 31-row abstention register pins it. The current rerun's 32-row output is versioned separately as `...2026-11-05.csv`; the multi-engine workflow now compares against that file. The current 236-case ledger remains independent from both queue artifacts.
 
