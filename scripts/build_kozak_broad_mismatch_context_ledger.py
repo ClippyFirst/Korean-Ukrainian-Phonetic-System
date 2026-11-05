@@ -73,7 +73,7 @@ def eligible_occurrences(source_rows: list[dict]) -> dict[str, tuple[dict, dict,
                 continue
             if not isinstance(gold, str) or not gold.strip():
                 continue
-            if not gold.replace(".", "").replace(" ", "").strip():
+            if not any(part.strip() for part in gold.split(",")):
                 continue
             indexed[str(occurrence_id)] = (source_row, token, token_index)
             occurrence_id += 1
