@@ -6584,3 +6584,55 @@ Exact-head checks on the PR head:
 - No post-fix multi-engine benchmark was run; the recovery PR changes only research metadata/tests and does not claim updated phonetic benchmark scores.
 
 Current research disposition remains: **239 reconstructed candidate IDs; 3 verified FIX overlaps; 236 candidate cases still unresolved**. RETAIN and ABSTAIN do not decrement the remaining count. Historical membership is still PARTIAL pending confirmation of the original aggregate selector; no independent IPA or Ukrainian-target gold is claimed.
+
+
+## 2026-11-06 — Repository agent workflows and documentation structure
+
+**Branch:** `docs/agent-workflow-structure-2026-11-06`  
+**Base:** `main` at `043754498f3ad8a17aa6c13b5f643b197536da8a`.  
+**Final verified implementation head before this handoff update:** `dea28eb7fc3f7494e8964a9e91164cbfde4990fa`.  
+**PR:** [#437](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/437), open and unmerged.  
+**Scope:** documentation, repository-local agent instructions/skills and structural tests only.
+
+### Delivered
+
+- Added root `AGENTS.md` as the project-wide entry contract and skill router.
+- Added general `engineering-change`, `repository-audit` and `change-review` skills.
+- Preserved the four existing phonetic/NIKL skills as the authorities for linguistic evidence, source capture, rule coverage and IPA-first engineering.
+- Added `docs/AGENT-WORKFLOWS.md` with the human-facing documentation map, lifecycle, task-status vocabulary, evidence/verification rules and skill boundaries.
+- Updated README/docs navigation, repository structure inventory and the existing upstream skill integration record.
+- Added structural tests for routing, project invariants, navigation and local Markdown links.
+- Reviewed [Superpowers](https://github.com/obra/superpowers) at `22f0b463e7a5e579904dd6211a520321035526f7`, [Matt Pocock's skills](https://github.com/mattpocock/skills) at `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d`, and [Ponytail](https://github.com/DietrichGebert/ponytail) at `96608e078b2d5ea607c5c3b8b5a54d1c1fba6846`. Selected ideas were adapted; no upstream prose, code, hooks, plugins or benchmark results were copied.
+
+### Exact-head verification
+
+GitHub Actions Verify run [42119824485](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42119824485) on `dea28eb7fc3f7494e8964a9e91164cbfde4990fa`:
+
+- Browser tests: **1,399/1,399 PASS**.
+- Browser production build: **PASS**.
+- Generated public-page checks: **PASS**.
+- Python regression/data-integrity job: **PASS**.
+- Official NIKL metadata-only inventory: **SKIPPED** (not a pass).
+- No local npm/pytest execution is claimed; the verification evidence is from GitHub Actions.
+
+Two earlier workflow attempts on intermediate commits failed because the new structural test initially expected a pipeline phrase not yet in the guide, README navigation insertion had not matched the source layout, and a later iteration contained an over-escaped regex. These issues were corrected; the exact final head passed.
+
+### Task ledger
+
+| Item | Status | Evidence / remaining acceptance |
+|---|---|---|
+| Root agent entry and task routing | DONE_VERIFIED | `AGENTS.md`; structural routing tests pass on the verified head. |
+| General engineering lifecycle skill | DONE_VERIFIED | `.agents/skills/engineering-change/SKILL.md`; exact-head test suite passes. |
+| Whole-repository audit skill | DONE_VERIFIED | `.agents/skills/repository-audit/SKILL.md`; project-specific risk/evidence constraints documented. |
+| Two-axis change review skill | DONE_VERIFIED | `.agents/skills/change-review/SKILL.md`; specification/evidence and engineering review are distinct. |
+| Human documentation navigation | DONE_VERIFIED | Root README, `docs/README.md`, `docs/AGENT-WORKFLOWS.md`; local-link test passes. |
+| Existing phonetic/NIKL skills | DONE_VERIFIED (preserved) | No replacement or duplicate evidence/rule register introduced. |
+| Flat historical docs namespace | DEFERRED | Paths preserved; any later migration requires link/caller inventory and a mechanical, no-content-change plan. |
+| Physical PR merge | TODO | PR #437 is open; owner/reviewer merge decision remains. |
+| Independent linguistic evidence and release gates | UNCHANGED / BLOCKED where previously recorded | This documentation task did not change pronunciation, IPA, target adaptation, source rights or independent review status. |
+
+### Repository state and next step
+
+The branch is four commits ahead of main and contains 12 changed files (663 additions, 31 deletions). PR #436 and the research branches were left untouched. No runtime code, Korean/IPA data, Ukrainian target mapping, generated artifact, vendor dependency, license, Pages setting or release was changed.
+
+Next action: review PR #437 and merge only through the normal owner-controlled process. Do not merge automatically as part of this documentation pass.

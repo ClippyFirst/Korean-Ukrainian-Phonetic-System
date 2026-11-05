@@ -75,10 +75,29 @@ The browser g2pK path remains a separate baseline from Kozak Kim/NIKL research r
 - `BLOCKED` — independent linguistic review, target adaptation review and source-rights decisions remain outside this documentation task.
 - `DEFERRED` — bulk documentation moves, upstream plugin/hook adoption, external subagent orchestration and benchmark-scoreboard adoption.
 
-## Verification boundary
+## Final verification — 2026-11-06
 
-At the start, the mainline exact-head Verify workflow run `42118194229` was successful on the unmodified base SHA. It does not verify this branch's new files. The new structural contract test and full repository checks must run on the final documentation commit through the repository's own test/verification workflow. A connector-only session is not represented as a local npm/Python run.
+Final documentation branch head: `dea28eb7fc3f7494e8964a9e91164cbfde4990fa`. Exact-head GitHub Actions Verify run [42119824485](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42119824485) completed successfully:
+
+- Browser regression: **1,399/1,399 PASS**.
+- Browser production build: **PASS**.
+- Generated public-page existence checks for `dist/index.html` and `dist/system.html`: **PASS**.
+- Python regression and data-integrity job: **PASS** (pytest progress reached 100%; no failure reported).
+- Official NIKL metadata-only source inventory: **SKIPPED**, not passed.
+
+The final diff is documentation, repository-local agent guidance and structural tests only. No local shell/npm/pytest run is claimed; verification came from the exact-head GitHub Actions run.
 
 ## Conclusion
 
 The repository did not need a wholesale directory redesign. It needed a clear root-level agent entry point, a task router, explicit general workflows for changes/audits/reviews, and human-readable navigation that preserves the existing research and runtime architecture. This branch addresses those gaps without moving source data, tests, historical reports, generated artifacts or production code.
+
+
+## Final branch and PR state
+
+- Branch: `docs/agent-workflow-structure-2026-11-06`.
+- Final head at this audit: `dea28eb7fc3f7494e8964a9e91164cbfde4990fa`.
+- PR: [#437](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/437), open, not merged.
+- Diff: 12 files, 663 additions, 31 deletions.
+- Research PR #436 and its branch were not modified.
+- The two earlier verification attempts failed on newly added structural assertions/regex syntax; those defects were corrected, and the exact final head passed run 42119824485. They are retained here as implementation history, not hidden.
+- Merge and any future physical documentation-directory migration remain unperformed. The current PR is ready for human review, subject to normal repository review/merge policy.

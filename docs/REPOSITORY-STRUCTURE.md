@@ -1,12 +1,12 @@
 # Repository structure and ownership guide
 
-**Snapshot:** 2026-11-06, based on default-branch HEAD `043754498f3ad8a17aa6c13b5f643b197536da8a`; the agent-workflow documentation branch adds a root router, three general skills and a human-facing workflow guide. This guide maps stable ownership; it is not a claim that every file has been independently reviewed line by line.
+**Snapshot:** 2026-11-06, default-branch baseline `043754498f3ad8a17aa6c13b5f643b197536da8a`; documentation branch head verified by GitHub Actions: `dea28eb7fc3f7494e8964a9e91164cbfde4990fa`. This branch adds a root router, three general skills and a human-facing workflow guide. This guide maps stable ownership; it is not a claim that every file has been independently reviewed line by line.
 
 ## What this repository contains
 
 A Python research package, a browser-based practical/research application, Korean phonology and lexical datasets, a Korean-to-Ukrainian IPA target layer, reproducible research tooling, and a public GitHub Pages service.
 
-After this documentation change, the expected recursive inventory is **816 entries** (774 files plus 42 directories), including **170 Markdown files**, **391 test files**, **62 scripts**, **18 GitHub Actions workflows**, and **13 schemas**. The `docs/` subtree contains 142 files and the repository-local skill catalogue contains seven `SKILL.md` files. These are point-in-time path counts, not measures of implementation or research completeness; verify the exact final tree on the branch head.
+The verified recursive inventory at the documentation branch head is **816 entries** (774 files plus 42 directories), including **170 Markdown files**, **391 test files**, **62 scripts**, **18 GitHub Actions workflows**, and **13 schemas**. The `docs/` subtree contains 142 files and the repository-local skill catalogue contains seven `SKILL.md` files. These are point-in-time path counts, not measures of implementation or research completeness.
 
 ## Top-level map
 
