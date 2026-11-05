@@ -94,6 +94,6 @@ The project already has domain-specific skills in `.agents/skills/` and an integ
 
 - `main` is the default branch; the repository also has one stale merged documentation branch with no unique commits, so the branch count is not yet literally one.
 - The main branch was reported as unprotected by GitHub repository metadata. No branch-protection or ruleset settings were changed.
-- The latest Pages deployment job timed out while GitHub reported `updating_pages`; Python and browser build/test jobs on that same head passed. See the latest repository audit addendum.
+- At starting head `c1feae5...`, Pages timed out while GitHub reported `updating_pages`; the later exact-head deployment at `d7c4c539ae751ee9feda2aba9c5806cc6968ce55` succeeded, including HTTP and live browser smoke. See the latest repository audit addendum.
 - The NIKL local HTML inventory is structurally complete (30/30) but page-level reuse terms and capture authenticity are not established.
 - Independent Korean IPA and Ukrainian target review remain external acceptance gates.

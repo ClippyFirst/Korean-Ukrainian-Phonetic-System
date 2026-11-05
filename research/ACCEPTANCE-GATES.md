@@ -1299,3 +1299,17 @@ The custom licence is purpose-limited and not OSI-approved/open source. Scientif
 - Issue #337 remains open for independent Korean phonetics reviewer recruitment.
 
 **Readiness:** partial research prototype; not research-certified or release-ready. Software automation passes do not close independent Korean IPA review, Ukrainian target review, source rights, C12 acoustic/context evidence or historical mismatch reconciliation.
+
+
+## 2026-11-05 — final exact-head verification at d7c4c539
+
+The documentation/source-register corrections are now verified on `main` at `d7c4c539ae751ee9feda2aba9c5806cc6968ce55`.
+
+- Browser tests: 1,396/1,396 PASS; Python 3.11/3.12/3.13 PASS; wheel install and teacher-corpus audit PASS ([tests workflow](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41985911802)).
+- System Verify PASS ([run 41985911475](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41985911475)); live NIKL source-inventory job skipped by workflow config and not counted as a pass.
+- Master table/research artifact generation PASS ([run 41985911482](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41985911482)).
+- GitHub Pages deployment and post-deploy HTTP/Playwright smoke PASS ([run 41985911844](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41985911844)).
+- Source register now parses as 178 records with exactly 12 fields each. A transient malformed-CSV change and a tested-status enum mismatch were both caught by CI and corrected before this final green head.
+- Local NIKL HTML inventory remains 30/30; this does not close clean-capture authenticity, live HTTP/robots or page/item-level rights.
+
+**Project readiness remains partial research prototype.** Passing build, test and deployment checks do not close independent Korean IPA gold, Ukrainian target review, NIKL item-level rights, C12 acoustic/context evidence, historical mismatch reconciliation or coverage/parity gates.

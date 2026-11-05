@@ -6316,3 +6316,16 @@ The four requested upstream repositories were inspected at the pinned revisions 
 8. Close cross-runtime parity and names/loans/Hanja/regional coverage gaps; keep neural training deferred until adjudicated IPA gold and corpus rights exist.
 
 **Disposition:** documentation and repository navigation are now in a substantially clearer state. The system remains a partial research prototype, not research-certified or release-ready. See `docs/REPOSITORY-STRUCTURE.md`, the latest addendum in `docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md`, `research/ACCEPTANCE-GATES.md` and `research/ROADMAP.md`.
+
+
+## 2026-11-05 — final exact-head verification after documentation audit
+
+- Final verified code/data head before this handoff-only addendum: `d7c4c539ae751ee9feda2aba9c5806cc6968ce55`.
+- Browser suite: 1,396/1,396 PASS. Python 3.11/3.12/3.13, wheel install and teacher-corpus audit PASS.
+- System Verify and master-table/research artifact workflows PASS. Live NIKL inventory step in Verify was SKIPPED; the separate local-HTML inventory/reproducibility workflows passed 30/30.
+- Pages deployment succeeded on d7c4. HTTP smoke covered `index.html`, `system.html` and the first JS asset; live Playwright UX smoke passed with a 1,443-character Korean passage.
+- Documentation link checks: README 77/77, docs index 13/13, structure guide 2/2. Source register: 178 data rows, all 12 columns after CSV quoting correction.
+- The audit caught and corrected two transient source-register regressions during this run: first a comma in an unquoted field, then a temporarily changed tested integration-status enum. The final head restores the established enum and all exact-head tests pass. See the audit addendum for commit-by-commit detail.
+- Branch state remains `main` plus one stale merged docs branch (17 behind, 0 ahead); no open PRs; issue #337 remains open. Main is not protected. The branch-delete action was unavailable, and no new branch was created.
+
+**Final disposition:** documentation/navigation and deployment checks are green; research prototype is still not research-certified or release-ready. Open gates: clean NIKL recapture and page/item rights; independent Korean IPA reviewers; independent Ukrainian target review; C12 source/audio/speaker/prosody crosswalk; historical 239-case reconciliation; cross-runtime parity and remaining lexical/orthographic coverage. Neural training remains deferred until adjudicated IPA gold and corpus rights are available.

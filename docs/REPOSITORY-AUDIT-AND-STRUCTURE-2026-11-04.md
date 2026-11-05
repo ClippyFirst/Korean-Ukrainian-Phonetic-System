@@ -319,3 +319,28 @@ The supplied repositories were inspected as process references at the revisions 
 ### Files changed by this audit refresh
 
 The accompanying commit updates navigation, repository structure/architecture guidance, current audit/handoff, NIKL capture notes and source-register status. It does not change production phonology, IPA mappings, lexical data, generated artifacts, vendor code, package versions, license terms or external GitHub settings.
+
+
+## 15. Final verification after documentation/source-register correction — 2026-11-05
+
+**Verified code/data head:** `d7c4c539ae751ee9feda2aba9c5806cc6968ce55` on `main`.
+
+### Intermediate validation failures and correction (recorded transparently)
+The first documentation commit `ff45e426420c85c6ae4d66237bee8e59280d0b50` appended a comma-containing note to an unquoted final CSV field in `research/SOURCE-REGISTER.csv`. CI caught the resulting 14-column row (the register contract is 12 columns); both browser and Python suites failed at the source-register/template checks. Commit `29a11e85247c9ca848fe23c5faaf447676753236` correctly quoted the field, but temporarily changed the tested `integration_status` enum, so the exact source-register contract still failed. Commit `d7c4c539ae751ee9feda2aba9c5806cc6968ce55` restored the established `blocked-live-source-access` enum while retaining the local-capture evidence in review/limitations fields. The final CSV was parsed and all 178 data rows were confirmed to have exactly 12 columns.
+
+### Exact-head verification at d7c4c539
+- [Tests workflow 41985911802](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41985911802) — PASS: browser suite 1,396/1,396; Python 3.11, 3.12 and 3.13 jobs PASS; wheel-install PASS; teacher-corpus audit PASS.
+- [System Verify 41985911475](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41985911475) — PASS: browser regression/build and Python regression/data integrity PASS. The live NIKL source-inventory job was SKIPPED by workflow configuration; it is not counted as a pass.
+- [Master table and research artifacts 41985911482](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41985911482) — PASS.
+- [GitHub Pages deployment 41985911844](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41985911844) — PASS: Python matrix and browser build passed; Pages deployment succeeded; HTTP smoke verified `index.html`, `system.html` and the first JS asset; live Playwright smoke passed for the practical UI, accessibility/UX behaviors and a 1,443-character Korean passage. The live smoke is a deployment/UX check, not linguistic expert validation.
+- Documentation links: root README 77/77 local targets exist; documentation index 13/13 local targets exist; repository structure guide 2/2 local targets exist.
+- NIKL local HTML inventory and schema/reproducibility remain separately verified by runs 40072018648 and 40072283788 (30/30 articles).
+- No local npm/pytest command was run in this connector-only session; all reported test results above are GitHub Actions results.
+
+### Final branch and project status
+
+The default branch now includes the structure/architecture documentation, README/index navigation, NIKL capture-quality notes, corrected source-register provenance, and updated research acceptance/handoff. No production phonology, IPA mapping, lexical data, generated browser projection, vendor code, package version, licence terms or external repository settings were changed.
+
+The branch search still returns `main` and the stale merged `docs/repository-audit-and-navigation-2026-11-04` ref; comparison at the verified head showed the stale ref 17 commits behind and 0 ahead. No open PRs remain; issue #337 is still open for independent Korean IPA reviewer recruitment. Main is reported unprotected. No new branch was created; the connected GitHub actions did not expose a branch-delete operation, so exact one-ref branch hygiene remains incomplete.
+
+**Readiness:** deployment pipeline is green at d7c4, but the project remains a partial research prototype, not research-certified or release-ready. Independent Korean IPA gold, Ukrainian target review, NIKL page/item rights, clean NIKL capture authenticity, C12 context, historical 239-case reconciliation and remaining coverage/parity gates remain open.
