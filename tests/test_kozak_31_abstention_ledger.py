@@ -27,6 +27,10 @@ def test_all_31_unresolved_broad_queue_rows_have_individual_abstentions():
         assert row["production_action"] == "NO_CHANGE_PENDING_PRIMARY_SOURCE_AND_INDEPENDENT_IPA_REVIEW"
         assert row["independent_ipa_review_status"] == "NOT_PERFORMED"
         assert row["context_lookup_status"] == "FOUND"
+        assert row["source_context_text"]
+        assert row["source_context_canonical"]
+        assert row["source_context_phonemes"]
+        assert int(row["source_token_index"]) in json.loads(row["source_token_index_candidates"])
         assert row["source_corpus"] == "UGTPHON/ko/test.json"
         assert row["corpus_commit"] == "ef0d5a09c2ea1874c7206020f875cbd9cfea2f54"
         assert row["queue_blob_sha"] == "fc331b42bbfd31700892d1f7df04dcb8578461f5"
@@ -68,3 +72,12 @@ def test_31_row_abstentions_do_not_claim_to_be_the_historical_239_population():
     assert "37" not in ids and "704" not in ids and "2018" not in ids and "2031" not in ids
     assert "1140" not in ids
     assert all(row["decision"] == "ABSTAIN" for row in ledger)
+
+def test_repeated_source_tokens_keep_occurrence_specific_token_positions():
+    ledger = _rows(ROOT / "research/kozak-kim-31-row-individual-abstentions-2026-11-05.csv")
+    expected = {"1805": 16, "1816": 28, "1832": 45, "1843": 57, "1859": 74, "1870": 86}
+    by_id = {row["occurrence_id"]: row for row in ledger}
+    for occurrence_id, token_index in expected.items():
+        row = by_id[occurrence_id]
+        assert int(row["source_token_index"]) == token_index
+        assert token_index in json.loads(row["source_token_index_candidates"])
