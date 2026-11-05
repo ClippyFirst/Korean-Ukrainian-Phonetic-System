@@ -26,7 +26,7 @@ PINNED_INPUT_GIT_BLOB_SHA = {
     IDS_PATH: "f46f6760dde844a3e7cf9abe00dc74969f45eca8",
     SUPERSET_PATH: "e6c4843bbb9f1e3eb83527698880d4d60184c333",
     ABSTENTION_PATH: "de838dcdc247e1846e0e633766135b3a902f436b",
-    ADJUDICATION_PATH: "911d5392f087757ebd063902dbaa1d2f5bb9deb0",
+    ADJUDICATION_PATH: "6b174d07c34ed7dca070be772acacc94676fbb36",
 }
 
 def verify_git_blob(path: Path, expected_sha: str) -> None:
@@ -103,9 +103,9 @@ def build_rows(root: Path = ROOT) -> list[dict[str, str]]:
         elif case_adjudication and case_adjudication["decision"] == "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW":
             disposition = "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW"
             basis = case_adjudication["notes"]
-            reason = "HANGUL_SURFACE_EVIDENCE_NOT_IPA"
-            rationale = case_adjudication["notes"]
-            ipa_status = case_adjudication["independent_review_status"]
+            reason = abstention["reason_code"] if abstention else "HANGUL_SURFACE_EVIDENCE_NOT_IPA"
+            rationale = abstention["individual_rationale"] if abstention else case_adjudication["notes"]
+            ipa_status = abstention["independent_ipa_review_status"] if abstention else case_adjudication["independent_review_status"]
         elif abstention:
             disposition = "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW"
             basis = "Existing 31-row individual-abstention ledger; one of 22 cohort overlaps."
