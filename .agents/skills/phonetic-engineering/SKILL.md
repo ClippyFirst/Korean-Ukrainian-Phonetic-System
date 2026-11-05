@@ -134,3 +134,11 @@ Do not claim linguistic certification or release readiness until relevant gates 
 - exact-head CI, clean build/install, deployed browser smoke, and runtime parity for every advertised interface.
 
 When blocked, name the missing evidence, consequence, and acceptance criterion. Do not hide blockers behind a high test count.
+
+
+## NIKL rule ownership and baseline isolation
+
+- NIKL Standard Pronunciation Rules R001–R016 and their exact-form/morphological licenses belong exclusively to the Kozak Kim research/native engine.
+- The browser and Python g2pK adapters are independent baselines. Preserve raw pinned g2pK surface output and derive IPA from that surface; do not import Kozak Kim NIKL rules, lexical surface corrections, lexical IPA overrides, variant surfaces, or diagnostic-only lexical statuses.
+- Do not patch the vendored upstream g2pK code to make it agree with NIKL. Keep any Kozak Kim/NIKL correction in the Kozak Kim path with source IDs, exact environment, positive and negative tests, and trace provenance.
+- If a benchmark compares Kozak Kim with g2pK, identify which g2pK adapter/profile was used and never call the g2pK result normative gold.

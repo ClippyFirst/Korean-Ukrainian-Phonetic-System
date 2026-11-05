@@ -28,7 +28,7 @@ Current evidence gaps:
 - obtain independent Ukrainian phonetic/orthographic target review on frozen IPA inputs;
 - finish rule-level parity across browser, Python, CLI, and API where the current rule coverage matrix says it is incomplete;
 - crosswalk C12 mismatch rows to source utterances, audio, speakers, dialect and prosodic context before any production change;
-- recover and reconcile the historical 239 mismatch occurrences into a hash-pinned occurrence ledger; the current 36-row Broad queue is not a substitute;
+- reconcile the historical 239 Broad-v2 mismatch occurrences. This is a historical diagnostic population, not 239 confirmed production defects. The archived 1,266-row fragment export, 36-row current unmapped queue, 13 cluster rows, and 38 paired-discrepancy rows have different grains and are not interchangeable. A complete hash-pinned 239-occurrence ledger with source-context crosswalk, exact IPA profile, provenance and adjudication is still missing; do not mass-change production outputs or expected tests to force corpus agreement.
 - close remaining names, loanwords, Hanja and regional-style coverage gaps;
 - retain exact-head CI and deployment smoke evidence for each release candidate.
 
@@ -56,3 +56,10 @@ The metadata-first collector is available at `scripts/nikl-norm-crawler.mjs`; se
 ## Feature continuation — Korean Revised Romanization (2026-10-28)
 
 The RR audit view is being developed in [PR #354](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/354). See [the feature contract and evidence](../docs/KOREAN-ROMANIZATION-RR-2026-10-28.md), [the roadmap status](ROADMAP.md#korean-revised-romanization-audit-view--2026-10-28), and [the RR release gate](ACCEPTANCE-GATES.md#addendum--revised-romanization-feature-gate-2026-10-28). It is intentionally a parallel display from resolved surface Hangul; IPA remains the only source for the Ukrainian target. The implementation is partial until exact-head CI/browser checks and a complete source-backed NIKL RR conformance matrix pass.
+
+
+## 2026-11-05 — engine scope and mismatch continuation
+
+NIKL R001–R016 and their exact-form licenses belong exclusively to Kozak Kim. The ordinary browser and optional Python g2pK adapters now preserve raw g2pK surfaces and derive IPA without Kozak Kim NIKL or lexical overlays. This restores a genuinely independent comparison baseline; see `docs/G2PK-INTEGRATION-2026-10-15.md` and the current repository audit.
+
+The historical 239 Broad-v2 mismatch occurrences remain PARTIAL / EVIDENCE-LIMITED. They are not 239 proven engine bugs. The 36-row unmapped queue is a later, narrower extraction; the 1,266-row fragment export is a different occurrence/fragment grain. Each candidate correction needs the original source context, profile/normalization provenance, a defensible Korean pronunciation analysis, and a negative control before production promotion.

@@ -112,3 +112,14 @@ Record consequential linguistic, data, architecture, testing, licensing, and rel
 - **Affected files:** `LICENSE`, `docs/LICENSING-AND-PERMISSIONS.md`, `README.md`, `docs/README.md`, `docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md`, `research/ACCEPTANCE-GATES.md`.
 - **Validation:** File presence, links, scope wording and third-party carve-outs must be checked on the final branch head; no code/runtime behaviour is changed by this policy update.
 - **Revisit when:** The owner changes scientific-use scope, wants commercial/institutional licensing, accepts third-party contributions under additional terms, or requests a standard open-source licence.
+
+
+## 2026-11-05 — NIKL normative rules are exclusive to Kozak Kim
+
+- **Status:** accepted owner instruction; implemented and regression-tested on main.
+- **Context:** earlier g2pK adapters carried a small set of NIKL-backed surface corrections, lexical IPA overrides and variant/diagnostic overlays. This made the ordinary g2pK path dependent on Kozak Kim's normative evidence and weakened the independence of the comparison baseline.
+- **Decision:** NIKL Standard Pronunciation Rules R001–R016 and their exact-form/morphological licenses are owned exclusively by Kozak Kim. The browser and Python g2pK adapters must preserve the raw pinned g2pK Hangul surface and derive IPA from that surface without importing Kozak Kim NIKL rules, lexical surface corrections, IPA overrides, variant surfaces or diagnostic-only lexical statuses. The vendored upstream code is not modified.
+- **Implementation:** `src/app/g2pk_web.js` and `src/korean_ukrainian/g2pk_engine.py` now implement the isolated baseline; Kozak Kim retains its source-backed rule and lexical paths. Regression tests explicitly compare the two behaviors.
+- **Consequences:** ordinary g2pK output can differ from NIKL even where a source-backed Kozak Kim form is available. This is intentional; it is not a claim that g2pK is normatively correct. Compare the engines as separate systems and label the reference convention.
+- **Validation:** browser suite 1,393/1,393 PASS; Python 3.11/3.12/3.13, wheel installation, teacher-corpus audit, system verification and master artifacts PASS at implementation/test head `1869b8936c17077ac4fde308644d8588c132404c`. Live NIKL inventory was SKIPPED.
+- **Revisit/acceptance:** before changing this boundary, obtain explicit owner direction and add a separate engine/profile rather than silently reintroducing NIKL overlays into g2pK.

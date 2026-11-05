@@ -1,3 +1,19 @@
+## 2026-11-05 — NIKL scope isolation and historical mismatch gate
+
+**Verified implementation/test head:** `1869b8936c17077ac4fde308644d8588c132404c` (documentation continuation follows).
+
+- **DONE_VERIFIED — NIKL ownership:** R001–R016 and exact-form/morphological licenses remain in Kozak Kim's rule modules. The browser and Python g2pK adapters preserve the raw pinned g2pK surface and derive IPA without NIKL surface corrections, lexical IPA overrides, or NIKL variant overlays.
+- **DONE_VERIFIED — regression boundary:** browser g2pK tests assert raw-port surface parity; Python tests assert that source-backed and diagnostic-only Kozak Kim lexical entries do not leak into the g2pK adapter. Exact NIKL exceptions remain covered by Kozak Kim's own tests.
+- **DONE_VERIFIED — CI at 1869b:** browser suite 1,393/1,393 PASS; Python 3.11/3.12/3.13 PASS; wheel install, teacher-corpus audit, system browser/Python regression and master-table/corpus artifact jobs PASS. Live NIKL inventory job SKIPPED. Pages deployment was still running at this audit point and must be checked on the final documentation head.
+- **PARTIAL — NIKL coverage:** the machine-readable rule matrix contains 16 rule groups plus NIKL article inventory and IPA→Ukrainian mapping. The finite article audit covers 30 numbered articles (29 finite-example statuses verified; Article 1 not applicable), but it is not independent expert adjudication of every subparagraph or every lexical/morphological environment.
+- **PARTIAL / EVIDENCE-LIMITED — historical 239:** 239 historical Broad-v2 mismatch occurrences are not 239 confirmed software defects. The 36-row current unmapped queue, 1,266-row archived fragment export, 13 cluster rows and 38 paired-discrepancy rows are distinct data grains. Full source-context reconstruction and a hash-pinned 239-case adjudication ledger are still required.
+- **BLOCKED — independent evidence:** independent Korean IPA reviewers, independent Ukrainian target review, C12 context/acoustic crosswalk, item-level NIKL reuse rights and pristine capture authenticity remain open. The existing local NIKL HTML is retained; no fresh snapshot was created.
+- **DEFERRED — neural training:** do not train or claim supervised IPA quality until independent adjudicated IPA gold and corpus rights are available.
+
+**Execution rule:** fix only source-supported Korean phonology defects in Kozak Kim; keep the g2pK baseline independent; do not convert corpus disagreement into normative truth. Preserve abstentions when evidence is insufficient.
+
+---
+
 ## 2026-11-02 — Active continuation: Kozak Kim runtime parity
 
 1. **Finish exact-head verification.** Read the paired multi-engine CI artifact. Require matching Native/Browser IPA profile contract, stable occurrence IDs, and inspect surface/IPA parity. Do not claim 99.9% without the actual report.

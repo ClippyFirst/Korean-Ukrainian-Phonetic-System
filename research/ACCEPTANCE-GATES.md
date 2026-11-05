@@ -1313,3 +1313,21 @@ The documentation/source-register corrections are now verified on `main` at `d7c
 - Local NIKL HTML inventory remains 30/30; this does not close clean-capture authenticity, live HTTP/robots or page/item-level rights.
 
 **Project readiness remains partial research prototype.** Passing build, test and deployment checks do not close independent Korean IPA gold, Ukrainian target review, NIKL item-level rights, C12 acoustic/context evidence, historical mismatch reconciliation or coverage/parity gates.
+
+
+## 2026-11-05 — NIKL scope isolation and historical 239-case gate
+
+**Verified implementation/test head:** `1869b8936c17077ac4fde308644d8588c132404c`.
+
+| Gate | Status | Evidence / remaining acceptance |
+|---|---|---|
+| NIKL rule ownership | DONE_VERIFIED | R001–R016 remain in Kozak Kim. Browser and Python g2pK adapters preserve raw g2pK surfaces and do not consume NIKL surface/IPA/lexical overlays. |
+| Engine-separation regressions | DONE_VERIFIED | Browser suite 1,393/1,393 PASS; Python 3.11/3.12/3.13 PASS; wheel install and teacher-corpus audit PASS. See runs 41988633305, 41988633224 and 41988508104. |
+| Master/research artifact generation | DONE_VERIFIED | Run 41988633308 PASS. |
+| Live NIKL inventory | SKIPPED / BLOCKED | The current System Verify run skips the live metadata-only inventory. The existing local HTML inventory remains 30/30; no new NIKL snapshot was created. Item-level KOGL rights and pristine capture authenticity remain unresolved. |
+| Historical 239 Broad-v2 mismatches | PARTIAL / EVIDENCE-LIMITED | The 239 historical occurrence population is not a set of 239 confirmed defects. The 36-row queue and 1,266-row fragment export are different grains. Acceptance requires a hash-pinned occurrence ledger with full source context, profile/version provenance, expert adjudication, and an explicit fix/retain/abstain decision for every occurrence. |
+| Independent Korean IPA gold | BLOCKED | Two qualified independent reviewers and adjudication are still required. |
+| Ukrainian target review | BLOCKED | Independent Ukrainian phonetic/orthographic review remains required. |
+| C12 context and source rights | BLOCKED | Reconstruct speaker/context/acoustic crosswalk and complete item-level source-rights review. |
+
+**Readiness:** partial research prototype. Green software CI and engine-isolation tests do not certify pronunciation accuracy or release readiness.
