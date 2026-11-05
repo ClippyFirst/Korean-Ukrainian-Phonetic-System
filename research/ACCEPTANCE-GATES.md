@@ -1358,3 +1358,11 @@ The documentation/source-register corrections are now verified on `main` at `d7c
 | Complete historical 239-occurrence ledger | BLOCKED / EVIDENCE-LIMITED | The tracked 1,267-row fragment export, 36-row Broad queue, 13 clusters and 38 paired rows do not encode the exact historical 239 membership. The historical engine commit, normalizer version and full contexts for every occurrence are not recoverable from these artifacts alone. Acceptance requires the original 2026-11-02 benchmark occurrence artifact or an equivalent reproducible reconstruction pinned to its original report, source split and runner. No synthetic 239-row ledger has been created. |
 
 **Interpretation:** all 36 rows in the current narrow queue now have a recorded disposition (four fixes, one provisional retain, 31 abstentions). This does **not** complete or stand in for the separate historical 239-occurrence population, and it does not constitute independent Korean IPA adjudication.
+
+
+## 2026-11-05 follow-up — historical benchmark artifact recovery
+
+| Gate | Status | Evidence / acceptance |
+|---|---|---|
+| Recover original historical benchmark artifact | DONE_VERIFIED | Run 41471244424, head `4f3f307c5bb056bce3b0aedc8ab07e0010eaa695`, artifact 13156351613, SHA-256 `749ac9a2b9db96c1e27828919afe05ef4320e35ca6a91ab2038c1ff3e9d04c69`; report contains 2,703 occurrences × 10 engines and the pinned source/profile/normalizer metadata. See `kozak-kim-historical-239-recovery-manifest-2026-11-05.md`. |
+| Reconstruct exact 239-member population | BLOCKED / PREDICATE NOT REPRODUCED | The artifact and 1,267-row mismatch export do not carry the stable 239-member flag or complete fragment-to-C01–C10 assignment snapshot. Acceptance: reproduce exactly 239 stable IDs from the pinned artifact using the historical executable selection predicate; only then join context and adjudicate. |
