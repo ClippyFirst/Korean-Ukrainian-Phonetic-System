@@ -7,7 +7,7 @@ Research-grade, machine-readable framework for Korean → Ukrainian phonetic-gra
 - [Documentation index](docs/README.md) — canonical navigation for users, developers and researchers.
 - [Versioning policy](docs/VERSIONING-POLICY.md) — separate version streams for the private browser app and installable Python package.
 - [Repository structure guide](docs/REPOSITORY-STRUCTURE.md) — current component map, data ownership, runtime entry points, development commands and safe navigation.
-- [Repository audit and structure (2026-11-04)](docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — dated audit snapshots and the latest superseding repository-state addendum.
+- [Repository audit and structure — latest 2026-11-05 addendum](docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — dated audit snapshots and the current exact-head status.
 
 ## Author, licensing and permissions
 
@@ -123,7 +123,7 @@ The public GitHub Pages service now uses a browser-only, vendored subset adapted
 
 `Hangul input → JS G2P surface spelling → project IPA conversion → IPA-to-Ukrainian mapping`.
 
-The browser preserves Latin text, digits, punctuation, and whitespace. The practical mode passes Korean-bearing spans through the pinned JavaScript port with `descriptive: false`, `groupVowels: false`, and `toSyl: true`, then applies exact-form NIKL-backed Korean-surface corrections before IPA for `값어치`, `넓죽하다`, `넓둥글다`, `넓적하다`, `읽고`, and `싫어서`; the dictionary reading for the exact form `수많은` is also preserved as `수마는` with lexical length `ː` retained in inspectable IPA and explicitly reported in the per-syllable target feature-loss trace. For `멋있어`, the adapter may expose the other official surface variant only when the current surface is one of NIKL's two attested readings and the alternative IPA-to-target mapping is fully supported; generated alternatives are marked `lexical-review`, not gold. The vendored port and its raw-output regression fixture remain unchanged so upstream divergences stay inspectable. No general phonological override is inferred from these forms, and the Ukrainian target is still generated from IPA rather than directly from Hangul. The separate **Research mode** continues to use the project's native evidence-gated engine and research lexicon.
+The browser preserves Latin text, digits, punctuation, and whitespace. Practical mode passes Korean-bearing spans through the pinned JavaScript g2pK port and derives IPA from its raw Hangul surface. It does not apply NIKL rule licenses, Kozak Kim lexical surface corrections, lexical IPA overrides, or NIKL pronunciation variants. NIKL R001–R016 and their exact-form/morphological licenses belong exclusively to Kozak Kim's research engine. This keeps g2pK an independent comparison baseline; the Ukrainian target is still generated from IPA, never directly from Hangul.
 
 **Important limitation:** the JavaScript port implements rule-based G2P and idiom handling, but does not reproduce the original Python g2pK's MeCab-based morphological analysis. It is therefore a browser-compatible reference engine, not a claim of exact parity with Python g2pK on morphology-dependent homographs. Those cases must be covered by source-backed lexical controls and adversarial regression tests.
 
@@ -137,7 +137,7 @@ A clean installation can therefore render IPA sequences covered by local corresp
 
 **Native IPA status contract:** `phoneticize_korean()` and `transliterate_korean()` expose `ipa_status`, `ipa_is_diagnostic_only`, and `ipa_status_reason` at the analysis root and mirror equivalent `status`, `is_diagnostic_only`, and `status_reason` fields inside the IPA object. When a source/morphology-dependent context cannot be resolved, the IPA string remains available for inspection but is explicitly marked `diagnostic_only_unresolved_pronunciation`; Ukrainian target selection is blocked and the rendered target is `null`. Otherwise the result is `provisional`, not expert-adjudicated gold. Consumers must check the status fields rather than treating the presence of an IPA string as proof of a resolved pronunciation.
 
-The Python package, CLI, and optional FastAPI backend can still use the original pinned g2pK engine. Its MeCab binding is tested on Python 3.11/3.12; on Python 3.13/3.14, use the native engine or a separate 3.11/3.12 environment. Install with `python -m pip install -e ".[g2pk]"`, then run `korean-ua analyze "넋이 굳이" --pronunciation-engine g2pk`. The native Python engine remains the default unless g2pK is explicitly selected; missing dependencies never trigger a silent fallback.
+The Python package, CLI, and optional FastAPI backend can use the original pinned g2pK engine as an optional pronunciation provider. The g2pK adapter returns the engine's surface spelling and derives project IPA from it; it does not import Kozak Kim's NIKL lexical, surface, IPA, or diagnostic-status overlays. Install with `python -m pip install -e ".[g2pk]"`, then run `korean-ua analyze "넋이 굳이" --pronunciation-engine g2pk`. The native Kozak Kim Python engine remains the default unless g2pK is explicitly selected; missing dependencies never trigger a silent fallback.
 
 Both runtimes preserve the same methodological boundary: the Ukrainian target is generated from IPA, never by a parallel Hangul-to-Ukrainian substitution. See [the Python integration and validation boundary](docs/G2PK-INTEGRATION-2026-10-15.md).
 
@@ -264,13 +264,13 @@ Missing evidence is not converted into a fabricated one-to-one correspondence.
 
 **Research layer:** a tested research prototype with source-backed rule coverage, but incomplete independent IPA and target-language validation.
 
-**Web layer:** a technically deployed research preview. Practical mode uses the pinned JavaScript g2pK port plus seven exact-form NIKL-backed Korean-surface corrections applied before IPA, a dictionary length overlay for `수많은`, and a conditional `멋있어` variant candidate; the raw port remains independently regression-tested. Other outputs may still diverge from the standard, and neither IPA nor Ukrainian adaptation has an independent full gold set. The public UI states these limitations. The main deployment workflow now HTTP-smoke-tests the public index, methodology page, and JavaScript asset, then runs headless Chromium against the repository's 1,443-character adversarial Korean passage. This verifies live interaction and output presence, not normative pronunciation accuracy; a different user-supplied passage remains a separate acceptance input.
+**Web layer:** a technically deployed research preview. Practical mode uses the pinned JavaScript g2pK port without NIKL or Kozak Kim overlays; its raw surface is independently regression-tested and passed to the shared IPA/target adapter. Kozak Kim's research modes own the project's NIKL rule inventory and evidence-scoped licenses. Neither mode has an independently adjudicated full IPA gold set or completed Ukrainian target review. The public UI states these limitations. The deployment workflow HTTP-smokes the public pages and runs headless Chromium; this verifies interaction and output presence, not normative pronunciation accuracy.
 
 Neither layer claims official Ukrainian standardisation, exhaustive lexical attestation, acoustic narrow-IPA validation or independent expert adjudication without the corresponding evidence.
 
 ## License / attribution
 
-The repository currently has **no root-level project-wide LICENSE file**. Do not infer a license for project-authored code or data from third-party notices. The vendored browser g2pK-derived code is attributed and its Apache-2.0 license is bundled in public/THIRD_PARTY_NOTICES.txt and public/LICENSES/Apache-2.0.txt. A project-wide license remains an owner decision.
+The repository includes a root-level [ClippyFirst Project License](LICENSE), version 1.0 (2026). It is a purpose-limited custom licence, not an OSI-approved open-source licence; it does not replace third-party licences or establish reuse rights for external corpora and source extracts. See [licensing and permissions](docs/LICENSING-AND-PERMISSIONS.md).
 
 
 ### Surface regression source adjudication (2026-10-21)

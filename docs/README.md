@@ -6,7 +6,7 @@ This page is the entry point for project documentation. It distinguishes current
 
 1. [Project README](../README.md) — product overview, installation entry points, public service, runtime modes and limitations.
 2. [Repository structure guide](REPOSITORY-STRUCTURE.md) — current component map, data ownership, runtime entry points, development commands and safe navigation.
-3. [Repository audit and structure](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — dated audit snapshots and latest superseding repository-state addendum.
+3. [Repository audit and structure](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — dated snapshots; latest addendum 2026-11-05, including engine isolation and historical mismatch blockers.
 4. [Versioning policy](VERSIONING-POLICY.md) — independent browser and Python release streams.
 5. [Architecture](architecture.md) — concise system architecture.
 6. [Methodology](methodology.md) — linguistic and engineering methodology.
@@ -29,7 +29,7 @@ This page is the entry point for project documentation. It distinguishes current
 | Korean phonology | `korean-phonology.md`, `KOREAN-IPA-CONVENTION-REVIEW-2026-10-26.md`, `NATIVE-ENGINE-UNRESOLVED-CASES-2026-10-24.md` | Source phonology, IPA conventions and unresolved contexts |
 | Evidence and rights | `evidence.md`, `METHODOLOGY-CLAIMS-AND-EVIDENCE-REGISTER-2026-10-30.md`, `NIKL-LOCAL-CAPTURE-AND-INVENTORY-2026-10-24.md` | Provenance, claim scope, licensing and source limitations |
 | Benchmarks | `KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md`, `BENCHMARK-REVIEW-2026-10-24.md`, `MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md` | Benchmark definitions, results and interpretation |
-| Kozak Kim | `KOZAK-KIM-DISCREPANCY-DRIVEN-IMPROVEMENT-2026-11-01.md` and matching files in `research/` | Recent discrepancy-driven research, parity and candidate analysis |
+| Kozak Kim | `KOZAK-KIM-DISCREPANCY-DRIVEN-IMPROVEMENT-2026-11-01.md`, `../research/RULE-COVERAGE.csv`, `../research/kozak-kim-unmapped-mismatch-review-queue-2026-11-03.csv`, and the historical mismatch triage report | NIKL R001–R016 implementation, discrepancy evidence, and source-gated review queue; do not equate diagnostic mismatches with confirmed defects |
 | Agent workflows | `AGENT-SKILL-INTEGRATION-2026-11-01.md`, `AGENT-SKILLS-NIKL.md`, `../.agents/skills/` | Repository-local agent skills and operating contracts |
 | Historical audits | `audits/` and dated top-level audit documents | Point-in-time audit evidence; not automatically current |
 | Design plans | `superpowers/specs/`, `superpowers/plans/`, `superpowers/ledger.md` | Design history and implementation ledger |

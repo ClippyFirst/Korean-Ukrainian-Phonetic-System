@@ -30,7 +30,7 @@ The Ukrainian target must be derived from the IPA/typed phonetic result. A paral
 - Target mapping: `src/app/engine_ipa.js` and the generated browser projection `src/app/ipa_target_data.js`; canonical source tables remain under `data/korean/`.
 - RR and Hanja: `src/app/romanization.js` and `src/app/hanja.js`, rendered as separate information.
 
-The browser port is not a claim of exact parity with Python g2pK's MeCab-dependent morphology. Preserve the documented limitations and explicit profile selection.
+The browser port is not a claim of exact parity with Python g2pK's MeCab-dependent morphology. Preserve the documented limitations and explicit profile selection. Both browser and Python g2pK adapters preserve the pinned external engine's surface output and derive IPA from it; they do not consume Kozak Kim NIKL rule licenses, lexical surface corrections, lexical IPA overrides, or unresolved lexical statuses. The NIKL R001–R016 implementation and exact-form licenses are scoped exclusively to Kozak Kim.
 
 ### Python package, CLI and API
 

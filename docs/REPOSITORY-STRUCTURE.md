@@ -1,12 +1,12 @@
 # Repository structure and ownership guide
 
-**Snapshot:** 2026-11-05, starting main commit `c1feae5fcc9e743ac7fba660221ad229b4ccf2ff`. This guide describes the observed tree and stable ownership boundaries; it is not a claim that every file has been independently reviewed line by line.
+**Snapshot:** 2026-11-05, audit continuation from main code/test head `1869b8936c17077ac4fde308644d8588c132404c`. This guide describes the observed tree and stable ownership boundaries; it is not a claim that every file has been independently reviewed line by line.
 
 ## What this repository contains
 
 A Python research package, a browser-based practical/research application, Korean phonology and lexical datasets, a Korean-to-Ukrainian IPA target layer, reproducible research tooling, and a public GitHub Pages service.
 
-The recursive Git tree contained **797 entries** (files plus directories), including **162 Markdown files**, **391 test files**, **61 scripts**, **18 GitHub Actions workflows**, and **13 schemas**. These counts are a point-in-time inventory and will change as research material is added.
+The recursive Git tree contained **798 entries** (files plus directories), including **392 test files**, **62 scripts**, **18 GitHub Actions workflows**, and **14 schemas**. The current documentation tree contains 145 entries. These are point-in-time inventory counts; see the latest audit addendum for the exact head and CI snapshot.
 
 ## Top-level map
 
@@ -92,8 +92,13 @@ The project already has domain-specific skills in `.agents/skills/` and an integ
 
 ## Known audit boundaries at this snapshot
 
-- `main` is the default branch; the repository also has one stale merged documentation branch with no unique commits, so the branch count is not yet literally one.
+- `main` is the default branch and is the only branch currently returned by the branch inventory. No open PRs were found at the audit snapshot.
 - The main branch was reported as unprotected by GitHub repository metadata. No branch-protection or ruleset settings were changed.
-- At starting head `c1feae5...`, Pages timed out while GitHub reported `updating_pages`; the later exact-head deployment at `d7c4c539ae751ee9feda2aba9c5806cc6968ce55` succeeded, including HTTP and live browser smoke. See the latest repository audit addendum.
+- The latest exact-head CI before this continuation passed browser/Python regression, build, generated artifacts and Pages deployment. This continuation adds a fresh exact-head verification; see the audit addendum.
 - The NIKL local HTML inventory is structurally complete (30/30) but page-level reuse terms and capture authenticity are not established.
 - Independent Korean IPA and Ukrainian target review remain external acceptance gates.
+
+
+## NIKL rule ownership boundary
+
+NIKL Standard Pronunciation Rules R001–R016 and exact-form/morphological licenses are implemented in Kozak Kim's research/native rule modules (`src/app/engine_rules_ctx.js`, `src/korean_ukrainian/rules.py`, canonical `data/korean/rules.csv`, and `research/RULE-COVERAGE.csv`). The browser and Python g2pK adapters are isolated baselines: they preserve raw g2pK surface output and derive IPA without Kozak Kim NIKL rule, lexical surface, or IPA overlays. Do not move NIKL licenses into `src/vendor/g2pk/` or either g2pK adapter. The existing user-supplied `한국어 어문 규범.htm` is retained; this continuation does not create a fresh NIKL snapshot.
