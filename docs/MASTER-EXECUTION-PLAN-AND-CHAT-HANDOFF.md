@@ -1,11 +1,12 @@
-## 2026-11-05 — Independent evidence update: nine confirmed, ten named evidence-limited abstentions
+## 2026-11-05 — Independent evidence update: ten resolved, ten named evidence-limited abstentions
 
 **Branch:** `research/236-candidate-review-2026-11-05` (single continuing working branch). **PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436), draft/open. The reconstructed 236-row baseline is retained unchanged.
 
 ### Current disposition
 
 - **Nine RULE_CONFIRMED_STANDARD_VARIANT occurrences:** IDs 341 (그놈의), 826 (유사성), 1140 (출산), 1406 (팔자걸음), 1527 (보일거라), 2001 (물가로), 2010 (혐오증), 2490 (머리속에 → 머릿속에), and 2533 (안할듯).
-- **22 ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW; 205 NOT_INDIVIDUALLY_ADJUDICATED; zero pending RETAIN.** Thus 227 occurrences remain unresolved. Historical membership is reconstructed from pinned replay, not proven original-selector membership.
+- **One PROFILE_CONVENTION_MISMATCH_CONFIRMED occurrence:** ID 2562 (정신병자네). The current engine applies the exact NIKL §28/R014 license `신>병`, producing `정신뼝자네`; the official dictionary attests `정신병자[정신뼝자]`. The remaining `ɕ` vs `/s/` is a broad-vs-narrow profile difference in the `신` + ㅣ environment: broad `/s/` is canonical and `[ɕ]` remains a research-only optional variant. This closes the historical benchmark mismatch without claiming acoustic IPA gold or generalizing ㄴ+ㅂ fortition.
+- **22 ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW; 205 NOT_INDIVIDUALLY_ADJUDICATED; zero pending RETAIN.** Thus **226 occurrences remain unresolved**. Historical membership is reconstructed from pinned replay, not proven original-selector membership.
 - ID 826: the official NIKL Korean Basic Dictionary entry 70710 directly gives 유사성[유ː사썽]. In 장르의 유사성 the source /s͈/ matches this exact lexical reading, while Kozak /s/ does not. This does not establish a productive -성 rule.
 - ID 2490: the source sentence uses 머리속에 in the figurative sense 'in one's mind'. Korean-language professor Kim Nam-mi explicitly attests 머릿속[머리쏙]. The comparator's /s͈/ is supported for this exact lexical form; Kozak /s/ is not. The corpus spelling omits the standard 사이시옷. Expert lexical attestation only; no audio/IPA reviewer or production change.
 - ID 78 (오조오억배) remains ABSTAIN. The 2025 full-text study Kim & Hong tests 기억–기역 and 보안–보완 within-word vowel sequences, not 오억 or numeral compounds; its 보완 analysis emphasizes longer preservation of /o/ rounding rather than a clearly independent /w/ gesture. No located study directly tests the candidate's /o.ʌ/ numeral boundary.
@@ -19,7 +20,7 @@
 - IDs 257, 813 and 853 (체험): remain abstained; 험 contains ㅓ, so the Rule 5 diphthong argument for ㅕ does not apply. IDs 813 and 853 repeat in one source row.
 - IDs 293, 538 and 1206 (sibilant cases): remain abstained; Hangul readings do not decide broad IPA [s] vs [ɕ]. Newly reviewed acoustic literature is context- and speaker-sensitive; it does not adjudicate these exact recordings.
 - IDs 1816, 1843 and 1870 (연전연패): remain abstained; n-insertion is variable and no word-specific evidence was found. Repeated occurrences in one source row are not independent speakers.
-- These are normative rule/lexical/expert-reference adjudications, not token-specific acoustic IPA gold. No production IPA, Ukrainian target, benchmark gold, or runtime rule changed.
+- These are normative rule/lexical/expert-reference adjudications plus one broad-vs-narrow profile-convention resolution, not token-specific acoustic IPA gold. No production IPA, Ukrainian target, benchmark gold, or runtime rule changed.
 
 ### Evidence and verification
 
@@ -31,7 +32,7 @@
 - These nine are normative rule/lexical/expert-reference confirmations, not token-specific acoustic IPA gold. No individual speaker recording has been independently adjudicated.
 - The generator pins the adjudication register blob; the checked-in candidate CSV must equal deterministic generator output. GitHub Actions exact-head verification is required after these commits. Local pytest/npm were not run in this connector-only session.
 
-**Current interpretation:** baseline inventory 236; nine source-supported standard-form adjudications; active unresolved occurrences 227. Overall readiness remains a partial research prototype, not research-certified or release-ready.
+**Current interpretation:** baseline inventory 236; nine standard-form adjudications plus one profile-convention resolution; active unresolved occurrences 226. Overall readiness remains a partial research prototype, not research-certified or release-ready.
 
 ---
 
