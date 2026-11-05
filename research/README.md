@@ -67,7 +67,7 @@ The historical 239 Broad-v2 mismatch occurrences remain PARTIAL / EVIDENCE-LIMIT
 
 ## 2026-11-05 follow-up — context-recovered R013 cases
 
-The historical **239** figure is the 2026-11-02 population of Broad-v2 mismatch occurrences whose fragments had not yet been assigned to C01–C10 candidate families. It is not the current count of unresolved production defects. Subsequent cluster work (including C11 and C12) reclassified substantial portions; the later **36-row** unmapped review queue is a narrower extraction and has a different grain. Do not treat 239, 36, 1,266 fragment rows, 13 cluster rows, or 38 paired-discrepancy rows as interchangeable.
+The historical **239** figure is the 2026-11-02 population of Broad-v2 mismatch occurrences whose fragments had not yet been assigned to C01–C10 candidate families. It is not the current count of unresolved production defects. Subsequent cluster work (including C11 and C12) reclassified substantial portions; the later **36-row** unmapped review queue is a narrower extraction and has a different grain. Do not treat 239, 36, 1,267 fragment rows, 13 cluster rows, or 38 paired-discrepancy rows as interchangeable.
 
 Using the pinned `naver-ai/UGTPHON:ko/test.json` source at commit `ef0d5a09c2ea1874c7206020f875cbd9cfea2f54`, four exact same-eojeol forms now have source-context-backed NIKL §27 licenses in Kozak Kim only: `해줄것`, `많을거같이`, `내릴수있는`, and `존중시킬수도있지만`. The context/decision register is [`kozak-kim-context-adjudication-2026-11-05.csv`](kozak-kim-context-adjudication-2026-11-05.csv). The UGTPHON Broad-v2 IPA is a comparator, not normative gold; the NIKL rule supplies the phonological basis. Browser/Python tests cover the exact forms, full source sentences, negative controls, and g2pK isolation.
 
