@@ -6,7 +6,7 @@
 
 A Python research package, a browser-based practical/research application, Korean phonology and lexical datasets, a Korean-to-Ukrainian IPA target layer, reproducible research tooling, and a public GitHub Pages service.
 
-The recursive Git tree contained **798 entries** (files plus directories), including **392 test files**, **62 scripts**, **18 GitHub Actions workflows**, and **14 schemas**. The current documentation tree contains 145 entries. These are point-in-time inventory counts; see the latest audit addendum for the exact head and CI snapshot.
+The recursive Git tree contained **798 entries** (files plus directories), including **163 Markdown files**, **388 test files**, **61 scripts**, **18 GitHub Actions workflows**, and **13 schemas**. The current documentation tree contains 144 entries. These are point-in-time inventory counts; see the latest audit addendum for the exact head and CI snapshot.
 
 ## Top-level map
 

@@ -354,7 +354,7 @@ The branch search still returns `main` and the stale merged `docs/repository-aud
 - Verified implementation/test head: `1869b8936c17077ac4fde308644d8588c132404c`.
 - Documentation commits: `0c6fb7f0148fae8daa597b368a442a71481fb1b3` and `f26601b0206c209f231396d630dbd69b039ee029`; this audit/handoff refresh follows them.
 - Branch inventory: `main` only; open PRs: 0. No new branch was created, preserving the requested single-branch repository state.
-- Recursive tree: 798 entries (files plus directories); `docs/` 145 entries; `tests/` 392 entries; `scripts/` 62 entries; `schemas/` 14 entries; 18 GitHub Actions workflows.
+- Recursive tree: 798 entries (files plus directories); `docs/` 144 entries; `tests/` 388 files; `scripts/` 61 files; `schemas/` 13 files; 18 GitHub Actions workflows.
 - Recent merged work was reconciled against main, including PR #434 (documentation/licensing/navigation) and PR #433 (g2pK/Kozak separation). No open PR was left unreviewed.
 - The audit reviewed the recursive path inventory, existing architecture and structure guides, master handoff, acceptance gates, roadmap, source/rule matrices, NIKL and Kozak Kim discrepancy registers, g2pK integration boundary, core rule/phonology/IPA adapters, key test suites, CI workflows, recent PRs and recent commits. This is an evidence-based whole-tree audit, not a claim of manual line-by-line review of all 798 tree entries.
 
