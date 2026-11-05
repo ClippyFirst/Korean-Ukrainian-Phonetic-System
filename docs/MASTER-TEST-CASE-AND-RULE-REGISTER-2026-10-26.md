@@ -2,7 +2,7 @@
 
 The research-only 236-candidate ledger adds two focused regression surfaces:
 
-- `tests/test_kozak_236_candidate_review.py` checks the 239-ID replay joins to the pinned 370-row context superset, three known FIX overlaps are excluded, exactly 236 unique occurrences remain, dispositions are 213 not individually adjudicated / 22 ABSTAIN / 1 provisional RETAIN, source context/provenance fields are populated, the 254 Broad edits/24 signatures (including 184 lenis and 24 fortis sibilant operations) and historical-only C11/C04 tag counts are stable, and the checked-in CSV matches the deterministic generator.
+- `tests/test_kozak_236_candidate_review.py` checks the 239-ID replay joins to the pinned 370-row context superset, three known FIX overlaps are excluded, exactly 236 unique occurrences remain, dispositions are 213 not individually adjudicated / 22 ABSTAIN / 1 provisional RETAIN, source context/provenance fields are populated, the 254 Broad edits/24 signatures (including 184 lenis and 24 fortis sibilant operations), the S018 p.31 Hangul environment crosswalk and historical-only C11/C04 tag counts are stable, and the checked-in CSV matches the deterministic generator.
 - `tests/test_source_register_integrity.py::test_s018_korean_ipa_source_matches_cambridge_primary_bibliographic_metadata` checks S018's corrected Hyun Bok Lee (1993) citation and the matching Cambridge source-register row.
 
 These tests validate inventory reproducibility and bibliographic identity only. They do **not** adjudicate the 236 pronunciations, certify IPA-Dict/Broad-v2 as gold, validate Ukrainian targets, or license a production phonological change. The 236 remain a research review queue, not 236 confirmed defects.

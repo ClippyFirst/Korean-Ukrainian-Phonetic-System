@@ -102,3 +102,14 @@ def test_236_lenis_sibilant_operations_map_to_lee_1993_page_31_environment():
     assert {row["occurrence_id"] for row, count, _, _ in lenis_rows if count == 2} == {"103"}
     assert len({row["token"] for row, _, _, _ in lenis_rows}) == 110
     assert len({row["source_row_id"] for row, _, _, _ in lenis_rows}) == 91
+
+
+def test_fortis_sibilant_cases_are_not_promoted_by_s018_lenis_scope():
+    rows = MODULE.build_rows(ROOT)
+    fortis_context_ids = set()
+    for row in rows:
+        fragments = json.loads(row["broad_mismatch_fragments"])
+        fortis_count = sum(item["reference_fragment"] == "ɕ͈" and item["kozak_fragment"] == "s͈" for item in fragments)
+        if fortis_count and _s018_hangul_sibilant_contexts(row["token"]):
+            fortis_context_ids.add(row["occurrence_id"])
+    assert fortis_context_ids == {"481", "551"}
