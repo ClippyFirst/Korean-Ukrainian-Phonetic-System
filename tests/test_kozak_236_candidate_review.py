@@ -16,8 +16,8 @@ def test_reconstructed_236_review_ledger_has_exact_membership_and_statuses():
     assert len({row["occurrence_id"] for row in rows}) == 236
     assert Counter(row["candidate_disposition"] for row in rows) == {
         "NOT_INDIVIDUALLY_ADJUDICATED": 28,
-        "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 15,
-        "RULE_CONFIRMED_STANDARD_VARIANT": 12,
+        "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 12,
+        "RULE_CONFIRMED_STANDARD_VARIANT": 15,
         "PROFILE_CONVENTION_MISMATCH_CONFIRMED": 181,
     }
     assert all(row["historical_membership_confidence"] ==
@@ -605,3 +605,18 @@ def test_jeonggweon_uses_exact_dictionary_attestation_with_nikl_morpheme_corrobo
     assert "does not establish a productive rule" in row["candidate_disposition_basis"]
     assert row["prior_individual_reason_code"] == "UNMAPPED_FRAGMENT_AND_NO_INDEPENDENT_IPA_GOLD"
     assert row["prior_independent_ipa_review_status"] == "NOT_PERFORMED"
+
+
+def test_yeonjeonyeonpae_compound_uses_nikl_rule_29():
+    rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
+    for occurrence_id in ("1816", "1843", "1870"):
+        row = rows[occurrence_id]
+        assert row["token"] == "연전연패"
+        assert row["source_row_id"] == "dc_inside_2227"
+        assert row["candidate_disposition"] == "RULE_CONFIRMED_STANDARD_VARIANT"
+        assert "Rule 29" in row["candidate_disposition_basis"]
+        assert "연전년패" in row["candidate_disposition_basis"]
+        assert "SRC-NIKL-QNA-322807" in row["candidate_disposition_basis"]
+        assert "SRC-NIKL-QNA-327019" in row["candidate_disposition_basis"]
+        assert row["prior_individual_reason_code"] == "UNMAPPED_FRAGMENT_AND_NO_INDEPENDENT_IPA_GOLD"
+        assert row["prior_independent_ipa_review_status"] == "NOT_PERFORMED"
