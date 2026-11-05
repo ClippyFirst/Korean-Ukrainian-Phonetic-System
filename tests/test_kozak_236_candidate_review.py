@@ -383,7 +383,7 @@ def test_mental_patient_occurrence_is_closed_by_exact_r014_and_broad_profile_evi
     assert row["candidate_disposition"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
     assert "정신병자[정신뼝자]" in row["candidate_disposition_basis"]
     assert "R014:compound:정신병자네:신>병" in row["candidate_disposition_basis"]
-    assert "broad profile /s/ canonical" in row["candidate_disposition_basis"]
+    assert "keeps lenis /s/ canonical" in row["candidate_disposition_basis"]
     assert "not a demonstrated phonemic error" in row["candidate_disposition_basis"]
 
     current = phoneticize_korean("정신병자네")
@@ -457,9 +457,9 @@ def test_lenis_sibilant_profile_mismatches_are_limited_to_supported_high_front_c
 def test_rule_13_resyllabified_lenis_sibilants_are_profile_not_phonemic_mismatches():
     rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
     expected = {
-        "475": ("것이냐", "것이", "copular 이냐"),
-        "2392": ("저딴짓이면서", "짓이", "copular 이면서"),
-        "2667": ("법알못이구만", "못이", "copular 이구만"),
+        "475": ("것이냐", "것이", "이냐"),
+        "2392": ("저딴짓이면서", "짓이", "이면서"),
+        "2667": ("법알못이구만", "못이", "이구만"),
     }
     for occurrence_id, (token, boundary, morphology) in expected.items():
         row = rows[occurrence_id]
@@ -468,6 +468,7 @@ def test_rule_13_resyllabified_lenis_sibilants_are_profile_not_phonemic_mismatch
         assert row["prior_individual_reason_code"] == "BROAD_VS_NARROW_PROFILE_CONVENTION_MISMATCH"
         assert boundary in row["candidate_disposition_basis"]
         assert morphology in row["candidate_disposition_basis"]
+        assert "copular" in row["candidate_disposition_basis"]
         assert "Rule 13" in row["candidate_disposition_basis"]
         assert "Kang (2010)" in row["candidate_disposition_basis"]
         assert "not a demonstrated phonemic error" in row["candidate_disposition_basis"]
