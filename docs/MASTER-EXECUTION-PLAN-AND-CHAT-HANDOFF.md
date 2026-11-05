@@ -1,28 +1,30 @@
-## 2026-11-05 — Independent evidence update: first rule-backed resolution
+## 2026-11-05 — Independent evidence update: two rule-backed resolutions
 
-**Branch:** `research/236-candidate-review-2026-11-05` (same working branch; no parallel branch created). **PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436), still draft/open. This entry supersedes the initial 236-candidate disposition counts below while preserving that original baseline.
+**Branch:** `research/236-candidate-review-2026-11-05` (same working branch; no parallel branch created). **PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436), still draft/open. This entry supersedes the initial 236-candidate disposition counts below while preserving the original baseline.
 
 ### Adjudication outcome
 
-- The baseline review inventory remains 236 rows. **ID 341 (`그놈의`) is now `RULE_CONFIRMED_STANDARD_VARIANT` under NIKL Standard Pronunciation Rule 5**, leaving **235 active unresolved occurrences**.
-- The canonical context is `그놈의 짱개타령`; `의` is the genitive particle. NIKL distinguishes non-initial lexical `의` (where [i] is permitted) from genitive-particle `의` (where [e] is an accepted variant alongside the principal [ɯi]). The source comparator [e] is normatively supported; Kozak [i] is not the rule's listed particle variant. The source's raw surface is `그노믜`, but the pinned canonical token is `그놈의`. This closes the standard-pronunciation mismatch only; it is **not** an acoustic judgment of the individual speaker.
-- Current counts: 213 no individual disposition; 21 prior ABSTAIN cases remain unresolved; one provisional RETAIN remains pending independent IPA review; one rule-confirmed standard variant. Historical 236 membership remains reconstructed, not original-selector proof.
-- The three repeated `연전연패` occurrences (IDs 1816, 1843, 1870) remain abstained. NIKL Rule 29 is relevant, but Jun (2015) finds Korean n-insertion variable and does not provide item-specific evidence for this word; the complete underlying word list is unavailable. The three repeats share one source row and are not independent speaker/audio samples.
-- The context-adjudication register now records the confirmed variant and the explicit n-insertion abstention. The generator consumes rule-confirmed adjudications, preserves the historical ABSTAIN rationale, and pins the updated adjudication-register Git blob. The generated CSV and regression test expectations are updated.
+- The baseline review inventory remains 236 rows. **Two occurrences are now `RULE_CONFIRMED_STANDARD_VARIANT`: ID 341 (`그놈의`) and ID 2001 (`물가로`)**. The active unresolved count is **234**.
+- **ID 341 — `그놈의`:** NIKL Standard Pronunciation Rule 5 distinguishes non-initial lexical `의` (where [i] is permitted) from the genitive particle `의` (where [e] is an accepted variant alongside the principal [ɯi]). The canonical context makes `의` the genitive particle. The source comparator [e] is normatively supported; Kozak [i] is not the rule's listed particle variant. Raw surface `그노믜` normalizes to canonical `그놈의`. This closes the standard-variant mismatch only; it is not an acoustic judgment of the individual speaker.
+- **ID 2001 — `물가로`:** the official NIKL Moscow educational PDF explicitly gives `물가[물까]` in the sense “price of goods” and contrasts `결과[결과]`. The source says these fortitions are irregular and must be learned individually. The candidate context is the price sense; `로` attaches to `물가` without changing the lexical fortis onset. This supports the comparator's `k͈` over Kozak's `ɡ`. It is an exact lexical license, not a general `ㄹ+ㄱ` rule.
+- Current counts: 212 no individual disposition; 21 prior ABSTAIN cases remain unresolved; one provisional RETAIN remains pending independent IPA review; two rule-confirmed standard variants. Historical 236 membership remains reconstructed, not original-selector proof.
+- The three repeated `연전연패` occurrences (IDs 1816, 1843, 1870) remain abstained. NIKL Rule 29 is relevant, but Jun (2015) finds n-insertion variable and does not provide item-specific evidence for this word; the complete underlying word list is unavailable. The three repeats share one source row and are not independent speaker/audio samples.
+- The context-adjudication register records both resolutions and the explicit n-insertion abstention. The generator consumes rule-confirmed adjudications, preserves historical disposition fields, and pins the updated adjudication-register Git blob. The generated CSV and regression expectations are updated.
 - No production phonology, IPA gold, Ukrainian target, or benchmark baseline changed.
 
 ### Evidence and verification
 
-- Official NIKL Standard Pronunciation Rule 5 and NIKL online Q&A 334585 were checked on 2026-11-05. Rule 5's explanation explicitly distinguishes [i] in non-initial lexical `의` from [e] for the genitive particle.
+- Official NIKL Standard Pronunciation Rule 5 and NIKL online Q&A 334585 were checked on 2026-11-05.
+- The official NIKL educational PDF's example (25)(a) gives `물가[물까]` (“price of goods”) and the negative control `결과[결과]`; its text explicitly warns that these cases are irregular.
 - Jun (2015), *Korean n-insertion: a mismatch between data and learning*, DOI 10.1017/S0952675715000275, was checked through the paper abstract and available PDF extraction. It supports variable n-insertion but does not itemize `연전연패`.
-- The evidence-gated closure is limited to one normative standard-variant case. No claim is made that any of the 236 cases has token-specific acoustic IPA confirmation.
+- These are normative/lexical confirmations, not token-specific acoustic IPA gold. No individual speaker's recording has been independently adjudicated.
 - GitHub Actions exact-head verification is required after these commits. Local pytest/npm were not run in this connector-only session.
 
-**Current interpretation:** baseline inventory 236; rule-supported resolved standard-variant occurrences 1; active unresolved occurrences 235. Overall readiness remains a partial research prototype, not research-certified or release-ready.
+**Current interpretation:** baseline inventory 236; two rule-supported resolved standard-variant occurrences; active unresolved occurrences 234. Overall readiness remains a partial research prototype, not research-certified or release-ready.
 
 ---
 
-## 2026-11-05 — S018/S019 scope correction and queue artifact split
+# 2026-11-05 — S018/S019 scope correction and queue artifact split
 
 The primary Cambridge PDF was re-read at page 31. Lee (1993) classifies /s/ among fortis /p,t,k,c,s/ in that description; the earlier claim that this directly supports modern lenis /s/ was wrong. The source register and code comments now state this limitation. S019 (Kang 2010) is the lenis acoustic-coarticulation source; its abstract covers /i, ye, ya/ and notes a distinct spectral pattern for /yu, yo/. Broad optional [ɕ] and narrow [ɕʰ] candidates are restricted to ㅣ, ㅖ, ㅑ; other /j/ nuclei are not generalized. The broad canonical [s], default target path and Ukrainian output are unchanged.
 
