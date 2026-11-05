@@ -31,13 +31,12 @@ test('practical browser mode is wired to the vendored JavaScript g2pK adapter', 
   assert.match(adapter, /new G2pBrowser\(\)/u);
   assert.match(adapter, /descriptive: false/u);
   assert.match(adapter, /toSyl: true/u);
-  assert.match(adapter, /exact-form corrections/u);
-  assert.match(adapter, /before the IPA adapter/iu);
+  assert.doesNotMatch(adapter, /NIKL|normativeCorrections|exact-form corrections/iu, 'the practical g2pK adapter must not apply Kozak Kim normative overlays');
   assert.doesNotMatch(adapter, /applyLexical(?:Surface|Ipa)Controls/u);
   assert.match(port, /Ported from g2pk\/g2pk\.py/u);
 });
 
-test('raw port output remains pinned while the practical adapter applies only explicit NIKL corrections', () => {
+test('the practical adapter preserves the raw pinned g2pK surface without Kozak Kim overlays', () => {
   const cases = JSON.parse(read('tests/fixtures/g2pk-surface-regression.json')).cases;
   const port = new G2pBrowser();
   assert.equal(cases.length, 20);
@@ -50,21 +49,9 @@ test('raw port output remains pinned while the practical adapter applies only ex
     });
     assert.equal(expectedPortSurface, item.expectedSurface, item.input + ': raw-port regression changed');
     const result = webEngine.convert(item.input);
-    const expectedCorrection = new Map([
-      ['값어치', '가버치'],
-      ['넓죽하다', '넙쭈카다'],
-      ['읽고', '일꼬']
-    ]).get(item.input);
     const actualSurface = result.surfaceHangul || item.input;
-    assert.equal(actualSurface, expectedCorrection || item.expectedSurface, item.input + ': adapter surface contract');
-    assert.equal(result.normativeCorrections.length, expectedCorrection ? 1 : 0, item.input + ': correction allowlist scope');
-    const primarySourceId = new Map([
-      ['넓죽하다', 'qna_seq=307219'],
-      ['읽고', 'qna_seq=329463']
-    ]).get(item.input);
-    if (primarySourceId) {
-      assert.match(result.normativeCorrections[0].evidence, new RegExp(primarySourceId), item.input + ': correction must cite the verified primary source');
-    }
+    assert.equal(actualSurface, expectedPortSurface, item.input + ': adapter must preserve raw g2pK surface');
+    assert.equal(result.normativeCorrections, undefined, item.input + ': no NIKL correction metadata may enter the practical adapter');
     assert.ok(result.ipa.length > 0, item.input + ': missing IPA');
     const visibleTarget=result.ukrainian||result.candidate_ukrainian||'';
     assert.ok(visibleTarget.length > 0, item.input + ': missing Ukrainian output/candidate');

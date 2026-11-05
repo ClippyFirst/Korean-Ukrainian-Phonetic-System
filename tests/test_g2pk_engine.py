@@ -27,21 +27,18 @@ def test_g2pk_adapter_derives_ipa_from_surface_hangul(monkeypatch):
     assert "NIKL" not in result["rules"][0]["source"]
 
 
-def test_nikl_surface_override_corrects_an_unlicensed_external_mismatch(monkeypatch):
-    class IncorrectG2p:
+def test_g2pk_adapter_does_not_apply_nikl_surface_or_ipa_overlays(monkeypatch):
+    class PassThroughG2p:
         def __call__(self, text, descriptive=False):
             return text
 
-    monkeypatch.setattr(g2pk_engine, "_ENGINE", IncorrectG2p())
+    monkeypatch.setattr(g2pk_engine, "_ENGINE", PassThroughG2p())
     result = g2pk_engine.phoneticize_with_g2pk("넋이")
 
-    assert result["surface_hangul"] == "넉씨"
-    assert any(
-        rule["name"] == "sourced-lexical-surface-override"
-        and rule["source"]
-        for rule in result["rules"]
-    )
-    assert result["ipa"]["ipa"] == "nʌk̚.ɕ͈i"
+    assert result["surface_hangul"] == "넋이"
+    assert result["ipa"]["lexical_overrides"] == []
+    assert result["ipa"]["status"] == "ipa-derived-from-g2pk-surface-form"
+    assert [rule["name"] for rule in result["rules"]] == ["external-g2pK-pronunciation"]
 
 
 
@@ -102,8 +99,9 @@ def test_g2pk_handles_adversarial_sentence_with_punctuation_and_protected_materi
     assert result["ipa"]["ipa"]
     assert "API 3.1" in result["surface_hangul"]
     assert "ㄴ 첨가" in result["surface_hangul"]
-    for expected_surface in ("넉씨", "가버치가", "구지", "실라", "칼랄", "꼰닙", "서울력"):
-        assert expected_surface in result["surface_hangul"]
+    assert result["surface_hangul"] == g2pk_engine.pronounce_surface(text)
+    assert result["ipa"]["lexical_overrides"] == []
+    assert [rule["name"] for rule in result["rules"]] == ["external-g2pK-pronunciation"]
 
 
 def test_g2pk_live_engine_smoke_and_normative_controls():
@@ -111,7 +109,6 @@ def test_g2pk_live_engine_smoke_and_normative_controls():
     expected = {
         "학교": "학꾜",
         "넋이": "넉씨",
-        "값어치": "가버치",
         "밟고": "밥꼬",
         "밟는": "밤는",
         "읽습니다": "익씀니다",
@@ -204,7 +201,7 @@ def test_g2pk_baseline_does_not_consume_kozak_only_research_lexical_candidates(m
     assert ipa_only_result["ipa"]["status"] != "diagnostic_only_unresolved_pronunciation"
     assert ipa_only_result["ipa"]["word_analyses"][0]["status"] == "derived-from-surface"
 
-def test_g2pk_keeps_source_backed_diagnostic_only_ipa_status(monkeypatch):
+def test_g2pk_does_not_import_nikl_lexical_readings_or_unresolved_status(monkeypatch):
     class PassThroughG2p:
         def __call__(self, text, descriptive=False):
             return text
@@ -212,9 +209,8 @@ def test_g2pk_keeps_source_backed_diagnostic_only_ipa_status(monkeypatch):
     monkeypatch.setattr(g2pk_engine, "_ENGINE", PassThroughG2p())
     result = g2pk_engine.phoneticize_with_g2pk("삶의")
 
-    # This is a source-backed NIKL variant with unresolved project IPA,
-    # not a Kozak-only research overlay; retain the diagnostic warning.
-    assert result["surface_hangul"] == "살믜"
-    assert result["ipa"]["is_diagnostic_only"] is True
-    assert result["ipa"]["status"] == "diagnostic_only_unresolved_pronunciation"
+    assert result["surface_hangul"] == "삶의"
+    assert result["ipa"]["is_diagnostic_only"] is False
+    assert result["ipa"]["status"] == "ipa-derived-from-g2pk-surface-form"
     assert result["ipa"]["lexical_overrides"] == []
+    assert result["ipa"]["word_analyses"][0]["status"] == "derived-from-surface"
