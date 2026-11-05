@@ -32,6 +32,22 @@ The 370-row superset joins to the pinned UGTPHON Korean test split at commit ef0
 - **1 RETAIN:** occurrence 1140 (출산) provisionally retains the existing source-backed R012 form. Independent Korean IPA review is pending; RETAIN is not completed adjudication.
 - **213 not individually adjudicated:** no occurrence-specific disposition was found in the current narrow review registers. The 370-row context ledger's default ABSTAIN / EVIDENCE_LIMITED_DIAGNOSTIC_ONLY is a safe no-change baseline, not an individual review result.
 
+## Case-level triage interpretation — review, not confirmation
+
+The 236 rows have been reviewed structurally by occurrence identity, source context, prior disposition, edit signature and provenance. This is a case-family triage, not independent pronunciation adjudication.
+
+| Signature family | Operations | Occurrence rows | Distinct tokens | Existing disposition in that family |
+|---|---:|---:|---:|---|
+| Lenis `ɕ → s` | 184 | 183 | 110 | 182 not individually adjudicated; 1 ABSTAIN |
+| Fortis `ɕ͈ → s͈` | 24 | 24 | 17 | 23 not individually adjudicated; 1 ABSTAIN |
+| Other 22 signatures | 46 | Mixed/overlapping | Heterogeneous | Includes the remaining ABSTAINs and the provisional RETAIN; consult each CSV row |
+
+The 22 ABSTAIN rows all carry `UNMAPPED_FRAGMENT_AND_NO_INDEPENDENT_IPA_GOLD`; they cover 18 distinct tokens and 15 source rows. Repeated tokens/rows must be grouped before evidence is counted. A row may contain multiple edit operations, so operation counts, occurrence counts and unique-token counts are not interchangeable.
+
+The provisional RETAIN is occurrence 1140 (`출산`, source row `dc_inside_2107`). Its context-specific record says existing Kozak Kim R012 licenses fortis /s͈/ for this Sino-Korean form under NIKL §26, while the Broad-v2 comparator omits fortis. This is a reason not to delete an existing source-backed rule merely to match one corpus annotation; it remains pending independent Korean review. The CSV preserves the context-ledger default ABSTAIN separately from the later occurrence-specific provisional RETAIN so provenance is not overwritten.
+
+The lenis and fortis sibilant families are separate review strata. C11's optional [ɕ] candidate is lenis-only; the 24 fortis operations cannot inherit that decision. The remaining 46 operations span 22 heterogeneous signatures (stop voicing/fortition differences, segment deletions/insertions, vowel quality/length and other sibilant mappings). These are not one productive rule and must be reviewed against their own exact environments.
+
 ## Mismatch profile
 
 The inherited export cluster field carries C11 on 207 of the 236 rows and a historical C04 tag on 206 rows. **The C04 tag is stale:** the current cluster register reports zero C04 residual occurrences and reclassifies the former aspirated-velar set under C12. The 206 inherited C04 labels must not be read as a current classification or as 206 live C04 errors. The review CSV therefore names this field historical_export_cluster_labels_descriptive_only.

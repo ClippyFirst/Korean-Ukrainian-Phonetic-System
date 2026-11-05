@@ -5,7 +5,7 @@
 **Starting default branch:** `main` at `043754498f3ad8a17aa6c13b5f643b197536da8a`.  
 **Working branch:** `research/236-candidate-review-2026-11-05`.  
 **Draft PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436).  
-**Implementation/test head:** `e253de40d97135ad5e61ba7e49546e2d4641b0a1`. **Latest documentation head:** `2877027d557d4ee725ac63f6a4d990c7e9e6702b` (ledger-only update).
+**Latest PR head:** `169e008bd0aabee34efe05385bcc5f6179f4cc70` (research inventory, tests and documentation).
 
 ### Task ledger
 
@@ -709,3 +709,12 @@ No production phonology change was justified by the latest benchmark-only run. K
 | SIGMORPHON Kozak-only exact wins | DONE_VERIFIED as diagnostic categorization | Five: `값어치`, `놓치다`, `많다`, `맛없다`, `인기`; no g2pK-only exact among 998 paired occurrences. |
 | SIGMORPHON `중심닮음` R002 abstention | BLOCKED for production license | Wiktionary secondary source suggests `중심 + 닮- + -음`, but identifies a North Korean mathematical term; its IPA matches the SIGMORPHON gold and is not independent. Need independent Korean expert and suitable standard-language evidence. Source is registered research-only; no production lexical row added. |
 | Kiwi/MeCab morphology consensus | DEFERRED / diagnostic only | 80.5978% exact boundary-set agreement on 1,907 words; 94.0092% observed rule-event boundary agreement; 24 phrase boundaries withheld; no gold-score improvement. Do not switch production to analyzer consensus. |
+
+
+## 2026-11-05 — case-family triage and exact-head verification refresh
+
+The 236-row inventory has been reviewed by occurrence identity, source context, disposition, IPA edit signature and provenance. The lenis `ɕ→s` stratum contains 184 operations across 183 occurrence rows / 110 tokens; 182 rows lack an individual disposition and one is ABSTAIN. The fortis `ɕ͈→s͈` stratum contains 24 operations across 24 occurrence rows / 17 tokens; 23 lack an individual disposition and one is ABSTAIN. The remaining 46 operations span 22 heterogeneous signatures. The 22 ABSTAIN rows all carry `UNMAPPED_FRAGMENT_AND_NO_INDEPENDENT_IPA_GOLD`, spanning 18 tokens and 15 source rows. Occurrence 1140 (`출산`) remains provisional RETAIN because the existing R012 / NIKL §26 license is source-backed; independent review is pending. Repeated observations are not independent evidence.
+
+PR #436 exact-head verification at `169e008bd0aabee34efe05385bcc5f6179f4cc70`: Python 3.11/3.12/3.13, Browser regression/build, wheel install, teacher audit, web, paired UGTPHON, pinned UGTPHON, morphology consensus, corpus generation, external UGTPHON IPA, artifact generation and exhaustive test-case extraction passed. The multi-engine IPA comparison remains in progress. CharsiuG2P, ByT5 and official NIKL metadata-only checks were skipped, not passed. Local pytest/npm were not run. See the current 236-candidate review note for artifact IDs and interpretation.
+
+The workflow reference comparison is in `docs/ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-05.md`; it adopts requirements clarification, TDD, systematic debugging, exact-head verification and small composable procedures without copying third-party code or duplicating the project's research framework.

@@ -7,9 +7,9 @@ The research-only 236-candidate ledger adds two focused regression surfaces:
 
 These tests validate inventory reproducibility and bibliographic identity only. They do **not** adjudicate the 236 pronunciations, certify IPA-Dict/Broad-v2 as gold, validate Ukrainian targets, or license a production phonological change. The 236 remain a research review queue, not 236 confirmed defects.
 
-**Exact-head verification:** implementation/test head `e253de40d97135ad5e61ba7e49546e2d4641b0a1` passed Python 3.11/3.12/3.13, Browser regression/build, wheel install, teacher-corpus audit and paired UGTPHON comparison. Research-corpus artifacts, external UGTPHON, exhaustive test-case extraction, system verification and morphology consensus also passed. The multi-engine diagnostic was cancelled after a later branch update; it is not counted as a pass. Official NIKL metadata-only and Charsiu inference jobs were skipped by policy. Latest documentation-only head `2877027d557d4ee725ac63f6a4d990c7e9e6702b` passed system verification (Python and Browser); the NIKL job remained skipped. Local pytest/npm were not run.
+**Exact-head verification:** PR #436 head `169e008bd0aabee34efe05385bcc5f6179f4cc70` passed Python 3.11/3.12/3.13, Browser regression/build, wheel install, teacher-corpus audit, web, paired UGTPHON, pinned UGTPHON, Kiwi/MeCab morphology, corpus generation, external IPA diagnostic, artifact generation and exhaustive test-case extraction. The multi-engine IPA comparison remains in progress. CharsiuG2P, ByT5 and official NIKL metadata-only jobs were skipped by policy, not passed. Local pytest/npm were not run.
 
-The semantic test-case register remains PARTIAL INVENTORY and independent IPA/Ukrainian review remains BLOCKED. The semantic test-case register remains PARTIAL INVENTORY and independent IPA/Ukrainian review remains BLOCKED.
+The semantic test-case register remains PARTIAL INVENTORY; independent Korean IPA and Ukrainian target review remain BLOCKED.
 
 ---
 

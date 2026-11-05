@@ -1,3 +1,11 @@
+## 2026-11-05 exact-head continuation — 236-candidate review and comparator status
+
+**PR #436 head:** `169e008bd0aabee34efe05385bcc5f6179f4cc70`. The reproducible 236-row inventory and bibliographic correction are covered by exact-head regressions. Python 3.11/3.12/3.13, browser regression/build, wheel install, teacher-corpus audit, web, paired UGTPHON, pinned UGTPHON, Kiwi/MeCab morphology, corpus generation, external IPA diagnostic, research artifacts and test-case extraction passed. The multi-engine IPA comparison remains in progress. CharsiuG2P, ByT5 and official NIKL metadata-only jobs were skipped by policy; they are not passes. Local pytest/npm were not run.
+
+**Linguistic gate remains BLOCKED:** 213 occurrences have no individual disposition; 22 have evidence-limited ABSTAIN; one occurrence (1140, `출산`) is a provisional source-backed RETAIN pending independent review. The 236 are candidate occurrences, not 236 confirmed errors. Lenis `ɕ → s` and fortis `ɕ͈ → s͈` require separate review. No production IPA or Ukrainian-target change is authorized by comparator metrics.
+
+---
+
 # 2026-11-05 acceptance-gate update — 236-candidate review
 
 ## 2026-11-02 acceptance-gate update — Kozak Kim only
