@@ -104,3 +104,8 @@ The narrow 36-row queue's disposition register is complete (4 FIX, 1 provisional
 - [370-row full-context, hash-pinned Broad mismatch ledger](kozak-kim-broad-mismatch-context-ledger-2026-11-05.csv): all broad-profile mismatch occurrences from the pinned 2026-11-02 report, joined to exact UGTPHON sentence/token context and engine/profile/normalizer provenance. All are conservatively `ABSTAIN` pending independent adjudication.
 - [Historical 239 recovery manifest](kozak-kim-historical-239-recovery-manifest-2026-11-05.md): explains why the 370-row evidence superset must not be confused with the historical 239-member cohort.
 
+
+
+### Historical 239 baseline refinement — 2026-11-05
+
+The pre-C11/C12 benchmark artifact and C01–C10 aggregate cluster snapshot have been recovered and hash-pinned. The missing item is narrower than previously stated: not the benchmark or baseline, but the per-fragment assignment snapshot / executable selection predicate required to reproduce exactly 239 unique occurrence IDs. See the [updated recovery manifest](kozak-kim-historical-239-recovery-manifest-2026-11-05.md). Do not replace this historical cohort with the 370-row Broad context superset.
