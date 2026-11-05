@@ -103,7 +103,7 @@ def build_rows(root: Path = ROOT) -> list[dict[str, str]]:
         elif case_adjudication and case_adjudication["decision"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED":
             disposition = "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
             basis = ("Broad IPA profile mismatch: source [ɕ] vs project broad /s/ in ㅅ+ㅣ/ㅖ/ㅑ; Kang (2010) supports optional coarticulation, not a categorical rule. Full evidence is in the context-adjudication register; token-specific acoustic IPA review was not performed." if case_adjudication["rule_id"] == "LENIS_SIBILANT_BROAD_PROFILE_CONVENTION" else case_adjudication["notes"])
-            reason = ("LENIS_SIBILANT_BROAD_PROFILE_CONVENTION" if case_adjudication["rule_id"] == "LENIS_SIBILANT_BROAD_PROFILE_CONVENTION" else "BROAD_VS_NARROW_PROFILE_CONVENTION_MISMATCH")
+            reason = ("LENIS_SIBILANT_BROAD_PROFILE_CONVENTION" if case_adjudication["rule_id"] == "LENIS_SIBILANT_BROAD_PROFILE_CONVENTION" else ("BROAD_IPA_VOWEL_SYMBOL_PROFILE_MISMATCH" if case_adjudication["rule_id"].startswith("PROFILE-CONVENTION-MISMATCH: long ㅓ") else "BROAD_VS_NARROW_PROFILE_CONVENTION_MISMATCH"))
             rationale = basis
             ipa_status = case_adjudication["independent_review_status"]
         elif case_adjudication and case_adjudication["decision"] == "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW":
