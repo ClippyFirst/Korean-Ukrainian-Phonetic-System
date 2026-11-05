@@ -15,10 +15,10 @@ def test_reconstructed_236_review_ledger_has_exact_membership_and_statuses():
     assert len(rows) == 236
     assert len({row["occurrence_id"] for row in rows}) == 236
     assert Counter(row["candidate_disposition"] for row in rows) == {
-        "NOT_INDIVIDUALLY_ADJUDICATED": 208,
+        "NOT_INDIVIDUALLY_ADJUDICATED": 206,
         "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 24,
         "RETAIN_PENDING_INDEPENDENT_IPA_REVIEW": 0,
-        "RULE_CONFIRMED_STANDARD_VARIANT": 4,
+        "RULE_CONFIRMED_STANDARD_VARIANT": 6,
     }
     assert all(row["historical_membership_confidence"] ==
         "RECONSTRUCTED_CANDIDATE_NOT_ORIGINAL_MEMBERSHIP_PROOF" for row in rows)
@@ -299,3 +299,24 @@ def test_nikl_rule_5_does_not_apply_to_heom_in_cheheom():
         assert "ㅓ, not ㅕ" in row["candidate_disposition_basis"]
         assert row["prior_individual_reason_code"] == "UNMAPPED_FRAGMENT_AND_NO_INDEPENDENT_IPA_GOLD"
         assert row["prior_independent_ipa_review_status"] == "NOT_PERFORMED"
+
+
+def test_nikl_sino_korean_rule_26_confirms_paljageoreum():
+    rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
+    row = rows["1406"]
+    assert row["token"] == "팔자걸음"
+    assert row["candidate_disposition"] == "RULE_CONFIRMED_STANDARD_VARIANT"
+    assert "팔자[팔짜]" in row["candidate_disposition_basis"]
+    assert "Rule 26" in row["candidate_disposition_basis"]
+    assert "SRC-NIKL-KRDICT-82835" in row["candidate_disposition_basis"]
+
+
+def test_nikl_rule_27_confirms_connected_anhaldeut():
+    rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
+    row = rows["2533"]
+    assert row["token"] == "안할듯"
+    assert row["candidate_disposition"] == "RULE_CONFIRMED_STANDARD_VARIANT"
+    assert "Rule 27" in row["candidate_disposition_basis"]
+    assert "할 듯하다[할뜨타다]" in row["candidate_disposition_basis"]
+    assert "SRC-NIKL-QNA-317798" in row["candidate_disposition_basis"]
+    assert "a pause can license the plain consonant" in row["candidate_disposition_basis"]
