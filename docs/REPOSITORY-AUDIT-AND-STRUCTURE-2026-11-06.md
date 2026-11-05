@@ -77,7 +77,7 @@ The browser g2pK path remains a separate baseline from Kozak Kim/NIKL research r
 
 ## Final verification — 2026-11-06
 
-Final documentation branch head: `dea28eb7fc3f7494e8964a9e91164cbfde4990fa`. Exact-head GitHub Actions Verify run [42119824485](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42119824485) completed successfully:
+Final documentation branch content head: `76ceed27728fb1da1302548211bfdc66a1fd92c8`. Exact-head GitHub Actions Verify run [42120139297](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42120139297) completed successfully:
 
 - Browser regression: **1,399/1,399 PASS**.
 - Browser production build: **PASS**.
@@ -85,7 +85,7 @@ Final documentation branch head: `dea28eb7fc3f7494e8964a9e91164cbfde4990fa`. Exa
 - Python regression and data-integrity job: **PASS** (pytest progress reached 100%; no failure reported).
 - Official NIKL metadata-only source inventory: **SKIPPED**, not passed.
 
-The final diff is documentation, repository-local agent guidance and structural tests only. No local shell/npm/pytest run is claimed; verification came from the exact-head GitHub Actions run.
+The final diff is documentation, repository-local agent guidance and structural tests only. The branch was five commits ahead of main and changed 13 files at this content head. No local shell/npm/pytest run is claimed; verification came from the exact-head GitHub Actions run.
 
 ## Conclusion
 
@@ -95,9 +95,9 @@ The repository did not need a wholesale directory redesign. It needed a clear ro
 ## Final branch and PR state
 
 - Branch: `docs/agent-workflow-structure-2026-11-06`.
-- Final head at this audit: `dea28eb7fc3f7494e8964a9e91164cbfde4990fa`.
+- Verified content head at this audit: `76ceed27728fb1da1302548211bfdc66a1fd92c8`.
 - PR: [#437](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/437), open, not merged.
-- Diff: 12 files, 663 additions, 31 deletions.
+- Diff: 13 files across five commits (see the PR's current diff statistics).
 - Research PR #436 and its branch were not modified.
 - The two earlier verification attempts failed on newly added structural assertions/regex syntax; those defects were corrected, and the exact final head passed run 42119824485. They are retained here as implementation history, not hidden.
 - Merge and any future physical documentation-directory migration remain unperformed. The current PR is ready for human review, subject to normal repository review/merge policy.

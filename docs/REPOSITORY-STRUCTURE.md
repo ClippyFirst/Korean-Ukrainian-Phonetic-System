@@ -1,6 +1,6 @@
 # Repository structure and ownership guide
 
-**Snapshot:** 2026-11-06, default-branch baseline `043754498f3ad8a17aa6c13b5f643b197536da8a`; documentation branch head verified by GitHub Actions: `dea28eb7fc3f7494e8964a9e91164cbfde4990fa`. This branch adds a root router, three general skills and a human-facing workflow guide. This guide maps stable ownership; it is not a claim that every file has been independently reviewed line by line.
+**Snapshot:** 2026-11-06, default-branch baseline `043754498f3ad8a17aa6c13b5f643b197536da8a`; documentation branch head verified by GitHub Actions: `76ceed27728fb1da1302548211bfdc66a1fd92c8`. This branch adds a root router, three general skills and a human-facing workflow guide. This guide maps stable ownership; it is not a claim that every file has been independently reviewed line by line.
 
 ## What this repository contains
 

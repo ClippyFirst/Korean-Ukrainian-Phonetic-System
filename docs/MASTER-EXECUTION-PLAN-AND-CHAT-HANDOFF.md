@@ -6590,7 +6590,7 @@ Current research disposition remains: **239 reconstructed candidate IDs; 3 verif
 
 **Branch:** `docs/agent-workflow-structure-2026-11-06`  
 **Base:** `main` at `043754498f3ad8a17aa6c13b5f643b197536da8a`.  
-**Final verified implementation head before this handoff update:** `dea28eb7fc3f7494e8964a9e91164cbfde4990fa`.  
+**Final verified content head before this handoff refresh:** `76ceed27728fb1da1302548211bfdc66a1fd92c8`.  
 **PR:** [#437](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/437), open and unmerged.  
 **Scope:** documentation, repository-local agent instructions/skills and structural tests only.
 
@@ -6606,7 +6606,7 @@ Current research disposition remains: **239 reconstructed candidate IDs; 3 verif
 
 ### Exact-head verification
 
-GitHub Actions Verify run [42119824485](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42119824485) on `dea28eb7fc3f7494e8964a9e91164cbfde4990fa`:
+GitHub Actions Verify run [42120139297](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42120139297) on `76ceed27728fb1da1302548211bfdc66a1fd92c8`:
 
 - Browser tests: **1,399/1,399 PASS**.
 - Browser production build: **PASS**.
@@ -6633,6 +6633,6 @@ Two earlier workflow attempts on intermediate commits failed because the new str
 
 ### Repository state and next step
 
-The branch is four commits ahead of main and contains 12 changed files (663 additions, 31 deletions). PR #436 and the research branches were left untouched. No runtime code, Korean/IPA data, Ukrainian target mapping, generated artifact, vendor dependency, license, Pages setting or release was changed.
+At the verified content head the branch was five commits ahead of main and changed 13 files. This final handoff refresh is an additional documentation-only commit. PR #436 and the research branches were left untouched. No runtime code, Korean/IPA data, Ukrainian target mapping, generated artifact, vendor dependency, license, Pages setting or release was changed.
 
 Next action: review PR #437 and merge only through the normal owner-controlled process. Do not merge automatically as part of this documentation pass.
