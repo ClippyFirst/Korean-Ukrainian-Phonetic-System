@@ -74,3 +74,12 @@ Using the pinned `naver-ai/UGTPHON:ko/test.json` source at commit `ef0d5a09c2ea1
 One additional queue item, `출산` (UGTPHON row `dc_inside_2107`), is **retained under the existing Kozak Kim R012 / NIKL §26 license** pending independent review: the Broad-v2 comparator omits fortis /s͈/, but that alone is not sufficient reason to remove a source-backed rule. The full user-generated context is not duplicated in the ledger because it contains profanity; the pinned row ID is retained.
 
 The 36-row queue therefore has four implemented exact-form corrections, one provisional retain decision, and 31 rows not individually adjudicated in this pass. The complete hash-pinned 239-occurrence/context ledger is still missing, and the full post-fix UGTPHON benchmark has not been rerun. Do not claim that all 239 are fixed or that old benchmark metrics measure the new code.
+
+
+## 2026-11-05 follow-up — queue dispositions and trace provenance
+
+The 36-row narrow Broad queue now has explicit row-level dispositions: four exact R013 fixes, one provisional R012 retain (`출산`), and 31 evidence-limited abstentions in [the individual decision register](kozak-kim-31-row-individual-abstentions-2026-11-05.csv). Each abstention records the occurrence/source-row locator, pinned UGTPHON commit, reference and engine profile labels, the queue blob SHA, and a row-specific reason. Historical engine commit and normalizer version are explicitly marked unrecovered rather than guessed. These are conservative production decisions, not independent IPA judgments.
+
+Python `RuleTrace` now exposes per-occurrence `applied_occurrences` and `license_contexts` (including matched source license, source pair, word form, index and before/after state); the original scalar `license_context` remains for compatibility.
+
+The full historical **239** population remains separate and BLOCKED: the original exact 239 membership and historical run artifact are not encoded in the current 1,267-fragment export or 36-row queue. A complete hash-pinned ledger still requires the original benchmark occurrence artifact or an exact reproducible reconstruction with its historical engine commit, normalizer, profile and source contexts. No placeholder or synthetic 239-row ledger has been represented as complete.
