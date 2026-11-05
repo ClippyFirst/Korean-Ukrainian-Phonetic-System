@@ -50,13 +50,13 @@ def test_236_broad_edit_signature_inventory_and_historical_tags_are_stable():
     assert sum(any(label.startswith("C04") for label in labels) for labels in historical) == 206
 
 
-# Hangul-to-IPA environment crosswalk for the S018 lenis sibilant scope.
+# Hangul-to-IPA environment crosswalk for Kang (2010)'s lenis /s/ acoustic contexts.
 _HANGUL_ONSETS = ["ㄱ", "ㄲ", "ㄴ", "ㄷ", "ㄸ", "ㄹ", "ㅁ", "ㅂ", "ㅃ", "ㅅ", "ㅆ", "ㅇ", "ㅈ", "ㅉ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"]
 _HANGUL_NUCLEI = ["ㅏ", "ㅐ", "ㅑ", "ㅒ", "ㅓ", "ㅔ", "ㅕ", "ㅖ", "ㅗ", "ㅘ", "ㅙ", "ㅚ", "ㅛ", "ㅜ", "ㅝ", "ㅞ", "ㅟ", "ㅠ", "ㅡ", "ㅢ", "ㅣ"]
 _HANGUL_CODAS = ["", "ㄱ", "ㄲ", "ㄳ", "ㄴ", "ㄵ", "ㄶ", "ㄷ", "ㄹ", "ㄺ", "ㄻ", "ㄼ", "ㄽ", "ㄾ", "ㄿ", "ㅀ", "ㅁ", "ㅂ", "ㅄ", "ㅅ", "ㅆ", "ㅇ", "ㅈ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"]
-_S018_NUCLEI = {"ㅣ", "ㅑ", "ㅒ", "ㅕ", "ㅖ", "ㅛ", "ㅠ"}
+_KANG_2010_NUCLEI = {"ㅣ", "ㅑ", "ㅖ"}
 
-def _s018_hangul_sibilant_contexts(token: str) -> list[tuple[str, str]]:
+def _kang2010_hangul_sibilant_contexts(token: str) -> list[tuple[str, str]]:
     syllables = []
     for char in token:
         codepoint = ord(char)
@@ -73,7 +73,7 @@ def _s018_hangul_sibilant_contexts(token: str) -> list[tuple[str, str]]:
         if syllable is None:
             continue
         char, onset, nucleus, coda = syllable
-        if onset == "ㅅ" and nucleus in _S018_NUCLEI:
+        if onset == "ㅅ" and nucleus in _KANG_2010_NUCLEI:
             contexts.append(("onset", char))
         if coda == "ㅅ" and index + 1 < len(syllables):
             following = syllables[index + 1]
@@ -81,36 +81,54 @@ def _s018_hangul_sibilant_contexts(token: str) -> list[tuple[str, str]]:
                 contexts.append(("liaison", char + following[0]))
     return contexts
 
-def test_236_lenis_sibilant_operations_map_to_lee_1993_page_31_environment():
+def test_236_lenis_sibilant_operations_are_separated_by_kang_2010_environment_scope():
     rows = MODULE.build_rows(ROOT)
-    lenis_rows = []
+    supported_rows = []
+    unsupported_rows = []
     for row in rows:
         fragments = json.loads(row["broad_mismatch_fragments"])
         lenis_count = sum(item["reference_fragment"] == "ɕ" and item["kozak_fragment"] == "s" for item in fragments)
         fortis_count = sum(item["reference_fragment"] == "ɕ͈" and item["kozak_fragment"] == "s͈" for item in fragments)
         if lenis_count:
-            contexts = _s018_hangul_sibilant_contexts(row["token"])
-            # A mixed lenis/fortis token has one additional fortis environment;
-            # S018 p.31 does not license fortis /s͈/.
-            assert len(contexts) == lenis_count + fortis_count, (row["occurrence_id"], row["token"], contexts, lenis_count, fortis_count)
-            lenis_rows.append((row, lenis_count, fortis_count, contexts))
-    assert len(lenis_rows) == 183
-    assert sum(item[1] for item in lenis_rows) == 184
-    assert sum(item[2] for item in lenis_rows) == 1
-    assert sum(len(item[3]) for item in lenis_rows) == 185
-    assert {row["occurrence_id"] for row, _, fortis, _ in lenis_rows if fortis} == {"551"}
-    assert {row["occurrence_id"] for row, count, _, _ in lenis_rows if count == 2} == {"103"}
-    assert len({row["token"] for row, _, _, _ in lenis_rows}) == 110
-    assert len({row["source_row_id"] for row, _, _, _ in lenis_rows}) == 91
+            contexts = _kang2010_hangul_sibilant_contexts(row["token"])
+            if contexts:
+                # The one mixed row has one lenis and one fortis environment.
+                assert len(contexts) == lenis_count + fortis_count, (row["occurrence_id"], row["token"], contexts, lenis_count, fortis_count)
+                supported_rows.append((row, lenis_count, fortis_count, contexts))
+            else:
+                unsupported_rows.append((row, lenis_count, fortis_count))
+
+    # 184 lenis edits exist in the reconstructed cohort, but only 157 occur
+    # in the /i, ye, ya/ environments covered by Kang's abstract. One extra
+    # context in row 551 is fortis and must not be counted as lenis support.
+    assert len(supported_rows) == 156
+    assert sum(item[1] for item in supported_rows) == 157
+    assert sum(item[2] for item in supported_rows) == 1
+    assert sum(len(item[3]) for item in supported_rows) == 158
+    assert len(unsupported_rows) == 27
+    assert sum(item[1] for item in unsupported_rows) == 27
+    assert sum(item[2] for item in unsupported_rows) == 0
+    assert {row["occurrence_id"] for row, _, _ in unsupported_rows} == {
+        "606", "843", "1155", "1157", "1414", "1417", "1420", "1423",
+        "1426", "1429", "1432", "1435", "1438", "1441", "1444", "1447",
+        "1450", "1453", "1456", "1459", "1462", "1465", "1468", "1471",
+        "1474", "1477", "2489",
+    }
+    assert len({row["token"] for row, _, _ in unsupported_rows}) == 6
+    assert len({row["source_row_id"] for row, _, _ in unsupported_rows}) == 5
+    assert {row["occurrence_id"] for row, _, fortis, _ in supported_rows if fortis} == {"551"}
+    assert {row["occurrence_id"] for row, count, _, _ in supported_rows if count == 2} == {"103"}
+    assert len({row["token"] for row, _, _, _ in supported_rows}) == 110
+    assert len({row["source_row_id"] for row, _, _, _ in supported_rows}) == 91
 
 
-def test_fortis_sibilant_cases_are_not_promoted_by_s018_lenis_scope():
+def test_fortis_sibilant_cases_are_not_promoted_by_lenis_coarticulation_scope():
     rows = MODULE.build_rows(ROOT)
     fortis_context_ids = set()
     for row in rows:
         fragments = json.loads(row["broad_mismatch_fragments"])
         fortis_count = sum(item["reference_fragment"] == "ɕ͈" and item["kozak_fragment"] == "s͈" for item in fragments)
-        if fortis_count and _s018_hangul_sibilant_contexts(row["token"]):
+        if fortis_count and _kang2010_hangul_sibilant_contexts(row["token"]):
             fortis_context_ids.add(row["occurrence_id"])
     assert fortis_context_ids == {"481", "551"}
 

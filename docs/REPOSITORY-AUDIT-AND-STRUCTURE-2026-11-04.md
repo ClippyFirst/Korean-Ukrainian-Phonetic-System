@@ -619,3 +619,55 @@ A pinned comparison of [Superpowers](https://github.com/obra/superpowers), [Matt
 | NIKL item rights/capture | BLOCKED / PARTIAL | Item-level terms and clean capture provenance |
 
 No production rule, target mapping, release, deployment or branch deletion was performed.
+
+
+## 22. 2026-11-05 — primary-source scope correction, queue versioning and exact-head revalidation
+
+### S018/S019 evidence correction
+
+Direct inspection of Cambridge's Lee (1993) PDF, p.31, found a substantive interpretation error in the earlier C11 note: Lee's own inventory explicitly lists /s/ among /p,t,k,c,s/ fortis sounds. The page does describe [ɕ] before /i/ and /j/-initial diphthongs, but this cannot be transferred directly to modern lenis /s/ or modern /s͈/ without reconciling notation and category. S018 remains a source for its Seoul /h/, /l/, stop-release and source-specific sibilant description; it is **not** the direct lenis C11 authority.
+
+S019 (Kang 2010) is the relevant lenis /s/ acoustic source. Its KCI abstract reports coarticulation/palatalization before /i, ye, ya/ and a distinct spectral pattern before /yu, yo/. The abstract does not establish a categorical [ɕ] phone for every /j/-initial diphthong. The Python broad optional variant and narrow partial profile are now limited to the explicit /i, ye, ya/ Hangul contexts (ㅣ, ㅖ, ㅑ); ㅒ, ㅕ, ㅛ and ㅠ are not generalized. The canonical broad [s] and all Ukrainian outputs remain unchanged. This is a conservative research-profile scope correction, not a production-default phonological change.
+
+The 236-row crosswalk was corrected accordingly: 157/184 lenis `ɕ→s` operations (156 occurrences) fit the /i, ye, ya/ contexts; 27 operations across 27 occurrences, six token strings and five source rows are outside those contexts. The 24 fortis `ɕ͈→s͈` operations remain separate and unresolved. The mixed `실시간` row has one lenis context and one separate fortis context. The 27 out-of-scope occurrence IDs are locked in the regression test.
+
+### Historical vs current unmapped queue
+
+The 36-row `kozak-kim-unmapped-mismatch-review-queue-2026-11-03.csv` is a historical, hash-pinned input to the 31-row abstention register and must remain immutable. The current pinned multi-engine rerun emits 32 rows after four cases no longer appear in the new export (37, 704, 2018, 2031). It is now stored separately as `kozak-kim-unmapped-mismatch-review-queue-2026-11-05.csv`. A regression verifies that the 32 rows are an exact subset of the historical file and that the historical 36-row/31-abstention crosswalk remains intact. The multi-engine workflow now compares against the date-specific 2026-11-05 artifact, not the historical file.
+
+### Current external diagnostic snapshot
+
+Run 42019876519, artifact 13411253960 (SHA-256 `bd5d4bc605a692858477984ba44539612270b8f90fc3d9c1a8e737f86557d5ca`) completed all ten engine comparisons over 2,703 eligible occurrences (2,698 common scored tokens for paired comparisons). This run's benchmark comparison step succeeded; the job was marked failed only because it compared the newly generated 32-row queue to the stale 36-row historical CSV. The queue has since been versioned and the exact-head workflow rerun is pending.
+
+| Engine | Exact / 2,703 | Exact rate | CER |
+|---|---:|---:|---:|
+| ClippyFirst native | 1,431 / 2,698 scored | 53.0393% | 8.9660% |
+| g2pk 0.9.4 | 1,435 / 2,703 | 53.0892% | 9.2285% |
+| g2p-ko 1.0.0 | 1,418 / 2,703 | 52.4602% | 9.3885% |
+| KoG2P 2019 | 738 / 2,703 | 27.3030% | 19.5122% |
+| HAMA 1.7.0 | 457 / 2,703 | 16.9071% | 25.1081% |
+| kokorog2p 0.9.15 | 495 / 2,703 | 18.3130% | 26.5352% |
+| KoG2Padvanced 2022 | 1,279 / 2,703 | 47.3178% | 10.6772% |
+| hangul_to_ipa | 439 / 2,703 | 16.2412% | 24.8054% |
+| eSpeak NG | 220 / 2,703 | 8.1391% | 33.6101% |
+| phonemize 2.0.1 | 1,150 / 2,703 | 42.5453% | 14.3531% |
+
+Native/g2pk paired difference on 2,698 shared tokens: native exact 53.0393%, g2pk 53.0892%; native CER 8.9660%, g2pk 9.2285%. The exact-match delta is negligible and the CER direction differs. The report documents shared renderer/normalization and other comparability limitations; it is diagnostic, not gold. The dataset is user-generated, the Broad profile is non-normative, and no engine score licenses a production rule or Ukrainian target.
+
+### Training-readiness gate
+
+The same artifact's training-readiness audit reports 644 lexical rows, zero duplicate lexical forms, 46 additions and a 24-case frozen holdout. It explicitly marks **zero independently adjudicated IPA gold rows** in additions and **zero holdout IPA gold labels**. Consequently `supervised_ipa_training_ready=false`. The holdout packets are blinded to engine outputs, contain 24 cases each for reviewers A/B, and prohibit tuning use. The two packets have identical SHA-256 because their blank schema and source cases are intentionally the same; no reviewer annotation has been supplied. Training or benchmark tuning on UGTPHON/SIGMORPHON test rows or the frozen holdout remains prohibited.
+
+### Status
+
+- Source identity and scope correction: DONE_VERIFIED by direct Cambridge PDF p.31 and KCI abstract inspection; software regression updated.
+- 236 inventory: DONE_VERIFIED as a deterministic inventory only.
+- Historical 239 membership: PARTIAL / EVIDENCE-LIMITED; original selector/member list still absent.
+- 157 context-compatible lenis edit operations: source-environment compatible only; pronunciation adjudication TODO.
+- 27 out-of-scope lenis operations and all 24 fortis operations: BLOCKED on independent Korean IPA evidence.
+- 22 ABSTAIN + 1 RETAIN: remain unresolved; no reviewer adjudication.
+- Ukrainian target and item-level source rights: BLOCKED.
+- Current multi-engine export parity: rerun pending after versioned queue correction; prior benchmark comparison itself succeeded, but workflow job failed on stale artifact comparison.
+- Supervised IPA training: BLOCKED; no independently adjudicated IPA gold and frozen holdout annotations absent.
+
+No production-default IPA, Ukrainian target, release, deployment or branch merge was performed.

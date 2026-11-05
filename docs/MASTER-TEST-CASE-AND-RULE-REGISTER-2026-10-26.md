@@ -1,3 +1,9 @@
+## 2026-11-05 evidence-scope regression corrections
+
+- The S018 source-integrity test now verifies that Lee (1993) classifies /s/ among fortis sounds and explicitly does not license a modern lenis /s/ rule.
+- The 236-row sibilant environment test now crosswalks only Kang (2010)'s abstracted /i, ye, ya/ contexts. It verifies 157 context-compatible lenis edits, 27 out-of-scope lenis edits, and keeps all 24 fortis edits separate.
+- The 36-row 2026-11-03 queue remains a historical input to the 31-row abstention register; the 32-row 2026-11-05 current export has a distinct file and exact-subset regression. These counts and files are not interchangeable.
+
 ## 2026-11-05 regression additions — reconstructed 236-candidate review inventory
 
 The research-only 236-candidate ledger adds two focused regression surfaces:

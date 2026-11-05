@@ -1,3 +1,13 @@
+## 2026-11-05 — S018/S019 scope correction and queue artifact split
+
+The primary Cambridge PDF was re-read at page 31. Lee (1993) classifies /s/ among fortis /p,t,k,c,s/ in that description; the earlier claim that this directly supports modern lenis /s/ was wrong. The source register and code comments now state this limitation. S019 (Kang 2010) is the lenis acoustic-coarticulation source; its abstract covers /i, ye, ya/ and notes a distinct spectral pattern for /yu, yo/. Broad optional [ɕ] and narrow [ɕʰ] candidates are restricted to ㅣ, ㅖ, ㅑ; other /j/ nuclei are not generalized. The broad canonical [s], default target path and Ukrainian output are unchanged.
+
+The corrected crosswalk finds 157/184 lenis `ɕ→s` edits context-compatible with the Kang abstract (156 occurrences); 27 edits/occurrences in six token strings and five source rows lie outside the cited contexts. The 24 fortis `ɕ͈→s͈` operations remain separate. Independent Korean IPA review is still required.
+
+The historical 36-row `...2026-11-03.csv` queue was restored unchanged because the 31-row abstention register pins it. The current rerun's 32-row output is versioned separately as `...2026-11-05.csv`; the multi-engine workflow now compares against that file. The current 236-case ledger remains independent from both queue artifacts.
+
+Run 42019876519 / artifact 13411253960 completed all ten engine comparisons, but the job failed at the final `cmp` because it compared the 32-row new output to the 36-row historical CSV. Its native vs g2pk results were effectively tied (53.0393% vs 53.0892% exact; CER 8.9660% vs 9.2285%); no engine change is justified. Training readiness remains false: zero independent IPA gold rows and zero IPA labels in the 24-item holdout. The exact-head CI rerun after the queue split and sibilant-scope correction is pending.
+
 ## 2026-11-05 — 236-candidate review, S018 source correction and exact-head handoff
 
 **Starting main:** `043754498f3ad8a17aa6c13b5f643b197536da8a`. **Working branch:** `research/236-candidate-review-2026-11-05`. **Draft PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436). This entry supersedes earlier statements that no reconstructed 239-ID cohort or 236-row source-context inventory exists; it does not claim historical membership is proven or the 236 are linguistically resolved.
