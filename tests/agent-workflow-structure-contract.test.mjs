@@ -50,6 +50,26 @@ test('documentation navigation exposes the workflow guide and root agent instruc
   assert.match(read('README.md'), /AGENTS\.md/u);
 });
 
+test('new agent documentation uses valid local Markdown links', () => {
+  const pages = [
+    ['AGENTS.md', rootGuide],
+    ['docs/AGENT-WORKFLOWS.md', workflowGuide],
+    ['docs/README.md', docsIndex],
+  ];
+  for (const [source, content] of pages) {
+    for (const [, href] of content.matchAll(/\\[[^\\]]+\\]\\(([^)]+)\\)/gu)) {
+      if (/^(?:https?:|mailto:|#)/u.test(href)) continue;
+      const local = decodeURIComponent(href.split('#', 1)[0]);
+      if (!local) continue;
+      const sourceDir = source.includes('/') ? source.slice(0, source.lastIndexOf('/') + 1) : '';
+      assert.ok(
+        existsSync(new URL('../' + sourceDir + local, import.meta.url)),
+        source + ' has a broken local link: ' + href,
+      );
+    }
+  }
+});
+
 test('workflow guide points to the canonical research and execution records', () => {
   for (const path of [
     '../research/MASTER-DIRECTIVE.md',

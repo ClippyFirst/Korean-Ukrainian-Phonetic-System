@@ -11,14 +11,13 @@ The following public skill repositories were inspected at the pinned upstream re
 | Source | Selected skill | Why it fits | Pinned upstream revision |
 |---|---|---|---|
 | obra/superpowers | test-driven-development | Require a test that fails for the intended defect before implementation; keep the fix minimal. | [22f0b46](https://github.com/obra/superpowers/tree/22f0b463e7a5e579904dd6211a520321035526f7/skills/test-driven-development) |
-| obra/superpowers | systematic-debugging | Trace root cause and full data flow instead of patching symptoms in a multi-stage phonetic pipeline. | [2ce8aa1](https://github.com/obra/superpowers/tree/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b/skills/systematic-debugging) |
-| obra/superpowers | verification-before-completion | Require fresh exact-head test/build evidence before reporting completion. | [2ce8aa1](https://github.com/obra/superpowers/tree/2ce8aa15d05bd57213e6f746f953aafb7ded7a8b/skills/verification-before-completion) |
+| obra/superpowers | systematic-debugging | Trace root cause and full data flow instead of patching symptoms in a multi-stage phonetic pipeline. | [22f0b46](https://github.com/obra/superpowers/tree/22f0b463e7a5e579904dd6211a520321035526f7/skills/systematic-debugging) |
+| obra/superpowers | verification-before-completion | Require fresh exact-head test/build evidence before reporting completion. | [22f0b46](https://github.com/obra/superpowers/tree/22f0b463e7a5e579904dd6211a520321035526f7/skills/verification-before-completion) |
 | mattpocock/skills | code-review | Separate specification compliance from engineering-standard review. | [4ae2317](https://github.com/mattpocock/skills/tree/4ae2317ddb22b046e26455e4f9c9b3aaaf62212d/skills/engineering/code-review) |
 | mattpocock/skills | research | Trace claims to primary sources and store evidence in the repository. | [4ae2317](https://github.com/mattpocock/skills/tree/4ae2317ddb22b046e26455e4f9c9b3aaaf62212d/skills/engineering/research) |
 | DietrichGebert/ponytail | ponytail-audit | Audit the whole repository and real data flow for correctness, risk, load, tests, and unnecessary complexity. | [96608e0](https://github.com/DietrichGebert/ponytail/tree/96608e078b2d5ea607c5c3b8b5a54d1c1fba6846/skills/ponytail-audit) |
 | DietrichGebert/ponytail | ponytail-review | Review changed code together with callers, tests, and runtime path; prioritize correctness and lean design. | [96608e0](https://github.com/DietrichGebert/ponytail/tree/96608e078b2d5ea607c5c3b8b5a54d1c1fba6846/skills/ponytail-review) |
 
-| obra/superpowers | verification-before-completion | Require fresh exact-head evidence before completion/commit/PR claims. | [22f0b46](https://github.com/obra/superpowers/tree/22f0b463e7a5e579904dd6211a520321035526f7/skills/verification-before-completion) |
 | mattpocock/skills | code-review | Separate specification compliance from engineering-quality review. | [4ae2317](https://github.com/mattpocock/skills/tree/4ae2317ddb22b046e26455e4f9c9b3aaaf62212d/skills/engineering/code-review) |
 | mattpocock/skills | research | Trace claims to primary sources and save cited findings in the existing research/documentation structure. | [4ae2317](https://github.com/mattpocock/skills/tree/4ae2317ddb22b046e26455e4f9c9b3aaaf62212d/skills/engineering/research) |
 

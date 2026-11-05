@@ -1,6 +1,6 @@
 # Repository structure and ownership guide
 
-**Snapshot:** 2026-11-06, based on default-branch HEAD `043754498f3ad8a17aa6c13b5f643b197536da8a`; the agent-workflow documentation branch adds a root router, three general skills and a human-facing workflow guide. This guide maps stable ownership; it is not a claim that every file has been independently reviewed line by line. This guide describes the observed tree and stable ownership boundaries; it is not a claim that every file has been independently reviewed line by line.
+**Snapshot:** 2026-11-06, based on default-branch HEAD `043754498f3ad8a17aa6c13b5f643b197536da8a`; the agent-workflow documentation branch adds a root router, three general skills and a human-facing workflow guide. This guide maps stable ownership; it is not a claim that every file has been independently reviewed line by line.
 
 ## What this repository contains
 
