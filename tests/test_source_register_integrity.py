@@ -701,3 +701,4 @@ def test_s027_kang_round_segment_source_is_not_collapsed_into_simple_palatalizat
     assert "labio-palatalized spectral pattern" in source["coverage"]
     assert "does not specify a canonical segmental IPA symbol" in source["limitations_or_next_action"]
     assert "S019" in source["limitations_or_next_action"]
+    assert "CC BY-NC 3.0 Unported" in source["license_status"]
