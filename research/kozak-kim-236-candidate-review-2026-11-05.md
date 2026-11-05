@@ -1,17 +1,18 @@
-## 2026-11-05 — First independent rule-backed candidate adjudication
+## 2026-11-05 — Two independent rule-backed candidate adjudications
 
-**Current status:** the historical baseline remains **236 occurrence rows** for provenance. One occurrence (ID **341**, `그놈의`) is now `RULE_CONFIRMED_STANDARD_VARIANT` under the official NIKL Standard Pronunciation Rule 5. The active unresolved count is therefore **235**, not 236. The original row is retained; it is not deleted from the evidence ledger.
+**Current status:** the historical baseline remains **236 occurrence rows** for provenance. Two occurrences are now `RULE_CONFIRMED_STANDARD_VARIANT` under independent NIKL normative sources: **ID 341 (`그놈의`)** and **ID 2001 (`물가로`)**. The active unresolved count is therefore **234**, not 236. Both original rows remain in the ledger.
 
-- **ID 341 — `그놈의`:** the canonical context is `그놈의 짱개타령`; `의` is the genitive particle. NIKL Rule 5 distinguishes non-initial lexical `의` (where [i] is permitted) from the genitive particle `의` (where [e] is an accepted variant alongside the principal [ɯi]). The source comparator's [e] is normatively supported; Kozak's [i] is not the rule's listed particle variant. The historical ABSTAIN is superseded only for this standard-variant mismatch. The raw surface spelling is `그노믜`; the pinned canonical token is `그놈의`. This is normative confirmation, **not** a claim that the speaker's audio was independently heard or acoustically adjudicated.
-- The current disposition counts are: 213 `NOT_INDIVIDUALLY_ADJUDICATED`, 21 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW`, one `RETAIN_PENDING_INDEPENDENT_IPA_REVIEW`, and one `RULE_CONFIRMED_STANDARD_VARIANT`. Historical membership remains reconstructed, not proven.
-- **IDs 1816, 1843, 1870 — `연전연패`:** remain abstained. NIKL Rule 29 is relevant to n-insertion, but Jun (2015) finds n-insertion variable and does not provide item-specific evidence for `연전연패`; the full word list is unavailable. Three repetitions in one source row are three corpus occurrences, not three independent speakers or acoustic confirmations.
-- No production IPA, Ukrainian target, benchmark gold, or runtime rule was changed. The evidence register records both the one rule-backed resolution and the n-insertion non-closure.
+- **ID 341 — `그놈의`:** the canonical context is `그놈의 짱개타령`; `의` is the genitive particle. NIKL Standard Pronunciation Rule 5 distinguishes non-initial lexical `의` (where [i] is permitted) from the genitive particle `의` (where [e] is an accepted variant alongside the principal [ɯi]). The source comparator's [e] is normatively supported; Kozak's [i] is not the rule's listed particle variant. The raw surface is `그노믜`, while the pinned canonical token is `그놈의`. This is normative confirmation, not token-specific acoustic IPA adjudication.
+- **ID 2001 — `물가로`:** the canonical context uses `물가` in the sense of prices. An official NIKL educational PDF explicitly lists `물가[물까]` for the meaning “price of goods” and contrasts `결과[결과]` as a negative control. The source explicitly describes these as irregular lexical cases. The postposition `로` preserves the lexical pronunciation of `물가`; the source supports the comparator's fortis `k͈`, not Kozak's `ɡ`. This is an exact lexical license, not a productive `ㄹ+ㄱ` rule.
+- Current disposition counts: 212 `NOT_INDIVIDUALLY_ADJUDICATED`, 21 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW`, one `RETAIN_PENDING_INDEPENDENT_IPA_REVIEW`, and two `RULE_CONFIRMED_STANDARD_VARIANT`. Historical membership remains reconstructed, not proven.
+- **IDs 1816, 1843, 1870 — `연전연패`:** remain abstained. NIKL Rule 29 is relevant to n-insertion, but Jun (2015) finds n-insertion variable and does not provide item-specific evidence for `연전연패`; the full underlying word list is unavailable. Three repetitions in one source row are three corpus occurrences, not three independent speakers or acoustic confirmations.
+- No production IPA, Ukrainian target, benchmark gold, or runtime rule was changed. Both adjudications are normative lexical/rule evidence, not acoustic confirmation of the individual speakers.
 
-**Sources:** NIKL Standard Pronunciation Rule 5 and official Q&A 334585; Jun (2015), DOI 10.1017/S0952675715000275. The source register and context-adjudication register contain the exact evidence and limitations.
+**Sources:** NIKL Standard Pronunciation Rule 5 and official Q&A 334585; NIKL educational PDF example (25) for `물가[물까]`; Jun (2015), DOI 10.1017/S0952675715000275.
 
 ---
 
-# 236-candidate review ledger — 2026-11-05
+ 236-candidate review ledger — 2026-11-05
 
 ## Scope and result
 
