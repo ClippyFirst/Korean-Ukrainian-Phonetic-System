@@ -510,3 +510,10 @@ Training gate: the latest readiness audit finds 644 unique lexical rows but zero
 8. **Neural training (DEFERRED):** do not train or claim supervised IPA quality until independent adjudicated IPA gold exists and corpus rights are established.
 
 **Execution rule:** prioritize evidence acquisition and independent review before code changes. Promote only independently supported corrections into production; retain abstentions where evidence is insufficient. Each batch must update the source register, rule coverage, acceptance gates, tests and exact-head verification evidence.
+
+
+## 2026-11-05 execution update — current queue and RuleTrace
+
+- **Current 36-row queue:** all rows now have explicit dispositions: four exact R013 fixes, one provisional R012 retain, and 31 individual evidence-limited `ABSTAIN` decisions in `kozak-kim-31-row-individual-abstentions-2026-11-05.csv`. These abstentions mean “insufficient independent evidence to change production”, not “the engine is linguistically correct”.
+- **Python provenance:** `RuleTrace` now emits per-occurrence `applied_occurrences` and `license_contexts` while preserving the legacy scalar `license_context`. This resolves the multi-license sentence trace loss at the Python boundary.
+- **Historical 239:** remains BLOCKED. The original occurrence-level population and its historical engine/normalizer run metadata are not present in the tracked 1,267 fragment rows or 36-row queue. Recover the original benchmark artifact/run or reproduce it from its exact historical commit, pinned source split, profile and normalizer before generating the complete ledger. Do not manufacture missing rows or provenance.
