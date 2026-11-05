@@ -2,6 +2,12 @@
 
 **Working branch:** `research/236-candidate-review-2026-11-05` (the only working branch for this task). **PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436), draft/open. The reconstructed historical baseline remains **236 occurrence rows**; no rows were deleted.
 
+### Additional negative evidence for unresolved ID 606 (`쇼`)
+
+- NIKL Online Q&A 332662 (question 2026-06-21; answer 2026-06-22) says foreign-word pronunciation is not separately standardized and that the Standard Korean Language Dictionary does not list a standard pronunciation for `쇼`; it advises pronouncing according to Hangul spelling.
+- This is useful negative evidence: there is no official standard IPA form to promote to benchmark gold. It does not decide whether a particular speaker's /s/ before /j/ is realized with a narrow [ɕ], and it supplies no token audio. ID 606 therefore remains among the 28 `NOT_INDIVIDUALLY_ADJUDICATED`; the unresolved total stays **40**, and no candidate is removed on this evidence.
+- Source record `SRC-NIKL-QNA-332662` is now in `research/SOURCE-REGISTER.csv`; item-level KOGL marking remains unverified.
+
 ### Current ledger
 
 - **15 `RULE_CONFIRMED_STANDARD_VARIANT`:** IDs 341 (`그놈의`), 826 (`유사성`), 1140 (`출산`), 1406 (`팔자걸음`), 1527 (`보일거라`), 2001 (`물가로`), 2010 (`혐오증`), 2092 (`출시미정에`), 2490 (`머리속에` → `머릿속에`), 2533 (`안할듯`), 1610 (`자신의`), 545 (`정권`, `政權`), and 1816, 1843 and 1870 (`연전연패`). ID 545 is supported by Kpedia's exact lexical entry `정권[정꿘]`, corroborated by NIKL Q&A 335292 on the Sino-Korean morpheme `권(權)`. IDs 1816/1843/1870 are repeated occurrences of one compound family; NIKL Rule 29 licenses n-insertion in `연전(連戰)+연패(連敗)`, and NIKL Q&A 322807 confirms the 連敗 sense. Jun (2015) still limits claims about natural-speech realization. These are standard lexical/rule readings, not speaker-level acoustic IPA gold.
