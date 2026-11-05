@@ -15,9 +15,9 @@ def test_reconstructed_236_review_ledger_has_exact_membership_and_statuses():
     assert len(rows) == 236
     assert len({row["occurrence_id"] for row in rows}) == 236
     assert Counter(row["candidate_disposition"] for row in rows) == {
-        "NOT_INDIVIDUALLY_ADJUDICATED": 54,
+        "NOT_INDIVIDUALLY_ADJUDICATED": 53,
         "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 20,
-        "RULE_CONFIRMED_STANDARD_VARIANT": 9,
+        "RULE_CONFIRMED_STANDARD_VARIANT": 10,
         "PROFILE_CONVENTION_MISMATCH_CONFIRMED": 153,
     }
     assert all(row["historical_membership_confidence"] ==
@@ -474,3 +474,16 @@ def test_rule_13_resyllabified_lenis_sibilants_are_profile_not_phonemic_mismatch
         assert "Kang (2010)" in row["candidate_disposition_basis"]
         assert "not a demonstrated phonemic error" in row["candidate_disposition_basis"]
         assert row["prior_independent_ipa_review_status"].endswith("token_specific_acoustic_IPA_review_not_performed")
+
+
+def test_nikl_rule_26_confirms_exact_chulsi_fortis_in_release_candidate():
+    rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
+    row = rows["2092"]
+    assert row["token"] == "출시미정에"
+    assert row["candidate_disposition"] == "RULE_CONFIRMED_STANDARD_VARIANT"
+    assert "출시 (出市)" in row["candidate_disposition_basis"]
+    assert "[출씨]" in row["candidate_disposition_basis"]
+    assert "Rule 26" in row["candidate_disposition_basis"]
+    assert "SRC-NIKL-QNA-330766" in row["candidate_disposition_basis"]
+    assert "SRC-KPEDIA-CHULSI" in row["candidate_disposition_basis"]
+    assert "Kozak's plain /s/ omits fortis" in row["candidate_disposition_basis"]
