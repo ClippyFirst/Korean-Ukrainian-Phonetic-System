@@ -2,15 +2,17 @@
 
 > This file began as an interim snapshot. The current canonical status is maintained in [the candidate review](kozak-kim-236-candidate-review-2026-11-05.md) and [the master handoff](../docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md); the earlier 10/153/20/53 figures below are historical and superseded.
 
-## Current status — after ID 545 lexical review
+## Current status — after ID 545 and Rule 29 compound reviews
 
-- 12 `RULE_CONFIRMED_STANDARD_VARIANT`
+- 15 `RULE_CONFIRMED_STANDARD_VARIANT`
 - 181 `PROFILE_CONVENTION_MISMATCH_CONFIRMED`
-- 15 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW`
+- 12 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW`
 - 28 `NOT_INDIVIDUALLY_ADJUDICATED`
-- **43 active unresolved occurrences**; all 236 baseline rows remain retained.
+- **40 active unresolved occurrences**; all 236 baseline rows remain retained.
 
 **New exact lexical case:** ID 545 `정권(政權)` is now rule/lexical-confirmed for the exact political noun. Kpedia gives `정권[정꿘]`; NIKL Q&A 335292 explains fortition associated with the Sino-Korean morpheme `권(權)` but warns that individual items must be checked in dictionaries. This exact entry supports only this occurrence; no productive `-권` rule or speaker-specific IPA gold is claimed. Historical ABSTAIN rationale remains preserved.
+
+**New compound resolution:** IDs 1816, 1843 and 1870 (`연전연패`) are three repeated occurrences of one source-row/token family. NIKL Rule 29 requires n-insertion in the exact compound `연전(連戰)+연패(連敗)`; NIKL Q&A 322807 confirms the defeat sense `連敗`, and Q&A 327019 restates Rule 29. The standard reading `[연전년패]` matches the comparator's n-insertion. Jun (2015) documents natural-speech variability, so no speaker-specific IPA is claimed. The original ABSTAIN rationale remains in the ledger.
 
 Historical 236-row membership is reconstructed from pinned replay, not proof of original selector membership. Profile-convention closures are not token-specific acoustic IPA gold.
 
