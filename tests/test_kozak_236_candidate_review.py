@@ -427,7 +427,7 @@ def test_lenis_sibilant_profile_mismatches_are_limited_to_supported_high_front_c
         if row["candidate_disposition"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
         and row["prior_individual_reason_code"] == "LENIS_SIBILANT_BROAD_PROFILE_CONVENTION"
     ]
-    assert len(scoped) == 147
+    assert len(scoped) == 149
     for row in scoped:
         fragments = json.loads(row["broad_mismatch_fragments"])
         assert fragments
@@ -526,7 +526,7 @@ def test_two_additional_liaison_lenis_sibilants_are_profile_only():
         assert row["token"] == token
         assert row["candidate_disposition"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
         assert row["prior_individual_reason_code"] == "LENIS_SIBILANT_BROAD_PROFILE_CONVENTION"
-        assert "after resyllabification" in row["candidate_disposition_basis"]
+        assert "optional coarticulation" in row["candidate_disposition_basis"]
         assert "Kang (2010, S019)" in row["candidate_disposition_basis"]
         assert row["prior_independent_ipa_review_status"].endswith("token_specific_acoustic_IPA_review_not_performed")
 
@@ -539,7 +539,7 @@ def test_first_romance_n_insertion_remains_prosody_limited_abstention():
     assert "no fixed standard pronunciation" in row["candidate_disposition_basis"]
     assert "[천녀내]" in row["candidate_disposition_basis"]
     assert "[첟#여내]" in row["candidate_disposition_basis"]
-    assert "prosodic grouping" in row["candidate_disposition_basis"]
+    assert "no spacing/prosody/audio annotation" in row["candidate_disposition_basis"]
     assert "SRC-NIKL-QNA-316146" in row["candidate_disposition_basis"]
 
 
