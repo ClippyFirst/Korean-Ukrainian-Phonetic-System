@@ -16,9 +16,9 @@ def test_reconstructed_236_review_ledger_has_exact_membership_and_statuses():
     assert len({row["occurrence_id"] for row in rows}) == 236
     assert Counter(row["candidate_disposition"] for row in rows) == {
         "NOT_INDIVIDUALLY_ADJUDICATED": 28,
-        "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 17,
+        "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW": 16,
         "RULE_CONFIRMED_STANDARD_VARIANT": 11,
-        "PROFILE_CONVENTION_MISMATCH_CONFIRMED": 180,
+        "PROFILE_CONVENTION_MISMATCH_CONFIRMED": 181,
     }
     assert all(row["historical_membership_confidence"] ==
         "RECONSTRUCTED_CANDIDATE_NOT_ORIGINAL_MEMBERSHIP_PROOF" for row in rows)
@@ -427,7 +427,7 @@ def test_lenis_sibilant_profile_mismatches_are_limited_to_supported_high_front_c
         if row["candidate_disposition"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
         and row["prior_individual_reason_code"] == "LENIS_SIBILANT_BROAD_PROFILE_CONVENTION"
     ]
-    assert len(scoped) == 149
+    assert len(scoped) == 150
     for row in scoped:
         fragments = json.loads(row["broad_mismatch_fragments"])
         assert fragments
@@ -452,7 +452,10 @@ def test_lenis_sibilant_profile_mismatches_are_limited_to_supported_high_front_c
     by_id = {row["occurrence_id"]: row for row in rows}
     assert by_id["293"]["candidate_disposition"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
     assert by_id["1206"]["candidate_disposition"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
-    assert by_id["538"]["candidate_disposition"] == "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW"
+    assert by_id["538"]["candidate_disposition"] == "PROFILE_CONVENTION_MISMATCH_CONFIRMED"
+    assert by_id["538"]["prior_individual_reason_code"] == "LENIS_SIBILANT_BROAD_PROFILE_CONVENTION"
+    assert "SRC-NIKL-QNA-306166" in by_id["538"]["candidate_disposition_basis"]
+    assert "not token-specific IPA gold" in by_id["538"]["candidate_disposition_basis"]
 
 
 def test_rule_13_resyllabified_lenis_sibilants_are_profile_not_phonemic_mismatches():
