@@ -276,7 +276,12 @@ def test_broad_sibilant_palatalization_is_available_as_an_optional_ipa_variant()
     assert result["ipa"] == "si"
     assert any(variant["ipa"] == "ɕi" for variant in result["variants"])
 
-    # The evidence used here concerns lenis /s/, not fortis /s͈/.
+    # The optional lenis candidate is supported only in /i, ye, ya/ contexts.
+    assert any(variant["ipa"] == "ɕja" for variant in phoneticize_korean("샤")["ipa"]["variants"])
+    assert any(variant["ipa"] == "ɕje" for variant in phoneticize_korean("셰")["ipa"]["variants"])
+    for word in ("섀", "셔", "쇼", "슈"):
+        assert not any("ɕ" in variant["ipa"] for variant in phoneticize_korean(word)["ipa"]["variants"]), word
+
     fortis = phoneticize_korean("씨")["ipa"]
     assert fortis["ipa"] == "s͈i"
     assert not any("ɕ͈" in variant["ipa"] for variant in fortis["variants"])
@@ -291,13 +296,13 @@ def test_narrow_h_has_context_conditioned_palatal_and_velar_allophones():
 
 
 
-def test_narrow_sibilant_profile_includes_yae_but_broad_keeps_it_optional():
+def test_yae_and_unreviewed_glide_contexts_do_not_receive_sibilant_candidate():
     from korean_ukrainian.pipeline import phoneticize_korean
 
-    assert phoneticize_korean("섀", ipa_level="narrow")["ipa"]["ipa"] == "ɕʰjɛ"
+    assert phoneticize_korean("섀", ipa_level="narrow")["ipa"]["ipa"] == "sʰjɛ"
     broad = phoneticize_korean("섀")["ipa"]
     assert broad["ipa"] == "sjɛ"
-    assert any(variant["ipa"] == "ɕjɛ" for variant in broad["variants"])
+    assert not any(variant["ipa"] == "ɕjɛ" for variant in broad["variants"])
 
 def test_broad_h_allophones_are_optional_and_profile_scoped():
     from korean_ukrainian.pipeline import phoneticize_korean
@@ -322,11 +327,12 @@ def test_seoul_broad_profile_offers_source_scoped_h_and_liquid_allophones():
     assert liquid["ipa"] == "na.ɾa"
     assert any(item["ipa"] == "na.ɭa" for item in liquid["variants"])
 
-    # Lee (1999) describes /ɕ/ before all these /j/-initial diphthongs.
-    # Python and Browser shared Broad profiles must expose the same candidates.
-    for word, expected in {"셔": "ɕjʌ", "쇼": "ɕjo", "슈": "ɕju"}.items():
+    # Lee (1993, p.31) classifies /s/ as fortis; it cannot license a
+    # lenis /s/ variant. Kang (2010) supports only /i, ye, ya/ acoustic
+    # coarticulation; do not generalize to all /j/-initial diphthongs.
+    for word in ("셔", "쇼", "슈"):
         sibilant = phoneticize_korean(word)["ipa"]
         assert sibilant["ipa"].startswith("s")
-        assert any(item["ipa"] == expected for item in sibilant["variants"]), word
+        assert not any("ɕ" in item["ipa"] for item in sibilant["variants"]), word
     fortis = phoneticize_korean("쑈")["ipa"]
     assert not any("ɕ͈" in item["ipa"] for item in fortis["variants"])

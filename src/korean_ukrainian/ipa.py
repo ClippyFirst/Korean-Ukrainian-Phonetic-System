@@ -3,12 +3,12 @@ from .phonology import Syllable, CONSONANT_PHONEMES, VOWEL_IPA, split_coda
 FORTIS={"ㄲ":"k͈","ㄸ":"t͈","ㅃ":"p͈","ㅆ":"s͈","ㅉ":"tɕ͈"}
 ASPIRATED={"ㅋ":"kʰ","ㅌ":"tʰ","ㅍ":"pʰ","ㅊ":"tɕʰ"}
 LENIS={"ㄱ":"k","ㄷ":"t","ㅂ":"p","ㅅ":"s","ㅈ":"tɕ"}
-# Partial narrow profile: Korean /s/ is phonetically aspirated; its onset
-# before /i, je, ja/ shows robust palatalization/coarticulation. Do not extend
-# this to /yu, yo/: Kang (2010) reports a distinct spectral pattern there.
-# https://www.sciencedirect.com/science/article/pii/S0095447015000339
+# Partial narrow profile: lenis /s/ is modeled as aspirated [sʰ], with a
+# conservative [ɕʰ] candidate only before /i, ye, ya/ (ㅣ, ㅖ, ㅑ).
+# Kang (2010) reports acoustic palatalization/coarticulation in those contexts;
+# /yu, yo/ have a distinct spectral pattern. This is not a categorical rule.
 # https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001444770
-_NARROW_HIGH_FRONT_SIBILANT_NUCLEI={"ㅣ","ㅒ","ㅖ","ㅑ"}
+_NARROW_HIGH_FRONT_SIBILANT_NUCLEI={"ㅣ","ㅖ","ㅑ"}
 # The research-only narrow profile models onset /n/ palatalization before
 # glide-initial nuclei. Keep /i/ out: the dev counterfactual regressed when /i/
 # was included, so the observed /j/ correspondence must not be generalized.
@@ -169,11 +169,13 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
                 "vowels":[f"ㅎ [{alternate_initial}]"],
             })
 
-    # S018 (Lee 1993, p.31) explicitly describes lenis /s/ as [ɕ] before
-    # /i/ or any diphthong beginning [j]. Kang (2010) reports different
-    # spectra for /yu, yo/ vs /ya, ye/; keep the variant optional and do not
-    # extend the source claim to fortis /s͈/.
-    palatal_sibilant_nuclei={"ㅣ","ㅑ","ㅒ","ㅕ","ㅖ","ㅛ","ㅠ"}
+    # Research-only lenis /s/ [ɕ] candidate: Kang (2010) reports acoustic
+    # palatalization/coarticulation before /i, ye, ya/ (ㅣ, ㅖ, ㅑ).
+    # /yu, yo/ show a distinct spectral pattern; no other /j/ context is
+    # inferred. Lee (1993, p.31) classifies its /s/ as fortis, so it is not
+    # evidence for lenis /s/; retain Lee only for the separately scoped
+    # Seoul /h/ and /l/ allophones. Broad canonical [s] remains unchanged.
+    palatal_sibilant_nuclei={"ㅣ","ㅑ","ㅖ"}
     for i,syllable in enumerate(items):
         if syllable.onset=="ㅅ" and syllable.nucleus in palatal_sibilant_nuclei and rendered[i].startswith("s"):
             alternate=list(rendered)
@@ -181,7 +183,7 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
             variants.append({
                 "syllable_indices":[i],
                 "ipa":render_syllable_sequence(items,alternate),
-                "note":"Optional [ɕ] allophone of lenis /s/ before /i/ or a diphthong beginning [j] (S018, Lee 1993, p.31); broad canonical /s/ is preserved.",
+                "note":"Research-only optional [ɕ] candidate for lenis /s/ before /i, ye, ya/ (S019, Kang 2010); acoustic coarticulation evidence, not a categorical rule. Broad canonical [s] is preserved.",
                 "vowels":["ㅅ [ɕ]"],
             })
     # S018: /h/ may be [ɸ] between voiced sounds. Here this is a
@@ -250,9 +252,9 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     if level=="narrow":
         result["transcription_profile"]={
             "name":"korean-narrow-contextual-allophones-v5",
-            "scope":["aspiration of lenis ㅅ as [sʰ]","palatalized [ɕʰ] before ㅣ, ㅒ, ㅖ, ㅑ","palatalized [ɲ] for onset ㄴ before glide nuclei ㅑ, ㅒ, ㅕ, ㅖ, ㅛ, ㅠ; not generalized to ㅣ","ㅎ is [ç] before selected high-front/glide nuclei and [x] before ㅜ, following the cited Seoul description","after a same-word sonorant coda, /h/ is rendered [ɦ] as one narrow-profile variant; no deletion is inferred","same-word intervocalic ㅎ may be [ɸ] and ㄹ may be [ɭ] intervocalically or before /i,j/ (S018)","tense ㅆ remains [s͈]; its palatalization is not assumed because evidence is mixed"],
+            "scope":["aspiration of lenis ㅅ as [sʰ]","palatalized [ɕʰ] candidate before ㅣ, ㅖ, ㅑ (Kang 2010; partial narrow profile)","palatalized [ɲ] for onset ㄴ before glide nuclei ㅑ, ㅒ, ㅕ, ㅖ, ㅛ, ㅠ; not generalized to ㅣ","ㅎ is [ç] before selected high-front/glide nuclei and [x] before ㅜ, following the cited Seoul description","after a same-word sonorant coda, /h/ is rendered [ɦ] as one narrow-profile variant; no deletion is inferred","same-word intervocalic ㅎ may be [ɸ] and ㄹ may be [ɭ] intervocalically or before /i,j/ (S018)","tense ㅆ remains [s͈]; its palatalization is not assumed because evidence is mixed"],
             "sources":[
-                "Lee, Hyun Bok (1999), Korean, Illustrations of the IPA: /h/ [ç] before /i,j/ and [x] before /u/: https://doi.org/10.1017/S0025100300004758",
+                "Lee, Hyun Bok (1993), Korean, Illustrations of the IPA: /h/ [ç] before /i,j/ and [x] before /u/; /s/ is classified as fortis in this description: https://doi.org/10.1017/S0025100300004758",
                 "Kang, Hyunsook (2010), Coarticulation effects of Korean sibilant /s/ before a high front segment: https://doi.org/10.17959/sppm.2010.16.1.3",
                 "Kim, Young Shin (2011), UCL PhD thesis, diphthong /ɥi/ and its [ɥi], [ø], [y] realizations: https://discovery.ucl.ac.uk/id/eprint/1324541/1/1324541.pdf",
                 "Cho, Jun & Ladefoged (2002), via High-toned [il] in Korean: https://www.sciencedirect.com/science/article/pii/S0095447015000339",

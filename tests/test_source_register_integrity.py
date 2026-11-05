@@ -685,9 +685,9 @@ def test_s018_korean_ipa_source_matches_cambridge_primary_bibliographic_metadata
     assert "Sohn (2008)" not in cambridge["title_or_project"]
 
 
-def test_s018_page_31_sibilant_scope_is_explicitly_lenis_only():
+def test_s018_page_31_does_not_license_modern_lenis_sibilant_rule():
     source = {row["source_id"]: row for row in load_source_register()}["SRC-CAMBRIDGE-KOREAN-IPA"]
     assert "page 31" in source["review_status"]
     assert "diphthong beginning [j]" in source["coverage"]
-    assert "/s/" in source["coverage"]
-    assert "fortis /s͈/" in source["limitations_or_next_action"]
+    assert "/s/ is classified as fortis" in source["coverage"]
+    assert "does not license a lenis /s/ rule" in source["limitations_or_next_action"]
