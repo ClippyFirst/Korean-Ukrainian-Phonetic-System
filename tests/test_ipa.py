@@ -40,7 +40,7 @@ def test_research_only_lenis_sibilant_variant_is_limited_to_kang_2010_contexts()
 
 
 def test_resyllabified_lenis_sibilant_variant_uses_surface_onset():
-    for word in ("멋있어", "멋있노"):
+    for word in ("멋있어", "멋있노", "무슨뜻임", "것이냐", "저딴짓이면서", "법알못이구만"):
         variants = phoneticize_korean(word)["ipa"]["variants"]
         assert any("ɕi" in item["ipa"] for item in variants), word
 
