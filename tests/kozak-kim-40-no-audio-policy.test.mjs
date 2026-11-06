@@ -10,11 +10,11 @@ const broad = (text) => engine.convert(text, { ipaProfile: 'clippyfirst-korean-b
 
 test('the three Rule 29 residual phrases are resolved only when word boundaries are explicit', () => {
   const cases = [
-    ['홍콩 영화들', '홍콩녕화들'],
-    ['한국 여자로', '한궁녀자로'],
-    ['첫 연애', '천녀내'],
+    '홍콩 영화들',
+    '한국 여자로',
+    '첫 연애',
   ];
-  for (const [phrase, expectedSurface] of cases) {
+  for (const phrase of cases) {
     const result = broad(phrase);
     assert.ok(result.trace.some(item => item.rules.includes('phrase-n-insertion-§29')), phrase);
     assert.ok(result.ipa.includes('n'), phrase);
