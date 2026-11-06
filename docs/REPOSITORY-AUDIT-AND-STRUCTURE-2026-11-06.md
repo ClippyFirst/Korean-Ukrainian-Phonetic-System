@@ -119,7 +119,7 @@ The prior verification snapshot above is historical. PR [#436](https://github.co
 | Four upstream workflow reference audit | DONE_VERIFIED as documented process comparison | Pinned revisions and adoption/rejection boundaries; no upstream code copied. |
 | Exact-head CI for merged change | DONE_VERIFIED | All applicable completed jobs on PR head `e525a15f15eebbd472c7d81033ff2991025e5525` passed; optional NIKL/Charsiu/ByT5 jobs skipped. See run IDs below. |
 | Independent Korean IPA gold | BLOCKED | Requires qualified independent reviewers and adjudication; corpus labels/model agreement are insufficient. |
-| NIKL/source item-level reuse rights | BLOCKED | 208 open source-register items remain in review/manual-classification categories; permissions not inferred. |
+| Citation-only source references | DONE_VERIFIED as non-redistribution evidence | Citations and recorded findings do not require item-level redistribution clearance when no source material is copied. |\n| Actual third-party material reuse | PARTIAL / evidence-limited | Review only copied, bundled, vendored, packaged or redistributed corpora, audio, dictionary text, models, code and dependencies; confirm exact item terms and notices. |
 | Independent Ukrainian target validation | BLOCKED | Requires Ukrainian reader/phonetic review and acceptance tests. |
 | Full local clean-install in this session | BLOCKED | Connector-only environment has no local checkout/shell; GitHub Actions performed the available clean wheel install and build checks. |
 | Release readiness | DEFERRED | Research prototype only; external linguistic and rights gates remain open. |
