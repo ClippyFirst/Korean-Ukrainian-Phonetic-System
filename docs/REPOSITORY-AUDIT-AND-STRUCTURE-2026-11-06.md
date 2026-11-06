@@ -367,3 +367,57 @@ The 28 rows are 27 lenis-sibilant mismatch occurrences across six token strings 
 
 
 The runtime metadata update cites the 2023 Seoul mid-front-vowel study in both native and browser shared-Broad optional-variant notes. Added regression guards assert that the six residual sibilant token strings do not acquire canonical or optional [ɕ] under the shared Broad profile and that ID 1885's existing length is preserved. Source-register size is now 214 rows (one new citation-only research record); no license permission is inferred from citation.
+
+
+## Superseding post-merge verification — PR #446 (2026-11-06)
+
+**Starting `main`:** `da9f98bdba553f80ecba0614294066c2d0561966`.  
+**PR:** [#446](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/446), merged.  
+**Merged `main` commit:** `321e4a126167eab0ad31fc44ae22b587ee8c809c`.  
+**PR head:** `29dc5d4634be5e6196f33ba9ab35949c22d602aa`.
+
+### Change outcome
+
+- Added `research/kozak-kim-236-residual-review-2026-11-06.csv`, an exact 28-row evidence register with occurrence/source-row/token crosswalks, reviewed basis, source IDs, explicit no-production-change action and reopening criteria.
+- Extended the reproducible 236-case generator and generated candidate ledger with five `residual_review_*` fields; exact residual IDs and the 12 abstention IDs are pinned by regression tests.
+- Added Lee (2023), DOI `10.17959/sppm.2023.29.2.193`, to the source register as citation-only research evidence. Native Python and browser shared-Broad optional-vowel metadata now cite it; canonical IPA and vowel length remain unchanged.
+- Added regression guards for all six residual sibilant token strings: canonical shared-Broad /s/ remains and unsupported [ɕ] variants are not introduced. The `대한민국` optional [ɛ]~[e] candidate remains non-selective and preserves length.
+- Updated the candidate review, engine integration record, roadmap, acceptance gates, audit and handoff. No production phonology rule, canonical IPA, Ukrainian target or benchmark gold changed.
+
+### Exact-head PR verification
+
+| Workflow | Run | Result |
+|---|---:|---|
+| System verification | [42236756802](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42236756802) | PASS — browser regression/build; Python regression/data integrity; conditional NIKL inventory SKIPPED |
+| Tests matrix | [42236756533](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42236756533) | PASS — Python 3.11/3.12/3.13, browser, wheel install, teacher-corpus audit |
+| Paired native/g2pk diagnostic | [42236756657](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42236756657) | PASS |
+| Master/research artifacts | [42236756864](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42236756864) | PASS |
+| External UGTPHON diagnostic | [42236756433](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42236756433) | PASS |
+| Exhaustive test-case extraction | [42236756422](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42236756422) | PASS |
+| Morphology consensus | [42236756578](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42236756578) | PASS |
+| Multi-engine IPA diagnostic | [42236756898](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42236756898) | PASS — pinned comparison; optional CharsiuG2P, ByT5 and dependent neural pairing SKIPPED |
+| Charsiu train/dev queue | [42236756752](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42236756752) | SKIPPED by policy |
+
+### Post-merge `main` verification
+
+| Workflow | Run | Result |
+|---|---:|---|
+| Tests matrix | [42254523067](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254523067) | PASS — web, Python 3.11/3.12/3.13, wheel install, teacher-corpus audit |
+| System verification | [42254523015](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254523015) | PASS — browser regression/build and Python regression/data integrity; NIKL inventory SKIPPED |
+| Master/research artifacts | [42254523078](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254523078) | PASS |
+| Pages deployment | [42254523031](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254523031) | IN PROGRESS at this audit update; do not count as deployed until it completes |
+
+### Updated disposition and remaining blockers
+
+| Workstream | Status | Acceptance / blocker |
+|---|---|---|
+| 236-row reconstructed cohort and generated ledger | DONE_VERIFIED as a reproducible candidate inventory | 236 rows; historical original 236/239 selector membership remains unproven |
+| 15 exact standard-form runtime dispositions | DONE_VERIFIED as bounded software integration | Ten new exact licenses plus five pre-existing licenses |
+| 181 profile-convention decisions | DONE_VERIFIED as bounded non-integration decisions | Not categorical phonology rules or speaker-level narrow IPA |
+| 28 residual occurrence evidence reviews | DONE_VERIFIED as evidence traceability | 28/28 rows crosswalked and reviewed; this is not IPA adjudication |
+| 12 abstentions + 28 unadjudicated | BLOCKED for linguistic acceptance | Need original audio and speaker crosswalk; two independent Korean broad/narrow IPA annotations with syllable/prosodic boundaries; blind reconciliation |
+| Ukrainian target review for the 40 | BLOCKED | Separate independent Ukrainian review after IPA is frozen |
+| Original historical cohort membership | PARTIAL | Reconstructed selection; original 236/239 selector/member list still required |
+| Release readiness | DEFERRED | Remains a bounded research prototype, not independently research-certified or release-ready |
+
+**Execution boundary:** no local `npm`, `pytest`, build or clean-install command was run in this connector-only session. Exact-head and post-merge GitHub Actions evidence is recorded above. The oversized append-only master handoff was preserved; this dated audit is its superseding continuation. No branch was deleted, no force-push was used, and no release was published.

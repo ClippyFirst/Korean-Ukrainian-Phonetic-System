@@ -1,12 +1,11 @@
 # Repository structure and ownership guide
 
-**Snapshot:** 2026-11-06, `main` after PR #443 at `bb972871a207b1f703503ade980a36cf3b976085`. The documentation/navigation continuation was prepared on `docs/repository-structure-and-navigation-2026-11-06` and merged through PR #444 at `e3ca4de087dc87c215d5284e59c89bdb0bff2808`. This guide describes observed tree ownership and navigation boundaries; it is not a claim that every file has been independently reviewed line by line.
-
+**Snapshot:** 2026-11-06, `main` after PR #446 at `321e4a126167eab0ad31fc44ae22b587ee8c809c`. The repository-structure/navigation guide was introduced through PR #444 at `e3ca4de087dc87c215d5284e59c89bdb0bff2808`; PR #446 subsequently added the 28-row residual evidence register and generator/test projections. This guide describes observed tree ownership and navigation boundaries; it is not a claim that every file has been independently reviewed line by line.
 ## What this repository contains
 
 A Python research package, a browser-based practical/research application, Korean phonology and lexical datasets, a Korean-to-Ukrainian IPA target layer, reproducible research tooling, and a public GitHub Pages service.
 
-At `main` commit `bb972871a207b1f703503ade980a36cf3b976085`, the recursive Git tree contains **831 entries** (789 files and 42 directories), including **177 Markdown files**, **394 files under `tests/`**, **64 scripts**, **18 GitHub Actions workflows**, and **13 schemas**. The `docs/` subtree contains 146 files and `research/` 55 files. These are point-in-time inventory counts, not measures of implementation completeness.
+At `main` commit `321e4a126167eab0ad31fc44ae22b587ee8c809c`, the recursive Git tree contains **832 entries** (790 files and 42 directories), including **177 Markdown files**, **394 files under `tests/`**, **64 scripts**, **18 GitHub Actions workflows**, and **13 schemas**. The `docs/` subtree contains 146 files and `research/` 56 files. These are point-in-time inventory counts, not measures of implementation completeness. These are point-in-time inventory counts, not measures of implementation completeness.
 
 ## Top-level map
 
@@ -109,3 +108,12 @@ NIKL Standard Pronunciation Rules R001–R016 and exact-form/morphological licen
 ## Current mismatch evidence register
 
 `research/kozak-kim-context-adjudication-2026-11-05.csv` records four context-restored NIKL §27 exact-form corrections and one provisional R012 retain decision. The reconstructed 239-ID cohort and 236-row source-context review inventory are documented in `research/kozak-kim-236-candidate-review-2026-11-05.csv` (draft PR #436); historical membership is still partial and the 236 are not individually IPA-adjudicated. The original NIKL HTML capture remains in place; no new snapshot was created. NIKL rules remain exclusive to Kozak Kim; g2pK remains an independent baseline.
+
+
+## Current 236-case status after PR #446
+
+PR [#446](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/446) is merged at `321e4a126167eab0ad31fc44ae22b587ee8c809c`. It adds a 28-row residual evidence register, projects five review fields into the generated 236-row ledger, registers Lee (2023) as citation-only research evidence, and adds regression guards for the 12 abstentions, 28 unadjudicated rows and six unresolved sibilant token strings. It does **not** add a new canonical IPA decision, Ukrainian target, production phonology rule or benchmark gold.
+
+The disposition remains 15 exact standard-form runtime cases, 181 profile-convention decisions, 12 abstentions and 28 unadjudicated cases. The 28-row evidence review is complete as a traceability/evidence review, not as token-level IPA adjudication. All 40 residual cases remain blocked on original audio and speaker crosswalk, two independent Korean broad/narrow IPA annotations with syllable/prosodic boundaries, blind reconciliation, and a separate Ukrainian target review. See the [residual register](../research/kozak-kim-236-residual-review-2026-11-06.csv), [current audit](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md) and [acceptance gates](../research/ACCEPTANCE-GATES.md).
+
+Exact-head PR CI passed the required software and diagnostic jobs; post-merge tests, system verification and master/research artifact generation passed (runs [42254523067](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254523067), [42254523015](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254523015), [42254523078](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254523078)). The Pages deployment run [42254523031](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254523031) was still in progress at this snapshot. No local shell, npm or pytest run is claimed for the connector-only session.
