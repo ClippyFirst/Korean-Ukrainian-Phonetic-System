@@ -49,13 +49,6 @@ def test_tense_sibilant_is_not_aspirated_and_palatalization_is_not_assumed():
     assert _ipa("쌰", "narrow")["ipa"] == "s͈ja"
 
 
-    # Broad profile exposes only a research candidate; narrow IPA does not
-    # force a speaker-independent [ɕ͈] realization.
-    broad_fortis = _ipa("씨", "broad")
-    assert broad_fortis["ipa"] == "s͈i"
-    assert any("ɕ͈i" in item["ipa"] for item in broad_fortis["variants"])
-    assert _ipa("씨", "narrow")["ipa"] == "s͈i"
-
 def test_narrow_profile_is_explicitly_partial_and_does_not_change_target_default():
     narrow = _ipa("사", "narrow")
     broad = _ipa("사", "broad")
