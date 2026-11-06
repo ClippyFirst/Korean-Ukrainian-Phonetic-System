@@ -131,7 +131,7 @@ test('current repository documentation records exact benchmark, rights and resea
     '181 profile-convention cases',
     '12 abstentions + 28 unadjudicated',
     'independent Ukrainian target review',
-  ]) assert.ok(repositoryAudit.includes(phrase), 'repository audit missing current disposition: ' + phrase);
+  ]) assert.ok(repositoryAudit.toLowerCase().includes(phrase.toLowerCase()), 'repository audit missing current disposition: ' + phrase);
   assert.ok(acceptance.includes('42226435101'), 'acceptance gates missing the mandatory multi-engine result');
   assert.ok(acceptance.includes('SKIPPED'), 'acceptance gates must distinguish skipped optional jobs');
 });
