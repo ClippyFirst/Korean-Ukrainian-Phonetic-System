@@ -17,7 +17,7 @@ It declares the Korean subset licensed under the Apache License, Version 2.0, an
 
 Upstream licence file: https://github.com/naver-ai/UGTPHON/blob/ef0d5a09c2ea1874c7206020f875cbd9cfea2f54/ko/LICENSE
 
-The review packet contains only 236 case-level excerpts (raw token, canonical input token, and raw sentence context). It does not contain the full UGTPHON dataset, source phoneme annotations, IPA-Dict lexicon/data, usernames, engine outputs, comparator IPA, candidate clusters, or previous case rationales.
+The review packet contains only 236 case-level excerpts (raw token, canonical input token, and raw sentence context). It does not contain the full UGTPHON dataset, source phoneme annotations, IPA-Dict lexicon/data, separate dataset account/user metadata fields, engine outputs, comparator IPA, candidate clusters, or previous case rationales. Raw sentence text may itself contain names or handles and may be searchable; the packet is therefore not source-identity-blind.
 
 The UGTPHON Korean-subset licence declaration is the documented basis for this limited reviewer distribution. This notice is not a legal opinion or an independent warranty that every upstream third-party post was contributed by a person authorised to license it. Apache-2.0 section 7 disclaims warranties including title and non-infringement; recipients should review the accompanying full licence.
 
