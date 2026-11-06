@@ -8,7 +8,7 @@ This page is the entry point for project documentation. It distinguishes current
 2. [Root agent instructions](../AGENTS.md) — repository-wide task routing and non-negotiable contracts.
 3. [Agent workflow guide](AGENT-WORKFLOWS.md) — maintained skills, task lifecycle, evidence rules and review/verification process.
 4. [Repository structure guide](REPOSITORY-STRUCTURE.md) — current component map, data ownership, runtime entry points, development commands and safe navigation.
-5. [Repository audit and structure — 2026-11-06](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md) — superseding post-PR #443 repository, CI, 236-case, source-rights and readiness snapshot.
+5. [Repository audit and structure — 2026-11-06](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md) — current continuation for repository, CI, 236-case, no-audio policy, source-rights and readiness status.
 6. [Engineering workflow reference audit — 2026-11-06](ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-06.md) — pinned review of Unlazy, Superpowers, Matt Pocock skills and Ponytail with explicit adoption boundaries.
 7. [Previous repository audit — 2026-11-04](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — historical snapshots; latest addendum 2026-11-05, including engine isolation and historical mismatch blockers.
 8. [Versioning policy](VERSIONING-POLICY.md) — independent browser and Python release streams.
@@ -30,7 +30,7 @@ This page is the entry point for project documentation. It distinguishes current
 - The 236-case cohort remains 15 exact standard-form runtime dispositions, 181 bounded profile-convention decisions, 12 abstentions and 28 unadjudicated cases. PR #446 adds evidence traceability for the 28 but does not adjudicate them. All 40 residual cases remain outside production changes pending original audio/speaker crosswalk and two independent Korean IPA annotations.
 - The source-rights gate is scoped to positively recorded copied/included/redistributed material; a pass is not blanket legal clearance.
 
-The navigation/status refresh is committed on `main` at `e0feeb6ac3697d026d151f3fbb78796728a1e8da`; exact-head CI is running.
+The `e0feeb6ac3697d026d151f3fbb78796728a1e8da` navigation refresh is a historical predecessor. The subsequent main baseline for the no-audio 40-case branch is `3570b3e5a35533739226d6bf9f0eefb1eb81fbac`; use the dated repository audit for current CI and readiness status.
 
 For the authoritative task ledger and exact evidence, use the [current repository audit](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md), [research acceptance gates](../research/ACCEPTANCE-GATES.md), [research roadmap](../research/ROADMAP.md), and [28-row residual evidence register](../research/kozak-kim-236-residual-review-2026-11-06.csv).
 ## 236-candidate engine work
@@ -38,6 +38,8 @@ For the authoritative task ledger and exact evidence, use the [current repositor
 - [236-candidate review](../research/kozak-kim-236-candidate-review-2026-11-05.md)
 - [236-case engine integration](KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md)
 - [28-row residual evidence register](../research/kozak-kim-236-residual-review-2026-11-06.csv)
+- [40-case no-audio engine-policy adjudication](KOZAK-KIM-40-NO-AUDIO-ADJUDICATION-2026-11-06.md)
+- [40-row no-audio policy register](../research/kozak-kim-40-no-audio-engine-policy-2026-11-06.csv)
 - [Independent IPA review protocol](KOZAK-236-INDEPENDENT-REVIEW.md)
 
 ## Documentation by responsibility
