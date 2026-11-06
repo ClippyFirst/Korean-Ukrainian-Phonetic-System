@@ -4,7 +4,7 @@ The focused review is documented in [UGTPHON five-abstention resolution](../docs
 
 - Three exact-form cases are implemented in Python and Browser: `쫒아내면` (R002), `많앗구나유유유` (R003), and `무서웟어` (R002). `칡칡이` remains blocked: the exact form is a field-recorded folk-song heading, with no audio; two-analyzer agreement does not establish the title's morphology or pronunciation.
 - `칡칡이` remains blocked from asserted IPA pending source-specific lexical/audio verification. `삶의` remains blocked from asserted IPA and Ukrainian output; NIKL supports Hangul `[살믜]/[살메]`, while `sal.mi`/`sal.me` remain diagnostic pending independent IPA review.
-- Exact-form Python and Browser regressions, including near-form negative controls, have been added. **Status: implementation submitted; exact-head CI pending.** Do not mark DONE_VERIFIED until Python, Browser, build, and relevant benchmark/parity jobs pass.
+- Exact-form Python and Browser regressions, including near-form negative controls, have been added. **Status: three-case implementation submitted; Browser and paired Native-vs-g2pk diagnostics complete; exact-head regression CI and full multi-engine comparison pending.** Do not mark DONE_VERIFIED until Python, Browser, build, and relevant benchmark/parity jobs pass.
 - No new productive R002/R003 heuristic has been introduced. Raw source spellings remain unchanged.
 - This continuation supersedes the earlier statement below that all five cases require abstention/no implementation.
 

@@ -215,7 +215,7 @@
   ],
   "currentSnapshot": {
     "updatedAt": "2026-11-06",
-    "implementationBranch": "fix/five-ugtphon-native-abstentions-final-2026-11-06",
+    "implementationBranch": "fix/five-ugtphon-native-abstentions-final-release-2026-11-06",
     "recoveredExactForms": [
       "쫒아내면",
       "많앗구나유유유",
@@ -225,6 +225,33 @@
       "칡칡이": "BLOCKED_SOURCE_IDENTITY_AND_AUDIO",
       "삶의": "BLOCKED_SPECIALIST_IPA_ADJUDICATION"
     },
-    "note": "The basis.latestRecordedUnresolvedCount=5 is retained as a historical 2026-10-25 snapshot. Current implementation resolves three cases with exact-form rules; two remain evidence-gated. Exact-head CI is pending."
+    "note": "The basis.latestRecordedUnresolvedCount=5 is retained as a historical 2026-10-25 snapshot. Current implementation resolves three cases with exact-form rules; two remain evidence-gated. Exact-head CI is pending.",
+    "pullRequest": 454,
+    "browserDiagnostic": {
+      "runId": 42290856158,
+      "scored": 2701,
+      "eligible": 2703,
+      "unresolved": 2,
+      "strictExact": 1435,
+      "strictCer": 0.089418,
+      "broadExact": 2344,
+      "broadCer": 0.020696
+    },
+    "pairedNativeVsG2pk": {
+      "runId": 42291597098,
+      "nativeScored": 2701,
+      "nativeExact": 1435,
+      "nativeCer": 0.089418,
+      "nativeUnresolved": 2,
+      "g2pkScored": 2703,
+      "g2pkExact": 1435,
+      "g2pkCer": 0.092328,
+      "pairedCerDeltaG2pkMinusNative": 0.002856
+    },
+    "fullMultiEngine": {
+      "runId": 42292099893,
+      "status": "CANCELLED_BEFORE_BENCHMARK",
+      "reason": "Cancelled during external implementation/license fetching; no full multi-engine score."
+    }
   }
 }

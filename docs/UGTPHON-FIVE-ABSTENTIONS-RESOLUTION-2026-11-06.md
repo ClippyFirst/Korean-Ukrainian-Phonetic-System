@@ -22,6 +22,34 @@ This change preserves each source spelling exactly. It does not normalize typos,
 - Added Browser positive and negative regressions for the three recovered cases; `칡칡이` and `삶의` remain fail-closed.
 - Kept `삶의` in the IPA-adjudication hold. Its source-backed Hangul variants remain distinct from IPA, and the Ukrainian target layer is not approved by this work.
 
+## Benchmark evidence
+
+The following reports were produced from the pinned UGTPHON Korean test split (275 dataset rows; 2,703 scorable Hangul tokens). The current browser and Python benchmark runs use the same engine code as this branch; later commits only corrected regression expectations.
+
+### Direct Browser diagnostic — run 42290856158
+
+| Metric | Historical baseline run 42226435101 | Current Browser diagnostic | Change |
+|---|---:|---:|---:|
+| Scored / coverage | 2,698 / 2,703 (99.815%) | 2,701 / 2,703 (99.926%) | +3 scored; +0.111 pp |
+| Strict IPA exact | 1,433 / 2,698 (53.113%) | 1,435 / 2,701 (53.129%) | +2 exact; +0.015 pp |
+| Strict IPA CER | 8.9486% | 8.9418% | -0.0068 pp |
+| Broad candidate exact | 2,341 / 2,698 (86.768%) | 2,344 / 2,701 (86.783%) | +3 exact; +0.015 pp |
+| Broad candidate CER | 2.0731% | 2.0696% | -0.0035 pp |
+| Unresolved | 5 | 2 | -3 |
+
+Coverage-adjusted exact match moved from 53.015% to 53.089% in strict mode (+0.074 pp), and from 86.608% to 86.719% in broad mode (+0.111 pp). This baseline is the last successful historical benchmark (PR #443), not a post-PR #447 baseline: the later PR #447 multi-engine run 42261250219 was cancelled before producing a score.
+
+### Paired Python Native vs g2pk diagnostic — run 42291597098
+
+- Native: 2,701 scored, 1,435 exact (53.1285%), CER 8.9418%, 2 unresolved, 0 engine errors.
+- g2pk: 2,703 scored, 1,435 exact (53.0892%), CER 9.2328%, 0 unresolved, 0 engine errors.
+- Paired 2,701-token subset: exact matches tied at 1,435; native CER 8.9418% vs g2pk 9.2274%, a 0.2856 pp lower CER for Native.
+- g2pk produces surface Hangul which is passed through this repository's IPA segment renderer; it does not run the native phonological rules. This is diagnostic evidence, not an independent model or normative gold comparison.
+
+### Full multi-engine status
+
+The multi-engine workflow 42292099893 was cancelled during external implementation/license fetching, before the benchmark adapter tests or comparison ran. No full multi-engine score is claimed. The active PR #454 opens a fresh exact-head run. CharsiuG2P and ByT5 remain skipped by the repository's current comparative-only/license policy, not passed.
+
 ## Evidence boundaries
 
 1. UGTPHON is a noisy user-generated-text benchmark with separate raw text, canonical text, and IPA fields. Its Korean token annotations are not the same thing as an official NIKL pronunciation ruling or speaker-specific acoustic gold.
@@ -42,4 +70,4 @@ This change preserves each source spelling exactly. It does not normalize typos,
 
 ## Verification status
 
-This document describes the implementation submitted on branch `fix/five-ugtphon-native-abstentions-final-2026-11-06`. Do not mark the code changes DONE_VERIFIED until the exact-head Python, Browser, benchmark, and cross-runtime checks pass. The source identity/audio review for `칡칡이` and independent IPA/Ukrainian-target review for `삶의` remain blocked regardless of software CI.
+This document describes the implementation submitted on branch `fix/five-ugtphon-native-abstentions-final-release-2026-11-06` in PR #454. Browser and paired Native-vs-g2pk diagnostics have numeric results above; the full multi-engine workflow and exact-head regression CI remain pending. The source identity/audio review for `칡칡이` and independent IPA/Ukrainian-target review for `삶의` remain blocked regardless of software CI.
