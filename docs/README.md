@@ -8,17 +8,18 @@ This page is the entry point for project documentation. It distinguishes current
 2. [Root agent instructions](../AGENTS.md) — repository-wide task routing and non-negotiable contracts.
 3. [Agent workflow guide](AGENT-WORKFLOWS.md) — maintained skills, task lifecycle, evidence rules and review/verification process.
 4. [Repository structure guide](REPOSITORY-STRUCTURE.md) — current component map, data ownership, runtime entry points, development commands and safe navigation.
+6. [Engineering workflow reference audit — 2026-11-06](ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-06.md) — pinned review of Unlazy, Superpowers, Matt Pocock skills and Ponytail with explicit adoption boundaries.
 5. [Repository audit and structure — 2026-11-06](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md) — current structure, agent workflow and branch/PR snapshot.
-6. [Previous repository audit — 2026-11-04](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — historical snapshots; latest addendum 2026-11-05, including engine isolation and historical mismatch blockers.
-7. [Versioning policy](VERSIONING-POLICY.md) — independent browser and Python release streams.
-8. [Architecture](architecture.md) — concise system architecture.
-9. [Methodology](methodology.md) — linguistic and engineering methodology.
-10. [Ukrainian target layer](ukrainian-target-layer.md) — IPA-to-Ukrainian mapping contract.
-11. [Research index](../research/README.md) — active research programme and evidence workflow.
-12. [Research master directive](../research/MASTER-DIRECTIVE.md) — non-negotiable research and implementation constraints.
-13. [Acceptance gates](../research/ACCEPTANCE-GATES.md) — research and release acceptance criteria.
-14. [Decision log](../research/DECISION-LOG.md) — append-only consequential decisions.
-15. [Master execution plan and handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) — detailed historical execution record; use the newest dated section, not an old snapshot.
+7. [Previous repository audit — 2026-11-04](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — historical snapshots; latest addendum 2026-11-05, including engine isolation and historical mismatch blockers.
+8. [Versioning policy](VERSIONING-POLICY.md) — independent browser and Python release streams.
+9. [Architecture](architecture.md) — concise system architecture.
+10. [Methodology](methodology.md) — linguistic and engineering methodology.
+11. [Ukrainian target layer](ukrainian-target-layer.md) — IPA-to-Ukrainian mapping contract.
+12. [Research index](../research/README.md) — active research programme and evidence workflow.
+13. [Research master directive](../research/MASTER-DIRECTIVE.md) — non-negotiable research and implementation constraints.
+14. [Acceptance gates](../research/ACCEPTANCE-GATES.md) — research and release acceptance criteria.
+15. [Decision log](../research/DECISION-LOG.md) — append-only consequential decisions.
+16. [Master execution plan and handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) — detailed historical execution record; use the newest dated section, not an old snapshot.
 
 - [Licensing and permissions](LICENSING-AND-PERMISSIONS.md) — author identity, scientific-use permissions, technical permission boundary and third-party licence scope.
 
