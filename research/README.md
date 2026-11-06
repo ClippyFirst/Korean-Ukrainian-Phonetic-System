@@ -225,3 +225,8 @@ The user's constraint is that no audio will be supplied. The 40 residual occurre
 - Three explicit, correctly spaced phrase pairs now have NIKL §29 [붙им 2] insertion support in both Python and browser runtimes: `홍콩 영화들`, `한국 여자로`, and `첫 연애`. Compact tokens are not split automatically.
 - Other decisions preserve broad /s/, broad vowel hiatus, no unsupported /j/ insertion in `오조오억배` or `체험`, non-selective [ɛ]~[e] quality candidates, and raw `ㅠ` emoticons as non-speech.
 - The historical 236 candidate dispositions remain 15 rule-confirmed, 181 profile-convention, 12 ABSTAIN, and 28 unadjudicated. The new engine-policy field is a separate axis, not a rewrite of the historical evidence status.
+
+
+## 236-case source-rights follow-up — 2026-11-06
+
+The focused [236-case source-rights audit](../docs/KOZAK-236-SOURCE-RIGHTS-AUDIT-2026-11-06.md) found a declared Apache-2.0 licence for the UGTPHON Korean subset and KoMultiText dataset, but did not establish the full upstream rights chain for the original DC Inside user comments. MultiLexNorm++'s paper does not state raw-text redistribution terms; its public Hugging Face dataset is gated by a contact-sharing agreement that was not accepted or inspected. The existing reviewer packets include raw sentence context and remain **internal-only**. All 236 `source_license` cells remain blank. External distribution is **BLOCKED** pending written rights-holder clarification or qualified legal determination. No packets were generated or sent.
