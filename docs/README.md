@@ -8,6 +8,7 @@ This page is the entry point for project documentation. It distinguishes current
 2. [Repository structure guide](REPOSITORY-STRUCTURE.md) — current component map, data ownership, runtime entry points, development commands and safe navigation.
 3. [Repository audit and structure](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — dated snapshots; latest addendum 2026-11-05, including engine isolation and historical mismatch blockers.
 4. [236-case independent review protocol](KOZAK-236-INDEPENDENT-REVIEW.md) — prepare blinded Korean IPA review packets for the reconstructed candidate cohort.
+- [236-candidate engine integration](KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md) — exact evidence-gated runtime licenses and remaining blockers.
 5. [Engineering workflow reference audit](ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-05.md) — review of the three supplied repositories and explicit adoption decisions.
 6. [Versioning policy](VERSIONING-POLICY.md) — independent browser and Python release streams.
 7. [Architecture](architecture.md) — concise system architecture.

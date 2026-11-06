@@ -20,6 +20,7 @@ This directory is the durable source of truth for research planning, evidence tr
 10. [Decision log](DECISION-LOG.md) — durable record of consequential decisions.
 11. [Release acceptance gates](ACCEPTANCE-GATES.md) — evidence required before a release is accepted.
 12. [236-candidate review note](kozak-kim-236-candidate-review-2026-11-05.md) and [occurrence ledger](kozak-kim-236-candidate-review-2026-11-05.csv) — reconstructed cohort, exact contexts and evidence-limited dispositions.
+- [236-candidate engine integration ledger](kozak-kim-236-engine-integration-2026-11-06.csv) — one runtime disposition per rule-confirmed occurrence, including existing licenses and the orthographic blocker.
 13. [Sibilant-glide scope review](KOREAN-SIBILANT-GLIDE-SCOPE-REVIEW-2026-11-05.md) — Kang (2009/2010) evidence boundary for /s/ before /j/; explicitly records why 27 out-of-scope occurrences remain open.
 
 ## Current state — 2026-11-05

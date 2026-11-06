@@ -2,7 +2,7 @@
  * Contextual phonological rules (same-eojeol pass).
  */
 import {
-  COMPLEX, FINAL_REPRESENTATIVE, LEXICAL_B_CODA_PREFIXES, decompose,
+  COMPLEX, FINAL_REPRESENTATIVE, LEXICAL_B_CODA_PREFIXES, LEXICAL_FORTITION_FORMS, decompose,
   NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_25_STEM_LB_LT_ENDING_FORMS, NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS, NIKL_28_COMPOUND_FORTITION_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_27_ADNOMINAL_FORMS, NIKL_29_PHRASE_INSERTION, NIKL_29_WORD_INSERTION, NIKL_30_SAISIOT_PRONUNCIATION_FORMS, NIKL_30_SAISIOT_INSERTION_FORMS,
   NASAL_AFTER, PLAIN_TO_FORTIS, ASPIRATION, H_CODA_ASPIRATION, representative,
 } from './engine_shared.js';
@@ -39,6 +39,8 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
     const exactR015Licensed=exactR015Pair===exactMorphPair;
     const exactR009Pair=NIKL_29_WORD_INSERTION.get(currentWord);
     const exactR009Licensed=exactR009Pair===exactMorphPair;
+    const exactLexicalFortitionPair=LEXICAL_FORTITION_FORMS.get(currentWord);
+    const exactLexicalFortitionLicensed=exactLexicalFortitionPair===exactMorphPair;
 
     if(a.coda==='ㄼ'&&b.onset!=='ㅇ'){
       if(a.char==='밟'){a.coda='ㅂ';rules.push('lexical-coda-balm');}
@@ -330,6 +332,16 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
       b.onset=PLAIN_TO_FORTIS[b.onset];
       rules.push('stem-lb-lt-fortition-§25-exact-form');
       nextRules.push('stem-lb-lt-fortition-§25-exact-form');
+      continue;
+    }
+
+    // Exact dictionary-backed lexical fortition outside a productive
+    // phonological environment (정권, 유사성, 혐오증). Keep the full-form
+    // and adjacent-pair gate; never generalize -권/-성/-증.
+    if(exactLexicalFortitionLicensed&&PLAIN_TO_FORTIS[b.onset]){
+      b.onset=PLAIN_TO_FORTIS[b.onset];
+      rules.push('lexical-fortition-exact-dictionary-form');
+      nextRules.push('lexical-fortition-exact-dictionary-form');
       continue;
     }
 

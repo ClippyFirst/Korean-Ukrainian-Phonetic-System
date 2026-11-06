@@ -95,6 +95,16 @@ def render_syllable_sequence(items:list[Syllable],rendered:list[str])->str:
         ipa+=separator+rendered[i]
     return ipa
 
+_NIKL_GENITIVE_UI_PARTICLE_FORMS={"그놈의","자신의"}
+
+def _word_form_at(items:list[Syllable],index:int)->str:
+    start=end=index
+    while start>0 and items[start-1].boundary_after!="word":
+        start-=1
+    while end+1<len(items) and items[end].boundary_after!="word":
+        end+=1
+    return "".join(item.text for item in items[start:end+1])
+
 def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="broad")->list[dict]:
     if level!="broad":
         return []
@@ -111,7 +121,8 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
             section="§5"
         elif (syllable.nucleus=="ㅢ" and syllable.onset=="ㅇ" and i>0
               and items[i-1].boundary_after!="word"):
-            primary,alternate="ɰi","i"
+            genitive_particle=_word_form_at(items,i) in _NIKL_GENITIVE_UI_PARTICLE_FORMS
+            primary,alternate="ɰi","e" if genitive_particle else "i"
             section="§5"
         else:
             continue

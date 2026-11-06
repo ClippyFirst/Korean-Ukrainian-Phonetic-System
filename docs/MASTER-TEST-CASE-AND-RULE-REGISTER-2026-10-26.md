@@ -645,3 +645,14 @@ The dimension-hint counts are multi-label and must not be summed as if they part
 ## 2026-11-05 current verification status
 
 At exact PR head `f2b30e3e64b42fed4ce9a857f76399df87559a12`, the initial browser/web run found three stale assertions (CSV quoting and source-register row/classification counts); they were corrected and the failed jobs rerun. The full tests workflow passed (Python 3.11/3.12/3.13, wheel install, teacher audit, web); system verification passed browser regression/build and Python/data integrity; master corpus artifact generation passed. Multi-engine and three external diagnostic workflows remained in progress at last check. Skipped CharsiuG2P, ByT5 and NIKL inventory jobs remain explicitly unavailable, not passed. Linguistic adjudication remains BLOCKED on qualified independent Korean IPA review.
+
+
+## 2026-11-06 — 236-candidate exact runtime integration
+
+- Browser regressions now cover exact R008 lexical fortition for `정권`, `유사성`, `혐오증`; R009 n-insertion for `연전연패`; R012 fortition for `출시미정에`; and Rule 5 particle variants for `그놈의` and `자신의`.
+- Python regressions assert the same surface forms and exact rule-license traces. Rule 5 tests assert principal /ɰi/ plus permitted [e], and explicitly reject [i] for these genitive-particle forms while retaining [i] for non-initial lexical ㅢ.
+- Negative controls keep unlisted `-권`, `-성`, `-증`, n-insertion, and ㄹ+ㅅ forms unmodified.
+- Five previously implemented standard-rule cases (`출산`, `팔자걸음`, `보일거라`, `물가로`, `안할듯`) are pinned as retained coverage.
+- `tests/test_kozak_236_engine_integration.py` checks that every one of the 15 rule-confirmed occurrence IDs has exactly one explicit integration disposition, including the `머리속에` orthographic-normalization blocker.
+
+The 181 profile-convention cases and 40 abstained/unadjudicated cases are not converted into rules. These tests validate software behavior and evidence traceability, not speaker-specific acoustic IPA or independent Ukrainian-reader gold.

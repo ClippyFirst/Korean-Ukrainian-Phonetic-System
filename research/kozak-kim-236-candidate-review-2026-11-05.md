@@ -245,3 +245,15 @@ This supports treating sibilant realization as speaker- and context-sensitive an
 The separate 2010 Sung & Cho study compares Korean lax/tense sibilants with English /s/ and /ʃ/ across /i, a, u/, using duration, center of gravity and major spectral peak. Its abstract reports strong vowel effects and acoustic distinctness of Korean sibilants from both English categories. It is a useful warning against equating Korean /s/ with English /s/ or /ʃ/ based on a single IPA symbol, but the abstract does not give a direct modern segmental IPA adjudication for this cohort. KCI record: [ART001486421](https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001486421). The paper's full text was not inspected. Its item-level reuse terms are not assessed; only citation-level use is recorded in the source register.
 
 **Current source-grounded scope:** S019 supports acoustic palatalization/coarticulation for lenis /s/ before /i, ye, ya/ in its abstract; S027 treats a separate within-syllable high-front-plus-round labio-palatalized pattern, without naming a canonical segmental IPA; Kong & Kang (2020) adds preliminary speaker/gender variation with palatalized variants before /i/; Sung & Cho (2010) warns that Korean lax/tense sibilants are acoustically distinct from English /s/ and /ʃ/. None licenses blanket simple [ɕ] for all /j/-initial nuclei, blanket [ɕ͈] for fortis ㅆ, or item-level confirmation without source audio and independent review.
+
+
+## 2026-11-06 implementation addendum
+
+The original evidence classifications remain unchanged. Runtime integration is recorded separately in [the 15-row engine integration ledger](kozak-kim-236-engine-integration-2026-11-06.csv) and summarized in [the implementation memo](../docs/KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md).
+
+Of the 15 `RULE_CONFIRMED_STANDARD_VARIANT` occurrences:
+- 5 already had exact licenses on the starting branch and were preserved;
+- 9 occurrences are now covered by new exact runtime licenses (7 distinct eojeol families);
+- occurrence 2490 (`머리속에`) remains blocked because correcting it to `머릿속` is spelling/semantic normalization, not a phonological rule.
+
+The other 221 rows remain as previously classified: 181 profile-convention mismatches are not categorical rules, 12 are ABSTAIN, and 28 are UNADJUDICATED. No acoustic IPA gold or Ukrainian target was invented. The new runtime rules continue through the existing IPA-first Ukrainian adapter.

@@ -24,7 +24,7 @@ RULE_META={
 "R005":("nasal-assimilation","NIKL §18","high"),
 "R006":("liquid-assimilation","NIKL §§19–20","high"),
 "R007":("palatalization","NIKL §17","high"),
-"R008":("tensification","NIKL §§23–27","high"),
+"R008":("tensification","NIKL §§23–27; exact dictionary forms: 정권 (Kpedia + NIKL Q&A 335292 scope), 유사성 and 혐오증 (NIKL Basic Dictionary); exact eojeol/pair only","high"),
 "R009":("n-insertion","NIKL §29; official Standard Pronunciation Rules https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","high"),
 "R010":("stem-nm-fortition","NIKL §24","high"),
 "R011":("stem-lb-lt-fortition","NIKL §25","high"),
@@ -180,6 +180,7 @@ _NIKL_R009_WORD_LICENSES = {
     "눈요기": "눈>요", "영업용": "업>용", "식용유": "용>유", "백분율": "분>율",
     "밤윷": "밤>윷", "들일": "들>일", "솔잎": "솔>잎", "설익다": "설>익",
     "물약": "물>약", "불여우": "불>여", "서울역": "울>역", "물엿": "물>엿",
+    "연전연패": "전>연",  # NIKL §29 exact compound; 連敗 sense confirmed by Q&A 322807.
     "서른여섯": "른>여", "스물여섯": "물>여",
 }
 _NIKL_R009_PHRASE_LICENSES = {
@@ -207,6 +208,7 @@ _NIKL_R012_WORD_LICENSES = {
     "저출산": "출>산",  # NIKL Basic Dictionary directly lists 저출산[저ː출싼].
     "실시간": "실>시",  # NIKL lexical source records 실시간(實時間); §26 licenses this exact Sino-Korean boundary.
     "팔자걸음": "팔>자",  # NIKL Basic Dictionary 팔자[팔짜]; exact corpus compound only.
+    "출시미정에": "출>시",  # Exact 출시[출씨] + NIKL §26; SRC-KPEDIA-CHULSI and SRC-NIKL-QNA-330766.
 }
 
 # Exact examples explicitly listed in NIKL §28 (fortition in compounds
@@ -296,6 +298,16 @@ _NIKL_R016_VERBAL_STEM_LICENSES = {
     "맑고": "맑>고",  # NIKL Online Q&A qna_seq=320900 explicitly confirms [말꼬].
 }
 
+# Exact lexical fortition entries supported by source-register records.
+# They are not productive suffix or morpheme rules; only the complete eojeol
+# and adjacent syllable pair are licensed.
+_EXACT_LEXICAL_FORTITION_WORD_LICENSES = {
+    "정권": "정>권",   # SRC-KPEDIA-JEONGGWON; SRC-NIKL-QNA-335292 is scope corroboration only.
+    "유사성": "사>성", # SRC-NIKL-KRDICT-YUSASEONG; no productive -성 rule.
+    "혐오증": "오>증", # SRC-NIKL-KRDICT-HYEMO; no productive -증 rule.
+}
+
+
 def _word_forms_with_indices(items):
     word_forms = []
     word_form_by_index = [""] * len(items)
@@ -319,6 +331,9 @@ def _source_backed_rule_licenses(items, boundary_mode):
     word_forms, _ = _word_forms_with_indices(items)
     licenses = set()
     for word_form in word_forms:
+        pair = _EXACT_LEXICAL_FORTITION_WORD_LICENSES.get(word_form)
+        if pair is not None:
+            licenses.add(f"R008:lexical:{word_form}:{pair}")
         pair = _NIKL_R002_FORMAL_LICENSES.get(word_form)
         if pair is not None:
             licenses.add(f"R002:formal:{word_form}:{pair}")
@@ -605,9 +620,21 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             elif ("formal_morpheme_i",pair) not in exact_pairs and ("dh_suffix_hi",pair) not in exact_pairs:
                 conditional_disabled=True
     elif rule_id=="R008":
+        lexical_licenses={x for x in licenses if x.startswith("R008:lexical:")}
+        lexical_pairs_by_word={}
+        for license in lexical_licenses:
+            parts=license.split(":",3)
+            if len(parts)==4 and parts[1]=="lexical":
+                lexical_pairs_by_word.setdefault(parts[2],set()).add(parts[3])
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
             if not _eligible(a,b,boundary_mode=boundary_mode): continue
+            exact_pair=f"{a.text}>{b.text}"
+            word_form=word_form_by_index[i]
+            if exact_pair in lexical_pairs_by_word.get(word_form,set()) and b.onset in PLAIN_TO_FORTIS:
+                b.onset=PLAIN_TO_FORTIS[b.onset]; changed=True
+                license_context=f"R008:lexical:{word_form}:{exact_pair}"
+                continue
             # A written ㄺ before ㄱ is the §11 morphophonemic exception
             # zone: a licensed stem form keeps ㄹ (R016), while ordinary
             # lexical forms simplify to ㄱ. Do not let generic §23 fortition

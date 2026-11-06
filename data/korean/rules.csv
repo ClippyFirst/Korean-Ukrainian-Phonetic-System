@@ -6,7 +6,7 @@ R004,h-aspiration,ㅎ+obstruent,ㅋ|ㅌ|ㅍ|ㅊ,licensed consonant interaction,w
 R005,nasal-assimilation,obstruent,nasal-place-matched,before ㄴ|ㅁ,word|morpheme,5,S001,established,high
 R006,liquid-assimilation,ㄴ|ㄹ,ㄹ|ㄹ,adjacent to liquid,word|morpheme,6,S001,established,high
 R007,palatalization,ㄷ|ㅌ,ㅈ|ㅊ,before i/y-initial nucleus,word|morpheme,7,S001,established,high
-R008,tensification,plain-obstruent,fortis,post-coda licensed context,word|morpheme,15,S001,established,high
+R008,tensification,plain-obstruent,fortis,post-coda licensed context or exact dictionary eojeol+pair license,word|morpheme,15,S001,established,high
 R009,n-insertion,zero-onset+i-or-y,ㄴ|ㄹ,before ㅣ/ㅑ/ㅕ/ㅛ/ㅠ/ㅖ/ㅒ under licensed morphology or connected speech,word|morpheme|phrase,1,S001,established,high
 
 R010,stem-nm-fortition,stem-final-n-or-m+suffix-initial-obstruent,ㄲ|ㄸ|ㅆ|ㅉ,verb-stem boundary with explicit morphological license,morpheme,8,S001,conditional,high

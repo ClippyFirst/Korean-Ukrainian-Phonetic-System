@@ -297,6 +297,7 @@ The durable project plan, evidence registers, rule-coverage matrix, architecture
 - [Architecture decision log](research/DECISION-LOG.md)
 - [Release acceptance gates](research/ACCEPTANCE-GATES.md)
 - [236-candidate occurrence review](research/kozak-kim-236-candidate-review-2026-11-05.md) — reconstructed historical cohort, per-case provenance and evidence-limited disposition.
+- [236-candidate Kozak Kim engine integration](docs/KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md) — exact runtime licenses, already-implemented cases, negative controls and blocked normalization.
 
 The initial Phase 0 reconstruction is substantially complete for the current mainline: current CI covers browser tests/build, Python 3.11/3.12/3.13, corpus artifacts and system verification. Remaining acceptance gaps and their evidence are tracked in the handoff, completion audit, and research/ACCEPTANCE-GATES.md.
 

@@ -336,3 +336,13 @@ def test_seoul_broad_profile_offers_source_scoped_h_and_liquid_allophones():
         assert not any("ɕ" in item["ipa"] for item in sibilant["variants"]), word
     fortis = phoneticize_korean("쑈")["ipa"]
     assert not any("ɕ͈" in item["ipa"] for item in fortis["variants"])
+ 
+def test_genitive_particle_ui_uses_rule5_e_variant_not_lexical_i_variant():
+    for word in ("그놈의", "자신의"):
+        result = phoneticize_korean(word)["ipa"]
+        assert result["ipa"].endswith("ɰi"), word
+        assert any(variant["ipa"].endswith(".e") for variant in result["variants"]), word
+        assert not any(variant["ipa"].endswith(".i") for variant in result["variants"]), word
+
+    lexical = phoneticize_korean("민주주의")["ipa"]
+    assert any(variant["ipa"].endswith(".i") for variant in lexical["variants"])
