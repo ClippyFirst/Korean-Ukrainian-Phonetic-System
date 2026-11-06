@@ -113,8 +113,19 @@ def test_current_2026_11_05_unmapped_queue_is_versioned_separately_from_historic
     historical_by_id = {row["occurrence_id"]: row for row in historical}
     current_by_id = {row["occurrence_id"]: row for row in current}
     assert len(historical) == 36
-    assert len(current) == 32
-    assert set(historical_by_id) - set(current_by_id) == {"37", "704", "2018", "2031"}
+    assert len(current) == 26
+    assert set(historical_by_id) - set(current_by_id) == {
+        "37", "704", "2018", "2031", "545", "826", "1610", "1816", "1843", "1870"
+    }
     assert set(current_by_id).issubset(historical_by_id)
+    # The exact 236-case engine integrations remove six previously unmapped
+    # fortition rows. The genitive-particle Rule 5 form remains diagnostic:
+    # its primary /ɰi/ is valid, while the comparator's [e] is an allowed
+    # alternate and the corpus supplies no speaker-level adjudication.
     for occurrence_id, row in current_by_id.items():
-        assert row == historical_by_id[occurrence_id]
+        if occurrence_id == "341":
+            assert row["strict_kozak_ipa"] == "kɯ.no.mɰi"
+            assert row["broad_kozak_ipa"] == "kɯnomɰi"
+            assert row["unmapped_broad_fragment_count"] == "2"
+        else:
+            assert row == historical_by_id[occurrence_id]
