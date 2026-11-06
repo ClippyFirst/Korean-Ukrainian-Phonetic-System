@@ -93,9 +93,14 @@ const UNASSESSED_PATTERNS = [
   /\bupstream\b.{0,120}\b(?:verify|notices|not[_ -]?verified|reported)\b/iu,
 ];
 
-function classifyRights(value) {
+function classifyRights(value, integrationStatus = '') {
   const text = String(value ?? '').trim();
   if (!text) return { status: 'REVIEW_REQUIRED', reason: 'license_status is empty' };
+  const usage = String(integrationStatus ?? '');
+  const explicitlyRedistributed = /\\b(?:copied|redistributed|vendored|bundled|packaged|included\\s+(?:in|into|with)\\s+(?:the\\s+)?(?:runtime|package|distribution|repository))\\b/iu.test(usage);
+  if (/\\bcitation[- ]only\\b/iu.test(text) && !explicitlyRedistributed) {
+    return { status: 'CITATION_ONLY_NO_REUSE', reason: 'source is recorded as citation-only; no source material is redistributed' };
+  }
   if (/^not[_ -]?applicable$/iu.test(text)) {
     return { status: 'NOT_APPLICABLE_RECORDED', reason: 'register explicitly says not_applicable; verify the scope remains correct' };
   }
@@ -139,7 +144,7 @@ export function auditSourceRegister(csvText) {
         errors.push({ row: index + 1, sourceId: record.source_id || null, error: 'non-empty source URL must be a valid HTTPS URL' });
       }
     }
-    const rights = classifyRights(record.license_status);
+    const rights = classifyRights(record.license_status, record.integration_status);
     records.push({
       row: index + 1,
       sourceId: record.source_id || null,
@@ -157,6 +162,7 @@ export function auditSourceRegister(csvText) {
   const counts = Object.fromEntries([
     'ITEM_LEVEL_LICENSE_RECORDED',
     'NOT_APPLICABLE_RECORDED',
+    'CITATION_ONLY_NO_REUSE',
     'REVIEW_REQUIRED',
     'MANUAL_CLASSIFICATION_REQUIRED',
   ].map(status => [status, records.filter(record => record.rightsReviewStatus === status).length]));
@@ -170,11 +176,14 @@ export function auditSourceRegister(csvText) {
     rightsClassificationCounts: counts,
     itemLevelRightsNotClosed: records.filter(record =>
       ['REVIEW_REQUIRED', 'MANUAL_CLASSIFICATION_REQUIRED'].includes(record.rightsReviewStatus)),
+    redistributionRightsNotClosed: records.filter(record =>
+      /\\b(?:copied|redistributed|vendored|bundled|packaged|included\\s+(?:in|into|with)\\s+(?:the\\s+)?(?:runtime|package|distribution|repository))\\b/iu.test(String(rows[record.row - 1]?.[header.indexOf('integration_status')] ?? '')) &&
+      ['REVIEW_REQUIRED', 'MANUAL_CLASSIFICATION_REQUIRED'].includes(record.rightsReviewStatus)),
     records,
     limitations: [
       'Classification is a triage aid, not a legal opinion or permission grant.',
-      'A source citation, site-wide policy, or package metadata does not by itself clear the exact retained artifact.',
-      'The audit does not access external websites, inspect page-level KOGL labels, or modify source-register statuses.',
+      'Citation-only records are not redistribution blockers; actual copied, bundled, vendored, packaged or redistributed artifacts still require item-level review.',
+      'The audit does not access external websites, inspect page-level KOGL labels, or modify source-register statuses. Unknown usage is informational until actual redistribution is recorded.',
     ],
   };
 }
@@ -186,7 +195,7 @@ async function main(argv = process.argv.slice(2)) {
   if (unknown.length) throw new Error('Unknown argument(s): ' + unknown.join(', '));
   if (argv.includes('--help') || argv.includes('-h')) {
     console.log('Usage: node scripts/audit-source-register.mjs [--json] [--require-reviewed-rights]');
-    console.log('--require-reviewed-rights exits 3 while any item-level rights classification remains open.');
+    console.log('--require-reviewed-rights exits 3 only when a copied/redistributed artifact lacks a recorded item-level rights decision; citation-only and unknown-use records remain informational.');
     return 0;
   }
   const sourcePath = resolve('research/SOURCE-REGISTER.csv');
@@ -198,6 +207,7 @@ async function main(argv = process.argv.slice(2)) {
       structuralErrorCount: result.structuralErrorCount,
       rightsClassificationCounts: result.rightsClassificationCounts,
       itemLevelRightsNotClosed: result.itemLevelRightsNotClosed.length,
+      redistributionRightsNotClosed: result.redistributionRightsNotClosed.length,
     }, null, 2));
     if (result.structuralErrors.length) console.error(JSON.stringify(result.structuralErrors, null, 2));
     console.log('Rights review queue (first 30 rows):');
@@ -206,7 +216,7 @@ async function main(argv = process.argv.slice(2)) {
     console.log(JSON.stringify(result, null, 2));
   }
   if (result.structuralErrorCount) return 2;
-  if (strictRights && result.itemLevelRightsNotClosed.length) return 3;
+  if (strictRights && result.redistributionRightsNotClosed.length) return 3;
   return 0;
 }
 
