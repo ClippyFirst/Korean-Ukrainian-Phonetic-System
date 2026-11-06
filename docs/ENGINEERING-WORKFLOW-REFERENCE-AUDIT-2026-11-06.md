@@ -53,7 +53,7 @@ Its README promotes small necessary changes and exposes audit, debt, gain, help 
 
 ## Licensing and reuse
 
-All three inspected snapshots contain an MIT License: Jesse Vincent (2025), Matt Pocock (2026), and DietrichGebert (2026). No third-party material was copied. MIT permission for these repositories does not apply to unrelated linked assets or datasets. The target repository's ClippyFirst Project License continues to govern its original implementation; each dependency and dataset retains its own terms.
+All four inspected snapshots contain an MIT License: Leonxlnx (2026 snapshot), Jesse Vincent (2025), Matt Pocock (2026), and DietrichGebert (2026). No third-party material was copied. MIT permission for these repositories does not apply to unrelated linked assets or datasets. The target repository's ClippyFirst Project License continues to govern its original implementation; each dependency and dataset retains its own terms.
 
 
 ## Unlazy — completion gates and evidence freshness (reviewed 2026-11-06)
