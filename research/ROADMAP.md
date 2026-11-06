@@ -1,3 +1,22 @@
+# Current continuation — 2026-11-06 (PR #443 merged)
+
+**Current `main`:** `bb972871a207b1f703503ade980a36cf3b976085`.  
+**Merged PR:** [#443](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/443).  
+**Verified PR head:** `625d6e3171e30ae7a6aae525dfdd4ded2c5249f8`.
+
+- **DONE_VERIFIED — mandatory multi-engine benchmark:** [run 42226435101](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435101) completed pinned comparison, mismatch export, same-occurrence Browser run, Native/Browser parity and SIGMORPHON lexical-gold comparison. Optional CharsiuG2P and ByT5 inference jobs were skipped by policy.
+- **DONE_VERIFIED — exact-head software verification:** [run 42226435403](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435403) passed browser tests, source-redistribution gate, build and generated-page checks; Python regression/data integrity passed.
+- **DONE_VERIFIED — scoped source-rights release gate:** no unresolved positively recorded redistribution item. Citation-only and non-redistributed sources remain informational review records, not redistribution grants or blanket clearance.
+- **DONE_VERIFIED — bounded 236-case runtime disposition:** 15 exact standard-form occurrences have runtime dispositions (10 new exact integrations + 5 pre-existing licenses); 181 are profile-convention decisions and are not promoted to categorical rules.
+- **BLOCKED — independent Korean IPA:** 12 abstentions + 28 not-individually-adjudicated occurrences remain open pending token/source/audio/speaker/prosodic evidence and independent annotation.
+- **BLOCKED — Ukrainian target review:** requires a separate independent reader/phonetic review on frozen IPA inputs.
+- **PARTIAL — historical cohort identity:** the 236-row candidate inventory is reproducible but does not prove the original historical 236/239 selector/member list.
+- **DEFERRED — release:** the system remains a research prototype; optional model inference and full independent research certification are not prerequisites for ordinary software CI but remain outside the completed evidence set.
+
+The detailed per-case counts, source-rights interpretation and verification boundary are in [the current repository audit](../docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md), [236-case integration record](../docs/KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md), and [acceptance gates](ACCEPTANCE-GATES.md).
+
+---
+
 ## 2026-11-05 — 236-candidate occurrence review and evidence correction
 
 **Starting main:** `043754498f3ad8a17aa6c13b5f643b197536da8a`. **Working branch / draft PR:** `research/236-candidate-review-2026-11-05`, [PR #436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436). The branch is research-only. It narrows the optional [ɕ] research variant and selectable partial narrow-profile contexts to /i, ye, ya/; canonical broad [s], phonemic output, and Ukrainian target mapping remain unchanged. This is a profile-scope correction, not a confirmed categorical pronunciation rule.
