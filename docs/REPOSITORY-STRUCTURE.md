@@ -1,6 +1,6 @@
 # Repository structure and ownership guide
 
-**Snapshot:** 2026-11-06, `main` after PR #443 at `bb972871a207b1f703503ade980a36cf3b976085`. The current documentation continuation is isolated on `docs/repository-structure-and-navigation-2026-11-06`. This guide describes observed tree ownership and navigation boundaries; it is not a claim that every file has been independently reviewed line by line.
+**Snapshot:** 2026-11-06, `main` after PR #443 at `bb972871a207b1f703503ade980a36cf3b976085`. The documentation/navigation continuation was prepared on `docs/repository-structure-and-navigation-2026-11-06` and merged through PR #444 at `e3ca4de087dc87c215d5284e59c89bdb0bff2808`. This guide describes observed tree ownership and navigation boundaries; it is not a claim that every file has been independently reviewed line by line.
 
 ## What this repository contains
 
