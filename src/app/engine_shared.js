@@ -75,9 +75,6 @@ const NIKL_13_14_FORMAL_LIAISON_FORMS=new Map([
   ['말없이','없>이'],
   ['수없이','없>이'],
   ['늙은이','늙>은'],
-  // Exact UGTPHON form; Kiwi and MeCab-Ko agree on 칡 + 칡 + particle 이.
-  // NIKL §14 licenses ㄺ + vowel-initial grammatical-morpheme liaison.
-  ['칡칡이','칡>이'],
   // Exact noisy spelling: preserve 쫒 (not a standard lexical spelling).
   ['쫒아내면','쫒>아'],
   // Exact noisy C1 spelling; preserve ㅅ in 웟 and license only 웟>어.
