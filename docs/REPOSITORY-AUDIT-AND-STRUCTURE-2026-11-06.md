@@ -7,7 +7,7 @@ Repository: [ClippyFirst/Korean-Ukrainian-Phonetic-System](https://github.com/Cl
 - Default branch at start: `main`, commit `043754498f3ad8a17aa6c13b5f643b197536da8a`.
 - Working branch: `research/236-candidate-review-2026-11-05`.
 - Working-branch snapshot for this audit: `9fa7b589ae881c497ea0800b3ae0886ce1990bfd` (before this final audit/handoff commit).
-- Open PR #436 carries the 236-case research/runtime integration; open PR #437 carries the agent-workflow documentation changes being reconciled into #436.
+- PR #436 is the single active integration PR. PR #437 was closed as superseded after all 13 of its changed paths were confirmed present and reconciled on #436; its source branch is preserved.
 - Recursive tree at the working-branch snapshot: 831 entries (789 files, 42 directories), 177 Markdown files, 394 files under `tests/`, 64 scripts, 18 GitHub Actions workflows and 13 schemas; `docs/` contains 146 files and `research/` 55. Seven repository-local skills are present.
 
 This is a repository-state, 236-case implementation and documentation-structure audit. It is not an independent Korean IPA adjudication, Ukrainian reader study, source-rights opinion, or local clean-room test run.
@@ -87,8 +87,8 @@ Pinned source revisions and detailed boundaries are recorded in [the 2026-11-06 
 ## Branch and PR reconciliation
 
 - PR #436 remains the working integration branch, based on the inspected main commit `043754498f3ad8a17aa6c13b5f643b197536da8a`.
-- PR #437's root `AGENTS.md`, three general skills, agent workflow guide, structural contract test and navigation changes have been ported to the #436 branch and reconciled with the 236-case documentation.
-- PR #437 itself is left open and untouched; it is not silently merged or closed. Its overlap should be resolved after the combined #436 branch's exact-head checks.
+- PR #437's root `AGENTS.md`, three general skills, agent workflow guide, structural contract test and navigation changes were ported to the #436 branch and reconciled with the 236-case documentation.
+- All 13 changed paths from PR #437 are present on #436; PR #437 is closed as superseded, with its branch preserved. No PR was blindly merged.
 - No user branch was deleted, no force-push was used, and `main` was not modified.
 
 ## Verification snapshot
