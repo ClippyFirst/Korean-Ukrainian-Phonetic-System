@@ -89,3 +89,25 @@ test('workflow guide points to the canonical research and execution records', ()
     'MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md',
   ]) assert.ok(workflowGuide.includes(path), 'missing canonical pointer: ' + path);
 });
+
+
+test('current documentation navigation exposes the four-source audit and 236-case decision record', () => {
+  const rootReadme = read('README.md');
+  const audit = read('docs/ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-06.md');
+  const repositoryAudit = read('docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md');
+  const integration = read('docs/KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md');
+  for (const phrase of [
+    'ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-06.md',
+    'KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md',
+    'REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md',
+  ]) {
+    assert.ok(rootReadme.includes(phrase), 'README missing current document: ' + phrase);
+    assert.ok(docsIndex.includes(phrase), 'docs index missing current document: ' + phrase);
+  }
+  assert.ok(audit.includes('16671491f6679ad9378f52604d3bc2415b4120c7'));
+  assert.ok(audit.includes('22f0b463e7a5e579904dd6211a520321035526f7'));
+  assert.ok(audit.includes('4ae2317ddb22b046e26455e4f9c9b3aaaf62212d'));
+  assert.ok(audit.includes('96608e078b2d5ea607c5c3b8b5a54d1c1fba6846'));
+  assert.ok(repositoryAudit.includes('236 reconstructed occurrence rows'));
+  assert.ok(integration.includes('14/15'));
+});
