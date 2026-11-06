@@ -86,11 +86,6 @@ _NIKL_R002_FORMAL_LICENSES = {
     "없으니까": "없>으",
     # Q&A 306166 directly attests 멋있어[머디써/머시써]; license only 있>어.
     "멋있어": "있>어",
-    # Exact UGTPHON form; Kiwi and MeCab-Ko independently agree on the
-    # 칡 + 칡 + nominative particle 이 boundary. NIKL §14 licenses the
-    # ㄺ + vowel-initial grammatical-morpheme pattern; only this full form
-    # is enabled (the analyzer result itself remains diagnostic evidence).
-    "칡칡이": "칡>이",
     # Exact noisy orthography from UGTPHON. The raw typo 쫒 is preserved;
     # only its internal 쫒>아 boundary is licensed for this token. This is
     # a corpus-specific surface analysis, not a claim that 쫒 is standard.
