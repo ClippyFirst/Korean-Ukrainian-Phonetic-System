@@ -23,7 +23,7 @@ The result is therefore:
 
 ### Rule 29 connected-phrase n-insertion
 
-The browser and Python engines now recognize these exact, explicitly spaced phrase pairs under NIKL Standard Pronunciation Rule 29 [붙임 2]:
+The browser and Python engines now expose conditional phrase-mode handling for these explicitly spaced phrase pairs under the general NIKL Standard Pronunciation Rule 29 [붙임 2] framework. These are **not lexical attestations or token-specific production licenses** for the compact corpus forms; they are runtime paths available only when the caller supplies the word boundary and connected-phrase mode:
 
 | Explicit phrase input | Connected-phrase surface | Scope |
 |---|---|---|
@@ -31,7 +31,7 @@ The browser and Python engines now recognize these exact, explicitly spaced phra
 | `한국 여자로` | `한궁녀자로` | Same |
 | `첫 연애` | `천녀내` | Same; NIKL Q&A 316146 explicitly says the result depends on prosodic grouping |
 
-The Python API requires `boundary_mode="phrase"`. The browser runtime uses explicit whitespace as its documented connected-phrase proxy. Neither runtime infers hidden spaces in compact inputs: `홍콩영화들`, `한국여자로`, and `첫연애` do **not** trigger this phrase rule. This is important because the corpus tokens are compact strings and their original prosodic boundaries are not encoded.
+The Python API requires `boundary_mode="phrase"`. The browser runtime uses explicit whitespace as its documented connected-phrase proxy. NIKL Q&A 330322 establishes the general two-word connected-phrase scope using `무슨 일`; it does not attest these exact tokens. Neither runtime infers hidden spaces in compact inputs: `홍콩영화들`, `한국여자로`, and `첫연애` do **not** trigger this phrase rule. This is important because the corpus tokens are compact strings and their original prosodic boundaries are not encoded.
 
 For `첫 연애`, the official answer is conditional, not a single universal form: [천녀내] is possible when grouped as one phrase; [첟#여내] with a pause and [처뎌내] with liaison but no n-insertion are also described. The engine only applies the connected-phrase path when the caller supplies explicit phrase boundaries; it does not pretend to infer the speaker's prosody.
 
