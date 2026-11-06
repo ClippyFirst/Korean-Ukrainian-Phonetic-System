@@ -312,3 +312,40 @@ The source register contains 213 rows and 12 columns with zero structural errors
 **Local verification boundary:** no local `npm`, `pytest`, build or clean-install command was run in this connector-only session. Exact-head GitHub Actions results above are the verification evidence; they must not be described as local execution.
 
 **Readiness:** mandatory software verification and the pinned multi-engine diagnostic are complete for the merged PR head. The repository remains a **bounded research prototype**, not independently research-certified or release-ready.
+
+## Post-merge handoff — PR #444 documentation integration (2026-11-06)
+
+**Starting main for the documentation pass:** `bb972871a207b1f703503ade980a36cf3b976085` (PR #443 merge).  
+**Documentation PR:** [#444](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/444), merged at `e3ca4de087dc87c215d5284e59c89bdb0bff2808`.  
+**Current main at this handoff snapshot:** `e3ca4de087dc87c215d5284e59c89bdb0bff2808`.
+
+### PR #444 scope and verification
+
+- Updated the root README positioning/status, documentation index, repository structure guide, architecture pointer, research index, roadmap and acceptance gates.
+- Appended the superseding evidence state to this repository audit; preserved the oversized append-only master handoff unchanged.
+- Extended the documentation structure contract test to validate local links in the repository-structure and research indexes and to guard current benchmark/readiness evidence.
+- Exact branch-head push verification [42231553988](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42231553988): PASS — Python regression/data integrity; browser tests **1,407/1,407**; strict source-rights gate; Vite build; generated-page checks. Conditional NIKL crawl SKIPPED.
+- PR event system verification [42231693973](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42231693973): PASS — Python regression/data integrity, browser regression, source-rights gate, build and generated-page checks.
+- PR event exhaustive register extraction [42231693721](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42231693721): PASS.
+- PR event master/research artifact generation [42231693765](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42231693765): PASS.
+
+### Post-merge main verification
+
+| Workflow | Run | Snapshot result |
+|---|---:|---|
+| Tests matrix | [42231901835](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42231901835) | PASS — Python 3.11/3.12/3.13, browser tests/build, wheel-install IPA data check and teacher-corpus audit |
+| System verification | [42231901990](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42231901990) | PASS — browser regression, strict source-rights gate, build/generated pages, Python regression/data integrity |
+| Master/research artifacts | [42231901902](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42231901902) | PASS |
+| Pages deployment | [42231902193](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42231902193) | IN_PROGRESS at deploy step at this handoff snapshot; Python 3.11/3.12/3.13, strict corpus validation, browser tests, static build and artifact upload had passed; deployment and live smoke were not yet confirmed |
+
+The preceding Pages deployment on main commit `bb972871a207b1f703503ade980a36cf3b976085` passed in run [42230551652](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42230551652). Do not count the later in-progress deployment run 42231902193 as a pass until it completes.
+
+### Branch and PR disposition
+
+- PR #443 and PR #444 are merged; PR #439 is closed as superseded by #443.
+- The repository branch inventory at this snapshot contains **11 branches** (main plus 10 supporting/historical branches). The task-specific documentation branch was merged; supporting and historical branches were preserved rather than deleted or force-pushed.
+- No open PRs were returned at this snapshot. No unrelated branch was blindly merged or cleaned up.
+
+**Local execution boundary:** no local shell, `npm`, `pytest`, clean-install or browser command was run in this connector-only session. All test/build/deployment statuses above are GitHub Actions evidence. The post-merge Pages run is explicitly still in progress at this snapshot.
+
+**Final readiness:** documentation/navigation is merged and CI-verified; mandatory multi-engine comparison and scoped software rights gate are verified. The product remains a bounded research prototype, not independently research-certified or release-ready because independent Korean IPA review, independent Ukrainian target validation, and proof of original historical cohort membership remain open.
