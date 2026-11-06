@@ -6927,3 +6927,16 @@ PR #436 was merged with a merge commit after all applicable exact-head jobs comp
 **Updated disposition:** PR #436 is merged; PR #437 remains closed as superseded with its source branch preserved. The 236-row ledger and runtime integration counts are unchanged. Research and rights blockers remain: 40 evidence-limited occurrences (12 abstentions + 28 unadjudicated), independent Korean IPA gold, 208 source-register rights/manual-review items (184 review-required + 24 manual classification; item-level permission not established), independent Ukrainian target review, the exact spelling/semantic-normalization contract for `머리속에`, and phrase-level Rule 29 evidence. Optional skipped neural/NIKL jobs are not treated as complete.
 
 **Readiness:** merged and CI-verified bounded research prototype; not release-ready or independently research-certified.
+
+
+## 2026-11-06 — bounded runtime completion across all 236 Kozak Kim occurrences
+
+**Branch:** `fix/236-cohort-evidence-scoped-completion-2026-11-06` · **PR:** [#441](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/441) · **Current code head:** `0d158a42939b87b9ad8e2cfe63d7a72a80445c19`.
+
+- All 15 `RULE_CONFIRMED_STANDARD_VARIANT` occurrences now have runtime dispositions: 10 new exact integrations plus five already present on the starting baseline. Candidate 2490 `머리속에` uses an exact `리>속` pronunciation alias backed by `SRC-KIMNAMMI-2017-DONGA-MEORISSOK`; original input spelling is preserved and no spelling-normalization feature or productive `머리+속` rule is introduced.
+- The 181 profile rows remain non-categorical. Existing optional `[ɕ]` variants cover the supported lenis contexts; the exact loanword `게임` now exposes optional `[k͈]`; `ㅐ` now exposes a research-only optional `[ɛ]~[e]` quality candidate, including lexicon-backed words. Canonical broad output is unchanged; no speaker-specific assignment or vowel length is inferred.
+- The 22 fortis `[ɕ͈]` profile rows remain unconverted because lenis coarticulation evidence does not establish fortis palatalization. The two `/ɘː/` versus `/ʌː/` cases remain transcription-profile differences. The 12 abstentions and 28 unadjudicated occurrences remain evidence-limited pending source audio, speaker crosswalk, and independent Korean IPA annotation.
+- Added Python and browser regressions, exact negative controls, and updated candidate review, engine-integration register, source register, rule coverage, and audit in place. No IPA gold or Ukrainian gold was fabricated.
+- First PR #441 verification on head `d82af8b6204cdbc7971f2a5a4f06c00a8f37e61e`: Python regression/data integrity, Python 3.11/3.12/3.13, wheel-install and teacher-corpus checks passed; browser tests exposed five assertion updates needed for the additional optional variant and the new 15/15 count. Those assertions were updated. Exact-head CI on `0d158a42939b87b9ad8e2cfe63d7a72a80445c19` is queued; no local shell tests are claimed.
+
+**Next acceptance gate:** finish exact-head PR #441 CI, repair any remaining failures, then merge only if required jobs pass. Do not count skipped optional neural or NIKL jobs as passes. PR #439 remains separate and open with its previously recorded source-rights test failures.
