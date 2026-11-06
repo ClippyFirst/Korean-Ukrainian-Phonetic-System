@@ -6625,3 +6625,46 @@ The multi-engine diagnostic, external UGTPHON diagnostic, paired native/g2pk com
 - **Source registry:** 180 records. Rights checks remain open (the current browser rights-audit test expects 166 REVIEW_REQUIRED and 10 MANUAL_CLASSIFICATION_REQUIRED); this is not a rights clearance.
 - **Exact code/evidence head:** 52586302f305dfd2b81184cef81f0c68def0c4f2. Python 3.11/3.12/3.13, wheel install, teacher audit, web, Python regression/data integrity, browser regression/build, corpus generation and exhaustive extraction passed. External UGTPHON IPA, paired native/g2pk and morphology consensus diagnostics passed. Multi-engine IPA comparison run 42029149673 remains in progress; do not claim a result until its artifact is published. CharsiuG2P, ByT5, Charsiu train/dev and NIKL metadata-only jobs were skipped by workflow policy.
 - **No linguistic promotion:** the research-only optional [ɕ] variant and partial narrow-profile candidate scope are limited to /i, ye, ya/ contexts; canonical broad [s], phonemic output and Ukrainian target mapping are unchanged. The 24 fortis ɕ͈→s͈ operations remain a separate unresolved stratum.
+
+
+## 2026-11-06 — 236-candidate Kozak Kim engine integration handoff
+
+**Starting branch head for this continuation:** 194d9d9ecfd7f0bdb3b3bb490f8f45fd0429a806. **Verified code head:** 8a5e6b83f7b6b1377200be3c4bdb330dc4d16de0 on research/236-candidate-review-2026-11-05. PR [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436) remains draft and unmerged; PR [#437](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/437) carries the separate agent-workflow documentation and is open, ready for review, mergeable clean. Neither PR has been merged to main in this continuation.
+
+### Ledger and actual engine outcome
+
+| Status | Count | Evidence / runtime outcome |
+|---|---:|---|
+| RULE_CONFIRMED_STANDARD_VARIANT | 15 | 9 new occurrence-level licenses across 7 exact eojeols; 5 exact licenses preserved from baseline; 1 blocked orthographic normalization (머리속에) |
+| PROFILE_CONVENTION_MISMATCH_CONFIRMED | 181 | No categorical phonological rules added |
+| ABSTAIN | 12 | No runtime changes; token-specific IPA/audio/prosody evidence insufficient |
+| UNADJUDICATED | 28 | No runtime changes; 27 lenis-sibilant mismatches outside Kang (2010)'s /i, ye, ya/ contexts plus one mid-front-vowel quality case |
+| **Total** | **236** | The 40 evidence-limited occurrences represent 17 unique token forms; repeats are not independent speakers |
+
+New runtime behavior: exact Rule 5 genitive particle 의 variants for 그놈의 and 자신의; exact R008 lexical fortition for 정권, 유사성, 혐오증; exact NIKL §29 compound n-insertion for 연전연패; exact NIKL §26 fortition for 출시미정에. Five baseline cases retained: 출산, 팔자걸음, 보일거라, 물가로, 안할듯. All new forms use exact eojeol + pair licenses; no productive suffix rules or phrase heuristics were added. The dictionary long vowel in 유ː사썽 is preserved in IPA as ː and as a target-adapter feature.
+
+### Exact-head CI and diagnostics
+
+- System Verify [42180312202](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312202): PASS — Python regression/data integrity; Browser regression/build 1,398/1,398; official NIKL metadata inventory SKIPPED.
+- Tests [42180312303](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312303): PASS — web, Python 3.11/3.12/3.13, wheel installation, teacher-corpus audit.
+- Browser G2P [42180312258](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312258): PASS.
+- Master/research artifacts [42180312182](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312182): PASS.
+- Exhaustive test-case register [42180312181](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312181): PASS.
+- External UGTPHON diagnostic [42180312221](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312221): PASS.
+- Paired native/g2pk diagnostic [42180312228](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312228): PASS; native 2,698 scored, exact 0.530764, CER 0.089530, 5 unresolved; g2pk 2,703 scored, exact 0.530892, CER 0.092328, 0 unresolved. Different coverage; diagnostic only, not a normative accuracy score.
+- Morphology consensus [42180312341](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312341): PASS; 2,698 paired; exact-rate delta 0; CER worsened by 0.000173; two higher edit distances. No analyzer-consensus behavior promoted.
+- Morphology adapter smoke [42180312291](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312291): PASS; Kiwi/MeCab initialization and smoke tests, no runtime errors; segmentation/tag output only, not morphology accuracy gold.
+- Multi-engine diagnostic [42180312294](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312294): IN PROGRESS at this handoff snapshot. Charsiu train/dev and Charsiu/ByT5 inference were SKIPPED by workflow policy, not passed.
+
+No local pytest/npm command was executed in this connector-only session. GitHub Actions supplied the test evidence. The official NIKL metadata inventory remains skipped. The source register has 24 items requiring manual rights classification; item-level KOGL review remains open.
+
+### Remaining blockers and acceptance
+
+1. Complete the multi-engine run and inspect its artifact on the code head; do not infer results from a running job.
+2. Resolve item-level source-rights classification for 24 manual items, including the new NIKL dictionary source.
+3. Obtain independent acoustic IPA review for the 12 abstentions and 28 unadjudicated cases; 40 occurrences are only 17 unique forms, with repeated tokens not independent speakers.
+4. Keep phrase-level Rule 29 candidates (한국여자로, 홍콩영화들) blocked until token audio or independent IPA/prosodic-boundary evidence is available.
+5. Keep 머리속에 blocked until spelling/semantic normalization has a separate explicit contract.
+6. Obtain independent Ukrainian-reader review for target adaptation. Current outputs remain research-grade/provisional.
+
+**Readiness:** technically verified research prototype for the bounded exact-form integration; not release-ready and not independently research-certified. PR #436 is not merged; PR #437 remains separate.

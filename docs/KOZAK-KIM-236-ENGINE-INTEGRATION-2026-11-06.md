@@ -25,7 +25,7 @@ No Ukrainian target is hard-coded in the new rule paths. New outputs continue th
 | `UNADJUDICATED` | 28 | No runtime change; evidence insufficient |
 | **Total** | **236** | **No unsupported guessing** |
 
-The 181 profile cases remain in the research ledger but are not promoted to categorical Korean phonology rules. The 40 abstained/unadjudicated cases remain evidence-limited.
+The 181 profile cases remain in the research ledger but are not promoted to categorical Korean phonology rules. The 40 abstained/unadjudicated occurrences represent 17 unique token forms: repeated 아끼셔 accounts for 22 occurrences and 한국여자로 for three. The 28 unadjudicated rows include 27 lenis-sibilant mismatches outside the /i, ye, ya/ environments covered by Kang (2010), plus one separate mid-front-vowel quality case. Occurrence repeats are not independent speaker evidence.
 
 ## New runtime integrations
 
@@ -63,7 +63,9 @@ Five rule-confirmed cases already had exact runtime licenses on the starting bra
 
 ## Verification added
 
-Browser exact-form/negative-control regressions, Python surface/trace regressions, Rule 5 variant regressions, and an occurrence-to-runtime traceability test are added. Rule coverage and source-register rows are updated in place. Exact-head CI results will be appended to the master handoff after completion.
+Browser exact-form/negative-control regressions, Python surface/trace regressions, Rule 5 variant regressions, an occurrence-to-runtime traceability test, and an exact seven-form browser/Python parity test are added. Rule coverage and source-register rows are updated in place.
+
+**Exact code-head verification (8a5e6b83f7b6b1377200be3c4bdb330dc4d16de0):** system verification [42180312202](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312202) passed Python regression/data integrity and browser regression/build (1,398/1,398); the official NIKL metadata inventory was skipped. Tests [42180312303](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312303) passed web, Python 3.11/3.12/3.13, wheel-install and teacher-corpus audit. Browser G2P [42180312258](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312258), master/research artifacts [42180312182](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312182), exhaustive test-case extraction [42180312181](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312181), external UGTPHON [42180312221](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312221), paired native/g2pk [42180312228](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312228), morphology consensus [42180312341](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312341), and morphology adapter smoke [42180312291](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312291) passed. The multi-engine diagnostic [42180312294](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312294) was still running at this documentation snapshot; no result is claimed.
 
 ### Phrase-level Rule 29 candidates kept out of production
 
