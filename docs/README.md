@@ -19,7 +19,7 @@ This page is the entry point for project documentation. It distinguishes current
 13. [Research master directive](../research/MASTER-DIRECTIVE.md) — non-negotiable research and implementation constraints.
 14. [Acceptance gates](../research/ACCEPTANCE-GATES.md) — research and release acceptance criteria.
 15. [Decision log](../research/DECISION-LOG.md) — append-only consequential decisions.
-16. [Master execution plan and handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) — detailed historical execution record; use the newest dated section, not an old snapshot.
+16. [Master execution plan and handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) — append-only historical execution record; use the newest dated section. If the current audit records that the oversized handoff could not be safely appended, the audit's latest superseding continuation is authoritative for that session.
 
 - [Licensing and permissions](LICENSING-AND-PERMISSIONS.md) — author identity, scientific-use permissions, technical permission boundary and third-party licence scope.
 
@@ -66,7 +66,7 @@ This page is the entry point for project documentation. It distinguishes current
 - Runtime behavior is defined by current source code, schemas, data contracts and tests—not by a dated narrative report.
 - Current research status is defined by the newest exact-head evidence and the current acceptance-gate/decision records.
 - Dated audits are immutable historical evidence. Add a superseding entry instead of rewriting historical conclusions.
-- The master handoff is append-only. Its newest dated entry supersedes older statements where they conflict.
+- The master handoff is append-only. Its newest dated entry supersedes older statements where they conflict; if a safe append is blocked by file-size limits, the latest dated repository-audit continuation supersedes the stale handoff snapshot and records that blocker.
 - Benchmark figures must retain their dataset, split, normalization profile, denominator and limitations. Do not compare different IPA profiles as if they were the same target.
 - A test passing verifies the asserted software contract; it does not establish independent linguistic gold or licensing permission.
 
@@ -79,3 +79,11 @@ This page is the entry point for project documentation. It distinguishes current
 5. Label hypotheses, reconstructed forms, candidate pronunciations and provisional Ukrainian renderings explicitly.
 6. Do not delete dated audit records, benchmark artifacts or source packets merely because a newer summary exists.
 7. When a repository-local skill changes, update root `AGENTS.md` routing, the skill catalogue and its structural contract test where one protects a real invariant.
+
+
+### Source-register rights checks
+
+- `npm run audit:source-register` — read-only CSV structure and rights-triage report.
+- `npm run audit:source-rights` — strict release gate. It fails only when a positively recorded copied/included/redistributed artifact lacks an item-level rights decision; citation-only sources and explicitly negated no-copy statements are not redistribution blockers.
+
+Research use does not itself waive copyright. A citation-only source is different from copied text, data, or other retained material; actual retained material must have a recorded license scope and preserve its required attribution/notices.

@@ -51,6 +51,28 @@ def test_236_broad_edit_signature_inventory_and_historical_tags_are_stable():
     assert sum(any(label.startswith("C04") for label in labels) for labels in historical) == 206
 
 
+
+def test_fortis_sibilant_candidate_inventory_has_exact_context_distribution():
+    hits = []
+    for row in MODULE.build_rows(ROOT):
+        operations = [
+            item for item in json.loads(row["broad_mismatch_fragments"])
+            if item["op"] == "S"
+            and item.get("reference_fragment") == "ɕ͈"
+            and item.get("kozak_fragment") == "s͈"
+        ]
+        if operations:
+            hits.append((row, operations))
+    assert sum(len(operations) for _, operations in hits) == 24
+    assert len(hits) == 24
+    assert len({row["source_row_id"] for row, _ in hits}) == 19
+    assert sum("ɕ͈i" in row["broad_reference_ipa"] for row, _ in hits) == 23
+    assert [
+        row["occurrence_id"] for row, _ in hits
+        if "ɕ͈j" in row["broad_reference_ipa"]
+    ] == ["96"]
+
+
 # Hangul-to-IPA environment crosswalk for Kang (2010)'s lenis /s/ acoustic contexts.
 _HANGUL_ONSETS = ["ㄱ", "ㄲ", "ㄴ", "ㄷ", "ㄸ", "ㄹ", "ㅁ", "ㅂ", "ㅃ", "ㅅ", "ㅆ", "ㅇ", "ㅈ", "ㅉ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"]
 _HANGUL_NUCLEI = ["ㅏ", "ㅐ", "ㅑ", "ㅒ", "ㅓ", "ㅔ", "ㅕ", "ㅖ", "ㅗ", "ㅘ", "ㅙ", "ㅚ", "ㅛ", "ㅜ", "ㅝ", "ㅞ", "ㅟ", "ㅠ", "ㅡ", "ㅢ", "ㅣ"]

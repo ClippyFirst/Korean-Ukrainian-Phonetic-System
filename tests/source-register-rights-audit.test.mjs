@@ -40,36 +40,43 @@ test('source rights triage never promotes vague source descriptions to a license
     'SRC-F,other,Unverified,https://example.org/f,2026,authority,not_verified,unknown,unknown,unreviewed,not integrated,review rights',
     'SRC-G,other,PDF,https://example.org/g,2026,authority,verify PDF terms,unknown,unknown,unreviewed,not integrated,review terms',
     'SRC-H,normative,Policy,https://example.org/h,2026,authority,site-wide policy permits use unless item-specific KOGL is marked,unknown,unknown,unreviewed,not integrated,inspect exact item',
+    'SRC-I,software,Retained artifact,https://example.org/i,1.0,upstream,not_assessed,artifact,source,unreviewed,copied into runtime,review item-level terms',
+    'SRC-J,source data,No-copy reference,https://example.org/j,1.0,upstream,not_assessed,citation,reference,unreviewed,no source file copied into repository,confirm no reuse',
+    'SRC-K,other,Citation-only reference,https://example.org/k,2026,authority,citation-only; no source file redistributed,bibliography,citation,reviewed,citation-only reference; no source material copied,not a redistribution blocker',
   ].join('\n');
   const report = auditSourceRegister(csv);
   assert.equal(report.structuralErrorCount, 0);
   assert.deepEqual(report.rightsClassificationCounts, {
     ITEM_LEVEL_LICENSE_RECORDED: 1,
     NOT_APPLICABLE_RECORDED: 1,
-    REVIEW_REQUIRED: 5,
+    CITATION_ONLY_NO_REUSE: 1,
+    REVIEW_REQUIRED: 7,
     MANUAL_CLASSIFICATION_REQUIRED: 1,
   });
-  assert.deepEqual(report.itemLevelRightsNotClosed.map(item => item.sourceId), ['SRC-A', 'SRC-B', 'SRC-E', 'SRC-F', 'SRC-G', 'SRC-H']);
+  assert.deepEqual(report.itemLevelRightsNotClosed.map(item => item.sourceId), ['SRC-A', 'SRC-B', 'SRC-E', 'SRC-F', 'SRC-G', 'SRC-H', 'SRC-I', 'SRC-J', 'SRC-K']);
+  assert.deepEqual(report.redistributionRightsNotClosed.map(item => item.sourceId), ['SRC-I']);
+  assert.ok(!report.redistributionRightsNotClosed.some(item => item.sourceId === 'SRC-J'), 'negated no-copy statements must not be treated as redistribution');
+  assert.ok(!report.redistributionRightsNotClosed.some(item => item.sourceId === 'SRC-K'), 'citation-only references must not be treated as redistribution');
 });
 
 test('real source register is structurally valid and unresolved rights remain visible', () => {
   const csv = readFileSync(new URL('../research/SOURCE-REGISTER.csv', import.meta.url), 'utf8');
   const report = auditSourceRegister(csv);
   assert.equal(report.structuralErrorCount, 0, JSON.stringify(report.structuralErrors));
-  assert.equal(report.sourceRegisterRows, 212);
-  assert.deepEqual(report.rightsClassificationCounts, {
-    ITEM_LEVEL_LICENSE_RECORDED: 3,
-    NOT_APPLICABLE_RECORDED: 1,
-    REVIEW_REQUIRED: 184,
-    MANUAL_CLASSIFICATION_REQUIRED: 24,
-  });
+  assert.equal(report.sourceRegisterRows, 213);
+  assert.equal(report.rightsClassificationCounts.ITEM_LEVEL_LICENSE_RECORDED, 4);
+  assert.equal(report.rightsClassificationCounts.NOT_APPLICABLE_RECORDED, 1);
+  assert.ok(report.rightsClassificationCounts.CITATION_ONLY_NO_REUSE > 0);
   assert.ok(report.rightsClassificationCounts.REVIEW_REQUIRED > 0);
   assert.ok(report.rightsClassificationCounts.MANUAL_CLASSIFICATION_REQUIRED > 0);
   assert.equal(
     report.itemLevelRightsNotClosed.length,
-    report.rightsClassificationCounts.REVIEW_REQUIRED + report.rightsClassificationCounts.MANUAL_CLASSIFICATION_REQUIRED,
+    report.rightsClassificationCounts.CITATION_ONLY_NO_REUSE + report.rightsClassificationCounts.REVIEW_REQUIRED + report.rightsClassificationCounts.MANUAL_CLASSIFICATION_REQUIRED,
   );
   assert.ok(report.itemLevelRightsNotClosed.every(item => item.sourceId && item.currentLicenseStatus !== null));
+  const ug = report.records.find(record => record.sourceId === 'SRC-UGTPHON-EMNLP-2026');
+  assert.equal(ug.rightsReviewStatus, 'ITEM_LEVEL_LICENSE_RECORDED', 'the explicit UGTPHON Korean-subset Apache-2.0 declaration covers the retained excerpts');
+  assert.ok(!report.redistributionRightsNotClosed.some(item => item.sourceId === 'SRC-IPA-DICT-KO'), 'the source register explicitly says no IPA-Dict file is copied');
   const c12AcousticSource = report.records.find(record => record.sourceId === 'SRC-JIPA-SCHWEIZER-AHN-KWON-2026-SEOUL-STOPS');
   assert.ok(c12AcousticSource, 'the newly registered C12 primary acoustic source must be present');
   assert.equal(c12AcousticSource.rightsReviewStatus, 'ITEM_LEVEL_LICENSE_RECORDED');
@@ -102,15 +109,16 @@ test('real source register is structurally valid and unresolved rights remain vi
   assert.ok(unresolvedIds.has('SRC-NIKL-KRDICT-YUSASEONG'));
 });
 
-test('CLI reports structure by default and keeps strict rights acceptance blocked', () => {
+test('CLI reports structure by default and strict rights gate checks redistribution, not citations', () => {
   const script = fileURLToPath(new URL('../scripts/audit-source-register.mjs', import.meta.url));
   const normal = spawnSync(process.execPath, [script, '--json'], { cwd: process.cwd(), encoding: 'utf8' });
   assert.equal(normal.status, 0, normal.stderr);
   const report = JSON.parse(normal.stdout);
-  assert.equal(report.sourceRegisterRows, 212);
+  assert.equal(report.sourceRegisterRows, 213);
   assert.equal(report.structuralErrorCount, 0);
   assert.ok(report.itemLevelRightsNotClosed.length > 0);
+  assert.equal(report.redistributionRightsNotClosed.length, 0);
 
   const strict = spawnSync(process.execPath, [script, '--require-reviewed-rights'], { cwd: process.cwd(), encoding: 'utf8' });
-  assert.equal(strict.status, 3, 'strict rights gate must remain blocked while item-level rights are unresolved');
+  assert.equal(strict.status, 0, 'citation-only and unknown-use references must not block runtime work when no redistribution is recorded');
 });

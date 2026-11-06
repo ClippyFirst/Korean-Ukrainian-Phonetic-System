@@ -147,7 +147,7 @@ The unresolved count remains 40 (12 abstentions + 28 unadjudicated). No runtime 
 ## 2026-11-06 — PR #441 follow-up: 236-case runtime coverage and parity correction
 
 - PR #441 remains the active implementation branch, based on main `07c0233fa7aaee18cbfde82f764ac9061a0fb24d`. The 236-row ledger remains 15 `RULE_CONFIRMED_STANDARD_VARIANT`, 181 `PROFILE_CONVENTION_MISMATCH_CONFIRMED`, 12 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW`, and 28 `NOT_INDIVIDUALLY_ADJUDICATED`.
-- All 15 standard-form/rule occurrences have explicit runtime dispositions (10 newly integrated on this branch, five preserved from baseline). The 181 profile rows are not promoted to productive phonological rules. The 24 fortis `ɕ͈→s͈` operations across 23 occurrence rows remain unresolved; 22 are on forms with orthographic ㅆ and two are coda-triggered fortition cases.
+- All 15 standard-form/rule occurrences have explicit runtime dispositions (10 newly integrated on this branch, five preserved from baseline). The 181 profile rows are not promoted to productive phonological rules. The 24 fortis `ɕ͈→s͈` operations occur in 24 occurrence IDs across 19 source rows; 23 are before /i/ and one is before /jo/. Kong & Kang (2021) show context- and gender-specific fronting of /s͈i/ closer to [s] than [ɕ], so no generic [ɕ͈] variant is accepted.
 - Code correction commit `dcf1726212e16719b0fdc03311e5903448151e8b` aligns Browser optional lenis [ɕ] variants with Python's evidence-scoped /i, ye, ya/ set, removes unsupported `/jʌ, jo, ju/` candidates, and handles post-rule coda-ㅅ resyllabification for IDs 143 (`멋있노`), 538 (`멋있어`), and Rule 13 context cases 475, 2392 and 2667. Regression tests cover six resyllabified forms, supported contexts, out-of-scope negative controls, and fortis negative controls.
 - The current profile disposition for IDs 143 and 538 is confirmed in `research/kozak-kim-context-adjudication-2026-11-05.csv`; older prose saying they remain open is superseded. ID 538 has direct NIKL Q&A 306166 support for the [머시써] surface variant. This is a broad-vs-narrow profile reconciliation, not speaker-specific acoustic IPA gold.
 - No canonical IPA, phonemic output, Ukrainian target, or benchmark gold changed. The 12 abstentions and 28 unadjudicated occurrences remain blocked on source audio, speaker crosswalk, and independent Korean IPA annotation. No local pytest/npm run is claimed in this connector-only environment. The master handoff section was updated in PR #441, but it still contains stale snapshot metadata (implementation head 0d158a..., fortis count 22, and CI pending). A later full-file correction was rejected by the available content action; the final merge SHA, exact verified code/test head, and current CI statuses are recorded here and in the PR description. Do not treat those stale master-handoff fields as current.
@@ -159,5 +159,101 @@ The unresolved count remains 40 (12 abstentions + 28 unadjudicated). No runtime 
 - PR #441 was merged into main with merge commit `f89c475c56796119e87130367fc15926b2428220`; the verified implementation/test head was `847cdb240aadc2c9343127fbb7de6dafad0441d4`.
 - Exact-head core checks on `847cdb2`: Python 3.11/3.12/3.13, wheel install, teacher-corpus audit, web checks, Python regression/data integrity, browser regression/build, Browser G2P, UGTPHON Korean split, paired native/G2PK comparison, Kiwi+MeCab-Ko consensus, research morphology adapter smoke, exhaustive test-case extraction, and master corpus artifact generation all **PASS**.
 - Official NIKL metadata inventory, Charsiu and ByT5 optional jobs were **SKIPPED**, not passed. Pinned multi-engine workflow `42215019081` remained **IN_PROGRESS** at the multi-engine comparison step; its later browser parity and SIGMORPHON steps had not yet run. Do not claim this benchmark passed.
-- The candidate ledger remains 236 rows: 15 standard-rule cases implemented/preserved, 181 profile-convention rows handled without new categorical phonology, 12 abstentions and 28 unadjudicated rows remain evidence-limited. The 24 fortis `[ɕ͈]→/s͈/` operations across 23 occurrence rows remain unconverted pending direct production evidence.
+- The candidate ledger remains 236 rows: 15 standard-rule cases implemented/preserved, 181 profile-convention rows handled without new categorical phonology, 12 abstentions and 28 unadjudicated rows remain evidence-limited. The 24 fortis `[ɕ͈]→/s͈/` operations occur in 24 occurrence IDs across 19 source rows; 23 are before /i/ and one is before /jo/. Direct 2021 acoustic evidence is speaker- and context-specific and does not support [ɕ͈] as a generic IPA value; exact cohort speaker/audio evidence remains required.
 - No local pytest/npm command is claimed; all verification above is from GitHub Actions. No release was published.
+
+
+## Superseding continuation snapshot — 2026-11-06 after PR #441/#442 merge
+
+**Current default-branch baseline:** `main` at `2e9647540e1be47571579f71b7466393172a2a6d`. **Continuation branch:** `research/236-residual-review-2026-11-06`. PR #441 (runtime) and #442 (post-merge documentation) are merged. The 236-case status is unchanged: 15 exact standard-form occurrences with runtime dispositions; 181 bounded profile-convention decisions; 12 abstentions; 28 unadjudicated occurrences. All 236 source rows remain retained and 40 remain evidence-limited.
+
+### Corrected current task ledger
+
+| Workstream | Status | Current acceptance / evidence |
+|---|---|---|
+| 236-row candidate ledger and provenance | DONE_VERIFIED | Reconstructed cohort retained; repeated tokens are not independent speakers; no independent IPA gold implied. |
+| 15 standard-form runtime dispositions | DONE_VERIFIED | Ten new exact licenses plus five baseline licenses; PR #441 merged. Current-main tests and system verification pass. |
+| 181 profile-convention reconciliations | DONE_VERIFIED as bounded non-integration decisions | Optional variants are narrowly scoped; no categorical rule promotion or speaker-specific claim. |
+| 24 fortis [ɕ͈]→/s͈/ edit operations in 24 occurrence IDs across 19 source rows | BLOCKED | 23 are before /i/, one before /jo/ (ID 96); 22 forms contain ㅆ and two are coda-triggered fortition. No generic [ɕ͈] variant is accepted; token-level IPA requires exact speaker/audio evidence. |
+| 12 abstentions + 28 unadjudicated occurrences | BLOCKED | Original token audio, speaker crosswalk, two independent Korean IPA annotations, blind reconciliation; then separate Ukrainian target review. |
+| Multi-engine unmapped-Broad generated artifact | PARTIAL | Exact PR #441 head run 42215019081 failed at `cmp`: generator emitted 25 rows, tracked CSV has 26 including now-integrated ID 2490. Downstream Browser parity and SIGMORPHON jobs were skipped. Regenerate artifact from pinned inputs, inspect full row-level diff, rerun workflow. Do not weaken byte comparison. |
+| Current-main tests/build/data/deploy workflows | DONE_VERIFIED for main `2e9647540e1be47571579f71b7466393172a2a6d` | Tests 42216016963, Verify 42216016988, master artifacts 42216016940, Pages 42216016937 all success. These do not supersede the separate multi-engine failure. |
+| Four upstream workflow references | DONE_VERIFIED | Existing pinned audit; adopt process practices only; no code/skills/hooks copied. |
+| Independent Korean IPA gold | BLOCKED | Qualified reviewers and blind adjudication absent. |
+| Independent Ukrainian target validation | BLOCKED | Independent reader/phonetic review and acceptance tests absent. |
+| Source-rights PR #439 | PARTIAL / leave untouched | Open PR is 56 commits behind current main; exact-head tests and verify failed (runs 42200300941, 42200300947). Reconcile selectively on a current branch; do not merge stale branch blindly. Citation-only evidence is not the same as copied/redistributed material. |
+| Release readiness | DEFERRED | Partial research prototype; not research-certified or release-ready. |
+
+### Runtime and evidence boundary
+
+No further 236-case runtime rule is justified by the reviewed residual evidence. In particular, the 24 fortis sibilant operations are not closed by the lenis /i, ye, ya/ coarticulation result; the two /ɘː/ vs /ʌː/ cases are profile-symbol questions; and phrase-level Rule 29 candidates require token-level prosodic evidence. The 12 + 28 evidence-limited rows must not receive guessed IPA or Ukrainian outputs. The next linguistic acceptance step is independent annotation, not another heuristic.
+
+### Current verification facts
+
+- Main `2e9647540e1be47571579f71b7466393172a2a6d`: tests, system verification, generated master/research artifacts and Pages deployment all succeeded (run IDs above).
+- Multi-engine exact-head run [42215019081](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42215019081): engine comparison and reviewer packet steps succeeded; mismatch-queue export `cmp` failed at byte 86966 / line 26. Later Browser parity, native/browser parity and SIGMORPHON jobs were skipped. ByT5/Charsiu optional inference jobs were skipped by policy.
+- No local pytest/npm/build was run: container-side GitHub clone failed because github.com DNS could not resolve. Connector-reported Actions results are not represented as local tests.
+
+The master handoff remains preserved as the historical append-only record. The current superseding continuation is recorded in this audit and the 236-case integration record; direct full-file append to the oversized handoff is blocked by the available content-write limit.
+
+## Superseding continuation snapshot — 2026-11-06
+
+Current main is `2e9647540e1be47571579f71b7466393172a2a6d`; PR #441 (runtime) and #442 (post-merge docs) are merged. The 236-row cohort remains 15 exact standard-form occurrences with runtime dispositions, 181 bounded profile-convention decisions, 12 abstentions and 28 unadjudicated rows. All rows remain retained; 40 remain evidence-limited.
+
+The 24 fortis [ɕ͈]→/s͈/ edit operations occur in 24 occurrence IDs across 19 source rows; 23 are before /i/ and one is before /jo/ (ID 96). Kong & Kang (2021) show age- and gender-conditioned fronting of word-initial /s͈i/ in young women, but explicitly describe it as closer to alveolar [s] than post-alveolar [ɕ]. This does not support an optional [ɕ͈] IPA variant for unknown speakers; the /jo/ case also remains unresolved. The two /ɘː/ vs /ʌː/ differences remain profile-symbol questions. The 12+28 residual rows require original audio, speaker crosswalk and two independent Korean IPA annotations; phrase-level Rule 29 candidates also require prosodic-boundary evidence. No further production rule is justified by current evidence.
+
+Multi-engine run [42215019081](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42215019081) on exact PR #441 head `847cdb240aadc2c9343127fbb7de6dafad0441d4` **FAILED** at generated-artifact `cmp`: generator output had 25 unmapped-Broad rows, tracked CSV had 26, including occurrence 2490 (`머리속에`) now covered by the exact alias. Failure: byte 86966 / line 26. Downstream Browser same-occurrence parity, Native/Browser parity and SIGMORPHON jobs were skipped; optional ByT5/Charsiu jobs were skipped by policy. Regenerate the tracked CSV from the pinned generator/corpus, inspect the full row-level diff, and rerun the entire workflow. Do not weaken the byte comparison.
+
+Current-main checks for `2e9647540e1be47571579f71b7466393172a2a6d`: tests 42216016963, system verification 42216016988, master/research artifacts 42216016940 and Pages deployment 42216016937 all succeeded. These do not supersede the separate multi-engine failure. No local pytest/npm/build ran; GitHub DNS resolution failed in the container.
+
+PR #439 remains open and was left untouched: its branch is 56 commits behind current main; its exact-head tests and verification failed (42200300941, 42200300947). Do not merge blindly. The four upstream workflow references are already documented as process-only adoption; no upstream code or duplicate orchestration is needed.
+
+**Current status:** cohort and 15 runtime dispositions DONE_VERIFIED; 181 profile reconciliations DONE_VERIFIED as non-integration decisions; 24 fortis operations BLOCKED for token-level IPA adjudication (2021 acoustic evidence does not support generic [ɕ͈]; exact speaker/audio needed); 40 abstained/unadjudicated rows BLOCKED; multi-engine artifact PARTIAL pending regeneration/reverification; current-main ordinary CI DONE_VERIFIED; independent Korean IPA and Ukrainian target review BLOCKED; release readiness DEFERRED (partial research prototype).
+
+### Generated diagnostic queue reconciliation — 2026-11-06
+
+The tracked unmapped-Broad CSV has now been regenerated from artifact 13501009061 of exact-head run 42215019081, using the workflow's pinned generator output. A row-by-row comparison found exactly one stale row: occurrence 2490 (`머리속에`), already covered by the exact pronunciation alias merged in PR #441. No other occurrence rows changed. The refreshed CSV now contains 25 rows and preserves the generator artifact's exact 89,638-byte content (Git blob SHA `15655fa35b74251c8c0fdd6e2b6dc973d3bba631`). This repairs the known stale snapshot; acceptance remains PARTIAL until the full multi-engine workflow reruns and the downstream Browser parity/SIGMORPHON jobs complete.
+
+### Master handoff preservation note
+
+The original master handoff blob `b49170395fa7f67ee50f29e32def5349fe92fef3` has been restored unchanged on this branch. A content-write attempt returned a truncated replacement because the handoff exceeds the available safe write path; the branch was corrected by restoring the exact original blob through the Git data tree API. No master-history content is changed in the final branch tree. This audit and the 236-case integration record are the current superseding continuation. Appending directly to the oversized master handoff remains BLOCKED by the connector write limit.
+
+## 2026-11-06 — superseding fortis sibilant evidence review: no runtime change
+
+The previous audit treated the 24 `ɕ͈→s͈` operations as unresolved and misstated their row count. Reconstructed from the 236-row ledger, these are **24 occurrence IDs in 19 source rows**; 23 reference forms contain [ɕ͈i], and only ID 96 (`똥꼬쑈`) is [ɕ͈jo]. Twenty-two forms contain orthographic ㅆ; two coda-triggered fortition cases are IDs 481 (`했을시`) and 551 (`실시간`).
+
+Evidence reviewed:
+- Holliday 2014 JASA describes both lenis-aspirated /sh/ and fortis /s*/ as typically palatalized before /i/ or /j/, but this is background in a perception study (SRC-HOLLIDAY-2014-JASA).
+- Holliday 2016 Phonetica notes that fortis /s*/ may palatalize less consistently; its experiment is perceptual (SRC-HOLLIDAY-2016-PHONETICA).
+- Holliday & Reidy 2016 places the /s*/ palatalization statement in poster background; it does not report speaker-level or token-level fortis-palatalization results from its six-speaker production sample (SRC-HOLLIDAY-REIDY-2016-PRODUCTION).
+- Kong & Kang 2020 report palatalized variants before /i/ in an abstract covering /s/ and /s'/ but do not disaggregate the category (SRC-KONG-KANG-2020-SEOUL-SIBILANTS).
+- **Kong & Kang 2021 provide direct acoustic constraints.** They analyze 39 adult Seoul Korean speakers and 1,832 sibilant tokens. Young female word-initial /s͈i/ shows age-related spectral fronting, but the authors explicitly describe the variant as closer to alveolar [s] than post-alveolar [ɕ], and the effect is context- and gender-specific (SRC-KONG-KANG-2021-SEOUL-SIBILANT-AGE-GENDER).
+
+**Implementation decision: no [ɕ͈] runtime variant is accepted.** Keep canonical broad [s͈] unchanged in Python and Browser; do not add [ɕ͈] to broad or narrow output and do not map an unobserved speaker-conditioned fronting variant into Ukrainian. The 23 /i/ cases are not resolved by the 2021 finding because it does not support [ɕ͈]; ID 96 /jo/ remains separately unsupported. The 24 mismatches remain part of the 181 profile-convention cases, not the 40 abstained/unadjudicated rows. Exact speaker identity and token audio are required for any individual alternate IPA decision.
+
+The data-inventory test `test_fortis_sibilant_candidate_inventory_has_exact_context_distribution` now records the 24 operations, 24 occurrence IDs, 19 source rows, 23 /i/ contexts and the single /jo/ case. Existing negative controls keep `씨` as a no-variant case in the broad research profile. No runtime code change is accepted from this evidence review.
+
+
+## 2026-11-06 — source redistribution rights gate
+
+The source-rights PR #439 was reviewed and its useful scope distinction is being ported with corrected tests and a negation-aware usage classifier. The current source register contains **213 rows, 12 columns and zero structural errors**. The read-only audit classifies citation-only references separately from actual retained material; the strict gate only blocks a positive copied/included/redistributed artifact whose item-level license remains unresolved. Phrases such as `no IPA-Dict corpus file copied` are not positive redistribution claims.
+
+### Current item-level disposition
+
+- `SRC-UGTPHON-EMNLP-2026`: the official UGTPHON Korean subset `ko/LICENSE` explicitly declares Apache-2.0. The repository retains 39 selected context excerpts under that subset-level grant, with attribution and the license notice preserved; it does not include the full dataset or separate IPA-Dict targets. This is an actual reuse, but an item-level license is recorded. The UGTPHON provenance note about MultiLexNorm++ remains documented separately; it is not a reason to misclassify the explicit Korean-subset license as unknown.
+- `SRC-IPA-DICT-KO`: the source is used indirectly as provenance for UGTPHON gold; no IPA-Dict corpus file or target annotation is copied into this repository. The audit's negation-aware matcher must not flag the words `no ... copied` as redistribution.
+- Citation-only academic papers and official references remain citation-only; research use does not itself waive copyright, but citation without copied source material is not a redistribution blocker.
+
+The strict source-rights audit currently yields **zero unresolved positive-redistribution blockers**. The informational triage counts are 4 item-level licenses recorded, 1 not-applicable, 37 citation-only/no-reuse, 162 review-required and 9 manual-classification-required; the last two categories include references that are not redistributed and therefore do not block the strict gate. The exact counts are generated by `npm run audit:source-register`; `npm run audit:source-rights` is the release gate and must exit 0.
+
+Acceptance requires the CSV parser/rights tests, a passing `npm run audit:source-rights`, and the same command in the GitHub Actions verification workflow. The audit is a triage tool, not legal advice; it never grants permission or infers rights from academic purpose alone.
+
+
+### Artifact reconciliation follow-up — 2026-11-06
+
+Recovered the original multi-engine ZIP from run 42215019081 and compared its generated queue to the tracked CSV. The 25 generated rows are unchanged; the sole extra tracked row is occurrence 2490 (`머리속에`), now licensed by the exact pronunciation alias. The tracked CSV has been replaced on continuation branch `research/236-residual-review-2026-11-06` with the exact generator-produced file, commit `8b87cd63bb145ccd8611144331dad20f1ad6663a`. No expected counts were changed and no rows were manually rewritten. Status improves from stale artifact identified to **artifact reconciled / CI rerun pending**; multi-engine acceptance remains PARTIAL until downstream parity and SIGMORPHON jobs pass on the corrected branch.
+
+
+### Ledger correction and current CI state — 2026-11-06
+
+The exact fortis inventory is **24 occurrence IDs across 19 source rows**, not 23 occurrence rows: 23 are /i/ contexts and one is /jo/ (ID 96). The table above has been corrected to this exact inventory. The unmapped-Broad CSV is no longer awaiting regeneration: it has been replaced with the exact 25-row output from the recovered CI artifact. Its remaining status is **CI rerun pending**, not artifact-generation pending. On the final branch head `2e4a76cc33fd55400f9de08ae9467ef1c2f45002`, multi-engine workflow run 42225608310 is pending with no jobs reported yet; ordinary tests 42225608150, system verification 42225608125, Browser integration 42225608073 and exhaustive extraction 42225608074 are queued/in progress. Master/research artifact workflow 42225608146 succeeded. Do not claim these in-progress workflows passed.

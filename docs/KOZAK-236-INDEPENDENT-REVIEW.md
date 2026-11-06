@@ -58,3 +58,14 @@ Both reviewers must submit independently. Freeze both first-pass packets before 
 - External distribution remains blocked until item-level source rights are cleared.
 
 The packet generator regression verifies exact case count, unique occurrence IDs, raw token indexing, reviewer separation, private coordinator mapping, and absence of engine/reference/candidate leakage.
+
+
+## 2026-11-06 status reconciliation
+
+The current candidate CSV contains **236 unique occurrence IDs across 110 source rows and 54 columns**. Its membership confidence is explicitly `RECONSTRUCTED_CANDIDATE_NOT_ORIGINAL_MEMBERSHIP_PROOF`: it is a reconstructed candidate inventory, not proof that these were the exact original historical 236/239 selected cases. Preserve all 236 rows; do not describe them as 236 independently confirmed pronunciation errors or 236 speakers.
+
+Current dispositions are 15 `RULE_CONFIRMED_STANDARD_VARIANT`, 181 `PROFILE_CONVENTION_MISMATCH_CONFIRMED`, 12 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW`, and 28 `NOT_INDIVIDUALLY_ADJUDICATED`. The 15 standard-form occurrences now have exact runtime dispositions (ten new exact integrations plus five pre-existing licenses). The 181 profile rows are not promoted to categorical phonological rules.
+
+The fortis sibilant sub-stratum is now counted precisely: **24 `ɕ͈→s͈` edit operations in 24 occurrence IDs across 19 source rows**; 23 contexts are before /i/ and one is before /jo/ (ID 96). Twenty-two forms contain orthographic ㅆ; two are coda-triggered fortition contexts. No generic [ɕ͈] IPA/runtime variant is accepted. Kong & Kang (2021) report a speaker- and context-conditioned fronted word-initial /s͈i/ realization in young female speakers closer to [s] than [ɕ], not a universal fortis-palatalization rule. The 2021 EPG study is based on five adults and reports a range of contact patterns; it does not provide token-level [ɕ͈] labels for this cohort. Keep these cases separate from the 40 abstained/unadjudicated occurrences and do not reveal this candidate taxonomy to first-pass reviewers.
+
+**Review status remains BLOCKED / NOT STARTED:** no independent reviewer annotations have been supplied or reconciled. The packet builder is an available preparation tool, not evidence that packets were distributed or reviewed. Keep reviewer packets internal-only; external redistribution remains blocked until the item-level source-rights scope for the packet contents is explicitly cleared. After two independent Korean IPA passes and blind reconciliation, perform Ukrainian target review as a separate acceptance stage. No production IPA, Ukrainian target, benchmark gold or training data is changed by this status update.

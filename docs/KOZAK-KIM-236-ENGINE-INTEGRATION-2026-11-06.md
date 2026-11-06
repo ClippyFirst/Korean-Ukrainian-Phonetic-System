@@ -97,4 +97,48 @@ A second implementation review found two Browser/Python mismatches affecting the
 
 Regression coverage now includes supported /i, ye, ya/ examples, negative controls for /jʌ, jo, ju/, ㅒ and fortis /s͈/, and six resyllabified forms: 멋있어, 멋있노, 무슨뜻임, 것이냐, 저딴짓이면서, and 법알못이구만. The last three include the Rule 13 context cases 475, 2392 and 2667. Code correction commit: dcf1726212e16719b0fdc03311e5903448151e8b. No canonical IPA, phonemic output, Ukrainian target, or benchmark gold changed.
 
-The 24 fortis ɕ͈→s͈ edit operations across 23 occurrence rows remain unresolved; 22 are on forms containing orthographic ㅆ and two are coda-triggered fortition cases (했을시, 실시간). The 12 abstentions and 28 unadjudicated rows remain evidence-limited. Exact-head CI must be read from the final PR #441 head; skipped optional jobs are not passes.
+The 24 fortis ɕ͈→s͈ edit operations occur in 24 occurrence IDs across 19 source rows; 23 are before /i/ and one is before /jo/ (ID 96). Twenty-two forms contain orthographic ㅆ; two are coda-triggered fortition cases (했을시, 실시간). No [ɕ͈] runtime variant is accepted because the 2021 acoustic evidence is context- and speaker-specific and describes the fronted /s͈i/ variant as closer to [s] than [ɕ]. The 12 abstentions and 28 unadjudicated rows remain evidence-limited. The stale artifact from PR #441 is reconciled in PR #443; current exact-head CI and skipped optional jobs must be assessed on PR #443, not inferred from the earlier run.
+
+
+## Post-merge continuation — 2026-11-06
+
+PR #441 is merged into `main` (merge commit `f89c475c56796119e87130367fc15926b2428220`; verified implementation head `847cdb240aadc2c9343127fbb7de6dafad0441d4`). All 15 standard-form/rule occurrences have runtime dispositions (ten new exact integrations plus five baseline licenses). The 181 profile rows remain non-categorical; 12 abstentions and 28 unadjudicated rows remain unresolved.
+
+The 24 fortis [ɕ͈]→/s͈/ edit operations occur in 24 occurrence IDs across 19 source rows; 23 are before /i/ and one is before /jo/ (ID 96). Direct acoustic evidence (Kong & Kang 2021) shows age- and gender-conditioned fronting of word-initial /s͈i/ in young women, but explicitly describes it as closer to alveolar [s] than post-alveolar [ɕ]. It therefore does not justify an optional [ɕ͈] IPA variant for unknown speakers. The /jo/ case remains out of scope. The two /ɘː/ versus /ʌː/ cases remain transcription-profile questions. Phrase-level Rule 29 candidates `한국여자로` and `홍콩영화들` still require exact morphology and prosodic-boundary evidence. The 12+28 residual occurrences require original audio, speaker crosswalk and two independent Korean IPA annotations, followed by separate Ukrainian target review.
+
+### Multi-engine artifact acceptance
+
+The multi-engine workflow on exact PR #441 head `847cdb240aadc2c9343127fbb7de6dafad0441d4` (run [42215019081](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42215019081)) did **not** pass. Comparison and reviewer-packet generation succeeded, but the export `cmp` failed: generator output contained 25 unmapped-Broad occurrences; the tracked CSV contained 26, including ID 2490 (`머리속에`) now covered by the exact alias. Failure was byte 86966 / line 26. Browser same-occurrence parity, Native/Browser parity and SIGMORPHON steps were skipped downstream; optional ByT5/Charsiu inference jobs were skipped by policy. Regenerate the tracked artifact using the pinned generator and corpus, inspect the complete row-level diff, and rerun the full workflow. Do not change the expected count or weaken `cmp`.
+
+Current main `2e9647540e1be47571579f71b7466393172a2a6d` has successful tests 42216016963, system verification 42216016988, master artifacts 42216016940 and Pages deployment 42216016937. These do not substitute for the failed multi-engine artifact gate. No local shell test was run in this connector-only session.
+
+### Generated unmapped-Broad CSV reconciliation
+
+The tracked `research/kozak-kim-unmapped-mismatch-review-queue-2026-11-05.csv` has been regenerated from the exact CSV uploaded by workflow run [42215019081](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42215019081), artifact 13501009061. A row-by-row comparison identified only one stale entry: ID 2490 (`머리속에`), which the exact pronunciation alias now covers. The refreshed queue contains 25 rows and matches the artifact's 89,638 bytes; its Git blob SHA is `15655fa35b74251c8c0fdd6e2b6dc973d3bba631`. This is an artifact reconciliation, not a new linguistic adjudication. The export gate still requires an exact-head rerun; downstream parity and SIGMORPHON checks must execute before DONE_VERIFIED.
+
+## 2026-11-06 — fortis sibilant evidence review: no [ɕ͈] runtime variant accepted
+
+A targeted review of the 24 `ɕ͈→s͈` edit operations found **24 occurrence IDs in 19 source rows** (correcting the earlier 23-row count). Twenty-three reference realizations are before /i/; the sole /j/-initial case is ID 96 `똥꼬쑈` /ɕ͈jo/. Twenty-two forms contain orthographic ㅆ; two are coda-triggered fortition contexts, IDs 481 `했을시` and 551 `실시간`.
+
+### Evidence assessment
+
+- Holliday (2014, JASA) describes both Korean lenis-aspirated /sh/ and fortis /s*/ as typically palatalized before /i/ or /j/ (SRC-HOLLIDAY-2014-JASA). This is a background statement in a perception study, not token-level production evidence.
+- Holliday (2016, Phonetica) explicitly notes that /s*/ may palatalize less consistently than /sh/ (SRC-HOLLIDAY-2016-PHONETICA); its own experiment is perceptual.
+- Holliday & Reidy (2016) state in the poster background that /s*/ is sometimes palatalized before /i/, but the poster does not report speaker-level or token-level fortis-palatalization results from its six-speaker production sample (SRC-HOLLIDAY-REIDY-2016-PRODUCTION).
+- Kong & Kang (2020) report palatalized variants before /i/ in an abstract covering both /s/ and /s'/, but do not disaggregate which category produced them (SRC-KONG-KANG-2020-SEOUL-SIBILANTS).
+- **Kong & Kang (2021) provide the decisive direct acoustic constraint.** Their study analyzes 39 adult Seoul Korean speakers and 1,832 sibilant tokens. For young female speakers, word-initial tense /s͈i/ has age-related spectral fronting; however, the authors explicitly state that this variant is closer to alveolar [s] than post-alveolar [ɕ], and that the pattern is context- and gender-specific (SRC-KONG-KANG-2021-SEOUL-SIBILANT-AGE-GENDER).
+
+### Implementation decision
+
+**No [ɕ͈] runtime variant is accepted.** The 2021 acoustic result does not support converting the 23 /i/ cases into [ɕ͈]; it describes a different, speaker-conditioned fronting pattern. The 2014/2016 claims are mixed background/perception evidence, and the 2016 poster does not provide a token-level fortis production result. The 2020 abstract does not distinguish lenis from fortis. No source maps the 236 occurrences to the speakers in these studies.
+
+Keep canonical broad [s͈] unchanged in Python and Browser. Do not add [ɕ͈] to broad or narrow output, do not select a fronted variant without speaker identity and acoustic evidence, and do not change Ukrainian target mappings. ID 96 /jo/ remains separately unsupported. The 24 mismatches remain BLOCKED for token-level IPA adjudication; they are part of the 181 profile-convention cases and distinct from the 40 abstained/unadjudicated occurrences.
+
+### Regression and inventory evidence
+
+The data-inventory test `test_fortis_sibilant_candidate_inventory_has_exact_context_distribution` records the 24 operations, 24 occurrence IDs, 19 source rows, 23 /i/ contexts and the single /jo/ case. Existing negative controls retain `씨` as a no-variant case in the broad research profile. No runtime code change is required or accepted from this evidence review.
+
+
+### Recovered generator artifact — reconciliation detail
+
+Original workflow artifact from run 42215019081 was recovered. The generated queue has 25 occurrence rows; the tracked queue had 26. Exact comparison showed all 25 common rows unchanged and exactly one tracked-only row: ID 2490 (`머리속에`), whose pronunciation alias is now integrated. The tracked queue was replaced with the recovered generator output on continuation branch `research/236-residual-review-2026-11-06` (commit `8b87cd63bb145ccd8611144331dad20f1ad6663a`). This is a reproducible stale-artifact correction, not a linguistic adjudication. The multi-engine workflow must still rerun and execute its previously skipped downstream jobs before the gate is marked DONE_VERIFIED.

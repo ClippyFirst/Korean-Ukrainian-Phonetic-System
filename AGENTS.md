@@ -11,7 +11,7 @@ Before a substantial task, inspect:
 3. [Repository structure and ownership](docs/REPOSITORY-STRUCTURE.md).
 4. [Agent workflow guide](docs/AGENT-WORKFLOWS.md).
 5. [Research master directive](research/MASTER-DIRECTIVE.md), [acceptance gates](research/ACCEPTANCE-GATES.md), and [roadmap](research/ROADMAP.md) when the task touches research, phonology, data, benchmarks, or release claims.
-6. The newest dated section of [the master execution handoff](docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md).
+6. The newest dated section of [the master execution handoff](docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md). If the current repository audit explicitly records that the oversized handoff could not be safely appended, use that audit's latest superseding continuation and preserve the original handoff blob.
 
 Read the files relevant to the actual task, not every historical report. Historical audits are evidence snapshots, not current instructions.
 
@@ -51,7 +51,7 @@ A task may require more than one skill. Prefer the domain-specific skill for lin
 6. Keep historical documents and stable paths. Do not bulk-move or rename documentation, data, fixtures or generated artifacts during a documentation pass.
 7. Work on a dedicated branch based on the current default branch. Preserve unrelated work. Do not force-push, delete user branches, merge blindly, publish releases or change external settings.
 8. Run the relevant repository-defined checks on the actual final commit. Record exact commands, run IDs, exit status, counts and skips. A skipped job is not a pass; connector-only inspection is not a local test run.
-9. Update the existing canonical index, registers and append-only handoff. Do not create competing master plans, source registries, rule matrices or acceptance-gate ledgers.
+9. Update the existing canonical index and registers, and append to the master handoff where the available write path safely supports it. If an oversized handoff cannot be safely updated, preserve its exact original blob and record the superseding continuation in the current repository audit. Do not create competing master plans, source registries, rule matrices or acceptance-gate ledgers.
 10. Report what changed, what was verified, what was not checked, and the remaining blockers without overstating readiness.
 
 ## Sources of truth
@@ -62,3 +62,6 @@ A task may require more than one skill. Prefer the domain-specific skill for lin
 - Human navigation: `README.md`, `docs/README.md`, `docs/REPOSITORY-STRUCTURE.md` and `docs/AGENT-WORKFLOWS.md`.
 - Historical evidence: dated reports in `docs/` and `docs/audits/`; supersede with a new dated record rather than silently rewriting history.
 - Session continuation: the newest dated section of `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md`.
+
+
+- Before release, run `npm run audit:source-rights`. Distinguish citation-only references from material actually copied or included in the repository; a negated statement such as `no source file copied` is not evidence of redistribution. Do not infer permission from academic purpose alone.

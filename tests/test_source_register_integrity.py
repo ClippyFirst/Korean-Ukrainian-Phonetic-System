@@ -323,7 +323,7 @@ def test_2026_11_01_g2p_sources_keep_scope_and_license_provenance_explicit():
 
     ugtphon = rows["SRC-UGTPHON-EMNLP-2026"]
     assert "Apache-2.0" in ugtphon["license_status"]
-    assert "CC BY-SA" in ugtphon["license_status"]
+    assert "CC BY-SA" in ugtphon["limitations_or_next_action"]
     assert "UGT" in ugtphon["limitations_or_next_action"]
 
 
