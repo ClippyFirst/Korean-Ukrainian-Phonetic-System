@@ -6940,3 +6940,50 @@ PR #436 was merged with a merge commit after all applicable exact-head jobs comp
 - First PR #441 verification on head `d82af8b6204cdbc7971f2a5a4f06c00a8f37e61e`: Python regression/data integrity, Python 3.11/3.12/3.13, wheel-install and teacher-corpus checks passed; browser tests exposed five assertion updates needed for the additional optional variant and the new 15/15 count. Those assertions were updated. Exact-head CI on `0d158a42939b87b9ad8e2cfe63d7a72a80445c19` is queued; no local shell tests are claimed.
 
 **Next acceptance gate:** finish exact-head PR #441 CI, repair any remaining failures, then merge only if required jobs pass. Do not count skipped optional neural or NIKL jobs as passes. PR #439 remains separate and open with its previously recorded source-rights test failures.
+
+
+## 2026-11-06 — post-merge residual review of the 236-case cohort
+
+**Starting main:** `2e9647540e1be47571579f71b7466393172a2a6d` (PR #442 merged).  
+**Continuation branch:** `research/236-residual-review-2026-11-06`.  
+**Previous verified implementation head:** `847cdb240aadc2c9343127fbb7de6dafad0441d4`; PR #441 merged via `f89c475c56796119e87130367fc15926b2428220`.
+
+### Current 236-case disposition
+
+- The reconstructed cohort remains 236 occurrence rows: 15 `RULE_CONFIRMED_STANDARD_VARIANT`, 181 `PROFILE_CONVENTION_MISMATCH_CONFIRMED`, 12 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW`, and 28 `NOT_INDIVIDUALLY_ADJUDICATED`. All rows remain retained; 40 are still evidence-limited. The 236 rows are not independent rules or independent speakers.
+- All 15 standard-form occurrences have exact runtime dispositions on `main` (10 new exact licenses plus five pre-existing licenses). The exact `머리속에` pronunciation alias preserves input spelling. The research-only `게임` [k͈] and group-level `ㅐ` [ɛ]~[e] variants, and the bounded lenis [ɕ] contexts, are exposed without changing canonical broad IPA or assigning speaker-specific phones.
+- The 181 profile decisions remain non-categorical. The 24 fortis [ɕ͈]→/s͈/ edit operations across 23 occurrence rows (22 with orthographic ㅆ; two coda-triggered fortition contexts) remain unresolved. The two /ɘː/ vs /ʌː/ differences remain transcription-profile questions. No lenis evidence is generalized to fortis /s͈/.
+- The 12 abstentions and 28 unadjudicated occurrences remain blocked on exact source audio/speaker crosswalk and two independent Korean IPA annotations with explicit convention, syllable boundaries and uncertainty. Phrase-level Rule 29 cases `한국여자로` and `홍콩영화들` additionally require prosodic-boundary evidence. No IPA or Ukrainian gold was invented.
+
+### Newly identified software acceptance defect
+
+Multi-engine diagnostic workflow [42215019081](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42215019081), on exact implementation head `847cdb240aadc2c9343127fbb7de6dafad0441d4`, completed the pinned engine comparison and reviewer-packet generation but **FAILED** at the generated-artifact `cmp` gate. The current generator emitted 25 unmapped-Broad occurrences; the tracked `research/kozak-kim-unmapped-mismatch-review-queue-2026-11-05.csv` still contains 26, including occurrence 2490 (`머리속에`) which now has an exact pronunciation alias. The mismatch is at byte 86966 / line 26. Downstream Browser same-occurrence parity, native/browser parity and SIGMORPHON jobs were skipped because the export gate failed. Optional ByT5 and Charsiu inference jobs were skipped by policy, not passed. The uploaded artifact is run artifact 13501009061. Do not describe this multi-engine workflow as passed.
+
+This is a stale generated diagnostic artifact, not evidence of a new linguistic defect. The correct acceptance action is to regenerate the tracked queue from the pinned generator and exact corpus revision, inspect the row-level diff, then rerun the entire workflow so downstream jobs execute. Do not merely change the expected row count or weaken the byte comparison. If a changed row cannot be independently reconstructed in this connector-only environment, leave the artifact reconciliation PARTIAL rather than hand-editing guessed CSV fields.
+
+### Current main CI
+
+On current main `2e9647540e1be47571579f71b7466393172a2a6d`: tests [42216016963](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42216016963), system verification [42216016988](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42216016988), master/research artifact generation [42216016940](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42216016940), and Pages deployment [42216016937](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42216016937) completed successfully. These workflows verify the ordinary test/build/data/deployment paths; they do not erase the separate multi-engine export/cmp failure above. No local pytest/npm command was run: GitHub DNS resolution failed in the available container.
+
+### Workflow reference decisions retained
+
+Unlazy, Superpowers, Matt Pocock skills and Ponytail remain process references only. Their relevant practices (explicit acceptance gates and evidence freshness; TDD/root-cause debugging; small composable project-aware procedures; risk-first review and measured benchmarks) are already documented and routed through `AGENTS.md` and `.agents/skills/`. No duplicate orchestrator, checker, skill catalogue, hooks or upstream code is warranted.
+
+### Task ledger at this continuation
+
+| Workstream | Status | Acceptance / blocker |
+|---|---|---|
+| 236-row provenance and disposition ledger | DONE_VERIFIED | 236 rows retained and reproducible; not independent IPA gold. |
+| 15 exact standard-form runtime dispositions | DONE_VERIFIED | Merged in #441; current main tests/verify passed. |
+| 181 broad/narrow profile reconciliations | DONE_VERIFIED as bounded non-integration decisions | No categorical rule expansion; speaker-level acoustic status remains unresolved. |
+| 24 fortis [ɕ͈] operations / 23 occurrence rows | BLOCKED | Need exact token audio or independent fortis-specific IPA/acoustic evidence; lenis literature is out of scope. |
+| 12 abstentions + 28 unadjudicated | BLOCKED | Need original audio, speaker crosswalk and two independent Korean IPA annotations; then separate Ukrainian review. |
+| Multi-engine unmapped-Broad generated CSV | PARTIAL | Generator emitted 25 rows while tracked file has 26; stale ID 2490 is present in tracked artifact. Regenerate exact CSV and rerun downstream parity/SIGMORPHON jobs. |
+| Main tests, system verification, corpus artifact generation, Pages deployment | DONE_VERIFIED for commit `2e9647540e1be47571579f71b7466393172a2a6d` | Runs 42216016963, 42216016988, 42216016940, 42216016937 all success. Multi-engine is a separate failed gate. |
+| Four upstream workflow reference audit | DONE_VERIFIED | Existing pinned audit; no copied upstream code or duplicate tooling. |
+| Independent Korean IPA gold | BLOCKED | Qualified independent reviewers and blind reconciliation required. |
+| Independent Ukrainian target validation | BLOCKED | Requires Ukrainian phonetic/orthographic reader review and acceptance tests. |
+| Third-party material redistribution rights | PARTIAL / separate PR #439 | PR #439 is 56 commits behind current main and its exact-head tests/verify failed; do not merge blindly. Citation-only source references are distinct from material actually copied or redistributed. |
+| Release readiness | DEFERRED | Partial research prototype; linguistic gold, target validation and artifact acceptance remain open. |
+
+**Readiness:** software runtime integration is merged and the current main test/build/deploy workflows pass, but the multi-engine artifact gate is failed and independent linguistic/target validation remains blocked. The repository is still a partial research prototype, not research-certified or release-ready.
