@@ -13,6 +13,7 @@ IDS_PATH = ROOT / "research/kozak-kim-historical-239-candidate-ids-2026-11-05.tx
 SUPERSET_PATH = ROOT / "research/kozak-kim-broad-mismatch-context-ledger-2026-11-05.csv"
 ABSTENTION_PATH = ROOT / "research/kozak-kim-31-row-individual-abstentions-2026-11-05.csv"
 ADJUDICATION_PATH = ROOT / "research/kozak-kim-context-adjudication-2026-11-05.csv"
+RESIDUAL_REVIEW_PATH = ROOT / "research/kozak-kim-236-residual-review-2026-11-06.csv"
 OUTPUT_PATH = ROOT / "research/kozak-kim-236-candidate-review-2026-11-05.csv"
 FIXES = {
     37: ("multilexnorm2026_1916", "해줄것"),
@@ -20,6 +21,12 @@ FIXES = {
     2031: ("dc_inside_2266", "내릴수있는"),
 }
 RETAIN_ID = 1140
+RESIDUAL_REVIEW_IDS = {
+    "606", "843", "1155", "1157", "1414", "1417", "1420", "1423",
+    "1426", "1429", "1432", "1435", "1438", "1441", "1444", "1447",
+    "1450", "1453", "1456", "1459", "1462", "1465", "1468", "1471",
+    "1474", "1477", "1885", "2489",
+}
 # Git object IDs pin the exact source snapshots used to reconstruct this queue.
 # A changed input requires an explicit review and a deliberate pin update.
 PINNED_INPUT_GIT_BLOB_SHA = {
@@ -27,6 +34,7 @@ PINNED_INPUT_GIT_BLOB_SHA = {
     SUPERSET_PATH: "e6c4843bbb9f1e3eb83527698880d4d60184c333",
     ABSTENTION_PATH: "de838dcdc247e1846e0e633766135b3a902f436b",
     ADJUDICATION_PATH: "df52622e4b49051bd5f7beeb081b5fda54a942e0",
+    RESIDUAL_REVIEW_PATH: "6305bdcf6f5fdc45aaba33b6e1b9ddb756b1290a",
 }
 
 def verify_git_blob(path: Path, expected_sha: str) -> None:
@@ -68,6 +76,10 @@ def build_rows(root: Path = ROOT) -> list[dict[str, str]]:
     abstention_by_id = {int(row["occurrence_id"]): row for row in abstentions}
     adjudications = read_csv(p(ADJUDICATION_PATH))
     adjudication_by_key = {(row["source_row_id"], row["token"]): row for row in adjudications}
+    residual_reviews = read_csv(p(RESIDUAL_REVIEW_PATH))
+    residual_review_by_id = {row["occurrence_id"]: row for row in residual_reviews}
+    if len(residual_reviews) != 28 or set(residual_review_by_id) != RESIDUAL_REVIEW_IDS:
+        raise ValueError("Expected the exact 28-row focused residual review register")
     retain_adjudication = next((row for row in adjudications
         if row["source_row_id"] == retain["source_row_id"] and row["token"] == retain["token"]
         and row["decision"] == "RETAIN_EXISTING_R012_NIKL_FORM_PENDING_INDEPENDENT_REVIEW"), None)
@@ -134,10 +146,18 @@ def build_rows(root: Path = ROOT) -> list[dict[str, str]]:
             ipa_status = retain_adjudication["independent_review_status"]
         else:
             disposition = "NOT_INDIVIDUALLY_ADJUDICATED"
-            basis = "No occurrence-level disposition found in current narrow review registers."
+            residual_review = residual_review_by_id.get(str(candidate_id))
+            if residual_review is None:
+                raise ValueError(f"Missing focused residual review for occurrence {candidate_id}")
+            if (residual_review["source_row_id"], residual_review["token"]) != (row["source_row_id"], row["token"]):
+                raise ValueError(f"Residual review crosswalk mismatch for occurrence {candidate_id}")
+            if residual_review["review_status"] != "EVIDENCE_REVIEWED_UNRESOLVED":
+                raise ValueError(f"Unexpected residual review status for occurrence {candidate_id}")
+            basis = "Focused evidence review completed; no token-level IPA adjudication. See residual_review_basis."
             reason = ""
             rationale = ""
             ipa_status = "NOT_PERFORMED"
+        residual_review = residual_review_by_id.get(str(candidate_id))
         item = {field: row.get(field, "") for field in source_fields}
         item.update({
             "historical_export_cluster_labels_descriptive_only": row["candidate_clusters"],
@@ -154,6 +174,11 @@ def build_rows(root: Path = ROOT) -> list[dict[str, str]]:
             "source_row_token_occurrences_in_review": str(pair_counts[(row["source_row_id"], row["token"])]),
             "candidate_selection_method": "PRE_C11_C12_BROAD_ONLY_AGGREGATE_C01_C10_REPLAY",
             "historical_membership_confidence": "RECONSTRUCTED_CANDIDATE_NOT_ORIGINAL_MEMBERSHIP_PROOF",
+            "residual_review_status": residual_review["review_status"] if residual_review else "",
+            "residual_review_basis": residual_review["review_basis"] if residual_review else "",
+            "residual_review_action": residual_review["review_action"] if residual_review else "",
+            "residual_review_required_evidence": residual_review["required_evidence"] if residual_review else "",
+            "residual_review_source_ids": residual_review["source_ids"] if residual_review else "",
         })
         output.append(item)
     return output

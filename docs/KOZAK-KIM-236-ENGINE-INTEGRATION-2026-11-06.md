@@ -142,3 +142,15 @@ The data-inventory test `test_fortis_sibilant_candidate_inventory_has_exact_cont
 ### Recovered generator artifact — reconciliation detail
 
 Original workflow artifact from run 42215019081 was recovered. The generated queue has 25 occurrence rows; the tracked queue had 26. Exact comparison showed all 25 common rows unchanged and exactly one tracked-only row: ID 2490 (`머리속에`), whose pronunciation alias is now integrated. The tracked queue was replaced with the recovered generator output on continuation branch `research/236-residual-review-2026-11-06` (commit `8b87cd63bb145ccd8611144331dad20f1ad6663a`). This is a reproducible stale-artifact correction, not a linguistic adjudication. The multi-engine workflow must still rerun and execute its previously skipped downstream jobs before the gate is marked DONE_VERIFIED.
+
+
+## 2026-11-06 — focused evidence pass on the remaining 40 occurrences
+
+The 12 `ABSTAIN` rows were rechecked against their existing individual-abstention rationales and the exact NIKL rule/Q&A scope. The 28 `NOT_INDIVIDUALLY_ADJUDICATED` rows now have a per-occurrence review in [the residual evidence register](../research/kozak-kim-236-residual-review-2026-11-06.csv), consumed by the 236-case generator and covered by regression assertions. The 28 comprise 27 lenis-sibilant mismatch occurrences across six token strings and one separate `대한민국` /ɛː/ versus /eː/ quality mismatch. Twenty-two `아끼셔` occurrences are repeats in one source-row/token family, not independent speaker samples.
+
+The new KCI record for Lee (2023), DOI 10.17959/sppm.2023.29.2.193, reports that the Seoul /ɛ/–/e/ merger is incomplete and position-sensitive. It supports keeping the existing research-only optional [ɛ]~[e] representation without selecting a speaker-specific vowel or changing canonical output. NIKL Q&A 332662 confirms that `쇼` has no separately prescribed standard foreign-word pronunciation; Kang (2010)'s high-front-plus-round acoustic study describes a coarticulatory spectral pattern but not a categorical IPA output. The remaining /jʌ/ sibilant cases are not covered by the reviewed direct acoustic environments.
+
+**Disposition:** all 12 abstentions remain abstentions; all 28 remain unadjudicated. The row-level evidence basis is now explicit, but token audio, speaker crosswalk, and two independent Korean IPA annotations remain the acceptance gate. No production rule, IPA gold, or Ukrainian target was changed.
+
+
+The native Python IPA profile and browser shared-Broad profile now cite Lee (2023) in the research-only [ɛ]~[e] variant metadata. Regression tests cover all six unresolved sibilant token strings in the shared-Broad runtime (canonical /s/, no unsupported [ɕ] variant) and verify that `대한민국` retains its length mark while the optional vowel-quality candidate remains non-selective. The legacy browser profile remains unchanged for compatibility; this guard explicitly tests `clippyfirst-korean-broad-v1`.

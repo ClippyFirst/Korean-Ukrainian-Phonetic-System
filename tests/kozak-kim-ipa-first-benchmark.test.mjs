@@ -386,7 +386,13 @@ test('236 profile-only vowel and loanword differences are exposed as optional va
   const shortFront = engine.convert('주는대로', { ipaProfile: 'clippyfirst-korean-broad-v1' });
   assert.ok(shortFront.variants.some(variant => variant.ipa.replaceAll('.', '') === 'tɕunɯndeɾo'));
   const longFront = engine.convert('대한민국', { ipaProfile: 'clippyfirst-korean-broad-v1' });
-  assert.ok(longFront.variants.some(variant => variant.ipa.includes('ɛ') && variant.note.includes('Research-only')));
+  assert.ok(longFront.variants.some(variant => variant.ipa.includes('ɛ') && variant.note.includes('Research-only') && variant.note.includes('SRC-LEE-2023-SEOUL-MID-FRONT-VOWEL-POSITION')));
+  for (const token of ['쇼', '모션어디서', '뿌셔우우', '뿌셔우우우', '아끼셔', '포지션을']) {
+    const result = engine.convert(token, { ipaProfile: 'clippyfirst-korean-broad-v1' });
+    assert.ok(result.ipa.includes('s'), token + ': canonical lenis /s/ remains');
+    assert.ok(!result.ipa.includes('ɕ'), token + ': no unsupported canonical [ɕ]');
+    assert.ok(!result.variants.some(variant => variant.ipa.includes('ɕ')), token + ': no unsupported [ɕ] variant');
+  }
 });
 
 test('shared broad profile exposes source-backed sibilant palatalization as a variant, not a forced rewrite', () => {

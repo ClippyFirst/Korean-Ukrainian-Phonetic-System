@@ -121,7 +121,7 @@ export function lexicalResult(text,entry,options={}){
       surface:entry.surface_hangul||text,
       ukrainian:mapped.map(item=>item.text??'').join(''),
       ipa:renderLexicalIpa(text,alternateIpas),
-      note:'Research-only optional [ɛ]~[e] realization of ㅐ; group-level Korean mid-front-vowel merger/weak-distinction evidence (Lee & Cho 2021; Eychenne & Jang 2015). Speaker-specific quality is unknown; canonical broad output and any existing vowel length are preserved.',
+      note:'Research-only optional [ɛ]~[e] realization of ㅐ; group-level Korean mid-front-vowel merger/weak-distinction evidence (Lee & Cho 2021; Eychenne & Jang 2015; Lee 2023, SRC-LEE-2023-SEOUL-MID-FRONT-VOWEL-POSITION). Lee (2023) finds the merger incomplete and position-sensitive. Speaker-specific quality is unknown; canonical broad output and any existing vowel length are preserved.',
       status:mapped.some(item=>item.status==='provisional')?'lexical-review':targetReview?'lexical-review':'lexical',
       target_status:mapped.some(item=>item.status==='unavailable'||item.unknown)?'unavailable':targetReview||mapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
     });
@@ -235,7 +235,7 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status,
       const sections=[...new Set(changed.map(site=>site.section))].join('/');
       const researchMerger=changed.some(site=>site.section==='research /ɛ–e/ merger');
       const note=researchMerger
-        ?'Research-only optional [ɛ]~[e] realization of ㅐ; group-level Korean mid-front-vowel merger/weak-distinction evidence (Lee & Cho 2021; Eychenne & Jang 2015). Speaker-specific quality is unknown; canonical broad output is unchanged.'
+        ?'Research-only optional [ɛ]~[e] realization of ㅐ; group-level Korean mid-front-vowel merger/weak-distinction evidence (Lee & Cho 2021; Eychenne & Jang 2015; Lee 2023, SRC-LEE-2023-SEOUL-MID-FRONT-VOWEL-POSITION). Lee (2023) finds the merger incomplete and position-sensitive. Speaker-specific quality is unknown; canonical broad output is unchanged.'
         :sites.length<=3
           ?sections+': дозволена альтернативна вимова '+labels.join(' + ')+'; корейське написання не змінюється.'
           :sections+': альтернативна вимова '+labels.join(' + ')+'; інші необрані голосні зберігають основне читання, написання не змінюється.';

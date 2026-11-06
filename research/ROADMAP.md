@@ -554,3 +554,11 @@ Training gate: the latest readiness audit finds 644 unique lexical rows but zero
 - **Current 36-row queue:** all rows now have explicit dispositions: four exact R013 fixes, one provisional R012 retain, and 31 individual evidence-limited `ABSTAIN` decisions in `kozak-kim-31-row-individual-abstentions-2026-11-05.csv`. These abstentions mean “insufficient independent evidence to change production”, not “the engine is linguistically correct”.
 - **Python provenance:** `RuleTrace` now emits per-occurrence `applied_occurrences` and `license_contexts` while preserving the legacy scalar `license_context`. This resolves the multi-license sentence trace loss at the Python boundary.
 - **Historical 239:** remains BLOCKED. The original occurrence-level population and its historical engine/normalizer run metadata are not present in the tracked 1,267 fragment rows or 36-row queue. Recover the original benchmark artifact/run or reproduce it from its exact historical commit, pinned source split, profile and normalizer before generating the complete ledger. Do not manufacture missing rows or provenance.
+
+
+## 2026-11-06 — residual 40 occurrence evidence pass
+
+The 12 abstentions and 28 unadjudicated occurrences were re-reviewed. A 28-row residual register is now the row-level evidence companion to the canonical 236-candidate ledger; the generator and regression tests enforce the exact occurrence set and preserve the 12/28 status split. No runtime change is justified. The next dependency is still original audio + speaker crosswalk + two independent Korean IPA annotations, followed by separate Ukrainian target review. See `kozak-kim-236-residual-review-2026-11-06.csv` and the 2026-11-06 section of the candidate review.
+
+
+Runtime guard follow-through: native and browser shared-Broad regressions now cover all six unresolved sibilant token strings and ensure no unsupported [ɕ] is emitted; the `대한민국` optional vowel candidate preserves length and carries the Lee (2023) source citation. These tests prevent evidence-limited cases from silently becoming production rules.

@@ -6947,3 +6947,21 @@ PR #436 was merged with a merge commit after all applicable exact-head jobs comp
 The original ZIP from failed run 42215019081 was recovered and its generated queue extracted. Exact row-level comparison against the tracked CSV established that all 25 generated rows are byte-for-byte identical to corresponding tracked rows; the only stale tracked row is occurrence 2490 (`머리속에`), already covered by the exact pronunciation alias. No generated row content was hand-edited and no other row changed. The tracked CSV has now been replaced on continuation branch `research/236-residual-review-2026-11-06` with the original generated output (commit `8b87cd63bb145ccd8611144331dad20f1ad6663a`).
 
 The artifact discrepancy is therefore reconciled at source-file level. **Acceptance remains PARTIAL until the branch's Actions workflow reruns successfully**, including the downstream Browser same-occurrence parity, Native/Browser parity and SIGMORPHON jobs previously skipped. Do not call the multi-engine gate passed until those jobs have actually run and succeeded. The 12+28 linguistic evidence blockers and independent target validation are unaffected.
+
+
+## 2026-11-06 — focused evidence review of the remaining 40 cohort occurrences
+
+**Branch:** `research/236-residual-evidence-register-2026-11-06` · based on main `da9f98bdba553f80ecba0614294066c2d0561966`.
+
+- Rechecked all 12 abstentions and all 28 unadjudicated occurrences against the exact occurrence ledger, existing NIKL/Q&A records, source register and completed Undermind literature searches.
+- Added `research/kozak-kim-236-residual-review-2026-11-06.csv`: 28 occurrence-level evidence rows, exact source-row/token crosswalks, reviewed basis, source IDs, explicit no-production-change actions and reopening evidence. The 22 `아끼셔` rows are one source-row/token family, not 22 independent speakers.
+- Added Lee (2023), DOI 10.17959/sppm.2023.29.2.193, to the source register. Its KCI abstract reports that Seoul /ɛ/–/e/ merger is incomplete and position-sensitive; this supports retaining a research-only optional [ɛ]~[e] candidate but not selecting a speaker-specific long vowel for ID 1885.
+- NIKL Q&A 332662 says foreign-word `쇼` has no separately prescribed standard pronunciation and should be read as written. Kang (2010)'s high-front-plus-round study reports an acoustic coarticulatory pattern, not a deterministic IPA segment. The /jʌ/ sibilant cases remain outside the directly measured contexts.
+- Updated the 236-case generator and regression tests. The generated ledger now carries five `residual_review_*` fields for the 28 cases; all 12 abstentions remain abstentions and all 28 remain unadjudicated. No runtime phonology, canonical IPA, Ukrainian target, or benchmark gold changed.
+
+**Verification status:** implementation and source/register consistency are committed on this branch; exact-head GitHub Actions, generated-artifact drift and PR review are still pending. No local shell, pytest or npm run was available in the connector-only session. The actual linguistic acceptance blocker remains original audio + speaker crosswalk + two independent Korean IPA annotations, followed by separate Ukrainian target review. The repository remains a partial research prototype, not release-ready.
+
+
+### 2026-11-06 — runtime guard and provenance update
+
+The native Python and browser shared-Broad optional [ɛ]~[e] metadata now cite Lee (2023), DOI 10.17959/sppm.2023.29.2.193, whose KCI abstract reports an incomplete, position-sensitive Seoul merger. Added native and browser regressions for the six residual sibilant token strings: shared-Broad canonical /s/ remains and no unsupported [ɕ] variant is emitted. The 대한민국 test preserves the existing length mark and treats [ɛ]~[e] as a non-selective research alternative. The legacy browser profile is unchanged for compatibility. The source register now contains 214 rows; the new study is citation-only and no redistribution rights are claimed. Exact-head CI and generated-artifact checks remain pending; no local shell/pytest/npm execution is claimed.
