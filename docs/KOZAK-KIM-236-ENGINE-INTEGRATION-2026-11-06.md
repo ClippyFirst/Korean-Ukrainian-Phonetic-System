@@ -132,7 +132,7 @@ A targeted review of the 24 `ɕ͈→s͈` edit operations found **24 occurrence I
 
 **No [ɕ͈] runtime variant is accepted.** The 2021 acoustic result does not support converting the 23 /i/ cases into [ɕ͈]; it describes a different, speaker-conditioned fronting pattern. The 2014/2016 claims are mixed background/perception evidence, and the 2016 poster does not provide a token-level fortis production result. The 2020 abstract does not distinguish lenis from fortis. No source maps the 236 occurrences to the speakers in these studies.
 
-Keep canonical broad [s͈] unchanged in Python and Browser. Do not add [ɕ͈] to broad or narrow output, do not select a fronted variant without speaker identity and acoustic evidence, and do not change Ukrainian target mappings. ID 96 /jo/ remains separately unsupported. The 24 mismatches remain PARTIAL/BLOCKED for speaker-level adjudication; they are part of the 181 profile-convention cases and distinct from the 40 abstained/unadjudicated occurrences.
+Keep canonical broad [s͈] unchanged in Python and Browser. Do not add [ɕ͈] to broad or narrow output, do not select a fronted variant without speaker identity and acoustic evidence, and do not change Ukrainian target mappings. ID 96 /jo/ remains separately unsupported. The 24 mismatches remain BLOCKED for token-level IPA adjudication; they are part of the 181 profile-convention cases and distinct from the 40 abstained/unadjudicated occurrences.
 
 ### Regression and inventory evidence
 
