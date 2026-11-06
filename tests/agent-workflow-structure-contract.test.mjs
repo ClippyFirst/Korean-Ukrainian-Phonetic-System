@@ -108,6 +108,6 @@ test('current documentation navigation exposes the four-source audit and 236-cas
   assert.ok(audit.includes('22f0b463e7a5e579904dd6211a520321035526f7'));
   assert.ok(audit.includes('4ae2317ddb22b046e26455e4f9c9b3aaaf62212d'));
   assert.ok(audit.includes('96608e078b2d5ea607c5c3b8b5a54d1c1fba6846'));
-  assert.ok(repositoryAudit.includes('236 reconstructed occurrence rows'));
-  assert.ok(integration.includes('14/15'));
+  assert.ok(repositoryAudit.includes('236 occurrence rows'));
+  assert.ok(integration.includes('14 occurrences integrated or already implemented'));
 });
