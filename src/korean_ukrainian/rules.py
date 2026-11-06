@@ -305,6 +305,9 @@ _EXACT_LEXICAL_FORTITION_WORD_LICENSES = {
     "정권": "정>권",   # SRC-KPEDIA-JEONGGWON; SRC-NIKL-QNA-335292 is scope corroboration only.
     "유사성": "사>성", # SRC-NIKL-KRDICT-YUSASEONG; no productive -성 rule.
     "혐오증": "오>증", # SRC-NIKL-KRDICT-HYEMO; no productive -증 rule.
+    # Exact pronunciation alias only; retain the nonstandard source spelling.
+    # SRC-KIMNAMMI-2017-DONGA-MEORISSOK attests 머릿속[머리쏙].
+    "머리속에": "리>속",
 }
 
 
