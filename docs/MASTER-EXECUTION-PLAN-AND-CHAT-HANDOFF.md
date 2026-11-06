@@ -6940,3 +6940,10 @@ PR #436 was merged with a merge commit after all applicable exact-head jobs comp
 - First PR #441 verification on head `d82af8b6204cdbc7971f2a5a4f06c00a8f37e61e`: Python regression/data integrity, Python 3.11/3.12/3.13, wheel-install and teacher-corpus checks passed; browser tests exposed five assertion updates needed for the additional optional variant and the new 15/15 count. Those assertions were updated. Exact-head CI on `0d158a42939b87b9ad8e2cfe63d7a72a80445c19` is queued; no local shell tests are claimed.
 
 **Next acceptance gate:** finish exact-head PR #441 CI, repair any remaining failures, then merge only if required jobs pass. Do not count skipped optional neural or NIKL jobs as passes. PR #439 remains separate and open with its previously recorded source-rights test failures.
+
+
+### 2026-11-06 artifact reconciliation update
+
+The original ZIP from failed run 42215019081 was recovered and its generated queue extracted. Exact row-level comparison against the tracked CSV established that all 25 generated rows are byte-for-byte identical to corresponding tracked rows; the only stale tracked row is occurrence 2490 (`머리속에`), already covered by the exact pronunciation alias. No generated row content was hand-edited and no other row changed. The tracked CSV has now been replaced on continuation branch `research/236-residual-review-2026-11-06` with the original generated output (commit `8b87cd63bb145ccd8611144331dad20f1ad6663a`).
+
+The artifact discrepancy is therefore reconciled at source-file level. **Acceptance remains PARTIAL until the branch's Actions workflow reruns successfully**, including the downstream Browser same-occurrence parity, Native/Browser parity and SIGMORPHON jobs previously skipped. Do not call the multi-engine gate passed until those jobs have actually run and succeeded. The 12+28 linguistic evidence blockers and independent target validation are unaffected.
