@@ -22,6 +22,12 @@ This page is the entry point for project documentation. It distinguishes current
 
 - [Licensing and permissions](LICENSING-AND-PERMISSIONS.md) — author identity, scientific-use permissions, technical permission boundary and third-party licence scope.
 
+## 236-candidate engine work
+
+- [236-candidate review](../research/kozak-kim-236-candidate-review-2026-11-05.md)
+- [236-case engine integration](KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md)
+- [Independent IPA review protocol](KOZAK-236-INDEPENDENT-REVIEW.md)
+
 ## Documentation by responsibility
 
 | Area | Canonical entry points | Contents |
