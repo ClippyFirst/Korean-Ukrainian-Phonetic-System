@@ -1,9 +1,9 @@
 # Korean–Ukrainian Phonetic System: Research Programme
 
-Status: research prototype; repository documentation, versioning policy and owner-approved custom licence are integrated into main. Scientific certification and release readiness remain blocked by independent IPA/Ukrainian review, NIKL item-level rights, C12 evidence, historical mismatch reconciliation and remaining coverage/parity work.
-Last updated: 2026-11-05.
+Status: evidence-scoped research prototype. Mandatory multi-engine diagnostic comparison and exact-head software verification passed on PR #443; independent Korean IPA review, independent Ukrainian target review, original historical cohort membership proof and residual token-level evidence remain open. The scoped source-redistribution gate passes for positively recorded redistributed material; it is not blanket legal clearance.
+Last updated: 2026-11-06.
 
-See [engineering workflow reference audit](../docs/ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-05.md) for the pinned review of the three supplied repositories and project-specific adoption decisions.
+See [engineering workflow reference audit](../docs/ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-06.md) for the pinned review of all four supplied repositories and project-specific adoption decisions.
 
 This directory is the durable source of truth for research planning, evidence tracking, implementation coverage, decisions, and release acceptance. Continue work from these files rather than relying on chat history.
 
@@ -23,24 +23,37 @@ This directory is the durable source of truth for research planning, evidence tr
 - [236-candidate engine integration ledger](kozak-kim-236-engine-integration-2026-11-06.csv) — one runtime disposition per rule-confirmed occurrence, including existing licenses and the orthographic blocker.
 13. [Sibilant-glide scope review](KOREAN-SIBILANT-GLIDE-SCOPE-REVIEW-2026-11-05.md) — Kang (2009/2010) evidence boundary for /s/ before /j/; explicitly records why 27 out-of-scope occurrences remain open.
 
-## Current state — 2026-11-05
+## Current state — 2026-11-06
 
-[236-candidate review note](kozak-kim-236-candidate-review-2026-11-05.md) · [236-row occurrence ledger](kozak-kim-236-candidate-review-2026-11-05.csv) · [historical 36-row queue](kozak-kim-unmapped-mismatch-review-queue-2026-11-03.csv) · [current 32-row queue](kozak-kim-unmapped-mismatch-review-queue-2026-11-05.csv) · [Draft PR #436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436)
+The current integration is on `main` at merge commit `bb972871a207b1f703503ade980a36cf3b976085` (PR [#443](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/443)). The exact PR head was `625d6e3171e30ae7a6aae525dfdd4ded2c5249f8`.
 
-The repository audit/navigation and owner-approved ClippyFirst Project License were merged through PR #434; the reconstructed 239-ID candidate replay was merged through PR #435. Starting main for the current continuation is `043754498f3ad8a17aa6c13b5f643b197536da8a`. Draft PR #436 adds the 236-occurrence context review inventory, corrects S018's scope, and uses S019 for the lenis /s/ acoustic hypothesis. The historical 36-row 2026-11-03 queue is preserved; the current 32-row 2026-11-05 export is versioned separately. Implementation/test head e253de4 passed the relevant Python/browser/wheel/teacher/paired-UGTPHON checks; latest docs-only head 2877027 passed system verification. The multi-engine diagnostic was cancelled after a later branch update; NIKL metadata-only and Charsiu inference were skipped. The repository remains a **partial research prototype**, not research-certified or release-ready. Software CI does not establish linguistic correctness or source-item reuse rights. Distinguish the blocked live NIKL HTTP crawl from the already completed local-HTML metadata inventory: the repository-held capture parses 30/30 Standard Pronunciation Rules articles and its schema/reproducibility workflow passed, while page-level KOGL rights and pristine capture authenticity remain unresolved.
+### Verified software and benchmark outcomes
 
-Current evidence gaps:
-- cleanly recapture the NIKL page with translation/browser extensions disabled, preserve the new file as a separately identified source artifact, and compare its byte hash; the current local HTML inventory is 30/30 but contains a likely injected DeepL controller and 17 referenced assets are absent;
-- inspect the page-specific KOGL mark and item-level reuse terms for the Standard Pronunciation Rules page and cited Q&A/dictionary items; live automated HTTP access remains blocked (HTTP 403), and local import does not verify robots or rights;
-- obtain independent Korean IPA review and adjudication from qualified reviewers on a frozen holdout;
-- obtain independent Ukrainian phonetic/orthographic target review on frozen IPA inputs;
-- finish rule-level parity across browser, Python, CLI, and API where the current rule coverage matrix says it is incomplete;
-- crosswalk C12 mismatch rows to source utterances, audio, speakers, dialect and prosodic context before any production change;
-- confirm the original historical 239 membership predicate or original member list. A pinned replay now yields 239 reconstructed candidate IDs and the 236 remaining occurrences are materialized in a context-linked review ledger on draft PR #436. Historical identity remains PARTIAL, and the 236 are not yet individually adjudicated; do not mass-change production outputs or expected tests to force corpus agreement.
-- close remaining names, loanwords, Hanja and regional-style coverage gaps;
-- retain exact-head CI and deployment smoke evidence for each release candidate.
+- **DONE_VERIFIED — mandatory multi-engine diagnostic:** run [42226435101](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435101) passed pinned-engine installation/license checks, UGTPHON and SIGMORPHON split validation, adapter tests, holdout-overlap audit, reviewer-packet generation, multi-engine comparison, mismatch export, same-occurrence Browser run, Native/Browser parity and SIGMORPHON lexical-gold comparison.
+- **DONE_VERIFIED — exact-head system verification:** run [42226435403](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435403) passed browser tests, `npm run audit:source-rights`, public-page build and generated-page checks; Python regression/data integrity also passed.
+- **DONE_VERIFIED — source-rights gate, narrowly scoped:** 213 source-register rows, 12 columns and zero structural errors; zero unresolved positively recorded redistribution blockers. The source triage still contains informational review/manual-classification records for citation-only or non-redistributed references. This is not blanket legal clearance.
+- **SKIPPED, not passed:** optional CharsiuG2P and ByT5 inference jobs; conditional live NIKL crawl.
 
-Supervised neural training remains deferred until independently adjudicated IPA gold is available.
+### Current 236-occurrence disposition
+
+| Disposition | Rows | Interpretation |
+|---|---:|---|
+| Exact standard-form runtime dispositions | 15 | Ten new exact integrations plus five pre-existing exact licenses |
+| Profile-convention decisions | 181 | Explicitly not categorical phonology rules or speaker-level IPA gold |
+| Pending independent Korean IPA | 12 | Abstain; no guessed target |
+| Not individually adjudicated | 28 | Evidence incomplete |
+| **Total** | **236** | Reconstructed candidate cohort; original historical membership is not proven |
+
+### Remaining acceptance blockers
+
+- **BLOCKED — independent Korean IPA:** obtain two qualified independent annotations on frozen, source-linked tokens, reconcile disagreements and retain profile/uncertainty metadata. The reviewer-packet generator is preparation tooling, not evidence of completed review.
+- **BLOCKED — Ukrainian target validation:** independently review target adaptation on frozen IPA inputs, separately from Korean IPA adjudication.
+- **BLOCKED — 40 residual occurrences:** 12 abstentions plus 28 unadjudicated rows require token-level source/audio/speaker/prosody evidence or qualified independent IPA annotation.
+- **PARTIAL — historical cohort identity:** a reproducible reconstructed 236/239 inventory exists, but the original selector/member list is not proven.
+- **BLOCKED — broader source review:** the strict gate covers positively recorded redistribution; it does not grant rights to unrecorded or future reuse. Obtain item-level terms before adding retained source material.
+- **PARTIAL — broad coverage:** continue only where the current rule-coverage matrix identifies a concrete gap with primary-source evidence and cross-runtime acceptance.
+
+**Readiness:** software-verified bounded research prototype; not independently research-certified and not release-ready.
 
 ## Working rules
 - Update these files as work progresses. Every work session must leave a durable status update.
