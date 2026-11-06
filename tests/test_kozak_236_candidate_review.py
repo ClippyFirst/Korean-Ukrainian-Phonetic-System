@@ -676,7 +676,7 @@ def test_all_28_unadjudicated_occurrences_have_row_level_evidence_reviews_withou
         assert "canonical broad" in row["residual_review_action"]
     vowel = output["1885"]
     assert "SRC-LEE-2023-SEOUL-MID-FRONT-VOWEL-POSITION" in vowel["residual_review_source_ids"]
-    assert "not yet fully completed" in vowel["residual_review_basis"]
+    assert "merger incomplete" in vowel["residual_review_basis"]
     assert "speaker-specific" in vowel["residual_review_basis"]
 
 
