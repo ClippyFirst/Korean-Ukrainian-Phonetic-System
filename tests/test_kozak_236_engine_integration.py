@@ -1,5 +1,11 @@
 import csv
+import json
+import shutil
+import subprocess
 from pathlib import Path
+
+import pytest
+from korean_ukrainian import phoneticize_korean
 
 ROOT = Path(__file__).resolve().parents[1]
 RESEARCH = ROOT / "research"
@@ -37,3 +43,42 @@ def test_orthographic_normalization_blocker_is_not_misrepresented_as_a_rule():
     assert row["engine_integration_status"] == "BLOCKED_ORTHOGRAPHIC_NORMALIZATION"
     assert row["runtime_rule"] == "BLOCKED"
     assert "머릿속" in row["implementation_note"]
+
+ 
+def test_browser_python_surface_and_ipa_parity_for_236_exact_forms():
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("Node.js is required for the cross-runtime parity check")
+
+    words = [
+        "그놈의",
+        "정권",
+        "유사성",
+        "자신의",
+        "연전연패",
+        "혐오증",
+        "출시미정에",
+    ]
+    node_source = (
+        "import { createBrowserKozakKimEngine } from './scripts/benchmark_kozak_kim_browser.mjs';\n"
+        f"const words = {json.dumps(words, ensure_ascii=False)};\n"
+        "const engine = createBrowserKozakKimEngine();\n"
+        "const rows = words.map(word => {\n"
+        "  const result = engine.convert(word, { morphologyMode: 'strict', ipaProfile: 'clippyfirst-korean-broad-v1' });\n"
+        "  return { word, surface: result.surfaceHangul || word, ipa: result.ipa };\n"
+        "});\n"
+        "process.stdout.write(JSON.stringify(rows));\n"
+    )
+    completed = subprocess.run(
+        [node, "--input-type=module", "-e", node_source],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    browser = {row["word"]: row for row in json.loads(completed.stdout)}
+
+    for word in words:
+        python = phoneticize_korean(word)
+        assert browser[word]["surface"] == (python["surface_hangul"] or word), word
+        assert browser[word]["ipa"] == python["ipa"]["ipa"], word
