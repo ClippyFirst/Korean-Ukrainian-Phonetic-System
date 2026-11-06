@@ -17,7 +17,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CSV = ROOT / "research/kozak-kim-236-candidate-review-2026-11-05.csv"
 EXPECTED_CASES = 236
-EXPECTED_SOURCE_CORPUS = "UGTPHON/ko/test.json"
 EXPECTED_SOURCE_COMMIT = "ef0d5a09c2ea1874c7206020f875cbd9cfea2f54"
 APACHE_LICENSE_PATH = ROOT / "licenses/Apache-2.0.txt"
 SOURCE_NOTICE_PATH = ROOT / "licenses/UGTPHON-KO-SOURCE-NOTICE.md"
@@ -52,10 +51,12 @@ def _read_rows(csv_path: Path) -> tuple[bytes, list[dict[str, str]]]:
 
 def _validate_licensed_external_scope(rows: list[dict[str, str]]) -> None:
     for row in rows:
-        if row.get("source_corpus", "").strip() != EXPECTED_SOURCE_CORPUS:
-            raise ValueError("Licensed external review requires every case to come from the pinned UGTPHON Korean test split")
         if row.get("source_corpus_commit", "").strip() != EXPECTED_SOURCE_COMMIT:
             raise ValueError("Licensed external review requires the exact pinned UGTPHON source commit")
+        if not row.get("source_corpus", "").strip() or not row.get("source_row_id", "").strip():
+            raise ValueError("Licensed external review requires source corpus and source-row provenance on every case")
+        if not row["source_row_id"].startswith(("multilexnorm2026_", "dc_inside_")):
+            raise ValueError("Licensed external review found a source-row ID outside the two declared UGTPHON Korean streams")
 
     register_path = ROOT / "research/SOURCE-REGISTER.csv"
     with register_path.open(encoding="utf-8-sig", newline="") as handle:
