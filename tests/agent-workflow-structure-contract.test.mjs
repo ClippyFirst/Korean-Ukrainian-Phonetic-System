@@ -128,9 +128,8 @@ test('current repository documentation records exact benchmark, rights and resea
   assert.ok(repositoryAudit.includes('bb972871a207b1f703503ade980a36cf3b976085'), 'repository audit missing the merge commit');
   for (const phrase of [
     '15 exact standard-form runtime dispositions',
-    '181 profile-convention decisions',
-    '12 abstentions',
-    '28 unadjudicated cases',
+    '181 profile-convention cases',
+    '12 abstentions + 28 unadjudicated',
     'independent Ukrainian target review',
   ]) assert.ok(repositoryAudit.includes(phrase), 'repository audit missing current disposition: ' + phrase);
   assert.ok(acceptance.includes('42226435101'), 'acceptance gates missing the mandatory multi-engine result');
