@@ -35,6 +35,11 @@ def test_residual_abstention_register_is_complete_and_evidence_scoped():
     assert "No accepted Ukrainian output" in cases[3]["productionChange"]
     assert "Original input" in cases[4]["productionChange"]
     assert all("IPA" in " ".join(queue["policy"]) or "IPA" in case["status"] for case in cases)
+    current = queue["currentSnapshot"]
+    assert current["recoveredExactForms"] == ["쫒아내면", "많앗구나유유유", "무서웟어"]
+    by_input = {case["input"]: case for case in cases}
+    assert by_input["칡칡이"]["currentDisposition"]["status"] == "BLOCKED_SOURCE_IDENTITY_AND_AUDIO"
+    assert by_input["삶의"]["currentDisposition"]["status"] == "BLOCKED_SPECIALIST_IPA_ADJUDICATION"
 
 
 def test_residual_cases_preserve_exact_spelling_and_ipa_acceptance_boundary():
