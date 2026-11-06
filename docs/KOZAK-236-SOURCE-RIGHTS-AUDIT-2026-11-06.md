@@ -74,7 +74,8 @@ No separate `ko/NOTICE` file was present at the pinned UGTPHON revision when che
 | Reconcile source-level licence with canonical register | DONE_VERIFIED | `SRC-UGTPHON-EMNLP-2026` records subset-level licence; blank row-level field is not treated as absence of a grant |
 | Preserve required licence and attribution materials | DONE_VERIFIED | Full Apache-2.0 text and UGTPHON Korean-subset notice added to `licenses/` |
 | Verify every 236 row belongs to pinned UGTPHON Korean test split | DONE_VERIFIED at inventory level | Builder requires the pinned source path and commit before licensed external packet generation |
-| External packet generation and distribution | TODO | Two separate packets generated in licensed mode; only each reviewer’s packet plus licence and notice shared |
+| Licensed packet builder and notice packaging | DONE_VERIFIED | CI tests verify pinned source commit/register, two blind packets, full Apache-2.0 text and source notice are produced in licensed mode |
+| Actual packet generation and external distribution | TODO | Generate the two packets in a private workspace; share each reviewer only their own packet plus licence and notice |
 | Two independent Korean IPA transcriptions | TODO | Two qualified reviewers complete all 236 cases independently, or explicitly mark unresolved/context-compromised items |
 | Blind reconciliation and adjudication | TODO | First-pass packets frozen before comparison; differences documented against private coordinator map |
 | Ukrainian target review | DEFERRED until Korean IPA is frozen | Separate expert acceptance on reconciled IPA; no direct Hangul-to-Ukrainian bypass |
