@@ -28,6 +28,17 @@ def test_research_only_broad_variants_cover_236_profile_cases_without_changing_c
     assert any("ㅐ [ɛ]" in variant.get("vowels", []) and "ɛ" in variant["ipa"] for variant in long_front["variants"])
 
 
+def test_research_only_lenis_sibilant_variant_is_limited_to_kang_2010_contexts():
+    for word, expected in (("시", "ɕi"), ("샤", "ɕja"), ("셰", "ɕje")):
+        variants = phoneticize_korean(word)["ipa"]["variants"]
+        assert any(item["ipa"] == expected for item in variants), word
+
+    # The reviewed evidence does not cover /jʌ, jo, ju/ or fortis /s͈/.
+    for word in ("쇼", "슈", "셔", "섀", "씨"):
+        variants = phoneticize_korean(word)["ipa"]["variants"]
+        assert not any("ɕ" in item["ipa"] for item in variants), word
+
+
 def test_broad_ipa_voicing_after_sonorant():
     result = phoneticize_korean("현대")["ipa"]["ipa"]
     assert "d" in result
