@@ -62,3 +62,6 @@ A task may require more than one skill. Prefer the domain-specific skill for lin
 - Human navigation: `README.md`, `docs/README.md`, `docs/REPOSITORY-STRUCTURE.md` and `docs/AGENT-WORKFLOWS.md`.
 - Historical evidence: dated reports in `docs/` and `docs/audits/`; supersede with a new dated record rather than silently rewriting history.
 - Session continuation: the newest dated section of `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md`.
+
+
+- Before release, run `npm run audit:source-rights`. Distinguish citation-only references from material actually copied or included in the repository; a negated statement such as `no source file copied` is not evidence of redistribution. Do not infer permission from academic purpose alone.
