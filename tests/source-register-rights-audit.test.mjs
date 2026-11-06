@@ -49,7 +49,8 @@ test('source rights triage never promotes vague source descriptions to a license
     REVIEW_REQUIRED: 5,
     MANUAL_CLASSIFICATION_REQUIRED: 1,
   });
-  assert.deepEqual(report.itemLevelRightsNotClosed.map(item => item.sourceId), ['SRC-A', 'SRC-B', 'SRC-E', 'SRC-F', 'SRC-G', 'SRC-H']);
+  assert.deepEqual(report.itemLevelRightsNotClosed.map(item => item.sourceId), ['SRC-A', 'SRC-B', 'SRC-E', 'SRC-F', 'SRC-G', 'SRC-H', 'SRC-I']);
+  assert.deepEqual(report.redistributionRightsNotClosed.map(item => item.sourceId), ['SRC-I']);
 });
 
 test('real source register is structurally valid and unresolved rights remain visible', () => {
@@ -102,7 +103,7 @@ test('real source register is structurally valid and unresolved rights remain vi
   assert.ok(unresolvedIds.has('SRC-NIKL-KRDICT-YUSASEONG'));
 });
 
-test('CLI reports structure by default and keeps strict rights acceptance blocked', () => {
+test('CLI reports structure by default and strict rights gate checks redistribution, not citations', () => {
   const script = fileURLToPath(new URL('../scripts/audit-source-register.mjs', import.meta.url));
   const normal = spawnSync(process.execPath, [script, '--json'], { cwd: process.cwd(), encoding: 'utf8' });
   assert.equal(normal.status, 0, normal.stderr);
@@ -110,7 +111,8 @@ test('CLI reports structure by default and keeps strict rights acceptance blocke
   assert.equal(report.sourceRegisterRows, 212);
   assert.equal(report.structuralErrorCount, 0);
   assert.ok(report.itemLevelRightsNotClosed.length > 0);
+  assert.equal(report.redistributionRightsNotClosed.length, 0);
 
   const strict = spawnSync(process.execPath, [script, '--require-reviewed-rights'], { cwd: process.cwd(), encoding: 'utf8' });
-  assert.equal(strict.status, 3, 'strict rights gate must remain blocked while item-level rights are unresolved');
+  assert.equal(strict.status, 0, 'citation-only and unknown-use references must not block runtime work when no redistribution is recorded');
 });
