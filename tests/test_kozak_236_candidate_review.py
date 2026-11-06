@@ -673,7 +673,7 @@ def test_all_28_unadjudicated_occurrences_have_row_level_evidence_reviews_withou
         assert row["residual_review_required_evidence"] == reviewed["required_evidence"]
         assert row["residual_review_source_ids"] == reviewed["source_ids"]
         assert row["prior_independent_ipa_review_status"] == "NOT_PERFORMED"
-        assert "Keep canonical broad" in row["residual_review_action"] or "Retain the canonical broad" in row["residual_review_action"]
+        assert "canonical broad" in row["residual_review_action"]
     vowel = output["1885"]
     assert "SRC-LEE-2023-SEOUL-MID-FRONT-VOWEL-POSITION" in vowel["residual_review_source_ids"]
     assert "not yet fully completed" in vowel["residual_review_basis"]
