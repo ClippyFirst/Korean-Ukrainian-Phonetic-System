@@ -100,3 +100,38 @@ No local `npm`, `pytest`, build or clean-install command was run: a container-si
 ## Readiness
 
 The repository remains a **partial research prototype**, not research-certified and not release-ready. Software integration can be verified independently; it cannot substitute for independent IPA gold, Ukrainian target review or item-level rights clearance.
+
+
+## Superseding verification update — 2026-11-06 (after PR #436 merge)
+
+The prior verification snapshot above is historical. PR [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436) is now merged. Merge commit on `main`: `da931f1fa4d95b000bfaa9a0fd54f36cebb1703c`; merged PR head: `e525a15f15eebbd472c7d81033ff2991025e5525`.
+
+### Updated task ledger
+
+| Workstream | Status | Current evidence / remaining acceptance |
+|---|---|---|
+| 236-row reconstructed cohort and provenance | DONE_VERIFIED as a reproducible cohort | 236 unique rows and reproducible register/generator checks; not independent IPA gold. |
+| 14 exact occurrence runtime integrations | DONE_VERIFIED as bounded software implementation | Merged in #436; exact-head Python/browser parity and negative controls; does not imply independent pronunciation adjudication. |
+| 181 profile-convention differences | DONE_VERIFIED as explicit non-integration decisions | No categorical phonology rules added. |
+| 12 abstentions + 28 unadjudicated | BLOCKED | Need token audio or independent Korean IPA evidence with source/profile/prosodic context. |
+| `머리속에` spelling normalization | DEFERRED / BLOCKED | Requires separately specified orthographic/semantic layer and disambiguation policy. |
+| Agent routing, workflow docs and structural tests | DONE_VERIFIED as merged documentation/tooling | Included in #436; PR #437 closed as superseded, its branch preserved. |
+| Four upstream workflow reference audit | DONE_VERIFIED as documented process comparison | Pinned revisions and adoption/rejection boundaries; no upstream code copied. |
+| Exact-head CI for merged change | DONE_VERIFIED | All applicable completed jobs on PR head `e525a15f15eebbd472c7d81033ff2991025e5525` passed; optional NIKL/Charsiu/ByT5 jobs skipped. See run IDs below. |
+| Independent Korean IPA gold | BLOCKED | Requires qualified independent reviewers and adjudication; corpus labels/model agreement are insufficient. |
+| NIKL/source item-level reuse rights | BLOCKED | 208 open source-register items remain in review/manual-classification categories; permissions not inferred. |
+| Independent Ukrainian target validation | BLOCKED | Requires Ukrainian reader/phonetic review and acceptance tests. |
+| Full local clean-install in this session | BLOCKED | Connector-only environment has no local checkout/shell; GitHub Actions performed the available clean wheel install and build checks. |
+| Release readiness | DEFERRED | Research prototype only; external linguistic and rights gates remain open. |
+
+### Exact-head verification (PR head immediately before merge)
+
+- Tests matrix [42193471625](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42193471625): PASS — Python 3.11/3.12/3.13, web tests/build, teacher-corpus audit, clean wheel-install IPA data verification.
+- System verification [42193471270](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42193471270): PASS — Python regression/data integrity and browser regression/build/generated pages.
+- Multi-engine IPA [42193471280](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42193471280): PASS — engine comparisons, overlap audit, reviewer packets, Browser same-occurrence run, runtime parity, SIGMORPHON, mismatch export.
+- Browser G2P [42193471380](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42193471380), UGTPHON [42193471364](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42193471364), exhaustive extraction [42193471134](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42193471134), morphology consensus [42193471411](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42193471411), morphology smoke [42193471149](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42193471149), corpus artifacts [42193471212](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42193471212), and paired native/g2pk [42193471116](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42193471116): PASS.
+- Charsiu train/dev [42193471275](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42193471275), official NIKL metadata inventory and optional ByT5/Charsiu inference: SKIPPED, not passes.
+
+The merged commit `da931f1fa4d95b000bfaa9a0fd54f36cebb1703c` was confirmed as the merge commit for PR #436. The commit-runs endpoint returned no PR-triggered runs for the merge commit itself; all listed checks are explicitly tied to the exact PR head before merge. No local npm/pytest command was executed in this session.
+
+**Verdict:** software integration is merged and CI-verified. The repository remains a **partial research prototype**, not research-certified and not release-ready.
