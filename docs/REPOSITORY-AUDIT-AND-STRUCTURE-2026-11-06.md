@@ -135,3 +135,10 @@ The prior verification snapshot above is historical. PR [#436](https://github.co
 The merged commit `da931f1fa4d95b000bfaa9a0fd54f36cebb1703c` was confirmed as the merge commit for PR #436. The commit-runs endpoint returned no PR-triggered runs for the merge commit itself; all listed checks are explicitly tied to the exact PR head before merge. No local npm/pytest command was executed in this session.
 
 **Verdict:** software integration is merged and CI-verified. The repository remains a **partial research prototype**, not research-certified and not release-ready.
+
+
+## 2026-11-06 — second-pass review of the 40 unresolved 236-cohort occurrences
+
+The canonical candidate review now contains a focused evidence pass over all 12 abstentions and 28 previously unadjudicated occurrences. It corrects several scope errors (notably 아끼셔 is lenis /s/ before /jʌ/, 체험 contains /e.hʌ/, and Rule 29 phrase-level applicability requires connected-speech evidence) and records why the remaining comparator mismatches cannot yet be promoted to IPA gold.
+
+The unresolved count remains 40 (12 abstentions + 28 unadjudicated). No runtime rule, benchmark gold, IPA target, or Ukrainian target changed. This is an evidence-gated decision, not an assertion that the cases are unimportant: source audio/speaker mapping and two independent Korean IPA annotations remain the acceptance blockers. See [the canonical candidate review](../research/kozak-kim-236-candidate-review-2026-11-05.md#2026-11-06--focused-second-pass-review-of-the-remaining-40-occurrences).
