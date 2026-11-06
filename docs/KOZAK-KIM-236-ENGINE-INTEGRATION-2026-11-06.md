@@ -98,3 +98,16 @@ A second implementation review found two Browser/Python mismatches affecting the
 Regression coverage now includes supported /i, ye, ya/ examples, negative controls for /jʌ, jo, ju/, ㅒ and fortis /s͈/, and six resyllabified forms: 멋있어, 멋있노, 무슨뜻임, 것이냐, 저딴짓이면서, and 법알못이구만. The last three include the Rule 13 context cases 475, 2392 and 2667. Code correction commit: dcf1726212e16719b0fdc03311e5903448151e8b. No canonical IPA, phonemic output, Ukrainian target, or benchmark gold changed.
 
 The 24 fortis ɕ͈→s͈ edit operations across 23 occurrence rows remain unresolved; 22 are on forms containing orthographic ㅆ and two are coda-triggered fortition cases (했을시, 실시간). The 12 abstentions and 28 unadjudicated rows remain evidence-limited. Exact-head CI must be read from the final PR #441 head; skipped optional jobs are not passes.
+
+
+## Post-merge continuation — 2026-11-06
+
+PR #441 is merged into `main` (merge commit `f89c475c56796119e87130367fc15926b2428220`; verified implementation head `847cdb240aadc2c9343127fbb7de6dafad0441d4`). All 15 standard-form/rule occurrences have runtime dispositions (ten new exact integrations plus five baseline licenses). The 181 profile rows remain non-categorical; 12 abstentions and 28 unadjudicated rows remain unresolved.
+
+The 24 fortis [ɕ͈]→/s͈/ edit operations across 23 occurrence rows remain unresolved: 22 involve orthographic ㅆ and two are coda-triggered fortition contexts. Lenis /s/ evidence does not establish fortis sibilant place. The two /ɘː/ versus /ʌː/ cases remain transcription-profile questions. Phrase-level Rule 29 candidates `한국여자로` and `홍콩영화들` still require exact morphology and prosodic-boundary evidence. The 12+28 residual occurrences require original audio, speaker crosswalk and two independent Korean IPA annotations, followed by separate Ukrainian target review.
+
+### Multi-engine artifact acceptance
+
+The multi-engine workflow on exact PR #441 head `847cdb240aadc2c9343127fbb7de6dafad0441d4` (run [42215019081](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42215019081)) did **not** pass. Comparison and reviewer-packet generation succeeded, but the export `cmp` failed: generator output contained 25 unmapped-Broad occurrences; the tracked CSV contained 26, including ID 2490 (`머리속에`) now covered by the exact alias. Failure was byte 86966 / line 26. Browser same-occurrence parity, Native/Browser parity and SIGMORPHON steps were skipped downstream; optional ByT5/Charsiu inference jobs were skipped by policy. Regenerate the tracked artifact using the pinned generator and corpus, inspect the complete row-level diff, and rerun the full workflow. Do not change the expected count or weaken `cmp`.
+
+Current main `2e9647540e1be47571579f71b7466393172a2a6d` has successful tests 42216016963, system verification 42216016988, master artifacts 42216016940 and Pages deployment 42216016937. These do not substitute for the failed multi-engine artifact gate. No local shell test was run in this connector-only session.
