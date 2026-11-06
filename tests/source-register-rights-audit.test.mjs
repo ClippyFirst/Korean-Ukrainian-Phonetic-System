@@ -114,7 +114,7 @@ test('CLI reports structure by default and strict rights gate checks redistribut
   const normal = spawnSync(process.execPath, [script, '--json'], { cwd: process.cwd(), encoding: 'utf8' });
   assert.equal(normal.status, 0, normal.stderr);
   const report = JSON.parse(normal.stdout);
-  assert.equal(report.sourceRegisterRows, 212);
+  assert.equal(report.sourceRegisterRows, 213);
   assert.equal(report.structuralErrorCount, 0);
   assert.ok(report.itemLevelRightsNotClosed.length > 0);
   assert.equal(report.redistributionRightsNotClosed.length, 0);
