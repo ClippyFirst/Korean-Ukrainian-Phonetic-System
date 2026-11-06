@@ -92,7 +92,7 @@ The project already has domain-specific skills in `.agents/skills/` and the curr
 
 ## Known audit boundaries at this snapshot
 
-- `main` is the default branch. The branch inventory includes the active PR #436 integration branch and PR #437 documentation branch. PR #437's general agent-workflow changes are being ported into #436; #437 remains open and untouched pending reconciliation. The merged PR #435 branch is preserved, not deleted.
+- `main` is the default branch. The branch inventory includes the active PR #436 integration branch and PR #437 documentation branch. PR #437's 13 documentation/skill/test paths were ported into #436; #437 is closed as superseded and its branch is preserved. The merged PR #435 branch is preserved, not deleted.
 - The main branch was reported as unprotected by GitHub repository metadata. No branch-protection or ruleset settings were changed.
 - The latest exact-head CI before this continuation passed browser/Python regression, build, generated artifacts and Pages deployment. This continuation adds a fresh exact-head verification; see the audit addendum.
 - The NIKL local HTML inventory is structurally complete (30/30) but page-level reuse terms and capture authenticity are not established.
