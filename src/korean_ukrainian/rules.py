@@ -186,6 +186,12 @@ _NIKL_R009_WORD_LICENSES = {
 _NIKL_R009_PHRASE_LICENSES = {
     "한 일": "한>일", "옷 입다": "옷>입", "먹은 엿": "은>엿",
     "할 일": "할>일", "잘 입다": "잘>입", "먹을 엿": "을>엿",
+    # Explicitly spaced benchmark phrases: Rule 29 [붙임 2] applies only
+    # when the caller selects phrase mode (connected speech), never to the
+    # compact/no-space corpus tokens. NIKL Q&A 330322 establishes the
+    # two-word connected-phrase scope; Q&A 316146 gives the exact 첫 연애
+    # prosodic alternatives, including [천녀내] when grouped as one phrase.
+    "홍콩 영화들": "콩>영", "한국 여자로": "국>여", "첫 연애": "첫>연",
 }
 
 # Exact NIKL §25 stem ㄼ/ㄾ + ending fortition examples.
@@ -390,9 +396,11 @@ def _source_backed_rule_licenses(items, boundary_mode):
             pair = _NIKL_R013_PHRASE_LICENSES.get(phrase_form)
             if pair is not None:
                 licenses.add(f"R013:adnominal_l:{phrase_form}:{pair}")
-        pair = _NIKL_R009_PHRASE_LICENSES.get(full_form)
-        if pair is not None:
-            licenses.add(f"R009:phrase:{full_form}:{pair}")
+        for left_word, right_word in zip(word_forms, word_forms[1:]):
+            phrase_form = f"{left_word} {right_word}"
+            pair = _NIKL_R009_PHRASE_LICENSES.get(phrase_form)
+            if pair is not None:
+                licenses.add(f"R009:phrase:{phrase_form}:{pair}")
     return licenses
 
 @dataclass
@@ -667,8 +675,10 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 if licensed_pair!=pair: continue
                 if scope=="word" and licensed_form==word_form and a.boundary_after!="word":
                     permitted=True; permitted_scope=scope; permitted_form=word_form
-                elif scope=="phrase" and licensed_form==full_form and boundary_mode=="phrase" and a.boundary_after=="word":
-                    permitted=True; permitted_scope=scope; permitted_form=full_form
+                elif scope=="phrase" and boundary_mode=="phrase" and a.boundary_after=="word":
+                    phrase_form = f"{word_form_by_index[i]} {word_form_by_index[i+1]}"
+                    if licensed_form == phrase_form:
+                        permitted=True; permitted_scope=scope; permitted_form=phrase_form
                 if permitted: break
             if not permitted:
                 conditional_disabled=True
