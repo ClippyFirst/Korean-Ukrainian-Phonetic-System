@@ -445,6 +445,11 @@ test('broad profile exposes [ɕ] only in Kang 2010 lenis /i, ye, ya/ contexts', 
     const result = engine.convert(word, { ipaProfile: 'clippyfirst-korean-broad-v1' });
     assert.ok(!result.variants.some(variant => variant.ipa.includes('ɕ')), word);
   }
+  const resyllabified = engine.convert('멋있어', { ipaProfile: 'clippyfirst-korean-broad-v1' });
+  assert.ok(resyllabified.variants.some(variant => variant.ipa.includes('ɕi')), 'surface /s/ after ㅅ liaison is covered');
+  const resyllabifiedNo = engine.convert('멋있노', { ipaProfile: 'clippyfirst-korean-broad-v1' });
+  assert.ok(resyllabifiedNo.variants.some(variant => variant.ipa.includes('ɕi')), 'surface /s/ before /i/ is covered after resyllabification');
+
   const fortis = engine.convert('쑈', { ipaProfile: 'clippyfirst-korean-broad-v1' });
   assert.ok(!fortis.variants.some(variant => variant.ipa.includes('ɕ͈')));
 });
