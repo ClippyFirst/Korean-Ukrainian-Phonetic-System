@@ -386,7 +386,7 @@ test('236 profile-only vowel and loanword differences are exposed as optional va
   const shortFront = engine.convert('주는대로', { ipaProfile: 'clippyfirst-korean-broad-v1' });
   assert.ok(shortFront.variants.some(variant => variant.ipa.replaceAll('.', '') === 'tɕunɯndeɾo'));
   const longFront = engine.convert('대한민국', { ipaProfile: 'clippyfirst-korean-broad-v1' });
-  assert.ok(longFront.variants.some(variant => variant.ipa.includes('tɛː')));
+  assert.ok(longFront.variants.some(variant => variant.ipa.includes('ɛ') && variant.note.includes('Research-only')));
 });
 
 test('shared broad profile exposes source-backed sibilant palatalization as a variant, not a forced rewrite', () => {
