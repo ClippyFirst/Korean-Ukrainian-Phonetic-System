@@ -29,7 +29,6 @@ R002_CASES = {
     "없으니깐": "없>으",
     "없으니까": "없>으",
     "멋있어": "있>어",
-    "칡칡이": "칡>이",
     "쫒아내면": "쫒>아",
     "무서웟어": "웟>어",
 }
@@ -118,6 +117,7 @@ def test_misspelled_and_unreviewed_lookalikes_remain_fail_closed():
         ("쫒아내서", "R002"),
         ("무서웟어요", "R002"),
         ("많앗으면", "R003"),
+        ("칡칡이", "R002"),
         ("칡칡에", "R002"),
         ("많아보임", "R003"),
         ("많이봄", "R003"),
@@ -153,11 +153,10 @@ def test_official_dictionary_supported_r004_cluster_h_suffix_is_resolved():
     assert result.get("pronunciation_status") != "unresolved", result.get("unresolved_contexts")
 
 
-def test_four_ugtphon_abstentions_are_resolved_and_life_particle_remains_gated():
+def test_three_ugtphon_abstentions_are_resolved_and_two_cases_remain_gated():
     # Four corpus-specific morphophonological cases now have exact-form
     # licenses. The spelling is preserved; no normalization is performed.
     resolved = {
-        "칡칡이": ("R002", "칡>이"),
         "쫒아내면": ("R002", "쫒>아"),
         "많앗구나유유유": ("R003", "많>앗"),
         "무서웟어": ("R002", "웟>어"),
@@ -168,6 +167,13 @@ def test_four_ugtphon_abstentions_are_resolved_and_life_particle_remains_gated()
         assert result.get("pronunciation_status") != "unresolved", (form, result.get("unresolved_contexts"))
         assert result.get("ipa", {}).get("ipa"), (form, result)
         assert result.get("surface_hangul"), (form, result)
+
+    # The folk-song heading 칡칡이 has a source-specific identity and no audio;
+    # analyzer agreement alone is not enough to license the morpheme boundary.
+    kudzu = phoneticize_korean("칡칡이")
+    assert kudzu.get("pronunciation_status") == "unresolved"
+    assert kudzu.get("ipa_is_diagnostic_only") is True
+    assert any(context.get("rule_id") == "R002" for context in kudzu.get("unresolved_contexts", []))
 
     # NIKL gives two Hangul readings for 삶의, not IPA. Keep this case blocked
     # from asserted IPA gold until independent adjudication is recorded.
