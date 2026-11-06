@@ -1473,3 +1473,6 @@ The 236 cohort is not 236 independent phonological rules: 181 are profile-conven
 ## 2026-11-06 — 236-cohort residual evidence review
 
 The 12 abstentions and 28 unadjudicated rows have received a focused evidence pass. The 28 now have row-level reviewed evidence in `kozak-kim-236-residual-review-2026-11-06.csv`, and the 236-case generator projects this evidence into the occurrence ledger. This does not close the pronunciation gate: no source audio/speaker crosswalk or independent Korean IPA gold is available. Keep all 40 out of production rules and Ukrainian-target gold until two qualified reviewers independently annotate and reconcile the tokens. Lee (2023), DOI 10.17959/sppm.2023.29.2.193, additionally shows that Seoul /ɛ/–/e/ merger is incomplete and position-sensitive; retain the existing research-only optional variant without selecting a speaker-specific long vowel.
+
+
+Additional regression scope: the native Python and browser shared-Broad profiles must keep /s/ canonical and omit [ɕ] variants for `쇼`, `모션어디서`, `뿌셔우우`, `뿌셔우우우`, `아끼셔` and `포지션을`. For `대한민국`, the research-only [ɛ]~[e] candidate must preserve the existing length mark and cite Lee (2023); it does not select a speaker-specific realization. The browser legacy profile remains a separate compatibility contract.
