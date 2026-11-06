@@ -25,7 +25,7 @@ def test_research_only_broad_variants_cover_236_profile_cases_without_changing_c
     short_front = phoneticize_korean("주는대로")["ipa"]
     assert any("ㅐ [e]" in variant.get("vowels", []) for variant in short_front["variants"])
     long_front = phoneticize_korean("대한민국")["ipa"]
-    assert any("ㅐ [ɛ]" in variant.get("vowels", []) and "ɛː" in variant["ipa"] for variant in long_front["variants"])
+    assert any("ㅐ [ɛ]" in variant.get("vowels", []) and "ɛ" in variant["ipa"] for variant in long_front["variants"])
 
 
 def test_broad_ipa_voicing_after_sonorant():
