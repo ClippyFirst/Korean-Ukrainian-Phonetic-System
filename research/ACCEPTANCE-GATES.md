@@ -1,3 +1,19 @@
+# Continuation acceptance snapshot — five UGTPHON abstentions (2026-11-06)
+
+Implementation branch: `fix/five-ugtphon-native-abstentions-2026-11-06`.
+
+| Case | Current disposition | Verification boundary |
+|---|---|---|
+| `칡칡이` | Exact R002 license added | Kiwi/MeCab-Ko boundary agreement; NIKL §14 pattern; Browser/Python tests pending CI |
+| `쫒아내면` | Exact typo-preserving R002 license added | Corpus-specific surface reading only; not normalized to `쫓아내면`; tests pending CI |
+| `많앗구나유유유` | Exact typo-preserving R003 license added | Context identifies 많- + past -았-; NIKL §12(4); tests pending CI |
+| `무서웟어` | Exact typo-preserving R002 license added | Retains source single ㅅ; tests pending CI |
+| `삶의` | BLOCKED_SPECIALIST_ADJUDICATION | NIKL Hangul readings are attested; IPA and Ukrainian output remain withheld |
+
+The four licenses are full-form + exact-adjacent-pair only. The Browser and Python positive/negative regressions are committed on the branch; exact-head Actions evidence is not yet available. See the case-by-case evidence and source list in the linked report above.
+
+---
+
 # 2026-11-06 — Current acceptance snapshot after PR #443 merge
 
 **Current `main`:** `bb972871a207b1f703503ade980a36cf3b976085`.  
