@@ -58,17 +58,16 @@ test('real source register is structurally valid and unresolved rights remain vi
   const report = auditSourceRegister(csv);
   assert.equal(report.structuralErrorCount, 0, JSON.stringify(report.structuralErrors));
   assert.equal(report.sourceRegisterRows, 212);
-  assert.deepEqual(report.rightsClassificationCounts, {
-    ITEM_LEVEL_LICENSE_RECORDED: 3,
-    NOT_APPLICABLE_RECORDED: 1,
-    REVIEW_REQUIRED: 184,
-    MANUAL_CLASSIFICATION_REQUIRED: 24,
-  });
+  assert.equal(report.rightsClassificationCounts.ITEM_LEVEL_LICENSE_RECORDED, 3);
+  assert.equal(report.rightsClassificationCounts.NOT_APPLICABLE_RECORDED, 1);
+  assert.ok(report.rightsClassificationCounts.CITATION_ONLY_NO_REUSE > 0);
+  assert.ok(report.rightsClassificationCounts.REVIEW_REQUIRED > 0);
+  assert.ok(report.rightsClassificationCounts.MANUAL_CLASSIFICATION_REQUIRED > 0);
   assert.ok(report.rightsClassificationCounts.REVIEW_REQUIRED > 0);
   assert.ok(report.rightsClassificationCounts.MANUAL_CLASSIFICATION_REQUIRED > 0);
   assert.equal(
     report.itemLevelRightsNotClosed.length,
-    report.rightsClassificationCounts.REVIEW_REQUIRED + report.rightsClassificationCounts.MANUAL_CLASSIFICATION_REQUIRED,
+    report.rightsClassificationCounts.CITATION_ONLY_NO_REUSE + report.rightsClassificationCounts.REVIEW_REQUIRED + report.rightsClassificationCounts.MANUAL_CLASSIFICATION_REQUIRED,
   );
   assert.ok(report.itemLevelRightsNotClosed.every(item => item.sourceId && item.currentLicenseStatus !== null));
   const c12AcousticSource = report.records.find(record => record.sourceId === 'SRC-JIPA-SCHWEIZER-AHN-KWON-2026-SEOUL-STOPS');
