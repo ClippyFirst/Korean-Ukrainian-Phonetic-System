@@ -194,7 +194,7 @@ No further 236-case runtime rule is justified by the reviewed residual evidence.
 - Multi-engine exact-head run [42215019081](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42215019081): engine comparison and reviewer packet steps succeeded; mismatch-queue export `cmp` failed at byte 86966 / line 26. Later Browser parity, native/browser parity and SIGMORPHON jobs were skipped. ByT5/Charsiu optional inference jobs were skipped by policy.
 - No local pytest/npm/build was run: container-side GitHub clone failed because github.com DNS could not resolve. Connector-reported Actions results are not represented as local tests.
 
-The detailed appended continuation and next acceptance steps are in [the master handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md).
+The master handoff remains preserved as the historical append-only record. The current superseding continuation is recorded in this audit and the 236-case integration record; direct full-file append to the oversized handoff is blocked by the available content-write limit.
 
 ## Superseding continuation snapshot — 2026-11-06
 
@@ -213,3 +213,7 @@ PR #439 remains open and was left untouched: its branch is 56 commits behind cur
 ### Generated diagnostic queue reconciliation — 2026-11-06
 
 The tracked unmapped-Broad CSV has now been regenerated from artifact 13501009061 of exact-head run 42215019081, using the workflow's pinned generator output. A row-by-row comparison found exactly one stale row: occurrence 2490 (`머리속에`), already covered by the exact pronunciation alias merged in PR #441. No other occurrence rows changed. The refreshed CSV now contains 25 rows and preserves the generator artifact's exact 89,638-byte content (Git blob SHA `15655fa35b74251c8c0fdd6e2b6dc973d3bba631`). This repairs the known stale snapshot; acceptance remains PARTIAL until the full multi-engine workflow reruns and the downstream Browser parity/SIGMORPHON jobs complete.
+
+### Master handoff preservation note
+
+The original master handoff blob `b49170395fa7f67ee50f29e32def5349fe92fef3` has been restored unchanged on this branch. A content-write attempt returned a truncated replacement because the handoff exceeds the available safe write path; the branch was corrected by restoring the exact original blob through the Git data tree API. No master-history content is changed in the final branch tree. This audit and the 236-case integration record are the current superseding continuation. Appending directly to the oversized master handoff remains BLOCKED by the connector write limit.
