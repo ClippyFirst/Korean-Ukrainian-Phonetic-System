@@ -101,11 +101,11 @@ def test_research_only_fortis_sibilant_variant_matches_native_and_browser():
     if not node:
         pytest.skip("Node.js is required for the cross-runtime parity check")
     node_source = (
-        "import { createBrowserKozakKimEngine } from './scripts/benchmark_kozak_kim_browser.mjs';\\n"
-        f"const words = {json.dumps(words, ensure_ascii=False)};\\n"
-        "const engine = createBrowserKozakKimEngine();\\n"
-        "const rows = words.map(word => { const result = engine.convert(word, { ipaProfile: 'clippyfirst-korean-broad-v1' }); return { word, ipa: result.ipa, variants: result.variants || [] }; });\\n"
-        "process.stdout.write(JSON.stringify(rows));\\n"
+        "import { createBrowserKozakKimEngine } from './scripts/benchmark_kozak_kim_browser.mjs';\n"
+        f"const words = {json.dumps(words, ensure_ascii=False)};\n"
+        "const engine = createBrowserKozakKimEngine();\n"
+        "const rows = words.map(word => { const result = engine.convert(word, { ipaProfile: 'clippyfirst-korean-broad-v1' }); return { word, ipa: result.ipa, variants: result.variants || [] }; });\n"
+        "process.stdout.write(JSON.stringify(rows));\n"
     )
     completed = subprocess.run(
         [node, "--input-type=module", "-e", node_source],
