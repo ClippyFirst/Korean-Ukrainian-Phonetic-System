@@ -157,9 +157,9 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
             labels=[f"{vowel} [{form}]" for _,vowel,_,form,_ in changed]
             sections="/".join(dict.fromkeys(section for *_,section in changed))
             if any(site[4]=="research /ɛ–e/ merger" for site in changed):
-                note=("Research-only optional [ɛ]~[e] realization of ㅐ; group-level Korean mid-front-vowel merger/weak-distinction evidence (Lee & Cho 2021; Eychenne & Jang 2015). Speaker-specific quality is unknown; canonical broad output is unchanged."
+                note=("Research-only optional [ɛ]~[e] realization of ㅐ; group-level Korean mid-front-vowel merger/weak-distinction evidence (Lee & Cho 2021; Eychenne & Jang 2015; Lee 2023, SRC-LEE-2023-SEOUL-MID-FRONT-VOWEL-POSITION). Lee (2023) finds the merger incomplete and position-sensitive. Speaker-specific quality is unknown; canonical broad output is unchanged."
                       if len(sites)<=3 else
-                      "Research-only local [ɛ]~[e] candidate for ㅐ, supported at group level (Lee & Cho 2021; Eychenne & Jang 2015); other optional vowels retain their primary readings.")
+                      "Research-only local [ɛ]~[e] candidate for ㅐ, supported at group level (Lee & Cho 2021; Eychenne & Jang 2015; Lee 2023, SRC-LEE-2023-SEOUL-MID-FRONT-VOWEL-POSITION); Lee (2023) finds the merger incomplete and position-sensitive; other optional vowels retain their primary readings.")
             else:
                 note=(f"NIKL {sections} permits this alternate; Korean spelling is unchanged."
                       if len(sites)<=3 else
