@@ -123,7 +123,7 @@ export function lexicalResult(text,entry){
       ipa:renderLexicalIpa(text,alternateIpas),
       note:'Research-only optional [ɛ]~[e] realization of ㅐ; group-level Korean mid-front-vowel merger/weak-distinction evidence (Lee & Cho 2021; Eychenne & Jang 2015). Speaker-specific quality is unknown; canonical broad output and any existing vowel length are preserved.',
       status:mapped.some(item=>item.status==='provisional')?'lexical-review':targetReview?'lexical-review':'lexical',
-      target_status:mapped.some(item=>item.status==='unavailable'||item.unknown)?'unavailable':mapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
+      target_status:mapped.some(item=>item.status==='unavailable'||item.unknown)?'unavailable':targetReview||mapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
     });
   }
   return {
