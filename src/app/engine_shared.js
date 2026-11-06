@@ -75,6 +75,13 @@ const NIKL_13_14_FORMAL_LIAISON_FORMS=new Map([
   ['말없이','없>이'],
   ['수없이','없>이'],
   ['늙은이','늙>은'],
+  // Exact UGTPHON form; Kiwi and MeCab-Ko agree on 칡 + 칡 + particle 이.
+  // NIKL §14 licenses ㄺ + vowel-initial grammatical-morpheme liaison.
+  ['칡칡이','칡>이'],
+  // Exact noisy spelling: preserve 쫒 (not a standard lexical spelling).
+  ['쫒아내면','쫒>아'],
+  // Exact noisy C1 spelling; preserve ㅅ in 웟 and license only 웟>어.
+  ['무서웟어','웟>어'],
 ]);
 
 // Exact-form substantive-morpheme liaison licenses under NIKL §15(붙임).
@@ -131,6 +138,8 @@ const NIKL_12_H_DELETION_FORMS=new Map([
   ['좋아해주는','좋>아'], // Exact form; internal 좋- + -아 in 좋아하다.
   ['죽었잖아','잖>아'], // NIKL §12(4), ending -잖아.
   ['개좆망했잖아','잖>아'], // Exact colloquial input; scoped only to -잖아.
+  // Exact UGTPHON noisy spelling of 많았구나; preserve 앗 (not normalize to 았).
+  ['많앗구나유유유','많>앗'],
 ]);
 
 const NIKL_17_FORMAL_I_FORMS=new Map([
