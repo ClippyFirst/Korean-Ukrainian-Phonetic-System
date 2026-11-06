@@ -126,6 +126,7 @@ def test_licensed_external_packets_validate_scope_and_ship_full_notices(tmp_path
     notice = (tmp_path / "UGTPHON-KO-SOURCE-NOTICE.md").read_text(encoding="utf-8")
     assert "UGTPHON/ko/test.json" in notice
     assert "ef0d5a09c2ea1874c7206020f875cbd9cfea2f54" in notice
+    assert "may be searchable" in notice
 
 
 def test_licensed_external_mode_rejects_rows_outside_the_pinned_ugtphon_split(tmp_path):
