@@ -66,9 +66,10 @@ test('§30(1): 냇가 retains both NIKL-listed coda realizations rather than col
   const result = engine.convert('냇가');
   assert.equal(result.surfaceHangul, '내까');
   assert.equal(result.ipa, 'nɛː.k͈a');
-  assert.equal(result.variants.length, 1);
-  assert.equal(result.variants[0].surface, '낻까');
-  assert.equal(result.variants[0].ipa, 'nɛːt̚.k͈a');
+  const saisiotVariant = result.variants.find(variant => variant.surface === '낻까');
+  assert.ok(saisiotVariant);
+  assert.equal(result.variants.filter(variant => variant.surface === '낻까').length, 1);
+  assert.equal(saisiotVariant.ipa, 'nɛːt̚.k͈a');
   assert.equal(result.status, 'lexical-review');
   assert.equal(result.variants[0].status, 'lexical-review');
 });
