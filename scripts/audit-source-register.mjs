@@ -97,8 +97,8 @@ function classifyRights(value, integrationStatus = '') {
   const text = String(value ?? '').trim();
   if (!text) return { status: 'REVIEW_REQUIRED', reason: 'license_status is empty' };
   const usage = String(integrationStatus ?? '');
-  const explicitlyRedistributed = /\\b(?:copied|redistributed|vendored|bundled|packaged|included\\s+(?:in|into|with)\\s+(?:the\\s+)?(?:runtime|package|distribution|repository))\\b/iu.test(usage);
-  if (/\\bcitation[- ]only\\b/iu.test(text) && !explicitlyRedistributed) {
+  const explicitlyRedistributed = /\b(?:copied|redistributed|vendored|bundled|packaged|included\s+(?:in|into|with)\s+(?:the\s+)?(?:runtime|package|distribution|repository))\b/iu.test(usage);
+  if (/\bcitation[- ]only\b/iu.test(text) && !explicitlyRedistributed) {
     return { status: 'CITATION_ONLY_NO_REUSE', reason: 'source is recorded as citation-only; no source material is redistributed' };
   }
   if (/^not[_ -]?applicable$/iu.test(text)) {
@@ -175,9 +175,9 @@ export function auditSourceRegister(csvText) {
     structuralErrors: errors,
     rightsClassificationCounts: counts,
     itemLevelRightsNotClosed: records.filter(record =>
-      ['REVIEW_REQUIRED', 'MANUAL_CLASSIFICATION_REQUIRED'].includes(record.rightsReviewStatus)),
+      ['CITATION_ONLY_NO_REUSE', 'REVIEW_REQUIRED', 'MANUAL_CLASSIFICATION_REQUIRED'].includes(record.rightsReviewStatus)),
     redistributionRightsNotClosed: records.filter(record =>
-      /\\b(?:copied|redistributed|vendored|bundled|packaged|included\\s+(?:in|into|with)\\s+(?:the\\s+)?(?:runtime|package|distribution|repository))\\b/iu.test(String(rows[record.row - 1]?.[header.indexOf('integration_status')] ?? '')) &&
+      /\b(?:copied|redistributed|vendored|bundled|packaged|included\s+(?:in|into|with)\s+(?:the\s+)?(?:runtime|package|distribution|repository))\b/iu.test(String(rows[record.row - 1]?.[header.indexOf('integration_status')] ?? '')) &&
       ['REVIEW_REQUIRED', 'MANUAL_CLASSIFICATION_REQUIRED'].includes(record.rightsReviewStatus)),
     records,
     limitations: [
