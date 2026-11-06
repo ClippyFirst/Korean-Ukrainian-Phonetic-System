@@ -46,8 +46,8 @@
       "evidenceReviewed": [
         {
           "url": "https://www.busandabom.net/data/history/ebook/EB_culture_song02.pdf",
-          "claim": "The search-index snippet and extracted PDF text layer disagree. The PDF text layer reads 칭칭이 and cites 이소라, 양산의 민요 (1992), p. 180. Other passages in the same volume also use 칭칭이 as a folk-song/refrain label and cite pp. 184–185.",
-          "scope": "Supports only a plausible source-specific transcription correction candidate. The exact heading at p. 180 has not been visually inspected; no lexical meaning or morphology for the isolated input 칡칡이 is established."
+          "claim": "The opened PDF text layer at lines 20611–20622 reads [철마면 민요 26] 칡칡이, identifies singer 이문춘 (male, born 1923), fieldwork date 1991-10-19 and location 철마면 이곡리, and cites 이소라, 양산의 민요 (1992), p. 180. The refrain includes 치기타 칭칭나네.",
+          "scope": "Directly confirms the exact song heading and source metadata, but not its spoken realization. The text transcription alone does not establish whether 칡칡이 is a lexicalized title, a regional variant, or an editorial/transcription form; no audio/field notes were available."
         },
         {
           "url": "https://www.gugak.go.kr/ency/topic/view/947",
@@ -55,18 +55,18 @@
           "scope": "Independent text-only contextual evidence that 칭칭이 is a real folk-song label; it does not establish that the isolated input 칡칡이 refers to this song or verify the disputed source heading."
         }
       ],
-      "productionChange": "Opt-in UI candidate 칭칭이 only when the folk-song source context is relevant; no silent rewrite, no pronunciation attributed to original 칡칡이, and no new production rule.",
-      "whyNotResolved": "The page image could not be fetched, the cited print source/audio was not inspected, and the user's isolated token may have a different origin. Repetition-looking spelling does not establish 칡+칡+이 segmentation.",
-      "acceptanceCriterion": "Visually inspect the exact PDF page and compare against 이소라, 양산의 민요 (1992), p. 180 or rights-cleared field audio/notes. Only after confirming the source form may the occurrence be classified as an OCR/corpus transcription error. If the user's form has a different origin, find an exact lexical source before analyzing morphology.",
+      "productionChange": "No production rule or accepted IPA. Keep the exact token and expose only the existing diagnostic candidate if available; no segmentation as 칡+칡+이 and no silent rewrite.",
+      "whyNotResolved": "The title is now directly attested in a 2015 Busan oral-culture collection and traced to a 1991 field recording, but the recording and cited 1992 print source were not available. The source identity is known; the title's spoken realization and morpheme structure are not. Two-analyzer consensus cannot substitute for audio or source-specific linguistic review.",
+      "acceptanceCriterion": "Obtain rights-cleared field audio/field notes or inspect the cited 이소라, 양산의 민요 (1992), p. 180 including notation and editorial notes. If no phonetic evidence is recoverable, retain the R002 abstention; do not promote the analyzer parse.",
       "externalTextSearch": {
-        "checkedAt": "2026-10-25",
-        "scope": "Public text-index search for exact 칡칡이 and related 칭칭이 terms; no PDF/audio discovery or inspection performed in this pass.",
-        "result": "No reliable text-only source found that identifies the isolated string 칡칡이. Official cultural reference confirms the candidate label 칭칭이소리 exists, but source identity remains unverified.",
-        "status": "BLOCKED_SOURCE_VERIFICATION"
+        "checkedAt": "2026-11-06",
+        "scope": "Opened the 2015 Busan Metropolitan City Historical Compilation Committee PDF and inspected extracted text around printed pages 586–587 (PDF lines 20611–20622).",
+        "result": "The PDF text layer directly reads the heading 칡칡이 and cites the 1992 fieldwork source. The earlier register claim that the PDF text layer read 칭칭이 was incorrect. The chorus includes 치기타 칭칭나네, but the title's pronunciation is still not established.",
+        "status": "SOURCE_TITLE_ATTESTED_PRONUNCIATION_BLOCKED"
       },
       "currentDisposition": {
         "status": "BLOCKED_SOURCE_IDENTITY_AND_AUDIO",
-        "reason": "Field-recorded folk-song heading [철마면 민요 26]; no recording/field notes. Analyzer consensus does not establish title morphology."
+        "reason": "The exact folk-song heading is confirmed, but no recording/field notes establish its spoken realization or morphology; analyzer consensus is insufficient."
       }
     },
     {
