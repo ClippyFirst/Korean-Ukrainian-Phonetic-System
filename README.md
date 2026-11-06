@@ -1,6 +1,14 @@
 # Korean–Ukrainian Phonetic System
 
-Research-grade, machine-readable framework for Korean → Ukrainian phonetic-graphemic correspondence, now with a two-page browser service.
+Evidence-scoped Korean → Ukrainian phonetic rendering research prototype with a two-page browser service. The system separates Korean phonology and IPA from Ukrainian target adaptation, and preserves typed uncertainty rather than guessing unsupported pronunciations.
+
+## Current status — 2026-11-06
+
+The mandatory multi-engine diagnostic benchmark passed on the exact PR #443 head `625d6e3171e30ae7a6aae525dfdd4ded2c5249f8` (workflow run [42226435101](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435101)). Browser/Python verification, the source-redistribution gate, and the public-page build also passed on that head (run [42226435403](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435403)). Optional CharsiuG2P and ByT5 inference jobs were skipped by policy, not passed.
+
+The reconstructed 236-occurrence review cohort currently contains 15 exact standard-form runtime dispositions, 181 profile-convention decisions, 12 IPA abstentions and 28 not-individually-adjudicated cases. The 181 profile decisions are not 181 new categorical phonology rules. Independent Korean IPA review and separate Ukrainian target review remain outstanding. Historical membership of the original 236/239 sample is reconstructed, not proven.
+
+The scoped source-rights release gate reports no unresolved positively recorded redistribution item. This is not blanket legal clearance for every cited or referenced source; citation-only material is distinct from retained third-party content. **The project remains a research prototype, not independently research-certified or release-ready.** See the [current repository audit](docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md) and [research acceptance gates](research/ACCEPTANCE-GATES.md).
 
 ## Documentation and repository map
 
