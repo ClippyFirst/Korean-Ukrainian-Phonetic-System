@@ -28,7 +28,7 @@ function renderLexicalIpa(text, ipas){
   }).join('');
 }
 
-export function lexicalResult(text,entry){
+export function lexicalResult(text,entry,options={}){
   if(entry.ipa_adjudication_status==='diagnostic_only_unresolved_pronunciation'){
     const syllables=[...text];
     const alternateSurface=entry.alternate_surface_hangul||'';
@@ -108,7 +108,7 @@ export function lexicalResult(text,entry){
   // speaker identity or add/remove vowel length; preserve any existing ː.
   const researchVowelVariants=[];
   const sourceSyllables=[...text];
-  for(let i=0;i<ipas.length;i++){
+  if(options.ipaProfile==='clippyfirst-korean-broad-v1')for(let i=0;i<ipas.length;i++){
     if(decompose(sourceSyllables[i]||'')?.vowel!=='ㅐ')continue;
     const primary=ipas[i].includes('ɛ')?'ɛ':ipas[i].includes('e')?'e':'';
     if(!primary)continue;
