@@ -39,6 +39,12 @@ def test_research_only_lenis_sibilant_variant_is_limited_to_kang_2010_contexts()
         assert not any("ɕ" in item["ipa"] for item in variants), word
 
 
+def test_resyllabified_lenis_sibilant_variant_uses_surface_onset():
+    for word in ("멋있어", "멋있노"):
+        variants = phoneticize_korean(word)["ipa"]["variants"]
+        assert any("ɕi" in item["ipa"] for item in variants), word
+
+
 def test_broad_ipa_voicing_after_sonorant():
     result = phoneticize_korean("현대")["ipa"]["ipa"]
     assert "d" in result
