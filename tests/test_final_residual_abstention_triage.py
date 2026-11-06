@@ -55,6 +55,7 @@ def test_residual_cases_preserve_exact_spelling_and_ipa_acceptance_boundary():
             # and any target is research-prototype output, not independent gold.
             assert phonetics["pronunciation_status"] == "provisional", (form, phonetics)
             assert phonetics["ipa_is_diagnostic_only"] is False, (form, phonetics)
+            assert phonetics["ipa"]["ipa"], (form, phonetics)
             assert result["target_status"] in {"model-selected", "provisional", "unavailable"}, (form, result)
             assert result["analysis_status"] == "research-prototype", (form, result)
         else:
@@ -64,7 +65,6 @@ def test_residual_cases_preserve_exact_spelling_and_ipa_acceptance_boundary():
             assert result["candidate_orthography"] is None, (form, result)
             assert phonetics["pronunciation_status"] == "unresolved", (form, phonetics)
             assert phonetics["ipa_is_diagnostic_only"] is True, (form, phonetics)
-            assert phonetics["ipa"]["ipa"], (form, phonetics)
 
 def test_spelling_sources_are_not_misrepresented_as_authorizing_normalization():
     queue = json.loads(QUEUE.read_text(encoding="utf-8"))
