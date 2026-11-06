@@ -74,12 +74,12 @@ Runtime requirements are Node.js `>=22.12.0` and Python `>=3.11`. Optional extra
 
 The four supplied upstream repositories were reviewed as process references, not as code or text to copy:
 
-- [unlazy](https://github.com/Leonxlnx/unlazy): observable acceptance gates, explicit command oracles, and honest handoff for unmet manual gates.
+- [unlazy](https://github.com/Leonxlnx/unlazy): observable acceptance gates, explicit command oracles, and honest handoff for unmet or abandoned gates.
 - [Superpowers](https://github.com/obra/superpowers): red/green TDD, systematic root-cause debugging and verification before completion claims.
 - [Matt Pocock's skills](https://github.com/mattpocock/skills): separate specification compliance from engineering-standard review; trace research claims to primary sources.
 - [Ponytail](https://github.com/DietrichGebert/ponytail): risk-first whole-repository audit, real data-flow tracing, concrete reproducible findings and smallest effective fixes.
 
-The project already has domain-specific skills in `.agents/skills/` and an integration record in [AGENT-WORKFLOWS.md and AGENT-SKILL-INTEGRATION-2026-11-01.md](AGENT-SKILL-INTEGRATION-2026-11-01.md). Do not add overlapping generic skills or a second gate ledger without a demonstrated gap.
+The project already has domain-specific skills in `.agents/skills/` and the current [agent workflow guide](AGENT-WORKFLOWS.md) and historical [phonetic skill integration record](AGENT-SKILL-INTEGRATION-2026-11-01.md). Do not add overlapping generic skills or a second gate ledger without a demonstrated gap.
 
 ## Safe structural evolution
 
@@ -92,7 +92,7 @@ The project already has domain-specific skills in `.agents/skills/` and an integ
 
 ## Known audit boundaries at this snapshot
 
-- `main` is the default branch. The branch inventory also contains the retained PR #435 source branch and active PR #436 review branch; PR #436 is the only open PR at this snapshot. The merged PR #435 branch is preserved, not deleted.
+- `main` is the default branch. The branch inventory includes the active PR #436 integration branch and PR #437 documentation branch. PR #437's general agent-workflow changes are being ported into #436; #437 remains open and untouched pending reconciliation. The merged PR #435 branch is preserved, not deleted.
 - The main branch was reported as unprotected by GitHub repository metadata. No branch-protection or ruleset settings were changed.
 - The latest exact-head CI before this continuation passed browser/Python regression, build, generated artifacts and Pages deployment. This continuation adds a fresh exact-head verification; see the audit addendum.
 - The NIKL local HTML inventory is structurally complete (30/30) but page-level reuse terms and capture authenticity are not established.
