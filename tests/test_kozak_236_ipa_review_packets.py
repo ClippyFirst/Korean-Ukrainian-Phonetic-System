@@ -132,11 +132,11 @@ def test_licensed_external_mode_rejects_rows_outside_the_pinned_ugtphon_split(tm
     source = ROOT / "research/kozak-kim-236-candidate-review-2026-11-05.csv"
     rows = list(csv.DictReader(source.open(encoding="utf-8-sig", newline="")))
     header = list(rows[0])
-    rows[0]["source_corpus"] = "some-other-dataset/test.json"
+    rows[0]["source_corpus_commit"] = "0000000000000000000000000000000000000000"
     altered = tmp_path / "wrong-source.csv"
     with altered.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=header)
         writer.writeheader()
         writer.writerows(rows)
-    with pytest.raises(ValueError, match="pinned UGTPHON Korean test split"):
+    with pytest.raises(ValueError, match="exact pinned UGTPHON source commit"):
         MODULE.build_packets(altered, distribution_mode="LICENSED_EXTERNAL_REVIEW")
