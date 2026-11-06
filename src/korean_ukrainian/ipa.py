@@ -233,31 +233,6 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
                 "note":"Research-only optional [ɕ] candidate for lenis /s/ before /i, ye, ya/ (S019, Kang 2010); acoustic coarticulation evidence, not a categorical rule. Broad canonical [s] is preserved.",
                 "vowels":["ㅅ [ɕ]"],
             })
-    # Research-only optional fortis /s͈/ palatalization before /i/.
-    # The canonical broad profile remains [s͈]. Holliday (2014) describes
-    # both Korean sibilants as typically palatalized before /i/ or /j/;
-    # later discussion and production evidence show variable, less consistent
-    # fortis realization. Restrict this candidate to /i/ (ㅣ), do not infer
-    # it for /j/-initial nuclei, and do not select it for an unknown speaker.
-    # Because items are post-rule surface syllables, coda-triggered fortition
-    # (했을시, 실시간) is covered without rewriting source orthography.
-    for i, syllable in enumerate(items):
-        if (syllable.onset == "ㅆ" and syllable.nucleus == "ㅣ"
-                and rendered[i].startswith("s͈")):
-            alternate = list(rendered)
-            alternate[i] = alternate[i].replace("s͈", "ɕ͈", 1)
-            variants.append({
-                "syllable_indices": [i],
-                "ipa": render_syllable_sequence(items, alternate),
-                "note": (
-                    "Research-only optional [ɕ͈] candidate for fortis /s͈/ before /i/ (ㅣ); "
-                    "Holliday 2014; Holliday 2016; Holliday & Reidy 2016; Kong & Kang 2020. "
-                    "Production is variable and speaker-specific realization is unknown; "
-                    "canonical broad [s͈] is preserved."
-                ),
-                "vowels": ["ㅆ [ɕ͈]"],
-            })
-
     # S018: /h/ may be [ɸ] between voiced sounds. Here this is a
     # same-word intervocalic ㅎ onset; canonical broad [h] is preserved.
     for i,syllable in enumerate(items):
@@ -344,7 +319,7 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
                 "Kang & Lee (2019), The Realizations of /h/ in Seoul and Gwangju Koreans: https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART002495941",
                 "Eom (2014), Phonetic realizations of /h/ after a sonorant in Korean: https://doi.org/10.17959/sppm.2014.20.3.357",
             ],
-            "limitations":["partial profile, not a complete narrow transcription","models [ç], [x], [ɸ], and [ɭ] in the cited Seoul contexts, plus one optional [ɦ] variant after a same-word sonorant coda; does not model /h/ deletion, dialectal probabilities, the full lateral allophone inventory, or prosody; broad IPA exposes only an optional research [ɕ͈] candidate before /i/, not a forced narrow realization","the [ɲ] choice before /j/-initial nuclei is a research-profile generalization; do not treat it as universal speaker-independent output","does not force palatalization of tense /s͈/ because the available literature reports variation and disagreement","research-only profile; do not treat as approved Ukrainian target input without target-inventory review"],
+            "limitations":["partial profile, not a complete narrow transcription","models [ç], [x], [ɸ], and [ɭ] in the cited Seoul contexts, plus one optional [ɦ] variant after a same-word sonorant coda; does not model /h/ deletion, dialectal probabilities, the full lateral allophone inventory, or prosody","the [ɲ] choice before /j/-initial nuclei is a research-profile generalization; do not treat it as universal speaker-independent output","does not force palatalization of tense /s͈/ because the available literature reports variation and disagreement","research-only profile; do not treat as approved Ukrainian target input without target-inventory review"],
             "target_compatible":False,
         }
     return result
