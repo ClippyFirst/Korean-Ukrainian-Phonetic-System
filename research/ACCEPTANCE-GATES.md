@@ -4,13 +4,13 @@ Implementation branch: `fix/five-ugtphon-native-abstentions-2026-11-06`.
 
 | Case | Current disposition | Verification boundary |
 |---|---|---|
-| `칡칡이` | Exact R002 license added | Kiwi/MeCab-Ko boundary agreement; NIKL §14 pattern; Browser/Python tests pending CI |
-| `쫒아내면` | Exact typo-preserving R002 license added | Corpus-specific surface reading only; not normalized to `쫓아내면`; tests pending CI |
+| `칡칡이` | BLOCKED_SOURCE_IDENTITY_AND_AUDIO | Field-recorded folk-song heading `[철마면 민요 26]`; no audio/field notes; Kiwi/MeCab boundary agreement is not enough to establish the title's morphology |
+| `쫒아내면` | Exact typo-preserving R002 license added | Corpus-specific written-form surface only; not normalized to `쫓아내면`; tests pending CI |
 | `많앗구나유유유` | Exact typo-preserving R003 license added | Context identifies 많- + past -았-; NIKL §12(4); tests pending CI |
+| `삶의` | BLOCKED_SPECIALIST_IPA_ADJUDICATION | NIKL Hangul readings are attested; IPA and Ukrainian output remain withheld |
 | `무서웟어` | Exact typo-preserving R002 license added | Retains source single ㅅ; tests pending CI |
-| `삶의` | BLOCKED_SPECIALIST_ADJUDICATION | NIKL Hangul readings are attested; IPA and Ukrainian output remain withheld |
 
-The four licenses are full-form + exact-adjacent-pair only. The Browser and Python positive/negative regressions are committed on the branch; exact-head Actions evidence is not yet available. See the case-by-case evidence and source list in the linked report above.
+Three licenses are full-form + exact-adjacent-pair only. Python and Browser positive/negative regressions are committed on the branch; exact-head Actions evidence is not yet available. See the case-by-case report for sources and limitations.
 
 ---
 
