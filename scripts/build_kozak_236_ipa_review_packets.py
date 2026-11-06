@@ -194,8 +194,20 @@ def write_packets(result: dict, output_dir: Path) -> dict:
         path = output_dir / name
         if path.exists():
             raise FileExistsError(f"Refusing to overwrite existing review material: {path}")
-        path.write_text(json.dumps(content, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    return {"output_dir": str(output_dir), "files": sorted(files), "case_count": result["case_count"],
+        path.write_text(json.dumps(content, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+    extra_files = []
+    if result["distribution_mode"] == "LICENSED_EXTERNAL_REVIEW":
+        for source_path, target_name in (
+            (APACHE_LICENSE_PATH, "LICENSE-APACHE-2.0.txt"),
+            (SOURCE_NOTICE_PATH, "UGTPHON-KO-SOURCE-NOTICE.md"),
+        ):
+            target = output_dir / target_name
+            if target.exists():
+                raise FileExistsError(f"Refusing to overwrite existing review material: {target}")
+            shutil.copyfile(source_path, target)
+            extra_files.append(target_name)
+    return {"output_dir": str(output_dir), "files": sorted(list(files) + extra_files),
+            "case_count": result["case_count"], "distribution_mode": result["distribution_mode"],
             "source_csv_sha256": result["source_csv_sha256"]}
 
 
