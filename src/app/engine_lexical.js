@@ -315,8 +315,11 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status,
   if(includeBroadAllophones){
     const palatalNuclei=new Set(['ㅣ','ㅑ','ㅖ']);
     for(let i=0;i<originalUnits.length;i++){
-      const syllable=originalUnits[i];
-      if(syllable.onset!=='ㅅ'||!palatalNuclei.has(syllable.vowel)||!ipa[i]?.startsWith('s'))continue;
+      const sourceSyllable=originalUnits[i];
+      const surfaceSyllable=units[i];
+      // Inspect the post-rule onset so coda-ㅅ resyllabification (e.g. 멋있어)
+      // receives the same optional variant as an orthographic onset ㅅ.
+      if(surfaceSyllable.onset!=='ㅅ'||!palatalNuclei.has(sourceSyllable.vowel)||!ipa[i]?.startsWith('s'))continue;
       const alternateIpa=ipa.slice();
       alternateIpa[i]='ɕ'+alternateIpa[i].slice(1);
       const mapped=alternateIpa.map(value=>ipaSyllableToUkrainian(value,{allowProvisional:true}));
