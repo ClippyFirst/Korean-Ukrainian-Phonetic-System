@@ -1,15 +1,14 @@
-## 2026-11-06 — post-merge residual review
+## 2026-11-06 — post-merge residual review and fortis evidence update
 
-PR #441 has merged the bounded runtime follow-up. All 15 standard-form/rule occurrences now have runtime dispositions (ten new exact integrations plus five preserved baseline licenses). The 181 profile-convention rows remain non-categorical. The unresolved count remains **40**: 12 abstentions and 28 unadjudicated occurrences. All 236 source rows remain retained; none is independent speaker-level acoustic IPA gold.
+PR #441 has merged the bounded runtime follow-up. All 15 standard-form/rule occurrences have runtime dispositions (ten new exact integrations plus five preserved baseline licenses). The 181 profile-convention rows remain non-categorical. The unresolved count remains **40**: 12 abstentions and 28 unadjudicated occurrences. All 236 source rows remain retained; none is independent speaker-level acoustic IPA gold.
 
-The **24 fortis [ɕ͈]→/s͈/ edit operations across 23 occurrence rows** remain unresolved (22 forms contain orthographic ㅆ; two are coda-triggered fortition contexts). The lenis /s/ coarticulation evidence for /i, ye, ya/ is not transferable to fortis /s͈/. The two /ɘː/ vs /ʌː/ cases remain transcription-profile questions. Phrase-level Rule 29 candidates `한국여자로` and `홍콩영화들` require exact morphology and prosodic-boundary evidence.
+A fresh source review found that the **24 fortis [ɕ͈]→/s͈/ edit operations occur in 24 occurrence IDs across 19 source rows** (correcting the earlier 23-row count). Twenty-three reference realizations are before /i/; one is before /jo/ (ID 96, `똥꼬쑈`). Twenty-two forms contain orthographic ㅆ and two are coda-triggered fortition contexts (IDs 481 `했을시`, 551 `실시간`).
 
-The 12 abstentions and 28 unadjudicated occurrences still require original audio, speaker crosswalk, and two independent Korean IPA annotations under an explicit convention, including syllable boundaries and uncertainty. Reconcile and freeze IPA before separate Ukrainian target review. No IPA gold or Ukrainian target was inferred from model agreement or corpus comparison. No further production rule is justified by the evidence currently recorded.
+Holliday (2014) describes both lenis and fortis Korean sibilants as typically palatalized before /i/ or /j/; Holliday (2016) notes that fortis /s*/ may palatalize less consistently; a 2016 production poster reports that /s*/ is sometimes palatalized before /i/ in six native speakers; Kong & Kang (2020) report palatalized variants before /i/ and speaker-related spectral variation, though the abstract does not disaggregate /s/ from /s'/. These sources support a **research-only optional [ɕ͈] candidate before /i/ only**, not a mandatory or speaker-specific rule. The Python and Browser broad research profiles now expose that optional variant while preserving canonical [s͈], phonemic IPA, narrow IPA and Ukrainian target mappings. The one /jo/ case remains outside the implementation. See the [engine integration and evidence record](../docs/KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md).
 
-See the [post-merge engine integration and CI record](../docs/KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md) for exact runtime and benchmark status.
+The 12 abstentions and 28 unadjudicated occurrences still require original audio, speaker crosswalk, and two independent Korean IPA annotations under an explicit convention, including syllable boundaries and uncertainty. Reconcile and freeze IPA before separate Ukrainian target review. No IPA gold or Ukrainian target was inferred from model agreement or corpus comparison.
 
 ---
-
 ## 2026-11-05 — Current evidence adjudication: 196 dispositioned, 40 open
 
 **Baseline:** 236 reconstructed candidate occurrences, all retained. **Current disposition:** 15 `RULE_CONFIRMED_STANDARD_VARIANT`, 181 `PROFILE_CONVENTION_MISMATCH_CONFIRMED`, 12 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW`, and 28 `NOT_INDIVIDUALLY_ADJUDICATED`. Thus 196 are dispositioned and **40 remain unresolved**. No case in this queue has independent speaker-level acoustic IPA gold.
