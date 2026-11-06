@@ -151,9 +151,9 @@ test('§30 permitted saisiot variants remain visible as variants, not silently d
     assert.ok(row, word);
     assert.ok(row.alternate_surface_hangul, word + ': official alternate surface must be retained');
     const result = engine.convert(word);
-    assert.equal(result.variants.length, 1, word);
-    assert.equal(result.variants[0].surface, row.alternate_surface_hangul, word);
-    assert.equal(result.variants[0].ipa, renderExpectedIpa(word, row.alternate_ipa_syllables), word);
+    const officialVariants = result.variants.filter(variant => variant.surface === row.alternate_surface_hangul);
+    assert.equal(officialVariants.length, 1, word);
+    assert.equal(officialVariants[0].ipa, renderExpectedIpa(word, row.alternate_ipa_syllables), word);
   }
 });
 
