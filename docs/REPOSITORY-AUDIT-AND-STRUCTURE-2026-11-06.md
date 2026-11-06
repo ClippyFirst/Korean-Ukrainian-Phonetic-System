@@ -208,7 +208,7 @@ Current-main checks for `2e9647540e1be47571579f71b7466393172a2a6d`: tests 422160
 
 PR #439 remains open and was left untouched: its branch is 56 commits behind current main; its exact-head tests and verification failed (42200300941, 42200300947). Do not merge blindly. The four upstream workflow references are already documented as process-only adoption; no upstream code or duplicate orchestration is needed.
 
-**Current status:** cohort and 15 runtime dispositions DONE_VERIFIED; 181 profile reconciliations DONE_VERIFIED as non-integration decisions; 24 fortis operations PARTIAL (optional /i/ candidate integrated; one /jo/ case and speaker-specific assignment remain evidence-limited); 40 abstained/unadjudicated rows BLOCKED; multi-engine artifact PARTIAL pending regeneration/reverification; current-main ordinary CI DONE_VERIFIED; independent Korean IPA and Ukrainian target review BLOCKED; release readiness DEFERRED (partial research prototype).
+**Current status:** cohort and 15 runtime dispositions DONE_VERIFIED; 181 profile reconciliations DONE_VERIFIED as non-integration decisions; 24 fortis operations BLOCKED for token-level IPA adjudication (2021 acoustic evidence does not support generic [ɕ͈]; exact speaker/audio needed); 40 abstained/unadjudicated rows BLOCKED; multi-engine artifact PARTIAL pending regeneration/reverification; current-main ordinary CI DONE_VERIFIED; independent Korean IPA and Ukrainian target review BLOCKED; release readiness DEFERRED (partial research prototype).
 
 ### Generated diagnostic queue reconciliation — 2026-11-06
 
@@ -218,16 +218,17 @@ The tracked unmapped-Broad CSV has now been regenerated from artifact 1350100906
 
 The original master handoff blob `b49170395fa7f67ee50f29e32def5349fe92fef3` has been restored unchanged on this branch. A content-write attempt returned a truncated replacement because the handoff exceeds the available safe write path; the branch was corrected by restoring the exact original blob through the Git data tree API. No master-history content is changed in the final branch tree. This audit and the 236-case integration record are the current superseding continuation. Appending directly to the oversized master handoff remains BLOCKED by the connector write limit.
 
-## 2026-11-06 — superseding fortis sibilant evidence and runtime update
+## 2026-11-06 — superseding fortis sibilant evidence review: no runtime change
 
-The previous audit treated all 24 `ɕ͈→s͈` operations as unresolved and misstated the row count. Reconstructed directly from the 236-row ledger, these are 24 occurrence IDs in 19 source rows; 23 reference forms contain the sequence [ɕ͈i], and only ID 96 (`똥꼬쑈`) is [ɕ͈jo]. Twenty-two forms contain orthographic ㅆ; two coda-triggered fortition cases are IDs 481 (`했을시`) and 551 (`실시간`).
+The previous audit treated the 24 `ɕ͈→s͈` operations as unresolved and misstated their row count. Reconstructed from the 236-row ledger, these are **24 occurrence IDs in 19 source rows**; 23 reference forms contain [ɕ͈i], and only ID 96 (`똥꼬쑈`) is [ɕ͈jo]. Twenty-two forms contain orthographic ㅆ; two coda-triggered fortition cases are IDs 481 (`했을시`) and 551 (`실시간`).
 
-Newly reviewed evidence:
-- Holliday 2014 JASA: both Korean lenis-aspirated /sh/ and fortis /s*/ are described as typically palatalized before /i/ or /j/ (SRC-HOLLIDAY-2014-JASA).
-- Holliday 2016 Phonetica: the paper explicitly notes that fortis /s*/ may not palatalize as consistently as lenis /sh/ (SRC-HOLLIDAY-2016-PHONETICA).
-- Holliday & Reidy 2016 production poster: six female native Korean speakers; /s*/ is reported to be sometimes palatalized before /i/ (SRC-HOLLIDAY-REIDY-2016-POSTER).
-- Kong & Kang 2020: 32 Seoul Korean young adults; palatalized variants before /i/ and gender-related spectral variation, but the abstract does not disaggregate /s/ and /s'/ (SRC-KONG-KANG-2020-SPECTRAL).
+Evidence reviewed:
+- Holliday 2014 JASA describes both lenis-aspirated /sh/ and fortis /s*/ as typically palatalized before /i/ or /j/, but this is background in a perception study (SRC-HOLLIDAY-2014-JASA).
+- Holliday 2016 Phonetica notes that fortis /s*/ may palatalize less consistently; its experiment is perceptual (SRC-HOLLIDAY-2016-PHONETICA).
+- Holliday & Reidy 2016 places the /s*/ palatalization statement in poster background; it does not report speaker-level or token-level fortis-palatalization results from its six-speaker production sample (SRC-HOLLIDAY-REIDY-2016-POSTER).
+- Kong & Kang 2020 report palatalized variants before /i/ in an abstract covering /s/ and /s'/ but do not disaggregate the category (SRC-KONG-KANG-2020-SPECTRAL).
+- **Kong & Kang 2021 provide direct acoustic constraints.** They analyze 39 adult Seoul Korean speakers and 1,832 sibilant tokens. Young female word-initial /s͈i/ shows age-related spectral fronting, but the authors explicitly describe the variant as closer to alveolar [s] than post-alveolar [ɕ], and the effect is context- and gender-specific (SRC-KONG-KANG-2021-SIBILANTS).
 
-A narrow **optional research-only [ɕ͈] variant before ㅣ** is now implemented in the Python and Browser broad research profiles. The canonical broad [s͈], phonemic profile, narrow profile and Ukrainian target mapping remain unchanged. Post-rule surface onset inspection covers IDs 481 and 551 without rewriting Hangul. No variant is emitted for /jo/, /ja/, /ju/ or other unsupported contexts. This is a profile candidate, not individual IPA adjudication; no speaker-specific claim is made. The 24 profile mismatches remain within the 181 profile-convention cases and are separate from the 40 abstained/unadjudicated rows.
+**Implementation decision: no [ɕ͈] runtime variant is accepted.** Keep canonical broad [s͈] unchanged in Python and Browser; do not add [ɕ͈] to broad or narrow output and do not map an unobserved speaker-conditioned fronting variant into Ukrainian. The 23 /i/ cases are not resolved by the 2021 finding because it does not support [ɕ͈]; ID 96 /jo/ remains separately unsupported. The 24 mismatches remain part of the 181 profile-convention cases, not the 40 abstained/unadjudicated rows. Exact speaker identity and token audio are required for any individual alternate IPA decision.
 
-New regression coverage checks the 24-operation/24-ID/19-source-row distribution, 23 /i/ cases and the single /jo/ negative, canonical preservation, broad-only status, and Native/Browser parity. Exact-head GitHub Actions verification for this branch is still pending; the optional variant must not be marked DONE_VERIFIED until those workflows pass.
+The data-inventory test `test_fortis_sibilant_candidate_inventory_has_exact_context_distribution` now records the 24 operations, 24 occurrence IDs, 19 source rows, 23 /i/ contexts and the single /jo/ case. Existing negative controls keep `씨` as a no-variant case in the broad research profile. No runtime code change is accepted from this evidence review.
