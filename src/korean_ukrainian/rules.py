@@ -86,6 +86,19 @@ _NIKL_R002_FORMAL_LICENSES = {
     "없으니까": "없>으",
     # Q&A 306166 directly attests 멋있어[머디써/머시써]; license only 있>어.
     "멋있어": "있>어",
+    # Exact UGTPHON form; Kiwi and MeCab-Ko independently agree on the
+    # 칡 + 칡 + nominative particle 이 boundary. NIKL §14 licenses the
+    # ㄺ + vowel-initial grammatical-morpheme pattern; only this full form
+    # is enabled (the analyzer result itself remains diagnostic evidence).
+    "칡칡이": "칡>이",
+    # Exact noisy orthography from UGTPHON. The raw typo 쫒 is preserved;
+    # only its internal 쫒>아 boundary is licensed for this token. This is
+    # a corpus-specific surface analysis, not a claim that 쫒 is standard.
+    "쫒아내면": "쫒>아",
+    # Exact C1 spelling variant in UGTPHON: 웟>어 is the past-ending/final-
+    # ending boundary. Preserve the single ㅅ in the source spelling; do not
+    # normalize it to ㅆ or generalize to other 웟-sequences.
+    "무서웟어": "웟>어",
 }
 
 # NIKL §15(붙임): substantive-morpheme liaison uses the coda representative;
@@ -139,6 +152,10 @@ _NIKL_R003_FORMAL_LICENSES = {
     "좋아해주는": "좋>아",  # Exact form; internal 좋- + -아 in 좋아하다.
     "죽었잖아": "잖>아",
     "개좆망했잖아": "잖>아",
+    # Exact noisy spelling of 많았구나 in the source sentence. The context
+    # identifies 많- + past ending -았- + 구나; retain the written ㅅ in 앗.
+    # §12(4) removes ㅎ from ㄶ before the vowel-initial ending; no typo rewrite.
+    "많앗구나유유유": "많>앗",
 }
 
 # Exact full-form licenses for transparent verb-stem + ending cases under NIKL §24.
