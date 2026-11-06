@@ -238,7 +238,14 @@ const NIKL_27_ADNOMINAL_FORMS=new Map([
 const NIKL_29_PHRASE_INSERTION=new Map([
   ['한 일',{onset:'ㄴ'}],['옷 입다',{coda:'ㄴ',onset:'ㄴ'}],
   ['먹은 엿',{onset:'ㄴ'}],['할 일',{onset:'ㄹ'}],
-  ['잘 입다',{onset:'ㄹ'}],['먹을 엿',{onset:'ㄹ'}]
+  ['잘 입다',{onset:'ㄹ'}],['먹을 엿',{onset:'ㄹ'}],
+  // Explicitly spaced forms only. Whitespace is the browser's documented
+  // connected-phrase proxy; compact/no-space benchmark tokens are not split.
+  // NIKL Q&A 330322 confirms §29 [붙임 2] across connected words;
+  // Q&A 316146 specifically conditions 첫 연애 [천녀내] on prosodic grouping.
+  ['홍콩 영화들',{onset:'ㄴ'}],
+  ['한국 여자로',{coda:'ㅇ',onset:'ㄴ'}],
+  ['첫 연애',{coda:'ㄴ',onset:'ㄴ'}]
 ]);
 
 // Exact NIKL §29 word-internal ㄴ insertion licenses; preserve lexical scope.
