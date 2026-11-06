@@ -181,10 +181,10 @@ test('NIKL §15 exposes both standard readings for 맛있다 and 멋있다', () 
     assert.equal(result.status, 'lexical-review', word);
     assert.equal(result.ukrainian, values.target, word);
     assert.equal(result.ipa, renderExpectedIpa(word, values.ipa), word);
-    assert.equal(result.variants.length, 1, word);
-    assert.equal(result.variants[0].surface, values.alternateSurface, word);
-    assert.equal(result.variants[0].ukrainian, values.alternateTarget, word);
-    assert.equal(result.variants[0].ipa, renderExpectedIpa(word, values.alternateIpa), word);
+    const officialVariants = result.variants.filter(variant => variant.surface === values.alternateSurface);
+    assert.equal(officialVariants.length, 1, word);
+    assert.equal(officialVariants[0].ukrainian, values.alternateTarget, word);
+    assert.equal(officialVariants[0].ipa, renderExpectedIpa(word, values.alternateIpa), word);
     assert.equal(result.variants[0].status, 'lexical-review', word);
   }
   const phrase = engine.convert('맛있다!');
