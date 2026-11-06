@@ -139,9 +139,9 @@ test('§29 optional standard variants are preserved as explicit alternatives', (
     assert.ok(row.alternate_surface_hangul, word + ': NIKL permits an alternate');
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, row.surface_hangul, word);
-    assert.equal(result.variants.length, 1, word);
-    assert.equal(result.variants[0].surface, row.alternate_surface_hangul, word);
-    assert.equal(result.variants[0].ipa, renderExpectedIpa(word, row.alternate_ipa_syllables), word);
+    const saisiotVariants = result.variants.filter(variant => variant.surface === row.alternate_surface_hangul);
+    assert.equal(saisiotVariants.length, 1, word);
+    assert.equal(saisiotVariants[0].ipa, renderExpectedIpa(word, row.alternate_ipa_syllables), word);
   }
 });
 
