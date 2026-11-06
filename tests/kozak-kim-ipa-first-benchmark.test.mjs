@@ -357,7 +357,7 @@ test('shared Broad profile and legacy default apply three exact noisy-form licen
   const cases = [
     ['칡칡이', '칙칙이', '', false],
     ['쫒아내면', '쪼자내면', '쪼자내면', true],
-    ['많앗구나유유유', '마낟꾸나유유유', '마낫꾸나유유유', true],
+    ['많앗구나유유유', '마낫꾸나유유유', '마낫꾸나유유유', true],
     ['무서웟어', '무서워서', '무서워서', true]
   ];
   const engine = createBrowserKozakKimEngine();
