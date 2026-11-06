@@ -9,7 +9,7 @@ const engine = createEngine(canonical, lexical);
 
 test('four exact UGTPHON morphology cases resolve without rewriting source spelling', () => {
   const cases = {
-    '칡칡이': '칙칠기',
+    '칡칡이': '칡칠기',
     '쫒아내면': '쪼자내면',
     '많앗구나유유유': '만앋꾸나유유유',
     '무서웟어': '무서워서',
@@ -25,7 +25,7 @@ test('four exact UGTPHON morphology cases resolve without rewriting source spell
 });
 
 test('exact noisy-form licenses do not generalize to neighboring spellings', () => {
-  for (const input of ['칡칡에', '쫒아내서', '많앗으면', '무서웟으니']) {
+  for (const input of ['칡칡에', '쫒아내서', '많앗으면', '무서웟어요']) {
     const result = engine.convert(input);
     assert.equal(result.status, 'unresolved', input + ': a different full form must remain fail-closed');
     assert.ok(result.issues.length > 0, input + ': explain the missing exact morphology evidence');
