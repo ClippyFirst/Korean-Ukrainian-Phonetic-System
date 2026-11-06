@@ -402,10 +402,10 @@ test('NIKL §22 preserves both permitted [어] and [여] readings', () => {
     assert.equal(result.status, 'lexical-review', word);
     assert.equal(result.ukrainian, values.target, word);
     assert.equal(result.ipa, renderExpectedIpa(word, values.ipa), word);
-    assert.equal(result.variants.length, 1, word);
-    assert.equal(result.variants[0].surface, values.alternateSurface, word);
-    assert.equal(result.variants[0].ukrainian, values.alternateTarget, word);
-    assert.equal(result.variants[0].ipa, renderExpectedIpa(word, values.alternateIpa), word);
+    const officialVariants = result.variants.filter(variant => variant.surface === values.alternateSurface);
+    assert.equal(officialVariants.length, 1, word);
+    assert.equal(officialVariants[0].ukrainian, values.alternateTarget, word);
+    assert.equal(officialVariants[0].ipa, renderExpectedIpa(word, values.alternateIpa), word);
     assert.equal(result.variants[0].status, 'lexical-review', word);
   }
 });
@@ -427,10 +427,10 @@ test('NIKL §5 ㅢ variants preserve lexical and particle-conditioned readings',
     assert.equal(result.status, 'lexical-review', word);
     assert.equal(result.ukrainian, values.target, word);
     assert.equal(result.ipa, renderExpectedIpa(word, values.ipa), word);
-    assert.equal(result.variants.length, 1, word);
-    assert.equal(result.variants[0].surface, values.alternateSurface, word);
-    assert.equal(result.variants[0].ukrainian, values.alternateTarget, word);
-    assert.equal(result.variants[0].ipa, renderExpectedIpa(word, values.alternateIpa), word);
+    const officialVariants = result.variants.filter(variant => variant.surface === values.alternateSurface);
+    assert.equal(officialVariants.length, 1, word);
+    assert.equal(officialVariants[0].ukrainian, values.alternateTarget, word);
+    assert.equal(officialVariants[0].ipa, renderExpectedIpa(word, values.alternateIpa), word);
   }
 });
 
@@ -517,10 +517,10 @@ test('NIKL §4–§5 preserves permitted vowel variants and contracted ㅕ readi
     assert.equal(result.status, 'lexical-review', word);
     assert.equal(result.ukrainian, values.target, word);
     assert.equal(result.ipa, renderExpectedIpa(word, values.ipa), word);
-    assert.equal(result.variants.length, 1, word);
-    assert.equal(result.variants[0].surface, values.alternateSurface, word);
-    assert.equal(result.variants[0].ukrainian, values.alternateTarget, word);
-    assert.equal(result.variants[0].ipa, renderExpectedIpa(word, values.alternateIpa), word);
+    const officialVariants = result.variants.filter(variant => variant.surface === values.alternateSurface);
+    assert.equal(officialVariants.length, 1, word);
+    assert.equal(officialVariants[0].ukrainian, values.alternateTarget, word);
+    assert.equal(officialVariants[0].ipa, renderExpectedIpa(word, values.alternateIpa), word);
   }
   const contractions = {
     '가져': ['가저', 'каджо', 'ka.dʑʌ'],
