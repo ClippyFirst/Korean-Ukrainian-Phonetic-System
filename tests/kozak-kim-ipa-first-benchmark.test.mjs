@@ -377,6 +377,18 @@ test('shared Broad profile exposes deterministic coda surfaces without resolving
   }
 });
 
+test('236 profile-only vowel and loanword differences are exposed as optional variants', () => {
+  const engine = createBrowserKozakKimEngine();
+  const game = engine.convert('게임', { ipaProfile: 'clippyfirst-korean-broad-v1' });
+  assert.equal(game.ipa, 'ke.im');
+  assert.ok(game.variants.some(variant => variant.ipa === 'k͈e.im' && variant.note.includes('NIKL')));
+
+  const shortFront = engine.convert('주는대로', { ipaProfile: 'clippyfirst-korean-broad-v1' });
+  assert.ok(shortFront.variants.some(variant => variant.ipa.replaceAll('.', '') === 'tɕunɯndeɾo'));
+  const longFront = engine.convert('대한민국', { ipaProfile: 'clippyfirst-korean-broad-v1' });
+  assert.ok(longFront.variants.some(variant => variant.ipa.includes('tɛː')));
+});
+
 test('shared broad profile exposes source-backed sibilant palatalization as a variant, not a forced rewrite', () => {
   const engine = createBrowserKozakKimEngine();
   const lenis = engine.convert('시', { ipaProfile: 'clippyfirst-korean-broad-v1' });
@@ -445,6 +457,7 @@ test('236-candidate standard-rule cases are integrated as exact runtime licenses
     ['정권', '정꿘', 'k͈w'],
     ['유사성', '유사썽', 's͈'],
     ['혐오증', '혀모쯩', 'tɕ͈'],
+    ['머리속에', '머리쏘게', 's͈o'],
     ['연전연패', '연전년패', 'njʌn'],
     ['출시미정에', '출씨미정에', 's͈i']
   ];
@@ -477,6 +490,7 @@ test('236-candidate exact licenses do not become productive suffix or substring 
   assert.ok(!convert('정관').ipa.includes('k͈'));
   assert.ok(!convert('유사증').ipa.includes('s͈'));
   assert.ok(!convert('혐오성').ipa.includes('tɕ͈'));
+  assert.ok(!convert('머리속으로').ipa.includes('s͈'), 'the exact pronunciation alias must not generalize to neighboring forms');
   const unlicensedN = convert('연전연합');
   assert.equal(unlicensedN.surfaceHangul, '연저년합'); // ordinary ㄴ liaison, not Rule 29 insertion.
   assert.ok(!convert('고시미정에').ipa.includes('s͈'));
