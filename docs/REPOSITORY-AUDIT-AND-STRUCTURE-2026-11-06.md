@@ -451,3 +451,35 @@ The first documentation-navigation refresh exposed a structural contract: `tests
 - **New tests:** Python coverage for 40-row crosswalk, source-register integrity and emoticon normalization evidence; Python and browser exact Rule 29 phrase tests; browser no-glide/hiatus/sibilant regressions; standalone-jamo regression.
 
 **Commands/results:** no local shell, pytest or npm command was run; this connector-only session cannot execute repository tests locally. CI on the PR head is the acceptance gate. The >1 MB append-only `MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md` was preserved; this dated audit is the concise continuation record. Do not call the implementation `DONE_VERIFIED` until exact-head CI, generated-artifact checks and any downstream jobs complete.
+
+
+
+
+### 2026-11-06 — PR #447 merged; 40 no-audio engine policies integrated
+
+**Merge:** PR [#447](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/447) squash-merged into `main`. Merge commit: `3c93a92e9b48c2a1c68d1139137a55c2dd2e7c7e`. PR head before merge: `6813018d4987822a42225dfa05590916e3030f52`.
+
+**Implemented outcome:** all 40 residual occurrences have `ENGINE_POLICY_RESOLVED_NO_AUDIO` dispositions in `research/kozak-kim-40-no-audio-engine-policy-2026-11-06.csv` (12 original ABSTAIN + 28 focused residual; 17 token spellings; 12 policy families). All 40 retain `UNRESOLVED_NO_AUDIO` for speaker-specific IPA gold. No narrow IPA or speaker-specific optional variant was fabricated. The three explicit Rule 29 phrase-mode paths are conditional and do not infer boundaries in compact corpus tokens.
+
+**Exact PR-head verification (head `6813018...`):**
+- Tests [42261250418](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42261250418) — PASS: Python 3.11/3.12/3.13, wheel installation, teacher-corpus audit, browser `npm test` (**1,413 passed, 0 failed**) and `npm run build`.
+- System verification [42261250274](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42261250274) — PASS: Python and browser tests/build; source redistribution rights gate PASS; official NIKL metadata-only inventory SKIPPED by workflow policy.
+- Master table/research artifacts [42261250275](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42261250275) — PASS.
+- Exhaustive test-case register extraction [42261250316](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42261250316) — PASS.
+- External UGTPHON diagnostic [42261250212](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42261250212) — PASS.
+- Paired native/g2pk diagnostic [42261250288](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42261250288) — PASS.
+- Morphology consensus [42261250269](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42261250269) — PASS.
+- Research morphology adapter smoke [42261250254](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42261250254) — PASS.
+- Multi-engine comparison [42261250219](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42261250219) — still IN_PROGRESS at this audit snapshot. Optional CharsiuG2P and ByT5 inference jobs were SKIPPED by policy; no result is claimed for them.
+
+**Post-merge main verification (merge commit `3c93a92...`):**
+- Tests [42262026684](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42262026684) — PASS.
+- System verification [42262026710](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42262026710) — PASS: Python/browser tests, source-rights gate, public build.
+- Master table/research artifacts [42262026709](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42262026709) — PASS.
+- Pages deployment [42262026851](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42262026851) — IN_PROGRESS at this snapshot; Python 3.11/3.12/3.13 strict corpus/tests and browser tests/build/artifact checks had passed; deployment and live smoke were pending.
+
+An initial Python assertion run [42260665657](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42260665657) failed because the test expected rendered surface Hangul without preserving explicit word spaces. The implementation had inserted the expected nasal; the regression expected strings were corrected to retain spaces, and the complete PR-head Python/browser suites passed afterward.
+
+**Execution limits:** no local shell, `pytest`, or `npm` command was run in this connector-only session; all verification above is GitHub Actions evidence. The >1 MB append-only `MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md` remains preserved; this audit is its dated continuation. No branches were deleted, no force-push was used, and no release was published.
+
+**Readiness:** the 40 engine-policy decisions are integrated and tested. The 40 speaker-specific IPA gold claims remain no-audio-limited. Original historical 239-member cohort proof and independent Ukrainian target review remain open; the repository remains a bounded research prototype, not a release-certified pronunciation authority.
