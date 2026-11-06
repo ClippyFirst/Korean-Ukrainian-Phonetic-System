@@ -110,17 +110,22 @@ def test_c09_source_backed_people_and_moreuda_keep_lexical_length_in_broad_ipa()
     gweseong = phoneticize_korean("괴성")
     assert gweseong["ipa"]["lexical_alternatives"][0]["ipa"] == "kweː.sʌŋ"
 
-def test_actual_native_abstentions_are_recovered_or_remain_ipa_gated():
+def test_three_native_abstentions_are_recovered_and_two_remain_ipa_gated():
     # Four exact corpus forms now have morphology licenses. Their IPA is
     # inspectable and provisional; it is not independent gold. 삶의 remains
     # blocked because official Hangul variants do not adjudicate IPA.
-    cases = ("칡칡이", "쫒아내면", "많앗구나유유유", "무서웟어")
+    cases = ("쫒아내면", "많앗구나유유유", "무서웟어")
     for word in cases:
         result = phoneticize_korean(word)
         assert result["pronunciation_status"] == "provisional", word
         assert result["ipa"]["ipa"], word
         assert result["ipa_is_diagnostic_only"] is False, word
         assert result["unresolved_contexts"] == [], word
+
+    kudzu = phoneticize_korean("칡칡이")
+    assert kudzu["pronunciation_status"] == "unresolved"
+    assert kudzu["ipa_is_diagnostic_only"] is True
+    assert any(item["rule_id"] == "R002" for item in kudzu["unresolved_contexts"])
 
     life = phoneticize_korean("삶의")
     assert life["pronunciation_status"] == "unresolved"
