@@ -14,8 +14,8 @@ import { practicalStatusForUnit, softStatusForUnit } from './soft_morphology.js'
 const NIKL_GENITIVE_UI_PARTICLE_FORMS=new Set(['그놈의','자신의']);
 function exactWordFormAt(units,index){
   let start=index,end=index;
-  while(start>0&&isHangulUnit(units[start-1]))start--;
-  while(end+1<units.length&&isHangulUnit(units[end+1]))end++;
+  while(start>0&&isHangulUnit(units,start-1))start--;
+  while(end+1<units.length&&isHangulUnit(units,end+1))end++;
   return units.slice(start,end+1).map(unit=>unit.char).join('');
 }
 
