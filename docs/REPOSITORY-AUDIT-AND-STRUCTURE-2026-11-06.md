@@ -18,7 +18,7 @@ The reconstructed cohort contains 236 occurrence rows, not 236 independent phono
 
 | Disposition | Rows | Runtime decision |
 |---|---:|---|
-| `RULE_CONFIRMED_STANDARD_VARIANT` | 15 | 14 occurrences covered by exact runtime licenses (nine new exact occurrence licenses plus five pre-existing licenses); one spelling-normalization case blocked |
+| `RULE_CONFIRMED_STANDARD_VARIANT` | 15 | 15 occurrences covered by exact runtime licenses (ten new exact occurrence licenses plus five pre-existing licenses); no input spelling rewrite |
 | `PROFILE_CONVENTION_MISMATCH_CONFIRMED` | 181 | Keep broad/narrow profile distinctions; do not create categorical Korean sound-change rules |
 | `ABSTAIN` | 12 | No runtime change; insufficient token-specific evidence |
 | `UNADJUDICATED` | 28 | No runtime change; individual evidence incomplete |
@@ -33,7 +33,7 @@ Exact integrations are documented in [the 236-case engine integration record](KO
 - NIKL Rule 26: exact `출시미정에`.
 - Five pre-existing exact licenses (`출산`, `팔자걸음`, `보일거라`, `물가로`, `안할듯`) are preserved.
 
-`머리속에` remains blocked because changing it to `머릿속에` would introduce spelling/semantic normalization, not phonology. No guessed IPA or Ukrainian target is added for abstained or unadjudicated cases.
+`머리속에` now has an exact pronunciation-only R008 alias for `리>속`; the original spelling is preserved and no orthographic normalization or productive `머리+속` rule is introduced. No guessed IPA or Ukrainian target is added for abstained or unadjudicated cases.
 
 ## Architecture and ownership boundaries
 
@@ -72,10 +72,10 @@ Pinned source revisions and detailed boundaries are recorded in [the 2026-11-06 
 | Workstream | Status | Acceptance / blocker |
 |---|---|---|
 | Reconstructed 236-row ledger | DONE_VERIFIED as a preserved/reproducible cohort | All 236 rows retained; generator, provenance and row-integrity tests are included in PR #436. This is not independent IPA gold. |
-| 14 exact occurrence runtime integrations | PARTIAL pending exact final-head CI | Code, tests, negative controls and Python/browser parity are present on the PR branch; verify exact final head. |
+| 15 exact occurrence runtime integrations | PARTIAL pending exact final-head CI | Ten new exact licenses plus five baseline licenses; new alias and profile variants have Python/browser regressions; verify exact final head. |
 | 181 profile-convention reconciliations | DONE_VERIFIED as non-integration decisions | No categorical phonology changes; token-acoustic IPA remains unresolved. |
 | 12 abstentions + 28 unadjudicated | BLOCKED | Need exact token audio or independent Korean IPA evidence with source/profile/prosodic context. |
-| `머리속에` spelling normalization | DEFERRED / BLOCKED | Requires a separately specified orthographic/semantic layer and disambiguation policy. |
+| `머리속에` pronunciation alias | PARTIAL pending exact final-head CI | Exact full-eojeol alias is implemented without rewriting spelling; a general orthographic-normalization layer remains out of scope. |
 | Agent routing and workflow documentation | PARTIAL pending final exact-head CI | Root guide, three general skills, workflow guide, navigation and structural test are ported into PR #436 branch. |
 | Upstream reference audit (four repositories) | DONE_VERIFIED as a documented comparison | Pinned revisions and adoption/rejection boundaries documented; no upstream code copied. |
 | Independent Korean IPA gold | BLOCKED | Requires qualified independent reviewers and adjudication; corpus labels/model agreement are insufficient. |
