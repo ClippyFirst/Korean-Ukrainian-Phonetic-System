@@ -150,7 +150,8 @@ A release is not accepted merely because the build succeeds or documentation des
 - [ ] Normative claims point to exact official source passages and article identifiers.
 - [ ] Source conflicts are recorded and resolved with rationale or left explicitly unresolved.
 - [ ] Third-party code/data versions and licenses are recorded.
-- [ ] Attribution obligations for cited sources are recorded.\n- [ ] Redistribution/derivative-work obligations are checked for material actually copied, bundled, vendored, packaged, adapted or redistributed; citation-only evidence is not treated as redistribution.
+- [ ] Attribution obligations for cited sources are recorded.
+- [ ] Redistribution/derivative-work obligations are checked for material actually copied, bundled, vendored, packaged, adapted or redistributed; citation-only evidence is not treated as redistribution.
 - [ ] No unsupported source-completeness claim is made.
 
 ## Gate 2 — Rule and data integrity
