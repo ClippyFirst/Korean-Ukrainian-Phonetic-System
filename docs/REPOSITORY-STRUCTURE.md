@@ -1,12 +1,12 @@
 # Repository structure and ownership guide
 
-**Snapshot:** 2026-11-05, default-branch `main` at `043754498f3ad8a17aa6c13b5f643b197536da8a`; current review branch `research/236-candidate-review-2026-11-05` is tracked by draft PR #436. This guide describes the observed tree and stable ownership boundaries; it is not a claim that every file has been independently reviewed line by line.
+**Snapshot:** 2026-11-06, default-branch baseline `main` at `043754498f3ad8a17aa6c13b5f643b197536da8a`; current integration branch `research/236-candidate-review-2026-11-05` is tracked by PR #436. This guide describes the observed tree and stable ownership boundaries; it is not a claim that every file has been independently reviewed line by line.
 
 ## What this repository contains
 
 A Python research package, a browser-based practical/research application, Korean phonology and lexical datasets, a Korean-to-Ukrainian IPA target layer, reproducible research tooling, and a public GitHub Pages service.
 
-The recursive Git tree contained **806 entries** (767 files plus directories), including **164 Markdown files**, **390 test files**, **62 scripts**, **18 GitHub Actions workflows**, and **13 schemas**. The documentation tree contains 140 files and the research tree 49 files. These are point-in-time inventory counts; see the latest audit addendum for the exact head and CI snapshot.
+At branch head `6c29e09f74af7b0e88ff847886dd7b944bae4c32`, the recursive Git tree contained **831 entries** (789 files and 42 directories), including **177 Markdown files**, **394 files under `tests/`**, **64 scripts**, **18 GitHub Actions workflows**, and **13 schemas**. The `docs/` subtree contained 146 files and `research/` 55 files. These are point-in-time inventory counts, not measures of implementation completeness.
 
 ## Top-level map
 
@@ -22,7 +22,7 @@ The recursive Git tree contained **806 entries** (767 files plus directories), i
 | `tests/` | Python and browser regression suites, fixtures and corpora | Fixtures are not automatically gold labels |
 | `research/` | Source register, rule coverage, acceptance gates, decisions, reviewer queues and discrepancy ledgers | Canonical research status; update existing registers, do not create parallel ledgers |
 | `docs/` | Stable guidance, dated audits, research notes, user/developer docs and handoff | Use the documentation index; keep historical links stable |
-| `.agents/skills/` | Four repository-specific agent skills: NIKL evidence audit, NIKL crawler, rule coverage and phonetic engineering | Extend existing skills rather than copying generic upstream workflows |
+| `.agents/skills/` | Seven repository-local skills: four domain-specific phonetic/NIKL skills plus engineering-change, repository-audit and change-review | Route through root `AGENTS.md`; extend the owning skill rather than copying generic upstream workflows |
 | `.github/workflows/` | Tests, verification, generated artifacts, research jobs and Pages deployment | Inspect path filters, permissions, skip policies and exact-head results |
 | `public/` | Static assets and third-party notices/licences | Third-party terms remain independent |
 | `reports/` | Generated audit summaries and metadata-only manifests | Regenerate from canonical inputs; do not hand-edit generated outputs |
