@@ -61,7 +61,7 @@ test('real source register is structurally valid and unresolved rights remain vi
     ITEM_LEVEL_LICENSE_RECORDED: 3,
     NOT_APPLICABLE_RECORDED: 1,
     REVIEW_REQUIRED: 184,
-    MANUAL_CLASSIFICATION_REQUIRED: 23,
+    MANUAL_CLASSIFICATION_REQUIRED: 24,
   });
   assert.ok(report.rightsClassificationCounts.REVIEW_REQUIRED > 0);
   assert.ok(report.rightsClassificationCounts.MANUAL_CLASSIFICATION_REQUIRED > 0);
@@ -99,6 +99,7 @@ test('real source register is structurally valid and unresolved rights remain vi
   assert.ok(unresolvedIds.has('SRC-KANG-2015-VOWEL-LENGTH-MERGER'));
   assert.ok(unresolvedIds.has('SRC-CHUNG-2022-MID-FRONT-PHONEMIC-STATUS'));
   assert.ok(unresolvedIds.has('SRC-LEE-2023-REVISITING-MID-FRONT-MERGER'));
+  assert.ok(unresolvedIds.has('SRC-NIKL-KRDICT-YUSASEONG'));
 });
 
 test('CLI reports structure by default and keeps strict rights acceptance blocked', () => {

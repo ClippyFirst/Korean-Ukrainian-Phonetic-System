@@ -288,7 +288,7 @@
       "The five reconstructed memberships are high-confidence matches from the pinned benchmark's fortis-versus-plain mismatch signature plus exact target-token occurrence in the pinned source split; they are not copied from the missing original extraction table.",
       "UGTPHON annotations are diagnostic and are not independently adjudicated normative IPA gold.",
       "Morphological and rule-environment sources do not directly attest the exact UGC token IPA.",
-      "No production phonology rule is authorized by this mapping alone; independent IPA review, prosodic review and interaction tests remain required."
+      "No production phonology rule is authorized by this mapping alone; the exact 유사성 lexical license is independently supported by NIKL Korean Basic Dictionary entry 70710. Token-specific acoustic IPA for the UGC speaker remains unavailable."
     ]
   }
 }
