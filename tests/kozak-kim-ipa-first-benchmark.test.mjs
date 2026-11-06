@@ -435,11 +435,15 @@ test('shared Broad profile exposes Lee 1999 intervocalic [ɸ] and [ɭ] as option
   assert.ok(!initialLiquid.variants.some(variant => variant.ipa.includes('ɭ')));
 });
 
-test('shared Broad profile exposes [ɕ] before all Lee 1999 /j/-initial diphthongs only as variants', () => {
+test('broad profile exposes [ɕ] only in Kang 2010 lenis /i, ye, ya/ contexts', () => {
   const engine = createBrowserKozakKimEngine();
-  for (const [word, expected] of [['쇼', 'ɕjo'], ['슈', 'ɕju'], ['셔', 'ɕjʌ']]) {
+  for (const [word, expected] of [['시', 'ɕi'], ['샤', 'ɕja'], ['셰', 'ɕje']]) {
     const result = engine.convert(word, { ipaProfile: 'clippyfirst-korean-broad-v1' });
     assert.ok(result.variants.some(variant => variant.ipa === expected), word);
+  }
+  for (const word of ['쇼', '슈', '셔', '섀', '씨']) {
+    const result = engine.convert(word, { ipaProfile: 'clippyfirst-korean-broad-v1' });
+    assert.ok(!result.variants.some(variant => variant.ipa.includes('ɕ')), word);
   }
   const fortis = engine.convert('쑈', { ipaProfile: 'clippyfirst-korean-broad-v1' });
   assert.ok(!fortis.variants.some(variant => variant.ipa.includes('ɕ͈')));
