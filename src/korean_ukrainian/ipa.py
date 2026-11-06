@@ -125,6 +125,16 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
         elif syllable.nucleus=="ㅖ" and syllable.onset not in {"ㅇ","ㄹ"}:
             primary,alternate="je","e"
             section="§5"
+        elif syllable.nucleus=="ㅐ":
+            # Research-only optional merger/weak-distinction candidate; keep
+            # the current broad-profile vowel as canonical in either direction.
+            if "ɛ" in rendered[i]:
+                primary,alternate="ɛ","e"
+            elif "e" in rendered[i]:
+                primary,alternate="e","ɛ"
+            else:
+                continue
+            section="research /ɛ–e/ merger"
         elif (syllable.nucleus=="ㅢ" and i>0
               and items[i-1].boundary_after!="word"):
             genitive_particle=_word_form_at(items,i) in _NIKL_GENITIVE_UI_PARTICLE_FORMS
@@ -146,14 +156,34 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
                 alternate[index]=alternate[index].replace(primary,form,1)
             labels=[f"{vowel} [{form}]" for _,vowel,_,form,_ in changed]
             sections="/".join(dict.fromkeys(section for *_,section in changed))
-            note=(f"NIKL {sections} permits this alternate; Korean spelling is unchanged."
-                  if len(sites)<=3 else
-                  f"NIKL {sections} permits this local alternate; other optional vowels keep the primary reading.")
+            if any(site[4]=="research /ɛ–e/ merger" for site in changed):
+                note=("Research-only optional [ɛ]~[e] realization of ㅐ; group-level Korean mid-front-vowel merger/weak-distinction evidence (Lee & Cho 2021; Eychenne & Jang 2015). Speaker-specific quality is unknown; canonical broad output is unchanged."
+                      if len(sites)<=3 else
+                      "Research-only local [ɛ]~[e] candidate for ㅐ, supported at group level (Lee & Cho 2021; Eychenne & Jang 2015); other optional vowels retain their primary readings.")
+            else:
+                note=(f"NIKL {sections} permits this alternate; Korean spelling is unchanged."
+                      if len(sites)<=3 else
+                      f"NIKL {sections} permits this local alternate; other optional vowels keep the primary reading.")
             variants.append({
                 "syllable_indices":[index for index,_,_,_,_ in changed],
                 "ipa":render_syllable_sequence(items,alternate),
                 "note":note,
                 "vowels":labels,
+            })
+
+    # Exact loanword variant: NIKL's 2005 usage column records both 게임[게임]
+    # and the fortis-onset variant 게임[께임]. Keep broad /k/ canonical; the
+    # source is qualitative and does not identify this token's speaker.
+    for i,syllable in enumerate(items):
+        if (_word_form_at(items,i)=="게임" and syllable.text=="게"
+                and syllable.onset=="ㄱ" and rendered[i].startswith("k")):
+            alternate=list(rendered)
+            alternate[i]="k͈"+alternate[i][1:]
+            variants.append({
+                "syllable_indices":[i],
+                "ipa":render_syllable_sequence(items,alternate),
+                "note":"Research-only optional [k͈] onset in the exact loanword 게임, recorded alongside [k] by NIKL's 2005 usage column (SRC-NIKL-LOANWORD-GAME-2005); canonical broad /k/ is preserved and speaker realization is unknown.",
+                "vowels":["게임 [k͈]"],
             })
 
     # S020 documents /ɥi/ alongside /wi/ and monophthongized [y] for
