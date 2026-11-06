@@ -90,6 +90,40 @@ def test_236_lenis_sibilant_variants_match_across_native_and_browser_after_resyl
         assert not any("ɕ" in item["ipa"].replace("tɕ", "") for item in browser[word]["variants"]), word + ": Browser out-of-scope negative control"
 
 
+
+def test_research_only_fortis_sibilant_variant_matches_native_and_browser():
+    positive = ["씨", "뼈가씨", "하나씩", "아저씨", "했을시", "실시간", "훨씬", "씌우기", "씌우더만", "씌운", "씹"]
+    negative = ["싸", "쌰", "쑈", "슈"]
+    words = positive + negative
+    native = {word: phoneticize_korean(word)["ipa"] for word in words}
+
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("Node.js is required for the cross-runtime parity check")
+    node_source = (
+        "import { createBrowserKozakKimEngine } from './scripts/benchmark_kozak_kim_browser.mjs';\\n"
+        f"const words = {json.dumps(words, ensure_ascii=False)};\\n"
+        "const engine = createBrowserKozakKimEngine();\\n"
+        "const rows = words.map(word => { const result = engine.convert(word, { ipaProfile: 'clippyfirst-korean-broad-v1' }); return { word, ipa: result.ipa, variants: result.variants || [] }; });\\n"
+        "process.stdout.write(JSON.stringify(rows));\\n"
+    )
+    completed = subprocess.run(
+        [node, "--input-type=module", "-e", node_source],
+        cwd=ROOT, check=True, capture_output=True, text=True,
+    )
+    browser = {row["word"]: row for row in json.loads(completed.stdout)}
+
+    for word in positive:
+        for engine_name, result in (("Native", native[word]), ("Browser", browser[word])):
+            assert "s͈" in result["ipa"], word + ": canonical fortis place is retained"
+            assert "ɕ͈" not in result["ipa"], word + ": canonical IPA is not rewritten"
+            assert any("ɕ͈i" in item["ipa"] for item in result["variants"]), word + ": " + engine_name
+    for word in negative:
+        for engine_name, result in (("Native", native[word]), ("Browser", browser[word])):
+            assert not any("ɕ͈" in item["ipa"] for item in result["variants"]), word + ": " + engine_name
+
+
+
 def test_browser_python_surface_and_ipa_parity_for_236_exact_forms():
     node = shutil.which("node")
     if not node:
