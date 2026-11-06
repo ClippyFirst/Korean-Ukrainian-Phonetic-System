@@ -559,3 +559,6 @@ Training gate: the latest readiness audit finds 644 unique lexical rows but zero
 ## 2026-11-06 — residual 40 occurrence evidence pass
 
 The 12 abstentions and 28 unadjudicated occurrences were re-reviewed. A 28-row residual register is now the row-level evidence companion to the canonical 236-candidate ledger; the generator and regression tests enforce the exact occurrence set and preserve the 12/28 status split. No runtime change is justified. The next dependency is still original audio + speaker crosswalk + two independent Korean IPA annotations, followed by separate Ukrainian target review. See `kozak-kim-236-residual-review-2026-11-06.csv` and the 2026-11-06 section of the candidate review.
+
+
+Runtime guard follow-through: native and browser shared-Broad regressions now cover all six unresolved sibilant token strings and ensure no unsupported [ɕ] is emitted; the `대한민국` optional vowel candidate preserves length and carries the Lee (2023) source citation. These tests prevent evidence-limited cases from silently becoming production rules.
