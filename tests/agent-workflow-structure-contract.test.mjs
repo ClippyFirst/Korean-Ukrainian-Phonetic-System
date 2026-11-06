@@ -124,8 +124,8 @@ test('current repository documentation records exact benchmark, rights and resea
     'research prototype, not independently research-certified or release-ready',
     '42226435101',
     '42226435403',
-    'bb972871a207b1f703503ade980a36cf3b976085',
   ]) assert.ok(rootReadme.includes(phrase), 'README missing current status evidence: ' + phrase);
+  assert.ok(repositoryAudit.includes('bb972871a207b1f703503ade980a36cf3b976085'), 'repository audit missing the merge commit');
   for (const phrase of [
     '15 exact standard-form runtime dispositions',
     '181 profile-convention decisions',
