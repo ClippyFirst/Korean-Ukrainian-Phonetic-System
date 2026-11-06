@@ -17,6 +17,34 @@ def test_narrow_ipa_is_explicitly_partial_and_source_scoped():
     assert phoneticize_korean("쇼", ipa_level="narrow")["ipa"]["ipa"] == "sʰjo"
 
 
+def test_research_only_broad_variants_cover_236_profile_cases_without_changing_canonical_ipa():
+    game = phoneticize_korean("게임")["ipa"]
+    assert game["ipa"] == "ke.im"
+    assert any(variant["ipa"] == "k͈e.im" and "NIKL" in variant["note"] for variant in game["variants"])
+
+    short_front = phoneticize_korean("주는대로")["ipa"]
+    assert any("ㅐ [e]" in variant.get("vowels", []) for variant in short_front["variants"])
+    long_front = phoneticize_korean("대한민국")["ipa"]
+    assert any("ㅐ [ɛ]" in variant.get("vowels", []) and "ɛ" in variant["ipa"] for variant in long_front["variants"])
+
+
+def test_research_only_lenis_sibilant_variant_is_limited_to_kang_2010_contexts():
+    for word, expected in (("시", "ɕi"), ("샤", "ɕja"), ("셰", "ɕje")):
+        variants = phoneticize_korean(word)["ipa"]["variants"]
+        assert any(item["ipa"] == expected for item in variants), word
+
+    # The reviewed evidence does not cover /jʌ, jo, ju/ or fortis /s͈/.
+    for word in ("쇼", "슈", "셔", "섀", "씨"):
+        variants = phoneticize_korean(word)["ipa"]["variants"]
+        assert not any("ɕ" in item["ipa"] for item in variants), word
+
+
+def test_resyllabified_lenis_sibilant_variant_uses_surface_onset():
+    for word in ("멋있어", "멋있노", "무슨뜻임", "것이냐", "저딴짓이면서", "법알못이구만"):
+        variants = phoneticize_korean(word)["ipa"]["variants"]
+        assert any("ɕi" in item["ipa"] for item in variants), word
+
+
 def test_broad_ipa_voicing_after_sonorant():
     result = phoneticize_korean("현대")["ipa"]["ipa"]
     assert "d" in result

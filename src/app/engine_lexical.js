@@ -28,7 +28,7 @@ function renderLexicalIpa(text, ipas){
   }).join('');
 }
 
-export function lexicalResult(text,entry){
+export function lexicalResult(text,entry,options={}){
   if(entry.ipa_adjudication_status==='diagnostic_only_unresolved_pronunciation'){
     const syllables=[...text];
     const alternateSurface=entry.alternate_surface_hangul||'';
@@ -103,6 +103,29 @@ export function lexicalResult(text,entry){
   }).join(' · ');
   const targetReview=entry.target_status==='provisional'||mappedTargets.some(item=>item.status==='provisional');
   const candidateOnly=['variant-aware-research','kozak-research-only'].includes(entry.input_kind)&&entry.target_status==='provisional';
+  // Group-level Korean /ɛ/-/e/ merger evidence is exposed as an optional
+  // research candidate for ㅐ, including lexicon-backed words. Never infer
+  // speaker identity or add/remove vowel length; preserve any existing ː.
+  const researchVowelVariants=[];
+  const sourceSyllables=[...text];
+  if(options.ipaProfile==='clippyfirst-korean-broad-v1')for(let i=0;i<ipas.length;i++){
+    if(decompose(sourceSyllables[i]||'')?.vowel!=='ㅐ')continue;
+    const primary=ipas[i].includes('ɛ')?'ɛ':ipas[i].includes('e')?'e':'';
+    if(!primary)continue;
+    const alternateIpas=ipas.slice();
+    alternateIpas[i]=alternateIpas[i].replace(primary,primary==='ɛ'?'e':'ɛ');
+    const mapped=alternateIpas.map(ipa=>ipaSyllableToUkrainian(ipa,{allowProvisional:true}));
+    if(mapped.some(item=>item.unknown))continue;
+    researchVowelVariants.push({
+      source:text,
+      surface:entry.surface_hangul||text,
+      ukrainian:mapped.map(item=>item.text??'').join(''),
+      ipa:renderLexicalIpa(text,alternateIpas),
+      note:'Research-only optional [ɛ]~[e] realization of ㅐ; group-level Korean mid-front-vowel merger/weak-distinction evidence (Lee & Cho 2021; Eychenne & Jang 2015). Speaker-specific quality is unknown; canonical broad output and any existing vowel length are preserved.',
+      status:mapped.some(item=>item.status==='provisional')?'lexical-review':targetReview?'lexical-review':'lexical',
+      target_status:mapped.some(item=>item.status==='unavailable'||item.unknown)?'unavailable':targetReview||mapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
+    });
+  }
   return {
     source:text,
     surfaceHangul:entry.surface_hangul||'',
@@ -115,10 +138,10 @@ export function lexicalResult(text,entry){
     variants:(()=>{
       const alternateIpas=(entry.alternate_ipa_syllables||'').split('|');
       const alternateSurface=entry.alternate_surface_hangul||'';
-      if(!alternateSurface||!entry.alternate_ipa_syllables||alternateIpas.some(value=>!value))return [];
+      if(!alternateSurface||!entry.alternate_ipa_syllables||alternateIpas.some(value=>!value))return researchVowelVariants;
       const mapped=alternateIpas.map(ipa=>ipaSyllableToUkrainian(ipa,{allowProvisional:true}));
-      if(mapped.some(item=>item.unknown))return [];
-      return [{
+      if(mapped.some(item=>item.unknown))return researchVowelVariants;
+      const variants=[{
         source:text,
         surface:alternateSurface,
         ukrainian:mapped.map(item=>item.text).join(''),
@@ -126,6 +149,7 @@ export function lexicalResult(text,entry){
         note:entry.variant_note||entry.rule_notes||'NIKL-listed alternate pronunciation; Ukrainian rendering remains provisional.',
         status:targetReview?'lexical-review':'lexical'
       }];
+      return [...variants,...researchVowelVariants];
     })(),
     trace:syllables.map((ch,i)=>({
       source:ch,
@@ -173,6 +197,13 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status,
     else if(vowel==='ㅖ'&&syllable.onset!=='ㅇ'&&syllable.onset!=='ㄹ'){
       primary='je';alternate='e';section='§5';
     }
+    else if(vowel==='ㅐ'){
+      // Group-level Korean /ɛ/-/e/ merger evidence supports an optional
+      // research candidate only; preserve whichever broad vowel is canonical.
+      primary=ipa[i]?.includes('ɛ')?'ɛ':ipa[i]?.includes('e')?'e':'';
+      alternate=primary==='ɛ'?'e':primary==='e'?'ɛ':'';
+      section='research /ɛ–e/ merger';
+    }
     else if(vowel==='ㅢ'&&syllable.onset==='ㅇ'&&!firstSyllableInWord(units,i)){
       genitiveParticle=NIKL_GENITIVE_UI_PARTICLE_FORMS.has(wordFormAt(originalUnits,i));
       primary='ɰi';alternate=genitiveParticle?'e':'i';section='§5';
@@ -197,13 +228,17 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status,
       const labels=changed.map(site=>{
         if(site.vowel==='ㅚ')return 'ㅚ [we]';
         if(site.vowel==='ㅟ')return 'ㅟ [wi]';
+        if(site.vowel==='ㅐ')return 'ㅐ ['+site.alternate+']';
         if(site.vowel==='ㅖ')return 'ㅖ [e]';
         return site.genitiveParticle?'관형격 조사 의 [e]':'비초성 ㅢ [i]';
       });
       const sections=[...new Set(changed.map(site=>site.section))].join('/');
-      const note=sites.length<=3
-        ?sections+': дозволена альтернативна вимова '+labels.join(' + ')+'; корейське написання не змінюється.'
-        :sections+': альтернативна вимова '+labels.join(' + ')+'; інші необрані голосні зберігають основне читання, написання не змінюється.';
+      const researchMerger=changed.some(site=>site.section==='research /ɛ–e/ merger');
+      const note=researchMerger
+        ?'Research-only optional [ɛ]~[e] realization of ㅐ; group-level Korean mid-front-vowel merger/weak-distinction evidence (Lee & Cho 2021; Eychenne & Jang 2015). Speaker-specific quality is unknown; canonical broad output is unchanged.'
+        :sites.length<=3
+          ?sections+': дозволена альтернативна вимова '+labels.join(' + ')+'; корейське написання не змінюється.'
+          :sections+': альтернативна вимова '+labels.join(' + ')+'; інші необрані голосні зберігають основне читання, написання не змінюється.';
       return{
         source:text,
         surface:text,
@@ -217,6 +252,23 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status,
   }
 
   if(includeBroadAllophones){
+    // NIKL's 2005 usage column records the exact loanword 게임 with both
+    // lenis [k] and fortis [k͈] initial realizations. Keep [k] canonical.
+    for(let i=0;i<originalUnits.length;i++){
+      const syllable=originalUnits[i];
+      if(wordFormAt(originalUnits,i)!=='게임'||syllable.char!=='게'||syllable.onset!=='ㄱ'||!ipa[i]?.startsWith('k'))continue;
+      const alternateIpa=ipa.slice();
+      alternateIpa[i]='k͈'+alternateIpa[i].slice(1);
+      const mapped=alternateIpa.map(value=>ipaSyllableToUkrainian(value,{allowProvisional:true}));
+      variants.push({
+        source:text,surface:text,ukrainian:mapped.map(item=>item.text??'').join(''),
+        ipa:renderStructured(units,alternateIpa,'.'),
+        note:'Research-only optional [k͈] onset in the exact loanword 게임, recorded alongside [k] by NIKL\'s 2005 usage column (SRC-NIKL-LOANWORD-GAME-2005); canonical broad /k/ is preserved and speaker realization is unknown.',
+        status:mapped.some(item=>item.status==='provisional')?'lexical-review':status,
+        target_status:mapped.some(item=>item.status==='unavailable'||item.unknown)?'unavailable':mapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
+      });
+    }
+
     // Korean ㅟ has a documented [ɥi] realization in addition to [y]/[wi].
     // Keep [y] canonical and expose the phonetic realization as an alternative.
     for(const site of sites.filter(item=>item.vowel==='ㅟ')){
@@ -258,14 +310,16 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status,
     }
   }
 
-  // Lee's Seoul Korean IPA description and Kang (2010) support [ɕ] as a
-  // lenis /s/ allophone before /i/ and selected /j/-initial diphthongs.
-  // Keep the broad canonical /s/ and fortis /s͈/ unchanged.
+  // Kang (2010) supports [ɕ] only as a research candidate for lenis /s/
+  // before /i, ye, ya/ (ㅣ, ㅖ, ㅑ). Do not extend it to /jʌ, jo, ju/ or /s͈/.
   if(includeBroadAllophones){
-    const palatalNuclei=new Set(['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ']);
+    const palatalNuclei=new Set(['ㅣ','ㅑ','ㅖ']);
     for(let i=0;i<originalUnits.length;i++){
-      const syllable=originalUnits[i];
-      if(syllable.onset!=='ㅅ'||!palatalNuclei.has(syllable.vowel)||!ipa[i]?.startsWith('s'))continue;
+      const sourceSyllable=originalUnits[i];
+      const surfaceSyllable=units[i];
+      // Inspect the post-rule onset so coda-ㅅ resyllabification (e.g. 멋있어)
+      // receives the same optional variant as an orthographic onset ㅅ.
+      if(surfaceSyllable.onset!=='ㅅ'||!palatalNuclei.has(sourceSyllable.vowel)||!ipa[i]?.startsWith('s'))continue;
       const alternateIpa=ipa.slice();
       alternateIpa[i]='ɕ'+alternateIpa[i].slice(1);
       const mapped=alternateIpa.map(value=>ipaSyllableToUkrainian(value,{allowProvisional:true}));
@@ -274,7 +328,7 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status,
         surface:text,
         ukrainian:mapped.map(item=>item.text??'').join(''),
         ipa:renderStructured(units,alternateIpa,'.'),
-        note:'Optional [ɕ] allophone of lenis /s/ before /i/ or a Lee (1999)-described /j/-initial diphthong; broad canonical /s/ is preserved.',
+        note:'Research-only optional [ɕ] candidate for lenis /s/ before /i, ye, ya/ (Kang 2010); coarticulation evidence, not a categorical rule. Broad canonical /s/ is preserved.',
         status:mapped.some(item=>item.status==='provisional')?'lexical-review':status,
         target_status:mapped.some(item=>item.status==='unavailable'||item.unknown)?'unavailable':mapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
       });

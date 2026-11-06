@@ -19,13 +19,13 @@ No Ukrainian target is hard-coded in the new rule paths. New outputs continue th
 
 | Candidate disposition | Cases | Runtime decision |
 |---|---:|---|
-| `RULE_CONFIRMED_STANDARD_VARIANT` | 15 | 14 occurrences integrated or already implemented; 1 blocked as spelling normalization |
+| `RULE_CONFIRMED_STANDARD_VARIANT` | 15 | 15 occurrences integrated or already implemented (10 new exact integrations plus 5 baseline integrations); no input spelling rewrite |
 | `PROFILE_CONVENTION_MISMATCH_CONFIRMED` | 181 | No new phonological rule; preserve broad/narrow profile distinction |
 | `ABSTAIN` | 12 | No runtime change; evidence insufficient |
 | `UNADJUDICATED` | 28 | No runtime change; evidence insufficient |
 | **Total** | **236** | **No unsupported guessing** |
 
-The 181 profile cases remain in the research ledger but are not promoted to categorical Korean phonology rules. The 40 abstained/unadjudicated occurrences represent 17 unique token forms: repeated 아끼셔 accounts for 22 occurrences and 한국여자로 for three. The 28 unadjudicated rows include 27 lenis-sibilant mismatches outside the /i, ye, ya/ environments covered by Kang (2010), plus one separate mid-front-vowel quality case. Occurrence repeats are not independent speaker evidence.
+The 181 profile cases remain in the research ledger but are not promoted to categorical Korean phonology rules. The broad profile already exposes optional [ɕ] for lenis-sibilant occurrences where the cited context applies; it now also exposes research-only [ɛ]~[e] quality variants for ㅐ and the exact-word [k͈] variant for 게임. The ㅐ variant preserves an existing length marker but never adds one. Fortis-sibilant [ɕ͈] cases and the two /ɘː/ versus /ʌː/ symbol-profile cases are not rewritten. The 40 abstained/unadjudicated occurrences represent 17 unique token forms: repeated 아끼셔 accounts for 22 occurrences and 한국여자로 for three. The 28 unadjudicated rows include 27 lenis-sibilant mismatches outside the /i, ye, ya/ environments covered by Kang (2010), plus one separate mid-front-vowel quality case. Occurrence repeats are not independent speaker evidence.
 
 ## New runtime integrations
 
@@ -57,7 +57,7 @@ Five rule-confirmed cases already had exact runtime licenses on the starting bra
 
 ## Explicitly not integrated
 
-- `머리속에` (occurrence 2490) is orthographically missing the 사이시옷 in the figurative lexical form `머릿속`. Automatically changing the input spelling would add a spelling/semantic normalization feature, not a phonological rule. It remains **BLOCKED** until that separate feature has an explicit contract and disambiguation policy.
+- `머리속에` (occurrence 2490) now has an exact pronunciation-only lexical alias `리>속`, based on the attested reading of `머릿속`. The source spelling is preserved; no automatic orthographic rewrite or productive `머리+속` rule is introduced.
 - The 181 profile-convention mismatches remain outside categorical rule tables.
 - The 12 abstentions and 28 unadjudicated rows remain unimplemented. No IPA, audio, or Ukrainian target is fabricated.
 
@@ -77,3 +77,24 @@ The remaining cohort includes three occurrences of `한국여자로` and one of 
 The current unmapped-Broad snapshot is **26 rows**. Six occurrences removed from the previous 32-row export are now covered by exact runtime licenses: 545 (`정권`), 826 (`유사성`), 1610 (`자신의`), and 1816/1843/1870 (repeated `연전연패`). The 236-candidate adjudication ledger is unchanged. `그놈의` remains a diagnostic mismatch because the engine's principal /ɰi/ is source-backed and [e] is an exposed permitted variant; the UGTPHON comparator is not speaker-specific gold.
 
 The tracked 26-row CSV matches the generated artifact row-by-row. The multi-engine export/cmp and downstream benchmark workflow on exact head `59e31ac63467280d345ee95533854b61608059f6` was still running at this documentation snapshot.
+
+
+
+## 2026-11-06 implementation follow-up
+
+- Added exact R008 pronunciation alias for `머리속에`; it returns the lexical fortis reading while retaining the user's written form. Negative controls prevent generalization to neighboring forms.
+- Added optional research-only broad-profile variants for exact `게임` `[k͈]` and group-level `ㅐ` `[ɛ]~[e]`. The canonical output remains unchanged, and variants are not accepted as speaker-level gold or approved Ukrainian targets.
+- The 12 abstentions and 28 unadjudicated cases remain blocked by missing source audio/speaker crosswalk and independent IPA annotation. Fortis sibilant place mismatches remain outside the lenis coarticulation evidence.
+
+**Updated implementation status:** 15/15 standard-form/rule occurrences have runtime dispositions (10 new exact integrations plus 5 already present on baseline); 181 profile differences are explicitly handled as profile variants or non-integrations; 40 remain evidence-limited.
+
+## 2026-11-06 — broad-profile sibilant scope and resyllabification parity correction
+
+A second implementation review found two Browser/Python mismatches affecting the 236-case profile work:
+
+- Browser previously exposed optional lenis [ɕ] for every /j/-initial nucleus in its broad profile, although the reviewed Kang (2010) evidence supports only /i, ye, ya/ (ㅣ, ㅖ, ㅑ). The Browser set now matches the Python broad-profile set exactly. No optional [ɕ] is emitted for the 27 out-of-scope lenis operations (/jʌ/, /jo/, /ju/ and other unsupported contexts); the canonical broad /s/ is unchanged.
+- Browser previously inspected the original onset when constructing optional variants, so it missed surface lenis /s/ created by coda-ㅅ resyllabification. It now inspects the post-rule surface onset while retaining the source vowel context. This exposes the same research-only optional [ɕ] candidate for 멋있어 (ID 538) and 멋있노 (ID 143) as the Python path. NIKL Q&A 306166 directly attests the [머시써] variant for 멋있어; neither case is claimed as speaker-specific acoustic IPA gold.
+
+Regression coverage now includes supported /i, ye, ya/ examples, negative controls for /jʌ, jo, ju/, ㅒ and fortis /s͈/, and six resyllabified forms: 멋있어, 멋있노, 무슨뜻임, 것이냐, 저딴짓이면서, and 법알못이구만. The last three include the Rule 13 context cases 475, 2392 and 2667. Code correction commit: dcf1726212e16719b0fdc03311e5903448151e8b. No canonical IPA, phonemic output, Ukrainian target, or benchmark gold changed.
+
+The 24 fortis ɕ͈→s͈ edit operations across 23 occurrence rows remain unresolved; 22 are on forms containing orthographic ㅆ and two are coda-triggered fortition cases (했을시, 실시간). The 12 abstentions and 28 unadjudicated rows remain evidence-limited. Exact-head CI must be read from the final PR #441 head; skipped optional jobs are not passes.

@@ -18,7 +18,7 @@ The reconstructed cohort contains 236 occurrence rows, not 236 independent phono
 
 | Disposition | Rows | Runtime decision |
 |---|---:|---|
-| `RULE_CONFIRMED_STANDARD_VARIANT` | 15 | 14 occurrences covered by exact runtime licenses (nine new exact occurrence licenses plus five pre-existing licenses); one spelling-normalization case blocked |
+| `RULE_CONFIRMED_STANDARD_VARIANT` | 15 | 15 occurrences covered by exact runtime licenses (ten new exact occurrence licenses plus five pre-existing licenses); no input spelling rewrite |
 | `PROFILE_CONVENTION_MISMATCH_CONFIRMED` | 181 | Keep broad/narrow profile distinctions; do not create categorical Korean sound-change rules |
 | `ABSTAIN` | 12 | No runtime change; insufficient token-specific evidence |
 | `UNADJUDICATED` | 28 | No runtime change; individual evidence incomplete |
@@ -33,7 +33,7 @@ Exact integrations are documented in [the 236-case engine integration record](KO
 - NIKL Rule 26: exact `출시미정에`.
 - Five pre-existing exact licenses (`출산`, `팔자걸음`, `보일거라`, `물가로`, `안할듯`) are preserved.
 
-`머리속에` remains blocked because changing it to `머릿속에` would introduce spelling/semantic normalization, not phonology. No guessed IPA or Ukrainian target is added for abstained or unadjudicated cases.
+`머리속에` now has an exact pronunciation-only R008 alias for `리>속`; the original spelling is preserved and no orthographic normalization or productive `머리+속` rule is introduced. No guessed IPA or Ukrainian target is added for abstained or unadjudicated cases.
 
 ## Architecture and ownership boundaries
 
@@ -72,10 +72,10 @@ Pinned source revisions and detailed boundaries are recorded in [the 2026-11-06 
 | Workstream | Status | Acceptance / blocker |
 |---|---|---|
 | Reconstructed 236-row ledger | DONE_VERIFIED as a preserved/reproducible cohort | All 236 rows retained; generator, provenance and row-integrity tests are included in PR #436. This is not independent IPA gold. |
-| 14 exact occurrence runtime integrations | PARTIAL pending exact final-head CI | Code, tests, negative controls and Python/browser parity are present on the PR branch; verify exact final head. |
+| 15 exact occurrence runtime integrations | PARTIAL pending exact final-head CI | Ten new exact licenses plus five baseline licenses; new alias and profile variants have Python/browser regressions; verify exact final head. |
 | 181 profile-convention reconciliations | DONE_VERIFIED as non-integration decisions | No categorical phonology changes; token-acoustic IPA remains unresolved. |
 | 12 abstentions + 28 unadjudicated | BLOCKED | Need exact token audio or independent Korean IPA evidence with source/profile/prosodic context. |
-| `머리속에` spelling normalization | DEFERRED / BLOCKED | Requires a separately specified orthographic/semantic layer and disambiguation policy. |
+| `머리속에` pronunciation alias | PARTIAL pending exact final-head CI | Exact full-eojeol alias is implemented without rewriting spelling; a general orthographic-normalization layer remains out of scope. |
 | Agent routing and workflow documentation | PARTIAL pending final exact-head CI | Root guide, three general skills, workflow guide, navigation and structural test are ported into PR #436 branch. |
 | Upstream reference audit (four repositories) | DONE_VERIFIED as a documented comparison | Pinned revisions and adoption/rejection boundaries documented; no upstream code copied. |
 | Independent Korean IPA gold | BLOCKED | Requires qualified independent reviewers and adjudication; corpus labels/model agreement are insufficient. |
@@ -142,3 +142,13 @@ The merged commit `da931f1fa4d95b000bfaa9a0fd54f36cebb1703c` was confirmed as th
 The canonical candidate review now contains a focused evidence pass over all 12 abstentions and 28 previously unadjudicated occurrences. It corrects several scope errors (notably 아끼셔 is lenis /s/ before /jʌ/, 체험 contains /e.hʌ/, and Rule 29 phrase-level applicability requires connected-speech evidence) and records why the remaining comparator mismatches cannot yet be promoted to IPA gold.
 
 The unresolved count remains 40 (12 abstentions + 28 unadjudicated). No runtime rule, benchmark gold, IPA target, or Ukrainian target changed. This is an evidence-gated decision, not an assertion that the cases are unimportant: source audio/speaker mapping and two independent Korean IPA annotations remain the acceptance blockers. See [the canonical candidate review](../research/kozak-kim-236-candidate-review-2026-11-05.md#2026-11-06--focused-second-pass-review-of-the-remaining-40-occurrences).
+
+
+## 2026-11-06 — PR #441 follow-up: 236-case runtime coverage and parity correction
+
+- PR #441 remains the active implementation branch, based on main `07c0233fa7aaee18cbfde82f764ac9061a0fb24d`. The 236-row ledger remains 15 `RULE_CONFIRMED_STANDARD_VARIANT`, 181 `PROFILE_CONVENTION_MISMATCH_CONFIRMED`, 12 `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW`, and 28 `NOT_INDIVIDUALLY_ADJUDICATED`.
+- All 15 standard-form/rule occurrences have explicit runtime dispositions (10 newly integrated on this branch, five preserved from baseline). The 181 profile rows are not promoted to productive phonological rules. The 24 fortis `ɕ͈→s͈` operations across 23 occurrence rows remain unresolved; 22 are on forms with orthographic ㅆ and two are coda-triggered fortition cases.
+- Code correction commit `dcf1726212e16719b0fdc03311e5903448151e8b` aligns Browser optional lenis [ɕ] variants with Python's evidence-scoped /i, ye, ya/ set, removes unsupported `/jʌ, jo, ju/` candidates, and handles post-rule coda-ㅅ resyllabification for IDs 143 (`멋있노`), 538 (`멋있어`), and Rule 13 context cases 475, 2392 and 2667. Regression tests cover six resyllabified forms, supported contexts, out-of-scope negative controls, and fortis negative controls.
+- The current profile disposition for IDs 143 and 538 is confirmed in `research/kozak-kim-context-adjudication-2026-11-05.csv`; older prose saying they remain open is superseded. ID 538 has direct NIKL Q&A 306166 support for the [머시써] surface variant. This is a broad-vs-narrow profile reconciliation, not speaker-specific acoustic IPA gold.
+- No canonical IPA, phonemic output, Ukrainian target, or benchmark gold changed. The 12 abstentions and 28 unadjudicated occurrences remain blocked on source audio, speaker crosswalk, and independent Korean IPA annotation. No local pytest/npm run is claimed in this connector-only environment. The 1.03 MB master handoff could not be rewritten through the available GitHub content action (the prior full-file update was rejected by the safety filter); this follow-up is recorded in the candidate review, engine-integration memo, and audit. The master handoff itself is not claimed as updated.
+- Exact-head CI for the final PR #441 head is the remaining software acceptance gate. Optional NIKL metadata, Charsiu and ByT5 jobs are skipped by policy, not passed. PR #439 remains separate and open with its previously recorded rights-audit test failures.

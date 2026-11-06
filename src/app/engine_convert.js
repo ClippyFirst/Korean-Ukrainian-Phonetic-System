@@ -104,7 +104,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
             }
             return result;
           }
-          return lexicalResult(part,entry);
+          return lexicalResult(part,entry,options);
         }
         return convertText(part,map,lexicon,true,options);
       });

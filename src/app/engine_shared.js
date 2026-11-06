@@ -189,6 +189,9 @@ const NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS=new Map([
 // No general -권, -성, or -증 rule is inferred.
 const LEXICAL_FORTITION_FORMS=new Map([
   ['정권','정>권'], ['유사성','사>성'], ['혐오증','오>증'],
+  // Exact lexical alias for the corpus spelling 머리속에; the input spelling
+  // is preserved. SRC-KIMNAMMI-2017-DONGA-MEORISSOK attests 머릿속[머리쏙].
+  ['머리속에','리>속'],
 ]);
 
 // Exact, source-backed NIKL §28 compound fortition cases. These licenses
