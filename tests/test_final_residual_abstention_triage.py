@@ -39,7 +39,7 @@ def test_residual_abstention_register_is_complete_and_evidence_scoped():
 
 def test_residual_cases_preserve_exact_spelling_and_ipa_acceptance_boundary():
     queue = json.loads(QUEUE.read_text(encoding="utf-8"))
-    recovered = {"칡칡이", "쫒아내면", "많앗구나유유유", "무서웟어"}
+    recovered = {"쫒아내면", "많앗구나유유유", "무서웟어"}
     for case in queue["cases"]:
         form = case["input"]
         phonetics = phoneticize_korean(form)
@@ -54,7 +54,7 @@ def test_residual_cases_preserve_exact_spelling_and_ipa_acceptance_boundary():
             assert result["target_status"] in {"model-selected", "provisional", "unavailable"}, (form, result)
             assert result["analysis_status"] == "research-prototype", (form, result)
         else:
-            # 삶의 remains blocked: NIKL Hangul variants are not IPA gold.
+            # 칡칡이 (folk-song heading) and 삶의 remain blocked for different reasons.
             assert result["target_status"] == "unavailable", (form, result)
             assert result["ukrainian_orthography"] is None, (form, result)
             assert result["candidate_orthography"] is None, (form, result)
