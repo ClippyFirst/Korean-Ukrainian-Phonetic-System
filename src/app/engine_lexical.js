@@ -310,11 +310,10 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status,
     }
   }
 
-  // Lee's Seoul Korean IPA description and Kang (2010) support [ɕ] as a
-  // lenis /s/ allophone before /i/ and selected /j/-initial diphthongs.
-  // Keep the broad canonical /s/ and fortis /s͈/ unchanged.
+  // Kang (2010) supports [ɕ] only as a research candidate for lenis /s/
+  // before /i, ye, ya/ (ㅣ, ㅖ, ㅑ). Do not extend it to /jʌ, jo, ju/ or /s͈/.
   if(includeBroadAllophones){
-    const palatalNuclei=new Set(['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ']);
+    const palatalNuclei=new Set(['ㅣ','ㅑ','ㅖ']);
     for(let i=0;i<originalUnits.length;i++){
       const syllable=originalUnits[i];
       if(syllable.onset!=='ㅅ'||!palatalNuclei.has(syllable.vowel)||!ipa[i]?.startsWith('s'))continue;
@@ -326,7 +325,7 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status,
         surface:text,
         ukrainian:mapped.map(item=>item.text??'').join(''),
         ipa:renderStructured(units,alternateIpa,'.'),
-        note:'Optional [ɕ] allophone of lenis /s/ before /i/ or a Lee (1999)-described /j/-initial diphthong; broad canonical /s/ is preserved.',
+        note:'Research-only optional [ɕ] candidate for lenis /s/ before /i, ye, ya/ (Kang 2010); coarticulation evidence, not a categorical rule. Broad canonical /s/ is preserved.',
         status:mapped.some(item=>item.status==='provisional')?'lexical-review':status,
         target_status:mapped.some(item=>item.status==='unavailable'||item.unknown)?'unavailable':mapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
       });
