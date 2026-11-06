@@ -257,7 +257,8 @@ test('C08 context recovery applies only the exact dictionary-backed 유사성 le
   assert.ok(result.surfaceHangul.includes('유사썽'), 'exact dictionary-backed 유사성 is fortified');
   assert.ok(!result.surfaceHangul.includes('유사성'), 'the exact form is no longer plain');
   const negative = generic.convert(sourceCase.source_sentence.replace('유사성','혐오성'));
-  assert.ok(!negative.ipa.includes('tɕ͈'), 'unlisted -성 forms do not inherit the exact license');
+  const unlistedSuffix = generic.convert('혐오성');
+  assert.ok(!unlistedSuffix.ipa.includes('s͈'), 'unlisted -성 forms do not inherit the exact license');
 });
 
 test('§27 attached -ㄹ게 ending license stays inside its exact eojeol', () => {

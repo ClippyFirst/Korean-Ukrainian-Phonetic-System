@@ -302,7 +302,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     }
 
     const prev=prevHangul(units,i);
-    const genitiveParticleUi=u.vowel==='ㅢ'&&NIKL_GENITIVE_UI_PARTICLE_FORMS.has(exactWordFormAt(units,i));
+    const genitiveParticleUi=u.vowel==='ㅢ'&&NIKL_GENITIVE_UI_PARTICLE_FORMS.has(exactWordFormAt(originalUnits,i));
     const contextualUi=u.vowel==='ㅢ'&&u.onset!=='ㅇ';
     const defaultUi=u.vowel==='ㅢ'&&u.onset==='ㅇ';
     const vowelJamo=contextualUi?'ㅣ':u.vowel;

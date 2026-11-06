@@ -174,7 +174,7 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status,
       primary='je';alternate='e';section='§5';
     }
     else if(vowel==='ㅢ'&&syllable.onset==='ㅇ'&&!firstSyllableInWord(units,i)){
-      genitiveParticle=NIKL_GENITIVE_UI_PARTICLE_FORMS.has(wordFormAt(units,i));
+      genitiveParticle=NIKL_GENITIVE_UI_PARTICLE_FORMS.has(wordFormAt(originalUnits,i));
       primary='ɰi';alternate=genitiveParticle?'e':'i';section='§5';
     }
     if(!alternate||!ipa[i]||!ipa[i].includes(primary))continue;

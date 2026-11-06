@@ -350,8 +350,9 @@ def test_c08_context_fixture_restores_all_eight_source_rows_without_importing_ip
         evidence_ids = set(case.get("morphology_evidence", [])) | set(case.get("rule_evidence", []))
         evidence_ids |= set(case.get("pronunciation_evidence", {}).get("source_ids", []))
         assert evidence_ids <= registered, case["source_row_id"]
-    unresolved = next(case for case in cases if case["source_row_id"] == "dc_inside_2024")
-    assert unresolved["status"] == "UNRESOLVED_EXACT_LEXICAL_PRONUNCIATION"
+    dictionary_attested = next(case for case in cases if case["source_row_id"] == "dc_inside_2024")
+    assert dictionary_attested["status"] == "EXACT_DICTIONARY_LEXICAL_PRONUNCIATION_CONFIRMED"
+    assert dictionary_attested["pronunciation_evidence"]["source_ids"] == ["SRC-NIKL-KRDICT-YUSASEONG"]
     supported = next(case for case in cases if case["source_row_id"] == "multilexnorm2026_1953")
     assert supported["pronunciation_evidence"]["source_ids"] == ["SRC-NIKL-QNA-307960"]
     assert "exact corpus token" in supported["pronunciation_evidence"]["scope"]
@@ -631,10 +632,13 @@ def test_c08_fixture_maps_all_eight_occurrences_without_promoting_hypotheses_to_
     assert set(mapping["independently_recovered_ids"]) | set(mapping["reconstructed_ids"]) == case_ids
     assert mapping["status"] == "ALL_EIGHT_SOURCE_ROWS_MAPPED_WITH_FIVE_HIGH_CONFIDENCE_RECONSTRUCTIONS"
 
+    dictionary_attested = [case for case in cases if case["status"] == "EXACT_DICTIONARY_LEXICAL_PRONUNCIATION_CONFIRMED"]
     unresolved = [case for case in cases if case["status"] == "UNRESOLVED_EXACT_LEXICAL_PRONUNCIATION"]
-    assert len(unresolved) == 1
-    assert unresolved[0]["source_row_id"] == "dc_inside_2024"
-    assert unresolved[0]["input"] == "유사성"
+    assert len(dictionary_attested) == 1
+    assert len(unresolved) == 0
+    assert dictionary_attested[0]["source_row_id"] == "dc_inside_2024"
+    assert dictionary_attested[0]["input"] == "유사성"
+    assert dictionary_attested[0]["pronunciation_evidence"]["source_ids"] == ["SRC-NIKL-KRDICT-YUSASEONG"]
     assert all(case.get("morphology_evidence") for case in cases if case["source_row_id"] != "dc_inside_2024")
     assert any("not independently adjudicated normative IPA gold" in item for item in mapping["limitations"])
     assert any("No production phonology rule" in item for item in mapping["limitations"])

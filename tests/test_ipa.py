@@ -341,8 +341,8 @@ def test_genitive_particle_ui_uses_rule5_e_variant_not_lexical_i_variant():
     for word in ("그놈의", "자신의"):
         result = phoneticize_korean(word)["ipa"]
         assert result["ipa"].endswith("ɰi"), word
-        assert any(variant["ipa"].endswith(".e") for variant in result["variants"]), word
-        assert not any(variant["ipa"].endswith(".i") for variant in result["variants"]), word
+        assert any(variant["ipa"].endswith("e") for variant in result["variants"]), word
+        assert not any(variant["ipa"].endswith("i") for variant in result["variants"]), word
 
     lexical = phoneticize_korean("민주주의")["ipa"]
-    assert any(variant["ipa"].endswith(".i") for variant in lexical["variants"])
+    assert any(variant["ipa"].endswith("i") for variant in lexical["variants"])

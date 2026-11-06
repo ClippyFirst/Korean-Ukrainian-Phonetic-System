@@ -1100,7 +1100,7 @@ def test_236_candidate_exact_lexical_fortition_and_nikl_29_26_licenses():
     assert not any(trace["rule_id"] == "R009" and trace["changed"] for trace in phoneticize_korean("연전연합")["rules"])
     # 혐오성 undergoes ordinary 혐>혀 liaison, but the unlisted -성 form
     # must not receive the dictionary-backed fortis onset.
-    assert "tɕ͈" not in phoneticize_korean("혐오성")["ipa"]["ipa"]
+    assert "s͈" not in phoneticize_korean("혐오성")["ipa"]["ipa"]
 
     for word, pair in (("정권", "정>권"), ("유사성", "사>성"), ("혐오증", "오>증")):
         items, traces = apply_ordered_rules(parse_syllables(word), ["R008"])

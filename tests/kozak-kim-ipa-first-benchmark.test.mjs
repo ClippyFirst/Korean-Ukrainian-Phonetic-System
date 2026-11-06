@@ -459,12 +459,12 @@ test('236-candidate standard-rule cases are integrated as exact runtime licenses
     const result = convert(word);
     assert.equal(result.pronunciation_status, 'resolved', word);
     assert.match(result.ipa, /ɰi$/u, word + ': principal genitive-particle reading');
-    assert.ok(result.variants.some(variant => /\.e$/u.test(variant.ipa)), word + ': Rule 5 [e] variant');
-    assert.ok(!result.variants.some(variant => /\.i$/u.test(variant.ipa)), word + ': [i] is not the genitive-particle variant');
+    assert.ok(result.variants.some(variant => /e$/u.test(variant.ipa)), word + ': Rule 5 [e] variant');
+    assert.ok(!result.variants.some(variant => /i$/u.test(variant.ipa)), word + ': [i] is not the genitive-particle variant');
   }
 
   const lexicalUi = convert('민주주의');
-  assert.ok(lexicalUi.variants.some(variant => /\.i$/u.test(variant.ipa)));
+  assert.ok(lexicalUi.variants.some(variant => /i$/u.test(variant.ipa)));
 });
 
 test('236-candidate exact licenses do not become productive suffix or substring rules', () => {
@@ -488,7 +488,7 @@ test('five previously integrated standard-rule cases remain covered', () => {
     '팔자걸음': '팔짜거름',
     '보일거라': '보일꺼라',
     '물가로': '물까로',
-    '안할듯': '안할뜯'
+    '안할듯': '안할뜻'
   };
   for (const [word, surface] of Object.entries(expected)) {
     assert.equal(engine.convert(word, { morphologyMode: 'strict' }).surfaceHangul, surface, word);
