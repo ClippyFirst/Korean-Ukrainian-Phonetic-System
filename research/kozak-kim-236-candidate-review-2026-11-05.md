@@ -6,7 +6,7 @@ The **24 fortis [ɕ͈]→/s͈/ edit operations across 23 occurrence rows** remai
 
 The 12 abstentions and 28 unadjudicated occurrences still require original audio, speaker crosswalk, and two independent Korean IPA annotations under an explicit convention, including syllable boundaries and uncertainty. Reconcile and freeze IPA before separate Ukrainian target review. No IPA gold or Ukrainian target was inferred from model agreement or corpus comparison. No further production rule is justified by the evidence currently recorded.
 
-See the [post-merge engine integration and CI record](../../docs/KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md) for exact runtime and benchmark status.
+See the [post-merge engine integration and CI record](../docs/KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md) for exact runtime and benchmark status.
 
 ---
 
