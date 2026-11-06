@@ -5,10 +5,17 @@ Research-grade, machine-readable framework for Korean → Ukrainian phonetic-gra
 ## Documentation and repository map
 
 - [Documentation index](docs/README.md) — canonical navigation for users, developers and researchers.
+- [Agent workflows](docs/AGENT-WORKFLOWS.md) — task routing, repository-local skills, evidence/verification lifecycle and upstream practice decisions.
+- [Agent instructions](AGENTS.md) — repository-wide entry contract and skill router.
 - [Versioning policy](docs/VERSIONING-POLICY.md) — separate version streams for the private browser app and installable Python package.
 - [Repository structure guide](docs/REPOSITORY-STRUCTURE.md) — current component map, data ownership, runtime entry points, development commands and safe navigation.
-- [Repository audit and structure — latest 2026-11-05 addendum](docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — dated audit snapshots and the current exact-head status.
-- [Engineering workflow reference audit](docs/ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-05.md) — pinned comparison of Superpowers, Matt Pocock skills and Ponytail; project-specific adoption decisions.
+- [Repository audit and structure — 2026-11-06](docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md) — current documentation/agent-workflow and 236-case integration audit.
+- [236-candidate review](research/kozak-kim-236-candidate-review-2026-11-05.md) and [engine integration](docs/KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md) — evidence disposition and exact runtime changes.
+- [Previous repository audit — 2026-11-04](docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — historical audit and earlier exact-head status.
+
+## Development and agent workflows
+
+Contributors and coding agents should start with [AGENTS.md](AGENTS.md), then use the [agent workflow guide](docs/AGENT-WORKFLOWS.md) to select the maintained skill and canonical research/engineering record. The guide adapts selected practices from Unlazy, Superpowers, Matt Pocock's skills and Ponytail without copying or vendoring their implementations.
 
 ## Author, licensing and permissions
 
@@ -296,8 +303,6 @@ The durable project plan, evidence registers, rule-coverage matrix, architecture
 - [Rule-to-implementation coverage matrix](research/RULE-COVERAGE.csv)
 - [Architecture decision log](research/DECISION-LOG.md)
 - [Release acceptance gates](research/ACCEPTANCE-GATES.md)
-- [236-candidate occurrence review](research/kozak-kim-236-candidate-review-2026-11-05.md) — reconstructed historical cohort, per-case provenance and evidence-limited disposition.
-- [236-candidate Kozak Kim engine integration](docs/KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md) — exact runtime licenses, already-implemented cases, negative controls and blocked normalization.
 
 The initial Phase 0 reconstruction is substantially complete for the current mainline: current CI covers browser tests/build, Python 3.11/3.12/3.13, corpus artifacts and system verification. Remaining acceptance gaps and their evidence are tracked in the handoff, completion audit, and research/ACCEPTANCE-GATES.md.
 
