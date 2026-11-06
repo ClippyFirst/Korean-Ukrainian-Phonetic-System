@@ -26,7 +26,7 @@ test('four exact UGTPHON morphology cases resolve without rewriting source spell
 test('exact noisy-form licenses do not generalize to neighboring spellings', () => {
   for (const input of ['칡칡이', '칡칡에', '쫒아내서', '많앗으면', '무서웟어요']) {
     const result = engine.convert(input);
-    assert.equal(result.status, 'unresolved', input + ': a different full form must remain fail-closed');
+    assert.equal(result.pronunciation_status, 'unresolved', input + ': a different full form must remain fail-closed');
     assert.ok(result.issues.length > 0, input + ': explain the missing exact morphology evidence');
   }
 });
