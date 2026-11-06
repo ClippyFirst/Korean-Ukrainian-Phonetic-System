@@ -443,7 +443,7 @@ The first documentation-navigation refresh exposed a structural contract: `tests
 **Detailed decision record:** [40-case no-audio adjudication](KOZAK-KIM-40-NO-AUDIO-ADJUDICATION-2026-11-06.md).  
 **Occurrence ledger:** [40-row engine-policy register](../research/kozak-kim-40-no-audio-engine-policy-2026-11-06.csv).
 
-- **DONE implementation (pending CI):** Python and browser NIKL §29 phrase-mode insertion licenses for the exact spaced phrases `홍콩 영화들`, `한국 여자로`, and `첫 연애`; no hidden word boundaries are inferred in compact tokens.
+- **DONE implementation (pending CI):** Python and browser NIKL §29 phrase-mode handling for the explicitly spaced phrases `홍콩 영화들`, `한국 여자로`, and `첫 연애`; these are not token-specific lexical attestations; no hidden word boundaries are inferred in compact tokens.
 - **DONE policy adjudication:** all 40 occurrences have `ENGINE_POLICY_RESOLVED_NO_AUDIO` decisions (12 original ABSTAIN rows + 28 focused residual rows; 17 distinct token spellings; 12 policy families).
 - **BLOCKED evidence claim:** all 40 remain `UNRESOLVED_NO_AUDIO` for speaker-specific IPA gold. No audio is available by user constraint; no narrow IPA, speaker-specific [ɛ]/[e], or optional prosodic variant is fabricated.
 - **Data-quality finding:** source contexts for occurrences 1219 and 1288 contain raw `ㅠ` emoticons but canonicalized text replaces them with `유`; these spans are non-speech notation and must not be treated as spoken /ju/. The runtime's standalone-jamo guard is now tested with `ㅠㅠ`.
