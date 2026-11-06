@@ -5,20 +5,20 @@ This page is the entry point for project documentation. It distinguishes current
 ## Start here
 
 1. [Project README](../README.md) — product overview, installation entry points, public service, runtime modes and limitations.
-2. [Repository structure guide](REPOSITORY-STRUCTURE.md) — current component map, data ownership, runtime entry points, development commands and safe navigation.
-3. [Repository audit and structure](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — dated snapshots; latest addendum 2026-11-05, including engine isolation and historical mismatch blockers.
-4. [236-case independent review protocol](KOZAK-236-INDEPENDENT-REVIEW.md) — prepare blinded Korean IPA review packets for the reconstructed candidate cohort.
-- [236-candidate engine integration](KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md) — exact evidence-gated runtime licenses and remaining blockers.
-5. [Engineering workflow reference audit](ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-05.md) — review of the three supplied repositories and explicit adoption decisions.
-6. [Versioning policy](VERSIONING-POLICY.md) — independent browser and Python release streams.
-7. [Architecture](architecture.md) — concise system architecture.
-8. [Methodology](methodology.md) — linguistic and engineering methodology.
-9. [Ukrainian target layer](ukrainian-target-layer.md) — IPA-to-Ukrainian mapping contract.
-10. [Research index](../research/README.md) — active research programme and evidence workflow.
-11. [Research master directive](../research/MASTER-DIRECTIVE.md) — non-negotiable research and implementation constraints.
-12. [Acceptance gates](../research/ACCEPTANCE-GATES.md) — research and release acceptance criteria.
-13. [Decision log](../research/DECISION-LOG.md) — append-only consequential decisions.
-13. [Master execution plan and handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) — detailed historical execution record; use the newest dated section, not an old snapshot.
+2. [Root agent instructions](../AGENTS.md) — repository-wide task routing and non-negotiable contracts.
+3. [Agent workflow guide](AGENT-WORKFLOWS.md) — maintained skills, task lifecycle, evidence rules and review/verification process.
+4. [Repository structure guide](REPOSITORY-STRUCTURE.md) — current component map, data ownership, runtime entry points, development commands and safe navigation.
+5. [Repository audit and structure — 2026-11-06](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md) — current structure, agent workflow and branch/PR snapshot.
+6. [Previous repository audit — 2026-11-04](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — historical snapshots; latest addendum 2026-11-05, including engine isolation and historical mismatch blockers.
+7. [Versioning policy](VERSIONING-POLICY.md) — independent browser and Python release streams.
+8. [Architecture](architecture.md) — concise system architecture.
+9. [Methodology](methodology.md) — linguistic and engineering methodology.
+10. [Ukrainian target layer](ukrainian-target-layer.md) — IPA-to-Ukrainian mapping contract.
+11. [Research index](../research/README.md) — active research programme and evidence workflow.
+12. [Research master directive](../research/MASTER-DIRECTIVE.md) — non-negotiable research and implementation constraints.
+13. [Acceptance gates](../research/ACCEPTANCE-GATES.md) — research and release acceptance criteria.
+14. [Decision log](../research/DECISION-LOG.md) — append-only consequential decisions.
+15. [Master execution plan and handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) — detailed historical execution record; use the newest dated section, not an old snapshot.
 
 - [Licensing and permissions](LICENSING-AND-PERMISSIONS.md) — author identity, scientific-use permissions, technical permission boundary and third-party licence scope.
 
@@ -33,7 +33,7 @@ This page is the entry point for project documentation. It distinguishes current
 | Evidence and rights | `evidence.md`, `METHODOLOGY-CLAIMS-AND-EVIDENCE-REGISTER-2026-10-30.md`, `NIKL-LOCAL-CAPTURE-AND-INVENTORY-2026-10-24.md` | Provenance, claim scope, licensing and source limitations |
 | Benchmarks | `KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md`, `BENCHMARK-REVIEW-2026-10-24.md`, `MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md` | Benchmark definitions, results and interpretation |
 | Kozak Kim | `KOZAK-KIM-DISCREPANCY-DRIVEN-IMPROVEMENT-2026-11-01.md`, `../research/RULE-COVERAGE.csv`, `../research/kozak-kim-unmapped-mismatch-review-queue-2026-11-03.csv`, and `../research/kozak-kim-context-adjudication-2026-11-05.csv` | NIKL R001–R016 implementation, discrepancy evidence, four context-backed R013 fixes, provisional R012 retain, and source-gated review queue |
-| Agent workflows | `AGENT-SKILL-INTEGRATION-2026-11-01.md`, `AGENT-SKILLS-NIKL.md`, `../.agents/skills/` | Repository-local agent skills and operating contracts |
+| Agent workflows | `../AGENTS.md`, `AGENT-WORKFLOWS.md`, `AGENT-SKILL-INTEGRATION-2026-11-01.md`, `AGENT-SKILLS-NIKL.md`, `../.agents/skills/` | Root task router, general engineering/audit/review skills, domain-specific evidence skills and upstream integration record |
 | Historical audits | `audits/` and dated top-level audit documents | Point-in-time audit evidence; not automatically current |
 | Design plans | `superpowers/specs/`, `superpowers/plans/`, `superpowers/ledger.md` | Design history and implementation ledger |
 
@@ -48,8 +48,9 @@ This page is the entry point for project documentation. It distinguishes current
 - `schemas/` — machine-readable JSON schemas.
 - `scripts/` — generators, importers, audits, benchmarks and research tooling.
 - `tests/` — Python and browser tests, fixtures and corpora.
-- `research/` — active research records, evidence queues, decisions, source register and acceptance gates; see the [31-row queue abstention register](../research/kozak-kim-31-row-individual-abstentions-2026-11-05.csv) and [historical 239 artifact-recovery manifest](../research/kozak-kim-historical-239-recovery-manifest-2026-11-05.md), plus the [236-candidate review note](../research/kozak-kim-236-candidate-review-2026-11-05.md) and [occurrence ledger](../research/kozak-kim-236-candidate-review-2026-11-05.csv).
-- `docs/` — architecture, methodology, user/developer guidance, audit reports and execution history; use [the structure guide](REPOSITORY-STRUCTURE.md) and this index rather than guessing from filenames.
+- `research/` — active research records, evidence queues, decisions, source register and acceptance gates; see the [31-row queue abstention register](../research/kozak-kim-31-row-individual-abstentions-2026-11-05.csv) and [historical 239 artifact-recovery manifest](../research/kozak-kim-historical-239-recovery-manifest-2026-11-05.md).
+- `AGENTS.md` — root agent entry contract and skill router.
+- `docs/` — architecture, methodology, user/developer guidance, audit reports and execution history; use [the structure guide](REPOSITORY-STRUCTURE.md), [agent workflow guide](AGENT-WORKFLOWS.md) and this index rather than guessing from filenames.
 - `.github/workflows/` — CI, benchmark, corpus, Pages and research workflows.
 - `public/` — static assets and third-party notices/licenses.
 
@@ -70,3 +71,4 @@ This page is the entry point for project documentation. It distinguishes current
 4. Keep research claims linked to source IDs, exact scope and rights status.
 5. Label hypotheses, reconstructed forms, candidate pronunciations and provisional Ukrainian renderings explicitly.
 6. Do not delete dated audit records, benchmark artifacts or source packets merely because a newer summary exists.
+7. When a repository-local skill changes, update root `AGENTS.md` routing, the skill catalogue and its structural contract test where one protects a real invariant.
