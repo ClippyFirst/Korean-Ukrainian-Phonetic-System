@@ -75,9 +75,9 @@ The fortis sibilant sub-stratum is now counted precisely: **24 `ɕ͈→s͈` edit
 
 The source-rights audit is recorded in [KOZAK-236-SOURCE-RIGHTS-AUDIT-2026-11-06](KOZAK-236-SOURCE-RIGHTS-AUDIT-2026-11-06.md).
 
-**External distribution remains BLOCKED.** UGTPHON declares its Korean subset Apache-2.0 and identifies two upstream streams (MultiLexNorm++ and KoMultiText/DC Inside). KoMultiText also publishes Apache-2.0 metadata and its paper says the authors reviewed DC Inside terms, but the paper does not identify a specific platform permission or establish the original posters' authority to license their comments. MultiLexNorm++'s paper does not specify raw-text redistribution terms, and its public Hugging Face dataset page has a contact-sharing access gate whose terms were not accepted or inspected in this audit. Apache-2.0's grant is from a rights holder or authorised licensor and its warranty disclaimer does not establish title/non-infringement.
+**Interim BLOCKED decision superseded.** The pinned UGTPHON Korean subset declares Apache-2.0 in `ko/LICENSE`, and the canonical source-register record `SRC-UGTPHON-EMNLP-2026` records that subset-level grant. The final rights report documents this as the basis for limited external reviewer distribution with the full licence and source notice. The original-post title/provenance caveat remains disclosed; it is not a legal opinion.
 
-Therefore keep all 236 `source_license` cells blank; do not send the existing source-identifiable sentence-context packets to external reviewers. The internal-only packet mode remains the maximum permitted workflow pending written source/rights-holder clarification or qualified legal determination. No packets were generated or distributed in this audit. See the rights report for the exact evidence, limits and clearance checklist.
+The 236-case packets have not yet been generated or distributed. Use the licensed external mode and provide each reviewer only their own packet plus `licenses/Apache-2.0.txt` and `licenses/UGTPHON-KO-SOURCE-NOTICE.md`. Keep the coordinator map private.
 
 
 ## 2026-11-06 — final source-rights and distribution protocol
