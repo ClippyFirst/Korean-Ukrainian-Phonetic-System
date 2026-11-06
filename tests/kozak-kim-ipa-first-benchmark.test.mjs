@@ -353,24 +353,27 @@ test('Browser occurrence ledger reconstructs complete surfaces for mixed per-syl
 });
 
 
-test('shared Broad profile exposes deterministic coda surfaces without resolving ambiguous morphology', () => {
+test('shared Broad profile recovers three exact noisy forms but keeps the folk-song token gated', () => {
   const cases = [
-    ['칡칡이', '칙칙이', ''],
-    ['쫒아내면', '쫃아내면', ''],
-    ['많앗구나유유유', '만앋꾸나유유유', '많앗꾸나유유유'],
-    ['무서웟어', '무서웓어', '']
+    ['칡칡이', '칙칙이', '', false],
+    ['쫒아내면', '쪼자내면', '', true],
+    ['많앗구나유유유', '마낟꾸나유유유', '많앗꾸나유유유', true],
+    ['무서웟어', '무서워서', '', true]
   ];
   const engine = createBrowserKozakKimEngine();
 
-  for (const [word, expectedSurface, expectedLegacySurface] of cases) {
+  for (const [word, expectedSurface, expectedLegacySurface, resolved] of cases) {
     const broad = engine.convert(word, { ipaProfile: 'clippyfirst-korean-broad-v1' });
     assert.equal(broad.surfaceHangul, expectedSurface, word);
-    assert.equal(broad.pronunciation_status, 'unresolved', word);
-    assert.equal(broad.ipa, '', word);
-    assert.equal(broad.ukrainian, '', word);
+    if (resolved) {
+      assert.notEqual(broad.pronunciation_status, 'unresolved', word);
+      assert.ok(broad.ipa, word);
+    } else {
+      assert.equal(broad.pronunciation_status, 'unresolved', word);
+      assert.equal(broad.ipa, '', word);
+      assert.equal(broad.ukrainian, '', word);
+    }
 
-    // Preserve the exact legacy-default surface contract, including unrelated
-    // deterministic changes that were already exposed before this Broad-only fix.
     const legacy = engine.convert(word);
     assert.equal(legacy.ipa_profile, 'browser-legacy-contextual-v1', word);
     assert.equal(legacy.surfaceHangul, expectedLegacySurface, word);
