@@ -70,3 +70,10 @@ Browser exact-form/negative-control regressions, Python surface/trace regression
 ### Phrase-level Rule 29 candidates kept out of production
 
 The remaining cohort includes three occurrences of `한국여자로` and one of `홍콩영화들` whose benchmark comparator contains n-insertion. NIKL Q&A 330322 confirms the conditional Rule 29 [붙임 2] scope for two words pronounced as one connected phrase, but it does not attest these exact tokens. The source records have no audio or prosodic-boundary annotation; both cases remain ABSTAIN. No phrase-level heuristic is added.
+
+
+### Derived mismatch queue refreshed after the exact 236-case runtime changes
+
+The current unmapped-Broad snapshot is **26 rows**. Six occurrences removed from the previous 32-row export are now covered by exact runtime licenses: 545 (`정권`), 826 (`유사성`), 1610 (`자신의`), and 1816/1843/1870 (repeated `연전연패`). The 236-candidate adjudication ledger is unchanged. `그놈의` remains a diagnostic mismatch because the engine's principal /ɰi/ is source-backed and [e] is an exposed permitted variant; the UGTPHON comparator is not speaker-specific gold.
+
+The tracked 26-row CSV matches the generated artifact row-by-row. The multi-engine export/cmp and downstream benchmark workflow on exact head `59e31ac63467280d345ee95533854b61608059f6` was still running at this documentation snapshot.

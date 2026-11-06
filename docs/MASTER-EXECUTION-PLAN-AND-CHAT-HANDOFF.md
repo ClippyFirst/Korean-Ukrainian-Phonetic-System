@@ -6668,3 +6668,33 @@ No local pytest/npm command was executed in this connector-only session. GitHub 
 6. Obtain independent Ukrainian-reader review for target adaptation. Current outputs remain research-grade/provisional.
 
 **Readiness:** technically verified research prototype for the bounded exact-form integration; not release-ready and not independently research-certified. PR #436 is not merged; PR #437 remains separate.
+
+## 2026-11-06 — superseding exact-head update after 236-rule engine integration
+
+**Working branch:** `research/236-candidate-review-2026-11-05` · **PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436) · **Code/data head:** `59e31ac63467280d345ee95533854b61608059f6`.
+
+### Evidence-gated disposition and runtime result
+
+- 236 occurrence rows retained: 15 `RULE_CONFIRMED_STANDARD_VARIANT`, 181 `PROFILE_CONVENTION_MISMATCH_CONFIRMED`, 12 `ABSTAIN`, 28 `UNADJUDICATED`.
+- 14/15 confirmed occurrences now have runtime coverage: nine newly implemented occurrences across seven exact eojeol families, plus five exact licenses already present on the starting branch. The remaining `머리속에` is intentionally blocked as a spelling/semantic-normalization problem, not a phonological rule.
+- The new licenses are exact Rule 5 genitive-particle forms `그놈의`/`자신의`; exact R008 dictionary forms `정권`, `유사성`, `혐오증`; exact Rule 29 compound `연전연패`; and exact Rule 26 `출시미정에`. Negative controls prevent productive `-권/-성/-증`, broad ㄹ+ㅅ, or compound/phrase overgeneralization.
+- The 181 profile differences were not added as production rules. The 12 abstentions and 28 unadjudicated occurrences remain without invented IPA. Phrase-level Rule 29 candidates `한국여자로` and `홍콩영화들` remain blocked pending audio or independent IPA plus prosodic-boundary evidence.
+- Python and Browser implementations preserve the Hangul → Korean phonology → IPA → Ukrainian adapter boundary. Exact-form parity and regression tests pass; this is implementation parity, not independent speaker-level IPA adjudication.
+
+### Generated diagnostic queue refresh
+
+The 2026-11-05 unmapped-Broad queue was regenerated against the changed engine output and is now **26 rows**, not the previous 32-row snapshot. Six newly covered occurrences left the unmapped queue: `545`, `826`, `1610`, `1816`, `1843`, `1870`. Row `341` (`그놈의`) remains diagnostic: the engine emits the NIKL principal `/ɰi/` and exposes the permitted [e] variant; the corpus comparator alone is not speaker-specific gold. The updated tracked CSV was checked against the generated artifact row-by-row; the exact-head CI export/cmp job is still running at this documentation snapshot. No research disposition or the 236-row source ledger was changed by this queue refresh.
+
+### Exact-head CI snapshot
+
+On `59e31ac63467280d345ee95533854b61608059f6`:
+- Verify [42185403786](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42185403786): PASS; browser regression/build 1,398/1,398 and Python regression/data integrity PASS; official NIKL metadata inventory SKIPPED.
+- Tests [42185403733](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42185403733): PASS; Python 3.11/3.12/3.13, web, wheel install and teacher-corpus audit.
+- Browser G2P [42185403742](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42185403742): PASS.
+- Master/research artifacts [42185403706](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42185403706): PASS.
+- Exhaustive register [42185403709](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42185403709): PASS.
+- External UGTPHON [42185403775](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42185403775), paired native/g2pk [42185403767](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42185403767), morphology consensus [42185403725](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42185403725), and morphology adapter smoke [42185403836](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42185403836): PASS.
+- Multi-engine comparison [42185403748](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42185403748): IN PROGRESS at this snapshot; do not claim pass until queue export, same-occurrence Browser, runtime parity, SIGMORPHON and artifact upload finish.
+- Charsiu train/dev, CharsiuG2P inference, ByT5 inference and official NIKL metadata inventory: SKIPPED, not passed.
+
+**Readiness:** bounded exact-rule implementation is regression-verified in the branch; not release-ready. Independent Korean acoustic IPA, Ukrainian-reader target review, NIKL item-level rights, the spelling-normalization contract and the remaining evidence-limited cases remain open. PR #436 is not merged at this snapshot.

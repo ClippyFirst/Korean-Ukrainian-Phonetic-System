@@ -718,3 +718,12 @@ The 236-row inventory has been reviewed by occurrence identity, source context, 
 PR #436 exact-head verification at `169e008bd0aabee34efe05385bcc5f6179f4cc70`: Python 3.11/3.12/3.13, Browser regression/build, wheel install, teacher audit, web, paired UGTPHON, pinned UGTPHON, morphology consensus, corpus generation, external UGTPHON IPA, artifact generation and exhaustive test-case extraction passed. The multi-engine IPA comparison remains in progress. CharsiuG2P, ByT5 and official NIKL metadata-only checks were skipped, not passed. Local pytest/npm were not run. See the current 236-candidate review note for artifact IDs and interpretation.
 
 The workflow reference comparison is in `docs/ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-05.md`; it adopts requirements clarification, TDD, systematic debugging, exact-head verification and small composable procedures without copying third-party code or duplicating the project's research framework.
+
+
+## 2026-11-06 — 236-case engine integration verification refresh
+
+The current 236-case integration is now reflected in the dedicated implementation ledger and acceptance gates. The 236 rows are occurrences, not rules: 14/15 source-confirmed occurrences have runtime coverage, five by existing exact licenses and nine by new exact licenses; `머리속에` remains blocked for a separate spelling/semantic-normalization feature. The 181 profile-convention cases and 40 evidence-limited cases were not promoted into production rules.
+
+The generated unmapped-Broad diagnostic queue was refreshed from 32 to 26 rows after six exact rule-confirmed occurrences gained runtime coverage. The 236-row adjudication ledger is unchanged. The exact `그놈의` comparator mismatch remains visible because corpus text is not speaker-level IPA gold; the engine uses the NIKL principal reading and offers its licensed alternate.
+
+Exact-head CI on `59e31ac63467280d345ee95533854b61608059f6`: Verify, Python/browser regression, build, browser G2P, web/Python version matrix, wheel install, teacher audit, master artifacts, exhaustive extraction, external UGTPHON, paired native/g2pk, morphology consensus and adapter smoke passed. Multi-engine comparison remained in progress; official NIKL metadata and neural inference were skipped. See the handoff addendum for run links and precise scope.
