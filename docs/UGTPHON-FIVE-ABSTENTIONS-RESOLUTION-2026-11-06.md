@@ -42,4 +42,4 @@ This change preserves each source spelling exactly. It does not normalize typos,
 
 ## Verification status
 
-This document describes the implementation submitted on branch `fix/five-ugtphon-native-abstentions-2026-11-06`. Do not mark the code changes DONE_VERIFIED until the exact-head Python, Browser, benchmark, and cross-runtime checks pass. The source identity/audio review for `칡칡이` and independent IPA/Ukrainian-target review for `삶의` remain blocked regardless of software CI.
+This document describes the implementation submitted on branch `fix/five-ugtphon-native-abstentions-final-2026-11-06`. Do not mark the code changes DONE_VERIFIED until the exact-head Python, Browser, benchmark, and cross-runtime checks pass. The source identity/audio review for `칡칡이` and independent IPA/Ukrainian-target review for `삶의` remain blocked regardless of software CI.

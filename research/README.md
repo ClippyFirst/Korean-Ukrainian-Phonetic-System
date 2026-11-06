@@ -5,7 +5,7 @@ See [case-by-case evidence and implementation](../docs/UGTPHON-FIVE-ABSTENTIONS-
 - Three exact-form recoveries are implemented in Python and Browser: `쫒아내면` (R002), `많앗구나유유유` (R003), and `무서웟어` (R002). Raw spelling is preserved; these are provisional, not independent IPA gold.
 - `칡칡이` remains blocked: the opened Busan oral-culture PDF directly records it as a folk-song heading and cites 1991 fieldwork / 1992 source, but no audio or field notes establish its spoken realization. The earlier source-register claim that the PDF text layer read `칭칭이` was incorrect and has been corrected.
 - `삶의` remains blocked from asserted IPA and Ukrainian output: NIKL supports Hangul `[살믜]/[살메]`, not a word-specific IPA adjudication.
-- Current implementation branch: `fix/five-ugtphon-native-abstentions-2026-11-06`; PR #449. Exact-head CI must be rerun on the final branch head; the initial pre-review head exposed stale regression expectations and did not produce multi-engine metrics.
+- Current implementation branch: `fix/five-ugtphon-native-abstentions-final-2026-11-06`; PR #450. Exact-head CI must be rerun on the final branch head; the initial pre-review head exposed stale regression expectations and did not produce multi-engine metrics.
 
 ---
 

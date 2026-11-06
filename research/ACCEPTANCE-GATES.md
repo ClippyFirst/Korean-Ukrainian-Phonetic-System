@@ -1,6 +1,6 @@
 # Continuation acceptance snapshot — five UGTPHON abstentions (2026-11-06)
 
-Implementation branch: `fix/five-ugtphon-native-abstentions-2026-11-06`.
+Implementation branch: `fix/five-ugtphon-native-abstentions-final-2026-11-06`.
 
 | Case | Current disposition | Verification boundary |
 |---|---|---|
