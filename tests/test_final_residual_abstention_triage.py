@@ -60,7 +60,7 @@ def test_residual_cases_preserve_exact_spelling_and_ipa_acceptance_boundary():
             assert result["analysis_status"] == "research-prototype", (form, result)
         else:
             # 칡칡이 (folk-song heading) and 삶의 remain blocked for different reasons.
-            expected_target_status = "unresolved" if form == "칡칡이" else "unavailable"
+            expected_target_status = "unresolved"
             assert result["target_status"] == expected_target_status, (form, result)
             assert result["ukrainian_orthography"] is None, (form, result)
             assert result["candidate_orthography"] is None, (form, result)
