@@ -103,6 +103,29 @@ export function lexicalResult(text,entry){
   }).join(' · ');
   const targetReview=entry.target_status==='provisional'||mappedTargets.some(item=>item.status==='provisional');
   const candidateOnly=['variant-aware-research','kozak-research-only'].includes(entry.input_kind)&&entry.target_status==='provisional';
+  // Group-level Korean /ɛ/-/e/ merger evidence is exposed as an optional
+  // research candidate for ㅐ, including lexicon-backed words. Never infer
+  // speaker identity or add/remove vowel length; preserve any existing ː.
+  const researchVowelVariants=[];
+  const sourceSyllables=[...text];
+  for(let i=0;i<ipas.length;i++){
+    if(decompose(sourceSyllables[i]||'')?.vowel!=='ㅐ')continue;
+    const primary=ipas[i].includes('ɛ')?'ɛ':ipas[i].includes('e')?'e':'';
+    if(!primary)continue;
+    const alternateIpas=ipas.slice();
+    alternateIpas[i]=alternateIpas[i].replace(primary,primary==='ɛ'?'e':'ɛ');
+    const mapped=alternateIpas.map(ipa=>ipaSyllableToUkrainian(ipa,{allowProvisional:true}));
+    if(mapped.some(item=>item.unknown))continue;
+    researchVowelVariants.push({
+      source:text,
+      surface:entry.surface_hangul||text,
+      ukrainian:mapped.map(item=>item.text??'').join(''),
+      ipa:renderLexicalIpa(text,alternateIpas),
+      note:'Research-only optional [ɛ]~[e] realization of ㅐ; group-level Korean mid-front-vowel merger/weak-distinction evidence (Lee & Cho 2021; Eychenne & Jang 2015). Speaker-specific quality is unknown; canonical broad output and any existing vowel length are preserved.',
+      status:mapped.some(item=>item.status==='provisional')?'lexical-review':targetReview?'lexical-review':'lexical',
+      target_status:mapped.some(item=>item.status==='unavailable'||item.unknown)?'unavailable':mapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
+    });
+  }
   return {
     source:text,
     surfaceHangul:entry.surface_hangul||'',
@@ -115,10 +138,10 @@ export function lexicalResult(text,entry){
     variants:(()=>{
       const alternateIpas=(entry.alternate_ipa_syllables||'').split('|');
       const alternateSurface=entry.alternate_surface_hangul||'';
-      if(!alternateSurface||!entry.alternate_ipa_syllables||alternateIpas.some(value=>!value))return [];
+      if(!alternateSurface||!entry.alternate_ipa_syllables||alternateIpas.some(value=>!value))return researchVowelVariants;
       const mapped=alternateIpas.map(ipa=>ipaSyllableToUkrainian(ipa,{allowProvisional:true}));
-      if(mapped.some(item=>item.unknown))return [];
-      return [{
+      if(mapped.some(item=>item.unknown))return researchVowelVariants;
+      const variants=[{
         source:text,
         surface:alternateSurface,
         ukrainian:mapped.map(item=>item.text).join(''),
@@ -126,6 +149,7 @@ export function lexicalResult(text,entry){
         note:entry.variant_note||entry.rule_notes||'NIKL-listed alternate pronunciation; Ukrainian rendering remains provisional.',
         status:targetReview?'lexical-review':'lexical'
       }];
+      return [...variants,...researchVowelVariants];
     })(),
     trace:syllables.map((ch,i)=>({
       source:ch,
