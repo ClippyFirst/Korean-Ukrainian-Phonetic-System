@@ -95,12 +95,12 @@ const UNASSESSED_PATTERNS = [
 
 function hasPositiveRedistributionClaim(value) {
   const usage = String(value ?? '');
-  const actionPattern = /\\b(?:copied|redistributed|vendored|bundled|packaged|included)\\b/giu;
+  const actionPattern = /\b(?:copied|redistributed|vendored|bundled|packaged|included)\b/giu;
   for (const match of usage.matchAll(actionPattern)) {
     const prefix = usage.slice(0, match.index);
-    const boundary = Math.max(prefix.lastIndexOf(';'), prefix.lastIndexOf('.'), prefix.lastIndexOf('\\n'));
+    const boundary = Math.max(prefix.lastIndexOf(';'), prefix.lastIndexOf('.'), prefix.lastIndexOf('\n'));
     const clause = prefix.slice(boundary + 1);
-    if (/\\b(?:no|not|never|without|none)\\b/iu.test(clause)) continue;
+    if (/\b(?:no|not|never|without|none)\b/iu.test(clause)) continue;
     return true;
   }
   return false;
@@ -110,7 +110,7 @@ function classifyRights(value, integrationStatus = '') {
   const text = String(value ?? '').trim();
   if (!text) return { status: 'REVIEW_REQUIRED', reason: 'license_status is empty' };
   const usage = String(integrationStatus ?? '');
-  const explicitlyRedistributed = /\b(?:copied|redistributed|vendored|bundled|packaged|included\s+(?:in|into|with)\s+(?:the\s+)?(?:runtime|package|distribution|repository))\b/iu.test(usage);
+  const explicitlyRedistributed = hasPositiveRedistributionClaim(usage);
   if (/\bcitation[- ]only\b/iu.test(text) && !explicitlyRedistributed) {
     return { status: 'CITATION_ONLY_NO_REUSE', reason: 'source is recorded as citation-only; no source material is redistributed' };
   }
@@ -190,7 +190,7 @@ export function auditSourceRegister(csvText) {
     itemLevelRightsNotClosed: records.filter(record =>
       ['CITATION_ONLY_NO_REUSE', 'REVIEW_REQUIRED', 'MANUAL_CLASSIFICATION_REQUIRED'].includes(record.rightsReviewStatus)),
     redistributionRightsNotClosed: records.filter(record =>
-      /\b(?:copied|redistributed|vendored|bundled|packaged|included\s+(?:in|into|with)\s+(?:the\s+)?(?:runtime|package|distribution|repository))\b/iu.test(String(rows[record.row - 1]?.[header.indexOf('integration_status')] ?? '')) &&
+      hasPositiveRedistributionClaim(rows[record.row - 1]?.[header.indexOf('integration_status')] ?? '') &&
       ['REVIEW_REQUIRED', 'MANUAL_CLASSIFICATION_REQUIRED'].includes(record.rightsReviewStatus)),
     records,
     limitations: [
