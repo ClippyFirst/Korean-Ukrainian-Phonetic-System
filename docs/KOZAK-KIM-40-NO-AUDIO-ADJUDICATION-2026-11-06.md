@@ -35,7 +35,7 @@ The Python API requires `boundary_mode="phrase"`. The browser runtime uses expli
 
 For `첫 연애`, the official answer is conditional, not a single universal form: [천녀내] is possible when grouped as one phrase; [첟#여내] with a pause and [처뎌내] with liaison but no n-insertion are also described. The engine only applies the connected-phrase path when the caller supplies explicit phrase boundaries; it does not pretend to infer the speaker's prosody.
 
-### Other 37 occurrences: retain the existing broad policy
+### Other 35 occurrences: retain the existing broad policy
 
 | Family / occurrences | Engine decision | Reason and limit |
 |---|---|---|
