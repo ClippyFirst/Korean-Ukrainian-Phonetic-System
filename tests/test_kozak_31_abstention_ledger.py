@@ -113,15 +113,17 @@ def test_current_2026_11_05_unmapped_queue_is_versioned_separately_from_historic
     historical_by_id = {row["occurrence_id"]: row for row in historical}
     current_by_id = {row["occurrence_id"]: row for row in current}
     assert len(historical) == 36
-    assert len(current) == 26
+    assert len(current) == 25
     assert set(historical_by_id) - set(current_by_id) == {
-        "37", "704", "2018", "2031", "545", "826", "1610", "1816", "1843", "1870"
+        "37", "704", "2018", "2031", "545", "826", "1610", "1816", "1843", "1870", "2490"
     }
     assert set(current_by_id).issubset(historical_by_id)
-    # The exact 236-case engine integrations remove six previously unmapped
-    # fortition rows. The genitive-particle Rule 5 form remains diagnostic:
-    # its primary /ɰi/ is valid, while the comparator's [e] is an allowed
-    # alternate and the corpus supplies no speaker-level adjudication.
+    assert '2490' not in current_by_id
+    # Ten exact engine integrations remove ten previously unmapped rows;
+    # the exact alias for 머리속에 removes occurrence 2490. The genitive-
+    # particle Rule 5 form remains diagnostic: its primary /ɰi/ is valid,
+    # while the comparator's [e] is an allowed alternate and the corpus
+    # supplies no speaker-level adjudication.
     for occurrence_id, row in current_by_id.items():
         if occurrence_id == "341":
             assert row["strict_kozak_ipa"] == "kɯ.no.mɰi"
