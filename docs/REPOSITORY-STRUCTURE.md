@@ -79,7 +79,7 @@ The four supplied upstream repositories were reviewed as process references, not
 - [Matt Pocock's skills](https://github.com/mattpocock/skills): separate specification compliance from engineering-standard review; trace research claims to primary sources.
 - [Ponytail](https://github.com/DietrichGebert/ponytail): risk-first whole-repository audit, real data-flow tracing, concrete reproducible findings and smallest effective fixes.
 
-The project already has domain-specific skills in `.agents/skills/` and an integration record in [AGENT-SKILL-INTEGRATION-2026-11-01.md](AGENT-SKILL-INTEGRATION-2026-11-01.md). Do not add overlapping generic skills or a second gate ledger without a demonstrated gap.
+The project already has domain-specific skills in `.agents/skills/` and an integration record in [AGENT-WORKFLOWS.md and AGENT-SKILL-INTEGRATION-2026-11-01.md](AGENT-SKILL-INTEGRATION-2026-11-01.md). Do not add overlapping generic skills or a second gate ledger without a demonstrated gap.
 
 ## Safe structural evolution
 
