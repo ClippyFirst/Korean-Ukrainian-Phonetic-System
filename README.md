@@ -17,6 +17,8 @@ Research-grade, machine-readable framework for Korean → Ukrainian phonetic-gra
 
 Contributors and coding agents should start with [AGENTS.md](AGENTS.md), then use the [agent workflow guide](docs/AGENT-WORKFLOWS.md) to select the maintained skill and canonical research/engineering record. The guide adapts selected practices from Unlazy, Superpowers, Matt Pocock's skills and Ponytail without copying or vendoring their implementations.
 
+- [236-candidate review](research/kozak-kim-236-candidate-review-2026-11-05.md) and [engine integration](docs/KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md) — evidence disposition and exact runtime changes.
+
 ## Author, licensing and permissions
 
 The project is authored by **Vitalii Volodymyrovych Tkachuk** under the authorial pseudonym **ClippyFirst**. The original project materials are governed by the custom [ClippyFirst Project License](LICENSE); a practical explanation is in [Licensing and permissions](docs/LICENSING-AND-PERMISSIONS.md). Scientific use of the public service's results and the Korean-to-Ukrainian correspondence table is permitted with attribution. Reuse, integration, self-hosting, modification or redistribution of the technical implementation requires the author's prior written permission. Third-party components and datasets retain their own licences and notices.
