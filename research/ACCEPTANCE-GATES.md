@@ -1485,3 +1485,13 @@ Additional regression scope: the native Python and browser shared-Broad profiles
 - **BLOCKED — external reviewer packet distribution:** the existing packet includes source-identifiable sentence contexts. Keep the 236 `source_license` cells blank and packets internal-only until written rights-holder confirmation or qualified legal determination covers raw text, context, reviewer retention, derived annotations, attribution and access conditions.
 - **No packets generated or distributed.** No benchmark or model evaluation run.
 - Full evidence and next actions: [source-rights audit](../docs/KOZAK-236-SOURCE-RIGHTS-AUDIT-2026-11-06.md).
+
+
+## 2026-11-06 — final 236-case source-rights decision
+
+- **DONE_VERIFIED — source licence basis:** the pinned `UGTPHON/ko/test.json` snapshot is covered by the UGTPHON Korean-subset `ko/LICENSE` declaration of Apache-2.0. The canonical source-register record `SRC-UGTPHON-EMNLP-2026` records this subset-level grant. A blank per-occurrence licence projection is not evidence that the source has no licence.
+- **DONE_VERIFIED — distribution materials:** full Apache-2.0 text and the pinned UGTPHON Korean-subset source notice are preserved in `licenses/`.
+- **PARTIAL — provenance/title risk:** the public licence declaration is the project's basis for limited reviewer distribution, but it is not an independent legal opinion or warranty that every original DC Inside poster authorised all upstream redistribution. This caveat is disclosed; it does not convert the published subset into unlicensed material.
+- **TODO — external review:** generate two separate licensed packets, send each only to its assigned qualified reviewer, keep the coordinator map private, and record reviewer confidentiality/retention/deletion arrangements.
+- **BLOCKED — independent Korean IPA acceptance:** still requires two completed first-pass annotations on all 236 cases, followed by blind reconciliation. Packet generation is not transcription evidence.
+- **DEFERRED — Ukrainian target validation:** begin only after Korean IPA reconciliation is frozen.
