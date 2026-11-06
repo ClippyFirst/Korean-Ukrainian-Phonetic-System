@@ -1,3 +1,33 @@
+## 2026-11-06 — Citation evidence vs redistributed material; Kozak Kim continuation
+
+**Starting main:** `2f048e9ac3a854a8898b61748f1ed45e949f415c`.
+**Working branch:** `fix/source-rights-redistribution-scope-2026-11-06`.
+
+### Rights triage correction
+
+A citation to a public source is not a redistribution of that source. Unverified page-level reuse terms for sources used only as bibliographic/linguistic evidence must remain visible as metadata, but they do not block engine development or ordinary citation. Rights review is required when the project actually copies, bundles, vendors, packages, adapts or redistributes third-party material (for example corpus excerpts, audio, dictionary text, model weights/assets, code or dependencies). This is a project workflow distinction, not legal advice or a permission grant.
+
+The source-register audit now distinguishes citation-only records from actual copied/redistributed artifacts. Its strict gate is scoped to an artifact explicitly recorded as copied/redistributed and lacking an item-level rights decision. Unknown use remains informational until actual material reuse is recorded; the audit does not infer permissions from a citation or a site-wide policy. Third-party notices and licenses for material already included in the repository remain in scope.
+
+### Kozak Kim runtime status and continuation
+
+Kozak Kim is already the repository's native Korean→IPA runtime and is integrated in `main`; the original g2pK 0.9.4 baseline remains isolated. PR #436 merged the 236-occurrence evidence-bounded extension (14 exact integrations/already licensed, one orthographic-normalization blocker; 181 profile conventions not generalized; 40 abstained/unadjudicated). This continuation must extend that runtime rather than introduce a duplicate engine or bypass the IPA→Ukrainian adapter.
+
+Undermind's completed sibilant literature search supports context-sensitive coarticulation evidence, not a categorical [ɕ]/[ɕ͈] rewrite for every /s+jV/ token. No new production rule is justified from abstracts or mismatched vowel environments alone. The next production candidates require exact environment, lexical/morphological scope, independent IPA or acoustic evidence, and Python/browser parity tests.
+
+### Task ledger
+
+| Task | Status | Acceptance / blocker |
+|---|---|---|
+| Distinguish citations from redistributed material in rights triage | PARTIAL pending exact-head CI | Script/test changes prepared; strict gate must fail for copied unlicensed artifact fixture but pass citation-only/unknown-use references. |
+| Existing Kozak Kim runtime and 236-case extension | DONE_VERIFIED | Already merged in #433/#436; no duplicate engine. |
+| Further sibilant rule changes | BLOCKED / evidence-limited | Available literature does not justify categorical mapping in the unresolved /jʌ/, /jo/ and fortis contexts; need exact-context full text/audio and independent review. |
+| Independent Korean IPA gold and Ukrainian target review | BLOCKED | Qualified independent reviewers and adjudication remain necessary. |
+
+**Verification note:** no local checkout/shell is available in this connector-only environment. CI must be checked on the exact PR head before merge; no test result is claimed here.
+
+---
+
 ## 2026-11-06 — 236-case engine integration and agent workflow consolidation
 
 **Default-branch baseline:** `main` at `043754498f3ad8a17aa6c13b5f643b197536da8a`.  
