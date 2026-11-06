@@ -1112,9 +1112,9 @@ def test_236_candidate_exact_lexical_fortition_and_nikl_29_26_licenses():
 
 def test_nikl_rule_29_connected_phrase_licenses_cover_the_three_residual_phrase_patterns():
     cases = {
-        "홍콩 영화들": "홍콩녕화들",
-        "한국 여자로": "한궁녀자로",
-        "첫 연애": "천녀내",
+        "홍콩 영화들": "홍콩 녕화들",
+        "한국 여자로": "한궁 녀자로",
+        "첫 연애": "천 녀내",
     }
     for phrase, expected_surface in cases.items():
         items, traces = apply_ordered_rules(
