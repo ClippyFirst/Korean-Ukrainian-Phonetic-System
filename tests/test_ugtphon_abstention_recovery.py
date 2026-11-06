@@ -116,7 +116,7 @@ def test_misspelled_and_unreviewed_lookalikes_remain_fail_closed():
     # Do not silently normalize noisy spellings into source-backed forms.
     for form, rule_id in (
         ("쫒아내서", "R002"),
-        ("무서웟으니", "R002"),
+        ("무서웟어요", "R002"),
         ("많앗으면", "R003"),
         ("칡칡에", "R002"),
         ("많아보임", "R003"),
