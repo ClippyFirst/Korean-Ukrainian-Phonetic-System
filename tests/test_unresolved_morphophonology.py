@@ -110,22 +110,20 @@ def test_c09_source_backed_people_and_moreuda_keep_lexical_length_in_broad_ipa()
     gweseong = phoneticize_korean("괴성")
     assert gweseong["ipa"]["lexical_alternatives"][0]["ipa"] == "kweː.sʌŋ"
 
-def test_actual_native_abstentions_remain_fail_closed_without_exact_morphology():
-    # These four forms are the R002/R003 items in the pinned UGTPHON native
-    # abstention audit. They are intentionally not normalized or guessed.
-    cases = {
-        "칡칡이": "R002",
-        "쫒아내면": "R002",
-        "많앗구나유유유": "R003",
-        "무서웟어": "R002",
-    }
-    for word, expected_rule in cases.items():
+def test_actual_native_abstentions_are_recovered_or_remain_ipa_gated():
+    # Four exact corpus forms now have morphology licenses. Their IPA is
+    # inspectable and provisional; it is not independent gold. 삶의 remains
+    # blocked because official Hangul variants do not adjudicate IPA.
+    cases = ("칡칡이", "쫒아내면", "많앗구나유유유", "무서웟어")
+    for word in cases:
         result = phoneticize_korean(word)
-        assert result["pronunciation_status"] == "unresolved", word
-        assert result["ipa_is_diagnostic_only"] is True, word
-        assert result["ipa_status_reason"] == "unresolved_morphophonological_context", word
-        assert any(
-            item["rule_id"] == expected_rule
-            and item["status"] == "unresolved-no-exact-license"
-            for item in result["unresolved_contexts"]
-        ), word
+        assert result["pronunciation_status"] == "provisional", word
+        assert result["ipa"]["ipa"], word
+        assert result["ipa_is_diagnostic_only"] is False, word
+        assert result["unresolved_contexts"] == [], word
+
+    life = phoneticize_korean("삶의")
+    assert life["pronunciation_status"] == "unresolved"
+    assert life["ipa_is_diagnostic_only"] is True
+    assert life["ipa_status"] == "diagnostic_only_unresolved_pronunciation"
+    assert any(item["rule_id"] == "IPA_ADJUDICATION" for item in life["unresolved_contexts"])
