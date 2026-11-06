@@ -6907,3 +6907,23 @@ On `59e31ac63467280d345ee95533854b61608059f6`:
 - Charsiu train/dev, CharsiuG2P inference, ByT5 inference and official NIKL metadata inventory: SKIPPED, not passed.
 
 **Readiness:** bounded exact-rule implementation is regression-verified in the branch; not release-ready. Independent Korean acoustic IPA, Ukrainian-reader target review, NIKL item-level rights, the spelling-normalization contract and the remaining evidence-limited cases remain open. PR #436 is not merged at this snapshot.
+
+
+## 2026-11-06 — post-merge verification and PR #436 closure
+
+**Merged PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436) · **merged commit / main integration commit:** `da931f1fa4d95b000bfaa9a0fd54f36cebb1703c` · **merged PR head:** `e525a15f15eebbd472c7d81033ff2991025e5525`.
+
+The previously pending exact-head Actions checks have now completed on PR head `e525a15f15eebbd472c7d81033ff2991025e5525`:
+- Tests matrix [42193471625](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42193471625): PASS — Python 3.11/3.12/3.13, web `npm test` and `npm run build`, teacher-corpus audit, and clean wheel-install IPA target-data verification.
+- System verification [42193471270](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42193471270): PASS — Python regression/data integrity and browser regression/build/generated-page verification.
+- Multi-engine IPA diagnostic [42193471280](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42193471280): PASS — pinned engine portfolio, benchmark adapters, holdout overlap audit, reviewer packets, same-occurrence Browser run, native/browser parity, SIGMORPHON lexical gold, mismatch ledger and artifact export.
+- Browser G2P [42193471380](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42193471380), external UGTPHON [42193471364](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42193471364), exhaustive extraction [42193471134](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42193471134), morphology consensus [42193471411](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42193471411), morphology adapter smoke [42193471149](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42193471149), master/research artifacts [42193471212](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42193471212), and paired native/g2pk [42193471116](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42193471116): PASS.
+- Charsiu train/dev [42193471275](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42193471275), official NIKL metadata inventory, and optional ByT5/Charsiu inference jobs: SKIPPED by workflow policy, not passes.
+
+The tests-matrix job log confirms editable install plus pytest on Python 3.11, 3.12 and 3.13; web `npm test` + `npm run build`; teacher-corpus parser/overlap audit; wheel build and clean wheel-install IPA data check. System verification confirms Python regression/data integrity and browser regression/build/generated-page checks. The multi-engine job completed all mandatory comparison/export/parity steps; optional neural inference remained skipped.
+
+PR #436 was merged with a merge commit after all applicable exact-head jobs completed successfully, no review threads/reviews were present, and GitHub reported the PR mergeable. The PR description was refreshed to replace its stale in-progress CI snapshot with exact-head results before merge. No local shell test was run in this connector-only environment; the GitHub Actions evidence above is the verification record. The merge commit itself has no PR-triggered workflow runs returned by the commit-runs endpoint; the verified gate is the exact PR head immediately before merge.
+
+**Updated disposition:** PR #436 is merged; PR #437 remains closed as superseded with its source branch preserved. The 236-row ledger and runtime integration counts are unchanged. Research and rights blockers remain: 40 evidence-limited occurrences (12 abstentions + 28 unadjudicated), independent Korean IPA gold, 208 source-register rights/manual-review items (184 review-required + 24 manual classification; item-level permission not established), independent Ukrainian target review, the exact spelling/semantic-normalization contract for `머리속에`, and phrase-level Rule 29 evidence. Optional skipped neural/NIKL jobs are not treated as complete.
+
+**Readiness:** merged and CI-verified bounded research prototype; not release-ready or independently research-certified.
