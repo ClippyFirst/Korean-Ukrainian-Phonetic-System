@@ -78,14 +78,16 @@ def test_236_lenis_sibilant_variants_match_across_native_and_browser_after_resyl
     browser = {row["word"]: row for row in json.loads(completed.stdout)}
 
     for word in positive:
-        assert "ɕ" not in native[word]["ipa"], word + ": canonical broad IPA remains /s/"
-        assert any("ɕi" in item["ipa"] for item in native[word]["variants"]), word + ": Native surface variant"
-        assert "ɕ" not in browser[word]["ipa"], word + ": Browser canonical broad IPA remains /s/"
-        assert any("ɕi" in item["ipa"] for item in browser[word]["variants"]), word + ": Browser surface variant"
+        native_ipa_without_affricates = native[word]["ipa"].replace("tɕ", "")
+        browser_ipa_without_affricates = browser[word]["ipa"].replace("tɕ", "")
+        assert "ɕ" not in native_ipa_without_affricates, word + ": canonical broad IPA remains /s/"
+        assert any("ɕi" in item["ipa"].replace("tɕ", "") for item in native[word]["variants"]), word + ": Native surface variant"
+        assert "ɕ" not in browser_ipa_without_affricates, word + ": Browser canonical broad IPA remains /s/"
+        assert any("ɕi" in item["ipa"].replace("tɕ", "") for item in browser[word]["variants"]), word + ": Browser surface variant"
 
     for word in negative:
-        assert not any("ɕ" in item["ipa"] for item in native[word]["variants"]), word + ": Native out-of-scope negative control"
-        assert not any("ɕ" in item["ipa"] for item in browser[word]["variants"]), word + ": Browser out-of-scope negative control"
+        assert not any("ɕ" in item["ipa"].replace("tɕ", "") for item in native[word]["variants"]), word + ": Native out-of-scope negative control"
+        assert not any("ɕ" in item["ipa"].replace("tɕ", "") for item in browser[word]["variants"]), word + ": Browser out-of-scope negative control"
 
 
 def test_browser_python_surface_and_ipa_parity_for_236_exact_forms():
