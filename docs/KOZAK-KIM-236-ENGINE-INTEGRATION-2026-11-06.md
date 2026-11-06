@@ -97,7 +97,7 @@ A second implementation review found two Browser/Python mismatches affecting the
 
 Regression coverage now includes supported /i, ye, ya/ examples, negative controls for /jʌ, jo, ju/, ㅒ and fortis /s͈/, and six resyllabified forms: 멋있어, 멋있노, 무슨뜻임, 것이냐, 저딴짓이면서, and 법알못이구만. The last three include the Rule 13 context cases 475, 2392 and 2667. Code correction commit: dcf1726212e16719b0fdc03311e5903448151e8b. No canonical IPA, phonemic output, Ukrainian target, or benchmark gold changed.
 
-The 24 fortis ɕ͈→s͈ edit operations occur in 24 occurrence IDs across 19 source rows; 23 are before /i/ and one is before /jo/ (ID 96). Twenty-two forms contain orthographic ㅆ; two are coda-triggered fortition cases (했을시, 실시간). No [ɕ͈] runtime variant is accepted because the 2021 acoustic evidence is context- and speaker-specific and describes the fronted /s͈i/ variant as closer to [s] than [ɕ]. The 12 abstentions and 28 unadjudicated rows remain evidence-limited. Exact-head CI must be read from the final PR #441 head; skipped optional jobs are not passes.
+The 24 fortis ɕ͈→s͈ edit operations occur in 24 occurrence IDs across 19 source rows; 23 are before /i/ and one is before /jo/ (ID 96). Twenty-two forms contain orthographic ㅆ; two are coda-triggered fortition cases (했을시, 실시간). No [ɕ͈] runtime variant is accepted because the 2021 acoustic evidence is context- and speaker-specific and describes the fronted /s͈i/ variant as closer to [s] than [ɕ]. The 12 abstentions and 28 unadjudicated rows remain evidence-limited. The stale artifact from PR #441 is reconciled in PR #443; current exact-head CI and skipped optional jobs must be assessed on PR #443, not inferred from the earlier run.
 
 
 ## Post-merge continuation — 2026-11-06
