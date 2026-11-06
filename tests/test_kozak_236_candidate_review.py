@@ -643,3 +643,50 @@ def test_yeonjeonyeonpae_compound_uses_nikl_rule_29():
         assert "SRC-NIKL-QNA-327019" in row["candidate_disposition_basis"]
         assert row["prior_individual_reason_code"] == "UNMAPPED_FRAGMENT_AND_NO_INDEPENDENT_IPA_GOLD"
         assert row["prior_independent_ipa_review_status"] == "NOT_PERFORMED"
+
+
+def test_all_28_unadjudicated_occurrences_have_row_level_evidence_reviews_without_promotion():
+    rows = MODULE.build_rows(ROOT)
+    register = MODULE.read_csv(MODULE.RESIDUAL_REVIEW_PATH)
+    expected_ids = {
+        "606", "843", "1155", "1157", "1414", "1417", "1420", "1423",
+        "1426", "1429", "1432", "1435", "1438", "1441", "1444", "1447",
+        "1450", "1453", "1456", "1459", "1462", "1465", "1468", "1471",
+        "1474", "1477", "1885", "2489",
+    }
+    assert len(register) == 28
+    assert {row["occurrence_id"] for row in register} == expected_ids
+    assert Counter(row["case_family"] for row in register) == {
+        "SIBILANT_BEFORE_HIGH_FRONT_ROUND_JO": 1,
+        "LENIS_SIBILANT_BEFORE_JEO_LOANWORD": 2,
+        "STYLIZED_UGC_SIBILANT_BEFORE_JEO": 2,
+        "HONORIFIC_CONTRACTION_LENIS_SIBILANT_JEO": 22,
+        "MID_FRONT_VOWEL_QUALITY_LONG": 1,
+    }
+    output = {row["occurrence_id"]: row for row in rows}
+    for reviewed in register:
+        row = output[reviewed["occurrence_id"]]
+        assert row["candidate_disposition"] == "NOT_INDIVIDUALLY_ADJUDICATED"
+        assert row["residual_review_status"] == "EVIDENCE_REVIEWED_UNRESOLVED"
+        assert row["residual_review_basis"] == reviewed["review_basis"]
+        assert row["residual_review_action"] == reviewed["review_action"]
+        assert row["residual_review_required_evidence"] == reviewed["required_evidence"]
+        assert row["residual_review_source_ids"] == reviewed["source_ids"]
+        assert row["prior_independent_ipa_review_status"] == "NOT_PERFORMED"
+        assert "Keep canonical broad" in row["residual_review_action"] or "Retain the canonical broad" in row["residual_review_action"]
+    vowel = output["1885"]
+    assert "SRC-LEE-2023-SEOUL-MID-FRONT-VOWEL-POSITION" in vowel["residual_review_source_ids"]
+    assert "not yet fully completed" in vowel["residual_review_basis"]
+    assert "speaker-specific" in vowel["residual_review_basis"]
+
+
+def test_all_12_existing_abstentions_remain_abstentions_after_second_pass():
+    rows = {row["occurrence_id"]: row for row in MODULE.build_rows(ROOT)}
+    expected_ids = {
+        "78", "257", "643", "813", "853", "899", "1219", "1288",
+        "1805", "1832", "1859", "2215",
+    }
+    assert {key for key, row in rows.items()
+            if row["candidate_disposition"] == "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW"} == expected_ids
+    assert all(rows[key]["prior_independent_ipa_review_status"] == "NOT_PERFORMED"
+               for key in expected_ids)
