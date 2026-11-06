@@ -122,7 +122,7 @@ def test_licensed_external_packets_validate_scope_and_ship_full_notices(tmp_path
         "reviewer-a.json",
         "reviewer-b.json",
     ]
-    assert (tmp_path / "LICENSE-APACHE-2.0.txt").read_text(encoding="utf-8").startswith("Apache License")
+    assert (tmp_path / "LICENSE-APACHE-2.0.txt").read_text(encoding="utf-8").lstrip().startswith("Apache License")
     notice = (tmp_path / "UGTPHON-KO-SOURCE-NOTICE.md").read_text(encoding="utf-8")
     assert "UGTPHON/ko/test.json" in notice
     assert "ef0d5a09c2ea1874c7206020f875cbd9cfea2f54" in notice
