@@ -1,3 +1,15 @@
+# Continuation snapshot — five UGTPHON native abstentions (2026-11-06)
+
+The focused review is documented in [UGTPHON five-abstention resolution](../docs/UGTPHON-FIVE-ABSTENTIONS-RESOLUTION-2026-11-06.md).
+
+- Four exact-form cases have been implemented in both Python and Browser: `칡칡이` (R002, two-analyzer boundary consensus), `쫒아내면` (R002, typo-preserving diagnostic form), `많앗구나유유유` (R003, typo-preserving past-ending form), and `무서웟어` (R002, typo-preserving single-ㅅ form).
+- `삶의` remains blocked from asserted IPA and Ukrainian output. NIKL supports Hangul `[살믜]/[살메]`; the project candidates `sal.mi`/`sal.me` remain diagnostic pending independent IPA review.
+- Exact-form Python and Browser regressions, including near-form negative controls, have been added. **Status: implementation submitted; exact-head CI pending.** Do not mark DONE_VERIFIED until Python, Browser, build, and relevant benchmark/parity jobs pass.
+- No new productive R002/R003 heuristic has been introduced. Raw source spellings remain unchanged.
+- This continuation supersedes the earlier statement below that all five cases require abstention/no implementation.
+
+---
+
 # Current continuation — 2026-11-06 (PR #443 merged)
 
 **Current `main`:** `bb972871a207b1f703503ade980a36cf3b976085`.  
