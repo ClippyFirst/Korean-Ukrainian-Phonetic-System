@@ -173,6 +173,13 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status,
     else if(vowel==='ㅖ'&&syllable.onset!=='ㅇ'&&syllable.onset!=='ㄹ'){
       primary='je';alternate='e';section='§5';
     }
+    else if(vowel==='ㅐ'){
+      // Group-level Korean /ɛ/-/e/ merger evidence supports an optional
+      // research candidate only; preserve whichever broad vowel is canonical.
+      primary=ipa[i]?.includes('ɛ')?'ɛ':ipa[i]?.includes('e')?'e':'';
+      alternate=primary==='ɛ'?'e':primary==='e'?'ɛ':'';
+      section='research /ɛ–e/ merger';
+    }
     else if(vowel==='ㅢ'&&syllable.onset==='ㅇ'&&!firstSyllableInWord(units,i)){
       genitiveParticle=NIKL_GENITIVE_UI_PARTICLE_FORMS.has(wordFormAt(originalUnits,i));
       primary='ɰi';alternate=genitiveParticle?'e':'i';section='§5';
@@ -197,13 +204,17 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status,
       const labels=changed.map(site=>{
         if(site.vowel==='ㅚ')return 'ㅚ [we]';
         if(site.vowel==='ㅟ')return 'ㅟ [wi]';
+        if(site.vowel==='ㅐ')return 'ㅐ ['+site.alternate+']';
         if(site.vowel==='ㅖ')return 'ㅖ [e]';
         return site.genitiveParticle?'관형격 조사 의 [e]':'비초성 ㅢ [i]';
       });
       const sections=[...new Set(changed.map(site=>site.section))].join('/');
-      const note=sites.length<=3
-        ?sections+': дозволена альтернативна вимова '+labels.join(' + ')+'; корейське написання не змінюється.'
-        :sections+': альтернативна вимова '+labels.join(' + ')+'; інші необрані голосні зберігають основне читання, написання не змінюється.';
+      const researchMerger=changed.some(site=>site.section==='research /ɛ–e/ merger');
+      const note=researchMerger
+        ?'Research-only optional [ɛ]~[e] realization of ㅐ; group-level Korean mid-front-vowel merger/weak-distinction evidence (Lee & Cho 2021; Eychenne & Jang 2015). Speaker-specific quality is unknown; canonical broad output is unchanged.'
+        :sites.length<=3
+          ?sections+': дозволена альтернативна вимова '+labels.join(' + ')+'; корейське написання не змінюється.'
+          :sections+': альтернативна вимова '+labels.join(' + ')+'; інші необрані голосні зберігають основне читання, написання не змінюється.';
       return{
         source:text,
         surface:text,
@@ -217,6 +228,23 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status,
   }
 
   if(includeBroadAllophones){
+    // NIKL's 2005 usage column records the exact loanword 게임 with both
+    // lenis [k] and fortis [k͈] initial realizations. Keep [k] canonical.
+    for(let i=0;i<originalUnits.length;i++){
+      const syllable=originalUnits[i];
+      if(wordFormAt(originalUnits,i)!=='게임'||syllable.char!=='게'||syllable.onset!=='ㄱ'||!ipa[i]?.startsWith('k'))continue;
+      const alternateIpa=ipa.slice();
+      alternateIpa[i]='k͈'+alternateIpa[i].slice(1);
+      const mapped=alternateIpa.map(value=>ipaSyllableToUkrainian(value,{allowProvisional:true}));
+      variants.push({
+        source:text,surface:text,ukrainian:mapped.map(item=>item.text??'').join(''),
+        ipa:renderStructured(units,alternateIpa,'.'),
+        note:'Research-only optional [k͈] onset in the exact loanword 게임, recorded alongside [k] by NIKL\'s 2005 usage column (SRC-NIKL-LOANWORD-GAME-2005); canonical broad /k/ is preserved and speaker realization is unknown.',
+        status:mapped.some(item=>item.status==='provisional')?'lexical-review':status,
+        target_status:mapped.some(item=>item.status==='unavailable'||item.unknown)?'unavailable':mapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
+      });
+    }
+
     // Korean ㅟ has a documented [ɥi] realization in addition to [y]/[wi].
     // Keep [y] canonical and expose the phonetic realization as an alternative.
     for(const site of sites.filter(item=>item.vowel==='ㅟ')){
