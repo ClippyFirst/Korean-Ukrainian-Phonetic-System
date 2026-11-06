@@ -194,7 +194,7 @@ def write_packets(result: dict, output_dir: Path) -> dict:
         path = output_dir / name
         if path.exists():
             raise FileExistsError(f"Refusing to overwrite existing review material: {path}")
-        path.write_text(json.dumps(content, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+        path.write_text(json.dumps(content, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     extra_files = []
     if result["distribution_mode"] == "LICENSED_EXTERNAL_REVIEW":
         for source_path, target_name in (
