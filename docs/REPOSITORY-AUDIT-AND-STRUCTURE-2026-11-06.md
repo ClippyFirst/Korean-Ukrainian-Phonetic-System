@@ -405,7 +405,7 @@ The runtime metadata update cites the 2023 Seoul mid-front-vowel study in both n
 | Tests matrix | [42254523067](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254523067) | PASS — web, Python 3.11/3.12/3.13, wheel install, teacher-corpus audit |
 | System verification | [42254523015](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254523015) | PASS — browser regression/build and Python regression/data integrity; NIKL inventory SKIPPED |
 | Master/research artifacts | [42254523078](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254523078) | PASS |
-| Pages deployment | [42254523031](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254523031) | IN PROGRESS at this audit update; do not count as deployed until it completes |
+| Pages deployment | [42254523031](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254523031) | CANCELLED by the subsequent documentation-only push; replacement [42254864628](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254864628) queued on the current documentation commit |
 
 ### Updated disposition and remaining blockers
 
@@ -421,3 +421,10 @@ The runtime metadata update cites the 2023 Seoul mid-front-vowel study in both n
 | Release readiness | DEFERRED | Remains a bounded research prototype, not independently research-certified or release-ready |
 
 **Execution boundary:** no local `npm`, `pytest`, build or clean-install command was run in this connector-only session. Exact-head and post-merge GitHub Actions evidence is recorded above. The oversized append-only master handoff was preserved; this dated audit is its superseding continuation. No branch was deleted, no force-push was used, and no release was published.
+
+
+### Documentation navigation refresh — current `main` continuation
+
+The root README, documentation index, repository-structure guide and this audit were reconciled after the PR #446 merge. Current `main` is `e0feeb6ac3697d026d151f3fbb78796728a1e8da`; the recursive tree remains 832 entries (790 files, 42 directories), including 177 Markdown files, 394 test files, 64 scripts, 18 workflows and 13 schemas; `docs/` has 146 files and `research/` 56 files. The documentation index now links the residual 28-row evidence register directly.
+
+The earlier post-merge Pages run 42254523031 was cancelled when this documentation-only push superseded it. Replacement Pages run [42254864628](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254864628) was queued on the current head. The new documentation commit's tests, system verification and master/research artifact workflows were still running at this snapshot; update this status only from their final results.
