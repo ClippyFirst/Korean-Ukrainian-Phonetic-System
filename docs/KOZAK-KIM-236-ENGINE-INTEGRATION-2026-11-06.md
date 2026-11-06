@@ -104,7 +104,7 @@ The 24 fortis ɕ͈→s͈ edit operations across 23 occurrence rows remain unreso
 
 PR #441 is merged into `main` (merge commit `f89c475c56796119e87130367fc15926b2428220`; verified implementation head `847cdb240aadc2c9343127fbb7de6dafad0441d4`). All 15 standard-form/rule occurrences have runtime dispositions (ten new exact integrations plus five baseline licenses). The 181 profile rows remain non-categorical; 12 abstentions and 28 unadjudicated rows remain unresolved.
 
-The 24 fortis [ɕ͈]→/s͈/ edit operations occur in 24 occurrence IDs across 19 source rows; 23 are before /i/ and one is before /jo/ (ID 96). New evidence supports a research-only optional [ɕ͈] candidate before /i/; it does not justify a categorical or speaker-specific assignment. The /jo/ case remains out of scope. The two /ɘː/ versus /ʌː/ cases remain transcription-profile questions. Phrase-level Rule 29 candidates `한국여자로` and `홍콩영화들` still require exact morphology and prosodic-boundary evidence. The 12+28 residual occurrences require original audio, speaker crosswalk and two independent Korean IPA annotations, followed by separate Ukrainian target review.
+The 24 fortis [ɕ͈]→/s͈/ edit operations occur in 24 occurrence IDs across 19 source rows; 23 are before /i/ and one is before /jo/ (ID 96). Direct acoustic evidence (Kong & Kang 2021) shows age- and gender-conditioned fronting of word-initial /s͈i/ in young women, but explicitly describes it as closer to alveolar [s] than post-alveolar [ɕ]. It therefore does not justify an optional [ɕ͈] IPA variant for unknown speakers. The /jo/ case remains out of scope. The two /ɘː/ versus /ʌː/ cases remain transcription-profile questions. Phrase-level Rule 29 candidates `한국여자로` and `홍콩영화들` still require exact morphology and prosodic-boundary evidence. The 12+28 residual occurrences require original audio, speaker crosswalk and two independent Korean IPA annotations, followed by separate Ukrainian target review.
 
 ### Multi-engine artifact acceptance
 
@@ -116,23 +116,24 @@ Current main `2e9647540e1be47571579f71b7466393172a2a6d` has successful tests 422
 
 The tracked `research/kozak-kim-unmapped-mismatch-review-queue-2026-11-05.csv` has been regenerated from the exact CSV uploaded by workflow run [42215019081](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42215019081), artifact 13501009061. A row-by-row comparison identified only one stale entry: ID 2490 (`머리속에`), which the exact pronunciation alias now covers. The refreshed queue contains 25 rows and matches the artifact's 89,638 bytes; its Git blob SHA is `15655fa35b74251c8c0fdd6e2b6dc973d3bba631`. This is an artifact reconciliation, not a new linguistic adjudication. The export gate still requires an exact-head rerun; downstream parity and SIGMORPHON checks must execute before DONE_VERIFIED.
 
-## 2026-11-06 — evidence-gated fortis sibilant optional variant
+## 2026-11-06 — fortis sibilant evidence review: no [ɕ͈] runtime variant accepted
 
-A targeted review of the remaining 24 `ɕ͈→s͈` edit operations found **24 occurrence IDs in 19 source rows** (not 23 occurrence rows as earlier notes stated). Twenty-three of the 24 reference realizations are before /i/; the sole /j/-initial case is ID 96 `똥꼬쑈` /ɕ͈jo/. Twenty-two forms contain orthographic ㅆ; two are coda-triggered fortition contexts, IDs 481 `했을시` and 551 `실시간`.
+A targeted review of the 24 `ɕ͈→s͈` edit operations found **24 occurrence IDs in 19 source rows** (correcting the earlier 23-row count). Twenty-three reference realizations are before /i/; the sole /j/-initial case is ID 96 `똥꼬쑈` /ɕ͈jo/. Twenty-two forms contain orthographic ㅆ; two are coda-triggered fortition contexts, IDs 481 `했을시` and 551 `실시간`.
 
-### Evidence and decision
+### Evidence assessment
 
-- Holliday (2014, JASA) describes both Korean lenis-aspirated /sh/ and fortis /s*/ as typically palatalized before /i/ or /j/ (SRC-HOLLIDAY-2014-JASA).
-- Holliday (2016, Phonetica) explicitly notes that /s*/ may palatalize less consistently than /sh/, documenting the mixed evidence (SRC-HOLLIDAY-2016-PHONETICA).
-- Holliday & Reidy (2016) report that /sh/ and sometimes /s*/ are palatalized before /i/ in a pilot production study of six female native speakers and 18 word-initial CV stimuli (SRC-HOLLIDAY-REIDY-2016-POSTER).
-- Kong & Kang (2020) report palatalized variants before /i/ in a 32-speaker Seoul Korean study, with gender-related spectral differences; the abstract does not disaggregate /s/ from /s'/ (SRC-KONG-KANG-2020-SPECTRAL).
+- Holliday (2014, JASA) describes both Korean lenis-aspirated /sh/ and fortis /s*/ as typically palatalized before /i/ or /j/ (SRC-HOLLIDAY-2014-JASA). This is a background statement in a perception study, not token-level production evidence.
+- Holliday (2016, Phonetica) explicitly notes that /s*/ may palatalize less consistently than /sh/ (SRC-HOLLIDAY-2016-PHONETICA); its own experiment is perceptual.
+- Holliday & Reidy (2016) state in the poster background that /s*/ is sometimes palatalized before /i/, but the poster does not report speaker-level or token-level fortis-palatalization results from its six-speaker production sample (SRC-HOLLIDAY-REIDY-2016-POSTER).
+- Kong & Kang (2020) report palatalized variants before /i/ in an abstract covering both /s/ and /s'/, but do not disaggregate which category produced them (SRC-KONG-KANG-2020-SPECTRAL).
+- **Kong & Kang (2021) provide the decisive direct acoustic constraint.** Their study analyzes 39 adult Seoul Korean speakers and 1,832 sibilant tokens. For young female speakers, word-initial tense /s͈i/ has age-related spectral fronting; however, the authors explicitly state that this variant is closer to alveolar [s] than post-alveolar [ɕ], and that the pattern is context- and gender-specific (SRC-KONG-KANG-2021-SIBILANTS).
 
-The evidence now supports a **research-only optional [ɕ͈] candidate for fortis /s͈/ before /i/ (ㅣ)**. It does not support a mandatory rule, speaker-specific assignment, or a general /j/-glide rule. The candidate is exposed in the broad research profile only; canonical [s͈], phonemic IPA, narrow IPA and Ukrainian target mappings are unchanged. The Browser implementation inspects the post-rule surface onset, so the two coda-triggered cases are represented without changing source spelling. The /jo/ case ID 96 remains out of scope; /ja/, /ju/ and other glide contexts remain negative controls.
+### Implementation decision
 
-### Implementation and acceptance
+**No [ɕ͈] runtime variant is accepted.** The 2021 acoustic result does not support converting the 23 /i/ cases into [ɕ͈]; it describes a different, speaker-conditioned fronting pattern. The 2014/2016 claims are mixed background/perception evidence, and the 2016 poster does not provide a token-level fortis production result. The 2020 abstract does not distinguish lenis from fortis. No source maps the 236 occurrences to the speakers in these studies.
 
-- Python: `src/korean_ukrainian/ipa.py` emits one optional variant when the post-rule surface onset is ㅆ and the source nucleus is ㅣ.
-- Browser: `src/app/engine_lexical.js` mirrors the same condition and candidate note.
-- Regression tests: `tests/test_ipa.py`, `tests/test_narrow_ipa.py`, `tests/test_kozak_236_candidate_review.py`, and `tests/test_kozak_236_engine_integration.py` cover canonical preservation, /i/ positives, /jo/ and other negatives, the 24-operation distribution, and Native/Browser parity.
+Keep canonical broad [s͈] unchanged in Python and Browser. Do not add [ɕ͈] to broad or narrow output, do not select a fronted variant without speaker identity and acoustic evidence, and do not change Ukrainian target mappings. ID 96 /jo/ remains separately unsupported. The 24 mismatches remain PARTIAL/BLOCKED for speaker-level adjudication; they are part of the 181 profile-convention cases and distinct from the 40 abstained/unadjudicated occurrences.
 
-**Disposition:** PARTIAL, not token-level adjudication. Twenty-three mismatch operations can now be represented as optional broad-profile variants; one /jo/ operation remains unsupported. No one of the 236 corpus occurrences is claimed to have a speaker-confirmed [ɕ͈] realization without source audio and speaker metadata. These 24 profile mismatches are distinct from the 40 abstained/unadjudicated rows.
+### Regression and inventory evidence
+
+The data-inventory test `test_fortis_sibilant_candidate_inventory_has_exact_context_distribution` records the 24 operations, 24 occurrence IDs, 19 source rows, 23 /i/ contexts and the single /jo/ case. Existing negative controls retain `씨` as a no-variant case in the broad research profile. No runtime code change is required or accepted from this evidence review.
