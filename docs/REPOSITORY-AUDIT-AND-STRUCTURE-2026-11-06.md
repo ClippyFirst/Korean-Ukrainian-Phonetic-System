@@ -349,3 +349,18 @@ The preceding Pages deployment on main commit `bb972871a207b1f703503ade980a36cf3
 **Local execution boundary:** no local shell, `npm`, `pytest`, clean-install or browser command was run in this connector-only session. All test/build/deployment statuses above are GitHub Actions evidence. The post-merge Pages run is explicitly still in progress at this snapshot.
 
 **Final readiness:** documentation/navigation is merged and CI-verified; mandatory multi-engine comparison and scoped software rights gate are verified. The product remains a bounded research prototype, not independently research-certified or release-ready because independent Korean IPA review, independent Ukrainian target validation, and proof of original historical cohort membership remain open.
+
+
+## 2026-11-06 — residual 40-case evidence register follow-through
+
+**Working branch:** `research/236-residual-evidence-register-2026-11-06`, based on `main` at `da9f98bdba553f80ecba0614294066c2d0561966`. Existing 236-case branches were compared with main; the residual-review and other 236 support branches are ancestors/behind main, with no unmerged changes to port. No open PRs were returned at the start of this batch.
+
+- `DONE_VERIFIED` — primary-source and literature recheck of all 12 abstentions and 28 unadjudicated occurrences; exact occurrence IDs and family crosswalks retained.
+- `DONE_VERIFIED` — new machine-readable 28-row residual evidence register, with source IDs, reviewed basis, explicit no-change runtime action and reopening evidence.
+- `DONE_VERIFIED` — source register adds Lee (2023), DOI 10.17959/sppm.2023.29.2.193; KCI abstract reports an incomplete, age/gender- and position-sensitive /ɛ/–/e/ merger.
+- `PARTIAL` — 236-case generator and generated ledger now project residual review fields; exact-head CI and generated-artifact checks are pending for this branch.
+- `BLOCKED` — no original audio or speaker crosswalk for the 40 unresolved rows; no two independent Korean IPA annotations. Therefore no new runtime rule or IPA/target gold is justified.
+
+The 28 rows are 27 lenis-sibilant mismatch occurrences across six token strings plus one mid-front-vowel quality case. Twenty-two `아끼셔` repetitions are one source-row/token family. The 12 abstentions remain 12; the 28 remain unadjudicated. All 40 remain excluded from production adjudication. No IPA-first adapter, canonical runtime output, Ukrainian target, or benchmark gold was changed.
+
+**Next acceptance criterion:** recover the original source audio and speaker mapping for all 40; obtain two independent, blinded Korean broad/narrow IPA annotations with syllable and prosodic boundaries; reconcile disagreements; only then review Ukrainian adaptation and add occurrence-specific runtime tests. For stylized IDs 1219/1288 also recover source normalization policy; for ID 1885 explicitly annotate /ɛː/ versus /eː/ rather than infer it from a population merger.
