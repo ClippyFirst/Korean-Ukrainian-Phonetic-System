@@ -137,3 +137,8 @@ Keep canonical broad [s͈] unchanged in Python and Browser. Do not add [ɕ͈] to
 ### Regression and inventory evidence
 
 The data-inventory test `test_fortis_sibilant_candidate_inventory_has_exact_context_distribution` records the 24 operations, 24 occurrence IDs, 19 source rows, 23 /i/ contexts and the single /jo/ case. Existing negative controls retain `씨` as a no-variant case in the broad research profile. No runtime code change is required or accepted from this evidence review.
+
+
+### Recovered generator artifact — reconciliation detail
+
+Original workflow artifact from run 42215019081 was recovered. The generated queue has 25 occurrence rows; the tracked queue had 26. Exact comparison showed all 25 common rows unchanged and exactly one tracked-only row: ID 2490 (`머리속에`), whose pronunciation alias is now integrated. The tracked queue was replaced with the recovered generator output on continuation branch `research/236-residual-review-2026-11-06` (commit `8b87cd63bb145ccd8611144331dad20f1ad6663a`). This is a reproducible stale-artifact correction, not a linguistic adjudication. The multi-engine workflow must still rerun and execute its previously skipped downstream jobs before the gate is marked DONE_VERIFIED.
