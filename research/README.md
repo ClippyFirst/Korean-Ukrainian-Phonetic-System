@@ -216,3 +216,12 @@ The engine integration register [kozak-kim-236-engine-integration-2026-11-06.csv
 The exact browser/Python parity test covers all seven new eojeols and verifies equal surface Hangul and broad IPA. Dictionary length in 유ː사썽 is preserved in IPA. Exact code-head CI at 8a5e6b83f7b6b1377200be3c4bdb330dc4d16de0 passed System Verify (Browser 1,398/1,398), Tests (Python 3.11/3.12/3.13, web, wheel, teacher corpus), Browser G2P, master/research artifact generation, exhaustive register extraction, external UGTPHON, paired native/g2pk, morphology-consensus and morphology-adapter smoke workflows. The multi-engine benchmark remained in progress at the last check; see the master handoff and [PR #436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436) for the exact status. Charsiu/ByT5 inference and official NIKL metadata-only inventory were skipped by workflow policy, not passed.
 
 The 236 cohort remains reconstructed candidate membership, not proof of original selector membership. Independent token-level acoustic IPA, Ukrainian target review and item-level NIKL rights review remain blockers. The repository remains a research prototype, not a release-ready transcription authority.
+
+## 2026-11-06 — no-audio engine-policy closure for the residual 40
+
+The user's constraint is that no audio will be supplied. The 40 residual occurrences therefore received explicit engine-policy decisions without being falsely promoted to speaker-level IPA gold. See the [detailed adjudication](../docs/KOZAK-KIM-40-NO-AUDIO-ADJUDICATION-2026-11-06.md) and [40-row occurrence register](kozak-kim-40-no-audio-engine-policy-2026-11-06.csv).
+
+- All 40 rows now carry `ENGINE_POLICY_RESOLVED_NO_AUDIO`; all 40 retain `UNRESOLVED_NO_AUDIO` for speaker-specific IPA gold.
+- Three explicit, correctly spaced phrase pairs now have NIKL §29 [붙им 2] insertion support in both Python and browser runtimes: `홍콩 영화들`, `한국 여자로`, and `첫 연애`. Compact tokens are not split automatically.
+- Other decisions preserve broad /s/, broad vowel hiatus, no unsupported /j/ insertion in `오조오억배` or `체험`, non-selective [ɛ]~[e] quality candidates, and raw `ㅠ` emoticons as non-speech.
+- The historical 236 candidate dispositions remain 15 rule-confirmed, 181 profile-convention, 12 ABSTAIN, and 28 unadjudicated. The new engine-policy field is a separate axis, not a rewrite of the historical evidence status.

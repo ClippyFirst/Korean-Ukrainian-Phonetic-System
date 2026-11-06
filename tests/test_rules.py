@@ -1108,3 +1108,30 @@ def test_236_candidate_exact_lexical_fortition_and_nikl_29_26_licenses():
         items, traces = apply_ordered_rules(parse_syllables(word), ["R008"])
         assert traces[0].changed, word
         assert traces[0].license_context == f"R008:lexical:{word}:{pair}", word
+
+
+def test_nikl_rule_29_connected_phrase_licenses_cover_the_three_residual_phrase_patterns():
+    cases = {
+        "홍콩 영화들": "홍콩 녕화들",
+        "한국 여자로": "한궁 녀자로",
+        "첫 연애": "천 녀내",
+    }
+    for phrase, expected_surface in cases.items():
+        items, traces = apply_ordered_rules(
+            parse_syllables(phrase),
+            ["R009", "R001", "R005", "R002"],
+            boundary_mode="phrase",
+        )
+        from korean_ukrainian.pipeline import _render_surface_hangul
+        assert _render_surface_hangul(items) == expected_surface
+        assert traces[0].changed, phrase
+        assert traces[0].license_context.startswith("R009:phrase:"), phrase
+
+def test_nikl_rule_29_residual_phrase_licenses_do_not_infer_hidden_spaces():
+    for compact in ("홍콩영화들", "한국여자로", "첫연애"):
+        items, traces = apply_ordered_rules(
+            parse_syllables(compact),
+            ["R009", "R001", "R005", "R002"],
+            boundary_mode="phrase",
+        )
+        assert not traces[0].changed, compact

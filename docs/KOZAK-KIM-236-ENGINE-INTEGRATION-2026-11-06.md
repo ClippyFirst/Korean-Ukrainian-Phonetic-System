@@ -154,3 +154,14 @@ The new KCI record for Lee (2023), DOI 10.17959/sppm.2023.29.2.193, reports that
 
 
 The native Python IPA profile and browser shared-Broad profile now cite Lee (2023) in the research-only [ɛ]~[e] variant metadata. Regression tests cover all six unresolved sibilant token strings in the shared-Broad runtime (canonical /s/, no unsupported [ɕ] variant) and verify that `대한민국` retains its length mark while the optional vowel-quality candidate remains non-selective. The legacy browser profile remains unchanged for compatibility; this guard explicitly tests `clippyfirst-korean-broad-v1`.
+
+
+## 2026-11-06 — no-audio engine-policy adjudication of the residual 40
+
+The user confirmed that no audio will be supplied. The work therefore separates a resolvable **engine-policy decision** from an unresolvable **speaker-specific IPA gold** claim. The new [40-occurrence no-audio policy register](../research/kozak-kim-40-no-audio-engine-policy-2026-11-06.csv) assigns all 40 occurrences an explicit production action across 12 decision families and 17 distinct token spellings. It preserves the historical ABSTAIN/unadjudicated source statuses and keeps `speaker_ipa_gold_status=UNRESOLVED_NO_AUDIO` for all 40.
+
+The Python and browser engines now support exact NIKL §29 [붙임 2] phrase insertion for the explicitly spaced pairs `홍콩 영화들`, `한국 여자로`, and `첫 연애`. The Python path requires `boundary_mode="phrase"`; the browser path uses explicit whitespace as its connected-phrase proxy. These are runtime paths under the general rule, not lexical/token-specific attestations. Compact corpus tokens are deliberately not split or rewritten. NIKL Q&A 316146's prosodic alternatives for `첫 연애` remain conditional; no speaker reading is selected.
+
+The other cases receive bounded no-change decisions: no categorical /j/ in `오조오억배` or `체험`; preserve broad /i/ hiatus in `자기이입하네`; keep broad /s/ for the /jʌ/ and /jo/ sibilant cases; retain the non-selective [ɛ]~[e] research candidate for `대한민국`; preserve raw `ㅠ` emoticons as non-speech rather than pronouncing their canonicalized `유` form. The existing standalone-jamo test now includes `ㅠㅠ`.
+
+**Status:** 40/40 engine-policy dispositions are complete; 40/40 speaker-specific narrow IPA claims remain explicitly unadjudicated without audio. This does not change the 236-case gold-status counts or release-readiness classification. See [the detailed no-audio adjudication](KOZAK-KIM-40-NO-AUDIO-ADJUDICATION-2026-11-06.md).

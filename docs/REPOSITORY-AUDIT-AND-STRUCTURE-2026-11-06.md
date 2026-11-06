@@ -433,3 +433,21 @@ The earlier post-merge Pages run 42254523031 was cancelled when this documentati
 ### Documentation contract-test correction — 2026-11-06
 
 The first documentation-navigation refresh exposed a structural contract: `tests/agent-workflow-structure-contract.test.mjs` requires the root README to retain links to the PR #443 baseline benchmark run `42226435101` and system verification run `42226435403`. The status rewrite had dropped those historical references. Restored both as explicitly labelled historical baseline evidence, separate from the PR #446 exact-head checks. The failure was limited to this documentation assertion: 1 of 1,407 browser tests failed and the other 1,406 passed; Python 3.11/3.12/3.13, wheel install and teacher-corpus audit passed. The corrective change is documentation-only; exact-head verification is triggered again on the current `main`.
+
+
+
+
+### 2026-11-06 — no-audio adjudication of all 40 residual occurrences
+
+**Branch:** `research/no-audio-40-case-adjudication-2026-11-06` (based on main `3570b3e5a35533739226d6bf9f0eefb1eb81fbac`).  
+**Detailed decision record:** [40-case no-audio adjudication](KOZAK-KIM-40-NO-AUDIO-ADJUDICATION-2026-11-06.md).  
+**Occurrence ledger:** [40-row engine-policy register](../research/kozak-kim-40-no-audio-engine-policy-2026-11-06.csv).
+
+- **DONE implementation (pending CI):** Python and browser NIKL §29 phrase-mode handling for the explicitly spaced phrases `홍콩 영화들`, `한국 여자로`, and `첫 연애`; these are not token-specific lexical attestations; no hidden word boundaries are inferred in compact tokens.
+- **DONE policy adjudication:** all 40 occurrences have `ENGINE_POLICY_RESOLVED_NO_AUDIO` decisions (12 original ABSTAIN rows + 28 focused residual rows; 17 distinct token spellings; 12 policy families).
+- **BLOCKED evidence claim:** all 40 remain `UNRESOLVED_NO_AUDIO` for speaker-specific IPA gold. No audio is available by user constraint; no narrow IPA, speaker-specific [ɛ]/[e], or optional prosodic variant is fabricated.
+- **Data-quality finding:** source contexts for occurrences 1219 and 1288 contain raw `ㅠ` emoticons but canonicalized text replaces them with `유`; these spans are non-speech notation and must not be treated as spoken /ju/. The runtime's standalone-jamo guard is now tested with `ㅠㅠ`.
+- **Preserved:** original 12 ABSTAIN and 28 residual review statuses, source registry, IPA-first adapter boundary, and historical 236-case completion counts. No benchmark gold was rewritten.
+- **New tests:** Python coverage for 40-row crosswalk, source-register integrity and emoticon normalization evidence; Python and browser exact Rule 29 phrase tests; browser no-glide/hiatus/sibilant regressions; standalone-jamo regression.
+
+**Commands/results:** no local shell, pytest or npm command was run; this connector-only session cannot execute repository tests locally. CI on the PR head is the acceptance gate. The >1 MB append-only `MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md` was preserved; this dated audit is the concise continuation record. Do not call the implementation `DONE_VERIFIED` until exact-head CI, generated-artifact checks and any downstream jobs complete.
