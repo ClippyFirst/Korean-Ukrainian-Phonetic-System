@@ -661,7 +661,7 @@ The 181 profile-convention cases and 40 abstained/unadjudicated cases are not co
 ## 2026-11-06 — 40-case no-audio engine-policy closure
 
 - Added `research/kozak-kim-40-no-audio-engine-policy-2026-11-06.csv`, which crosswalks all 12 individual ABSTAIN occurrences and all 28 focused residual rows to a bounded engine action. It preserves the original evidence statuses and explicitly records `UNRESOLVED_NO_AUDIO` for speaker-level IPA gold.
-- Added exact, explicit phrase-mode NIKL §29 insertion licenses for `홍콩 영화들`, `한국 여자로`, and `첫 연애` in both Python and browser runtimes. No hidden spaces are inferred in compact benchmark tokens.
+- Added conditional, explicit phrase-mode NIKL §29 insertion handling for `홍콩 영화들`, `한국 여자로`, and `첫 연애` in both Python and browser runtimes. No hidden spaces are inferred in compact benchmark tokens.
 - Added Python/browser tests for the phrase pairs, compact-input negative controls, no-glide and hiatus decisions, broad /s/ retention, the `ㅠㅠ` non-speech jamo path, all-40 occurrence coverage, source-row crosswalk, and source-register IDs.
 - 22 `아끼셔` rows are treated as one source-row/token family, not 22 independent speakers.
 - Completion vocabulary is intentionally split: `ENGINE_POLICY_RESOLVED_NO_AUDIO` for all 40; `UNRESOLVED_NO_AUDIO` for all speaker-level IPA gold. This is not 40 new categorical phonology rules and does not alter the historical 236-candidate cohort totals.
