@@ -64,3 +64,7 @@ Five rule-confirmed cases already had exact runtime licenses on the starting bra
 ## Verification added
 
 Browser exact-form/negative-control regressions, Python surface/trace regressions, Rule 5 variant regressions, and an occurrence-to-runtime traceability test are added. Rule coverage and source-register rows are updated in place. Exact-head CI results will be appended to the master handoff after completion.
+
+### Phrase-level Rule 29 candidates kept out of production
+
+The remaining cohort includes three occurrences of `한국여자로` and one of `홍콩영화들` whose benchmark comparator contains n-insertion. NIKL Q&A 330322 confirms the conditional Rule 29 [붙임 2] scope for two words pronounced as one connected phrase, but it does not attest these exact tokens. The source records have no audio or prosodic-boundary annotation; both cases remain ABSTAIN. No phrase-level heuristic is added.

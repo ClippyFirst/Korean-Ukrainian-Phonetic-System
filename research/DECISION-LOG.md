@@ -133,3 +133,10 @@ Record consequential linguistic, data, architecture, testing, licensing, and rel
 - **Verification:** Python isolated-form and full-context tests, browser rule tests, negative controls, and Python/browser g2pK isolation tests pass on implementation/test head `be65ee71b9d3f224876875830b30be856f96126f`.
 - **Separate retain decision:** `출산` (row `dc_inside_2107`) remains under the existing R012 / NIKL §26 license pending independent review. Do not remove fortition solely to match a single Broad-v2 annotation.
 - **Limit:** the historical 239 count is pre-C11/C12; the current 36-row queue is narrower. Four fixes and one provisional retain do not complete the 239-case adjudication. The full post-fix benchmark was not rerun.
+
+## 2026-11-06 — Rule 29 phrase-level candidate remains evidence-limited
+
+- **Decision:** retain ABSTAIN for the three repeated `한국여자로` occurrences (1805/1832/1859) and `홍콩영화들` (643); do not add phrase-level n-insertion runtime rules.
+- **New primary evidence:** NIKL Online Q&A 330322 confirms Rule 29 [붙임 2] can apply across two words when they are pronounced as one connected phrase. Registered as `SRC-NIKL-QNA-330322`.
+- **Why this does not resolve the cases:** the UGC strings omit standard inter-word spacing and provide no audio or prosodic-boundary annotation. The benchmark IPA is a diagnostic comparator, not independent gold. The NIKL Q&A gives a conditional phrase-level rule, not an exact pronunciation for `한국여자` or `홍콩영화`.
+- **Acceptance:** require token-level audio or independently adjudicated IPA plus a defensible phrase/morpheme boundary before changing the engine. The exact compound `연전연패` remains separately licensed; no broad Rule 29 phrase heuristic is added.

@@ -1402,3 +1402,16 @@ The documentation/source-register corrections are now verified on `main` at `d7c
 ### 2026-11-05 — exact historical-239 selection remains blocked
 
 The recovered ZIP artifact `13156351613` has verified SHA-256 `749ac9a2b9db96c1e27828919afe05ef4320e35ca6a91ab2038c1ff3e9d04c69` and contains 2,703 occurrence records for each of ten engine ledgers. The historical exporter (run-head `4f3f307c5bb056bce3b0aedc8ab07e0010eaa695`) assigns only an occurrence-level union over strict plus Broad mismatch fragments. It does not retain per-fragment Broad C01–C10 labels. The pinned export has 1,267 rows, 370 Broad mismatches, 3 rows with union label exactly `UNMAPPED_REQUIRES_REVIEW`, and 12 Broad mismatches with no C01–C10 union label. Neither count reconstructs the historical 239; rows containing both mapped and unmapped edits cannot be distinguished from the stored union. Acceptance remains blocked until the original per-fragment assignment snapshot or exact executable selection predicate yields exactly 239 stable IDs.
+
+### 2026-11-06 — 236-candidate engine integration and evidence gate
+
+| Gate | Status | Evidence / acceptance |
+|---|---|---|
+| Integrate 15 rule-confirmed standard-variant occurrences | PARTIAL | 14 have runtime coverage (9 new occurrence-level licenses across 7 exact eojeol families; 5 preserved baseline cases). Occurrence 2490 `머리속에` remains BLOCKED because spelling/semantic normalization is outside phonological conversion. |
+| Keep 181 profile-convention mismatches out of categorical rules | DONE_VERIFIED | No runtime rule added; broad/narrow profile differences remain separately classified. |
+| Preserve 12 ABSTAIN and 28 UNADJUDICATED cases without invented IPA | DONE_VERIFIED | Candidate ledger remains unchanged except evidence-basis enrichment for phrase-level Rule 29 cases; no production rules added for these 40. |
+| Rule 29 phrase-level cases `한국여자로` / `홍콩영화들` | BLOCKED | NIKL Q&A 330322 confirms the conditional two-word connected-phrase scope, but no audio or prosodic boundary establishes that condition. Acceptance requires token-level audio or independent IPA adjudication. |
+| Preserve dictionary length in IPA for `유사성[유ː사썽]` | PARTIAL | Exact NIKL dictionary-backed long ㅠ is emitted as `juː`; the IPA target adapter retains length as a feature without adding a Ukrainian length grapheme. |
+| Browser/Python parity for the exact 236 integrations | PARTIAL | Dedicated test compares surface Hangul and broad IPA for seven exact forms. Exact-head CI result is recorded in the handoff after all workflows complete. |
+
+The 236 cohort is not 236 independent phonological rules: 181 are profile-convention differences, and the remaining 40 are evidence-limited. No automatic generalization is authorized from these counts.

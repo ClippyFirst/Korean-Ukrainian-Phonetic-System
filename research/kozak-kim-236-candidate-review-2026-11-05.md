@@ -257,3 +257,7 @@ Of the 15 `RULE_CONFIRMED_STANDARD_VARIANT` occurrences:
 - occurrence 2490 (`머리속에`) remains blocked because correcting it to `머릿속` is spelling/semantic normalization, not a phonological rule.
 
 The other 221 rows remain as previously classified: 181 profile-convention mismatches are not categorical rules, 12 are ABSTAIN, and 28 are UNADJUDICATED. No acoustic IPA gold or Ukrainian target was invented. The new runtime rules continue through the existing IPA-first Ukrainian adapter.
+
+### Additional Rule 29 phrase-level source check (2026-11-06)
+
+NIKL Online Q&A 330322 was inspected and added to the source register. It confirms that Rule 29 [붙임 2] can apply across two words when they are spoken as one connected phrase. This is relevant to the comparator mismatches for `한국여자로` (three repeated occurrences) and `홍콩영화들`, but does not directly attest either expression. The UGC transcription has no audio or prosodic-boundary annotation, so both remain ABSTAIN and no runtime change is made. The existing exact compound license for `연전연패` is not generalized to these phrase candidates.
