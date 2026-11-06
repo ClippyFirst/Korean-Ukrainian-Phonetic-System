@@ -6960,3 +6960,8 @@ The artifact discrepancy is therefore reconciled at source-file level. **Accepta
 - Updated the 236-case generator and regression tests. The generated ledger now carries five `residual_review_*` fields for the 28 cases; all 12 abstentions remain abstentions and all 28 remain unadjudicated. No runtime phonology, canonical IPA, Ukrainian target, or benchmark gold changed.
 
 **Verification status:** implementation and source/register consistency are committed on this branch; exact-head GitHub Actions, generated-artifact drift and PR review are still pending. No local shell, pytest or npm run was available in the connector-only session. The actual linguistic acceptance blocker remains original audio + speaker crosswalk + two independent Korean IPA annotations, followed by separate Ukrainian target review. The repository remains a partial research prototype, not release-ready.
+
+
+### 2026-11-06 — runtime guard and provenance update
+
+The native Python and browser shared-Broad optional [ɛ]~[e] metadata now cite Lee (2023), DOI 10.17959/sppm.2023.29.2.193, whose KCI abstract reports an incomplete, position-sensitive Seoul merger. Added native and browser regressions for the six residual sibilant token strings: shared-Broad canonical /s/ remains and no unsupported [ɕ] variant is emitted. The 대한민국 test preserves the existing length mark and treats [ɛ]~[e] as a non-selective research alternative. The legacy browser profile is unchanged for compatibility. The source register now contains 214 rows; the new study is citation-only and no redistribution rights are claimed. Exact-head CI and generated-artifact checks remain pending; no local shell/pytest/npm execution is claimed.
