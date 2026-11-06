@@ -497,3 +497,10 @@ An initial Python assertion run [42260665657](https://github.com/ClippyFirst/Kor
 - **Next acceptance input:** written clarification from UGTPHON/KoMultiText/MultiLexNorm++ rights holders (or qualified legal determination) covering raw token and sentence-context redistribution, reviewer retention, publication of derived annotations, attribution and any access/purpose limits.
 
 The 236-case workflow remains blocked at the external distribution gate, not at packet-builder implementation. Do not infer permission from public availability or repository licence badges. This audit does not conclude that reuse is prohibited; it concludes that the public evidence currently inspected is insufficient to clear external sharing of source-identifiable excerpts.
+
+
+## 2026-11-06 — 236-case source-rights decision supersession
+
+The interim source-rights report initially treated the empty per-occurrence `source_license` projection as an unresolved licence gap. This was incomplete. The canonical `research/SOURCE-REGISTER.csv` record `SRC-UGTPHON-EMNLP-2026` already records the Apache-2.0 declaration for the UGTPHON Korean subset, and the 236-case inventory is derived from the pinned `UGTPHON/ko/test.json` snapshot (commit `ef0d5a09c2ea1874c7206020f875cbd9cfea2f54`). The final rights report supersedes the interim `BLOCKED` conclusion: limited distribution of the 236 case excerpts to two reviewers is permitted under the declared subset licence when the complete Apache-2.0 text and source notice accompany each packet. Residual upstream title/provenance risk is disclosed, not represented as legally adjudicated.
+
+The reviewer workflow remains NOT STARTED until two qualified reviewers are identified and the two separate blind packets are generated and distributed. No packets have been generated or shared in this documentation pass. The full licence and source notice are stored in `licenses/`.
