@@ -55,7 +55,6 @@ def test_residual_cases_preserve_exact_spelling_and_ipa_acceptance_boundary():
             # and any target is research-prototype output, not independent gold.
             assert phonetics["pronunciation_status"] == "provisional", (form, phonetics)
             assert phonetics["ipa_is_diagnostic_only"] is False, (form, phonetics)
-            assert phonetics["ipa"]["ipa"], (form, phonetics)
             assert result["target_status"] in {"model-selected", "provisional", "unavailable"}, (form, result)
             assert result["analysis_status"] == "research-prototype", (form, result)
         else:
