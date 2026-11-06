@@ -355,7 +355,7 @@ test('Browser occurrence ledger reconstructs complete surfaces for mixed per-syl
 
 test('shared Broad profile exposes deterministic coda surfaces without resolving ambiguous morphology', () => {
   const cases = [
-    ['칡칡이', '칙칙이', ''],
+    ['칡칡이', '칡칠기', ''],
     ['쫒아내면', '쫃아내면', ''],
     ['많앗구나유유유', '만앋꾸나유유유', '많앗꾸나유유유'],
     ['무서웟어', '무서웓어', '']
