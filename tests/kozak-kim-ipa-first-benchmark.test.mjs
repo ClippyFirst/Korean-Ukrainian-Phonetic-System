@@ -477,7 +477,7 @@ test('236-candidate exact licenses do not become productive suffix or substring 
   assert.ok(!convert('유사증').ipa.includes('s͈'));
   assert.ok(!convert('혐오성').ipa.includes('tɕ͈'));
   const unlicensedN = convert('연전연합');
-  assert.ok(!unlicensedN.surfaceHangul || unlicensedN.surfaceHangul === '연전연합');
+  assert.equal(unlicensedN.surfaceHangul, '연저년합'); // ordinary ㄴ liaison, not Rule 29 insertion.
   assert.ok(!convert('고시미정에').ipa.includes('s͈'));
 });
 
@@ -485,7 +485,7 @@ test('five previously integrated standard-rule cases remain covered', () => {
   const engine = createBrowserKozakKimEngine();
   const expected = {
     '출산': '출싼',
-    '팔자걸음': '팔짜걸음',
+    '팔자걸음': '팔짜거름',
     '보일거라': '보일꺼라',
     '물가로': '물까로',
     '안할듯': '안할뜯'

@@ -78,7 +78,7 @@ def nucleus_ipa(s:Syllable,*,phonemic=False,genitive_particle=False)->list[str]:
         return ["ʌ"]
     # Exact genitive-particle forms retain principal [ɯi]; Rule 5's [e]
     # alternative is emitted separately. Non-initial lexical ㅢ keeps [i].
-    if not phonemic and genitive_particle and s.nucleus=="ㅢ" and s.onset=="ㅇ":
+    if not phonemic and genitive_particle and s.nucleus=="ㅢ":
         return ["ɰi"]
     # Korean standard pronunciation: ㅢ in a syllable with a consonant
     # onset is realized as [i]. Keep the underlying /ɰi/ at the phonemic
@@ -123,7 +123,7 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
         elif syllable.nucleus=="ㅖ" and syllable.onset not in {"ㅇ","ㄹ"}:
             primary,alternate="je","e"
             section="§5"
-        elif (syllable.nucleus=="ㅢ" and syllable.onset=="ㅇ" and i>0
+        elif (syllable.nucleus=="ㅢ" and i>0
               and items[i-1].boundary_after!="word"):
             genitive_particle=_word_form_at(items,i) in _NIKL_GENITIVE_UI_PARTICLE_FORMS
             primary,alternate="ɰi","e" if genitive_particle else "i"
@@ -244,7 +244,7 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     phonemic=level=="phonemic"
     rendered=[]
     for i,s in enumerate(items):
-        genitive_particle=(s.nucleus=="ㅢ" and s.onset=="ㅇ" and
+        genitive_particle=(s.nucleus=="ㅢ" and
                            _word_form_at(items,i) in _NIKL_GENITIVE_UI_PARTICLE_FORMS)
         rendered.append("".join(onset_ipa(s,i,items,phonemic=phonemic,level=level)+
                                  nucleus_ipa(s,phonemic=phonemic,genitive_particle=genitive_particle)+

@@ -248,14 +248,16 @@ test('§27 exact phrase licenses apply at adjacent eojeol pairs inside sentences
   }
 });
 
-test('C08 context recovery does not authorize the unresolved -성 lexical case', () => {
+test('C08 context recovery applies only the exact dictionary-backed 유사성 lexical license', () => {
   const sourceCase = c08ContextFixture.cases.find((item) => item.source_row_id === 'dc_inside_2024');
   assert.ok(sourceCase && sourceCase.source_sentence.includes('유사성'));
   const result = generic.convert(sourceCase.source_sentence);
-  // This sentence also contains the independently licensed exact form 없을듯.
-  // Do not mistake that R013 trace for evidence about the unresolved -성 token.
-  assert.ok(result.surfaceHangul.includes('유사성'), '유사성 must remain plain');
-  assert.ok(!result.surfaceHangul.includes('유사썽'), 'no suffix-wide -성 fortition is authorized');
+  // This exact dictionary word is licensed by R008; the evidence does not
+  // authorize a productive -성 suffix rule or neighboring lexical guesses.
+  assert.ok(result.surfaceHangul.includes('유사썽'), 'exact dictionary-backed 유사성 is fortified');
+  assert.ok(!result.surfaceHangul.includes('유사성'), 'the exact form is no longer plain');
+  const negative = generic.convert(sourceCase.source_sentence.replace('유사성','혐오성'));
+  assert.ok(!negative.ipa.includes('tɕ͈'), 'unlisted -성 forms do not inherit the exact license');
 });
 
 test('§27 attached -ㄹ게 ending license stays inside its exact eojeol', () => {

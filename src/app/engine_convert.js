@@ -11,6 +11,14 @@ import { ipaSyllableToUkrainian, ipaSyllablesToUkrainian, ipaTargetForSource, IP
 import { lexicalResult, firstSyllableInWord, genericVowelVariants } from './engine_lexical.js';
 import { practicalStatusForUnit, softStatusForUnit } from './soft_morphology.js';
 
+const NIKL_GENITIVE_UI_PARTICLE_FORMS=new Set(['그놈의','자신의']);
+function exactWordFormAt(units,index){
+  let start=index,end=index;
+  while(start>0&&isHangulUnit(units[start-1]))start--;
+  while(end+1<units.length&&isHangulUnit(units[end+1]))end++;
+  return units.slice(start,end+1).map(unit=>unit.char).join('');
+}
+
 function ipaSafeLiteral(value){return [...value].filter(isPreservableIpaLiteral).join('');}
 
 export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options={}){
@@ -294,6 +302,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     }
 
     const prev=prevHangul(units,i);
+    const genitiveParticleUi=u.vowel==='ㅢ'&&NIKL_GENITIVE_UI_PARTICLE_FORMS.has(exactWordFormAt(units,i));
     const contextualUi=u.vowel==='ㅢ'&&u.onset!=='ㅇ';
     const defaultUi=u.vowel==='ㅢ'&&u.onset==='ㅇ';
     const vowelJamo=contextualUi?'ㅣ':u.vowel;
@@ -303,7 +312,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     // The Python IPA adapter already applies this broad-profile rule; keep the
     // browser runtime in parity. Phonemic /jʌ/ remains a distinct representation.
     const palatalYeo=u.vowel==='ㅕ'&&['ㅈ','ㅉ','ㅊ'].includes(onset);
-    let status=u.__superSoftFallback?'super-soft-orthographic-fallback':superSoftOn&&u.__practicalHeuristic?'super-soft-practical-heuristic':superSoftOn&&u.__softHeuristic?'super-soft-morphology-heuristic':u.__practicalHeuristic?'practical-transliteration':u.__softHeuristic?'heuristic-low-confidence':(applied.length||contextualUi||defaultUi||palatalYeo?'contextual':'canonical');
+    let status=u.__superSoftFallback?'super-soft-orthographic-fallback':superSoftOn&&u.__practicalHeuristic?'super-soft-practical-heuristic':superSoftOn&&u.__softHeuristic?'super-soft-morphology-heuristic':u.__practicalHeuristic?'practical-transliteration':u.__softHeuristic?'heuristic-low-confidence':(applied.length||contextualUi||defaultUi||genitiveParticleUi||palatalYeo?'contextual':'canonical');
     const previousCoda=prev?.__effectiveCoda??prev?.coda??'';
     const liaisonOnset=Boolean(u.__liaison);
     const previousSonorant=['ㄴ','ㄹ','ㅁ','ㅇ'].includes(previousCoda);
@@ -325,7 +334,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     u.__effectiveCoda=u.coda;
 
     const o=get(map,'onset',onset),v=get(map,'vowel',vowelJamo),c=u.coda?get(map,'coda',u.coda):null;
-    const vowelIpa=defaultUi?'ɰi':palatalYeo?'ʌ':(v?.ipa||'');
+    const vowelIpa=(genitiveParticleUi||defaultUi)?'ɰi':palatalYeo?'ʌ':(v?.ipa||'');
     const ipaOnset=useSharedBroadIpaProfile?(o?.ipa||''):
       (J_VOWELS.has(u.vowel)&&onset==='ㅅ')?'ɕ':
       (J_VOWELS.has(u.vowel)&&onset==='ㅆ')?'ɕ͈':(o?.ipa||'');
