@@ -48,6 +48,46 @@ def test_2490_uses_exact_pronunciation_alias_without_rewriting_source_orthograph
     assert "s͈" in result["ipa"]["ipa"]
 
  
+def test_236_lenis_sibilant_variants_match_across_native_and_browser_after_resyllabification():
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("Node.js is required for the cross-runtime parity check")
+
+    positive = ["멋있어", "멋있노", "무슨뜻임", "것이냐", "저딴짓이면서", "법알못이구만"]
+    negative = ["쇼", "슈", "셔", "섀", "씨"]
+    words = positive + negative
+    native = {word: phoneticize_korean(word)["ipa"] for word in words}
+
+    node_source = (
+        "import { createBrowserKozakKimEngine } from './scripts/benchmark_kozak_kim_browser.mjs';\n"
+        f"const words = {json.dumps(words, ensure_ascii=False)};\n"
+        "const engine = createBrowserKozakKimEngine();\n"
+        "const rows = words.map(word => {\n"
+        "  const result = engine.convert(word, { ipaProfile: 'clippyfirst-korean-broad-v1' });\n"
+        "  return { word, ipa: result.ipa, variants: result.variants || [] };\n"
+        "});\n"
+        "process.stdout.write(JSON.stringify(rows));\n"
+    )
+    completed = subprocess.run(
+        [node, "--input-type=module", "-e", node_source],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    browser = {row["word"]: row for row in json.loads(completed.stdout)}
+
+    for word in positive:
+        assert "ɕ" not in native[word]["ipa"], word + ": canonical broad IPA remains /s/"
+        assert any("ɕi" in item["ipa"] for item in native[word]["variants"]), word + ": Native surface variant"
+        assert "ɕ" not in browser[word]["ipa"], word + ": Browser canonical broad IPA remains /s/"
+        assert any("ɕi" in item["ipa"] for item in browser[word]["variants"]), word + ": Browser surface variant"
+
+    for word in negative:
+        assert not any("ɕ" in item["ipa"] for item in native[word]["variants"]), word + ": Native out-of-scope negative control"
+        assert not any("ɕ" in item["ipa"] for item in browser[word]["variants"]), word + ": Browser out-of-scope negative control"
+
+
 def test_browser_python_surface_and_ipa_parity_for_236_exact_forms():
     node = shutil.which("node")
     if not node:
