@@ -27,7 +27,7 @@ ID 2092 contains the exact Sino-Korean lexical item 출시 (出市). NIKL Standa
 ## Explicitly not closed
 
 - ID 49 remains open: its colloquial nominal/copular parse needs confirmation.
-- IDs 143 and 538 remain open because the lexical form has variable accepted pronunciations and the exact inflected token needs independent review.
+- IDs 143 (멋있노) and 538 (멋있어) are now profile-convention confirmed in the canonical context-adjudication register: the lenis ㅅ is resyllabified before ㅣ, so Kang (2010)'s /i/ context supports an optional [ɕ] candidate while broad /s/ remains canonical. NIKL Q&A 306166 directly attests [머시써] for 멋있어. This closes only the broad-vs-narrow profile mismatch; it does not claim speaker-specific acoustic IPA gold or Ukrainian gold.
 - IDs 481 and 551 remain open because they include fortis sibilants; lenis /s/ evidence does not adjudicate fortis place.
 - ID 551 is mixed: only its lenis component is in the /i/ environment; its fortis component remains unresolved.
 - ID 78 remains evidence-limited pending token audio or independent Korean IPA review.
