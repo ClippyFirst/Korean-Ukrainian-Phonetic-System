@@ -483,3 +483,17 @@ An initial Python assertion run [42260665657](https://github.com/ClippyFirst/Kor
 **Execution limits:** no local shell, `pytest`, or `npm` command was run in this connector-only session; all verification above is GitHub Actions evidence. The >1 MB append-only `MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md` remains preserved; this audit is its dated continuation. No branches were deleted, no force-push was used, and no release was published.
 
 **Readiness:** the 40 engine-policy decisions are integrated and tested. The 40 speaker-specific IPA gold claims remain no-audio-limited. Original historical 239-member cohort proof and independent Ukrainian target review remain open; the repository remains a bounded research prototype, not a release-certified pronunciation authority.
+
+
+## 2026-11-06 — 236-case source-rights audit
+
+**Branch:** `audit/kozak-236-source-rights-2026-11-06` (based on `main` at `f6d282145d985578af3d0a0bedb75197f00e3cb9`).
+**Decision record:** [KOZAK-236 source-rights audit](KOZAK-236-SOURCE-RIGHTS-AUDIT-2026-11-06.md).
+
+- **DONE_VERIFIED — public source-chain inspection:** UGTPHON's Korean subset declares Apache-2.0 and identifies KoMultiText/DC Inside (partly via MultiLexNorm++) as its two source streams. KoMultiText repository/Hugging Face metadata also declares Apache-2.0. The KoMultiText paper states that its authors reviewed DC Inside terms, but does not name a specific permission or establish original comment authors' licensing authority.
+- **PARTIAL — MultiLexNorm++ terms:** paper and public Hugging Face dataset page inspected. The paper identifies DC Inside but does not specify raw-text redistribution conditions; the dataset page requires a contact-sharing access agreement. Those gated terms were not accepted or inspected.
+- **BLOCKED — external reviewer distribution:** Apache-2.0 declarations are positive dataset-level evidence, but do not independently verify the licensor's authority over every original user comment. Apache-2.0 §1/§2 and §7 are relevant: the grant is from the copyright owner/authorised entity and the licence disclaims title/non-infringement warranties. Keep all 236 `source_license` fields blank and the reviewer packets internal-only.
+- **No packets generated or distributed.** No external reviewer has been contacted; no benchmark was run.
+- **Next acceptance input:** written clarification from UGTPHON/KoMultiText/MultiLexNorm++ rights holders (or qualified legal determination) covering raw token and sentence-context redistribution, reviewer retention, publication of derived annotations, attribution and any access/purpose limits.
+
+The 236-case workflow remains blocked at the external distribution gate, not at packet-builder implementation. Do not infer permission from public availability or repository licence badges. This audit does not conclude that reuse is prohibited; it concludes that the public evidence currently inspected is insufficient to clear external sharing of source-identifiable excerpts.
