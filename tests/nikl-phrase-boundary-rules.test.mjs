@@ -91,3 +91,22 @@ test('§29 internal compound example 서른여섯 uses the sourced standard surf
   assert.equal(result.status, 'lexical-review');
   assert.equal(result.ipa, 'sʌ.ɾɯn.ɲʌ.sʌt̚');
 });
+
+
+test('§29 applies the three reviewed residual phrase patterns only with explicit word boundaries', () => {
+  const cases = [
+    ['홍콩 영화들', 'phrase-n-insertion-§29'],
+    ['한국 여자로', 'phrase-n-insertion-§29'],
+    ['첫 연애', 'phrase-n-insertion-§29'],
+  ];
+  for (const [phrase, rule] of cases) {
+    const result = engine.convert(phrase);
+    assert.ok(result.trace.some(item => item.rules.includes(rule)), phrase);
+    assert.ok(result.ipa.includes('n'), phrase + ': expected inserted nasal in IPA');
+    assert.equal(result.issues.length, 0, phrase);
+  }
+  for (const compact of ['홍콩영화들', '한국여자로', '첫연애']) {
+    const result = engine.convert(compact);
+    assert.ok(!result.trace.some(item => item.rules.includes('phrase-n-insertion-§29')), compact);
+  }
+});
