@@ -1,3 +1,24 @@
+## 2026-11-05 evidence-scope regression corrections
+
+- The S018 source-integrity test now verifies that Lee (1993) classifies /s/ among fortis sounds and explicitly does not license a modern lenis /s/ rule.
+- The 236-row sibilant environment test now crosswalks only Kang (2010)'s abstracted /i, ye, ya/ contexts. It verifies 157 context-compatible lenis edits, 27 out-of-scope lenis edits, and keeps all 24 fortis edits separate.
+- The 36-row 2026-11-03 queue remains a historical input to the 31-row abstention register; the 32-row 2026-11-05 current export has a distinct file and exact-subset regression. These counts and files are not interchangeable.
+
+## 2026-11-05 regression additions — reconstructed 236-candidate review inventory
+
+The research-only 236-candidate ledger adds two focused regression surfaces:
+
+- `tests/test_kozak_236_candidate_review.py` checks the 239-ID replay joins to the pinned 370-row context superset, three known FIX overlaps are excluded, exactly 236 unique occurrences remain, dispositions are 213 not individually adjudicated / 22 ABSTAIN / 1 provisional RETAIN, source context/provenance fields are populated, the 254 Broad edits/24 signatures (including 184 lenis and 24 fortis sibilant operations, with 22 orthographic-ㅆ and two coda-triggered fortis cases), the S018 p.31 Hangul environment crosswalk and historical-only C11/C04 tag counts are stable, and the checked-in CSV matches the deterministic generator.
+- `tests/test_source_register_integrity.py::test_s018_korean_ipa_source_matches_cambridge_primary_bibliographic_metadata` checks S018's corrected Hyun Bok Lee (1993) citation and the matching Cambridge source-register row.
+
+These tests validate inventory reproducibility and bibliographic identity only. They do **not** adjudicate the 236 pronunciations, certify IPA-Dict/Broad-v2 as gold, validate Ukrainian targets, or license a production phonological change. The 236 remain a research review queue, not 236 confirmed defects.
+
+**Exact-head verification:** PR #436 head `169e008bd0aabee34efe05385bcc5f6179f4cc70` passed Python 3.11/3.12/3.13, Browser regression/build, wheel install, teacher-corpus audit, web, paired UGTPHON, pinned UGTPHON, Kiwi/MeCab morphology, corpus generation, external IPA diagnostic, artifact generation and exhaustive test-case extraction. The multi-engine IPA comparison remains in progress. CharsiuG2P, ByT5 and official NIKL metadata-only jobs were skipped by policy, not passed. Local pytest/npm were not run.
+
+The semantic test-case register remains PARTIAL INVENTORY; independent Korean IPA and Ukrainian target review remain BLOCKED.
+
+---
+
 ## 2026-11-02 regression additions — Kozak Kim only
 
 The following tests were added and verified in GitHub Actions; no existing expectation was weakened:
@@ -619,3 +640,19 @@ PR [#347](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/3
 | Rows with a non-empty expected fragment | 2,598 |
 
 The dimension-hint counts are multi-label and must not be summed as if they partition cases. The queue remains a triage aid: all 5,286 rows require case-level review, and none is tied to an exact-head observed result. Raw literals are not gold; no IPA/Ukrainian correctness is established. **Status remains PARTIAL INVENTORY.**
+
+
+## 2026-11-05 current verification status
+
+At exact PR head `f2b30e3e64b42fed4ce9a857f76399df87559a12`, the initial browser/web run found three stale assertions (CSV quoting and source-register row/classification counts); they were corrected and the failed jobs rerun. The full tests workflow passed (Python 3.11/3.12/3.13, wheel install, teacher audit, web); system verification passed browser regression/build and Python/data integrity; master corpus artifact generation passed. Multi-engine and three external diagnostic workflows remained in progress at last check. Skipped CharsiuG2P, ByT5 and NIKL inventory jobs remain explicitly unavailable, not passed. Linguistic adjudication remains BLOCKED on qualified independent Korean IPA review.
+
+
+## 2026-11-06 — 236-candidate exact runtime integration
+
+- Browser regressions now cover exact R008 lexical fortition for `정권`, `유사성`, `혐오증`; R009 n-insertion for `연전연패`; R012 fortition for `출시미정에`; and Rule 5 particle variants for `그놈의` and `자신의`.
+- Python regressions assert the same surface forms and exact rule-license traces. Rule 5 tests assert principal /ɰi/ plus permitted [e], and explicitly reject [i] for these genitive-particle forms while retaining [i] for non-initial lexical ㅢ.
+- Negative controls keep unlisted exact-form lookalikes and n-insertion / ㄹ+ㅅ contexts outside their source-backed licenses. The exact NIKL dictionary length in `유사성[유ː사썽]` is preserved in IPA; the Ukrainian adapter records length as a feature without adding a target grapheme.
+- Five previously implemented standard-rule cases (`출산`, `팔자걸음`, `보일거라`, `물가로`, `안할듯`) are pinned as retained coverage.
+- `tests/test_kozak_236_engine_integration.py` checks that every one of the 15 rule-confirmed occurrence IDs has exactly one explicit integration disposition, including the `머리속에` orthographic-normalization blocker.
+
+The 181 profile-convention cases and 40 abstained/unadjudicated cases are not converted into rules. These tests validate software behavior and evidence traceability, not speaker-specific acoustic IPA or independent Ukrainian-reader gold.

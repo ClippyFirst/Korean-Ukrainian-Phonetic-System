@@ -50,10 +50,19 @@ test('engine selection is multi-metric, paired, reproducible, and legally gated'
 
 test('upstream skills are pinned and selectively integrated without copying', () => {
   for (const phrase of [
-    '2ce8aa15d05bd57213e6f746f953aafb7ded7a8b',
+    '22f0b463e7a5e579904dd6211a520321035526f7',
     '4ae2317ddb22b046e26455e4f9c9b3aaaf62212d',
     '96608e078b2d5ea607c5c3b8b5a54d1c1fba6846',
     'No upstream skill text or code is copied',
     'Ponytail\'s gain/scoreboard skill is excluded',
   ]) assert.ok(integration.includes(phrase), 'missing upstream provenance/selection detail: ' + phrase);
+  for (const phrase of [
+    'systematic-debugging',
+    'verification-before-completion',
+    'skills/engineering/code-review',
+    'skills/engineering/research',
+    '22f0b463e7a5e579904dd6211a520321035526f7',
+    '4ae2317ddb22b046e26455e4f9c9b3aaaf62212d',
+    '96608e078b2d5ea607c5c3b8b5a54d1c1fba6846',
+  ]) assert.ok(integration.includes(phrase), 'missing current upstream reference: ' + phrase);
 });

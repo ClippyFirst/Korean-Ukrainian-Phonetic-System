@@ -3,6 +3,8 @@
 Status: research prototype; repository documentation, versioning policy and owner-approved custom licence are integrated into main. Scientific certification and release readiness remain blocked by independent IPA/Ukrainian review, NIKL item-level rights, C12 evidence, historical mismatch reconciliation and remaining coverage/parity work.
 Last updated: 2026-11-05.
 
+See [engineering workflow reference audit](../docs/ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-05.md) for the pinned review of the three supplied repositories and project-specific adoption decisions.
+
 This directory is the durable source of truth for research planning, evidence tracking, implementation coverage, decisions, and release acceptance. Continue work from these files rather than relying on chat history.
 
 ## Start here
@@ -17,9 +19,15 @@ This directory is the durable source of truth for research planning, evidence tr
 9. [Ukrainian target-layer comparison](UKRAINIAN-TARGET-LAYER-COMPARISON-2026-10-16.md) — page-referenced comparison of Shchegel (2009) and Kovalchuk (2011), including conflicts and proposed tests.
 10. [Decision log](DECISION-LOG.md) — durable record of consequential decisions.
 11. [Release acceptance gates](ACCEPTANCE-GATES.md) — evidence required before a release is accepted.
+12. [236-candidate review note](kozak-kim-236-candidate-review-2026-11-05.md) and [occurrence ledger](kozak-kim-236-candidate-review-2026-11-05.csv) — reconstructed cohort, exact contexts and evidence-limited dispositions.
+- [236-candidate engine integration ledger](kozak-kim-236-engine-integration-2026-11-06.csv) — one runtime disposition per rule-confirmed occurrence, including existing licenses and the orthographic blocker.
+13. [Sibilant-glide scope review](KOREAN-SIBILANT-GLIDE-SCOPE-REVIEW-2026-11-05.md) — Kang (2009/2010) evidence boundary for /s/ before /j/; explicitly records why 27 out-of-scope occurrences remain open.
 
 ## Current state — 2026-11-05
-The repository audit/navigation, independent browser/Python version policy, and owner-approved ClippyFirst Project License have been merged into `main` via PR #434 (merge commit `56318e8a293d6f92dc307256430279d386a77d33`). The repository remains a **partial research prototype**, not research-certified or release-ready. Software CI on the current main head passed for tests, system verification and generated artifacts, but the Pages deployment timed out; these checks do not establish linguistic correctness or source-item reuse rights. Distinguish the blocked live NIKL HTTP crawl from the already completed local-HTML metadata inventory: the repository-held capture parses 30/30 Standard Pronunciation Rules articles and its schema/reproducibility workflow passed, while page-level KOGL rights and pristine capture authenticity remain unresolved.
+
+[236-candidate review note](kozak-kim-236-candidate-review-2026-11-05.md) · [236-row occurrence ledger](kozak-kim-236-candidate-review-2026-11-05.csv) · [historical 36-row queue](kozak-kim-unmapped-mismatch-review-queue-2026-11-03.csv) · [current 32-row queue](kozak-kim-unmapped-mismatch-review-queue-2026-11-05.csv) · [Draft PR #436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436)
+
+The repository audit/navigation and owner-approved ClippyFirst Project License were merged through PR #434; the reconstructed 239-ID candidate replay was merged through PR #435. Starting main for the current continuation is `043754498f3ad8a17aa6c13b5f643b197536da8a`. Draft PR #436 adds the 236-occurrence context review inventory, corrects S018's scope, and uses S019 for the lenis /s/ acoustic hypothesis. The historical 36-row 2026-11-03 queue is preserved; the current 32-row 2026-11-05 export is versioned separately. Implementation/test head e253de4 passed the relevant Python/browser/wheel/teacher/paired-UGTPHON checks; latest docs-only head 2877027 passed system verification. The multi-engine diagnostic was cancelled after a later branch update; NIKL metadata-only and Charsiu inference were skipped. The repository remains a **partial research prototype**, not research-certified or release-ready. Software CI does not establish linguistic correctness or source-item reuse rights. Distinguish the blocked live NIKL HTTP crawl from the already completed local-HTML metadata inventory: the repository-held capture parses 30/30 Standard Pronunciation Rules articles and its schema/reproducibility workflow passed, while page-level KOGL rights and pristine capture authenticity remain unresolved.
 
 Current evidence gaps:
 - cleanly recapture the NIKL page with translation/browser extensions disabled, preserve the new file as a separately identified source artifact, and compare its byte hash; the current local HTML inventory is 30/30 but contains a likely injected DeepL controller and 17 referenced assets are absent;
@@ -28,7 +36,7 @@ Current evidence gaps:
 - obtain independent Ukrainian phonetic/orthographic target review on frozen IPA inputs;
 - finish rule-level parity across browser, Python, CLI, and API where the current rule coverage matrix says it is incomplete;
 - crosswalk C12 mismatch rows to source utterances, audio, speakers, dialect and prosodic context before any production change;
-- reconcile the historical 239 Broad-v2 mismatch occurrences. This is a historical diagnostic population, not 239 confirmed production defects. The archived 1,267-row fragment export, 36-row current unmapped queue, 13 cluster rows, and 38 paired-discrepancy rows have different grains and are not interchangeable. A complete hash-pinned 239-occurrence ledger with source-context crosswalk, exact IPA profile, provenance and adjudication is still missing; do not mass-change production outputs or expected tests to force corpus agreement.
+- confirm the original historical 239 membership predicate or original member list. A pinned replay now yields 239 reconstructed candidate IDs and the 236 remaining occurrences are materialized in a context-linked review ledger on draft PR #436. Historical identity remains PARTIAL, and the 236 are not yet individually adjudicated; do not mass-change production outputs or expected tests to force corpus agreement.
 - close remaining names, loanwords, Hanja and regional-style coverage gaps;
 - retain exact-head CI and deployment smoke evidence for each release candidate.
 
@@ -95,9 +103,9 @@ The 31 current-queue abstention rationales now identify each occurrence, source 
 
 ## 2026-11-05 verification refresh — current `main`
 
-Current `main` is `d68cb09e12eb8b71b264775f2cf7ac6e9c2a51c5` (single branch; no open PRs). Exact-head GitHub Actions on this commit: tests `42000327552` PASS (Python 3.11/3.12/3.13, wheel install, teacher-corpus audit, browser tests); System Verify `42000327509` PASS (Python and browser tests/build; live NIKL metadata-only inventory SKIPPED); master/research artifacts `42000327383` PASS; Pages deployment `42000327385` PASS. These checks validate software and generated artifacts, not independent IPA correctness, Ukrainian target quality, or source-item rights.
+Current `main` is `043754498f3ad8a17aa6c13b5f643b197536da8a`. Draft PR #436 is the only open PR and carries the 236-candidate review branch; the merged PR #435 source branch is retained. Exact-head GitHub Actions on this commit: tests `42000327552` PASS (Python 3.11/3.12/3.13, wheel install, teacher-corpus audit, browser tests); System Verify `42000327509` PASS (Python and browser tests/build; live NIKL metadata-only inventory SKIPPED); master/research artifacts `42000327383` PASS; Pages deployment `42000327385` PASS. These checks validate software and generated artifacts, not independent IPA correctness, Ukrainian target quality, or source-item rights.
 
-The narrow 36-row queue's disposition register is complete (4 FIX, 1 provisional RETAIN, 31 ABSTAIN); the five source-context adjudication rows are separately recorded in `kozak-kim-context-adjudication-2026-11-05.csv`. Python `RuleTrace` per-occurrence `applied_occurrences` and `license_contexts` are implemented and covered by the verified test suite. The historical 239-row ledger remains BLOCKED solely on exact 239 membership / historical fragment assignment reconstruction; the recovered artifact itself is no longer missing.
+The narrow 36-row queue's disposition register is complete (4 FIX, 1 provisional RETAIN, 31 ABSTAIN); the five source-context adjudication rows are separately recorded in `kozak-kim-context-adjudication-2026-11-05.csv`. Python `RuleTrace` per-occurrence `applied_occurrences` and `license_contexts` are implemented and covered by the verified test suite. A replay now yields 239 reconstructed candidate IDs and a 236-row context-linked review ledger is proposed in PR #436. The original historical selector/member list remains unproven, and 236 individual IPA decisions remain outstanding.
 
 ### Historical Broad mismatch recovery
 
@@ -173,3 +181,25 @@ Exact-head checks on the PR head:
 - No post-fix multi-engine benchmark was run; the recovery PR changes only research metadata/tests and does not claim updated phonetic benchmark scores.
 
 Current research disposition remains: **239 reconstructed candidate IDs; 3 verified FIX overlaps; 236 candidate cases still unresolved**. RETAIN and ABSTAIN do not decrement the remaining count. Historical membership is still PARTIAL pending confirmation of the original aggregate selector; no independent IPA or Ukrainian-target gold is claimed.
+
+
+## 2026-11-05 — 236-candidate review and source correction
+
+A hash-pinned pre-C11/C12 Broad-only aggregate replay yields 239 unique candidate IDs from the 370-row context superset. Three exact-form FIX overlaps (37, 704, 2031) are excluded, leaving 236 candidate occurrences. The occurrence ledger and reproducible generator are proposed in [draft PR #436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436): 213 have no individual disposition in the current narrow registers, 22 overlap the 31-row ABSTAIN register, and one (1140, 출산) is a provisional RETAIN. RETAIN/ABSTAIN do not decrement the unresolved count.
+
+The 236 rows carry 254 Broad edit operations across 24 signatures; 184 are lenis ɕ→s and 24 are fortis ɕ͈→s͈. The latter are not covered by the lenis-only C11 optional variant. The inherited C04 label on 206 rows is stale: current C04 has zero residual occurrences after reclassification to C12. The new ledger names inherited labels as historical only.
+
+The Cambridge S018 bibliography is corrected to Hyun Bok Lee (1993), JIPA 23(1), pp. 28–31. Direct page-31 inspection found /s/ classified among fortis sounds, so S018 does not directly support modern lenis /s/. S019 (Kang 2010) supports only an acoustic-coarticulation hypothesis before /i, ye, ya/; the crosswalk finds 157/184 lenis edits in scope and 27 outside. The optional broad/narrow research variants are now restricted to ㅣ, ㅖ, ㅑ; canonical broad output and Ukrainian targets remain unchanged. PR #436 exact-head CI is pending at the latest branch update; earlier intermediate test failures were fixed, and the next CI result must be checked before marking this batch DONE_VERIFIED.
+
+
+## 2026-11-06 — superseding 236-candidate disposition and engine integration
+
+This section supersedes the 2026-11-05 snapshot above, which described the earlier 213/22/1 split before the complete candidate-by-candidate adjudication.
+
+The reproducible 236-row candidate ledger now has: 15 RULE_CONFIRMED_STANDARD_VARIANT, 181 PROFILE_CONVENTION_MISMATCH_CONFIRMED, 12 ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW, and 28 NOT_INDIVIDUALLY_ADJUDICATED. The 181 profile cases are not 181 confirmed pronunciation errors or 181 new rules. The 40 evidence-limited occurrences are 17 unique token forms; repeated 아끼셔 (22 rows) and 한국여자로 (3 rows) are not independent speaker observations.
+
+The engine integration register [kozak-kim-236-engine-integration-2026-11-06.csv](kozak-kim-236-engine-integration-2026-11-06.csv) maps all 15 rule-confirmed occurrences: 9 new occurrence-level licenses across seven exact eojeols, five already implemented baseline cases, and one blocked orthographic normalization case (머리속에). New forms are exact-scoped: 그놈의, 자신의, 정권, 유사성, 혐오증, 연전연패, and 출시미정에. The 181 profile mismatches, 12 abstentions and 28 unadjudicated rows did not generate production rules.
+
+The exact browser/Python parity test covers all seven new eojeols and verifies equal surface Hangul and broad IPA. Dictionary length in 유ː사썽 is preserved in IPA. Exact code-head CI at 8a5e6b83f7b6b1377200be3c4bdb330dc4d16de0 passed System Verify (Browser 1,398/1,398), Tests (Python 3.11/3.12/3.13, web, wheel, teacher corpus), Browser G2P, master/research artifact generation, exhaustive register extraction, external UGTPHON, paired native/g2pk, morphology-consensus and morphology-adapter smoke workflows. The multi-engine benchmark remained in progress at the last check; see the master handoff and [PR #436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436) for the exact status. Charsiu/ByT5 inference and official NIKL metadata-only inventory were skipped by workflow policy, not passed.
+
+The 236 cohort remains reconstructed candidate membership, not proof of original selector membership. Independent token-level acoustic IPA, Ukrainian target review and item-level NIKL rights review remain blockers. The repository remains a research prototype, not a release-ready transcription authority.

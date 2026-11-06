@@ -24,9 +24,11 @@ def test_narrow_profile_palatalizes_sibilants_only_in_reviewed_contexts():
     assert _ipa("시", "narrow")["ipa"] == "ɕʰi"
     assert _ipa("샤", "narrow")["ipa"] == "ɕʰja"
     assert _ipa("셰", "narrow")["ipa"] == "ɕʰje"
-    # The source study reports a different spectral pattern for /yu, yo/,
-    # so this partial profile intentionally does not extend [ɕʰ] to these.
+    # Kang (2010) reports a distinct spectral pattern for /yu, yo/ and
+    # does not license a generalization to other /j/-initial nuclei.
     assert _ipa("쇼", "narrow")["ipa"] == "sʰjo"
+    assert _ipa("슈", "narrow")["ipa"] == "sʰju"
+    assert _ipa("섀", "narrow")["ipa"] == "sʰjɛ"
 
 
 def test_narrow_profile_palatalizes_n_before_glide_nuclei_but_not_before_i():

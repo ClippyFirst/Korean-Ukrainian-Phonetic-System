@@ -1,12 +1,12 @@
 # Repository structure and ownership guide
 
-**Snapshot:** 2026-11-05, verified code/test head `be65ee71b9d3f224876875830b30be856f96126f`; documentation and audit addenda committed through `eba384fba0a201837cdb3b657ced4f376ae84fdd`. This guide describes the observed tree and stable ownership boundaries; it is not a claim that every file has been independently reviewed line by line.
+**Snapshot:** 2026-11-06, default-branch baseline `main` at `043754498f3ad8a17aa6c13b5f643b197536da8a`; current integration branch `research/236-candidate-review-2026-11-05` is tracked by PR #436. This guide describes the observed tree and stable ownership boundaries; it is not a claim that every file has been independently reviewed line by line.
 
 ## What this repository contains
 
 A Python research package, a browser-based practical/research application, Korean phonology and lexical datasets, a Korean-to-Ukrainian IPA target layer, reproducible research tooling, and a public GitHub Pages service.
 
-The recursive Git tree contained **799 entries** (files plus directories), including **163 Markdown files**, **388 test files**, **61 scripts**, **18 GitHub Actions workflows**, and **13 schemas**. The current documentation tree contains 144 entries. These are point-in-time inventory counts; see the latest audit addendum for the exact head and CI snapshot.
+At branch head `6c29e09f74af7b0e88ff847886dd7b944bae4c32`, the recursive Git tree contained **831 entries** (789 files and 42 directories), including **177 Markdown files**, **394 files under `tests/`**, **64 scripts**, **18 GitHub Actions workflows**, and **13 schemas**. The `docs/` subtree contained 146 files and `research/` 55 files. These are point-in-time inventory counts, not measures of implementation completeness.
 
 ## Top-level map
 
@@ -22,7 +22,7 @@ The recursive Git tree contained **799 entries** (files plus directories), inclu
 | `tests/` | Python and browser regression suites, fixtures and corpora | Fixtures are not automatically gold labels |
 | `research/` | Source register, rule coverage, acceptance gates, decisions, reviewer queues and discrepancy ledgers | Canonical research status; update existing registers, do not create parallel ledgers |
 | `docs/` | Stable guidance, dated audits, research notes, user/developer docs and handoff | Use the documentation index; keep historical links stable |
-| `.agents/skills/` | Four repository-specific agent skills: NIKL evidence audit, NIKL crawler, rule coverage and phonetic engineering | Extend existing skills rather than copying generic upstream workflows |
+| `.agents/skills/` | Seven repository-local skills: four domain-specific phonetic/NIKL skills plus engineering-change, repository-audit and change-review | Route through root `AGENTS.md`; extend the owning skill rather than copying generic upstream workflows |
 | `.github/workflows/` | Tests, verification, generated artifacts, research jobs and Pages deployment | Inspect path filters, permissions, skip policies and exact-head results |
 | `public/` | Static assets and third-party notices/licences | Third-party terms remain independent |
 | `reports/` | Generated audit summaries and metadata-only manifests | Regenerate from canonical inputs; do not hand-edit generated outputs |
@@ -74,12 +74,12 @@ Runtime requirements are Node.js `>=22.12.0` and Python `>=3.11`. Optional extra
 
 The four supplied upstream repositories were reviewed as process references, not as code or text to copy:
 
-- [unlazy](https://github.com/Leonxlnx/unlazy): observable acceptance gates, explicit command oracles, and honest handoff for unmet manual gates.
+- [unlazy](https://github.com/Leonxlnx/unlazy): observable acceptance gates, explicit command oracles, and honest handoff for unmet or abandoned gates.
 - [Superpowers](https://github.com/obra/superpowers): red/green TDD, systematic root-cause debugging and verification before completion claims.
 - [Matt Pocock's skills](https://github.com/mattpocock/skills): separate specification compliance from engineering-standard review; trace research claims to primary sources.
 - [Ponytail](https://github.com/DietrichGebert/ponytail): risk-first whole-repository audit, real data-flow tracing, concrete reproducible findings and smallest effective fixes.
 
-The project already has domain-specific skills in `.agents/skills/` and an integration record in [AGENT-SKILL-INTEGRATION-2026-11-01.md](AGENT-SKILL-INTEGRATION-2026-11-01.md). Do not add overlapping generic skills or a second gate ledger without a demonstrated gap.
+The project already has domain-specific skills in `.agents/skills/` and the current [agent workflow guide](AGENT-WORKFLOWS.md) and historical [phonetic skill integration record](AGENT-SKILL-INTEGRATION-2026-11-01.md). Do not add overlapping generic skills or a second gate ledger without a demonstrated gap.
 
 ## Safe structural evolution
 
@@ -92,7 +92,7 @@ The project already has domain-specific skills in `.agents/skills/` and an integ
 
 ## Known audit boundaries at this snapshot
 
-- `main` is the default branch and is the only branch currently returned by the branch inventory. No open PRs were found at the audit snapshot.
+- `main` is the default branch. The branch inventory includes the active PR #436 integration branch and PR #437 documentation branch. PR #437's 13 documentation/skill/test paths were ported into #436; #437 is closed as superseded and its branch is preserved. The merged PR #435 branch is preserved, not deleted.
 - The main branch was reported as unprotected by GitHub repository metadata. No branch-protection or ruleset settings were changed.
 - The latest exact-head CI before this continuation passed browser/Python regression, build, generated artifacts and Pages deployment. This continuation adds a fresh exact-head verification; see the audit addendum.
 - The NIKL local HTML inventory is structurally complete (30/30) but page-level reuse terms and capture authenticity are not established.
@@ -106,4 +106,4 @@ NIKL Standard Pronunciation Rules R001–R016 and exact-form/morphological licen
 
 ## Current mismatch evidence register
 
-`research/kozak-kim-context-adjudication-2026-11-05.csv` records four context-restored NIKL §27 exact-form corrections and one provisional R012 retain decision. It is a narrow decision register, not the complete historical 239-occurrence ledger. The original NIKL HTML capture remains in place; no new snapshot was created. NIKL rules remain exclusive to Kozak Kim; g2pK remains an independent baseline.
+`research/kozak-kim-context-adjudication-2026-11-05.csv` records four context-restored NIKL §27 exact-form corrections and one provisional R012 retain decision. The reconstructed 239-ID cohort and 236-row source-context review inventory are documented in `research/kozak-kim-236-candidate-review-2026-11-05.csv` (draft PR #436); historical membership is still partial and the 236 are not individually IPA-adjudicated. The original NIKL HTML capture remains in place; no new snapshot was created. NIKL rules remain exclusive to Kozak Kim; g2pK remains an independent baseline.

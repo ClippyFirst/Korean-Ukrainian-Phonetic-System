@@ -176,9 +176,19 @@ const NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS=new Map([
   ['실수','실>수'], // NIKL Online Q&A qna_seq=330843: every listed homonymous 실수 is [실쑤].
   ['출산','출>산'], ['출산율','출>산'], ['출산하다','출>산'],
   ['비출산','출>산'], // Exact prefixed form; its Sino-Korean constituent 출산 is dictionary-attested [출싼].
+  ['출시미정에','출>시'], // Exact 출시 (出市)[출씨] inside this eojeol; no general ㄹ+ㅅ inference.
   ['저출산','출>산'], // NIKL Basic Dictionary directly lists 저출산[저ː출싼].
   ['실시간','실>시'], // NIKL §26 + NIKL lexical source records 實時間; exact Sino-Korean 실>시간 boundary.
   ['팔자걸음','팔>자'], // NIKL Basic Dictionary 팔자[팔짜]; exact corpus compound only.
+]);
+
+// Exact lexical fortition entries outside a productive rule environment.
+// Each entry is an exact eojeol + adjacent-syllable pair only. Sources are
+// SRC-KPEDIA-JEONGGWON + SRC-NIKL-QNA-335292 (정권),
+// SRC-NIKL-KRDICT-YUSASEONG (유사성), and SRC-NIKL-KRDICT-HYEMO (혐오증).
+// No general -권, -성, or -증 rule is inferred.
+const LEXICAL_FORTITION_FORMS=new Map([
+  ['정권','정>권'], ['유사성','사>성'], ['혐오증','오>증'],
 ]);
 
 // Exact, source-backed NIKL §28 compound fortition cases. These licenses
@@ -241,6 +251,7 @@ const NIKL_29_WORD_INSERTION=new Map([
   ['솔잎','솔>잎'], ['설익다','설>익'], ['물약','물>약'],
   ['불여우','불>여'], ['서울역','울>역'], ['물엿','물>엿'],
   ['서른여섯','른>여'], ['스물여섯','물>여'],
+  ['연전연패','전>연'], // NIKL §29 exact compound 연전(連戰)+연패(連敗).
 ]);
 // §30(3) compound examples need a lexical compound boundary: do not treat
 // their written 사이시옷 as ordinary coda-to-vowel liaison when the exact
@@ -317,7 +328,7 @@ export {
   HANGUL_BASE, HANGUL_END, V_COUNT, T_COUNT, N_COUNT,
   ONSETS, VOWELS, CODAS, COMPLEX, FINAL_REPRESENTATIVE,
   NASAL_AFTER, PLAIN_TO_FORTIS, J_VOWELS, ASPIRATION, H_CODA_ASPIRATION,
-  LEXICAL_B_CODA_PREFIXES, NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_25_STEM_LB_LT_ENDING_FORMS, NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS, NIKL_28_COMPOUND_FORTITION_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_27_ADNOMINAL_FORMS, NIKL_29_PHRASE_INSERTION, NIKL_29_WORD_INSERTION,
+  LEXICAL_B_CODA_PREFIXES, LEXICAL_FORTITION_FORMS, NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_25_STEM_LB_LT_ENDING_FORMS, NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS, NIKL_28_COMPOUND_FORTITION_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_27_ADNOMINAL_FORMS, NIKL_29_PHRASE_INSERTION, NIKL_29_WORD_INSERTION,
   NIKL_30_SAISIOT_PRONUNCIATION_FORMS, NIKL_30_SAISIOT_INSERTION_FORMS,
   parseCsv, decompose, compose, createMap, get, isHangulUnit, nextHangul, prevHangul,
   representative, isJamoChar, isPreservableIpaLiteral, renderStructured,

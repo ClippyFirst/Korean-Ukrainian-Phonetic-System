@@ -538,3 +538,177 @@ Exact-head checks on the PR head:
 - No post-fix multi-engine benchmark was run; the recovery PR changes only research metadata/tests and does not claim updated phonetic benchmark scores.
 
 Current research disposition remains: **239 reconstructed candidate IDs; 3 verified FIX overlaps; 236 candidate cases still unresolved**. RETAIN and ABSTAIN do not decrement the remaining count. Historical membership is still PARTIAL pending confirmation of the original aggregate selector; no independent IPA or Ukrainian-target gold is claimed.
+
+
+## 20. 2026-11-05 — 236-candidate review and whole-repository continuation
+
+### Starting state and repository inventory
+
+- Starting default-branch commit: `043754498f3ad8a17aa6c13b5f643b197536da8a` (`main`).
+- Recursive tree: 806 entries (767 files), 164 Markdown files, 390 test files, 62 scripts, 18 workflows and 13 schemas; `docs/` contains 140 files and `research/` 49.
+- PR #435 (239-ID replay) and PR #434 (documentation/navigation) were merged. The retained PR #435 source branch was not deleted. This continuation created `research/236-candidate-review-2026-11-05` and draft PR #436; no existing branch or PR was force-pushed, deleted, or modified.
+- The architecture, IPA-first target boundary, independent g2pK baseline, vendored-code boundary, canonical data ownership, schema/test contracts and existing research registers were inspected. No phonological production rule or Ukrainian target mapping was changed.
+
+### 236-case review outcome
+
+The pinned pre-C11/C12 Broad-only aggregate replay yields 239 unique candidate IDs and joins all 239 to the 370-row context superset. Three existing exact-form FIX overlaps (37, 704, 2031) are excluded, leaving 236 candidate occurrences. The new CSV and deterministic generator are proposed in PR #436.
+
+| Review disposition | Count | Meaning |
+|---|---:|---|
+| No individual disposition in current narrow registers | 213 | Not individually adjudicated; no decision inferred |
+| Existing ABSTAIN overlap | 22 | Evidence-limited and unresolved |
+| Provisional RETAIN | 1 | Occurrence 1140 (`출산`), independent review pending |
+| **Total** | **236** | Candidate occurrences, not confirmed pronunciation defects |
+
+The rows represent 151 distinct token strings, 110 source rows/contexts and 168 source-row/token pairs. They contain 254 Broad edit operations across 24 signatures. The two largest signatures are 184 lenis `ɕ → s` operations and 24 fortis `ɕ͈ → s͈` operations. The latter are not covered by the lenis-only C11 optional variant and require separate review. The inherited C04 label on 206 rows is stale: the current cluster register has zero C04 residuals after the former aspirated-velar group was reclassified to C12. The new ledger explicitly labels inherited cluster values as historical-only.
+
+The replay's 239 membership remains PARTIAL: the original historical selector/member list was not preserved. The 236 inventory is a reproducible review queue, not linguistic confirmation. Two independent Korean IPA reviews, exact source convention/context, and separate Ukrainian target review are still required. The full post-fix multi-engine benchmark has not been rerun.
+
+### Source-register correction
+
+The Cambridge primary record identifies S018 as Hyun Bok Lee, *Korean*, Journal of the International Phonetic Association 23(1), June 1993, pp. 28–31, DOI 10.1017/S0025100300004758. The prior data catalog entry had year 1999 and the research source-register entry incorrectly attributed the Cambridge article to Sohn (2008). PR #436 corrects the catalog, source register, C11/C02/C01/C07 research references, and Python profile comment, with a bibliographic regression. This is a metadata correction only; it does not adjudicate individual pronunciations or clear reuse rights.
+
+### Verification and intermediate failures
+
+- Initial PR #436 head `51b7bce8dcf8fd7bac1bf87193e220dd48233ead`: Python 3.11/3.12/3.13, browser regression/build, wheel install, teacher-corpus audit, web and generated artifacts **PASS**.
+- Intermediate head `c7d95e64082a45e13c062c78c977e347d72fcbfc`: Python tests **FAIL** on three issues (field rename not propagated, source-register coverage assertions removed, S018 catalog year not yet corrected); Browser passed. All three were corrected and the signature regression was added.
+- Implementation/test head `e253de40d97135ad5e61ba7e49546e2d4641b0a1`: Python 3.11/3.12/3.13, Browser regression/build, wheel install, teacher-corpus audit, paired UGTPHON, research artifacts, external UGTPHON, exhaustive test-case extraction, system verification and morphology consensus **PASS**. The multi-engine diagnostic was **CANCELLED** after a subsequent branch update, not passed. NIKL metadata-only and Charsiu inference were **SKIPPED**.
+- Latest documentation-only head `2877027d557d4ee725ac63f6a4d990c7e9e6702b`: system verification **PASS** for Python and Browser; NIKL inventory **SKIPPED**. Local pytest/npm were not executed.
+
+### Task ledger
+
+| Work item | Status | Acceptance / blocker |
+|---|---|---|
+| Repository structure, source ownership, runtime boundaries, tests/workflows inventory | DONE_VERIFIED as a focused structural audit | 806-entry tree and canonical guides inspected; not every source file was read line by line |
+| 236-row review inventory and generator | DONE_VERIFIED as a derived inventory | Generator/CSV parity, 236/213/22/1 dispositions, 254/24 signature counts and historical C11/C04 label counts passed on implementation/test head e253de4; latest docs-only head system verification passed |
+| Historical 239 identity | PARTIAL / EVIDENCE-LIMITED | Recover original selector/member list or prove replay matches historical triage |
+| Individual IPA adjudication | BLOCKED | Two independent qualified Korean IPA reviewers, source convention and exact context needed |
+| Fortis sibilant sub-stratum | BLOCKED | 24 `ɕ͈ → s͈` operations need evidence separate from lenis C11 |
+| C12 audio/speaker/prosody crosswalk | BLOCKED | Current source ledger lacks audio and speaker metadata |
+| Ukrainian target validation | BLOCKED | Independent Ukrainian phonetic/orthographic review on adjudicated IPA inputs |
+| NIKL item-level rights / clean capture authenticity | BLOCKED / PARTIAL | Page/item KOGL terms and pristine capture remain unverified |
+| Full post-fix benchmark and remaining parity/coverage | TODO / PARTIAL | Run after evidence-backed changes; do not compare historical scores as post-fix metrics |
+| Neural teacher training | DEFERRED | Requires independent IPA gold and corpus-rights clearance |
+
+**Readiness:** partial research prototype; not research-certified and not release-ready. No release, deployment, branch protection, external setting, branch deletion, or merge was performed.
+
+
+## 21. 2026-11-05 — workflow references and comparator evidence
+
+A pinned comparison of [Superpowers](https://github.com/obra/superpowers), [Matt Pocock skills](https://github.com/mattpocock/skills) and [Ponytail](https://github.com/DietrichGebert/ponytail) is recorded in [ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-05.md](ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-05.md). All inspected snapshots have MIT licences; no code, skill text, artwork or benchmark data were copied. Adopted practices: requirements clarification, TDD, systematic debugging, exact-head verification, small composable procedures and benchmark transparency. Existing linguistic matrices remain canonical.
+
+### Exact-head comparator evidence (PR #436, 44c9b08f20d3099ce57a2ba9b7a478c4ed0388d3)
+
+- UGTPHON: 2,698 scored, 1,431 exact (53.0393%), CER 8.966%, five unresolved, zero engine errors; non-normative and convention-sensitive.
+- Native vs g2pk paired: 2,698 shared; exact 53.0393% vs 53.1134%, but CER 8.966% vs 9.2304%. Near-tie; no production engine decision.
+- Kiwi/MeCab consensus: 2,703 occurrences, 1,907 unique words; three words changed IPA/status, one newly resolved, four unresolved, 24 phrase-boundary cases withheld.
+- Raw-surface retrieval: 3,140 attempted, 2,639 scored; 22/722 noncanonical hits, no canonical hits or potential canonical false rewrites.
+- Python versions, browser, wheel, corpus, paired UGTPHON, morphology, external IPA and artifact jobs passed. Multi-engine IPA comparison was still in progress. CharsiuG2P, ByT5 and NIKL metadata checks were skipped, not passed.
+
+### Task ledger
+
+| Item | Status | Remaining acceptance |
+|---|---|---|
+| 236-row inventory | DONE_VERIFIED as reproducible inventory | Not linguistic confirmation |
+| External comparator diagnostics | PARTIAL | Multi-engine run still pending; skipped engines remain unavailable |
+| Historical 239 membership | PARTIAL / EVIDENCE-LIMITED | Original selector/member list absent |
+| 213 unadjudicated rows | TODO / BLOCKED | Independent IPA decisions with exact context/provenance |
+| 22 ABSTAIN + 1 RETAIN | BLOCKED | Independent IPA review; neither closes a case |
+| 24 fortis sibilant operations | BLOCKED | Separate review; not covered by lenis-only C11 |
+| Ukrainian target | BLOCKED | Separate review after Korean IPA adjudication |
+| NIKL item rights/capture | BLOCKED / PARTIAL | Item-level terms and clean capture provenance |
+
+No production-default phonological rule, canonical broad IPA reading, or Ukrainian target mapping was promoted. This branch does narrow the research-only optional [ɕ] variant and selectable partial narrow profile to the /i, ye, ya/ contexts supported by the reviewed Kang (2010) abstract; this is a deliberate research-profile scope correction with regression coverage, not a categorical pronunciation claim. No release, deployment or branch deletion was performed.
+
+
+## 22. 2026-11-05 — primary-source scope correction, queue versioning and exact-head revalidation
+
+### S018/S019 evidence correction
+
+Direct inspection of Cambridge's Lee (1993) PDF, p.31, found a substantive interpretation error in the earlier C11 note: Lee's own inventory explicitly lists /s/ among /p,t,k,c,s/ fortis sounds. The page does describe [ɕ] before /i/ and /j/-initial diphthongs, but this cannot be transferred directly to modern lenis /s/ or modern /s͈/ without reconciling notation and category. S018 remains a source for its Seoul /h/, /l/, stop-release and source-specific sibilant description; it is **not** the direct lenis C11 authority.
+
+S019 (Kang 2010) is the relevant lenis /s/ acoustic source. Its KCI abstract reports coarticulation/palatalization before /i, ye, ya/ and a distinct spectral pattern before /yu, yo/. The abstract does not establish a categorical [ɕ] phone for every /j/-initial diphthong. The Python broad optional variant and narrow partial profile are now limited to the explicit /i, ye, ya/ Hangul contexts (ㅣ, ㅖ, ㅑ); ㅒ, ㅕ, ㅛ and ㅠ are not generalized. The canonical broad [s] and all Ukrainian outputs remain unchanged. This is a conservative research-profile scope correction, not a production-default phonological change.
+
+The 236-row crosswalk was corrected accordingly: 157/184 lenis `ɕ→s` operations (156 occurrences) fit the /i, ye, ya/ contexts; 27 operations across 27 occurrences, six token strings and five source rows are outside those contexts. The 24 fortis `ɕ͈→s͈` operations remain separate and unresolved. The mixed `실시간` row has one lenis context and one separate fortis context. The 27 out-of-scope occurrence IDs are locked in the regression test.
+
+### Historical vs current unmapped queue
+
+The 36-row `kozak-kim-unmapped-mismatch-review-queue-2026-11-03.csv` is a historical, hash-pinned input to the 31-row abstention register and must remain immutable. The current pinned multi-engine rerun emits 32 rows after four cases no longer appear in the new export (37, 704, 2018, 2031). It is now stored separately as `kozak-kim-unmapped-mismatch-review-queue-2026-11-05.csv`. A regression verifies that the 32 rows are an exact subset of the historical file and that the historical 36-row/31-abstention crosswalk remains intact. The multi-engine workflow now compares against the date-specific 2026-11-05 artifact, not the historical file.
+
+### Current external diagnostic snapshot
+
+Run 42019876519, artifact 13411253960 (SHA-256 `bd5d4bc605a692858477984ba44539612270b8f90fc3d9c1a8e737f86557d5ca`) completed all ten engine comparisons over 2,703 eligible occurrences (2,698 common scored tokens for paired comparisons). This run's benchmark comparison step succeeded; the job was marked failed only because it compared the newly generated 32-row queue to the stale 36-row historical CSV. The queue has since been versioned and the exact-head workflow rerun is pending.
+
+| Engine | Exact / 2,703 | Exact rate | CER |
+|---|---:|---:|---:|
+| ClippyFirst native | 1,431 / 2,698 scored | 53.0393% | 8.9660% |
+| g2pk 0.9.4 | 1,435 / 2,703 | 53.0892% | 9.2285% |
+| g2p-ko 1.0.0 | 1,418 / 2,703 | 52.4602% | 9.3885% |
+| KoG2P 2019 | 738 / 2,703 | 27.3030% | 19.5122% |
+| HAMA 1.7.0 | 457 / 2,703 | 16.9071% | 25.1081% |
+| kokorog2p 0.9.15 | 495 / 2,703 | 18.3130% | 26.5352% |
+| KoG2Padvanced 2022 | 1,279 / 2,703 | 47.3178% | 10.6772% |
+| hangul_to_ipa | 439 / 2,703 | 16.2412% | 24.8054% |
+| eSpeak NG | 220 / 2,703 | 8.1391% | 33.6101% |
+| phonemize 2.0.1 | 1,150 / 2,703 | 42.5453% | 14.3531% |
+
+Native/g2pk paired difference on 2,698 shared tokens: native exact 1,431/2,698 (53.0393%), g2pk exact 1,433/2,698 (53.1134%); paired CER 8.9660% vs 9.2285%. The exact-match delta is +0.0741 percentage points, while CER worsens by +0.2644 percentage points. The report documents shared renderer/normalization and other comparability limitations; it is diagnostic, not gold. The dataset is user-generated, the Broad profile is non-normative, and no engine score licenses a production rule or Ukrainian target.
+
+### Training-readiness gate
+
+The same artifact's training-readiness audit reports 644 lexical rows, zero duplicate lexical forms, 46 additions and a 24-case frozen holdout. It explicitly marks **zero independently adjudicated IPA gold rows** in additions and **zero holdout IPA gold labels**. Consequently `supervised_ipa_training_ready=false`. The holdout packets are blinded to engine outputs, contain 24 cases each for reviewers A/B, and prohibit tuning use. The two packets have identical SHA-256 because their blank schema and source cases are intentionally the same; no reviewer annotation has been supplied. Training or benchmark tuning on UGTPHON/SIGMORPHON test rows or the frozen holdout remains prohibited.
+
+### Status
+
+- Source identity and scope correction: DONE_VERIFIED by direct Cambridge PDF p.31 and KCI abstract inspection; software regression updated.
+- 236 inventory: DONE_VERIFIED as a deterministic inventory only.
+- Historical 239 membership: PARTIAL / EVIDENCE-LIMITED; original selector/member list still absent.
+- 157 context-compatible lenis edit operations: source-environment compatible only; pronunciation adjudication TODO.
+- 27 out-of-scope lenis operations and all 24 fortis operations: BLOCKED on independent Korean IPA evidence.
+- 22 ABSTAIN + 1 RETAIN: remain unresolved; no reviewer adjudication.
+- Ukrainian target and item-level source rights: BLOCKED.
+- Current multi-engine export parity: rerun pending after versioned queue correction; prior benchmark comparison itself succeeded, but workflow job failed on stale artifact comparison.
+- Supervised IPA training: BLOCKED; no independently adjudicated IPA gold and frozen holdout annotations absent.
+
+No production-default IPA, Ukrainian target, release, deployment or branch merge was performed.
+
+
+### Additional separate S027 context
+
+A second Kang (2010) KCI paper is now registered as S027: *Korean Sibilant /s/ before a High Front and a Round Segment* (Phonetics and Speech Sciences 2(4):59–65; [KCI](https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001509195)). Its abstract describes a distinct labio-palatalized spectral pattern when a high-front and a round segment occur within the same syllable. The KCI article page states CC BY-NC 3.0 Unported; the repository records attribution/noncommercial terms and does not redistribute the PDF. Of the 27 lenis edits outside S019's /i, ye, ya/ set, occurrence 606 (`쇼`, /yo/) is a possible S027-context case. The abstract does not specify a canonical segmental IPA symbol, so this does not authorize [ɕ] or [ɕʷ] as a deterministic output. The other 26 edits remain outside the two reviewed abstract scopes. S027 is citation-only; full text, acoustic measurements and item-level pronunciation adjudication remain outstanding.
+
+
+## 2026-11-05 exact-head CI repair and current verification — f2b30e3e64b42fed4ce9a857f76399df87559a12
+
+The first exact-head run exposed three stale browser-suite assertions, not production-code failures:
+
+1. The NIKL Q&A register test expected a quoted CSV first field, while the canonical source register serializes this row with an unquoted first field. The test now matches the actual canonical CSV row prefix and continues to assert the exact URL, contrast, and rights caveats.
+2. The source-register rights audit expected 178 rows and 9 manual-classification cases. The current source register contains 179 rows and 10 manual-classification cases after adding the separately reviewed Korean IPA source. Expected counts were updated; rights remain open, not cleared.
+3. The CLI row-count assertion was updated from 178 to 179.
+
+Failed browser/web jobs were rerun rather than ignored. At exact head above, these workflows passed: **tests** (Python 3.11/3.12/3.13, wheel install, teacher-corpus audit, web suite), **Verify Korean–Ukrainian system** (browser regression/build and Python regression/data integrity), and **Master table and research corpus artifacts** (corpus generation). The PR's Python/data integrity checks also pass.
+
+The multi-engine diagnostic, external UGTPHON diagnostic, paired native/g2pk comparison and Kiwi/MeCab morphology consensus were still running at the last check. CharsiuG2P, ByT5 and official NIKL metadata inventory remain skipped by explicit workflow policy; they are not passes. No local shell execution was performed in this connector-only session. The PR remains open and unmerged pending the diagnostic run completion and final exact-head review.
+
+## 2026-11-05 — source refinement, repetition analysis and exact-head verification
+
+- **Sibilant evidence refinement:** the source register now includes and rechecks Kong & Kang (2020), a preliminary Seoul Korean study of 32 young adults (17 women, 15 men), seven monophthong contexts, word-initial/medial tokens, and speaker-conditioned spectral differences with palatalized variants before /i/. It also adds Sung & Cho (2010), a Korean lax/tense vs English sibilant comparison across /i, a, u/. Both are abstract-level reviews; neither provides item-level audio or confirms any of the 236 UGTPHON occurrences. Their full texts/raw data were not inspected. See the 236 review note and source register.
+- **Repetition weighting:** the 236 occurrences contain 151 unique token spellings and 110 source rows; 135 token spellings occur once. Repeated forms include 아끼셔 (22), 스시녀들은 (15), 시중도 (14), and 신안 (10). Group repeated observations before counting evidence; do not treat 236 occurrences as 236 independent speakers or utterances.
+- **Source registry:** 180 records. Rights checks remain open (the current browser rights-audit test expects 166 REVIEW_REQUIRED and 10 MANUAL_CLASSIFICATION_REQUIRED); this is not a rights clearance.
+- **Exact code/evidence head:** 52586302f305dfd2b81184cef81f0c68def0c4f2. Python 3.11/3.12/3.13, wheel install, teacher audit, web, Python regression/data integrity, browser regression/build, corpus generation and exhaustive extraction passed. External UGTPHON IPA, paired native/g2pk and morphology consensus diagnostics passed. Multi-engine IPA comparison run 42029149673 remains in progress; do not claim a result until its artifact is published. CharsiuG2P, ByT5, Charsiu train/dev and NIKL metadata-only jobs were skipped by workflow policy.
+- **No linguistic promotion:** the research-only optional [ɕ] variant and partial narrow-profile candidate scope are limited to /i, ye, ya/ contexts; canonical broad [s], phonemic output and Ukrainian target mapping are unchanged. The 24 fortis ɕ͈→s͈ operations remain a separate unresolved stratum.
+
+
+## 2026-11-05 continuation — 236-candidate evidence gate
+
+The 2026-11-04 main-branch audit snapshot above remains historical and unchanged. Subsequent work continued on the single branch `research/236-candidate-review-2026-11-05`, Draft PR #436, without merging or creating a parallel branch.
+
+- The reconstructed 236-occurrence candidate baseline remains intact.
+- Current disposition: 15 exact standard-form/rule confirmations; 181 bounded profile/variation reconciliations; 12 ABSTAIN pending independent IPA review; 28 not individually adjudicated. Thus 196 are dispositioned and 40 remain unresolved.
+- None of the 236 has independent speaker-level acoustic IPA gold. No production IPA, Ukrainian target, or benchmark gold was changed.
+- Source register now contains 207 entries; 3 item-level licenses, 1 not applicable, 180 rights-review required, 23 manual-classification required; 203 remain open.
+- NIKL Q&A 332662 is negative evidence for `쇼`: no standardized foreign-word pronunciation entry and no IPA gold. NIKL Q&A 328785 is a Rule 29 negative control: phonological shape alone does not guarantee n-insertion.
+- Kim & Hong (2025) full-text scope was corrected in the case adjudication: /iə~ijə/ and /oa~owa/ within-word pairs do not test /o.ʌ/ or numeral compounds.
+- The preceding malformed-CSV defect is fixed; all 207 source-register records parse as exactly 12 columns. Exact-head `785ee15473f83de3583c1d470a4ce477bd8575ab` verification: tests (Python 3.11/3.12/3.13, web, wheel, teacher audit) passed; system Python regression/data integrity and browser regression/build passed; corpus generation, extraction, pinned UGTPHON, paired native/g2pk and morphology consensus passed. Multi-engine IPA diagnostic remains in progress. Charsiu train-dev, ByT5/Charsiu inference and NIKL metadata-only jobs were skipped by policy. Local pytest/npm were not run.
+- The previous failed run's wheel-install and teacher-corpus-audit jobs passed; web and Python 3.13 failed due to the malformed CSV; Python 3.11/3.12 were cancelled. Local pytest/npm were not run.
+

@@ -54,6 +54,13 @@ test('ASCII Latin g is not accepted as the IPA symbol ɡ', () => {
   assert.deepEqual(ipaSyllableToUkrainian('g'), { text: '', unknown: 'g' });
 });
 
+test('vowel length remains in IPA features without adding a Ukrainian length grapheme', () => {
+  const mapping = traceIpaMappingDetailed('uː');
+  assert.equal(mapping.unknown, '');
+  assert.ok(mapping.features.some(feature => feature.feature === 'vowel-length'));
+  assert.equal(ipaSyllableToUkrainian('uː').text, ipaSyllableToUkrainian('u').text);
+});
+
 test('unknown IPA segments keep target rendering fail-closed', () => {
   const mapping = traceIpaMapping('ɕ☃');
   assert.equal(mapping.tokens.length, 1);

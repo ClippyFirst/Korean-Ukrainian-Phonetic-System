@@ -56,12 +56,12 @@ test('real source register is structurally valid and unresolved rights remain vi
   const csv = readFileSync(new URL('../research/SOURCE-REGISTER.csv', import.meta.url), 'utf8');
   const report = auditSourceRegister(csv);
   assert.equal(report.structuralErrorCount, 0, JSON.stringify(report.structuralErrors));
-  assert.equal(report.sourceRegisterRows, 178);
+  assert.equal(report.sourceRegisterRows, 212);
   assert.deepEqual(report.rightsClassificationCounts, {
     ITEM_LEVEL_LICENSE_RECORDED: 3,
     NOT_APPLICABLE_RECORDED: 1,
-    REVIEW_REQUIRED: 165,
-    MANUAL_CLASSIFICATION_REQUIRED: 9,
+    REVIEW_REQUIRED: 184,
+    MANUAL_CLASSIFICATION_REQUIRED: 24,
   });
   assert.ok(report.rightsClassificationCounts.REVIEW_REQUIRED > 0);
   assert.ok(report.rightsClassificationCounts.MANUAL_CLASSIFICATION_REQUIRED > 0);
@@ -85,6 +85,8 @@ test('real source register is structurally valid and unresolved rights remain vi
   assert.ok(unresolvedIds.has('SRC-NIKL-EDU-2021-DEPENDENT-SI'));
   assert.ok(unresolvedIds.has('SRC-KCI-ITO-2007-MORPHEME-STRUCTURE'));
   assert.ok(unresolvedIds.has('SRC-NIKL-QNA-319525'));
+  assert.ok(unresolvedIds.has('SRC-NIKL-QNA-334585'));
+  assert.ok(unresolvedIds.has('SRC-JUN15'));
   assert.ok(unresolvedIds.has('SRC-NIKL-KRDICT-62281'));
   assert.ok(unresolvedIds.has('SRC-NIKL-EDU-MOSKVA'));
   assert.ok(unresolvedIds.has('SRC-NIKL-KRDICT-82835'));
@@ -92,6 +94,12 @@ test('real source register is structurally valid and unresolved rights remain vi
   assert.ok(unresolvedIds.has('SRC-NIKL-KRDICT-HYEMO'));
   assert.ok(unresolvedIds.has('SRC-NIKL-KRDICT-89917'));
   assert.ok(unresolvedIds.has('SRC-WIKTIONARY-JUNGSIMDALMEUM'));
+  assert.ok(unresolvedIds.has('SRC-NIKL-LOANWORD-GAME-2005'));
+  assert.ok(unresolvedIds.has('SRC-KANG-2009-PALATAL-GLIDE'));
+  assert.ok(unresolvedIds.has('SRC-KANG-2015-VOWEL-LENGTH-MERGER'));
+  assert.ok(unresolvedIds.has('SRC-CHUNG-2022-MID-FRONT-PHONEMIC-STATUS'));
+  assert.ok(unresolvedIds.has('SRC-LEE-2023-REVISITING-MID-FRONT-MERGER'));
+  assert.ok(unresolvedIds.has('SRC-NIKL-KRDICT-YUSASEONG'));
 });
 
 test('CLI reports structure by default and keeps strict rights acceptance blocked', () => {
@@ -99,7 +107,7 @@ test('CLI reports structure by default and keeps strict rights acceptance blocke
   const normal = spawnSync(process.execPath, [script, '--json'], { cwd: process.cwd(), encoding: 'utf8' });
   assert.equal(normal.status, 0, normal.stderr);
   const report = JSON.parse(normal.stdout);
-  assert.equal(report.sourceRegisterRows, 178);
+  assert.equal(report.sourceRegisterRows, 212);
   assert.equal(report.structuralErrorCount, 0);
   assert.ok(report.itemLevelRightsNotClosed.length > 0);
 

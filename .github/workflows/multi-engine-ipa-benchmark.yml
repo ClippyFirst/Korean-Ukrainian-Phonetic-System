@@ -14,7 +14,7 @@ on:
       - "scripts/benchmark_multi_engine_ko.py"
       - "scripts/export_kozak_kim_mismatch_fragments.py"
       - "tests/test_export_kozak_kim_mismatch_fragments.py"
-      - "research/kozak-kim-unmapped-mismatch-review-queue-2026-11-03.csv"
+      - "research/kozak-kim-unmapped-mismatch-review-queue-2026-11-05.csv"
       - "scripts/benchmark_kozak_kim_browser.mjs"
       - "src/app/engine_convert.js"
       - "src/app/engine.js"
@@ -310,7 +310,7 @@ jobs:
             --corpus-license "Apache-2.0" \
             --only-unmapped-broad
           cmp "$RUNNER_TEMP/kozak-kim-unmapped-mismatch-review-queue.csv" \
-            research/kozak-kim-unmapped-mismatch-review-queue-2026-11-03.csv
+            research/kozak-kim-unmapped-mismatch-review-queue-2026-11-05.csv
       - name: Run Browser Kozak Kim on the same UGTPHON occurrences
         run: |
           set -euo pipefail

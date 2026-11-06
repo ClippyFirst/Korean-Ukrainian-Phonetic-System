@@ -2,6 +2,10 @@
 
 The repository keeps Korean surface evidence, engine output, IPA adjudication, and Ukrainian-target review as separate layers. A reviewer packet must not leak the surface comparator or source citation: those are evidence for the coordinator's later reconciliation, not inputs to the first-pass IPA annotation.
 
+## 236-case reconstructed cohort
+
+For the 236-row Kozak Kim cohort, use [the dedicated internal-only review protocol](KOZAK-236-INDEPENDENT-REVIEW.md). Its raw UGTPHON contexts and source-identity limitations differ from the NIKL queue below; do not pass the 236-case CSV to the NIKL-only packet builder.
+
 ## Generate two source- and candidate-blind packets
 
 From the repository root:

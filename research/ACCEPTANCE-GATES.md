@@ -1,4 +1,36 @@
-# 2026-11-02 acceptance-gate update — Kozak Kim only
+# 2026-11-05 — Current 236-candidate evidence gate (supersedes earlier interim counts)
+
+**Working branch:** `research/236-candidate-review-2026-11-05` (single continuation branch). **Draft PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436). The historical 236-row occurrence baseline remains intact.
+
+| Disposition | Occurrences | Meaning |
+|---|---:|---|
+| `RULE_CONFIRMED_STANDARD_VARIANT` | 15 | Exact official rule or lexical standard-form evidence; not speaker-specific audio |
+| `PROFILE_CONVENTION_MISMATCH_CONFIRMED` | 181 | Exact bounded broad/narrow profile or documented-variation reconciliation; not speaker-specific narrow IPA |
+| `ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW` | 12 | Evidence is insufficient to choose an individual IPA realization |
+| `NOT_INDIVIDUALLY_ADJUDICATED` | 28 | Individual evidence review remains incomplete |
+| **Total** | **236** | All rows retained for provenance |
+
+**196/236 are dispositioned; 40/236 remain unresolved.** None of the 236 has independent speaker-level acoustic IPA gold. Do not describe the 181 profile cases as independent pronunciation confirmations. The three `연전연패` occurrences (1816/1843/1870) are one source-row/token family, not three independent speakers. The historical 236 membership is reconstructed from pinned replay, not proven original-selector membership.
+
+**Current source register:** 207 records; 3 item-level licenses, 1 not applicable, 180 rights-review required, and 23 manual-classification required (203 remain open). New official negative controls are registered for NIKL Q&A 332662 (`쇼`: no standardized foreign-word pronunciation/IPA gold) and Q&A 328785 (Rule 29 phonological shape alone does not guarantee n-insertion). Kim & Hong (2025) full-text scope is corrected: within-word /iə~ijə/ and /oa~owa/ pairs, not the candidate's /o.ʌ/ numeral boundary.
+
+**Evidence constraints:** no production phonology, IPA gold, Ukrainian target, or benchmark gold changed. IDs 643 (`홍콩영화들`) and 1805/1832/1859 (`한국여자로`) remain open because Rule 29 needs exact lexical/morphological and phrase/prosodic licensing; the official negative control says the segmental shape alone is insufficient. ID 78 (`오조오억배`) remains ABSTAIN because the full-text hiatus study does not test /o.ʌ/ or numeral compounds. ID 606 (`쇼`) remains unadjudicated because NIKL supplies no standard pronunciation entry and no narrow IPA.
+
+**Verification on exact head `785ee15473f83de3583c1d470a4ce477bd8575ab`:** the `tests` workflow (42105728062) passed Python 3.11/3.12/3.13, web, wheel-install and teacher-corpus-audit. The system verify workflow (42105728208) passed Python regression/data integrity and browser regression/build. Master corpus generation (42105728193), exhaustive extraction/validation (42105728166), pinned UGTPHON test split (42105728184), paired native-vs-g2pk comparison (42105728267), and Kiwi/MeCab morphology consensus (42105728074) passed. The multi-engine IPA diagnostic (42105728130) is still in progress. Charsiu train-dev, ByT5/Charsiu inference, and official NIKL metadata-only jobs were skipped by workflow policy, not passed. Source-register integrity and candidate-ledger generator parity passed in Python CI. Local pytest/npm were not run.
+
+---
+
+## 2026-11-05 exact-head continuation — 236-candidate review and comparator status
+
+**PR #436 head:** `169e008bd0aabee34efe05385bcc5f6179f4cc70`. The reproducible 236-row inventory and bibliographic correction are covered by exact-head regressions. Python 3.11/3.12/3.13, browser regression/build, wheel install, teacher-corpus audit, web, paired UGTPHON, pinned UGTPHON, Kiwi/MeCab morphology, corpus generation, external IPA diagnostic, research artifacts and test-case extraction passed. The multi-engine IPA comparison remains in progress. CharsiuG2P, ByT5 and official NIKL metadata-only jobs were skipped by policy; they are not passes. Local pytest/npm were not run.
+
+**Linguistic gate remains BLOCKED:** 213 occurrences have no individual disposition; 22 have evidence-limited ABSTAIN; one occurrence (1140, `출산`) is a provisional source-backed RETAIN pending independent review. The 236 are candidate occurrences, not 236 confirmed errors. Lenis `ɕ → s` and fortis `ɕ͈ → s͈` require separate review. No production IPA or Ukrainian-target change is authorized by comparator metrics.
+
+---
+
+# 2026-11-05 acceptance-gate update — 236-candidate review
+
+## 2026-11-02 acceptance-gate update — Kozak Kim only
 
 ## 2026-11-02 — Kozak Kim cross-runtime evidence and parity continuation
 
@@ -1370,3 +1402,29 @@ The documentation/source-register corrections are now verified on `main` at `d7c
 ### 2026-11-05 — exact historical-239 selection remains blocked
 
 The recovered ZIP artifact `13156351613` has verified SHA-256 `749ac9a2b9db96c1e27828919afe05ef4320e35ca6a91ab2038c1ff3e9d04c69` and contains 2,703 occurrence records for each of ten engine ledgers. The historical exporter (run-head `4f3f307c5bb056bce3b0aedc8ab07e0010eaa695`) assigns only an occurrence-level union over strict plus Broad mismatch fragments. It does not retain per-fragment Broad C01–C10 labels. The pinned export has 1,267 rows, 370 Broad mismatches, 3 rows with union label exactly `UNMAPPED_REQUIRES_REVIEW`, and 12 Broad mismatches with no C01–C10 union label. Neither count reconstructs the historical 239; rows containing both mapped and unmapped edits cannot be distinguished from the stored union. Acceptance remains blocked until the original per-fragment assignment snapshot or exact executable selection predicate yields exactly 239 stable IDs.
+
+### 2026-11-06 — 236-candidate engine integration and evidence gate
+
+| Gate | Status | Evidence / acceptance |
+|---|---|---|
+| Integrate 15 rule-confirmed standard-variant occurrences | PARTIAL | 14 have runtime coverage (9 new occurrence-level licenses across 7 exact eojeol families; 5 preserved baseline cases). Occurrence 2490 `머리속에` remains BLOCKED because spelling/semantic normalization is outside phonological conversion. |
+| Keep 181 profile-convention mismatches out of categorical rules | DONE_VERIFIED | No runtime rule added; broad/narrow profile differences remain separately classified. |
+| Preserve 12 ABSTAIN and 28 UNADJUDICATED cases without invented IPA | DONE_VERIFIED | Candidate ledger remains unchanged except evidence-basis enrichment for phrase-level Rule 29 cases; no production rules added for these 40. |
+| Rule 29 phrase-level cases `한국여자로` / `홍콩영화들` | BLOCKED | NIKL Q&A 330322 confirms the conditional two-word connected-phrase scope, but no audio or prosodic boundary establishes that condition. Acceptance requires token-level audio or independent IPA adjudication. |
+| Preserve dictionary length in IPA for `유사성[유ː사썽]` | DONE_VERIFIED | Exact NIKL dictionary-backed long ㅠ is emitted as `juː`; the dedicated seven-form browser/Python parity test checks identical IPA and the adapter retains length as a feature without adding a Ukrainian length grapheme. No token-specific acoustic IPA gold is claimed. |
+| Browser/Python parity for the exact 236 integrations | DONE_VERIFIED | tests/test_kozak_236_engine_integration.py::test_browser_python_surface_and_ipa_parity_for_236_exact_forms compares surface Hangul and broad IPA for all seven exact forms; exact code-head Tests run [42180312303](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312303) passed. This verifies implementation parity, not independent pronunciation accuracy. |
+
+The 236 cohort is not 236 independent phonological rules: 181 are profile-convention differences, and the remaining 40 are evidence-limited. No automatic generalization is authorized from these counts.
+
+
+**Exact code-head verification snapshot — 8a5e6b83f7b6b1377200be3c4bdb330dc4d16de0:** System Verify [42180312202](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312202) PASS (Python regression/data integrity; Browser regression/build 1,398/1,398); Tests [42180312303](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312303) PASS (web, Python 3.11/3.12/3.13, wheel-install, teacher-corpus audit); Browser G2P [42180312258](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312258), master artifacts [42180312182](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312182), exhaustive register [42180312181](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312181), external UGTPHON [42180312221](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312221), paired native/g2pk [42180312228](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312228), morphology consensus [42180312341](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312341), and morphology adapter smoke [42180312291](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312291) PASS. Official NIKL metadata inventory and Charsiu train-dev queue were SKIPPED; neural Charsiu/ByT5 inference was SKIPPED by workflow policy. Multi-engine diagnostic [42180312294](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312294) was IN_PROGRESS at this snapshot. Paired native/g2pk: native 2,698 scored, exact 0.530764, CER 0.089530, 5 unresolved; g2pk 2,703 scored, exact 0.530892, CER 0.092328, 0 unresolved; diagnostic only, differing coverage. Morphology-consensus ablation: 2,698 paired; exact-rate delta 0, CER worsened by 0.000173, two higher edit distances; no analyzer-consensus behavior was promoted to production.
+
+### 2026-11-06 — exact engine integration and derived queue refresh
+
+| Gate | Status | Evidence / acceptance |
+|---|---|---|
+| Integrate source-confirmed 236-cohort standard variants | PARTIAL | 14/15 occurrences have runtime coverage: nine newly integrated exact licenses and five preserved baseline licenses. `머리속에` remains blocked pending a separate spelling/semantic-normalization contract. |
+| Keep profile-convention differences and evidence-limited cases out of production rules | DONE_VERIFIED | 181 profile-convention rows and 40 abstained/unadjudicated rows have no new production rules; no IPA is fabricated. |
+| Refresh the derived unmapped-Broad queue after runtime changes | PARTIAL / exact-head CI pending | Tracked queue is 26 rows; six newly covered occurrence IDs were removed and row 341 was updated for the principal `/ɰi/` output. Row-by-row hashes match the generated artifact. Exact-head workflow 42185403748 is still running the export/cmp and downstream benchmark steps. |
+| Browser/Python parity for seven exact integrated forms | DONE_VERIFIED | Dedicated exact-form parity test passed in exact-head Tests run 42185403733; this is software parity, not independent pronunciation validation. |
+| Independent speaker-level IPA / Ukrainian target validation | BLOCKED | Requires qualified Korean reviewers/audio and independent Ukrainian-reader review; corpus comparators are not gold. |

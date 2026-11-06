@@ -133,3 +133,35 @@ Record consequential linguistic, data, architecture, testing, licensing, and rel
 - **Verification:** Python isolated-form and full-context tests, browser rule tests, negative controls, and Python/browser g2pK isolation tests pass on implementation/test head `be65ee71b9d3f224876875830b30be856f96126f`.
 - **Separate retain decision:** `출산` (row `dc_inside_2107`) remains under the existing R012 / NIKL §26 license pending independent review. Do not remove fortition solely to match a single Broad-v2 annotation.
 - **Limit:** the historical 239 count is pre-C11/C12; the current 36-row queue is narrower. Four fixes and one provisional retain do not complete the 239-case adjudication. The full post-fix benchmark was not rerun.
+
+## 2026-11-06 — Rule 29 phrase-level candidate remains evidence-limited
+
+- **Decision:** retain ABSTAIN for the three repeated `한국여자로` occurrences (1805/1832/1859) and `홍콩영화들` (643); do not add phrase-level n-insertion runtime rules.
+- **New primary evidence:** NIKL Online Q&A 330322 confirms Rule 29 [붙임 2] can apply across two words when they are pronounced as one connected phrase. Registered as `SRC-NIKL-QNA-330322`.
+- **Why this does not resolve the cases:** the UGC strings omit standard inter-word spacing and provide no audio or prosodic-boundary annotation. The benchmark IPA is a diagnostic comparator, not independent gold. The NIKL Q&A gives a conditional phrase-level rule, not an exact pronunciation for `한국여자` or `홍콩영화`.
+- **Acceptance:** require token-level audio or independently adjudicated IPA plus a defensible phrase/morpheme boundary before changing the engine. The exact compound `연전연패` remains separately licensed; no broad Rule 29 phrase heuristic is added.
+
+
+## 2026-11-06 — integrate evidence-confirmed 236-candidate rules in Kozak Kim
+
+**Decision:** Treat the 236-row set as benchmark occurrences, not 236 independent phonological rules. Promote only source-backed exact forms and rule environments. Keep profile-convention mismatches, unresolved cases and orthographic normalization outside production phonology.
+
+- Cohort: 15 RULE_CONFIRMED_STANDARD_VARIANT; 181 PROFILE_CONVENTION_MISMATCH_CONFIRMED; 12 ABSTAIN; 28 UNADJUDICATED.
+- Runtime coverage: 9 new occurrence-level licenses across seven exact eojeols; five rule-confirmed cases already implemented on the starting branch; one 머리속에 case blocked pending an explicit spelling/semantic normalization contract.
+- Exact additions: Rule 5 genitive particles 그놈의 and 자신의; R008 정권, 유사성, 혐오증; NIKL §29 연전연패; NIKL §26 출시미정에. All are exact-word/pair scoped; no productive -권/-성/-증, broad ㄹ+ㅅ, or phrase-level heuristic was added.
+- The 40 evidence-limited occurrences are 17 unique token forms; 22 repeats of 아끼셔 and three repeats of 한국여자로 are not independent speakers. The 27 lenis-sibilant mismatches outside Kang (2010)'s /i, ye, ya/ contexts remain unadjudicated; the 쇼 /yo/ case is a separate high-front+round coarticulation candidate, not evidence for a categorical [ɕ] rule.
+- The browser/Python parity test checks all seven exact forms and passes on the exact code head. Dictionary long-vowel feature for 유ː사썽 is preserved as IPA length; no speaker-specific acoustic IPA gold is claimed.
+
+**No inference from benchmark metrics:** the paired native/g2pk diagnostic and morphology-consensus ablation remain research-only; the latter shows no exact-rate gain and a small CER regression. Do not promote analyzer consensus or external comparator output to production rules.
+
+**Rights / research blockers:** source register now has 24 items requiring manual classification; NIKL item-level KOGL classification remains unresolved. Official NIKL metadata-only inventory was skipped by workflow policy. Independent acoustic IPA and Ukrainian-reader review remain open.
+
+**Implementation/verification:** PR #436 branch research/236-candidate-review-2026-11-05, exact code head 8a5e6b83f7b6b1377200be3c4bdb330dc4d16de0; system Verify [42180312202](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312202), Tests [42180312303](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312303), browser G2P [42180312258](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312258), research artifacts [42180312182](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312182), test register [42180312181](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312181), external UGTPHON [42180312221](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312221), paired native/g2pk [42180312228](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312228), morphology consensus [42180312341](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312341), morphology adapter smoke [42180312291](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312291). Multi-engine [42180312294](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42180312294) was in progress; its result is deliberately not asserted here.
+
+## 2026-11-06 — decision: refresh the derived unmapped queue after exact engine integration
+
+- **Decision:** update the derived `kozak-kim-unmapped-mismatch-review-queue-2026-11-05.csv` snapshot to reflect the current Kozak Kim engine rather than retain stale pre-integration outputs.
+- **Observed delta:** six occurrences (`545`, `826`, `1610`, `1816`, `1843`, `1870`) no longer have unmapped Broad fragments after exact source-backed rules were integrated. The current queue is 26 rows.
+- **Row 341 (`그놈의`):** remains diagnostic. The exact genitive-particle implementation uses the NIKL principal `/ɰi/` and exposes [e] as a permitted variant. The corpus comparator's [e] is not speaker-specific acoustic gold and does not justify replacing the principal reading or removing the occurrence from review.
+- **Guardrail:** this is a derived benchmark-output refresh only. The 236-row candidate ledger, source dispositions and g2pk baseline are unchanged. No profile convention or unresolved candidate was promoted to a production rule.
+- **Verification:** the committed 26-row CSV was compared row-by-row with the generated queue artifact from run 42181660273 (matching row hashes for all 26 rows); exact-head CI on 59e31ac is rerunning the export/cmp and downstream diagnostics. The multi-engine workflow was still in progress at this snapshot.

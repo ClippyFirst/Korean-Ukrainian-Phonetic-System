@@ -350,8 +350,9 @@ def test_c08_context_fixture_restores_all_eight_source_rows_without_importing_ip
         evidence_ids = set(case.get("morphology_evidence", [])) | set(case.get("rule_evidence", []))
         evidence_ids |= set(case.get("pronunciation_evidence", {}).get("source_ids", []))
         assert evidence_ids <= registered, case["source_row_id"]
-    unresolved = next(case for case in cases if case["source_row_id"] == "dc_inside_2024")
-    assert unresolved["status"] == "UNRESOLVED_EXACT_LEXICAL_PRONUNCIATION"
+    dictionary_attested = next(case for case in cases if case["source_row_id"] == "dc_inside_2024")
+    assert dictionary_attested["status"] == "EXACT_DICTIONARY_LEXICAL_PRONUNCIATION_CONFIRMED"
+    assert dictionary_attested["pronunciation_evidence"]["source_ids"] == ["SRC-NIKL-KRDICT-YUSASEONG"]
     supported = next(case for case in cases if case["source_row_id"] == "multilexnorm2026_1953")
     assert supported["pronunciation_evidence"]["source_ids"] == ["SRC-NIKL-QNA-307960"]
     assert "exact corpus token" in supported["pronunciation_evidence"]["scope"]
@@ -478,7 +479,7 @@ def test_c01_c07_allophone_profile_research_is_registered_with_bounded_scope():
     rows = {row["source_id"]: row for row in load_source_register()}
     expected = {
         "SRC-PLSA-KOREAN-LIQUID-2021": ("retroflex", "pauses"),
-        "SRC-CAMBRIDGE-KOREAN-IPA": ("[ç]", "[x]", "[p̚]"),
+        "SRC-CAMBRIDGE-KOREAN-IPA": ("[ç]", "[x]", "[p̚]", "[ɕ]", "diphthong beginning [j]"),
         "SRC-KCI-KANG-LEE-2019-H": ("Seoul", "Gwangju"),
         "SRC-KCI-CHOI-OH-2014-N-PALATALIZATION": ("늬", "[ɲi]"),
         "SRC-KCI-YUN-2005-KOREAN-GLIDES": ("[ɥ]", "front vowel"),
@@ -631,10 +632,13 @@ def test_c08_fixture_maps_all_eight_occurrences_without_promoting_hypotheses_to_
     assert set(mapping["independently_recovered_ids"]) | set(mapping["reconstructed_ids"]) == case_ids
     assert mapping["status"] == "ALL_EIGHT_SOURCE_ROWS_MAPPED_WITH_FIVE_HIGH_CONFIDENCE_RECONSTRUCTIONS"
 
+    dictionary_attested = [case for case in cases if case["status"] == "EXACT_DICTIONARY_LEXICAL_PRONUNCIATION_CONFIRMED"]
     unresolved = [case for case in cases if case["status"] == "UNRESOLVED_EXACT_LEXICAL_PRONUNCIATION"]
-    assert len(unresolved) == 1
-    assert unresolved[0]["source_row_id"] == "dc_inside_2024"
-    assert unresolved[0]["input"] == "유사성"
+    assert len(dictionary_attested) == 1
+    assert len(unresolved) == 0
+    assert dictionary_attested[0]["source_row_id"] == "dc_inside_2024"
+    assert dictionary_attested[0]["input"] == "유사성"
+    assert dictionary_attested[0]["pronunciation_evidence"]["source_ids"] == ["SRC-NIKL-KRDICT-YUSASEONG"]
     assert all(case.get("morphology_evidence") for case in cases if case["source_row_id"] != "dc_inside_2024")
     assert any("not independently adjudicated normative IPA gold" in item for item in mapping["limitations"])
     assert any("No production phonology rule" in item for item in mapping["limitations"])
@@ -667,3 +671,150 @@ def test_wiktionary_central_similarity_is_secondary_and_cannot_license_productio
     assert source["integration_status"] == "research_only_not_integrated"
     assert "not independent confirmation" in source["limitations_or_next_action"]
     assert "Do not copy" in source["limitations_or_next_action"]
+
+
+def test_s018_korean_ipa_source_matches_cambridge_primary_bibliographic_metadata():
+    with DATA_SOURCE_CATALOG.open("r", encoding="utf-8-sig", newline="") as stream:
+        catalog = {row["source_id"]: row for row in csv.DictReader(stream)}
+    s018 = catalog["S018"]
+    assert s018["author_or_organization"] == "Hyun Bok Lee"
+    assert s018["year"] == "1993"
+    assert s018["locator"] == "Journal of the International Phonetic Association 23(1) pp. 28–31"
+    assert s018["url"] == "https://doi.org/10.1017/S0025100300004758"
+
+    register = {row["source_id"]: row for row in load_source_register()}
+    cambridge = register["SRC-CAMBRIDGE-KOREAN-IPA"]
+    assert "Hyun Bok Lee" in cambridge["title_or_project"]
+    assert "June 1993" in cambridge["version_or_date"]
+    assert "Sohn (2008)" not in cambridge["title_or_project"]
+
+
+def test_s018_page_31_does_not_license_modern_lenis_sibilant_rule():
+    source = {row["source_id"]: row for row in load_source_register()}["SRC-CAMBRIDGE-KOREAN-IPA"]
+    assert "page 31" in source["review_status"]
+    assert "diphthong beginning [j]" in source["coverage"]
+    assert "classifies /s/ among fortis sounds" in source["coverage"]
+    assert "does not license a modern lenis /s/ rule" in source["limitations_or_next_action"]
+
+
+def test_s027_kang_round_segment_source_is_not_collapsed_into_simple_palatalization():
+    source = {row["source_id"]: row for row in load_source_register()}[
+        "SRC-KANG-2010-KOREAN-SIBILANT-ROUND-SEGMENT"
+    ]
+    assert "high-front and a round segment" in source["coverage"]
+    assert "labio-palatalized spectral pattern" in source["coverage"]
+    assert "does not specify a canonical segmental IPA symbol" in source["limitations_or_next_action"]
+    assert "S019" in source["limitations_or_next_action"]
+    assert "CC BY-NC 3.0 Unported" in source["license_status"]
+
+
+def test_kong_kang_2020_sibilant_source_records_speaker_and_vowel_scope():
+    source = {row["source_id"]: row for row in load_source_register()}[
+        "SRC-KONG-KANG-2020-SEOUL-SIBILANTS"
+    ]
+    assert source["url"] == "https://kci.go.kr/kciportal/landing/article.kci?arti_id=ART002585434"
+    assert "32 young adults" in source["coverage"]
+    assert "17 women, 15 men" in source["coverage"]
+    assert "seven monophthong contexts" in source["coverage"]
+    assert "before /i/" in source["coverage"]
+    assert "speaker-variable" in source["contribution_expected"]
+    assert "Abstract-only" in source["limitations_or_next_action"]
+    assert "no audio for the 236 UGTPHON items" in source["limitations_or_next_action"]
+
+
+def test_sung_cho_2010_distinguishes_korean_sibilants_from_english_categories():
+    source = {row["source_id"]: row for row in load_source_register()}[
+        "SRC-SUNG-CHO-2010-KOREAN-ENGLISH-SIBILANTS"
+    ]
+    assert source["url"] == "https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001486421"
+    assert "lax/tense" in source["coverage"]
+    assert "center of gravity" in source["coverage"]
+    assert "distinctness" in source["coverage"]
+    assert "not provide item-level modern IPA decisions" in source["contribution_expected"]
+    assert "item-level reuse terms not assessed" in source["license_status"]
+
+
+def test_jeonggweon_exact_dictionary_and_nikl_kwon_morpheme_sources_are_registered():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    dictionary = rows["SRC-KPEDIA-JEONGGWON"]
+    assert dictionary["url"] == "https://www.kpedia.jp/w/6291"
+    assert "정꿘" in dictionary["coverage"]
+    assert "政權" in dictionary["coverage"]
+    assert "Item-level reuse terms not verified" in dictionary["license_status"]
+    nikl = rows["SRC-NIKL-QNA-335292"]
+    assert "qna_seq=335292" in nikl["url"]
+    assert "인권[인꿘]" in nikl["coverage"]
+    assert "does not itself attest 정권" in nikl["contribution_expected"]
+
+
+def test_nikl_rule_29_and_renpa_sense_sources_are_registered():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    rule = rows["SRC-NIKL-QNA-327019"]
+    assert "qna_seq=327019" in rule["url"]
+    assert "Rule 29" in rule["coverage"]
+    assert "[붙임 2]" in rule["coverage"]
+    renpa = rows["SRC-NIKL-QNA-322807"]
+    assert "qna_seq=322807" in renpa["url"]
+    assert "連敗" in renpa["coverage"]
+    assert "연패²(連霸)" in renpa["coverage"]
+    assert "Does not give a pronunciation" in renpa["limitations_or_next_action"]
+
+
+def test_nikl_show_loanword_qna_is_registered_as_negative_evidence_only():
+    row = {item["source_id"]: item for item in load_source_register()}["SRC-NIKL-QNA-332662"]
+    assert "qna_seq=332662" in row["url"]
+    assert "쇼" in row["coverage"]
+    assert "no standard pronunciation entry" in row["contribution_expected"]
+    assert "does not decide IPA [s] vs [ɕ]" in row["limitations_or_next_action"]
+
+
+def test_nikl_rule_29_qna_variability_is_registered_as_negative_control():
+    row = {item["source_id"]: item for item in load_source_register()}["SRC-NIKL-QNA-328785"]
+    assert "qna_seq=328785" in row["url"]
+    assert "does not guarantee n-insertion in every case" in row["limitations_or_next_action"]
+    assert "lexical-semantic status" in row["limitations_or_next_action"]
+    assert "does not attest 홍콩영화 or 한국여자" in row["limitations_or_next_action"]
+
+
+def test_kim_hong_2025_full_text_scope_does_not_license_o_eo_glide():
+    row = {item["source_id"]: item for item in load_source_register()}[
+        "SRC-KIM-HONG-2025-HIATUS-TRANSITIONS-GLIDES"
+    ]
+    assert row["url"] == "https://doi.org/10.30961/lr.2025.61.1.1"
+    assert "10 men aged 27–35" in row["authority_or_role"]
+    assert "Within-word vowel sequences in 기억–기역 and 보안–보완" in row["coverage"]
+    assert "no numeral compound or /o.ʌ/ target" in row["limitations_or_next_action"]
+
+
+def test_kang_2009_glide_abstract_is_registered_with_exact_scope_limits():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-KANG-2009-PALATAL-GLIDE"]
+    assert source["url"] == "https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001319180"
+    assert "when followed by palatal glide /j/" in source["coverage"]
+    assert "no specific following vowel" in source["coverage"]
+    assert "not proof of [ɕ]" in source["contribution_expected"]
+    assert "item-level reuse terms not assessed" in source["license_status"]
+    assert "does not identify the tested /jV/ vowel sequence" in source["limitations_or_next_action"]
+
+
+def test_kim_2021_fortis_study_separates_profile_bookkeeping_from_token_acoustic_gold():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-KIM-2021-EPG-KOREAN-FRICATIVES"]
+    assert "24 fortis mismatch operations remain unresolved at the token-acoustic IPA level" in source["contribution_expected"]
+    assert "not an independent confirmation of a speaker's phone" in source["contribution_expected"]
+    assert "profile-convention bookkeeping only" in source["integration_status"]
+    assert "only /i, a, u/ contexts" in source["limitations_or_next_action"]
+
+
+def test_long_vowel_and_counterevidence_sources_bound_1885_adjudication():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    length = rows["SRC-KANG-2015-VOWEL-LENGTH-MERGER"]
+    assert "118 Seoul speakers" in length["coverage"]
+    assert "does not directly test the quality merger separately in long vowels" in length["contribution_expected"]
+    assert "does not analyze F1/F2 quality of long /ɛ/ vs /e/ separately" in length["limitations_or_next_action"]
+    phonemic = rows["SRC-CHUNG-2022-MID-FRONT-PHONEMIC-STATUS"]
+    assert "have not fully merged" in phonemic["coverage"]
+    assert "Counterevidence" in phonemic["contribution_expected"]
+    positional = rows["SRC-LEE-2023-REVISITING-MID-FRONT-MERGER"]
+    assert "significant F2 differences by syllable position" in positional["coverage"]
+    assert "Counterevidence" in positional["contribution_expected"]

@@ -433,3 +433,65 @@ test('shared Broad profile exposes [ɕ] before all Lee 1999 /j/-initial diphthon
   assert.ok(!fortis.variants.some(variant => variant.ipa.includes('ɕ͈')));
 });
 
+
+ 
+test('236-candidate standard-rule cases are integrated as exact runtime licenses', () => {
+  const engine = createBrowserKozakKimEngine();
+  const convert = word => engine.convert(word, {
+    morphologyMode: 'strict',
+    ipaProfile: 'clippyfirst-korean-broad-v1'
+  });
+  const exact = [
+    ['정권', '정꿘', 'k͈w'],
+    ['유사성', '유사썽', 's͈'],
+    ['혐오증', '혀모쯩', 'tɕ͈'],
+    ['연전연패', '연전년패', 'njʌn'],
+    ['출시미정에', '출씨미정에', 's͈i']
+  ];
+  for (const [word, surface, ipaPart] of exact) {
+    const result = convert(word);
+    assert.equal(result.pronunciation_status, 'resolved', word);
+    assert.equal(result.surfaceHangul, surface, word);
+    assert.ok(result.ipa.includes(ipaPart), word + ': ' + result.ipa);
+  }
+  assert.ok(convert('유사성').ipa.includes('juː'), 'NIKL dictionary long ㅠ is retained in IPA');
+
+  for (const word of ['그놈의', '자신의']) {
+    const result = convert(word);
+    assert.equal(result.pronunciation_status, 'resolved', word);
+    assert.match(result.ipa, /ɰi$/u, word + ': principal genitive-particle reading');
+    assert.ok(result.variants.some(variant => /e$/u.test(variant.ipa)), word + ': Rule 5 [e] variant');
+    assert.ok(!result.variants.some(variant => variant.ipa.endsWith('mi') || variant.ipa.endsWith('ni')), word + ': [i] is not the genitive-particle variant');
+  }
+
+  const lexicalUi = convert('민주주의');
+  assert.ok(lexicalUi.variants.some(variant => /i$/u.test(variant.ipa)));
+});
+
+test('236-candidate exact licenses do not become productive suffix or substring rules', () => {
+  const engine = createBrowserKozakKimEngine();
+  const convert = word => engine.convert(word, {
+    morphologyMode: 'strict',
+    ipaProfile: 'clippyfirst-korean-broad-v1'
+  });
+  assert.ok(!convert('정관').ipa.includes('k͈'));
+  assert.ok(!convert('유사증').ipa.includes('s͈'));
+  assert.ok(!convert('혐오성').ipa.includes('tɕ͈'));
+  const unlicensedN = convert('연전연합');
+  assert.equal(unlicensedN.surfaceHangul, '연저년합'); // ordinary ㄴ liaison, not Rule 29 insertion.
+  assert.ok(!convert('고시미정에').ipa.includes('s͈'));
+});
+
+test('five previously integrated standard-rule cases remain covered', () => {
+  const engine = createBrowserKozakKimEngine();
+  const expected = {
+    '출산': '출싼',
+    '팔자걸음': '팔짜거름',
+    '보일거라': '보일꺼라',
+    '물가로': '물까로',
+    '안할듯': '안할뜻'
+  };
+  for (const [word, surface] of Object.entries(expected)) {
+    assert.equal(engine.convert(word, { morphologyMode: 'strict' }).surfaceHangul, surface, word);
+  }
+});

@@ -1078,3 +1078,32 @@ def test_section_27_ugtphon_same_eojeol_contexts_use_exact_form_licenses():
         item.get("rule_id") == "R013" and item.get("changed")
         for item in unlicensed["rules"]
     )
+
+ 
+def test_236_candidate_exact_lexical_fortition_and_nikl_29_26_licenses():
+    expected = {
+        "정권": "정꿘",
+        "유사성": "유사썽",
+        "혐오증": "혀모쯩",
+        "연전연패": "연전년패",
+        "출시미정에": "출씨미정에",
+    }
+    for word, surface in expected.items():
+        result = phoneticize_korean(word)
+        assert result["surface_hangul"] == surface, word
+        assert result["ipa"]["ipa"], word
+    assert "juː" in phoneticize_korean("유사성")["ipa"]["ipa"]
+
+    for word in ("정관", "유사증", "연전연합", "고시미정에"):
+        result = phoneticize_korean(word)
+        expected_surface = "연저년합" if word == "연전연합" else word
+        assert result["surface_hangul"] in ("", expected_surface), word
+    assert not any(trace["rule_id"] == "R009" and trace["changed"] for trace in phoneticize_korean("연전연합")["rules"])
+    # 혐오성 undergoes ordinary 혐>혀 liaison, but the unlisted -성 form
+    # must not receive the dictionary-backed fortis onset.
+    assert "s͈" not in phoneticize_korean("혐오성")["ipa"]["ipa"]
+
+    for word, pair in (("정권", "정>권"), ("유사성", "사>성"), ("혐오증", "오>증")):
+        items, traces = apply_ordered_rules(parse_syllables(word), ["R008"])
+        assert traces[0].changed, word
+        assert traces[0].license_context == f"R008:lexical:{word}:{pair}", word

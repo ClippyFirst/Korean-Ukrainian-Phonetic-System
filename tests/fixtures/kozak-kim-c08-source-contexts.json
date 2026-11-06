@@ -61,14 +61,18 @@
       "split": "test",
       "input": "유사성",
       "source_sentence": "저번에 사전체험 풀었을때 해봤는데 배낀게 문제가 아니라 그냥 재미가 없음 못만들었음배낀게 ㅈ같긴 해도 장르의 유사성 뭐 시발 잘만들면 됐지 이렇게 생각한 내가 빡대가리 새끼였음취향차이라고 하기엔 조오온나 답답한 조작감에 거기서 나오는 어정쩡한 모션어디서 많이본 시스템을 채택했지만 위 단점때문에 오히려 비슷한 게임들이랑 비교하게끔 만듬사전체험때 10시간인가 이것저것 해봤는데 그냥 씹노잼임 구매 안해서 지금은 모르겠는데 솔직히 텀이 긴것도 아니고 바뀐거 거의 없을듯",
-      "morphology_evidence": [
-        "SRC-NIKL-QNA-312649"
-      ],
-      "rule_evidence": [
-        "SRC-NIKL-PRON"
-      ],
-      "status": "UNRESOLVED_EXACT_LEXICAL_PRONUNCIATION",
-      "notes": "Q&A 312649 directly confirms 의외성 only; 유사성 appears in the question, not in the official answer. No suffix-wide -성 rule is authorized."
+      "morphology_evidence": [],
+      "rule_evidence": [],
+      "status": "EXACT_DICTIONARY_LEXICAL_PRONUNCIATION_CONFIRMED",
+      "notes": "NIKL Korean Basic Dictionary entry 70710 directly lists 유사성[유ː사썽]. The exact eojeol is licensed; no productive -성 suffix rule is inferred. This dictionary Hangul pronunciation is not acoustic IPA gold for the UGC speaker.",
+      "pronunciation_evidence": {
+        "source_ids": [
+          "SRC-NIKL-KRDICT-YUSASEONG"
+        ],
+        "claim": "NIKL Korean Basic Dictionary entry 70710 lists 유사성[유ː사썽].",
+        "scope": "Exact lexical pronunciation for the eojeol 유사성 only; not a productive -성 rule.",
+        "caveat": "No speaker-specific audio/IPA gold is available for this occurrence; the dictionary pronunciation does not adjudicate the separate lenis sibilant place-profile difference."
+      }
     },
     {
       "case_id": "C08-CTX-004",
@@ -284,7 +288,7 @@
       "The five reconstructed memberships are high-confidence matches from the pinned benchmark's fortis-versus-plain mismatch signature plus exact target-token occurrence in the pinned source split; they are not copied from the missing original extraction table.",
       "UGTPHON annotations are diagnostic and are not independently adjudicated normative IPA gold.",
       "Morphological and rule-environment sources do not directly attest the exact UGC token IPA.",
-      "No production phonology rule is authorized by this mapping alone; independent IPA review, prosodic review and interaction tests remain required."
+      "No production phonology rule is authorized by this mapping alone; the exact 유사성 lexical license is independently supported by NIKL Korean Basic Dictionary entry 70710. Token-specific acoustic IPA for the UGC speaker remains unavailable."
     ]
   }
 }
