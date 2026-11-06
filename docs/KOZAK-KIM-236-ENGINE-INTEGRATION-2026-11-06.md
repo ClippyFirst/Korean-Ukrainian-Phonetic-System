@@ -104,7 +104,7 @@ The 24 fortis ɕ͈→s͈ edit operations across 23 occurrence rows remain unreso
 
 PR #441 is merged into `main` (merge commit `f89c475c56796119e87130367fc15926b2428220`; verified implementation head `847cdb240aadc2c9343127fbb7de6dafad0441d4`). All 15 standard-form/rule occurrences have runtime dispositions (ten new exact integrations plus five baseline licenses). The 181 profile rows remain non-categorical; 12 abstentions and 28 unadjudicated rows remain unresolved.
 
-The 24 fortis [ɕ͈]→/s͈/ edit operations across 23 occurrence rows remain unresolved: 22 involve orthographic ㅆ and two are coda-triggered fortition contexts. Lenis /s/ evidence does not establish fortis sibilant place. The two /ɘː/ versus /ʌː/ cases remain transcription-profile questions. Phrase-level Rule 29 candidates `한국여자로` and `홍콩영화들` still require exact morphology and prosodic-boundary evidence. The 12+28 residual occurrences require original audio, speaker crosswalk and two independent Korean IPA annotations, followed by separate Ukrainian target review.
+The 24 fortis [ɕ͈]→/s͈/ edit operations occur in 24 occurrence IDs across 19 source rows; 23 are before /i/ and one is before /jo/ (ID 96). New evidence supports a research-only optional [ɕ͈] candidate before /i/; it does not justify a categorical or speaker-specific assignment. The /jo/ case remains out of scope. The two /ɘː/ versus /ʌː/ cases remain transcription-profile questions. Phrase-level Rule 29 candidates `한국여자로` and `홍콩영화들` still require exact morphology and prosodic-boundary evidence. The 12+28 residual occurrences require original audio, speaker crosswalk and two independent Korean IPA annotations, followed by separate Ukrainian target review.
 
 ### Multi-engine artifact acceptance
 
