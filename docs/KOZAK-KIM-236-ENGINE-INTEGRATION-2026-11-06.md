@@ -38,7 +38,7 @@ Sources: `SRC-NIKL-QNA-334585`, `SRC-NIKL-QNA-335190`, `SRC-NIKL-PRON`.
 ### R008 — exact dictionary-backed lexical fortition
 
 - `정권`: `정>권` — exact Kpedia pronunciation entry; NIKL Q&A 335292 is corroborative scope evidence only.
-- `유사성`: `사>성` — NIKL Korean Basic Dictionary entry 70710.
+- `유사성`: `사>성` — NIKL Korean Basic Dictionary entry 70710; its dictionary long vowel in `유ː` is also retained as `ː` in IPA. The Ukrainian adapter preserves this as a length feature rather than inventing a Ukrainian length grapheme.
 - `혐오증`: `오>증` — NIKL Korean Basic Dictionary search result.
 
 These entries do **not** create productive rules for `-권`, `-성`, or `-증`. Negative controls cover unlisted lookalikes.

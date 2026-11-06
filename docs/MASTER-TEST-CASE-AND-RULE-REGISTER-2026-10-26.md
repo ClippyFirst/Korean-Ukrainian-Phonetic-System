@@ -651,7 +651,7 @@ At exact PR head `f2b30e3e64b42fed4ce9a857f76399df87559a12`, the initial browser
 
 - Browser regressions now cover exact R008 lexical fortition for `정권`, `유사성`, `혐오증`; R009 n-insertion for `연전연패`; R012 fortition for `출시미정에`; and Rule 5 particle variants for `그놈의` and `자신의`.
 - Python regressions assert the same surface forms and exact rule-license traces. Rule 5 tests assert principal /ɰi/ plus permitted [e], and explicitly reject [i] for these genitive-particle forms while retaining [i] for non-initial lexical ㅢ.
-- Negative controls keep unlisted `-권`, `-성`, `-증`, n-insertion, and ㄹ+ㅅ forms unmodified.
+- Negative controls keep unlisted exact-form lookalikes and n-insertion / ㄹ+ㅅ contexts outside their source-backed licenses. The exact NIKL dictionary length in `유사성[유ː사썽]` is preserved in IPA; the Ukrainian adapter records length as a feature without adding a target grapheme.
 - Five previously implemented standard-rule cases (`출산`, `팔자걸음`, `보일거라`, `물가로`, `안할듯`) are pinned as retained coverage.
 - `tests/test_kozak_236_engine_integration.py` checks that every one of the 15 rule-confirmed occurrence IDs has exactly one explicit integration disposition, including the `머리속에` orthographic-normalization blocker.
 

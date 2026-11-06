@@ -454,6 +454,7 @@ test('236-candidate standard-rule cases are integrated as exact runtime licenses
     assert.equal(result.surfaceHangul, surface, word);
     assert.ok(result.ipa.includes(ipaPart), word + ': ' + result.ipa);
   }
+  assert.ok(convert('유사성').ipa.includes('juː'), 'NIKL dictionary long ㅠ is retained in IPA');
 
   for (const word of ['그놈의', '자신의']) {
     const result = convert(word);

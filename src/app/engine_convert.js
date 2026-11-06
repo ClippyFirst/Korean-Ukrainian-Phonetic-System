@@ -12,6 +12,10 @@ import { lexicalResult, firstSyllableInWord, genericVowelVariants } from './engi
 import { practicalStatusForUnit, softStatusForUnit } from './soft_morphology.js';
 
 const NIKL_GENITIVE_UI_PARTICLE_FORMS=new Set(['그놈의','자신의']);
+// NIKL Basic Dictionary entry 70710: 유사성[유ː사썽]. Preserve the
+// dictionary-attested long ㅠ in IPA; the target adapter records length as a
+// feature because Ukrainian practical orthography has no separate length sign.
+const NIKL_LEXICAL_LONG_VOWEL_FORMS=new Map([['유사성','유']]);
 function exactWordFormAt(units,index){
   let start=index,end=index;
   while(start>0&&isHangulUnit(units,start-1))start--;
@@ -303,6 +307,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
 
     const prev=prevHangul(units,i);
     const genitiveParticleUi=u.vowel==='ㅢ'&&NIKL_GENITIVE_UI_PARTICLE_FORMS.has(exactWordFormAt(originalUnits,i));
+    const lexicalLongVowel=NIKL_LEXICAL_LONG_VOWEL_FORMS.get(exactWordFormAt(originalUnits,i))===originalUnits[i]?.char;
     const contextualUi=u.vowel==='ㅢ'&&u.onset!=='ㅇ';
     const defaultUi=u.vowel==='ㅢ'&&u.onset==='ㅇ';
     const vowelJamo=contextualUi?'ㅣ':u.vowel;
@@ -327,6 +332,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     if(superSoftOn&&u.__softHeuristic)traceRules.push('super-soft-morphology-heuristic');
     if(contextualUi)traceRules.push('vowel-ui-to-i');
     if(defaultUi)traceRules.push('vowel-ui-default-ɰi');
+    if(lexicalLongVowel)traceRules.push('lexical-vowel-length-nikl-dictionary');
     if(palatalYeo)traceRules.push('vowel-yeo-monophthongization-§5-exception-1');
     if(voiced)traceRules.push('contextual-voicing');
     if(fortis)traceRules.push('tensification');
@@ -334,7 +340,8 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     u.__effectiveCoda=u.coda;
 
     const o=get(map,'onset',onset),v=get(map,'vowel',vowelJamo),c=u.coda?get(map,'coda',u.coda):null;
-    const vowelIpa=(genitiveParticleUi||defaultUi)?'ɰi':palatalYeo?'ʌ':(v?.ipa||'');
+    const baseVowelIpa=(genitiveParticleUi||defaultUi)?'ɰi':palatalYeo?'ʌ':(v?.ipa||'');
+    const vowelIpa=lexicalLongVowel?`${baseVowelIpa}ː`:baseVowelIpa;
     const ipaOnset=useSharedBroadIpaProfile?(o?.ipa||''):
       (J_VOWELS.has(u.vowel)&&onset==='ㅅ')?'ɕ':
       (J_VOWELS.has(u.vowel)&&onset==='ㅆ')?'ɕ͈':(o?.ipa||'');

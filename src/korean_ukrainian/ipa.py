@@ -100,6 +100,8 @@ def render_syllable_sequence(items:list[Syllable],rendered:list[str])->str:
     return ipa
 
 _NIKL_GENITIVE_UI_PARTICLE_FORMS={"그놈의","자신의"}
+# NIKL Korean Basic Dictionary entry 70710: 유사성[유ː사썽].
+_NIKL_LEXICAL_LONG_VOWEL_FORMS={"유사성":"유"}
 
 def _word_form_at(items:list[Syllable],index:int)->str:
     start=end=index
@@ -246,9 +248,11 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     for i,s in enumerate(items):
         genitive_particle=(s.nucleus=="ㅢ" and
                            _word_form_at(items,i) in _NIKL_GENITIVE_UI_PARTICLE_FORMS)
+        nucleus=nucleus_ipa(s,phonemic=phonemic,genitive_particle=genitive_particle)
+        if _NIKL_LEXICAL_LONG_VOWEL_FORMS.get(_word_form_at(items,i))==s.text:
+            nucleus=[nucleus[0]+"ː"]
         rendered.append("".join(onset_ipa(s,i,items,phonemic=phonemic,level=level)+
-                                 nucleus_ipa(s,phonemic=phonemic,genitive_particle=genitive_particle)+
-                                 coda_ipa(s.coda,phonemic=phonemic)))
+                                 nucleus+coda_ipa(s.coda,phonemic=phonemic)))
     ipa=render_syllable_sequence(items,rendered)
     profile_ids={
         "phonemic":"clippyfirst-korean-phonemic-v1",

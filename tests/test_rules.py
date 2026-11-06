@@ -1092,6 +1092,7 @@ def test_236_candidate_exact_lexical_fortition_and_nikl_29_26_licenses():
         result = phoneticize_korean(word)
         assert result["surface_hangul"] == surface, word
         assert result["ipa"]["ipa"], word
+    assert "juː" in phoneticize_korean("유사성")["ipa"]["ipa"]
 
     for word in ("정관", "유사증", "연전연합", "고시미정에"):
         result = phoneticize_korean(word)
