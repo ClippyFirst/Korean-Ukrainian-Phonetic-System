@@ -200,7 +200,7 @@ The master handoff remains preserved as the historical append-only record. The c
 
 Current main is `2e9647540e1be47571579f71b7466393172a2a6d`; PR #441 (runtime) and #442 (post-merge docs) are merged. The 236-row cohort remains 15 exact standard-form occurrences with runtime dispositions, 181 bounded profile-convention decisions, 12 abstentions and 28 unadjudicated rows. All rows remain retained; 40 remain evidence-limited.
 
-The 24 fortis [ɕ͈]→/s͈/ edit operations across 23 occurrence rows remain unresolved (22 contain orthographic ㅆ; two are coda-triggered fortition). Lenis /s/ coarticulation evidence is not transferable to fortis /s͈/. The two /ɘː/ vs /ʌː/ differences remain profile-symbol questions. The 12+28 residual rows require original audio, speaker crosswalk and two independent Korean IPA annotations; phrase-level Rule 29 candidates also require prosodic-boundary evidence. No further production rule is justified by current evidence.
+The 24 fortis [ɕ͈]→/s͈/ edit operations occur in 24 occurrence IDs across 19 source rows; 23 are before /i/ and one is before /jo/ (ID 96). New evidence supports an optional research-only [ɕ͈] candidate before /i/ only; it does not justify a categorical or speaker-specific assignment. The /jo/ case remains unresolved. The two /ɘː/ vs /ʌː/ differences remain profile-symbol questions. The 12+28 residual rows require original audio, speaker crosswalk and two independent Korean IPA annotations; phrase-level Rule 29 candidates also require prosodic-boundary evidence. No further production rule is justified by current evidence.
 
 Multi-engine run [42215019081](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42215019081) on exact PR #441 head `847cdb240aadc2c9343127fbb7de6dafad0441d4` **FAILED** at generated-artifact `cmp`: generator output had 25 unmapped-Broad rows, tracked CSV had 26, including occurrence 2490 (`머리속에`) now covered by the exact alias. Failure: byte 86966 / line 26. Downstream Browser same-occurrence parity, Native/Browser parity and SIGMORPHON jobs were skipped; optional ByT5/Charsiu jobs were skipped by policy. Regenerate the tracked CSV from the pinned generator/corpus, inspect the full row-level diff, and rerun the entire workflow. Do not weaken the byte comparison.
 
@@ -208,7 +208,7 @@ Current-main checks for `2e9647540e1be47571579f71b7466393172a2a6d`: tests 422160
 
 PR #439 remains open and was left untouched: its branch is 56 commits behind current main; its exact-head tests and verification failed (42200300941, 42200300947). Do not merge blindly. The four upstream workflow references are already documented as process-only adoption; no upstream code or duplicate orchestration is needed.
 
-**Current status:** cohort and 15 runtime dispositions DONE_VERIFIED; 181 profile reconciliations DONE_VERIFIED as non-integration decisions; 24 fortis operations and 40 unresolved rows BLOCKED on evidence; multi-engine artifact PARTIAL pending regeneration/reverification; current-main ordinary CI DONE_VERIFIED; independent Korean IPA and Ukrainian target review BLOCKED; release readiness DEFERRED (partial research prototype).
+**Current status:** cohort and 15 runtime dispositions DONE_VERIFIED; 181 profile reconciliations DONE_VERIFIED as non-integration decisions; 24 fortis operations PARTIAL (optional /i/ candidate integrated; one /jo/ case and speaker-specific assignment remain evidence-limited); 40 abstained/unadjudicated rows BLOCKED; multi-engine artifact PARTIAL pending regeneration/reverification; current-main ordinary CI DONE_VERIFIED; independent Korean IPA and Ukrainian target review BLOCKED; release readiness DEFERRED (partial research prototype).
 
 ### Generated diagnostic queue reconciliation — 2026-11-06
 
@@ -217,3 +217,17 @@ The tracked unmapped-Broad CSV has now been regenerated from artifact 1350100906
 ### Master handoff preservation note
 
 The original master handoff blob `b49170395fa7f67ee50f29e32def5349fe92fef3` has been restored unchanged on this branch. A content-write attempt returned a truncated replacement because the handoff exceeds the available safe write path; the branch was corrected by restoring the exact original blob through the Git data tree API. No master-history content is changed in the final branch tree. This audit and the 236-case integration record are the current superseding continuation. Appending directly to the oversized master handoff remains BLOCKED by the connector write limit.
+
+## 2026-11-06 — superseding fortis sibilant evidence and runtime update
+
+The previous audit treated all 24 `ɕ͈→s͈` operations as unresolved and misstated the row count. Reconstructed directly from the 236-row ledger, these are 24 occurrence IDs in 19 source rows; 23 reference forms contain the sequence [ɕ͈i], and only ID 96 (`똥꼬쑈`) is [ɕ͈jo]. Twenty-two forms contain orthographic ㅆ; two coda-triggered fortition cases are IDs 481 (`했을시`) and 551 (`실시간`).
+
+Newly reviewed evidence:
+- Holliday 2014 JASA: both Korean lenis-aspirated /sh/ and fortis /s*/ are described as typically palatalized before /i/ or /j/ (SRC-HOLLIDAY-2014-JASA).
+- Holliday 2016 Phonetica: the paper explicitly notes that fortis /s*/ may not palatalize as consistently as lenis /sh/ (SRC-HOLLIDAY-2016-PHONETICA).
+- Holliday & Reidy 2016 production poster: six female native Korean speakers; /s*/ is reported to be sometimes palatalized before /i/ (SRC-HOLLIDAY-REIDY-2016-POSTER).
+- Kong & Kang 2020: 32 Seoul Korean young adults; palatalized variants before /i/ and gender-related spectral variation, but the abstract does not disaggregate /s/ and /s'/ (SRC-KONG-KANG-2020-SPECTRAL).
+
+A narrow **optional research-only [ɕ͈] variant before ㅣ** is now implemented in the Python and Browser broad research profiles. The canonical broad [s͈], phonemic profile, narrow profile and Ukrainian target mapping remain unchanged. Post-rule surface onset inspection covers IDs 481 and 551 without rewriting Hangul. No variant is emitted for /jo/, /ja/, /ju/ or other unsupported contexts. This is a profile candidate, not individual IPA adjudication; no speaker-specific claim is made. The 24 profile mismatches remain within the 181 profile-convention cases and are separate from the 40 abstained/unadjudicated rows.
+
+New regression coverage checks the 24-operation/24-ID/19-source-row distribution, 23 /i/ cases and the single /jo/ negative, canonical preservation, broad-only status, and Native/Browser parity. Exact-head GitHub Actions verification for this branch is still pending; the optional variant must not be marked DONE_VERIFIED until those workflows pass.
