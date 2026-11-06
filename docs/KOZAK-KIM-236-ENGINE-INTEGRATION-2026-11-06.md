@@ -84,6 +84,6 @@ The tracked 26-row CSV matches the generated artifact row-by-row. The multi-engi
 
 - Added exact R008 pronunciation alias for `머리속에`; it returns the lexical fortis reading while retaining the user's written form. Negative controls prevent generalization to neighboring forms.
 - Added optional research-only broad-profile variants for exact `게임` `[k͈]` and group-level `ㅐ` `[ɛ]~[e]`. The canonical output remains unchanged, and variants are not accepted as speaker-level gold or approved Ukrainian targets.
-- The 12 abstentions and 28 unadjudicated cases remain blocked by missing source audio/speaker crosswalk and independent IPA annotation. The 22 fortis sibilant place mismatches remain outside the lenis coarticulation evidence.
+- The 12 abstentions and 28 unadjudicated cases remain blocked by missing source audio/speaker crosswalk and independent IPA annotation. Fortis sibilant place mismatches remain outside the lenis coarticulation evidence.
 
 **Updated implementation status:** 15/15 standard-form/rule occurrences have runtime dispositions (10 new exact integrations plus 5 already present on baseline); 181 profile differences are explicitly handled as profile variants or non-integrations; 40 remain evidence-limited.
