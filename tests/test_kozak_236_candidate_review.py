@@ -690,3 +690,21 @@ def test_all_12_existing_abstentions_remain_abstentions_after_second_pass():
             if row["candidate_disposition"] == "ABSTAIN_PENDING_INDEPENDENT_IPA_REVIEW"} == expected_ids
     assert all(rows[key]["prior_independent_ipa_review_status"] == "NOT_PERFORMED"
                for key in expected_ids)
+
+
+def test_236_residual_sibilants_keep_shared_broad_s_and_1885_variant_remains_nonselective():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    for token in ("쇼", "모션어디서", "뿌셔우우", "뿌셔우우우", "아끼셔", "포지션을"):
+        result = phoneticize_korean(token)
+        assert "ɕ" not in result["ipa"]["ipa"], token
+        assert not any("ɕ" in variant["ipa"] for variant in result["ipa"]["variants"]), token
+        assert "s" in result["ipa"]["ipa"], token
+
+    vowel = phoneticize_korean("대한민국")
+    assert "ː" in vowel["ipa"]["ipa"]
+    assert any(
+        "SRC-LEE-2023-SEOUL-MID-FRONT-VOWEL-POSITION" in variant["note"]
+        and "position-sensitive" in variant["note"]
+        for variant in vowel["ipa"]["variants"]
+    )
