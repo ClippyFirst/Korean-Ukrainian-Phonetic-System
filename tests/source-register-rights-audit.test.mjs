@@ -63,7 +63,7 @@ test('real source register is structurally valid and unresolved rights remain vi
   const csv = readFileSync(new URL('../research/SOURCE-REGISTER.csv', import.meta.url), 'utf8');
   const report = auditSourceRegister(csv);
   assert.equal(report.structuralErrorCount, 0, JSON.stringify(report.structuralErrors));
-  assert.equal(report.sourceRegisterRows, 213);
+  assert.equal(report.sourceRegisterRows, 214);
   assert.equal(report.rightsClassificationCounts.ITEM_LEVEL_LICENSE_RECORDED, 4);
   assert.equal(report.rightsClassificationCounts.NOT_APPLICABLE_RECORDED, 1);
   assert.ok(report.rightsClassificationCounts.CITATION_ONLY_NO_REUSE > 0);
@@ -77,6 +77,10 @@ test('real source register is structurally valid and unresolved rights remain vi
   const ug = report.records.find(record => record.sourceId === 'SRC-UGTPHON-EMNLP-2026');
   assert.equal(ug.rightsReviewStatus, 'ITEM_LEVEL_LICENSE_RECORDED', 'the explicit UGTPHON Korean-subset Apache-2.0 declaration covers the retained excerpts');
   assert.ok(!report.redistributionRightsNotClosed.some(item => item.sourceId === 'SRC-IPA-DICT-KO'), 'the source register explicitly says no IPA-Dict file is copied');
+  const midFront2023 = report.records.find(record => record.sourceId === 'SRC-LEE-2023-SEOUL-MID-FRONT-VOWEL-POSITION');
+  assert.ok(midFront2023, 'the 2023 mid-front-vowel study must be registered');
+  assert.equal(midFront2023.rightsReviewStatus, 'CITATION_ONLY_NO_REUSE');
+  assert.match(midFront2023.currentLicenseStatus, /citation-only/u);
   const c12AcousticSource = report.records.find(record => record.sourceId === 'SRC-JIPA-SCHWEIZER-AHN-KWON-2026-SEOUL-STOPS');
   assert.ok(c12AcousticSource, 'the newly registered C12 primary acoustic source must be present');
   assert.equal(c12AcousticSource.rightsReviewStatus, 'ITEM_LEVEL_LICENSE_RECORDED');
@@ -114,7 +118,7 @@ test('CLI reports structure by default and strict rights gate checks redistribut
   const normal = spawnSync(process.execPath, [script, '--json'], { cwd: process.cwd(), encoding: 'utf8' });
   assert.equal(normal.status, 0, normal.stderr);
   const report = JSON.parse(normal.stdout);
-  assert.equal(report.sourceRegisterRows, 213);
+  assert.equal(report.sourceRegisterRows, 214);
   assert.equal(report.structuralErrorCount, 0);
   assert.ok(report.itemLevelRightsNotClosed.length > 0);
   assert.equal(report.redistributionRightsNotClosed.length, 0);
