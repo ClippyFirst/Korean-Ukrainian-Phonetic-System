@@ -1,3 +1,36 @@
+## 2026-11-06 — 236-case engine integration and agent workflow consolidation
+
+**Default-branch baseline:** `main` at `043754498f3ad8a17aa6c13b5f643b197536da8a`.  
+**Working branch:** `research/236-candidate-review-2026-11-05`, PR [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436).  
+**Working snapshot before this handoff update:** `facc75ee887e2ee7a38a8ff83a2ff5277a277b75`.  
+**Current audit:** [Repository audit and structure — 2026-11-06](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md).  
+**236-case implementation:** [Engine integration](KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md); [candidate adjudication](../research/kozak-kim-236-candidate-review-2026-11-05.md).
+
+### Reconciled task state
+
+- 236 reconstructed occurrence rows remain intact: 15 standard-form/rule confirmations, 181 bounded profile-convention reconciliations, 12 abstentions and 28 unadjudicated rows.
+- 14 of the 15 standard-form occurrences are implemented or were already licensed; one (`머리속에`) remains blocked pending a separate spelling/semantic-normalization contract.
+- The 181 profile cases are not converted into categorical Korean phonology rules. The 40 abstained/unadjudicated cases receive no guessed IPA, audio or Ukrainian target.
+- The IPA-first pipeline remains unchanged. New exact licenses flow through the existing IPA-to-Ukrainian adapter. Existing g2pK baseline isolation is preserved.
+- The 236-row review and occurrence-to-runtime integration registers, exact-form negative controls, runtime parity tests, source register, rule coverage, acceptance gates and generated 26-row unmapped-Broad diagnostic queue are retained on the branch.
+
+### Documentation and upstream review
+
+- Ported PR #437's repository entry router, three general skills (`engineering-change`, `repository-audit`, `change-review`), agent workflow guide and structural contract test into the #436 working branch. Updated README, documentation index and structure guide without bulk-moving historical documents.
+- Reviewed Unlazy at `16671491f6679ad9378f52604d3bc2415b4120c7`, Superpowers at `22f0b463e7a5e579904dd6211a520321035526f7`, Matt Pocock skills at `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d`, and Ponytail at `96608e078b2d5ea607c5c3b8b5a54d1c1fba6846`. Adopted process concepts only; no upstream code, skills, hooks, plugins or benchmark assets copied.
+- Unlazy's standalone checker, approval store, Stop hook and lease/Depth Tree orchestration are deliberately not installed: existing GitHub Actions and canonical project ledgers already own verification state, and its command approvals are not a sandbox.
+
+### PR and verification status
+
+- PR #436 is the active combined branch. PR #437 remains open and untouched while its documentation changes are reconciled; do not merge/close it blindly.
+- Earlier exact code-head checks on `37ccbd17ac764ee83e592c8434372a00195ddd68`: Python regression/data integrity, browser regression/build (1,398/1,398), tests on Python 3.11/3.12/3.13, wheel install, teacher-corpus audit, browser G2P, master artifacts, exhaustive extraction, UGTPHON, paired native/g2pk and morphology diagnostics passed. Multi-engine comparison was cancelled; official NIKL metadata inventory and Charsiu/ByT5 jobs were skipped.
+- New exact-head workflows were queued on `facc75ee887e2ee7a38a8ff83a2ff5277a277b75`; final outcomes must be read after the last documentation commit. No local npm/pytest/build/clean-install command was run in this connector-only session.
+- External blockers remain: independent speaker-level Korean IPA gold, Ukrainian target validation, NIKL item-level reuse rights and evidence for unresolved 40 rows.
+
+**Readiness:** partial research prototype; not research-certified or release-ready. Latest final commit and exact-head CI results to be appended after verification.
+
+---
+
 ## 2026-11-05 — Owner-approved ClippyFirst project licence
 
 **Branch:** `docs/repository-audit-and-navigation-2026-11-04`  
