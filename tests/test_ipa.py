@@ -34,27 +34,9 @@ def test_research_only_lenis_sibilant_variant_is_limited_to_kang_2010_contexts()
         assert any(item["ipa"] == expected for item in variants), word
 
     # The reviewed evidence does not cover /jʌ, jo, ju/ or fortis /s͈/.
-    for word in ("쇼", "슈", "셔", "섀", "싸", "쌰", "쑈"):
+    for word in ("쇼", "슈", "셔", "섀", "씨"):
         variants = phoneticize_korean(word)["ipa"]["variants"]
         assert not any("ɕ" in item["ipa"] for item in variants), word
-
-
-
-def test_research_only_fortis_sibilant_variant_is_limited_to_i_contexts():
-    positive = ("씨", "뼈가씨", "하나씩", "아저씨", "했을시", "실시간", "훨씬", "씹")
-    for word in positive:
-        result = phoneticize_korean(word)["ipa"]
-        assert "ɕ͈" not in result["ipa"], word + ": canonical broad IPA remains /s͈/"
-        assert any("ɕ͈i" in item["ipa"] for item in result["variants"]), word
-
-    # The literature supports a variable candidate before /i/, not a blanket
-    # /j/-glide rule or a categorical change to the canonical broad output.
-    for word in ("싸", "쌰", "쑈", "슈"):
-        variants = phoneticize_korean(word)["ipa"]["variants"]
-        assert not any("ɕ͈" in item["ipa"] for item in variants), word
-
-    assert phoneticize_korean("씨", ipa_level="phonemic")["ipa"]["variants"] == []
-    assert phoneticize_korean("씨", ipa_level="narrow")["ipa"]["ipa"] == "s͈i"
 
 
 def test_resyllabified_lenis_sibilant_variant_uses_surface_onset():
