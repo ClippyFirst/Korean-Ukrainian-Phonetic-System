@@ -17,6 +17,17 @@ def test_narrow_ipa_is_explicitly_partial_and_source_scoped():
     assert phoneticize_korean("쇼", ipa_level="narrow")["ipa"]["ipa"] == "sʰjo"
 
 
+def test_research_only_broad_variants_cover_236_profile_cases_without_changing_canonical_ipa():
+    game = phoneticize_korean("게임")["ipa"]
+    assert game["ipa"] == "ke.im"
+    assert any(variant["ipa"] == "k͈e.im" and "NIKL" in variant["note"] for variant in game["variants"])
+
+    short_front = phoneticize_korean("주는대로")["ipa"]
+    assert any("ㅐ [e]" in variant.get("vowels", []) for variant in short_front["variants"])
+    long_front = phoneticize_korean("대한민국")["ipa"]
+    assert any("ㅐ [ɛ]" in variant.get("vowels", []) and "ɛː" in variant["ipa"] for variant in long_front["variants"])
+
+
 def test_broad_ipa_voicing_after_sonorant():
     result = phoneticize_korean("현대")["ipa"]["ipa"]
     assert "d" in result
