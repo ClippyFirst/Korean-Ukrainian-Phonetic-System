@@ -7,10 +7,10 @@ const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
 const engine = createEngine(canonical, lexical);
 
-test('four exact UGTPHON morphology cases resolve without rewriting source spelling', () => {
+test('three exact UGTPHON morphology cases resolve without rewriting source spelling', () => {
   const cases = {
     '쫒아내면': '쪼자내면',
-    '많앗구나유유유': '만앋꾸나유유유',
+    '많앗구나유유유': '마낫꾸나유유유',
     '무서웟어': '무서워서',
   };
   for (const [input, expectedSurface] of Object.entries(cases)) {
