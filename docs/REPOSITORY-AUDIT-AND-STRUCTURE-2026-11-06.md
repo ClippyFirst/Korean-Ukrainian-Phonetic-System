@@ -483,3 +483,8 @@ An initial Python assertion run [42260665657](https://github.com/ClippyFirst/Kor
 **Execution limits:** no local shell, `pytest`, or `npm` command was run in this connector-only session; all verification above is GitHub Actions evidence. The >1 MB append-only `MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md` remains preserved; this audit is its dated continuation. No branches were deleted, no force-push was used, and no release was published.
 
 **Readiness:** the 40 engine-policy decisions are integrated and tested. The 40 speaker-specific IPA gold claims remain no-audio-limited. Original historical 239-member cohort proof and independent Ukrainian target review remain open; the repository remains a bounded research prototype, not a release-certified pronunciation authority.
+
+
+## Addendum — UGTPHON five native abstentions (2026-11-06)
+
+The five residual Native G2P abstentions have been reviewed against the pinned UGTPHON rows and primary/source-specific evidence. Three exact-token cases now have Python/Browser R002/R003 licenses (`쫒아내면`, `많앗구나유유유`, `무서웟어`), with raw spelling retained and no generalization. Two remain blocked: `칡칡이` is a directly attested folk-song heading in the Busan oral-culture collection, but no audio/field notes establish its spoken realization; `삶의` has NIKL Hangul variants but no independent IPA adjudication. The prior folk-source register claim that the PDF text layer read `칭칭이` was corrected; opened PDF lines 20611–20622 read `칡칡이`. Implementation and tests are in PR #449; exact-head CI is pending on the final branch head. See [the focused case report](UGTPHON-FIVE-ABSTENTIONS-RESOLUTION-2026-11-06.md) and [the current triage register](../research/final-residual-abstention-triage-2026-10-25.json).
