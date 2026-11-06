@@ -115,3 +115,24 @@ Current main `2e9647540e1be47571579f71b7466393172a2a6d` has successful tests 422
 ### Generated unmapped-Broad CSV reconciliation
 
 The tracked `research/kozak-kim-unmapped-mismatch-review-queue-2026-11-05.csv` has been regenerated from the exact CSV uploaded by workflow run [42215019081](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42215019081), artifact 13501009061. A row-by-row comparison identified only one stale entry: ID 2490 (`머리속에`), which the exact pronunciation alias now covers. The refreshed queue contains 25 rows and matches the artifact's 89,638 bytes; its Git blob SHA is `15655fa35b74251c8c0fdd6e2b6dc973d3bba631`. This is an artifact reconciliation, not a new linguistic adjudication. The export gate still requires an exact-head rerun; downstream parity and SIGMORPHON checks must execute before DONE_VERIFIED.
+
+## 2026-11-06 — evidence-gated fortis sibilant optional variant
+
+A targeted review of the remaining 24 `ɕ͈→s͈` edit operations found **24 occurrence IDs in 19 source rows** (not 23 occurrence rows as earlier notes stated). Twenty-three of the 24 reference realizations are before /i/; the sole /j/-initial case is ID 96 `똥꼬쑈` /ɕ͈jo/. Twenty-two forms contain orthographic ㅆ; two are coda-triggered fortition contexts, IDs 481 `했을시` and 551 `실시간`.
+
+### Evidence and decision
+
+- Holliday (2014, JASA) describes both Korean lenis-aspirated /sh/ and fortis /s*/ as typically palatalized before /i/ or /j/ (SRC-HOLLIDAY-2014-JASA).
+- Holliday (2016, Phonetica) explicitly notes that /s*/ may palatalize less consistently than /sh/, documenting the mixed evidence (SRC-HOLLIDAY-2016-PHONETICA).
+- Holliday & Reidy (2016) report that /sh/ and sometimes /s*/ are palatalized before /i/ in a pilot production study of six female native speakers and 18 word-initial CV stimuli (SRC-HOLLIDAY-REIDY-2016-POSTER).
+- Kong & Kang (2020) report palatalized variants before /i/ in a 32-speaker Seoul Korean study, with gender-related spectral differences; the abstract does not disaggregate /s/ from /s'/ (SRC-KONG-KANG-2020-SPECTRAL).
+
+The evidence now supports a **research-only optional [ɕ͈] candidate for fortis /s͈/ before /i/ (ㅣ)**. It does not support a mandatory rule, speaker-specific assignment, or a general /j/-glide rule. The candidate is exposed in the broad research profile only; canonical [s͈], phonemic IPA, narrow IPA and Ukrainian target mappings are unchanged. The Browser implementation inspects the post-rule surface onset, so the two coda-triggered cases are represented without changing source spelling. The /jo/ case ID 96 remains out of scope; /ja/, /ju/ and other glide contexts remain negative controls.
+
+### Implementation and acceptance
+
+- Python: `src/korean_ukrainian/ipa.py` emits one optional variant when the post-rule surface onset is ㅆ and the source nucleus is ㅣ.
+- Browser: `src/app/engine_lexical.js` mirrors the same condition and candidate note.
+- Regression tests: `tests/test_ipa.py`, `tests/test_narrow_ipa.py`, `tests/test_kozak_236_candidate_review.py`, and `tests/test_kozak_236_engine_integration.py` cover canonical preservation, /i/ positives, /jo/ and other negatives, the 24-operation distribution, and Native/Browser parity.
+
+**Disposition:** PARTIAL, not token-level adjudication. Twenty-three mismatch operations can now be represented as optional broad-profile variants; one /jo/ operation remains unsupported. No one of the 236 corpus occurrences is claimed to have a speaker-confirmed [ɕ͈] realization without source audio and speaker metadata. These 24 profile mismatches are distinct from the 40 abstained/unadjudicated rows.
