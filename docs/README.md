@@ -8,7 +8,7 @@ This page is the entry point for project documentation. It distinguishes current
 2. [Root agent instructions](../AGENTS.md) — repository-wide task routing and non-negotiable contracts.
 3. [Agent workflow guide](AGENT-WORKFLOWS.md) — maintained skills, task lifecycle, evidence rules and review/verification process.
 4. [Repository structure guide](REPOSITORY-STRUCTURE.md) — current component map, data ownership, runtime entry points, development commands and safe navigation.
-5. [Repository audit and structure — 2026-11-06](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md) — current structure, agent workflow and branch/PR snapshot.
+5. [Repository audit and structure — 2026-11-06](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md) — superseding post-PR #443 repository, CI, 236-case, source-rights and readiness snapshot.
 6. [Engineering workflow reference audit — 2026-11-06](ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-06.md) — pinned review of Unlazy, Superpowers, Matt Pocock skills and Ponytail with explicit adoption boundaries.
 7. [Previous repository audit — 2026-11-04](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — historical snapshots; latest addendum 2026-11-05, including engine isolation and historical mismatch blockers.
 8. [Versioning policy](VERSIONING-POLICY.md) — independent browser and Python release streams.
@@ -23,6 +23,14 @@ This page is the entry point for project documentation. It distinguishes current
 
 - [Licensing and permissions](LICENSING-AND-PERMISSIONS.md) — author identity, scientific-use permissions, technical permission boundary and third-party licence scope.
 
+## Current project status — 2026-11-06
+
+- PR [#443](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/443) is merged at `bb972871a207b1f703503ade980a36cf3b976085`. Its exact-head multi-engine diagnostic passed all mandatory comparison, export, Browser same-occurrence, Native/Browser parity and SIGMORPHON steps (run [42226435101](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435101)).
+- The exact-head system verification passed browser tests, source-rights gate, public-page build and generated-page checks; Python regression/data integrity also passed (run [42226435403](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435403)). Optional neural inference jobs and the conditional live NIKL crawl are not passes.
+- The 236-case cohort has 15 exact standard-form runtime dispositions, 181 profile-convention decisions, 12 abstentions and 28 unadjudicated cases. Independent Korean IPA review, independent Ukrainian target review and proof of original historical cohort membership remain open.
+- The source-rights gate is scoped to positively recorded copied/included/redistributed material. A passing gate is not a blanket legal opinion on citation-only sources or materials not recorded as redistributed.
+
+For the authoritative task ledger and exact evidence, use the [current repository audit](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md), [research acceptance gates](../research/ACCEPTANCE-GATES.md), and [research roadmap](../research/ROADMAP.md).
 ## 236-candidate engine work
 
 - [236-candidate review](../research/kozak-kim-236-candidate-review-2026-11-05.md)
@@ -39,7 +47,7 @@ This page is the entry point for project documentation. It distinguishes current
 | Korean phonology | `korean-phonology.md`, `KOREAN-IPA-CONVENTION-REVIEW-2026-10-26.md`, `NATIVE-ENGINE-UNRESOLVED-CASES-2026-10-24.md` | Source phonology, IPA conventions and unresolved contexts |
 | Evidence and rights | `evidence.md`, `METHODOLOGY-CLAIMS-AND-EVIDENCE-REGISTER-2026-10-30.md`, `NIKL-LOCAL-CAPTURE-AND-INVENTORY-2026-10-24.md` | Provenance, claim scope, licensing and source limitations |
 | Benchmarks | `KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md`, `BENCHMARK-REVIEW-2026-10-24.md`, `MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md` | Benchmark definitions, results and interpretation |
-| Kozak Kim | `KOZAK-KIM-DISCREPANCY-DRIVEN-IMPROVEMENT-2026-11-01.md`, `../research/RULE-COVERAGE.csv`, `../research/kozak-kim-unmapped-mismatch-review-queue-2026-11-03.csv`, and `../research/kozak-kim-context-adjudication-2026-11-05.csv` | NIKL R001–R016 implementation, discrepancy evidence, four context-backed R013 fixes, provisional R012 retain, and source-gated review queue |
+| Kozak Kim / 236-case cohort | `KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md`, `KOZAK-236-INDEPENDENT-REVIEW.md`, `../research/kozak-kim-236-candidate-review-2026-11-05.md`, `../research/kozak-kim-236-engine-integration-2026-11-06.csv`, `../research/kozak-kim-unmapped-mismatch-review-queue-2026-11-05.csv`, and `../research/RULE-COVERAGE.csv` | Exact runtime dispositions, reconstructed candidate cohort, profile-convention decisions, unresolved IPA strata and the independent-review protocol |
 | Agent workflows | `../AGENTS.md`, `AGENT-WORKFLOWS.md`, `AGENT-SKILL-INTEGRATION-2026-11-01.md`, `AGENT-SKILLS-NIKL.md`, `../.agents/skills/` | Root task router, general engineering/audit/review skills, domain-specific evidence skills and upstream integration record |
 | Historical audits | `audits/` and dated top-level audit documents | Point-in-time audit evidence; not automatically current |
 | Design plans | `superpowers/specs/`, `superpowers/plans/`, `superpowers/ledger.md` | Design history and implementation ledger |
@@ -55,7 +63,7 @@ This page is the entry point for project documentation. It distinguishes current
 - `schemas/` — machine-readable JSON schemas.
 - `scripts/` — generators, importers, audits, benchmarks and research tooling.
 - `tests/` — Python and browser tests, fixtures and corpora.
-- `research/` — active research records, evidence queues, decisions, source register and acceptance gates; see the [31-row queue abstention register](../research/kozak-kim-31-row-individual-abstentions-2026-11-05.csv) and [historical 239 artifact-recovery manifest](../research/kozak-kim-historical-239-recovery-manifest-2026-11-05.md).
+- `research/` — active research records, source register, rule coverage, 236-occurrence cohort, evidence queues, decisions and acceptance gates. The 236-row cohort is reconstructed candidate membership, not proof of the original historical selector; see the [candidate review](../research/kozak-kim-236-candidate-review-2026-11-05.md), [engine integration ledger](../research/kozak-kim-236-engine-integration-2026-11-06.csv) and [independent review protocol](KOZAK-236-INDEPENDENT-REVIEW.md).
 - `AGENTS.md` — root agent entry contract and skill router.
 - `docs/` — architecture, methodology, user/developer guidance, audit reports and execution history; use [the structure guide](REPOSITORY-STRUCTURE.md), [agent workflow guide](AGENT-WORKFLOWS.md) and this index rather than guessing from filenames.
 - `.github/workflows/` — CI, benchmark, corpus, Pages and research workflows.

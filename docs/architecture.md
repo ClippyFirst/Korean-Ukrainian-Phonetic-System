@@ -92,4 +92,4 @@ The browser-side G2P-derived code under `src/vendor/g2pk/` retains its upstream 
 - Unresolved source contexts remain unresolved; do not infer a general rule from a lexical example.
 - Source access and source reuse rights are separate questions. A locally parsed NIKL file does not itself establish page-level KOGL permission.
 
-For the repository inventory, file ownership, branch/CI snapshot and current blockers, see [Repository structure](REPOSITORY-STRUCTURE.md) and the latest dated [repository audit](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md).
+For the repository inventory, file ownership, branch/CI snapshot and current blockers, see [Repository structure](REPOSITORY-STRUCTURE.md) and the latest dated [repository audit](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md).

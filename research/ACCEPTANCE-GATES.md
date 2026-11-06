@@ -1,3 +1,43 @@
+# 2026-11-06 — Current acceptance snapshot after PR #443 merge
+
+**Current `main`:** `bb972871a207b1f703503ade980a36cf3b976085`.  
+**Verified PR #443 head:** `625d6e3171e30ae7a6aae525dfdd4ded2c5249f8`.
+
+## Software and benchmark gates
+
+| Gate | Status | Evidence / boundary |
+|---|---|---|
+| Browser regression + public-page build | DONE_VERIFIED | System verification [42226435403](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435403): tests, source-rights gate, Vite build and generated-page checks passed |
+| Python regression and data integrity | DONE_VERIFIED | Same exact-head system verification run 42226435403 passed |
+| Strict source redistribution gate | DONE_VERIFIED, scoped | `npm run audit:source-rights` passed in run 42226435403; zero unresolved positively recorded redistribution blockers. This is not blanket clearance for all cited sources or future reuse |
+| Multi-engine IPA diagnostic | DONE_VERIFIED, mandatory steps | Run [42226435101](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435101): pinned comparisons, UGTPHON/SIGMORPHON validation, mismatch export, Browser same-occurrence execution, Native/Browser parity and SIGMORPHON lexical-gold steps passed |
+| Optional CharsiuG2P / ByT5 inference | SKIPPED | Skipped by workflow policy; not counted as a pass or as independent IPA review |
+| Conditional live NIKL crawl | SKIPPED | Conditional job not run on this branch; separate historical access/rights limitations remain |
+
+## 236-occurrence evidence gates
+
+| Disposition | Rows | Acceptance meaning |
+|---|---:|---|
+| Exact standard-form runtime dispositions | 15 | Ten new exact integrations plus five pre-existing exact licenses; runtime coverage does not establish speaker-level IPA |
+| Profile-convention decisions | 181 | Reconciled as bounded profile differences; not 181 categorical Korean sound-change rules |
+| Independent Korean IPA abstentions | 12 | Remain blocked pending token-specific evidence and independent review |
+| Not individually adjudicated | 28 | Remain blocked pending source/token-level review |
+| **Total** | **236** | Reconstructed candidate cohort; not proof of original historical sample membership |
+
+## Remaining research/release gates
+
+- **BLOCKED — independent Korean IPA:** two qualified, independent first-pass annotations on frozen source-linked tokens; blind reconciliation; record speaker, dialect, prosody, transcription profile and uncertainty. Packet generation alone is not review.
+- **BLOCKED — Ukrainian target validation:** independent Ukrainian phonetic/orthographic review on frozen IPA inputs, with a separate target acceptance record.
+- **BLOCKED — 40 residual occurrences:** 12 abstentions + 28 unadjudicated; require token audio/source crosswalk and expert annotations. Do not fill gaps with comparator strings or guessed IPA.
+- **PARTIAL — original historical cohort membership:** reconstructed candidate inventory is reproducible; original 236/239 selection predicate or original member list remains unproven.
+- **BLOCKED — any additional third-party redistribution:** the strict gate covers only positively recorded retained/copied material. Before adding any source extract/data, record the exact item, source version, applicable licence/permission, attribution and retained scope. Research purpose alone is not permission.
+- **PARTIAL — broader phonological coverage:** implement only gaps named by `research/RULE-COVERAGE.csv` with primary-source evidence, positive/negative controls and Python/Browser parity.
+- **DEFERRED — release certification:** no public release claim of independent research certification until Korean IPA and Ukrainian target review, provenance and applicable rights gates are accepted.
+
+**Readiness:** mandatory software and multi-engine diagnostic gates are verified on the merged PR head; the project remains a bounded research prototype, not independently research-certified or release-ready.
+
+---
+
 # 2026-11-05 — Current 236-candidate evidence gate (supersedes earlier interim counts)
 
 **Working branch:** `research/236-candidate-review-2026-11-05` (single continuation branch). **Draft PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436). The historical 236-row occurrence baseline remains intact.

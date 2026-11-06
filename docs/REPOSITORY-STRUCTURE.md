@@ -1,12 +1,12 @@
 # Repository structure and ownership guide
 
-**Snapshot:** 2026-11-06, default-branch baseline `main` at `043754498f3ad8a17aa6c13b5f643b197536da8a`; current integration branch `research/236-candidate-review-2026-11-05` is tracked by PR #436. This guide describes the observed tree and stable ownership boundaries; it is not a claim that every file has been independently reviewed line by line.
+**Snapshot:** 2026-11-06, `main` after PR #443 at `bb972871a207b1f703503ade980a36cf3b976085`. The current documentation continuation is isolated on `docs/repository-structure-and-navigation-2026-11-06`. This guide describes observed tree ownership and navigation boundaries; it is not a claim that every file has been independently reviewed line by line.
 
 ## What this repository contains
 
 A Python research package, a browser-based practical/research application, Korean phonology and lexical datasets, a Korean-to-Ukrainian IPA target layer, reproducible research tooling, and a public GitHub Pages service.
 
-At branch head `6c29e09f74af7b0e88ff847886dd7b944bae4c32`, the recursive Git tree contained **831 entries** (789 files and 42 directories), including **177 Markdown files**, **394 files under `tests/`**, **64 scripts**, **18 GitHub Actions workflows**, and **13 schemas**. The `docs/` subtree contained 146 files and `research/` 55 files. These are point-in-time inventory counts, not measures of implementation completeness.
+At `main` commit `bb972871a207b1f703503ade980a36cf3b976085`, the recursive Git tree contains **831 entries** (789 files and 42 directories), including **177 Markdown files**, **394 files under `tests/`**, **64 scripts**, **18 GitHub Actions workflows**, and **13 schemas**. The `docs/` subtree contains 146 files and `research/` 55 files. These are point-in-time inventory counts, not measures of implementation completeness.
 
 ## Top-level map
 
@@ -65,7 +65,8 @@ A successful test proves only the assertion encoded in that test. It does not pr
 | Master table generation | `python scripts/generate_master_table.py` |
 | IPA target data generation | `npm run generate:ipa-target-data` |
 | IPA target data drift check | `npm run check:ipa-target-data` |
-| Source register audit | `npm run audit:source-register` |
+| Source register audit (read-only triage) | `npm run audit:source-register` |
+| Strict positive-redistribution rights gate | `npm run audit:source-rights` |
 | NIKL local HTML inventory | `npm run crawl:nikl -- --url "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002" --input-html "한국어 어문 규범.htm" --output reports/nikl/standard-pronunciation-manifest.json` |
 
 Runtime requirements are Node.js `>=22.12.0` and Python `>=3.11`. Optional extras are documented in `pyproject.toml`; do not assume g2pK, Kiwi, MeCab-Ko, FastAPI or Excel dependencies exist in a minimal install.
@@ -92,13 +93,14 @@ The project already has domain-specific skills in `.agents/skills/` and the curr
 
 ## Known audit boundaries at this snapshot
 
-- `main` is the default branch. The branch inventory includes the active PR #436 integration branch and PR #437 documentation branch. PR #437's 13 documentation/skill/test paths were ported into #436; #437 is closed as superseded and its branch is preserved. The merged PR #435 branch is preserved, not deleted.
-- The main branch was reported as unprotected by GitHub repository metadata. No branch-protection or ruleset settings were changed.
-- The latest exact-head CI before this continuation passed browser/Python regression, build, generated artifacts and Pages deployment. This continuation adds a fresh exact-head verification; see the audit addendum.
-- The NIKL local HTML inventory is structurally complete (30/30) but page-level reuse terms and capture authenticity are not established.
-- Independent Korean IPA and Ukrainian target review remain external acceptance gates.
-
-
+- `main` is the default branch and was reported as unprotected by GitHub repository metadata at this snapshot. No branch-protection or ruleset settings were changed.
+- PR #443 merged the 236-case evidence reconciliation, regenerated diagnostic queue, scoped source-rights gate and release-workflow integration at `bb972871a207b1f703503ade980a36cf3b976085`. PR #439 was closed as superseded; its branch was preserved. Other historical/supporting branches were not deleted or force-updated.
+- Exact-head multi-engine run [42226435101](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435101) passed all mandatory pinned comparison, export, Browser same-occurrence, Native/Browser parity and SIGMORPHON steps. Optional CharsiuG2P and ByT5 inference jobs were skipped by policy.
+- Exact-head system verification [42226435403](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435403) passed browser regression, `npm run audit:source-rights`, build and generated-page checks; Python regression/data integrity passed. This is GitHub Actions evidence, not a local shell run.
+- The strict rights gate found no unresolved positively recorded redistribution item. Citation-only references and non-redistributed materials remain distinct from copied content; this result is not blanket legal clearance or a legal opinion.
+- The 236-occurrence cohort remains a reconstructed candidate inventory: 15 exact standard-form runtime dispositions, 181 profile-convention decisions, 12 IPA abstentions and 28 unadjudicated cases. The original historical 236/239 membership predicate is not proven.
+- Independent Korean IPA review and separate Ukrainian target review remain external acceptance gates. The repository is not release-ready or independently research-certified.
+- The master handoff is approximately 1 MB and remains preserved as a historical append-only record. Where the available connector write path cannot safely append, the newest dated repository-audit continuation is the current status source; do not truncate or replace the handoff.
 ## NIKL rule ownership boundary
 
 NIKL Standard Pronunciation Rules R001–R016 and exact-form/morphological licenses are implemented in Kozak Kim's research/native rule modules (`src/app/engine_rules_ctx.js`, `src/korean_ukrainian/rules.py`, canonical `data/korean/rules.csv`, and `research/RULE-COVERAGE.csv`). The browser and Python g2pK adapters are isolated baselines: they preserve raw g2pK surface output and derive IPA without Kozak Kim NIKL rule, lexical surface, or IPA overlays. Do not move NIKL licenses into `src/vendor/g2pk/` or either g2pK adapter. The existing user-supplied `한국어 어문 규범.htm` is retained; this continuation does not create a fresh NIKL snapshot.

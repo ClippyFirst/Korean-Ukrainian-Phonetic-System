@@ -7,6 +7,8 @@ const read = (path) => readFileSync(new URL('../' + path, import.meta.url), 'utf
 const rootGuide = read('AGENTS.md');
 const workflowGuide = read('docs/AGENT-WORKFLOWS.md');
 const docsIndex = read('docs/README.md');
+const structureGuide = read('docs/REPOSITORY-STRUCTURE.md');
+const researchIndex = read('research/README.md');
 
 const skills = [
   '.agents/skills/engineering-change/SKILL.md',
@@ -55,6 +57,8 @@ test('new agent documentation uses valid local Markdown links', () => {
     ['AGENTS.md', rootGuide],
     ['docs/AGENT-WORKFLOWS.md', workflowGuide],
     ['docs/README.md', docsIndex],
+    ['docs/REPOSITORY-STRUCTURE.md', structureGuide],
+    ['research/README.md', researchIndex],
   ];
   for (const [source, content] of pages) {
     for (const [, href] of content.matchAll(/\[[^\]]+\]\(([^)]+)\)/gu)) {
@@ -110,4 +114,24 @@ test('current documentation navigation exposes the four-source audit and 236-cas
   assert.ok(audit.includes('96608e078b2d5ea607c5c3b8b5a54d1c1fba6846'));
   assert.ok(repositoryAudit.includes('236 occurrence rows'));
   assert.ok(integration.includes('15 occurrences integrated or already implemented'));
+});
+
+test('current repository documentation records exact benchmark, rights and research boundaries', () => {
+  const rootReadme = read('README.md');
+  const repositoryAudit = read('docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md');
+  const acceptance = read('research/ACCEPTANCE-GATES.md');
+  for (const phrase of [
+    'research prototype, not independently research-certified or release-ready',
+    '42226435101',
+    '42226435403',
+  ]) assert.ok(rootReadme.includes(phrase), 'README missing current status evidence: ' + phrase);
+  assert.ok(repositoryAudit.includes('bb972871a207b1f703503ade980a36cf3b976085'), 'repository audit missing the merge commit');
+  for (const phrase of [
+    '15 exact standard-form runtime dispositions',
+    '181 profile-convention cases',
+    '12 abstentions + 28 unadjudicated',
+    'independent Ukrainian target review',
+  ]) assert.ok(repositoryAudit.toLowerCase().includes(phrase.toLowerCase()), 'repository audit missing current disposition: ' + phrase);
+  assert.ok(acceptance.includes('42226435101'), 'acceptance gates missing the mandatory multi-engine result');
+  assert.ok(acceptance.includes('SKIPPED'), 'acceptance gates must distinguish skipped optional jobs');
 });

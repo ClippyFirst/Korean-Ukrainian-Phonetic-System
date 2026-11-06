@@ -257,3 +257,58 @@ Recovered the original multi-engine ZIP from run 42215019081 and compared its ge
 ### Ledger correction and current CI state — 2026-11-06
 
 The exact fortis inventory is **24 occurrence IDs across 19 source rows**, not 23 occurrence rows: 23 are /i/ contexts and one is /jo/ (ID 96). The table above has been corrected to this exact inventory. The unmapped-Broad CSV is no longer awaiting regeneration: it has been replaced with the exact 25-row output from the recovered CI artifact. Its remaining status is **CI rerun pending**, not artifact-generation pending. On the final branch head `2e4a76cc33fd55400f9de08ae9467ef1c2f45002`, multi-engine workflow run 42225608310 is pending with no jobs reported yet; ordinary tests 42225608150, system verification 42225608125, Browser integration 42225608073 and exhaustive extraction 42225608074 are queued/in progress. Master/research artifact workflow 42225608146 succeeded. Do not claim these in-progress workflows passed.
+
+## Superseding continuation — 2026-11-06 after PR #443 merge
+
+**Current `main`:** `bb972871a207b1f703503ade980a36cf3b976085` (merge commit for PR [#443](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/443)).  
+**PR #443 exact verified head:** `625d6e3171e30ae7a6aae525dfdd4ded2c5249f8`.  
+**Documentation continuation branch:** `docs/repository-structure-and-navigation-2026-11-06`.
+
+### Reconciled PRs and branches
+
+- PR #443 was reviewed before merge: 16 changed paths, no submitted reviews or inline review threads, and GitHub reported it mergeable. Its latest exact-head CI completed successfully for all mandatory jobs.
+- PR #443 merged with merge commit `bb972871a207b1f703503ade980a36cf3b976085`; it reconciles the 236-case disposition, exact generated mismatch queue, source redistribution scope, source-register tests, release script and workflow gate.
+- PR #439 was closed as superseded after its intended redistribution-scope distinction and corrected negation-aware classifier were incorporated into #443. Its source branch was preserved.
+- No force-push, branch deletion, release publication, branch-protection change or unrelated branch cleanup was performed.
+
+### Current verification evidence
+
+| Workflow | Run | Result |
+|---|---:|---|
+| Multi-engine Korean IPA diagnostic | [42226435101](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435101) | PASS — pinned engines/licences, UGTPHON and SIGMORPHON split validation, adapter tests, holdout audit, reviewer packet generation, multi-engine comparison, mismatch export, Browser same-occurrence run, Native/Browser parity and SIGMORPHON comparison |
+| System verification | [42226435403](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435403) | PASS — browser regression, `npm run audit:source-rights`, public-page build, generated-page checks, Python regression/data integrity |
+| Optional CharsiuG2P inference | same multi-engine run | SKIPPED by policy; not a pass |
+| Optional ByT5 inference | same multi-engine run | SKIPPED by policy; not a pass |
+| Conditional live NIKL crawl | system verification | SKIPPED because the branch did not match its research-only condition; not a pass |
+
+The multi-engine run's required steps all completed successfully, including the export comparison and downstream parity jobs that were previously skipped by the stale generated CSV. This closes the previously recorded multi-engine artifact/parity blocker for this exact PR head. The benchmark remains diagnostic: it does not create independent Korean IPA gold or validate Ukrainian targets.
+
+### Current 236-occurrence task ledger
+
+| Workstream | Status | Evidence / remaining acceptance |
+|---|---|---|
+| Reconstructed 236-row candidate inventory | DONE_VERIFIED as a reproducible inventory | 236 unique occurrence IDs retained; original historical 236/239 selector membership remains unproven |
+| 15 exact standard-form runtime dispositions | DONE_VERIFIED as bounded software implementation | Ten new exact integrations plus five pre-existing exact licenses; no spelling rewrite or unsupported productive rule |
+| 181 profile-convention cases | DONE_VERIFIED as bounded non-integration decisions | Do not interpret as categorical phonology or speaker-level narrow IPA |
+| 12 abstentions + 28 unadjudicated | BLOCKED | Need source/token/audio/speaker/prosody crosswalk and qualified independent Korean IPA annotation |
+| Independent Korean IPA review | BLOCKED | Reviewer packets are prepared; no independent first-pass annotations or blind reconciliation are evidenced |
+| Independent Ukrainian target review | BLOCKED | Requires a separate review on frozen IPA inputs |
+| Strict source-redistribution gate | DONE_VERIFIED, scoped | Zero unresolved positively recorded redistribution items; informational citation-only/non-redistributed review records remain |
+| Broader source reuse clearance | PARTIAL / item-specific | Any new retained third-party material requires item-level licence/permission, attribution and scope evidence; academic purpose alone is not a grant |
+| Multi-engine benchmark | DONE_VERIFIED, mandatory steps | Run 42226435101 passed mandatory comparison, export, Browser same-occurrence, Native/Browser parity and SIGMORPHON steps; optional neural jobs skipped |
+| Release readiness | DEFERRED | Research prototype only; independent Korean IPA and Ukrainian target validation remain open |
+
+### Source-rights interpretation
+
+The source register contains 213 rows and 12 columns with zero structural errors. The strict gate passed with zero unresolved positively recorded copied/included/redistributed artifacts. The generated triage also contains 162 review-required and 9 manual-classification-required references; those are not automatically redistribution blockers when the source is citation-only or not retained in the repository. This software gate is not legal advice and does not authorize future reuse. `npm run audit:source-register` is the read-only triage; `npm run audit:source-rights` is the strict release gate.
+
+### Documentation and structure decisions
+
+- The repository has 831 tree entries (789 files, 42 directories), 177 Markdown files, 394 test files, 64 scripts, 18 workflows and 13 schemas; `docs/` has 146 files and `research/` 55 at the current snapshot.
+- Keep the flat historical `docs/` namespace. Improve discoverability through `README.md`, `docs/README.md`, `docs/REPOSITORY-STRUCTURE.md` and `research/README.md`; do not bulk-move files whose paths are referenced by tests, scripts, evidence packets and historical reports.
+- Keep one canonical source register, rule coverage matrix, acceptance-gate register and execution handoff. The oversized append-only handoff remains unchanged; this audit is the current superseding continuation where the connector cannot safely append to the 1 MB handoff.
+- The four upstream workflow references (Unlazy, Superpowers, Matt Pocock skills, Ponytail) remain process-only references. No upstream code, skill text, hooks, plugins, artwork or benchmark data was copied.
+
+**Local verification boundary:** no local `npm`, `pytest`, build or clean-install command was run in this connector-only session. Exact-head GitHub Actions results above are the verification evidence; they must not be described as local execution.
+
+**Readiness:** mandatory software verification and the pinned multi-engine diagnostic are complete for the merged PR head. The repository remains a **bounded research prototype**, not independently research-certified or release-ready.
