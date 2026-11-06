@@ -1,3 +1,15 @@
+> **Superseding status — 2026-11-06, main `f6d282145d985578af3d0a0bedb75197f00e3cb9`.** PR [#447](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/447) is merged (merge commit `3c93a92e9b48c2a1c68d1139137a55c2dd2e7c7e`). All 40 residual occurrences (12 prior ABSTAIN + 28 focused residual) have explicit `ENGINE_POLICY_RESOLVED_NO_AUDIO` dispositions; all 40 remain `UNRESOLVED_NO_AUDIO` for speaker-specific IPA gold. This closes the bounded engine-policy axis, **not** independent pronunciation adjudication.
+>
+> The merge adds conditional NIKL Rule 29 phrase-mode paths for explicitly spaced `홍콩 영화들`, `한국 여자로`, and `첫 연애` in Python and browser runtimes. Compact spellings do not receive inferred word boundaries. The other 35 occurrences receive conservative retain/no-change policy decisions; they are not 35 new pronunciation rules or 35 new token outputs.
+>
+> **Verification on the PR head** `6813018d4987822a42225dfa05590916e3030f52`: browser tests **1,413/1,413**, Python 3.11/3.12/3.13, wheel install, teacher-corpus audit, build, source-rights gate, master/research artifacts, exhaustive extraction, UGTPHON, native/g2pk, morphology consensus and adapter smoke passed. The multi-engine benchmark run [42261250219](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42261250219) was **cancelled before producing a benchmark result**; optional CharsiuG2P and ByT5 inference were skipped by policy. No 40-case benchmark score is available. The earlier mandatory multi-engine run [42226435101](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435101) passed on an earlier PR #443 head and is a baseline, not a post-#447 score.
+>
+> Post-merge verification on current main `f6d282145d985578af3d0a0bedb75197f00e3cb9`: [tests](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42262413712), [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42262413711), [master/research artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42262413691), and [GitHub Pages deployment](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42262413689) all passed. These software checks do not supply missing acoustic gold.
+>
+> The reconstructed 236-row cohort remains 15 exact standard-form dispositions, 181 profile-convention decisions, 12 abstentions and 28 previously unadjudicated rows. The 40-case engine-policy register is a separate axis; do not rewrite those historical evidence labels. Remaining gates include independent Korean IPA gold, independent Ukrainian target review, proof of original historical cohort membership, and item-level rights review where reuse/redistribution is contemplated. **Readiness remains bounded research prototype; not independently research-certified or release-ready.**
+
+---
+
 # Documentation map
 
 This page is the entry point for project documentation. It distinguishes current operating contracts from dated research records and append-only execution history.

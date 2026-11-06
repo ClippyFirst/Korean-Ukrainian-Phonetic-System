@@ -483,3 +483,14 @@ An initial Python assertion run [42260665657](https://github.com/ClippyFirst/Kor
 **Execution limits:** no local shell, `pytest`, or `npm` command was run in this connector-only session; all verification above is GitHub Actions evidence. The >1 MB append-only `MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md` remains preserved; this audit is its dated continuation. No branches were deleted, no force-push was used, and no release was published.
 
 **Readiness:** the 40 engine-policy decisions are integrated and tested. The 40 speaker-specific IPA gold claims remain no-audio-limited. Original historical 239-member cohort proof and independent Ukrainian target review remain open; the repository remains a bounded research prototype, not a release-certified pronunciation authority.
+
+
+## Current-main verification addendum — 2026-11-06
+
+This addendum supersedes older status snapshots earlier in this audit. Current default branch: `main`; current head: `f6d282145d985578af3d0a0bedb75197f00e3cb9`.
+
+- PR #447 merged at `3c93a92e9b48c2a1c68d1139137a55c2dd2e7c7e`; the 40-row engine-policy register is now on main. All 40 retain `UNRESOLVED_NO_AUDIO` speaker-specific IPA status.
+- Exact PR-head browser regression: 1,413 passed, 0 failed; Python 3.11/3.12/3.13, wheel install, teacher-corpus audit, build, source-rights gate, research artifacts, exhaustive extraction, UGTPHON, native/g2pk, morphology consensus and adapter smoke passed. See run IDs 42261250418, 42261250274, 42261250275, 42261250316, 42261250212, 42261250288, 42261250269 and 42261250254.
+- PR-head multi-engine run 42261250219 was cancelled; no post-#447 score is available. Optional CharsiuG2P/ByT5 inference jobs were skipped, not passed. Earlier run 42226435101 is a successful historical baseline on PR #443, not a post-#447 result.
+- Current-main CI on `f6d2821...`: tests 42262413712 PASS; system verification 42262413711 PASS; generated master/research artifacts 42262413691 PASS; Pages deployment 42262413689 PASS.
+- No local shell/pytest/npm execution is claimed; verification is from GitHub Actions. The repository remains a bounded research prototype, not release-ready.
