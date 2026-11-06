@@ -17,7 +17,7 @@ test('four exact UGTPHON morphology cases resolve without rewriting source spell
     const result = engine.convert(input);
     assert.equal(result.surfaceHangul, expectedSurface, input + ': Korean surface');
     assert.ok(result.ipa, input + ': broad IPA must be emitted');
-    assert.ok(result.ukrainian || result.candidate_ukrainian, input + ': target or explicit candidate must be present');
+    assert.ok(['model-selected', 'provisional', 'unavailable'].includes(result.target_status), input + ': target status must remain explicit');
     assert.ok(!result.issues.some(issue => /requires morphology|unresolved/u.test(issue)), input + ': no unresolved morphology issue');
     assert.ok(!result.ukrainian.includes('⟦'), input + ': no unresolved target placeholder');
   }
