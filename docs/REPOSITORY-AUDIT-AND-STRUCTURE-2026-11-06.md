@@ -161,3 +161,37 @@ The unresolved count remains 40 (12 abstentions + 28 unadjudicated). No runtime 
 - Official NIKL metadata inventory, Charsiu and ByT5 optional jobs were **SKIPPED**, not passed. Pinned multi-engine workflow `42215019081` remained **IN_PROGRESS** at the multi-engine comparison step; its later browser parity and SIGMORPHON steps had not yet run. Do not claim this benchmark passed.
 - The candidate ledger remains 236 rows: 15 standard-rule cases implemented/preserved, 181 profile-convention rows handled without new categorical phonology, 12 abstentions and 28 unadjudicated rows remain evidence-limited. The 24 fortis `[ɕ͈]→/s͈/` operations across 23 occurrence rows remain unconverted pending direct production evidence.
 - No local pytest/npm command is claimed; all verification above is from GitHub Actions. No release was published.
+
+
+## Superseding continuation snapshot — 2026-11-06 after PR #441/#442 merge
+
+**Current default-branch baseline:** `main` at `2e9647540e1be47571579f71b7466393172a2a6d`. **Continuation branch:** `research/236-residual-review-2026-11-06`. PR #441 (runtime) and #442 (post-merge documentation) are merged. The 236-case status is unchanged: 15 exact standard-form occurrences with runtime dispositions; 181 bounded profile-convention decisions; 12 abstentions; 28 unadjudicated occurrences. All 236 source rows remain retained and 40 remain evidence-limited.
+
+### Corrected current task ledger
+
+| Workstream | Status | Current acceptance / evidence |
+|---|---|---|
+| 236-row candidate ledger and provenance | DONE_VERIFIED | Reconstructed cohort retained; repeated tokens are not independent speakers; no independent IPA gold implied. |
+| 15 standard-form runtime dispositions | DONE_VERIFIED | Ten new exact licenses plus five baseline licenses; PR #441 merged. Current-main tests and system verification pass. |
+| 181 profile-convention reconciliations | DONE_VERIFIED as bounded non-integration decisions | Optional variants are narrowly scoped; no categorical rule promotion or speaker-specific claim. |
+| 24 fortis [ɕ͈]→/s͈/ edit operations across 23 rows | BLOCKED | 22 forms contain ㅆ; two are coda-triggered fortition. Lenis [ɕ] evidence cannot decide fortis place. Need exact audio or fortis-specific independent IPA/acoustic annotation. |
+| 12 abstentions + 28 unadjudicated occurrences | BLOCKED | Original token audio, speaker crosswalk, two independent Korean IPA annotations, blind reconciliation; then separate Ukrainian target review. |
+| Multi-engine unmapped-Broad generated artifact | PARTIAL | Exact PR #441 head run 42215019081 failed at `cmp`: generator emitted 25 rows, tracked CSV has 26 including now-integrated ID 2490. Downstream Browser parity and SIGMORPHON jobs were skipped. Regenerate artifact from pinned inputs, inspect full row-level diff, rerun workflow. Do not weaken byte comparison. |
+| Current-main tests/build/data/deploy workflows | DONE_VERIFIED for main `2e9647540e1be47571579f71b7466393172a2a6d` | Tests 42216016963, Verify 42216016988, master artifacts 42216016940, Pages 42216016937 all success. These do not supersede the separate multi-engine failure. |
+| Four upstream workflow references | DONE_VERIFIED | Existing pinned audit; adopt process practices only; no code/skills/hooks copied. |
+| Independent Korean IPA gold | BLOCKED | Qualified reviewers and blind adjudication absent. |
+| Independent Ukrainian target validation | BLOCKED | Independent reader/phonetic review and acceptance tests absent. |
+| Source-rights PR #439 | PARTIAL / leave untouched | Open PR is 56 commits behind current main; exact-head tests and verify failed (runs 42200300941, 42200300947). Reconcile selectively on a current branch; do not merge stale branch blindly. Citation-only evidence is not the same as copied/redistributed material. |
+| Release readiness | DEFERRED | Partial research prototype; not research-certified or release-ready. |
+
+### Runtime and evidence boundary
+
+No further 236-case runtime rule is justified by the reviewed residual evidence. In particular, the 24 fortis sibilant operations are not closed by the lenis /i, ye, ya/ coarticulation result; the two /ɘː/ vs /ʌː/ cases are profile-symbol questions; and phrase-level Rule 29 candidates require token-level prosodic evidence. The 12 + 28 evidence-limited rows must not receive guessed IPA or Ukrainian outputs. The next linguistic acceptance step is independent annotation, not another heuristic.
+
+### Current verification facts
+
+- Main `2e9647540e1be47571579f71b7466393172a2a6d`: tests, system verification, generated master/research artifacts and Pages deployment all succeeded (run IDs above).
+- Multi-engine exact-head run [42215019081](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42215019081): engine comparison and reviewer packet steps succeeded; mismatch-queue export `cmp` failed at byte 86966 / line 26. Later Browser parity, native/browser parity and SIGMORPHON jobs were skipped. ByT5/Charsiu optional inference jobs were skipped by policy.
+- No local pytest/npm/build was run: container-side GitHub clone failed because github.com DNS could not resolve. Connector-reported Actions results are not represented as local tests.
+
+The detailed appended continuation and next acceptance steps are in [the master handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md).
