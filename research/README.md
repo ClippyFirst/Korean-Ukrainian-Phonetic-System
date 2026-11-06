@@ -230,3 +230,8 @@ The user's constraint is that no audio will be supplied. The 40 residual occurre
 ## 236-case source-rights follow-up — 2026-11-06
 
 The focused [236-case source-rights audit](../docs/KOZAK-236-SOURCE-RIGHTS-AUDIT-2026-11-06.md) found a declared Apache-2.0 licence for the UGTPHON Korean subset and KoMultiText dataset, but did not establish the full upstream rights chain for the original DC Inside user comments. MultiLexNorm++'s paper does not state raw-text redistribution terms; its public Hugging Face dataset is gated by a contact-sharing agreement that was not accepted or inspected. The existing reviewer packets include raw sentence context and remain **internal-only**. All 236 `source_license` cells remain blank. External distribution is **BLOCKED** pending written rights-holder clarification or qualified legal determination. No packets were generated or sent.
+
+
+## 2026-11-06 — 236-case source-rights decision
+
+The pinned UGTPHON Korean subset declares Apache-2.0 in `ko/LICENSE`; source-register record `SRC-UGTPHON-EMNLP-2026` is the canonical licence record. The earlier interim external-review hold is superseded. Two reviewer-specific 236-case packets may be distributed under that declared subset licence only with the full Apache-2.0 text and the UGTPHON Korean-subset source notice. The residual original-post title/provenance caveat is disclosed in the source-rights report. The independent review itself remains TODO until two qualified reviewers complete their separate first passes.
