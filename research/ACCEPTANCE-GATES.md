@@ -1476,3 +1476,12 @@ The 12 abstentions and 28 unadjudicated rows have received a focused evidence pa
 
 
 Additional regression scope: the native Python and browser shared-Broad profiles must keep /s/ canonical and omit [ɕ] variants for `쇼`, `모션어디서`, `뿌셔우우`, `뿌셔우우우`, `아끼셔` and `포지션을`. For `대한민국`, the research-only [ɛ]~[e] candidate must preserve the existing length mark and cite Lee (2023); it does not select a speaker-specific realization. The browser legacy profile remains a separate compatibility contract.
+
+
+## 2026-11-06 — 236-case source-rights audit
+
+- **DONE_VERIFIED — source declaration inspection:** UGTPHON Korean subset `ko/LICENSE` declares Apache-2.0 and states derivation from KoMultiText, partly through MultiLexNorm++ and partly direct DC Inside comments. KoMultiText repository and Hugging Face metadata also declare Apache-2.0.
+- **PARTIAL — chain of title:** KoMultiText paper says the authors reviewed DC Inside terms, but does not specify a platform permission or establish original posters' licensing authority. MultiLexNorm++ paper identifies DC Inside but does not state raw-text redistribution terms; its public Hugging Face dataset requires acceptance of a contact-sharing gate whose terms were not inspected.
+- **BLOCKED — external reviewer packet distribution:** the existing packet includes source-identifiable sentence contexts. Keep the 236 `source_license` cells blank and packets internal-only until written rights-holder confirmation or qualified legal determination covers raw text, context, reviewer retention, derived annotations, attribution and access conditions.
+- **No packets generated or distributed.** No benchmark or model evaluation run.
+- Full evidence and next actions: [source-rights audit](../docs/KOZAK-236-SOURCE-RIGHTS-AUDIT-2026-11-06.md).
