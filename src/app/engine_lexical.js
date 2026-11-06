@@ -335,7 +335,31 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status,
     }
   }
   if(includeBroadAllophones){
-    // S018: intervocalic /h/ may surface as [ɸ]. Keep [h] canonical.
+    // Research-only optional fortis /s͈/ palatalization before /i/ (ㅣ).
+  // Evidence supports variable [ɕ͈] in this context, not a categorical rule.
+  // Inspect the post-rule surface onset so the two coda-triggered fortition
+  // cases are covered; retain the original source vowel and canonical [s͈].
+  if(includeBroadAllophones){
+    for(let i=0;i<originalUnits.length;i++){
+      const sourceSyllable=originalUnits[i];
+      const surfaceSyllable=units[i];
+      if(surfaceSyllable.onset!=='ㅆ'||sourceSyllable.vowel!=='ㅣ'||!ipa[i]?.startsWith('s͈'))continue;
+      const alternateIpa=ipa.slice();
+      alternateIpa[i]='ɕ͈'+alternateIpa[i].slice('s͈'.length);
+      const mapped=alternateIpa.map(value=>ipaSyllableToUkrainian(value,{allowProvisional:true}));
+      variants.push({
+        source:text,
+        surface:text,
+        ukrainian:mapped.map(item=>item.text??'').join(''),
+        ipa:renderStructured(units,alternateIpa,'.'),
+        note:'Research-only optional [ɕ͈] candidate for fortis /s͈/ before /i/ (ㅣ); Holliday 2014; Holliday 2016; Holliday & Reidy 2016; Kong & Kang 2020. Production is variable and speaker-specific realization is unknown; canonical broad [s͈] is preserved.',
+        status:mapped.some(item=>item.status==='provisional')?'lexical-review':status,
+        target_status:mapped.some(item=>item.status==='unavailable'||item.unknown)?'unavailable':mapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
+      });
+    }
+  }
+
+  // S018: intervocalic /h/ may surface as [ɸ]. Keep [h] canonical.
     for(let i=1;i<originalUnits.length;i++){
       const syllable=originalUnits[i];
       const previous=originalUnits[i-1];
