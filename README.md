@@ -13,6 +13,8 @@ Research-grade, machine-readable framework for Korean → Ukrainian phonetic-gra
 - [236-candidate review](research/kozak-kim-236-candidate-review-2026-11-05.md) and [engine integration](docs/KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md) — evidence disposition and exact runtime changes.
 - [Previous repository audit — 2026-11-04](docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — historical audit and earlier exact-head status.
 
+- [Engineering workflow reference audit — 2026-11-06](docs/ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-06.md) — four upstream references and explicit adoption boundaries.
+
 ## Development and agent workflows
 
 Contributors and coding agents should start with [AGENTS.md](AGENTS.md), then use the [agent workflow guide](docs/AGENT-WORKFLOWS.md) to select the maintained skill and canonical research/engineering record. The guide adapts selected practices from Unlazy, Superpowers, Matt Pocock's skills and Ponytail without copying or vendoring their implementations.
