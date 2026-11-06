@@ -17,6 +17,28 @@ A single custom, purpose-limited licence has been added for original project mat
 
 ---
 
+## 2026-11-04 — Kozak Kim stack consolidated into main (MERGED)
+
+**Current main:** `e628096e7d1a06ed355de27936c42fa732f4f6b6` (merge of PR #433). Starting main: `607dccb46fd83d7bd70245c165dbd9fe6dfd3af9`.
+
+Merged Kozak Kim PRs in dependency order: #415 (`28acc10`), #416 (`aaf1375`), #417 (`1f2baab`), #419 (`a771b3d`), #422 (`f32e121`), #423 (`7cfced5`), #426 (`7e24dbc`), and #433 (`e628096`). PR #420/#421 were superseded by cumulative #422; PR #424/#425 by cumulative #426; PR #432 by mainline consolidation PR #433. Those superseded PRs are closed, not merged separately. Their branches were not deleted.
+
+**Baseline invariant:** original g2pK 0.9.4 vendor implementation remains unchanged; all 9 files under `src/vendor/g2pk/` are byte-identical between starting main and consolidated main. The Python application adapter now blocks Kozak-only `variant-aware-research` and `kozak-research-only` entries from surface, IPA and diagnostic-status overrides while retaining source-backed NIKL controls and source-backed uncertainty (`삶의`). Kozak Kim production phonology was not changed by this final baseline-isolation guard.
+
+**Mainline verification:** post-merge System Verify `41887431814` **PASS**; Python 3.11/3.12/3.13, web, wheel-install, teacher-corpus audit, generated corpus and browser regression/build checks passed. Browser suite on PR #433 code head: **1,396/1,396**. Optional g2pK integration: **31 passed** on Python 3.11 and 31 on Python 3.12. Paired Native/g2pK and morphology consensus workflows completed successfully. Official live NIKL metadata inventory, CharsiuG2P and ByT5 jobs were **SKIPPED**, not passed. Multi-engine IPA comparison run `41887431384` was still **IN PROGRESS** at this handoff refresh; do not claim a result from it.
+
+**Disposition:** the Kozak Kim implementation stack and baseline-isolation correction are merged into `main`. This does not make the system release-ready: independent IPA adjudication, Ukrainian-target review, item-level source-rights clearance, unresolved mismatch adjudication and completion of the current multi-engine diagnostic remain outstanding. Overall status remains a research prototype. No branch deletion or release was performed.
+
+## 2026-11-04 — baseline isolation merged into Kozak Kim mainline (PR #433 pending)
+
+The Kozak Kim research lexicon is deliberately shared with adapters for data reuse, but research-only candidates are not evidence for the independent pinned g2pK 0.9.4 comparison engine. The Python adapter now excludes `variant-aware-research` and `kozak-research-only` rows from Hangul surface overrides, IPA overrides, and diagnostic-only status propagation. Source-backed NIKL lexical controls remain enabled, including unresolved source-backed warnings such as `삶의`.
+
+Regression coverage includes real `못잃어`, the source-backed `끌다` correction remaining outside the g2pK overlay, synthetic research-only surface/IPA/status isolation, and preservation of the source-backed `삶의` diagnostic warning. Synthetic fixtures are structural isolation tests, not linguistic evidence. The upstream/vendor g2pK implementation is unchanged; this is an adapter-boundary correction.
+
+The verified code/test snapshot `a8781dbd134929fb3b65ac168c9ea8fee0bf57c7` passed System Verify, the Python 3.11/3.12/3.13 and browser test matrix (1,345 browser tests), optional g2pK integration (30 tests on Python 3.11 and 30 on Python 3.12), and paired Native/g2pK UGTPHON diagnostic (2,698 paired occurrences). The latter is corpus-relative diagnostic evidence, not normative IPA gold or a claim of universal engine superiority. Official live NIKL inventory was skipped; CharsiuG2P/ByT5 neural jobs were skipped. TDD RED was not observed. Overall readiness remains a research prototype pending independent IPA adjudication, Ukrainian-target review, source-rights clearance and mismatch adjudication.
+
+PR #433 carries the final adapter-status guard and regression coverage onto the consolidated mainline. This note supersedes older handoff statements that the PR was unmerged; older sections remain historical records.
+
 ## 2026-11-05 — Current 236-candidate adjudication snapshot (single-branch continuation)
 
 **Working branch:** `research/236-candidate-review-2026-11-05` (the only working branch for this task). **PR:** [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436), draft/open. The reconstructed historical baseline remains **236 occurrence rows**; no rows were deleted.
