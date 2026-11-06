@@ -1093,9 +1093,12 @@ def test_236_candidate_exact_lexical_fortition_and_nikl_29_26_licenses():
         assert result["surface_hangul"] == surface, word
         assert result["ipa"]["ipa"], word
 
-    for word in ("정관", "유사증", "혐오성", "연전연합", "고시미정에"):
+    for word in ("정관", "유사증", "연전연합", "고시미정에"):
         result = phoneticize_korean(word)
         assert result["surface_hangul"] in ("", word), word
+    # 혐오성 undergoes ordinary 혐>혀 liaison, but the unlisted -성 form
+    # must not receive the dictionary-backed fortis onset.
+    assert "tɕ͈" not in phoneticize_korean("혐오성")["ipa"]["ipa"]
 
     for word, pair in (("정권", "정>권"), ("유사성", "사>성"), ("혐오증", "오>증")):
         items, traces = apply_ordered_rules(parse_syllables(word), ["R008"])

@@ -106,13 +106,13 @@ def test_nikl_27_c08_exact_word_licenses_apply_inside_full_sentences():
         and "R013:adnominal_l:없을듯:을>듯" in trace["license_context"]
         for trace in result["phonetics"]["rules"]
     )
-    # This sentence also contains the independently licensed exact form 없을듯.
-    # Its R013 trace must not be mistaken for evidence about 유사성.
-    assert "유사성" in result["phonetics"]["surface_hangul"]
-    assert "유사썽" not in result["phonetics"]["surface_hangul"]
-    assert not any(
-        trace["rule_id"] == "R013"
+    # The exact dictionary-backed R008 license applies to 유사성 only;
+    # the sentence's other adnominal form remains a separate R013 case.
+    assert "유사썽" in result["phonetics"]["surface_hangul"]
+    assert "유사성" not in result["phonetics"]["surface_hangul"]
+    assert any(
+        trace["rule_id"] == "R008"
         and trace["changed"]
-        and "유사성" in trace.get("license_context", "")
+        and "R008:lexical:유사성:사>성" in trace.get("license_context", "")
         for trace in result["phonetics"]["rules"]
-    ), "the unresolved 유사성 context must not inherit a suffix-wide rule"
+    ), "the exact lexical license must be visible in the R008 trace"

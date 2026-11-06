@@ -67,7 +67,7 @@ def onset_ipa(s:Syllable,index:int,items:list[Syllable],*,phonemic=False,level="
         return [LENIS[c]]
     return [CONSONANT_PHONEMES[c].strip("/")]
 
-def nucleus_ipa(s:Syllable,*,phonemic=False)->list[str]:
+def nucleus_ipa(s:Syllable,*,phonemic=False,genitive_particle=False)->list[str]:
     # NIKL Standard Pronunciation Rule 5, exception 1:
     # https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
     # verbal forms with 져/쪄/쳐 are [저/쩌/처]. The official explanation
@@ -76,6 +76,10 @@ def nucleus_ipa(s:Syllable,*,phonemic=False)->list[str]:
     # only in the broad surface-IPA representation.
     if not phonemic and s.nucleus=="ㅕ" and s.onset in {"ㅈ","ㅉ","ㅊ"}:
         return ["ʌ"]
+    # Exact genitive-particle forms retain principal [ɯi]; Rule 5's [e]
+    # alternative is emitted separately. Non-initial lexical ㅢ keeps [i].
+    if not phonemic and genitive_particle and s.nucleus=="ㅢ" and s.onset=="ㅇ":
+        return ["ɰi"]
     # Korean standard pronunciation: ㅢ in a syllable with a consonant
     # onset is realized as [i]. Keep the underlying /ɰi/ at the phonemic
     # level; ㅇ+ㅢ remains lexically/morphologically ambiguous.
@@ -238,7 +242,13 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
 def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     if level not in {"phonemic","broad","narrow"}: raise ValueError("level must be phonemic, broad, or narrow")
     phonemic=level=="phonemic"
-    rendered=["".join(onset_ipa(s,i,items,phonemic=phonemic,level=level)+nucleus_ipa(s,phonemic=phonemic)+coda_ipa(s.coda,phonemic=phonemic)) for i,s in enumerate(items)]
+    rendered=[]
+    for i,s in enumerate(items):
+        genitive_particle=(s.nucleus=="ㅢ" and s.onset=="ㅇ" and
+                           _word_form_at(items,i) in _NIKL_GENITIVE_UI_PARTICLE_FORMS)
+        rendered.append("".join(onset_ipa(s,i,items,phonemic=phonemic,level=level)+
+                                 nucleus_ipa(s,phonemic=phonemic,genitive_particle=genitive_particle)+
+                                 coda_ipa(s.coda,phonemic=phonemic)))
     ipa=render_syllable_sequence(items,rendered)
     profile_ids={
         "phonemic":"clippyfirst-korean-phonemic-v1",

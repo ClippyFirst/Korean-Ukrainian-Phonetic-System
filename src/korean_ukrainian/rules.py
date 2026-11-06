@@ -24,7 +24,7 @@ RULE_META={
 "R005":("nasal-assimilation","NIKL §18","high"),
 "R006":("liquid-assimilation","NIKL §§19–20","high"),
 "R007":("palatalization","NIKL §17","high"),
-"R008":("tensification","NIKL §§23–27; exact dictionary forms: 정권 (Kpedia + NIKL Q&A 335292 scope), 유사성 and 혐오증 (NIKL Basic Dictionary); exact eojeol/pair only","high"),
+"R008":("tensification","NIKL §§23–27","high"),
 "R009":("n-insertion","NIKL §29; official Standard Pronunciation Rules https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","high"),
 "R010":("stem-nm-fortition","NIKL §24","high"),
 "R011":("stem-lb-lt-fortition","NIKL §25","high"),
