@@ -507,3 +507,19 @@ The reviewer workflow remains NOT STARTED until two qualified reviewers are iden
 
 
 The master handoff `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md` was inspected by path but its contents were returned empty by the GitHub file connector in normal, ranged, and base64 modes (blob `2b8e85f735af1210e4210c18fb91eafd3146ce19`). It was therefore not rewritten blindly. This rights report and `docs/KOZAK-236-INDEPENDENT-REVIEW.md` are the scoped continuation records for this work; the handoff remains a documented tooling blocker until its exact content can be retrieved safely.
+
+
+## 2026-11-06 — final verification and handoff
+
+- Starting default-branch commit: `f6d282145d985578af3d0a0bedb75197f00e3cb9`.
+- Working branch: `audit/kozak-236-source-rights-2026-11-06`.
+- Verified implementation head before this audit note: `e48a7d26cb59bedbe7b08e3ee642faa230ac3a83`.
+- PR: [#455](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/455), open, draft, mergeable, not merged.
+- Changed scope: source register, rights report, independent-review protocol, acceptance gates, research index, repository audit, full Apache-2.0 text, UGTPHON source notice, licensed blind-packet builder and tests.
+- CI at `e48a7d26cb59bedbe7b08e3ee642faa230ac3a83`: Python 3.11/3.12/3.13 suites passed; web tests/build passed; wheel install passed; teacher-corpus audit passed; Python regression/data integrity passed; browser regression/build passed; master-table/corpus generation passed; exhaustive test-case register extraction passed.
+- Benchmarks: no multi-engine benchmark workflow was triggered; no benchmark command was run.
+- Local checkout attempt: `git clone --filter=blob:none --no-checkout https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System.git /tmp/kozak-repo` failed because this execution container could not resolve `github.com`; GitHub Actions supplied the verification evidence instead.
+- Packet generation: not run in this environment because no private local repository checkout or private reviewer-delivery channel is available. The licensed command is documented in `docs/KOZAK-236-INDEPENDENT-REVIEW.md`; CI verified the builder and notice packaging.
+- Reviewer recruitment: two primary candidates and one reserve identified; no invitations sent and no reviewers engaged.
+- Next genuine blocker: private execution/delivery of the two packets and acceptance by two independent reviewers. Each reviewer must receive only their own packet plus the licence and source notice; the coordinator map remains private.
+- Master handoff remains a retrieval blocker as described above; it was not overwritten blindly.
