@@ -1085,6 +1085,7 @@ def test_236_candidate_exact_lexical_fortition_and_nikl_29_26_licenses():
         "정권": "정꿘",
         "유사성": "유사썽",
         "혐오증": "혀모쯩",
+        "머리속에": "머리쏘게",
         "연전연패": "연전년패",
         "출시미정에": "출씨미정에",
     }
@@ -1094,7 +1095,7 @@ def test_236_candidate_exact_lexical_fortition_and_nikl_29_26_licenses():
         assert result["ipa"]["ipa"], word
     assert "juː" in phoneticize_korean("유사성")["ipa"]["ipa"]
 
-    for word in ("정관", "유사증", "연전연합", "고시미정에"):
+    for word in ("정관", "유사증", "머리속으로", "연전연합", "고시미정에"):
         result = phoneticize_korean(word)
         expected_surface = "연저년합" if word == "연전연합" else word
         assert result["surface_hangul"] in ("", expected_surface), word
@@ -1103,7 +1104,7 @@ def test_236_candidate_exact_lexical_fortition_and_nikl_29_26_licenses():
     # must not receive the dictionary-backed fortis onset.
     assert "s͈" not in phoneticize_korean("혐오성")["ipa"]["ipa"]
 
-    for word, pair in (("정권", "정>권"), ("유사성", "사>성"), ("혐오증", "오>증")):
+    for word, pair in (("정권", "정>권"), ("유사성", "사>성"), ("혐오증", "오>증"), ("머리속에", "리>속")):
         items, traces = apply_ordered_rules(parse_syllables(word), ["R008"])
         assert traces[0].changed, word
         assert traces[0].license_context == f"R008:lexical:{word}:{pair}", word
