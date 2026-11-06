@@ -195,3 +195,17 @@ No further 236-case runtime rule is justified by the reviewed residual evidence.
 - No local pytest/npm/build was run: container-side GitHub clone failed because github.com DNS could not resolve. Connector-reported Actions results are not represented as local tests.
 
 The detailed appended continuation and next acceptance steps are in [the master handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md).
+
+## Superseding continuation snapshot — 2026-11-06
+
+Current main is `2e9647540e1be47571579f71b7466393172a2a6d`; PR #441 (runtime) and #442 (post-merge docs) are merged. The 236-row cohort remains 15 exact standard-form occurrences with runtime dispositions, 181 bounded profile-convention decisions, 12 abstentions and 28 unadjudicated rows. All rows remain retained; 40 remain evidence-limited.
+
+The 24 fortis [ɕ͈]→/s͈/ edit operations across 23 occurrence rows remain unresolved (22 contain orthographic ㅆ; two are coda-triggered fortition). Lenis /s/ coarticulation evidence is not transferable to fortis /s͈/. The two /ɘː/ vs /ʌː/ differences remain profile-symbol questions. The 12+28 residual rows require original audio, speaker crosswalk and two independent Korean IPA annotations; phrase-level Rule 29 candidates also require prosodic-boundary evidence. No further production rule is justified by current evidence.
+
+Multi-engine run [42215019081](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42215019081) on exact PR #441 head `847cdb240aadc2c9343127fbb7de6dafad0441d4` **FAILED** at generated-artifact `cmp`: generator output had 25 unmapped-Broad rows, tracked CSV had 26, including occurrence 2490 (`머리속에`) now covered by the exact alias. Failure: byte 86966 / line 26. Downstream Browser same-occurrence parity, Native/Browser parity and SIGMORPHON jobs were skipped; optional ByT5/Charsiu jobs were skipped by policy. Regenerate the tracked CSV from the pinned generator/corpus, inspect the full row-level diff, and rerun the entire workflow. Do not weaken the byte comparison.
+
+Current-main checks for `2e9647540e1be47571579f71b7466393172a2a6d`: tests 42216016963, system verification 42216016988, master/research artifacts 42216016940 and Pages deployment 42216016937 all succeeded. These do not supersede the separate multi-engine failure. No local pytest/npm/build ran; GitHub DNS resolution failed in the container.
+
+PR #439 remains open and was left untouched: its branch is 56 commits behind current main; its exact-head tests and verification failed (42200300941, 42200300947). Do not merge blindly. The four upstream workflow references are already documented as process-only adoption; no upstream code or duplicate orchestration is needed.
+
+**Current status:** cohort and 15 runtime dispositions DONE_VERIFIED; 181 profile reconciliations DONE_VERIFIED as non-integration decisions; 24 fortis operations and 40 unresolved rows BLOCKED on evidence; multi-engine artifact PARTIAL pending regeneration/reverification; current-main ordinary CI DONE_VERIFIED; independent Korean IPA and Ukrainian target review BLOCKED; release readiness DEFERRED (partial research prototype).
