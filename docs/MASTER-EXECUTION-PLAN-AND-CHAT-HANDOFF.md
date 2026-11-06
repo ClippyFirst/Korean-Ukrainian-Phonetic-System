@@ -2,7 +2,7 @@
 
 **Default-branch baseline:** `main` at `043754498f3ad8a17aa6c13b5f643b197536da8a`.  
 **Working branch:** `research/236-candidate-review-2026-11-05`, PR [#436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/436).  
-**Working snapshot before this handoff update:** `facc75ee887e2ee7a38a8ff83a2ff5277a277b75`.  
+**Final pre-handoff implementation/documentation head:** `9fa7b589ae881c497ea0800b3ae0886ce1990bfd` (the following audit/handoff update is documentation-only).  
 **Current audit:** [Repository audit and structure — 2026-11-06](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md).  
 **236-case implementation:** [Engine integration](KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md); [candidate adjudication](../research/kozak-kim-236-candidate-review-2026-11-05.md).
 
@@ -24,7 +24,7 @@
 
 - PR #436 is the active combined branch. PR #437 remains open and untouched while its documentation changes are reconciled; do not merge/close it blindly.
 - Earlier exact code-head checks on `37ccbd17ac764ee83e592c8434372a00195ddd68`: Python regression/data integrity, browser regression/build (1,398/1,398), tests on Python 3.11/3.12/3.13, wheel install, teacher-corpus audit, browser G2P, master artifacts, exhaustive extraction, UGTPHON, paired native/g2pk and morphology diagnostics passed. Multi-engine comparison was cancelled; official NIKL metadata inventory and Charsiu/ByT5 jobs were skipped.
-- New exact-head workflows were queued on `facc75ee887e2ee7a38a8ff83a2ff5277a277b75`; final outcomes must be read after the last documentation commit. No local npm/pytest/build/clean-install command was run in this connector-only session.
+- Exact-head Actions at `9fa7b589ae881c497ea0800b3ae0886ce1990bfd`: 1 sub-job success, 5 skipped, 2 in progress and 18 queued. Multi-engine run 42193072679 was in progress; morphology adapter smoke 42193072667 had Kiwi pass and MeCab in progress. Tests matrix 42193072530, Verify 42193072622, browser G2P 42193072634, morphology consensus 42193072645, exhaustive extraction 42193072676, master artifacts 42193072796, paired native/g2pk 42193072643 and external UGTPHON 42193072568 were queued. Official NIKL metadata inventory, Charsiu train/dev, CharsiuG2P and ByT5 were skipped, not passed. A container `git ls-remote` attempt failed because `github.com` DNS resolution is unavailable; no local npm/pytest/build/clean-install command was run. Connector-side CSV validation confirmed 236 unique candidates, 15 integration register rows (9 new, 5 baseline, 1 blocked), and 212 source-register records; a nine-document relative-link audit found zero broken links. No local npm/pytest/build/clean-install command was run in this connector-only session.
 - External blockers remain: independent speaker-level Korean IPA gold, Ukrainian target validation, NIKL item-level reuse rights and evidence for unresolved 40 rows.
 
 **Readiness:** partial research prototype; not research-certified or release-ready. Latest final commit and exact-head CI results to be appended after verification.
