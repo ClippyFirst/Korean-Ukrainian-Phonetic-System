@@ -79,3 +79,11 @@ This page is the entry point for project documentation. It distinguishes current
 5. Label hypotheses, reconstructed forms, candidate pronunciations and provisional Ukrainian renderings explicitly.
 6. Do not delete dated audit records, benchmark artifacts or source packets merely because a newer summary exists.
 7. When a repository-local skill changes, update root `AGENTS.md` routing, the skill catalogue and its structural contract test where one protects a real invariant.
+
+
+### Source-register rights checks
+
+- `npm run audit:source-register` — read-only CSV structure and rights-triage report.
+- `npm run audit:source-rights` — strict release gate. It fails only when a positively recorded copied/included/redistributed artifact lacks an item-level rights decision; citation-only sources and explicitly negated no-copy statements are not redistribution blockers.
+
+Research use does not itself waive copyright. A citation-only source is different from copied text, data, or other retained material; actual retained material must have a recorded license scope and preserve its required attribution/notices.
