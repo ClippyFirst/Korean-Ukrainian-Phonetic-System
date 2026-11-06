@@ -172,6 +172,7 @@ def test_four_ugtphon_abstentions_are_resolved_and_life_particle_remains_gated()
     # NIKL gives two Hangul readings for 삶의, not IPA. Keep this case blocked
     # from asserted IPA gold until independent adjudication is recorded.
     life = phoneticize_korean("삶의")
-    assert life.get("pronunciation_status") == "diagnostic_only_unresolved_pronunciation"
+    assert life.get("pronunciation_status") == "unresolved"
+    assert life.get("ipa_status") == "diagnostic_only_unresolved_pronunciation"
     assert any(context.get("rule_id") == "IPA_ADJUDICATION"
                for context in life.get("unresolved_contexts", []))
