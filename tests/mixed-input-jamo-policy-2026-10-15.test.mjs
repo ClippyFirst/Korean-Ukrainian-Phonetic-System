@@ -10,7 +10,7 @@ const engine = createEngine(canonical, lexical);
 const RAW_KOREAN = /[가-힣ㄱ-ㅎㅏ-ㅣ]/u;
 
 test('standalone compatibility jamo is unresolved and never emitted as pronunciation', () => {
-  for (const input of ['ㄺ', 'ㅎ', 'ㄷ', 'ㄺkwa', 'ㄷi', 'ㅎ tʰal']) {
+  for (const input of ['ㄺ', 'ㅎ', 'ㄷ', 'ㅠㅠ', 'ㄺkwa', 'ㄷi', 'ㅎ tʰal']) {
     const result = engine.convert(input);
     assert.equal(result.status, 'unresolved', input);
     assert.doesNotMatch(result.ipa, RAW_KOREAN, input + ': IPA must not contain Hangul or jamo');
