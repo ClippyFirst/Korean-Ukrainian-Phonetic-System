@@ -124,9 +124,9 @@ A targeted review of the 24 `ɕ͈→s͈` edit operations found **24 occurrence I
 
 - Holliday (2014, JASA) describes both Korean lenis-aspirated /sh/ and fortis /s*/ as typically palatalized before /i/ or /j/ (SRC-HOLLIDAY-2014-JASA). This is a background statement in a perception study, not token-level production evidence.
 - Holliday (2016, Phonetica) explicitly notes that /s*/ may palatalize less consistently than /sh/ (SRC-HOLLIDAY-2016-PHONETICA); its own experiment is perceptual.
-- Holliday & Reidy (2016) state in the poster background that /s*/ is sometimes palatalized before /i/, but the poster does not report speaker-level or token-level fortis-palatalization results from its six-speaker production sample (SRC-HOLLIDAY-REIDY-2016-POSTER).
-- Kong & Kang (2020) report palatalized variants before /i/ in an abstract covering both /s/ and /s'/, but do not disaggregate which category produced them (SRC-KONG-KANG-2020-SPECTRAL).
-- **Kong & Kang (2021) provide the decisive direct acoustic constraint.** Their study analyzes 39 adult Seoul Korean speakers and 1,832 sibilant tokens. For young female speakers, word-initial tense /s͈i/ has age-related spectral fronting; however, the authors explicitly state that this variant is closer to alveolar [s] than post-alveolar [ɕ], and that the pattern is context- and gender-specific (SRC-KONG-KANG-2021-SIBILANTS).
+- Holliday & Reidy (2016) state in the poster background that /s*/ is sometimes palatalized before /i/, but the poster does not report speaker-level or token-level fortis-palatalization results from its six-speaker production sample (SRC-HOLLIDAY-REIDY-2016-PRODUCTION).
+- Kong & Kang (2020) report palatalized variants before /i/ in an abstract covering both /s/ and /s'/, but do not disaggregate which category produced them (SRC-KONG-KANG-2020-SEOUL-SIBILANTS).
+- **Kong & Kang (2021) provide the decisive direct acoustic constraint.** Their study analyzes 39 adult Seoul Korean speakers and 1,832 sibilant tokens. For young female speakers, word-initial tense /s͈i/ has age-related spectral fronting; however, the authors explicitly state that this variant is closer to alveolar [s] than post-alveolar [ɕ], and that the pattern is context- and gender-specific (SRC-KONG-KANG-2021-SEOUL-SIBILANT-AGE-GENDER).
 
 ### Implementation decision
 
