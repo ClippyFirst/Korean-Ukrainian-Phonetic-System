@@ -4,7 +4,8 @@
 This is a historical aggregate triage selector, not a phonological rule or IPA
 adjudicator. It deliberately reproduces the old C01-C10 aggregate classifier
 and aligns Broad fragments only; it must not be replaced with per-fragment
-classification or the later C11/C12-aware exporter.
+classification or the later C11/C12-aware exporter. The historical label
+function emits C01-C07, C09 and C10 labels; C08 was not encoded in it.
 """
 from __future__ import annotations
 
