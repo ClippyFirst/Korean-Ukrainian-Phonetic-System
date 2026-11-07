@@ -1001,3 +1001,13 @@ def test_resyllabified_ui_preserves_nikl_ㅢ_variants_in_ipa():
     assert target["target_unavailable_reason"] == "lexical_target_reference_provisional"
     assert target["candidate_status"] == "provisional"
     assert target["lexical_target_reference"] == "салмий"
+
+
+def test_resyllabified_coda_exception_for_ㅢ_is_general_not_lexicon_only():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    # NIKL Rule 5 commentary names 협의[혀븨] as the exception: a preceding
+    # coda that becomes the next onset does not trigger ㅢ → [i].
+    result = phoneticize_korean("협의", include_research_lexical=False)
+    assert result["ipa"]["ipa"] == "hjʌ.bɰi"
+    assert result["pronunciation_status"] == "provisional"
