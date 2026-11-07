@@ -62,7 +62,7 @@ The Seoul /ɛ/–/e/ literature finds merger and residual differentiation condit
 
 ### Genitive `의` and the limit of corpus-level acoustic evidence
 
-The Seoul Corpus literature provides recordings and phonemic labels from 40 Seoul Korean speakers. The study of 2,370 /ɨi/ tokens reports that genitive tokens mostly surface as [e], while most other monophthongized tokens are [i]. These are aggregate results; the available search did not confirm an exact `삶의` token, speaker, timestamp, or lawful token-level retrieval path. Thus this literature can inform the variant inventory but cannot choose a speaker-specific realization for a particular `삶의` token. [Unk16l] [Yun15] [Yun17b]
+The Seoul Corpus literature provides recordings and phonemic labels from 40 Seoul Korean speakers. The study of 2,370 /ɨi/ tokens reports that 602/628 (95.86%) monophthongized genitive tokens were [e], while 94.40% of monophthongized tokens overall were [i]. This supports retaining both source-derived broad candidates /sal.mɰi/ and /sal.me/ for NIKL [살믜]/[살메], but the genitive aggregate does not select this token. The Seoul Corpus is described as 40-speaker spontaneous speech with phonemic/TextGrid annotation; the source search still did not confirm an exact `삶의` token, speaker, timestamp, or a currently lawful token-level retrieval route. A 2025 abstract on 의 variation reports additional context-conditioned realizations but was not used to add a runtime rule. Thus this literature can inform the variant inventory but cannot choose a speaker-specific realization for a particular `삶의` token. [Unk16l] [Yun15] [Yun17b]
 
 ## Research source links
 
