@@ -216,7 +216,7 @@ The original benchmark artifact and historical classifier were downloaded/fetche
 1. Iterate Native scored occurrences in the pinned report.
 2. Keep only occurrences whose Broad candidate edit distance is greater than zero (370 rows).
 3. Align the Broad candidate's `closest_gold` and `predicted` strings with the historical NFC + Unicode-combining-mark Levenshtein aligner.
-4. Pass the concatenated **Broad fragments only** to the historical pre-C11/C12 aggregate C01–C10 classifier from commit `8c335dd`.
+4. Pass the concatenated **Broad fragments only** to the historical aggregate label function from commit `8c335dd`. That function labels C01–C07, C09 and C10; C08 was not encoded in this function. The exporter’s ordinary `build_rows()` path passes strict + Broad fragments together, so this Broad-only replay is an interpretation of the historical triage note, not proof of the original manual selector.
 5. Select an occurrence only when the aggregate classifier returns exactly `UNMAPPED_REQUIRES_REVIEW`.
 
 This yields the exact 239 IDs in the tracked candidate list. It is an occurrence-level aggregate selector; it is not a per-fragment assignment system. A separate per-fragment interpretation produces a different population (269) and must not be substituted.
