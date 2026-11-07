@@ -71,3 +71,21 @@ The multi-engine workflow 42292099893 was cancelled during external implementati
 ## Verification status
 
 This document describes the implementation submitted on branch `fix/five-ugtphon-native-abstentions-final-release-2026-11-06` in PR #454. Browser and paired Native-vs-g2pk diagnostics have numeric results above; the full multi-engine workflow and exact-head regression CI remain pending. The source identity/audio review for `칡칡이` and independent IPA/Ukrainian-target review for `삶의` remain blocked regardless of software CI.
+
+
+## 2026-11-07 source-only follow-up — 삶의 variants resolved from official sources
+
+The earlier statement that 삶의 lacked independent IPA adjudication is superseded at the standard-variant level. No audio is required to establish the normative variant set:
+
+1. NIKL MCFAQ 5716 directly names 삶의 and gives the official Hangul readings [살믜] and [살메] under Standard Pronunciation Rule §5(다만 4).
+2. NIKL §5 commentary (Rule 5, lines 1399–1439 of the official page) clarifies that the consonant-initial ㅢ → [i] exception does not apply when the preceding coda moves into the onset before ㅢ. In 삶의, ㅁ is resyllabified into the second syllable. The earlier sal.mi project candidate therefore incorrectly applied the post-consonantal [i] rule.
+3. The research lexicon now distinguishes the project IPA renderings sal.mɰi for [살믜] and sal.me for [살메]. This uses the repository's existing ɰi notation for ㅢ; NIKL itself supplies Hangul pronunciation notation, not IPA.
+4. Park, Cho & Han (2016) report [e] in 602/628 (95.86%) of monophthongized genitive-particle tokens in the Seoul Corpus. This supports the population-level prevalence of the [e] variant, not a choice for this unknown speaker.
+
+**Updated disposition:** 삶의 is no longer blocked for its normative Hangul/derived broad-IPA variant set. The speaker-specific selection remains unresolved; the IPA-to-Ukrainian ɰi → ий mapping remains provisional, so the production target renderer continues to withhold final Ukrainian orthography unless explicitly invoked in provisional research mode. No speaker-specific narrow IPA or target gold is claimed.
+
+The same Rule 5 correction is applied to the 협의 lexical control: [혀븨] is now represented separately as hjʌ|bɰi, while the permitted [혀비] variant remains hjʌ|bi. The prior data had collapsed both Hangul variants to bi.
+
+칡칡이 remains the sole unresolved case in this five-row set: the source identifies the folk-song heading, but the available text sources do not establish its lexical segmentation or a source-specific spoken realization. The exact spelling remains preserved; no audio is requested.
+
+**Files updated:** data/korean/lexical_pronunciations.csv, research/SOURCE-REGISTER.csv. The exact-head CI for this follow-up is still pending.
