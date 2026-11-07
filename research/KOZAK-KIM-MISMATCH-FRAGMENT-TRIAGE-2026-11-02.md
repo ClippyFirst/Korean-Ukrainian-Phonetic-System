@@ -379,3 +379,18 @@ The `출산` case (row `dc_inside_2107`) is provisionally retained under the exi
 **Current queue disposition:** 4 exact-form corrections implemented; 1 provisional retain; 31 of the 36 rows remain without an individual fix/retain/abstain adjudication. The full historical 239-occurrence ledger with stable IDs, full context, exact profile/version provenance and reviewer decisions is still TODO. The 2,703-record multi-engine report is pre-fix; the full benchmark has not been rerun on the new code. Do not describe old scores as post-fix metrics.
 
 **Known trace limitation:** Python `RuleTrace` has one scalar `license_context` per rule pass. When a sentence contains multiple licensed R013 forms, IPA output and isolated exact-form tests cover each correction, but the sentence-level trace may retain only the last license context. Per-occurrence provenance is a follow-up requirement.
+
+## 2026-11-07 addendum — C14 genitive-particle variant
+
+The taxonomy's **C13** remains reserved for source-attested lexical vowel length in `없는`. The 16 strict `의` fragments in the current 2,703-occurrence comparison are now registered as **C14 / `C14_NIKL_GENITIVE_UI_PARTICLE`**:
+
+- `그놈의` — 1 occurrence
+- `대황본의` — 3 occurrences
+- `염전의` — 10 occurrences
+- `대한민국의` — 1 occurrence
+- `삶의` — 1 occurrence
+
+This is a genitive-particle variant, not a generic coda+`의` or liaison rule. NIKL Q&A 335190 distinguishes genitive-particle [ɯi]/[e] from non-initial lexical `의` [i]; MCFAQ 5716 directly gives `삶의` [살믜]/[살메]. The classifier is exact-form scoped. The separate runtime correction for lexical `협의` preserves liaison provenance and must not be conflated with C14.
+
+Only the `그놈의` occurrence remains in the broad unmapped review queue because it also contains an independent unresolved /e/ versus /i/ fragment. The other 15 strict `ɰ` fragments are source-adjudicated profile variants. This does not establish the speaker's realization, does not promote a Ukrainian target, and does not justify a production change.
+
