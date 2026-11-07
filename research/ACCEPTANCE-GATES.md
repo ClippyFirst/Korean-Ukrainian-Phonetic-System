@@ -38,7 +38,7 @@ These are diagnostic Korean G2P/IPA comparisons, not Ukrainian target accuracy o
 
 ## Remaining acceptance boundaries
 
-- **DONE_VERIFIED — reconstructed 239 candidate set:** independent replay of the pinned pre-C11/C12 artifact and historical Broad-only aggregate C01–C10 classifier produced 239 unique IDs and matched the tracked candidate snapshot 239/239.
+- **DONE_VERIFIED — reconstructed 239 candidate set:** independent replay of the pinned pre-C11/C12 artifact and historical Broad-only aggregate label function (C01–C07/C09/C10; C08 not encoded) produced 239 unique IDs and matched the tracked candidate snapshot 239/239.
 - **PARTIAL — committed replay tooling:** compact 370-row input, hash-pinned replay script and full regression are added; exact-head CI is pending.
 - **PARTIAL — original historical 236/239 identity:** the original contemporaneous selector/member snapshot is absent; the replay verifies the reconstructed candidate cohort, not that the original manual selection used precisely this operation.
 - **UNRESOLVED_NO_AUDIO — 40 speaker-specific IPA claims:** no audio/speaker crosswalk; no guessed narrow IPA or Ukrainian gold.
