@@ -13,7 +13,7 @@ From the repository root:
 ```bash
 python scripts/build_kozak_236_ipa_review_packets.py \
   --output-dir /tmp/kozak-236-independent-review \
-  --internal-review-only
+  --licensed-external-review
 ```
 
 The command writes:
@@ -22,7 +22,7 @@ The command writes:
 - `reviewer-b.json` — the same cases/order and reviewer B's empty annotation form;
 - `coordinator-map.json` — private mapping from blind IDs to occurrence/source-row IDs.
 
-**Never send the coordinator map to reviewers.** Do not commit generated packets or upload them to a public issue, PR, gist, or shared workspace. Item-level upstream rights for all source material have not been cleared; the packets are internal-review-only pending that separate rights review.
+**Never send the coordinator map to reviewers.** Do not commit generated packets or upload them to a public issue, PR, gist, or shared workspace. For external review, distribute only the reviewer-specific packet plus `licenses/Apache-2.0.txt` and `licenses/UGTPHON-KO-SOURCE-NOTICE.md`. The declared UGTPHON Korean-subset Apache-2.0 licence is the distribution basis; the notice discloses the residual upstream provenance/title caveat.
 
 ## What reviewers see
 
@@ -55,7 +55,7 @@ Both reviewers must submit independently. Freeze both first-pass packets before 
 - Every eventual decision maps to the occurrence ID and source context through the coordinator map.
 - No production IPA, Ukrainian target, benchmark gold or training data is changed merely because a reviewer supplied a first-pass transcription.
 - Separate Ukrainian target review follows only after Korean IPA reconciliation.
-- External distribution remains blocked until item-level source rights are cleared.
+- External distribution is permitted only under the declared UGTPHON Korean-subset Apache-2.0 licence, with the full licence and source notice accompanying each packet; do not include the full dataset or IPA-Dict data.
 
 The packet generator regression verifies exact case count, unique occurrence IDs, raw token indexing, reviewer separation, private coordinator mapping, and absence of engine/reference/candidate leakage.
 
@@ -68,4 +68,30 @@ Current dispositions are 15 `RULE_CONFIRMED_STANDARD_VARIANT`, 181 `PROFILE_CONV
 
 The fortis sibilant sub-stratum is now counted precisely: **24 `ɕ͈→s͈` edit operations in 24 occurrence IDs across 19 source rows**; 23 contexts are before /i/ and one is before /jo/ (ID 96). Twenty-two forms contain orthographic ㅆ; two are coda-triggered fortition contexts. No generic [ɕ͈] IPA/runtime variant is accepted. Kong & Kang (2021) report a speaker- and context-conditioned fronted word-initial /s͈i/ realization in young female speakers closer to [s] than [ɕ], not a universal fortis-palatalization rule. The 2021 EPG study is based on five adults and reports a range of contact patterns; it does not provide token-level [ɕ͈] labels for this cohort. Keep these cases separate from the 40 abstained/unadjudicated occurrences and do not reveal this candidate taxonomy to first-pass reviewers.
 
-**Review status remains BLOCKED / NOT STARTED:** no independent reviewer annotations have been supplied or reconciled. The packet builder is an available preparation tool, not evidence that packets were distributed or reviewed. Keep reviewer packets internal-only; external redistribution remains blocked until the item-level source-rights scope for the packet contents is explicitly cleared. After two independent Korean IPA passes and blind reconciliation, perform Ukrainian target review as a separate acceptance stage. No production IPA, Ukrainian target, benchmark gold or training data is changed by this status update.
+**Review status remains NOT STARTED:** no independent reviewer annotations have been supplied or reconciled. The source-rights audit now records a scoped Apache-2.0 basis for external distribution of excerpts from the pinned UGTPHON Korean subset. The packet generator supports a licensed external mode that attaches the complete licence and source notice. After two independent Korean IPA passes and blind reconciliation, perform Ukrainian target review as a separate acceptance stage. No production IPA, Ukrainian target, benchmark gold or training data is changed by this status update.
+
+
+## 2026-11-06 — source-rights audit outcome
+
+The source-rights audit is recorded in [KOZAK-236-SOURCE-RIGHTS-AUDIT-2026-11-06](KOZAK-236-SOURCE-RIGHTS-AUDIT-2026-11-06.md).
+
+**Interim BLOCKED decision superseded.** The pinned UGTPHON Korean subset declares Apache-2.0 in `ko/LICENSE`, and the canonical source-register record `SRC-UGTPHON-EMNLP-2026` records that subset-level grant. The final rights report documents this as the basis for limited external reviewer distribution with the full licence and source notice. The original-post title/provenance caveat remains disclosed; it is not a legal opinion.
+
+The 236-case packets have not yet been generated or distributed. Use the licensed external mode and provide each reviewer only their own packet plus `licenses/Apache-2.0.txt` and `licenses/UGTPHON-KO-SOURCE-NOTICE.md`. Keep the coordinator map private.
+
+
+## 2026-11-06 — final source-rights and distribution protocol
+
+The pinned UGTPHON Korean subset declares Apache-2.0 in its `ko/LICENSE`; the canonical source register records that subset-level grant. This supersedes the earlier internal-only rights hold. The residual uncertainty about the original third-party post rights remains disclosed in the attached source notice and is not represented as a legal opinion.
+
+Generate reviewer packets with:
+
+```bash
+python scripts/build_kozak_236_ipa_review_packets.py \
+  --output-dir /tmp/kozak-236-independent-review \
+  --licensed-external-review
+```
+
+The licensed mode validates the pinned source corpus and source-register licence record, then writes the complete Apache-2.0 text and UGTPHON Korean-subset notice alongside the two reviewer packets. Send reviewer A only `reviewer-a.json`; send reviewer B only `reviewer-b.json`. Give both the same licence and notice. Keep `coordinator-map.json` private.
+
+The 236 items are reconstructed occurrences from 110 source rows, not 236 speakers. Because no audio is supplied, reviewers must distinguish a broad transcription under their declared Korean convention from a claim about the actual speaker's narrow acoustic realization. They should mark uncertainty rather than infer speaker-specific allophones, dialect, or prosody from spelling alone.

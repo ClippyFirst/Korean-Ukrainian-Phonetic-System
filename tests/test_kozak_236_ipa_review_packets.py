@@ -103,3 +103,63 @@ def test_refuses_wrong_case_count_duplicate_occurrences_and_bad_context_index(tm
         writer.writerows(bad_index)
     with pytest.raises(ValueError, match="outside the"):
         MODULE.build_packets(bad_path)
+
+
+
+def test_licensed_external_packets_validate_scope_and_ship_full_notices(tmp_path):
+    result = MODULE.build_packets(distribution_mode="LICENSED_EXTERNAL_REVIEW")
+    assert result["distribution_mode"] == "LICENSED_EXTERNAL_REVIEW"
+    assert result["reviewer_a"]["distributionMode"] == "LICENSED_EXTERNAL_REVIEW"
+    assert result["reviewer_b"]["sourceLicense"] == "Apache-2.0"
+    assert "UGTPHON-KO-SOURCE-NOTICE.md" in result["reviewer_a"]["sourceLicenseNotice"]
+
+    summary = MODULE.write_packets(result, tmp_path)
+    assert summary["distribution_mode"] == "LICENSED_EXTERNAL_REVIEW"
+    assert sorted(p.name for p in tmp_path.iterdir()) == [
+        "LICENSE-APACHE-2.0.txt",
+        "UGTPHON-KO-SOURCE-NOTICE.md",
+        "coordinator-map.json",
+        "reviewer-a.json",
+        "reviewer-b.json",
+    ]
+    assert (tmp_path / "LICENSE-APACHE-2.0.txt").read_text(encoding="utf-8").lstrip().startswith("Apache License")
+    notice = (tmp_path / "UGTPHON-KO-SOURCE-NOTICE.md").read_text(encoding="utf-8")
+    assert "UGTPHON/ko/test.json" in notice
+    assert "ef0d5a09c2ea1874c7206020f875cbd9cfea2f54" in notice
+    assert "may be searchable" in notice
+
+
+def test_licensed_external_mode_rejects_rows_outside_the_pinned_ugtphon_split(tmp_path):
+    source = ROOT / "research/kozak-kim-236-candidate-review-2026-11-05.csv"
+    rows = list(csv.DictReader(source.open(encoding="utf-8-sig", newline="")))
+    header = list(rows[0])
+    rows[0]["source_corpus_commit"] = "0000000000000000000000000000000000000000"
+    altered = tmp_path / "wrong-source.csv"
+    with altered.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=header)
+        writer.writeheader()
+        writer.writerows(rows)
+    with pytest.raises(ValueError, match="exact pinned UGTPHON source commit"):
+        MODULE.build_packets(altered, distribution_mode="LICENSED_EXTERNAL_REVIEW")
+
+
+@pytest.mark.parametrize(
+    ("field", "value", "message"),
+    [
+        ("source_corpus", "UGTPHON/ko/train.json", "exact pinned UGTPHON Korean test split"),
+        ("source_corpus_blob", "0" * 40, "exact pinned UGTPHON source blob"),
+        ("source_corpus_license", "CC-BY-4.0", "declared Apache-2.0 source licence"),
+    ],
+)
+def test_licensed_external_mode_rejects_wrong_source_path_blob_or_license(tmp_path, field, value, message):
+    source = ROOT / "research/kozak-kim-236-candidate-review-2026-11-05.csv"
+    rows = list(csv.DictReader(source.open(encoding="utf-8-sig", newline="")))
+    header = list(rows[0])
+    rows[0][field] = value
+    altered = tmp_path / f"wrong-{field}.csv"
+    with altered.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=header)
+        writer.writeheader()
+        writer.writerows(rows)
+    with pytest.raises(ValueError, match=message):
+        MODULE.build_packets(altered, distribution_mode="LICENSED_EXTERNAL_REVIEW")
