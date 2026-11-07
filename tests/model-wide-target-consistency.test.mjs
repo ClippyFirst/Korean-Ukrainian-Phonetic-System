@@ -64,7 +64,13 @@ test('word-initial lenis and affricate targets follow the declared Ukrainian map
   for (const [word, target] of Object.entries(expected)) {
     assert.equal(entries.get(word)?.target_syllables, target, word + ': target segmentation');
     const result = engine.convert(word);
-    assert.equal(result.ukrainian, target.replaceAll('|', ''), word + ': runtime target');
+    if (word === '협의') {
+      assert.equal(result.ukrainian, '', 'source-derived ɰi target remains candidate-only');
+      assert.equal(result.candidate_ukrainian, 'гьобий');
+      assert.equal(result.target_status, 'provisional');
+    } else {
+      assert.equal(result.ukrainian, target.replaceAll('|', ''), word + ': runtime target');
+    }
     assert.deepEqual(result.issues, [], word + ': unexpected unresolved issue');
   }
 });
