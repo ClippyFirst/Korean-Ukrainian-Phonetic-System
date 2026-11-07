@@ -2,7 +2,7 @@
 
 ## Outcome
 
-The five rows were not five instances of one missing phonological rule. Three are recoverable as exact-token, morphology-conditioned surface analyses; two remain blocked for different reasons: `칡칡이` is a source-identified folk-song heading with no recording to adjudicate its lexical pronunciation, while `삶의` lacks independent IPA adjudication.
+The five rows were not five instances of one missing phonological rule. Three are recoverable as exact-token, morphology-conditioned surface analyses; `삶의` now has a source-adjudicated standard variant set (see the 2026-11-07 addendum); `칡칡이` remains blocked because its source-identified folk-song heading has no source-specific spoken realization.
 
 This change preserves each source spelling exactly. It does not normalize typos, infer arbitrary morpheme boundaries, or turn UGTPHON annotations into normative Korean pronunciation gold.
 
@@ -11,7 +11,7 @@ This change preserves each source spelling exactly. It does not normalize typos,
 | `칡칡이` | `dc_inside_2050` | **Still blocked: source identity / audio** | The exact string is a field-recorded folk-song heading `[철마면 민요 26]` in the Busan oral-culture collection; its refrain contains `치기타 칭칭나네`. This may be a regional song name or transcriptional variant, not the compositional noun phrase `칡+칡+이`. Kiwi and MeCab-Ko agreement on `칡>이` is not enough to establish the title's lexical segmentation. NIKL's dialect transcription example `[칠기]` for `칡이` does not adjudicate this proper-name use. No audio/field notes are available. Keep the R002 abstention. |
 | `쫒아내면` | `dc_inside_2183` | Exact R002 diagnostic recovery | The source writes `쫒`, not standard `쫓`. The benchmark IPA follows the written final `ㅈ` into the following vowel-initial syllable. The full token is licensed only as this exact noisy spelling; it is not normalized to `쫓아내면`, and no standard lexical claim is made. |
 | `많앗구나유유유` | `dc_inside_2202` | Exact R003 recovery | Context identifies `많-` + past ending `-았-` + `구나`; source typo `앗` is retained. NIKL §12(4) explicitly deletes ㅎ from `ㅎ/ㄶ/ㅀ` before a vowel-initial ending; NIKL Q&A directly confirms `많아[마ː나]`. The license applies only to this full noisy token and pair `많>앗`. |
-| `삶의` | `dc_inside_2212` | **Still blocked: IPA adjudication** | NIKL MCFAQ 5716 confirms the standard Hangul readings `[살믜]` and `[살메]`, not IPA. Park, Cho & Han (2016) analyzed 2,370 Seoul-Corpus /ɨi/ tokens; among 628 monophthongized genitive-particle `-의` tokens, 602 (95.86%) were [e]. Thus `sal.me` is the statistically common spontaneous-speech candidate, while `sal.mi` remains a NIKL-permitted reading and the UGTPHON annotation. These are population-level observations, not a speaker-specific adjudication of this token. Keep IPA and Ukrainian target withheld pending qualified review. |
+| `삶의` | `dc_inside_2212` | **Source-adjudicated standard variants; speaker choice unselected** | NIKL MCFAQ 5716 directly gives `[살믜]` and `[살메]`; Rule 5 commentary excludes the `[i]` reading when ㅁ resyllabifies into the onset before ㅢ. The project lexicon now renders these as `sal.mɰi` and `sal.me`; the Ukrainian `ɰi → ий` mapping remains provisional. |
 | `무서웟어` | `dc_inside_2241` | Exact R002 diagnostic recovery | The source has `웟` with single `ㅅ`, not standard `웠` with `ㅆ`. The benchmark IPA reflects the written single `ㅅ` as the onset of the following vowel-initial ending. The exact pair `웟>어` is licensed only for this token; no spelling normalization is performed. |
 
 ## Implementation
@@ -19,8 +19,8 @@ This change preserves each source spelling exactly. It does not normalize typos,
 - Added exact-form R002 licenses for `쫒아내면` and `무서웟어` in Python and Browser.
 - Added an exact-form R003 license for `많앗구나유유유` in Python and Browser.
 - Added a positive R003 regression for `많앗구나유유유`; extended Python positive regressions and added near-form negative controls for all three recoveries.
-- Added Browser positive and negative regressions for the three recovered cases; `칡칡이` and `삶의` remain fail-closed.
-- Kept `삶의` in the IPA-adjudication hold. Its source-backed Hangul variants remain distinct from IPA, and the Ukrainian target layer is not approved by this work.
+- Added Browser positive and negative regressions for the three recovered cases; `칡칡이` remains fail-closed. `삶의` now exposes its source-backed broad-IPA variant set as a research-only lexical entry.
+- The `삶의` source-based IPA variant set is now recorded. Its speaker-specific selection remains unknown, and the Ukrainian target layer remains provisional.
 
 ## Benchmark evidence
 
