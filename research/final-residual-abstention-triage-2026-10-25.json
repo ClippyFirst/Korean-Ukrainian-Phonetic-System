@@ -65,7 +65,7 @@
           "scope": "Useful morphological/dialect context for 칡+vowel-initial particle liaison, but not a standard pronunciation or direct pronunciation of the folk-song title."
         }
       ],
-      "productionChange": "Preserve exact source spelling 칡칡이. Do not alias or rewrite it to 칭칭이. No runtime rule or IPA entry is added until the title's morphological segmentation and pronunciation are independently supported.",
+      "productionChange": "Preserve exact source spelling 칡칡이. No silent rewrite or alias to the separate title 칭칭이. No runtime rule or IPA entry is added until the title's morphological segmentation and pronunciation are independently supported.",
       "whyNotResolved": "The primary source establishes the title and context, not the speaker's phonetic realization. NIKL Rule 11 and the 2020 dialect report constrain parts of the coda/liaison behavior but do not determine the complete lexicalized song-title pronunciation. The user provides no audio, and no exact-token audio or speaker crosswalk is available.",
       "acceptanceCriterion": "Keep the source-attested spelling and source metadata. Promote IPA only if an authoritative pronunciation source explicitly gives the title or an accessible recording is tied to this exact 1991 performance. No audio or external review is requested.",
       "externalTextSearch": {
