@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import csv
 import json
 import pytest
 import importlib.util
@@ -73,45 +74,68 @@ def test_candidate_clusters_keep_sibilant_place_separate():
     ]
 
 
-def test_resyllabified_ui_exception_is_scoped_to_coda_plus_의():
-    assert MODULE.has_resyllabified_ui("삶의") is True
-    assert MODULE.has_resyllabified_ui("협의") is True
-    assert MODULE.has_resyllabified_ui("대황본의") is True
-    assert MODULE.has_resyllabified_ui("염전의") is True
-    assert MODULE.has_resyllabified_ui("주의") is False
-    assert MODULE.has_resyllabified_ui("희망") is False
-
-
-def test_source_adjudicated_resyllabified_ui_is_not_an_unmapped_broad_queue_item():
+def test_genitive_ui_particle_classification_is_exact_form_scoped():
     fragments = [
         {"op": "I", "reference_fragment": "", "kozak_fragment": "ɰ"},
     ]
+    for token in ("그놈의", "자신의", "대황본의", "염전의", "대한민국의", "삶의"):
+        assert MODULE.candidate_clusters(fragments, source_token=token) == [
+            "C14_NIKL_GENITIVE_UI_PARTICLE"
+        ]
+
+    # 협의 is lexical: its ㅢ behavior comes from liaison provenance, not
+    # the genitive-particle exception. Do not infer particle morphology from
+    # the mere orthographic sequence coda+의.
     assert MODULE.candidate_clusters(fragments, source_token="협의") == [
-        "C13_NIKL_RESYLLABIFIED_UI"
+        "UNMAPPED_REQUIRES_REVIEW"
     ]
     assert MODULE.candidate_clusters(fragments, source_token="주의") == [
         "UNMAPPED_REQUIRES_REVIEW"
     ]
 
 
-def test_build_rows_excludes_only_source_adjudicated_resyllabified_ui_from_unmapped_queue():
+def test_genitive_ui_particle_label_does_not_hide_an_unrelated_unmapped_edit():
+    fragments = [
+        {"op": "I", "reference_fragment": "", "kozak_fragment": "ɰ"},
+        {"op": "S", "reference_fragment": "e", "kozak_fragment": "i"},
+    ]
+    assert MODULE.candidate_clusters(fragments, source_token="그놈의") == [
+        "C14_NIKL_GENITIVE_UI_PARTICLE",
+        "UNMAPPED_REQUIRES_REVIEW",
+    ]
+
+
+def test_build_rows_keeps_other_unmapped_fragment_after_genitive_ui_adjudication():
     report = {
         "per_engine_occurrences": {
             "clippyfirst_native": [{
-                "occurrence_id": "1", "row_id": "r1", "token": "협의",
-                "surface_hangul": "혀븨", "gold": "hjʌbi", "ipa": "hjʌbɰi",
-                "status": "scored", "distance": 1,
+                "occurrence_id": "341", "row_id": "r341", "token": "그놈의",
+                "surface_hangul": "그노믜", "gold": "kɯ.no.me", "ipa": "kɯ.no.mɰi",
+                "status": "scored", "distance": 2,
                 "broad_candidate": {
-                    "closest_gold": "hjʌbi", "predicted": "hjʌbɰi", "distance": 1
+                    "closest_gold": "kɯ.no.me", "predicted": "kɯ.no.mɰi", "distance": 2
                 },
             }],
-            "g2pk_0_9_4": [{"occurrence_id": "1", "ipa": "hjʌbi", "distance": 0}],
+            "g2pk_0_9_4": [{"occurrence_id": "341", "ipa": "kɯ.no.me", "distance": 0}],
         },
     }
     row = MODULE.build_rows(report)[0]
-    assert row["candidate_clusters"] == "C13_NIKL_RESYLLABIFIED_UI"
-    assert row["has_unmapped_broad_fragments"] == "false"
-    assert MODULE.filter_unmapped_broad([row]) == []
+    assert "C14_NIKL_GENITIVE_UI_PARTICLE" in row["candidate_clusters"]
+    assert "UNMAPPED_REQUIRES_REVIEW" in row["candidate_clusters"]
+    assert row["has_unmapped_broad_fragments"] == "true"
+    assert MODULE.filter_unmapped_broad([row]) == [row]
+
+
+def test_mismatch_cluster_registry_ids_are_unique_and_c14_is_registered():
+    path = ROOT / "research/KOZAK-KIM-MASS-MISMATCH-CLUSTERS-2026-11-01.csv"
+    with path.open(encoding="utf-8", newline="") as stream:
+        rows = list(csv.DictReader(stream))
+    ids = [row["cluster_id"] for row in rows]
+    assert len(ids) == len(set(ids))
+    assert "C13" in ids
+    c14 = next(row for row in rows if row["cluster_id"] == "C14")
+    assert c14["unique_occurrences"] == "16"
+    assert c14["edit_operations"] == "16"
 
 
 def test_aspirated_velar_coarticulation_is_not_misclassified_as_h_aspiration():
