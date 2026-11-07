@@ -289,18 +289,28 @@ test('browser Broad IPA benchmark report exposes the numeric v2 contract consume
 });
 
 
-test('Browser withholds project-derived IPA when independent lexical IPA adjudication is required', () => {
-  const result = createBrowserKozakKimEngine().convert('삶의');
+test('Browser preserves source-backed resyllabified ㅢ variants while withholding provisional Ukrainian output', () => {
+  const engine = createBrowserKozakKimEngine();
+  const life = engine.convert('삶의');
 
-  assert.equal(result.pronunciation_status, 'unresolved');
-  assert.equal(result.ipa, '');
-  assert.equal(result.ukrainian, '');
-  assert.equal(result.target_status, 'unavailable');
-  assert.equal(result.surfaceHangul, '살믜');
-  assert.equal(result.variants.length, 1);
-  assert.equal(result.variants[0].surface, '살메');
-  assert.equal(result.variants[0].ipa, '');
-  assert.equal(result.variants[0].ukrainian, '');
+  assert.equal(life.pronunciation_status, 'resolved');
+  assert.equal(life.ipa, 'sal.mɰi');
+  assert.equal(life.ukrainian, '');
+  assert.equal(life.candidate_ukrainian, 'салмий');
+  assert.equal(life.target_status, 'provisional');
+  assert.equal(life.surfaceHangul, '살믜');
+  assert.equal(life.variants.length, 1);
+  assert.equal(life.variants[0].surface, '살메');
+  assert.equal(life.variants[0].ipa, 'sal.me');
+  assert.equal(life.variants[0].ukrainian, 'салме');
+
+  const consultation = engine.convert('협의');
+  assert.equal(consultation.pronunciation_status, 'resolved');
+  assert.equal(consultation.ipa, 'hjʌ.bɰi');
+  assert.equal(consultation.ukrainian, '');
+  assert.equal(consultation.target_status, 'provisional');
+  assert.equal(consultation.variants[0].surface, '혀비');
+  assert.equal(consultation.variants[0].ipa, 'hjʌ.bi');
 });
 
 
