@@ -165,3 +165,16 @@ Record consequential linguistic, data, architecture, testing, licensing, and rel
 - **Row 341 (`그놈의`):** remains diagnostic. The exact genitive-particle implementation uses the NIKL principal `/ɰi/` and exposes [e] as a permitted variant. The corpus comparator's [e] is not speaker-specific acoustic gold and does not justify replacing the principal reading or removing the occurrence from review.
 - **Guardrail:** this is a derived benchmark-output refresh only. The 236-row candidate ledger, source dispositions and g2pk baseline are unchanged. No profile convention or unresolved candidate was promoted to a production rule.
 - **Verification:** the committed 26-row CSV was compared row-by-row with the generated queue artifact from run 42181660273 (matching row hashes for all 26 rows); exact-head CI on 59e31ac is rerunning the export/cmp and downstream diagnostics. The multi-engine workflow was still in progress at this snapshot.
+
+
+## DEC-2026-008 — preserve coda-resyllabification provenance through the ㅢ IPA adapter and scope C14 narrowly
+
+- **Date:** 2026-11-07
+- **Status:** accepted for the Korean source/IPA layer; Ukrainian target rendering remains provisional.
+- **Context/problem:** the non-initial `ㅢ` → [i] exception was being applied to cases where a preceding coda is resyllabified as the onset. This incorrectly collapsed the NIKL-attested /ɰi/ variants in `삶의` and `협의`.
+- **Evidence and sources:** NIKL pronunciation FAQ `mcfaq_seq=5716` and the source-only 40-case adjudication report. NIKL records `삶의` [살믜]/[살메] and `협의` [혀븨]/[혀비].
+- **Decision:** preserve coda-origin onset provenance through the IPA adapter (`onset_from_coda` in Python; `__liaison` in Browser). Apply ordinary [i] only to the non-resyllabified consonant-onset case. Keep the internal flags out of the public schema.
+- **C14 classification:** reserve `C14_NIKL_GENITIVE_UI_PARTICLE` for the exact, conservative genitive-particle allowlist. It is not a generic resyllabification label; C13 remains the existing lexical-vowel-length cluster. `협의` remains a separate liaison case, not a genitive-particle instance. `그놈의` remains in the broad review queue because its independent e/i mismatch is still unresolved.
+- **Consequences:** no productive general-purpose rule or automatic Ukrainian output is licensed by this decision. The /ɰi/ → Ukrainian target choice remains provisional/candidate-only. All 40 residual occurrences remain unresolved as speaker-specific IPA gold.
+- **Validation:** exact-head Python/browser regressions, Python 3.11–3.13 tests, browser tests/build, wheel install, source-rights gate and research artifact checks passed on PR #456 head. The long multi-engine run 42414467825 was still running at the last check.
+- **Revisit when:** independent speaker-level IPA evidence or qualified review becomes available, or the official NIKL rule/FAQ is superseded.

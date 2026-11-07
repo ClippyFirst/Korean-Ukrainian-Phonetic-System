@@ -1,19 +1,18 @@
 # Repository structure and ownership guide
 
-**Snapshot:** 2026-11-07, after PR #454 and the mainline documentation reconciliation (latest preceding docs commit 249c2e7ce7556a0acf07f7fe9cb6fe77ebd1e96c). The implementation merge commit is d2f942d0615df3da2a973a2709f8738f65da18d9. This guide describes observed tree ownership and navigation boundaries; it is not a claim that every file has been independently reviewed line by line.
+**Snapshot:** 2026-11-07, after PR #456 (squash merge `18f5529b9100ea6e4f7c176c9627bacf1fc52585`) and the UGTPHON source-rights continuation. The latest mainline documentation commit at this snapshot is `f845e30729ca52f60831ac873b901676268db272`. This guide describes observed tree ownership and navigation boundaries; it is not a claim that every file has been independently reviewed line by line.
 
 ## What this repository contains
+
+A Python research package, a browser-based practical/research application, Korean phonology and lexical datasets, a Korean-to-Ukrainian IPA target layer, reproducible research tooling, source-rights records and a public GitHub Pages service.
 
 ## Current 236-case and benchmark status — 2026-11-07
 
 The reconstructed 236-row cohort contains 15 exact standard-form runtime dispositions, 181 bounded profile-convention decisions, 12 original abstentions and 28 residual cases. The 40 residual cases have explicit no-audio engine-policy dispositions, but all 40 remain unresolved as speaker-specific IPA gold. Do not describe the 181 profile decisions as new categorical rules or the 40 engine-policy decisions as IPA adjudication. The historical 236/239 selector membership is reconstructed, not independently proven.
 
-Latest PR #454 diagnostics: UGTPHON Native 1,435/2,701 exact (53.1285%), CER 8.9418%; g2pK 1,435/2,703 (53.0892%), CER 9.2328%. SIGMORPHON 2021: Native 358/998 (35.8717%), CER 14.5598%; g2pK 353/999 (35.3353%), CER 14.8222%. These are Korean G2P/IPA diagnostics, not Ukrainian target accuracy or normative gold. See the [236-case integration record](KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md) and [2026-11-07 repository status](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md).
+Latest paired UGTPHON diagnostic: Native 1,425/2,702 exact (52.7387%), CER 9.0130%; g2pK 1,435/2,703 (53.0892%), CER 9.2328%. SIGMORPHON 2021 figures retained from the prior exact-head run: Native 358/998 exact (35.8717%), CER 14.5598%; g2pK 353/999 (35.3353%), CER 14.8222%. These are Korean G2P/IPA diagnostics, not Ukrainian target accuracy or normative gold. The multi-engine run 42414467825 was pending at the last check.
 
-
-A Python research package, a browser-based practical/research application, Korean phonology and lexical datasets, a Korean-to-Ukrainian IPA target layer, reproducible research tooling, and a public GitHub Pages service.
-
-At main commit d2f942d0615df3da2a973a2709f8738f65da18d9, the recursive Git tree contains **838 entries** (796 files and 42 directories), including **179 Markdown files**, **397 files under tests/**, **64 scripts**, **18 GitHub Actions workflows**, and **13 schemas**. The docs/ subtree contains 148 files and research/ 57 files. These are point-in-time inventory counts, not measures of implementation completeness. These are point-in-time inventory counts, not measures of implementation completeness.
+At main commit `45f1d266c7793b6c280ed3a1ec4565e309ec1cbb`, the recursive Git tree contains **848 entries** (805 files and 43 directories), including 183 Markdown files, 398 files under tests/, 65 scripts, 18 GitHub Actions workflows and 13 schemas. These are point-in-time inventory counts, not measures of implementation completeness.
 
 ## Top-level map
 
@@ -29,6 +28,7 @@ At main commit d2f942d0615df3da2a973a2709f8738f65da18d9, the recursive Git tree 
 | `tests/` | Python and browser regression suites, fixtures and corpora | Fixtures are not automatically gold labels |
 | `research/` | Source register, rule coverage, acceptance gates, decisions, reviewer queues and discrepancy ledgers | Canonical research status; update existing registers, do not create parallel ledgers |
 | `docs/` | Stable guidance, dated audits, research notes, user/developer docs and handoff | Use the documentation index; keep historical links stable |
+| `licenses/` | Third-party data licence texts and source notices (currently the pinned UGTPHON Korean-subset Apache-2.0 notice) | Not the project-code licence; preserve source scope and full notices with permitted reviewer packets |
 | `.agents/skills/` | Seven repository-local skills: four domain-specific phonetic/NIKL skills plus engineering-change, repository-audit and change-review | Route through root `AGENTS.md`; extend the owning skill rather than copying generic upstream workflows |
 | `.github/workflows/` | Tests, verification, generated artifacts, research jobs and Pages deployment | Inspect path filters, permissions, skip policies and exact-head results |
 | `public/` | Static assets and third-party notices/licences | Third-party terms remain independent |

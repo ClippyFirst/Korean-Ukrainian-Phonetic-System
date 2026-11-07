@@ -243,3 +243,10 @@ The user's constraint is that no audio will be supplied. The 40 residual occurre
 - Three explicit, correctly spaced phrase pairs now have NIKL §29 [붙им 2] insertion support in both Python and browser runtimes: `홍콩 영화들`, `한국 여자로`, and `첫 연애`. Compact tokens are not split automatically.
 - Other decisions preserve broad /s/, broad vowel hiatus, no unsupported /j/ insertion in `오조오억배` or `체험`, non-selective [ɛ]~[e] quality candidates, and raw `ㅠ` emoticons as non-speech.
 - The historical 236 candidate dispositions remain 15 rule-confirmed, 181 profile-convention, 12 ABSTAIN, and 28 unadjudicated. The new engine-policy field is a separate axis, not a rewrite of the historical evidence status.
+
+
+## 2026-11-07 — source-only adjudication and third-party rights boundary
+
+PR #456 is merged to `main` at `18f5529b9100ea6e4f7c176c9627bacf1fc52585`. The 40-case source-only matrix covers 17 spellings / 40 occurrences and keeps speaker-specific IPA gold unresolved. C14 is a narrow genitive-particle mismatch label; it is distinct from C13 lexical vowel length and from the R002 `협의` liaison case.
+
+The pinned UGTPHON Korean subset declares Apache-2.0 at the subset level. See the [source-rights audit](../docs/KOZAK-236-SOURCE-RIGHTS-AUDIT-2026-11-06.md), [independent review protocol](../docs/KOZAK-236-INDEPENDENT-REVIEW.md), and [third-party licence notices](../licenses/README.md). The committed 236-case ledger is broader than the narrow reviewer packet: it contains context and source phoneme/IPA comparison fields that the external reviewer packet excludes. No 236-case reviewer packets have been generated or distributed.

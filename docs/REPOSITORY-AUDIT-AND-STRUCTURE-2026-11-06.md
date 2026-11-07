@@ -587,3 +587,35 @@ The source crosswalk for all 40 no-audio occurrences remains complete at the eng
 
 
 **Durable replay input:** `research/kozak-kim-370-broad-only-replay-input-2026-11-07.csv` (370 rows, six fields; Git blob SHA `4335d6488a647f0e240dcc9f8aa24edc5f076a40`). The historical classifier was replayed against the original 370-row context ledger and independently against this compact input; both produced 239 IDs with exact 239/239 equality to the candidate snapshot. The regression now runs the complete 370-row replay in CI.
+
+
+## 2026-11-07 continuation — PR #456 integration and UGTPHON rights reconciliation
+
+### Integration and branch state
+
+- Starting main commit: `1f220fcd7e3b44dab7302b37e2fe225812ee18a6`.
+- PR #456 was reviewed and squash-merged to `main`: `18f5529b9100ea6e4f7c176c9627bacf1fc52585`.
+- The owner-selected integration branch is `main`; root agent guidance and the workflow guide now encode this repository-specific instruction. Historical branches are preserved and were not deleted.
+- The historical rights branch `audit/kozak-236-source-rights-2026-11-06` was used as a scoped source for files/code; it was not merged wholesale.
+
+### Exact-head verification on PR #456 head `53ba9168e1dedeab3a4308736a0997dea6151ffd`
+
+- DONE_VERIFIED: Python tests on 3.11, 3.12 and 3.13; browser tests and build; clean wheel install; source-rights gate; system verification; master/research artifact generation; exhaustive test-case register extraction; optional g2pK integration; external UGTPHON diagnostic; paired Native/g2pK diagnostic; morphology-consensus and morphology-adapter smoke.
+- Paired Native/g2pK UGTPHON run `42414467883`: Native 1,425/2,702 exact (52.7387%), CER 9.0130%, one unresolved; g2pK 1,435/2,703 (53.0892%), CER 9.2328%, zero unresolved. Diagnostic only, not normative gold or Ukrainian accuracy.
+- PARTIAL at the time of this snapshot: multi-engine diagnostic run `42414467825` remained in progress; no success or failure is claimed until its exporter/queue parity, Browser runtime parity and SIGMORPHON stages complete.
+- Charsiu/ByT5 inference and the Charsiu train-dev review queue were skipped by workflow policy; skipped is not passed.
+
+### UGTPHON Korean-subset rights
+
+- DONE_VERIFIED: pinned upstream `UGTPHON/ko/test.json` commit `ef0d5a09c2ea1874c7206020f875cbd9cfea2f54`, blob `59380491d5a797308c475f7d0007dcf6c4be00af`, and Korean-subset `ko/LICENSE` declaration of Apache-2.0 are recorded.
+- Ported the scoped rights audit, full Apache-2.0 text, source notice, independent-review protocol and packet builder from the audited historical rights branch; no blind branch merge was performed.
+- The internal 236-case ledger contains richer source/context and phoneme/IPA comparison fields than the external reviewer packet. The packet builder omits those fields and validates exact source path, commit, blob and declared licence for every row.
+- No 236-case reviewer packet has been generated or externally distributed. The subset-level licence declaration is a documented basis for the narrow packet workflow, not a legal opinion or independent guarantee of title for every original post.
+
+### Remaining blockers and acceptance criteria
+
+- BLOCKED — independent Korean IPA review of the 236 cases: two qualified independent reviewers must annotate all cases or explicitly mark unresolved items; blind reconciliation and reviewer method/convention records are required.
+- BLOCKED — Ukrainian target validation: a separate Ukrainian-reader review must follow Korean IPA reconciliation; current /ɰi/ → Ukrainian target choices remain provisional.
+- BLOCKED — original historical 236/239 selector membership: no contemporaneous original selector/member list has been recovered; the 239 replay verifies the reconstructed selection only.
+- BLOCKED — per-post copyright chain-of-title: the upstream subset-level Apache-2.0 declaration is documented, but it is not independent evidence that every original post author had authority to license their post.
+- PARTIAL — multi-engine diagnostic: run `42414467825` must finish the exporter/cmp, browser runtime parity and SIGMORPHON stages before its result is recorded.

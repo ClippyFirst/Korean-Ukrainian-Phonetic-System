@@ -1532,3 +1532,14 @@ The 12 abstentions and 28 unadjudicated rows have received a focused evidence pa
 
 
 Additional regression scope: the native Python and browser shared-Broad profiles must keep /s/ canonical and omit [ɕ] variants for `쇼`, `모션어디서`, `뿌셔우우`, `뿌셔우우우`, `아끼셔` and `포지션을`. For `대한민국`, the research-only [ɛ]~[e] candidate must preserve the existing length mark and cite Lee (2023); it does not select a speaker-specific realization. The browser legacy profile remains a separate compatibility contract.
+
+
+### 2026-11-07 — UGTPHON Korean-subset rights and 236-case reviewer boundary
+
+| Gate | Status | Evidence / acceptance |
+|---|---|---|
+| Verify the pinned UGTPHON Korean-subset licence declaration | DONE_VERIFIED | Exact upstream `ko/LICENSE` at commit `ef0d5a09c2ea1874c7206020f875cbd9cfea2f54` declares Apache-2.0; full licence text and source notice are retained in `licenses/`. |
+| Keep the internal 236-case research ledger distinct from external reviewer packets | DONE_VERIFIED | The audit documents the richer internal ledger fields; the packet builder omits source phoneme/IPA annotations, comparator IPA, engine outputs and prior dispositions. |
+| Validate exact source provenance before licensed external packet generation | DONE_VERIFIED | Builder checks pinned source path, commit, blob and declared licence for every row, plus the canonical source-register entry and accompanying notices. |
+| Conduct independent 236-case review and Ukrainian target review | TODO / BLOCKED | No reviewer annotations or packets have been supplied/generated. Acceptance requires two independent qualified Korean IPA passes, blind reconciliation, and a separate Ukrainian-reader target review. |
+| Resolve original 236/239 selector membership and source post chain-of-title uncertainty | BLOCKED | The historical selector/member snapshot and per-post copyright authority are not independently established; disclose both limitations and do not claim legal certainty. |

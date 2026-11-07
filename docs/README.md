@@ -130,3 +130,10 @@ For the authoritative task ledger and exact evidence, use the [current repositor
 - `npm run audit:source-rights` — strict release gate. It fails only when a positively recorded copied/included/redistributed artifact lacks an item-level rights decision; citation-only sources and explicitly negated no-copy statements are not redistribution blockers.
 
 Research use does not itself waive copyright. A citation-only source is different from copied text, data, or other retained material; actual retained material must have a recorded license scope and preserve its required attribution/notices.
+
+
+## Third-party rights and independent review
+
+- [UGTPHON Korean-subset source-rights audit](KOZAK-236-SOURCE-RIGHTS-AUDIT-2026-11-06.md) — pinned source, Apache-2.0 declaration, residual chain-of-title caveat and distribution limits.
+- [236-case independent review protocol](KOZAK-236-INDEPENDENT-REVIEW.md) — blind reviewer packet contract, private coordinator map and separate Ukrainian target acceptance.
+- [Third-party licences and notices](../licenses/README.md) — licence texts and notices for retained third-party research material, separate from the root project-code licence.
