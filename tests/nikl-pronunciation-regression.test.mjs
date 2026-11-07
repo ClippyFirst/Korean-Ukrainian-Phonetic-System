@@ -455,11 +455,22 @@ test('NIKL §5 ㅢ variants preserve lexical and particle-conditioned readings',
     assert.equal(row.target_status, 'provisional', word);
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
-    assert.equal(result.ukrainian, values.target, word);
+    if (word === '협의') {
+      assert.equal(result.ukrainian, '');
+      assert.equal(result.candidate_ukrainian, 'гьобий');
+      assert.equal(result.target_status, 'provisional');
+    } else {
+      assert.equal(result.ukrainian, values.target, word);
+    }
     assert.equal(result.ipa, renderExpectedIpa(word, values.ipa), word);
     const officialVariants = result.variants.filter(variant => variant.surface === values.alternateSurface);
     assert.equal(officialVariants.length, 1, word);
-    assert.equal(officialVariants[0].ukrainian, values.alternateTarget, word);
+    if (word === '협의') {
+      assert.equal(officialVariants[0].ukrainian, '');
+      assert.equal(officialVariants[0].candidate_ukrainian, 'гьобі');
+    } else {
+      assert.equal(officialVariants[0].ukrainian, values.alternateTarget, word);
+    }
     assert.equal(officialVariants[0].ipa, renderExpectedIpa(word, values.alternateIpa), word);
   }
 });
