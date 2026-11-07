@@ -39,7 +39,7 @@ The reconstructed 236-row cohort is **not 236 independently confirmed phonologic
 | Previously unadjudicated residuals | 28 | Engine policy explicitly decided under the no-audio constraint; speaker-specific IPA remains unresolved |
 | **Total** | **236** | Reconstructed candidate cohort; original historical selector membership is not independently proven |
 
-Thus, **15/236 have exact standard-form runtime dispositions**. The 181 are handled as bounded profile decisions/non-promotions, not as a set of new production rules. The remaining 40 have explicit no-audio engine-policy dispositions (including conditional phrase-mode behavior where word boundaries are explicit), but **40/40 remain unresolved as speaker-specific IPA gold**. The original 236/239 cohort membership is reconstructed, not proven from the original selector/member list. See the [236-case integration record](docs/KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md), [40-case policy record](docs/KOZAK-KIM-40-NO-AUDIO-ADJUDICATION-2026-11-06.md), and machine-readable registers.
+Thus, **15/236 have exact standard-form runtime dispositions**. The 181 are handled as bounded profile decisions/non-promotions, not as a set of new production rules. The remaining 40 have explicit no-audio engine-policy dispositions (including conditional phrase-mode behavior where word boundaries are explicit), but **40/40 remain unresolved as speaker-specific IPA gold**. The original 236/239 cohort membership is reconstructed, not proven from the original selector/member list. See the [236-case integration record](KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md), [40-case policy record](KOZAK-KIM-40-NO-AUDIO-ADJUDICATION-2026-11-06.md), and machine-readable registers.
 
 ### Latest measured pronunciation benchmarks
 
