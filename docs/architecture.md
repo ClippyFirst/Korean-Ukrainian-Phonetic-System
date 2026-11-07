@@ -93,3 +93,13 @@ The browser-side G2P-derived code under `src/vendor/g2pk/` retains its upstream 
 - Source access and source reuse rights are separate questions. A locally parsed NIKL file does not itself establish page-level KOGL permission.
 
 For the repository inventory, file ownership, branch/CI snapshot and current blockers, see [Repository structure](REPOSITORY-STRUCTURE.md) and the latest dated [repository audit](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md).
+
+
+## IPA adapter provenance for resyllabified ㅢ
+
+The Korean phonology layer records whether an onset was created by coda resyllabification. Python carries this as `onset_from_coda`; the browser runtime carries the equivalent internal `__liaison` provenance. The IPA adapter must consume that provenance before resolving `ㅢ`:
+
+- an ordinary consonant-onset `ㅢ` follows the documented non-initial [i] behavior;
+- a coda consonant resyllabified before `ㅢ` preserves the Rule 5 /ɰi/ analysis, as in the NIKL-attested variant sets for `삶의` and `협의`.
+
+These are internal analysis/provenance flags. They must not be serialized as public phoneme fields or exposed as a user-facing API contract. The Ukrainian target adapter consumes the resulting typed IPA/phonetic representation; it must not reconstruct the distinction independently from Hangul.

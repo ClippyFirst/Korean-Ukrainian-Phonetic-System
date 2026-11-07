@@ -135,3 +135,20 @@ test('current repository documentation records exact benchmark, rights and resea
   assert.ok(acceptance.includes('42226435101'), 'acceptance gates missing the mandatory multi-engine result');
   assert.ok(acceptance.includes('SKIPPED'), 'acceptance gates must distinguish skipped optional jobs');
 });
+
+
+test('owner-selected mainline policy and third-party rights documents remain discoverable', () => {
+  for (const phrase of [
+    'owner designates `main`',
+    'do not create task-specific branches',
+    'Preserve historical branches',
+  ]) assert.ok(rootGuide.includes(phrase), 'root guide missing owner-selected mainline policy: ' + phrase);
+  assert.ok(workflowGuide.includes('owner has designated `main`'));
+  assert.ok(docsIndex.includes('KOZAK-236-SOURCE-RIGHTS-AUDIT-2026-11-06.md'));
+  assert.ok(docsIndex.includes('../licenses/README.md'));
+  assert.ok(structureGuide.includes('`licenses/`'));
+  assert.ok(read('README.md').includes('licenses/README.md'));
+  assert.ok(existsSync(new URL('../licenses/Apache-2.0.txt', import.meta.url)));
+  assert.ok(existsSync(new URL('../licenses/UGTPHON-KO-SOURCE-NOTICE.md', import.meta.url)));
+  assert.ok(existsSync(new URL('../docs/KOZAK-236-INDEPENDENT-REVIEW.md', import.meta.url)));
+});

@@ -44,3 +44,10 @@ Please cite the repository version and access date where appropriate, identify t
 ## Scope and legal note
 
 The licence is deliberately narrower than a conventional open-source licence and may not be compatible with workflows that require open-source reuse, broad redistribution, or downstream relicensing. It expresses the author's intended permissions only for copyrightable rights the author controls; facts, ideas, methods, unprotectable elements, statutory exceptions, and third-party rights remain governed by applicable law. This documentation is not a legal opinion. If the project later needs commercial distribution, institutional licensing, contributor licensing, or enforceable restrictions across jurisdictions, the author should review the terms with a qualified lawyer before making those changes.
+
+
+## UGTPHON Korean-subset research material
+
+The pinned UGTPHON Korean subset at commit `ef0d5a09c2ea1874c7206020f875cbd9cfea2f54` declares Apache-2.0 in its upstream `ko/LICENSE`. The repository preserves the complete licence text and a source-specific notice in [`licenses/`](../licenses/README.md). The corresponding source-rights audit is [here](KOZAK-236-SOURCE-RIGHTS-AUDIT-2026-11-06.md).
+
+This third-party data declaration is separate from the custom root project-code licence and is not an independent legal guarantee of the copyright chain for every original user-generated post. The internal 236-case research ledger contains richer source/context and phoneme/IPA comparison fields than the narrow external reviewer packets. The packet builder deliberately excludes source phoneme/IPA annotations, comparator IPA and engine outputs. Do not distribute the research ledger as if it were the reviewer packet. As of this audit, no 236-case reviewer packet has been generated or externally distributed.

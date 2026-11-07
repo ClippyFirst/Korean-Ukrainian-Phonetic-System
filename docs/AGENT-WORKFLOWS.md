@@ -49,13 +49,17 @@ Request / existing issue / current plan
      Registers + append-only handoff
                  |
                  v
-      Commit on task-specific branch
+      Commit on owner-selected branch (`main` here)
                  |
                  v
        Exact-head CI + honest report
 ```
 
 Not every documentation or configuration edit has a meaningful failing test. In those cases, use structural assertions, link checks, schema/build checks or exact-head CI, and state which verification was used. Do not fabricate a RED phase for an editorial-only change.
+
+## Integration branch policy
+
+The repository owner explicitly selects the integration branch. For this project the owner has designated `main`; ordinary continuation work therefore commits directly to `main` after reviewing the current state and preserving unrelated changes. Do not create task-specific branches unless the owner changes this instruction. Historical branches are audit/history evidence and must not be deleted as part of cleanup.
 
 ## Skill catalogue and boundaries
 
