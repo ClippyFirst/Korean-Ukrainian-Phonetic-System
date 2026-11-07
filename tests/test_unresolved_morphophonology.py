@@ -7,6 +7,7 @@ def test_nikl_attested_particle_readings_for_salmui_are_explicit_variants():
     result = phoneticize_korean(word)
     assert result["surface_hangul"] == "\uc0b4\ubbdc"
     assert result["ipa"]["ipa"] == "sal.mɰi"
+    assert result["ipa"]["variants"] == [], "the exact NIKL [살믜]/[살메] set must not acquire a generic [살미] variant"
     assert result["ipa"]["lexical_alternatives"] == [{
         "input": word,
         "surface_hangul": "\uc0b4\uba54",
