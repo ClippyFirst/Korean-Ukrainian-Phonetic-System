@@ -1,6 +1,6 @@
 # Current continuation — mainline status (2026-11-07)
 
-**Current main:** d2f942d0615df3da2a973a2709f8738f65da18d9; PR #454 merged.
+**Mainline implementation baseline:** d2f942d0615df3da2a973a2709f8738f65da18d9; PR #454 merged.
 
 - **DONE_VERIFIED — PR #454 exact-form recovery:** three typo-preserving morphology licenses are implemented in Python and Browser for 쫒아내면, 많앗구나유유유, and 무서웟어. Positive and near-form negative controls passed. No spelling normalization or productive generalization was added.
 - **DONE_VERIFIED — UGTPHON paired diagnostic:** Native 1,435/2,701 exact (53.1285%), CER 8.9418%; g2pK 1,435/2,703 exact (53.0892%), CER 9.2328%. Native has two explicit abstentions; paired exact counts are equal.
