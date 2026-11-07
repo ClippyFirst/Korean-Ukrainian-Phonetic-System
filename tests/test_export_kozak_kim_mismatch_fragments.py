@@ -310,7 +310,7 @@ def test_write_csv_uses_canonical_crlf_without_trailing_record_separator(tmp_pat
         for field in MODULE.FIELDS
     }])
     payload = output.read_bytes()
-    assert b"\\r\\n" in payload
-    assert payload.count(b"\\n") == payload.count(b"\\r\\n")
-    assert not payload.endswith(b"\\r\\n")
+    assert b"\r\n" in payload
+    assert payload.count(b"\\n") == payload.count(b"\r\n")
+    assert not payload.endswith(b"\r\n")
     assert payload.decode("utf-8").splitlines()[0].split(",") == MODULE.FIELDS
