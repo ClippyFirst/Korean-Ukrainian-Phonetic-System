@@ -131,18 +131,23 @@
     },
     {
       "input": "삶의",
-      "status": "BLOCKED_SPECIALIST_IPA_ADJUDICATION",
-      "observedIssue": "NIKL permits two Korean surface readings; project-derived IPA candidates are not independent gold. Repository text audit also found an existing provisional lexical-table row with sal|mi / сал|мі and alternate sal|me / сал|ме; sal|mi does not match the separate diagnostic candidate sal.mɰi, so this notation/analysis difference must be explicitly reconciled rather than silently normalized.",
+      "status": "SOURCE_ADJUDICATED_STANDARD_VARIANTS; SPEAKER_SELECTION_UNRESOLVED",
+      "observedIssue": "NIKL directly gives the two standard Hangul readings [살믜] and [살메] for the exact token 삶의. Rule 5 commentary clarifies that the consonant-initial ㅢ→[i] exception does not apply when the preceding coda moves into the onset; the earlier sal|mi candidate was therefore incorrectly derived.",
       "evidenceReviewed": [
         {
-          "url": "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5716&mn_id=217&pageIndex=225",
-          "claim": "NIKL states that particle phrase 삶의 may be pronounced [살믜] or [살메].",
-          "scope": "Official Hangul surface-pronunciation notation, not IPA."
+          "url": "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5716",
+          "claim": "NIKL directly names 삶의 and gives [살믜]/[살메] under Standard Pronunciation Rule §5(다만 4).",
+          "scope": "Exact official Hangul surface forms; not IPA."
+        },
+        {
+          "url": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+          "claim": "Rule 5 commentary (lines 1399–1439) states that consonant-initial ㅢ→[i] does not apply when the consonant is a resyllabified coda, and that genitive particle 의 may be [에].",
+          "scope": "Normative rule interpretation for the exact structure of 삶의."
         },
         {
           "url": "https://doi.org/10.17959/SPPM.2016.22.1.35",
-          "claim": "Park, Cho & Han (2016) examine positional and grammatical variation in monophthongization of /의/.",
-          "scope": "Abstract-level contextual evidence only; exact form 삶의 was not directly measured and the study is not IPA gold for this token."
+          "claim": "Park, Cho & Han (2016) report [e] for 602/628 (95.86%) of monophthongized genitive-particle /ɨi/ tokens in the Seoul Corpus.",
+          "scope": "Population-level frequency, not speaker-specific or exact-token gold."
         }
       ],
       "reviewWorkflow": {
@@ -150,47 +155,46 @@
         "reviewerA": "research/ipa-review-packets/salmui-reviewer-A.json",
         "reviewerB": "research/ipa-review-packets/salmui-reviewer-B.json",
         "queueSha256": "c13b50fa336a81d94b82ad689195655cd2e2ca3b11843874c9d46ca2178cdfe3",
-        "submissionsStatus": "both_blank"
+        "submissionsStatus": "not_required_for_source_variant_set; no external outreach"
       },
-      "productionChange": "No accepted Ukrainian output. Keep diagnostic IPA candidates provisional; the blind packets contain only opaque case ID, Hangul input, instructions and blank review fields.",
-      "whyNotResolved": "The [살믜]/[살메] alternatives do not by themselves settle broad IPA, syllable boundary, variant status or Ukrainian target. No qualified independent submissions are present.",
-      "acceptanceCriterion": "Two independent qualified reviewers annotate broad IPA, convention/reference, syllable boundary, vowel-length assessment and uncertainty without seeing each other's work or source evidence. Validate and reconcile after both first passes are frozen; then conduct a separate Ukrainian-target review on frozen IPA. Reconcile the pre-existing lexical-table candidate sal|mi with the separate sal.mɰi notation explicitly after independent submissions; do not silently promote the CSV's provisional Ukrainian fields.",
+      "productionChange": "Corrected the research lexicon to distinguish project broad IPA /sal.mɰi/ for [살믜] and /sal.me/ for [살메]. The ɰi→ий Ukrainian correspondence remains provisional; strict target rendering withholds final Ukrainian output unless provisional research mode is explicitly requested.",
+      "whyNotResolved": "The normative variant set and its project broad-IPA representations are source-adjudicated. Only the unknown speaker's choice between the two variants remains unselected; aggregate Seoul-Corpus statistics cannot identify that speaker. No speaker-specific narrow IPA or Ukrainian target gold is claimed.",
+      "acceptanceCriterion": "Source-based acceptance is complete: preserve both standard variants and their distinct IPA representations. Do not choose a speaker-specific variant or promote the provisional Ukrainian mapping. No audio or external review is requested under the current project scope.",
       "repositoryTextFootprints": [
         {
           "path": "data/korean/lexical_pronunciations.csv",
-          "line": 644,
-          "status": "provisional",
+          "status": "source_adjudicated_variants_target_provisional",
           "existingCandidate": {
             "surface": "살믜",
-            "broadIpaLike": "sal|mi",
-            "ukrainian": "сал|мі"
+            "broadIpaLike": "sal|mɰi",
+            "ukrainian": "сал|мий"
           },
           "alternateCandidate": {
             "surface": "살메",
             "broadIpaLike": "sal|me",
             "ukrainian": "сал|ме"
           },
-          "interpretation": "Repository-internal candidate record only; not independent IPA evidence and not accepted Ukrainian target.",
-          "unresolvedDiscrepancy": "Existing table sal|mi versus residual triage candidate sal.mɰi for the Hangul surface notation [살믜]. Preserve both as unaccepted until independent review and reconciliation."
+          "interpretation": "The two Hangul surface forms are directly attested by NIKL. The IPA strings are project broad-IPA renderings, not IPA transcriptions supplied by NIKL. Ukrainian target mapping remains provisional.",
+          "unresolvedDiscrepancy": "The previous sal|mi candidate was corrected: Rule 5 commentary excludes the post-consonantal [i] exception when the preceding coda is resyllabified before ㅢ."
         }
       ],
       "reviewerRecruitment": {
         "issue": "https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/issues/337",
-        "status": "OPEN_NO_VERIFIED_SUBMISSIONS",
+        "status": "DEFERRED_USER_SCOPE_NO_OUTREACH",
         "countReceived": 0,
         "countVerified": 0,
-        "publicIssuePolicy": "No candidate IPA or source citations; preserve independent first-pass review.",
-        "nextAction": "Obtain two qualified independent packet submissions; validate queue fingerprint and reviewer qualifications; reconcile only after both are frozen."
+        "publicIssuePolicy": "No external reviewer outreach or correspondence under the user's source-only instruction.",
+        "nextAction": "No action. Preserve the source-backed variant set and leave speaker-specific choice unselected."
       },
       "externalTextSearch": {
-        "checkedAt": "2026-10-25",
-        "scope": "Public text-index search for an exact IPA transcription of 삶의 and sal.mɰi.",
-        "result": "No independent text source was found that supplies a case-specific IPA gold transcription. NIKL's [살믜]/[살메] remains official Hangul surface notation only; the existing CSV candidates remain provisional.",
-        "status": "BLOCKED_SPECIALIST_IPA_ADJUDICATION"
+        "checkedAt": "2026-11-07",
+        "scope": "Exact NIKL Q&A and full Rule 5 commentary plus peer-reviewed Seoul Corpus research.",
+        "result": "NIKL directly attests [살믜]/[살메]; Rule 5 commentary excludes the [i] reading in the resyllabified-coda context; Park et al. (2016) provide population-level frequency evidence for [e].",
+        "status": "SOURCE_VARIANT_SET_RESOLVED_SPEAKER_SELECTION_UNRESOLVED"
       },
       "currentDisposition": {
-        "status": "BLOCKED_SPECIALIST_IPA_ADJUDICATION",
-        "reason": "NIKL Hangul readings [살믜]/[살메] do not settle independent IPA."
+        "status": "SOURCE_ADJUDICATED_VARIANT_SET_SPEAKER_CHOICE_UNRESOLVED",
+        "reason": "Both normative standard variants and project broad-IPA renderings are now recorded; no source can identify which variant the unknown speaker used."
       }
     },
     {
