@@ -2,13 +2,13 @@
 
 ## Outcome
 
-The five rows were not five instances of one missing phonological rule. Three are recoverable as exact-token, morphology-conditioned surface analyses; `삶의` now has a source-adjudicated standard variant set (see the 2026-11-07 addendum); `칡칡이` remains blocked because its source-identified folk-song heading has no source-specific spoken realization.
+The five rows were not five instances of one missing phonological rule. Three are recoverable as exact-token, morphology-conditioned surface analyses; `삶의` has a source-adjudicated standard variant set; `칡칡이` is now confirmed as a source mismatch: the cited Busan PDF attests `칭칭이`, not the exact benchmark spelling. No automatic correction is licensed.
 
 This change preserves each source spelling exactly. It does not normalize typos, infer arbitrary morpheme boundaries, or turn UGTPHON annotations into normative Korean pronunciation gold.
 
 | UGTPHON token | Source row | Decision | Scope / evidence |
 |---|---|---|---|
-| `칡칡이` | `dc_inside_2050` | **Still blocked: source identity / audio** | The exact string is a field-recorded folk-song heading `[철마면 민요 26]` in the Busan oral-culture collection; its refrain contains `치기타 칭칭나네`. This may be a regional song name or transcriptional variant, not the compositional noun phrase `칡+칡+이`. Kiwi and MeCab-Ko agreement on `칡>이` is not enough to establish the title's lexical segmentation. NIKL's dialect transcription example `[칠기]` for `칡이` does not adjudicate this proper-name use. No audio/field notes are available. Keep the R002 abstention. |
+| `칡칡이` | `dc_inside_2050` | **Source mismatch confirmed; preserve raw / no IPA** | The cited Busan PDF at printed p. 587 reads `[철마면 민요 26] 칭칭이`, not `칡칡이`; the refrain is `치기타 칭칭나네` and the entry cites 이소라, 『양산의 민요』 (1992), p. 180. The National Gugak Center independently documents `칭칭이소리`. The benchmark token is therefore not attested by the cited source. It may be a transcription error, but text evidence does not authorize rewriting the user's exact `칡칡이` to `칭칭이`. Preserve the raw token and keep the R002 abstention. |
 | `쫒아내면` | `dc_inside_2183` | Exact R002 diagnostic recovery | The source writes `쫒`, not standard `쫓`. The benchmark IPA follows the written final `ㅈ` into the following vowel-initial syllable. The full token is licensed only as this exact noisy spelling; it is not normalized to `쫓아내면`, and no standard lexical claim is made. |
 | `많앗구나유유유` | `dc_inside_2202` | Exact R003 recovery | Context identifies `많-` + past ending `-았-` + `구나`; source typo `앗` is retained. NIKL §12(4) explicitly deletes ㅎ from `ㅎ/ㄶ/ㅀ` before a vowel-initial ending; NIKL Q&A directly confirms `많아[마ː나]`. The license applies only to this full noisy token and pair `많>앗`. |
 | `삶의` | `dc_inside_2212` | **Source-adjudicated standard variants; speaker choice unselected** | NIKL MCFAQ 5716 directly gives `[살믜]` and `[살메]`; Rule 5 commentary excludes the `[i]` reading when ㅁ resyllabifies into the onset before ㅢ. The project lexicon now renders these as `sal.mɰi` and `sal.me`; the Ukrainian `ɰi → ий` mapping remains provisional. |
@@ -19,7 +19,7 @@ This change preserves each source spelling exactly. It does not normalize typos,
 - Added exact-form R002 licenses for `쫒아내면` and `무서웟어` in Python and Browser.
 - Added an exact-form R003 license for `많앗구나유유유` in Python and Browser.
 - Added a positive R003 regression for `많앗구나유유유`; extended Python positive regressions and added near-form negative controls for all three recoveries.
-- Added Browser positive and negative regressions for the three recovered cases; `칡칡이` remains fail-closed. `삶의` now exposes its source-backed broad-IPA variant set as a research-only lexical entry.
+- Added Browser positive and negative regressions for the three recovered cases; `칡칡이` remains fail-closed because its exact spelling is not attested by the cited source. `삶의` exposes its source-backed broad-IPA variant set as a research-only lexical entry.
 - The `삶의` source-based IPA variant set is now recorded. Its speaker-specific selection remains unknown, and the Ukrainian target layer remains provisional.
 
 ## Benchmark evidence
@@ -56,7 +56,7 @@ The multi-engine workflow 42292099893 was cancelled during external implementati
 2. The three new rules are exact-token licenses. They do not enable a productive R002/R003 heuristic for similar-looking forms.
 3. The two typo-bearing tokens (`쫒아내면`, `무서웟어`) retain their raw spelling. The engine models the written surface sequence used by the benchmark; it does not assert that those spellings are standard.
 4. The IPA in the new exact-form cases is rule-derived broad IPA. Passing runtime tests demonstrates implementation/parity, not independent phonetic validation or Ukrainian-target acceptance.
-5. The `칡칡이` source record identifies a song title but provides no audio, and analyzer agreement cannot settle a proper-name reading. The `삶의` literature supports a candidate range, not a definitive per-token choice. A qualified reviewer must adjudicate the broad IPA and the Ukrainian target independently.
+5. The cited source does not identify `칡칡이`; it attests the distinct title `칭칭이`. The National Gugak Center confirms `칭칭이` as a real folk-song label, but no source licenses correcting the benchmark token. Preserve `칡칡이` and abstain. For `삶의`, both standard variants are source-adjudicated, but the unknown speaker's choice remains unselected.
 
 ## Primary and scholarly sources
 
@@ -64,13 +64,13 @@ The multi-engine workflow 42292099893 was cancelled during external implementati
 - NIKL Online Q&A 317199, `많아` → `[마ː나]` and §12(4): https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=317199
 - NIKL MCFAQ 5716, genitive particle `의`: `삶의[살믜]/[살메]`: https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5716
 - NIKL 2024 regional-variation transcription report, example for the grammatical form `칡이` → `[칠기]` (not evidence for the song title): https://www.korean.go.kr/common/download.do?c_file_name=ecbc2e07-fb80-40d5-804b-8254964798d9.pdf&file_path=reportData&o_file_name=2024%EB%85%84+%EC%84%B8%EB%8C%80%EB%B3%84+%EC%84%B1%EB%B3%84+%EC%A7%80%EC%97%AD%EC%96%B4+%EB%B3%80%EC%9D%B4+%EC%A1%B0%EC%82%AC+%EA%B2%B0%EA%B3%BC+%EB%B3%B4%EA%B3%A0%EC%84%9C.pdf
-- Busan Metropolitan City Historical Compilation Committee, *Dongbusan Cultural Area Folk Songs II* (2015), `[철마면 민요 26] 칡칡이`, field recording metadata (1991-10-19) and refrain `치기타 칭칭나네`, printed pp. 586–587: https://www.busandabom.net/data/history/ebook/EB_culture_song02.pdf
+- Busan Metropolitan City Historical Compilation Committee, *Dongbusan Cultural Area Folk Songs II* (2015), printed p. 587 (PDF page 596): `[철마면 민요 26] 칭칭이`, field recording metadata (1991-10-19) and refrain `치기타 칭칭나네`; this does not attest the UGTPHON token `칡칡이`: https://www.busandabom.net/data/history/ebook/EB_culture_song02.pdf
 - Park, Cho & Han (2016), “한국어 이중모음 /의/의 단모음화 양상”, DOI: https://doi.org/10.17959/SPPM.2016.22.1.35
 - UGTPHON upstream dataset and annotation contract: https://github.com/naver-ai/UGTPHON
 
 ## Verification status
 
-This document describes the implementation submitted on branch `fix/five-ugtphon-native-abstentions-final-release-2026-11-06` in PR #454. Browser and paired Native-vs-g2pk diagnostics have numeric results above; the full multi-engine workflow and exact-head regression CI remain pending. The source identity/audio review for `칡칡이` and independent IPA/Ukrainian-target review for `삶의` remain blocked regardless of software CI.
+This document describes the implementation submitted on branch `fix/five-ugtphon-native-abstentions-final-release-2026-11-06` in PR #454. Browser and paired Native-vs-g2pk diagnostics have numeric results above; the full multi-engine workflow and exact-head regression CI remain pending. The source mismatch for `칡칡이` is now verified; the exact token remains abstained and is not auto-corrected. For `삶의`, the normative variant set is source-adjudicated while speaker-specific selection and Ukrainian target acceptance remain unclaimed.
 
 
 ## 2026-11-07 source-only follow-up — 삶의 variants resolved from official sources
@@ -89,3 +89,12 @@ The same Rule 5 correction is applied to the 협의 lexical control: [혀븨] is
 칡칡이 remains the sole unresolved case in this five-row set: the source identifies the folk-song heading, but the available text sources do not establish its lexical segmentation or a source-specific spoken realization. The exact spelling remains preserved; no audio is requested.
 
 **Files updated:** data/korean/lexical_pronunciations.csv, research/SOURCE-REGISTER.csv. The exact-head CI for this follow-up is still pending.
+
+
+## 2026-11-07 source correction — 칡칡이 is not the cited song title
+
+The primary Busan PDF has now been checked at the exact entry: printed p. 587 (PDF page 596), lines 14284–14292. It reads `[철마면 민요 26] 칭칭이`, identifies singer 이문찬 (male, born 1923), fieldwork on 1991-10-19 at 철마면 이곡리, gives the refrain `치기타 칭칭나네`, and cites 이소라, 『양산의 민요』 (1992), p. 180. The National Gugak Center separately confirms `칭칭이소리` as a Gyeongsang folk-song label.
+
+The source does **not** attest `칡칡이`. Earlier repository notes incorrectly described the PDF as reading `칡칡이`; the source register and triage JSON have been corrected. This establishes a source mismatch, not the intended correction. Do not rewrite `칡칡이` to `칭칭이`, do not segment it as `칡+칡+이`, and do not assign IPA. Preserve the exact benchmark spelling and keep the abstention until a source explicitly attests that exact token or documents its correction.
+
+This is a source-only resolution of the evidence conflict. No audio is requested, and no external reviewer is contacted.
