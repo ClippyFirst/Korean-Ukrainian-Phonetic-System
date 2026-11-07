@@ -59,7 +59,8 @@ test('§5 all listed 의 alternations are kept as explicit variants', () => {
     const officialVariants = result.variants.filter(variant => variant.surface === row.alternate_surface_hangul);
     assert.equal(officialVariants.length, 1, word);
     assert.equal(officialVariants[0].ipa, renderExpectedIpa(word, row.alternate_ipa_syllables), word);
-    assert.equal(result.variants[0].ukrainian, row.alternate_target_syllables.split('|').join(''), word);
+    const alternateTarget = result.variants[0].ukrainian || result.variants[0].candidate_ukrainian;
+    assert.equal(alternateTarget, row.alternate_target_syllables.split('|').join(''), word);
   }
   const pronunciation = engine.convert('발음의');
   assert.equal(pronunciation.surfaceHangul, '바르미');
