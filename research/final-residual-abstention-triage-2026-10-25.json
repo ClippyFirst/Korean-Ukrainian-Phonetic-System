@@ -41,32 +41,37 @@
   "cases": [
     {
       "input": "칡칡이",
-      "status": "SOURCE_MISMATCH_CONFIRMED; EXACT_TOKEN_PRONUNCIATION_UNASSIGNED",
-      "observedIssue": "The UGTPHON token is 칡칡이, but the cited Busan oral-culture PDF does not attest that spelling. At printed p. 587 [철마면 민요 26] is explicitly titled 칭칭이, and the refrain contains 치기타 칭칭나네. The National Gugak Center independently documents 칭칭이소리 as a Gyeongsang folk-song label. The benchmark spelling is therefore a source mismatch or transcriptional corruption, not a source-backed lexical form.",
+      "status": "SOURCE_ATTESTED_TITLE; EXACT_TOKEN_PRONUNCIATION_UNASSIGNED",
+      "observedIssue": "The UGTPHON token 칡칡이 is directly attested as the title of [철마면 민요 26] in the 1991 fieldwork record at printed p. 586 of the cited Busan oral-culture PDF. The record identifies singer 이문춘 (male, born 1923), date 1991-10-19, location 철마면 이곡리, and the refrain 치기타 칭칭나네. It does not provide IPA or a phonetic transcription. The title's internal morphology and the status of final 이 are not established.",
       "evidenceReviewed": [
         {
           "url": "https://www.busandabom.net/data/history/ebook/EB_culture_song02.pdf",
-          "claim": "At printed p. 587 (PDF page 596), the source reads [철마면 민요 26] 칭칭이; singer 이문찬 (male, born 1923); fieldwork 1991-10-19; 철마면 이곡리; refrain 치기타 칭칭나네; cites 이소라, 양산의 민요 (1992), p. 180.",
-          "scope": "Direct source attestation of 칭칭이, not 칡칡이. It does not establish that the UGTPHON token is intended to be corrected to this title."
+          "claim": "Printed p. 586, lines 20611–20622: [철마면 민요 26] 칡칡이; singer 이문춘 (남, 1923); fieldwork 1991.10.19; 철마면 이곡리; refrain 치기타 칭칭나네; cites 이소라, 『양산의 민요』 (1992), p. 180.",
+          "scope": "Directly attests the exact benchmark spelling as a field-recorded folk-song title. No IPA or narrow phonetic transcription is supplied."
+        },
+        {
+          "url": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=321743",
+          "claim": "NIKL Q&A explains Rule 11: ㄺ is [ㄱ] before consonants and gives 칡과[칙꽈], contrasting verbal-stem 읽고[일꼬].",
+          "scope": "Supports only the coda behavior of 칡 before a consonant; it does not establish the morphology or complete pronunciation of the title 칡칡이."
         },
         {
           "url": "https://www.gugak.go.kr/ency/topic/view/947",
-          "claim": "The National Gugak Center encyclopedia entry for 칭칭이소리 lists 칭칭이 among alternate names and describes a Gyeongsang-do folk-song context.",
-          "scope": "Independent contextual confirmation that 칭칭이 is a real folk-song label; not evidence that 칡칡이 is the same lexical item."
+          "claim": "National Gugak Center encyclopedia lists 칭칭이 among alternate names of 칭칭이소리.",
+          "scope": "Separate cultural context only. It does not correct or replace the independently attested 1991 title 칡칡이."
         }
       ],
-      "productionChange": "No production rule, alias, surface rewrite or IPA is added for 칡칡이. Preserve the exact benchmark spelling and keep the existing abstention. Do not auto-correct it to 칭칭이.",
-      "whyNotResolved": "The cited source positively attests 칭칭이 and does not attest 칡칡이. Text evidence identifies a source mismatch, but cannot prove whether the benchmark token is a typo, a separate local form, or an unrelated input. Analyzer consensus and the known folk-song label cannot substitute for source-specific lexical attestation.",
-      "acceptanceCriterion": "Only integrate a source-backed lexical reading if an authoritative text source explicitly attests the exact token 칡칡이 or documents its correction to 칭칭이. Otherwise preserve the raw spelling and abstain. No audio or external review is requested.",
+      "productionChange": "No runtime rule, alias, surface rewrite or IPA is added. Preserve the exact source spelling 칡칡이. A conditional compositional reading could be derived only if the title is independently shown to segment as 칡+칡+-이; do not promote such a hypothesis to a lexical output.",
+      "whyNotResolved": "The primary text confirms the title, but gives no pronunciation. The title may be lexicalized or dialectal; the internal reduplication and grammatical status of final 이 are not established. NIKL Rule 11 explains 칡과[칙꽈] but cannot by itself determine the full title's syllabification or final liaison.",
+      "acceptanceCriterion": "Only add a lexical IPA entry if an authoritative text source explicitly gives the pronunciation or confirms the title's morphological segmentation. Otherwise preserve the source-attested spelling and keep pronunciation unassigned. No audio or external review is requested.",
       "externalTextSearch": {
         "checkedAt": "2026-11-07",
-        "scope": "Opened the 2015 Busan oral-culture PDF at the exact field-song entry and cross-checked the National Gugak Center encyclopedia entry for 칭칭이소리.",
-        "result": "The source PDF reads [철마면 민요 26] 칭칭이 at printed p. 587 (PDF page 596), not 칡칡이. Its refrain includes 치기타 칭칭나네 and cites the 1992 Yangsan folk-song collection. The benchmark token remains unverified.",
-        "status": "SOURCE_MISMATCH_CONFIRMED; EXACT_TOKEN_PRONUNCIATION_UNASSIGNED"
+        "scope": "Reopened the exact 1991 Busan field-recording entry at PDF text lines 20611–20622 and checked NIKL Q&A 321743 for ㄺ before consonants. The previously cited printed p. 587 [칭칭이] occurrence was not the exact 1991 entry and must not be used to correct this title.",
+        "result": "The exact 1991 record at printed p. 586 reads [철마면 민요 26] 칡칡이. This is a source-attested spelling, not a source mismatch; pronunciation/morphology remain unresolved.",
+        "status": "SOURCE_ATTESTED_TITLE; EXACT_TOKEN_PRONUNCIATION_UNASSIGNED"
       },
       "currentDisposition": {
-        "status": "SOURCE_MISMATCH_CONFIRMED_PRESERVE_RAW_NO_AUTOCORRECTION",
-        "reason": "The source attests 칭칭이, not the exact token 칡칡이; no automatic spelling correction or pronunciation mapping is licensed."
+        "status": "SOURCE_ATTESTED_TITLE_PRESERVE_RAW_PRONUNCIATION_UNASSIGNED",
+        "reason": "The primary source attests the exact title 칡칡이; it supplies no phonetic form or secure morphology, so no IPA or alias is licensed."
       }
     },
     {
