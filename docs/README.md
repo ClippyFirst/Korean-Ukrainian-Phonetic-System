@@ -27,7 +27,7 @@ This page is the entry point for project documentation. It distinguishes current
 
 ## Current project status — 2026-11-07
 
-**Integration branch:** `main`, current merge commit `62ca357d1ff64bc0a113e30fc92e4ce2f1b5ffcc` (PR [#457](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/457)). Audited starting commit: `e72856c1f03bfb775805748f96ec23889ca2e60f`. PR [#456](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/456) remains the feature integration, merged as `18f5529b9100ea6e4f7c176c9627bacf1fc52585`.
+**Integration branch:** `main`. **PR #457 merge commit:** `62ca357d1ff64bc0a113e30fc92e4ce2f1b5ffcc`. Audited starting commit: `e72856c1f03bfb775805748f96ec23889ca2e60f`. PR [#456](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/456) remains the feature integration, merged as `18f5529b9100ea6e4f7c176c9627bacf1fc52585`.
 
 The starting main-head runs `42415278464` and `42415278451` failed because of a malformed UGTPHON source-register CSV row and an incorrect pinned corpus-path expectation. PR #457 corrects both. Its exact-head verification is green:
 - [System verification 42416681845](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681845): Python regression/data integrity, browser tests, source redistribution rights gate, and public-page build all passed. The metadata-only NIKL inventory was skipped by workflow policy.
