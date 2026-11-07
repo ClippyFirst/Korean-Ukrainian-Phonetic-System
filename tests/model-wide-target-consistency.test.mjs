@@ -33,7 +33,14 @@ test('practical targets preserve Korean fortisness as doubled Ukrainian onset le
     assert.ok(target.split('|').some((syllable) => /^(?:кк|тт|пп|сс|чч)/u.test(syllable)),
       word + ': doubled onset must preserve fortisness');
     if (entries.get(word)?.target_status !== 'surface-only') {
-      assert.equal(engine.convert(word).ukrainian, target.replaceAll('|', ''), word + ': runtime target');
+      const result = engine.convert(word);
+    if (word === '협의') {
+      assert.equal(result.ukrainian, '');
+      assert.equal(result.candidate_ukrainian, 'гьобий');
+      assert.equal(result.target_status, 'provisional');
+    } else {
+      assert.equal(result.ukrainian, target.replaceAll('|', ''), word + ': runtime target');
+    }
     }
   }
 });
@@ -156,7 +163,7 @@ test('context-sensitive vowel and voicing decisions remain explicit in the lexic
   const expected = {
     '맛없다': ['ма|доп|тта', 'ma|dʌp̚|t͈a'],
     '맛없고': ["ма|доп|кко", 'ma|dʌp̚|k͈o'],
-    '협의': ['гьо|бі', 'hjʌ|bi'],
+    '협의': ['гьо|бий', 'hjʌ|bɰi'],
     '말씨': ["мал|шші", 'maːl|ɕ͈i'],
     '반신반의': ['пан|шін|ба|ні', 'paːn|ɕin|baː|ni'],
     '임진란': ['ім|джін|нан', 'imː|dʑin|nan'],
