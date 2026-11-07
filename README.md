@@ -36,11 +36,11 @@ The latest exact-head diagnostics are from PR #454 before its squash merge. They
 - Multi-engine SIGMORPHON diagnostic: Native was 358/998 exact (35.8717%), ahead of g2pK (353/999; 35.3353%) and the other installed deterministic/phonemizer baselines in that run. This is a dataset- and convention-specific diagnostic, not proof of normative accuracy.
 - CharsiuG2P and ByT5 inference were skipped by policy; no neural score is claimed.
 
-Evidence: [UGTPHON diagnostic](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493640), [multi-engine comparison](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493822), and [exact-head system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493613).
+Evidence: [UGTPHON diagnostic](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493640), [multi-engine comparison](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493822), and [exact-head system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493613). Historical mandatory baseline runs [42226435101](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435101) and [42226435403](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435403) remain linked as earlier evidence, not as the latest benchmark.
 
 ### Readiness and remaining work
 
-The repository is a **software-verified, bounded research prototype**. It is **not independently research-certified and not release-ready as an authoritative transcription standard**. Remaining substantive work is evidence-limited: original 236/239 cohort provenance, speaker-specific IPA evidence for the 40 no-audio cases, independent Ukrainian target validation if certification is pursued, broader source-backed rule coverage, and deployment/live-smoke confirmation on the latest main commit. No external reviewer outreach or correspondence is part of this execution pass.
+The repository is a **software-verified, bounded research prototype**; it remains a **research prototype, not independently research-certified or release-ready** as an authoritative transcription standard. Remaining substantive work is evidence-limited: original 236/239 cohort provenance, speaker-specific IPA evidence for the 40 no-audio cases, independent Ukrainian target validation if certification is pursued, broader source-backed rule coverage, and deployment/live-smoke confirmation on the latest main commit. No external reviewer outreach or correspondence is part of this execution pass.
 
 ## Documentation and repository map
 
