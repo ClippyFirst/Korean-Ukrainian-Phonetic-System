@@ -7047,3 +7047,16 @@ The already registered Park, Cho & Han (2016) full-text study reports 602/628 (9
 - **PARTIAL:** Ukrainian target mapping for /ɰi/ and independent Ukrainian intelligibility; source rights at item level; official NIKL live metadata crawl (HTTP 403/skip).
 
 **Readiness:** source-backed bounded research prototype, not independently research-certified or release-ready as an authoritative standard.
+
+
+## 2026-11-07 — literature intake and source-count refresh
+
+The source register now contains **224 records** (12 columns). Since the previous 220-row handoff snapshot, four more source records were added from the existing Undermind research workspace:
+- Kim (2012), cine-MRI/acoustic gradual tongue movement in Korean palatalization;
+- Sung (2014), ultrasound study distinguishing lexical and post-lexical palatalization across speakers;
+- Kim (2021), acoustic realization of vowel-vowel sequences;
+- Shin (2013), optional /j/ formation/insertion and speech-rate effects.
+
+These are research-context sources only. They do not test all exact UGTPHON target tokens, do not justify categorical [ɕ]/[ɕ͈] or [j]/[w] runtime rules, and do not supply speaker-specific IPA for the residual corpus items. The source register records the DOI/abstract-level evidence and limitations. Historical rights-triage counts predate these additions and must be recomputed before reuse.
+
+**Correction note:** the direct Busan PDF inspection and the corrected 칡칡이 source-mismatch disposition recorded above supersede the earlier mistaken p.586 transcription. The PDF's printed p.587 / PDF p.596 records 칭칭이, not 칡칡이; the full extracted PDF contains no exact 칡칡이 match.
