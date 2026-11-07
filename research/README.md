@@ -1,3 +1,14 @@
+# Current continuation — UGTPHON five native abstentions (2026-11-06)
+
+See [case-by-case evidence and implementation](../docs/UGTPHON-FIVE-ABSTENTIONS-RESOLUTION-2026-11-06.md) and the updated [residual triage register](final-residual-abstention-triage-2026-10-25.json).
+
+- Three exact-form recoveries are implemented in Python and Browser: `쫒아내면` (R002), `많앗구나유유유` (R003), and `무서웟어` (R002). Raw spelling is preserved; these are provisional, not independent IPA gold.
+- `칡칡이` remains blocked: the opened Busan oral-culture PDF directly records it as a folk-song heading and cites 1991 fieldwork / 1992 source, but no audio or field notes establish its spoken realization. The earlier source-register claim that the PDF text layer read `칭칭이` was incorrect and has been corrected.
+- `삶의` remains blocked from asserted IPA and Ukrainian output: NIKL supports Hangul `[살믜]/[살메]`, not a word-specific IPA adjudication.
+- Current implementation branch: `fix/five-ugtphon-native-abstentions-final-release-2026-11-06`; PR #454. Browser and paired Native-vs-g2pk diagnostics report 2,701/2,703 coverage and 2 unresolved cases. Full multi-engine comparison was cancelled during external implementation fetching; exact-head CI is pending on PR #454.
+
+---
+
 # Korean–Ukrainian Phonetic System: Research Programme
 
 Status: evidence-scoped research prototype. Mandatory multi-engine diagnostic comparison and exact-head software verification passed on PR #443; independent Korean IPA review, independent Ukrainian target review, original historical cohort membership proof and residual token-level evidence remain open. The scoped source-redistribution gate passes for positively recorded redistributed material; it is not blanket legal clearance.

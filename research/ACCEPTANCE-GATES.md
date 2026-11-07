@@ -1,3 +1,19 @@
+# Continuation acceptance snapshot — five UGTPHON abstentions (2026-11-06)
+
+Implementation branch: `fix/five-ugtphon-native-abstentions-final-release-2026-11-06`.
+
+| Case | Current disposition | Verification boundary |
+|---|---|---|
+| `칡칡이` | BLOCKED_SOURCE_IDENTITY_AND_AUDIO | Field-recorded folk-song heading `[철마면 민요 26]`; no audio/field notes; Kiwi/MeCab boundary agreement is not enough to establish the title's morphology |
+| `쫒아내면` | Exact typo-preserving R002 license added | Corpus-specific written-form surface only; not normalized to `쫓아내면`; tests pending CI |
+| `많앗구나유유유` | Exact typo-preserving R003 license added | Context identifies 많- + past -았-; NIKL §12(4); tests pending CI |
+| `삶의` | BLOCKED_SPECIALIST_IPA_ADJUDICATION | NIKL Hangul readings are attested; IPA and Ukrainian output remain withheld |
+| `무서웟어` | Exact typo-preserving R002 license added | Retains source single ㅅ; tests pending CI |
+
+Three licenses are full-form + exact-adjacent-pair only. Python and Browser positive/negative regressions are committed. Browser and paired Native-vs-g2pk diagnostics report 2,701/2,703 Native coverage and 2 unresolved cases; full multi-engine comparison and final regression CI remain pending. See the case-by-case report for sources and limitations.
+
+---
+
 # 2026-11-06 — Current acceptance snapshot after PR #443 merge
 
 **Current `main`:** `bb972871a207b1f703503ade980a36cf3b976085`.  

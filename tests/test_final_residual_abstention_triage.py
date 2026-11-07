@@ -35,28 +35,37 @@ def test_residual_abstention_register_is_complete_and_evidence_scoped():
     assert "No accepted Ukrainian output" in cases[3]["productionChange"]
     assert "Original input" in cases[4]["productionChange"]
     assert all("IPA" in " ".join(queue["policy"]) or "IPA" in case["status"] for case in cases)
+    current = queue["currentSnapshot"]
+    assert current["recoveredExactForms"] == ["쫒아내면", "많앗구나유유유", "무서웟어"]
+    by_input = {case["input"]: case for case in cases}
+    assert by_input["칡칡이"]["currentDisposition"]["status"] == "BLOCKED_SOURCE_IDENTITY_AND_AUDIO"
+    assert by_input["삶의"]["currentDisposition"]["status"] == "BLOCKED_SPECIALIST_IPA_ADJUDICATION"
 
 
-def test_residual_cases_preserve_abstention_and_literal_ipa_contract():
+def test_residual_cases_preserve_exact_spelling_and_ipa_acceptance_boundary():
     queue = json.loads(QUEUE.read_text(encoding="utf-8"))
+    recovered = {"쫒아내면", "많앗구나유유유", "무서웟어"}
     for case in queue["cases"]:
         form = case["input"]
         phonetics = phoneticize_korean(form)
         result = transliterate_korean(form)
         assert phonetics["input"] == form, (form, phonetics)
-        assert result["target_status"] == "unresolved", (form, result)
-        assert result["ukrainian_orthography"] is None, (form, result)
-        assert result["candidate_orthography"] is None, (form, result)
-        if form == "많앗구나유유유":
-            # The literal written form receives an inspectable IPA diagnostic;
-            # the engine must not silently substitute a corrected spelling.
+        if form in recovered:
+            # Exact source spelling is now rule-analyzable. IPA is provisional,
+            # and any target is research-prototype output, not independent gold.
+            assert phonetics["pronunciation_status"] == "provisional", (form, phonetics)
+            assert phonetics["ipa_is_diagnostic_only"] is False, (form, phonetics)
             assert phonetics["ipa"]["ipa"], (form, phonetics)
-            assert phonetics["ipa"]["is_diagnostic_only"] is True, (form, phonetics)
-            assert phonetics["pronunciation_status"] == "unresolved", (form, phonetics)
-            assert phonetics["input"] == "많앗구나유유유"
+            assert result["target_status"] in {"model-selected", "provisional", "unavailable"}, (form, result)
+            assert result["analysis_status"] == "research-prototype", (form, result)
         else:
+            # 칡칡이 (folk-song heading) and 삶의 remain blocked for different reasons.
+            expected_target_status = "unresolved"
+            assert result["target_status"] == expected_target_status, (form, result)
+            assert result["ukrainian_orthography"] is None, (form, result)
+            assert result["candidate_orthography"] is None, (form, result)
             assert phonetics["pronunciation_status"] == "unresolved", (form, phonetics)
-
+            assert phonetics["ipa_is_diagnostic_only"] is True, (form, phonetics)
 
 def test_spelling_sources_are_not_misrepresented_as_authorizing_normalization():
     queue = json.loads(QUEUE.read_text(encoding="utf-8"))

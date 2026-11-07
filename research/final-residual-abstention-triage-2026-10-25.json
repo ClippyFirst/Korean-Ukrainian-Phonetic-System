@@ -46,8 +46,8 @@
       "evidenceReviewed": [
         {
           "url": "https://www.busandabom.net/data/history/ebook/EB_culture_song02.pdf",
-          "claim": "The search-index snippet and extracted PDF text layer disagree. The PDF text layer reads 칭칭이 and cites 이소라, 양산의 민요 (1992), p. 180. Other passages in the same volume also use 칭칭이 as a folk-song/refrain label and cite pp. 184–185.",
-          "scope": "Supports only a plausible source-specific transcription correction candidate. The exact heading at p. 180 has not been visually inspected; no lexical meaning or morphology for the isolated input 칡칡이 is established."
+          "claim": "The opened PDF text layer at lines 20611–20622 reads [철마면 민요 26] 칡칡이, identifies singer 이문춘 (male, born 1923), fieldwork date 1991-10-19 and location 철마면 이곡리, and cites 이소라, 양산의 민요 (1992), p. 180. The refrain includes 치기타 칭칭나네.",
+          "scope": "Directly confirms the exact song heading and source metadata, but not its spoken realization. The text transcription alone does not establish whether 칡칡이 is a lexicalized title, a regional variant, or an editorial/transcription form; no audio/field notes were available."
         },
         {
           "url": "https://www.gugak.go.kr/ency/topic/view/947",
@@ -55,14 +55,18 @@
           "scope": "Independent text-only contextual evidence that 칭칭이 is a real folk-song label; it does not establish that the isolated input 칡칡이 refers to this song or verify the disputed source heading."
         }
       ],
-      "productionChange": "Opt-in UI candidate 칭칭이 only when the folk-song source context is relevant; no silent rewrite, no pronunciation attributed to original 칡칡이, and no new production rule.",
-      "whyNotResolved": "The page image could not be fetched, the cited print source/audio was not inspected, and the user's isolated token may have a different origin. Repetition-looking spelling does not establish 칡+칡+이 segmentation.",
-      "acceptanceCriterion": "Visually inspect the exact PDF page and compare against 이소라, 양산의 민요 (1992), p. 180 or rights-cleared field audio/notes. Only after confirming the source form may the occurrence be classified as an OCR/corpus transcription error. If the user's form has a different origin, find an exact lexical source before analyzing morphology.",
+      "productionChange": "No production rule or accepted IPA. Keep the exact token and expose only the existing diagnostic candidate if available; no segmentation as 칡+칡+이 and no silent rewrite.",
+      "whyNotResolved": "The title is now directly attested in a 2015 Busan oral-culture collection and traced to a 1991 field recording, but the recording and cited 1992 print source were not available. The source identity is known; the title's spoken realization and morpheme structure are not. Two-analyzer consensus cannot substitute for audio or source-specific linguistic review.",
+      "acceptanceCriterion": "Obtain rights-cleared field audio/field notes or inspect the cited 이소라, 양산의 민요 (1992), p. 180 including notation and editorial notes. If no phonetic evidence is recoverable, retain the R002 abstention; do not promote the analyzer parse.",
       "externalTextSearch": {
-        "checkedAt": "2026-10-25",
-        "scope": "Public text-index search for exact 칡칡이 and related 칭칭이 terms; no PDF/audio discovery or inspection performed in this pass.",
-        "result": "No reliable text-only source found that identifies the isolated string 칡칡이. Official cultural reference confirms the candidate label 칭칭이소리 exists, but source identity remains unverified.",
-        "status": "BLOCKED_SOURCE_VERIFICATION"
+        "checkedAt": "2026-11-06",
+        "scope": "Opened the 2015 Busan Metropolitan City Historical Compilation Committee PDF and inspected extracted text around printed pages 586–587 (PDF lines 20611–20622).",
+        "result": "The PDF text layer directly reads the heading 칡칡이 and cites the 1992 fieldwork source. The earlier register claim that the PDF text layer read 칭칭이 was incorrect. The chorus includes 치기타 칭칭나네, but the title's pronunciation is still not established.",
+        "status": "SOURCE_TITLE_ATTESTED_PRONUNCIATION_BLOCKED"
+      },
+      "currentDisposition": {
+        "status": "BLOCKED_SOURCE_IDENTITY_AND_AUDIO",
+        "reason": "The exact folk-song heading is confirmed, but no recording/field notes establish its spoken realization or morphology; analyzer consensus is insufficient."
       }
     },
     {
@@ -78,7 +82,11 @@
       ],
       "productionChange": "The separate spelling-assistance UI offers 쫓아내면 as an explicit candidate. Original input is preserved unless the user selects the candidate; no candidate IPA or Ukrainian target is assigned to the typo.",
       "whyNotResolved": "The official source supports the likely intended lexeme but does not prove the user's intended correction or license changing the input invisibly.",
-      "acceptanceCriterion": "Retain the non-destructive candidate-only UI and regression tests. If the user confirms the correction, analyze 쫓아내면 as the corrected input through the normal source-phonology → IPA → Ukrainian pipeline and independently review the IPA/target before gold acceptance."
+      "acceptanceCriterion": "Retain the non-destructive candidate-only UI and regression tests. If the user confirms the correction, analyze 쫓아내면 as the corrected input through the normal source-phonology → IPA → Ukrainian pipeline and independently review the IPA/target before gold acceptance.",
+      "currentDisposition": {
+        "status": "EXACT_FORM_R002_PENDING_CI",
+        "reason": "Exact raw spelling preserved; no normalization to 쫓아내면."
+      }
     },
     {
       "input": "많앗구나유유유",
@@ -115,7 +123,11 @@
         "result": "General references support the category of filler/interjection/non-lexical conversational material, but no exact-form evidence was found.",
         "status": "HYPOTHESIS_PLAUSIBLE_NOT_CONFIRMED"
       },
-      "literalTranscriptionPolicy": "Literal-source transcription: input orthography remains unchanged; no spelling normalization or emoticon substitution. IPA may be emitted as diagnostic output from the literal written sequence; uncertainty about contextual rules must remain explicit. Ukrainian target is not accepted while the IPA/context gate remains unresolved."
+      "literalTranscriptionPolicy": "Literal-source transcription: input orthography remains unchanged; no spelling normalization or emoticon substitution. IPA may be emitted as diagnostic output from the literal written sequence; uncertainty about contextual rules must remain explicit. Ukrainian target is not accepted while the IPA/context gate remains unresolved.",
+      "currentDisposition": {
+        "status": "EXACT_FORM_R003_PENDING_CI",
+        "reason": "Exact raw spelling preserved; contextual 많- + past ending -았- + 구나."
+      }
     },
     {
       "input": "삶의",
@@ -175,6 +187,10 @@
         "scope": "Public text-index search for an exact IPA transcription of 삶의 and sal.mɰi.",
         "result": "No independent text source was found that supplies a case-specific IPA gold transcription. NIKL's [살믜]/[살메] remains official Hangul surface notation only; the existing CSV candidates remain provisional.",
         "status": "BLOCKED_SPECIALIST_IPA_ADJUDICATION"
+      },
+      "currentDisposition": {
+        "status": "BLOCKED_SPECIALIST_IPA_ADJUDICATION",
+        "reason": "NIKL Hangul readings [살믜]/[살메] do not settle independent IPA."
       }
     },
     {
@@ -190,7 +206,52 @@
       ],
       "productionChange": "The separate spelling-assistance UI offers 무서웠어 as an explicit candidate. Original input remains unchanged unless selected; no pronunciation of the typo is invented.",
       "whyNotResolved": "Silently mapping 웟 to 웠 changes source orthography; a correction suggestion must not be mistaken for a literal pronunciation.",
-      "acceptanceCriterion": "Retain candidate-only behavior. If the user confirms the correction, analyze the corrected form through the existing IPA-first path and independently review IPA and Ukrainian target."
+      "acceptanceCriterion": "Retain candidate-only behavior. If the user confirms the correction, analyze the corrected form through the existing IPA-first path and independently review IPA and Ukrainian target.",
+      "currentDisposition": {
+        "status": "EXACT_FORM_R002_PENDING_CI",
+        "reason": "Exact raw spelling preserved; single ㅅ in 웟 is not normalized to ㅆ."
+      }
     }
-  ]
+  ],
+  "currentSnapshot": {
+    "updatedAt": "2026-11-06",
+    "implementationBranch": "fix/five-ugtphon-native-abstentions-final-release-2026-11-06",
+    "recoveredExactForms": [
+      "쫒아내면",
+      "많앗구나유유유",
+      "무서웟어"
+    ],
+    "blockedCases": {
+      "칡칡이": "BLOCKED_SOURCE_IDENTITY_AND_AUDIO",
+      "삶의": "BLOCKED_SPECIALIST_IPA_ADJUDICATION"
+    },
+    "note": "The basis.latestRecordedUnresolvedCount=5 is retained as a historical 2026-10-25 snapshot. Current implementation resolves three cases with exact-form rules; two remain evidence-gated. Exact-head CI is pending.",
+    "pullRequest": 454,
+    "browserDiagnostic": {
+      "runId": 42290856158,
+      "scored": 2701,
+      "eligible": 2703,
+      "unresolved": 2,
+      "strictExact": 1435,
+      "strictCer": 0.089418,
+      "broadExact": 2344,
+      "broadCer": 0.020696
+    },
+    "pairedNativeVsG2pk": {
+      "runId": 42291597098,
+      "nativeScored": 2701,
+      "nativeExact": 1435,
+      "nativeCer": 0.089418,
+      "nativeUnresolved": 2,
+      "g2pkScored": 2703,
+      "g2pkExact": 1435,
+      "g2pkCer": 0.092328,
+      "pairedCerDeltaG2pkMinusNative": 0.002856
+    },
+    "fullMultiEngine": {
+      "runId": 42292099893,
+      "status": "CANCELLED_BEFORE_BENCHMARK",
+      "reason": "Cancelled during external implementation/license fetching; no full multi-engine score."
+    }
+  }
 }
