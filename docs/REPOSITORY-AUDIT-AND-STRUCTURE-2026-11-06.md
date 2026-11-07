@@ -540,3 +540,12 @@ This does not claim speaker-level acoustic IPA. The original occurrence register
 **Implementation decision:** no new runtime rule was added because the already-integrated Python and Browser policies match the source-backed boundaries. Jun (2021) was added to the source register to document the variable/gradient n-insertion evidence. All source IDs in the new 17-token register were checked against the source register. The new report/data artifacts require exact-head CI before they are marked fully verified.
 
 **Status correction:** source-based engine-policy adjudication is complete for the 40 occurrences; speaker-specific IPA gold is still unresolved for 40/40. These are separate acceptance axes and must not be conflated.
+
+
+## Addendum — exact source adjudication for 삶의 (2026-11-07)
+
+The earlier IPA hold for UGTPHON occurrence `dc_inside_2212` is superseded at the standard-variant level. NIKL MCFAQ 5716 directly names `삶의` and lists `[살믜]` and `[살메]`. The official Rule 5 commentary clarifies that the consonant-initial `ㅢ → [i]` exception does not apply when the preceding coda is resyllabified into the onset. The earlier project candidate `sal.mi` therefore applied the wrong exception.
+
+The Python research lexicon and Browser lexical overlay now preserve the distinct broad-IPA candidates `sal.mɰi` and `sal.me`; the same Rule 5 correction is applied to `협의` (`hjʌ.bɰi` versus `hjʌ.bi`). Regression tests cover both. The `ɰi → ий` Ukrainian correspondence remains provisional, so final target output is withheld and only a research candidate is exposed.
+
+**Revised five-abstention status:** three exact runtime recoveries; one source-adjudicated standard variant set (`삶의`); one remaining source-limited case (`칡칡이`). No speaker-specific variant or narrow IPA is claimed. No audio or external reviewer outreach is requested.
