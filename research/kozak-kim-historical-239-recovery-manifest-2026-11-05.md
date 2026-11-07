@@ -224,8 +224,9 @@ This yields the exact 239 IDs in the tracked candidate list. It is an occurrence
 ### Reproducible implementation
 
 The repository now includes:
-- `scripts/replay_kozak_239_candidate_selection.py` — pins the report SHA, reproduces the historical Broad-only aggregate classifier and fails unless the candidate-ID file matches exactly;
-- `tests/test_replay_kozak_239_candidate_selection.py` — positive, mapped-negative, and strict-vs-Broad isolation controls;
+- `research/kozak-kim-370-broad-only-replay-input-2026-11-07.csv` — compact 370-row Broad reference/prediction input extracted from the pinned context ledger; Git blob SHA `4335d6488a647f0e240dcc9f8aa24edc5f076a40`;
+- `scripts/replay_kozak_239_candidate_selection.py` — verifies that input Git blob, reproduces the historical Broad-only aggregate classifier and fails unless the candidate-ID file matches exactly;
+- `tests/test_replay_kozak_239_candidate_selection.py` — classifier controls plus a full 370-row replay asserting 239/239 exact candidate-ID equality;
 - the original 239-ID candidate snapshot and this manifest.
 
 The full replay was independently executed against the downloaded artifact in this continuation; the candidate ID sets matched exactly. Exact-head GitHub CI for the new script/test is pending and must pass before marking the repository implementation `DONE_VERIFIED`.
