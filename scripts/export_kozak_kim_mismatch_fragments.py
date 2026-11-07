@@ -317,11 +317,11 @@ def write_csv(path: Path, rows: list[dict[str, str]]) -> None:
     newline normalization.
     """
     buffer = StringIO(newline="")
-    writer = csv.DictWriter(buffer, fieldnames=FIELDS, lineterminator="\\r\\n")
+    writer = csv.DictWriter(buffer, fieldnames=FIELDS, lineterminator="\r\n")
     writer.writeheader()
     writer.writerows(rows)
     payload = buffer.getvalue()
-    if payload.endswith("\\r\\n"):
+    if payload.endswith("\r\n"):
         payload = payload[:-2]
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(payload.encode("utf-8"))
