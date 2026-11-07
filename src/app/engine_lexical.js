@@ -207,7 +207,7 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status,
       alternate=primary==='ɛ'?'e':primary==='e'?'ɛ':'';
       section='research /ɛ–e/ merger';
     }
-    else if(vowel==='ㅢ'&&Boolean(units[i]?.__liaison)){
+    else if(vowel==='ㅢ'&&syllable.onset==='ㅇ'&&!firstSyllableInWord(units,i)){
       genitiveParticle=NIKL_GENITIVE_UI_PARTICLE_FORMS.has(wordFormAt(originalUnits,i));
       primary='ɰi';alternate=genitiveParticle?'e':'i';section='§5';
     }
