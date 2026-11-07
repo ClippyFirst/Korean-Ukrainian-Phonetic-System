@@ -514,7 +514,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                     else:
                         conditional_disabled=True
                 else:
-                    b.onset=a.coda; a.coda=""; changed=True
+                    b.onset=a.coda; b.onset_from_coda=True; a.coda=""; changed=True
         if applied_license_contexts:
             license_context=";".join(dict.fromkeys(applied_license_contexts))
     elif rule_id=="R003":
