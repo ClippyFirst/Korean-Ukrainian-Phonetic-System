@@ -7060,3 +7060,10 @@ The source register now contains **224 records** (12 columns). Since the previou
 These are research-context sources only. They do not test all exact UGTPHON target tokens, do not justify categorical [ɕ]/[ɕ͈] or [j]/[w] runtime rules, and do not supply speaker-specific IPA for the residual corpus items. The source register records the DOI/abstract-level evidence and limitations. Historical rights-triage counts predate these additions and must be recomputed before reuse.
 
 **Correction note:** the direct Busan PDF inspection and the corrected 칡칡이 source-mismatch disposition recorded above supersede the earlier mistaken p.586 transcription. The PDF's printed p.587 / PDF p.596 records 칭칭이, not 칡칡이; the full extracted PDF contains no exact 칡칡이 match.
+
+
+## 2026-11-07 — OpenSLR Seoul Corpus route identified
+
+The source register now contains **225 records**. OpenSLR SLR113 publicly lists the Seoul Corpus with a stated **CC BY-NC 2.0** license and downloadable archives: readme.tgz (27 MB), label.tgz (57 MB Praat TextGrid files), and sound.tgz (2.5 GB FLAC). This upgrades the previous generic corpus lead to a concrete public retrieval route.
+
+Attempted retrieval of the 57 MB label archive from both OpenSLR EU mirrors failed in this execution environment; direct container DNS resolution also failed. Therefore the TextGrid labels were not searched and no exact 삶의 token, speaker, timestamp or matching audio segment is confirmed. The archive is non-commercial under the listed license; no files were redistributed or used for training. Even if an exact 삶의 token is found in this corpus, it will provide a population-level comparison, not identify the unknown UGTPHON source speaker.
