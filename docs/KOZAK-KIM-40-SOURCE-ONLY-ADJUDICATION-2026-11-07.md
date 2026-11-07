@@ -99,3 +99,21 @@ No runtime rule was added in this pass because the current engine policy already
 
 **Acceptance outcome:** source-based engine policy is adjudicated for all 40 occurrences. Speaker-specific narrow IPA gold remains unavailable for 40/40, and the exact prosodic realization of compact n-insertion candidates remains conditional. This is a source-grounded production-policy result, not an independently annotated acoustic benchmark.
 
+## 2026-11-07 benchmark-fragment taxonomy correction
+
+The existing mismatch taxonomy already reserves **C13** for source-attested lexical vowel length. The genitive-particle difference is therefore registered as **C14 — `C14_NIKL_GENITIVE_UI_PARTICLE`**, not as a resyllabification class.
+
+The 16 strict mismatch fragments are limited to five exact benchmark token forms:
+
+- `그놈의`: 1 occurrence
+- `대황본의`: 3 occurrences
+- `염전의`: 10 occurrences
+- `대한민국의`: 1 occurrence
+- `삶의`: 1 occurrence
+
+NIKL Q&A 335190 distinguishes the genitive-particle allowance ([ɯi] as the principal form and [e] as a permitted variant) from non-initial lexical `의` [i]. NIKL MCFAQ 5716 directly attests `삶의` as [살믜]/[살메]. The classifier uses an explicit exact-form allowlist; it does **not** infer genitive morphology from the orthographic sequence coda+`의`.
+
+This benchmark classification is distinct from the runtime liaison-provenance correction for lexical `협의` [혀븨]/[혀비]. The latter preserves the /ɰi/ path when a coda is resyllabified into the onset before `ㅢ`; it is not a genitive-particle exception.
+
+Of the 16 strict fragments, only the `그놈의` occurrence remains in the broad unmapped review queue, because that occurrence also has a separate unresolved /e/ versus /i/ fragment. The other 15 are source-adjudicated variants, not speaker-specific IPA gold. No Ukrainian target is promoted by this classification.
+
