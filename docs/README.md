@@ -23,16 +23,44 @@ This page is the entry point for project documentation. It distinguishes current
 
 - [Licensing and permissions](LICENSING-AND-PERMISSIONS.md) — author identity, scientific-use permissions, technical permission boundary and third-party licence scope.
 
-## Current project status — 2026-11-06
+## Current project status — 2026-11-07
 
-- PR [#446](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/446) is merged into `main` at `321e4a126167eab0ad31fc44ae22b587ee8c809c`. Its exact-head CI passed the browser/Python checks, test matrix, wheel install, teacher-corpus audit, research artifacts, paired native/g2pk, UGTPHON, exhaustive extraction, morphology consensus and mandatory multi-engine diagnostic. Conditional NIKL metadata and optional neural inference jobs were skipped, not passed.
-- Post-merge tests [42254523067](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254523067), system verification [42254523015](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254523015) and master/research artifacts [42254523078](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254523078) passed on the merge commit. Pages deployment [42254523031](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254523031) was cancelled by the subsequent documentation-only push; replacement deployment [42254864628](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254864628) was queued on current `main` commit `e0feeb6ac3697d026d151f3fbb78796728a1e8da`.
-- The 236-case cohort remains 15 exact standard-form runtime dispositions, 181 bounded profile-convention decisions, 12 abstentions and 28 unadjudicated cases. PR #446 adds evidence traceability for the 28 but does not adjudicate them. All 40 residual cases remain outside production changes pending original audio/speaker crosswalk and two independent Korean IPA annotations.
-- The source-rights gate is scoped to positively recorded copied/included/redistributed material; a pass is not blanket legal clearance.
+**Current branch:** main. **Starting commit for this documentation pass:** d2f942d0615df3da2a973a2709f8738f65da18d9. **Latest merged implementation:** PR [#454](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/454), merge commit d2f942d0615df3da2a973a2709f8738f65da18d9.
 
-The `e0feeb6ac3697d026d151f3fbb78796728a1e8da` navigation refresh is a historical predecessor. The subsequent main baseline for the no-audio 40-case branch is `3570b3e5a35533739226d6bf9f0eefb1eb81fbac`; use the dated repository audit for current CI and readiness status.
+### What the 236 cases mean
 
-For the authoritative task ledger and exact evidence, use the [current repository audit](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md), [research acceptance gates](../research/ACCEPTANCE-GATES.md), [research roadmap](../research/ROADMAP.md), and [28-row residual evidence register](../research/kozak-kim-236-residual-review-2026-11-06.csv).
+The reconstructed 236-row cohort is **not 236 independently confirmed phonological rules**:
+
+| Cohort disposition | Rows | What is actually established |
+|---|---:|---|
+| Exact standard-form runtime dispositions | 15 | Ten exact integrations plus five pre-existing exact licenses; no spelling rewrite |
+| Profile-convention decisions | 181 | Bounded broad/narrow or transcription-profile distinctions; not 181 new categorical rules or speaker-level IPA gold |
+| Original abstentions | 12 | Engine policy explicitly decided under the no-audio constraint; speaker-specific IPA remains unresolved |
+| Previously unadjudicated residuals | 28 | Engine policy explicitly decided under the no-audio constraint; speaker-specific IPA remains unresolved |
+| **Total** | **236** | Reconstructed candidate cohort; original historical selector membership is not independently proven |
+
+Thus, **15/236 have exact standard-form runtime dispositions**. The 181 are handled as bounded profile decisions/non-promotions, not as a set of new production rules. The remaining 40 have explicit no-audio engine-policy dispositions (including conditional phrase-mode behavior where word boundaries are explicit), but **40/40 remain unresolved as speaker-specific IPA gold**. The original 236/239 cohort membership is reconstructed, not proven from the original selector/member list. See the [236-case integration record](docs/KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md), [40-case policy record](docs/KOZAK-KIM-40-NO-AUDIO-ADJUDICATION-2026-11-06.md), and machine-readable registers.
+
+### Latest measured pronunciation benchmarks
+
+The latest exact-head diagnostics are from PR #454 before its squash merge. They are Korean G2P comparisons, **not Ukrainian transcription accuracy**:
+
+| Dataset / engine | Scored | Exact match | CER | Coverage |
+|---|---:|---:|---:|---:|
+| UGTPHON Korean test — Native | 2,701 | 53.1285% (1,435) | 8.9418% | 99.9260% |
+| UGTPHON Korean test — g2pK 0.9.4 | 2,703 | 53.0892% (1,435) | 9.2328% | 100% |
+| SIGMORPHON 2021 Korean test — Native | 998 | 35.8717% (358) | 14.5598% | 99.90% of 999 eligible |
+| SIGMORPHON 2021 Korean test — g2pK 0.9.4 | 999 | 35.3353% (353) | 14.8222% | 100% |
+
+- UGTPHON paired comparison: 2,701 shared occurrences; same exact-match count, Native CER lower by 0.2856 percentage points. Native abstained on two occurrences rather than guessing.
+- SIGMORPHON paired comparison: 998 shared words; Native exact-match rate higher by about 0.50 percentage points and CER lower by about 0.25 points. The Native engine abstained on one word.
+- Multi-engine SIGMORPHON diagnostic: Native was 358/998 exact (35.8717%), ahead of g2pK (353/999; 35.3353%) and the other installed deterministic/phonemizer baselines in that run. This is a dataset- and convention-specific diagnostic, not proof of normative accuracy.
+- CharsiuG2P and ByT5 inference were skipped by policy; no neural score is claimed.
+
+Evidence: [UGTPHON diagnostic](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493640), [multi-engine comparison](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493822), and [exact-head system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493613).
+
+For the authoritative task ledger and exact evidence, use the [current repository audit](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md), [research acceptance gates](../research/ACCEPTANCE-GATES.md), [research roadmap](../research/ROADMAP.md), and the linked 236/40-row registers.
+
 ## 236-candidate engine work
 
 - [236-candidate review](../research/kozak-kim-236-candidate-review-2026-11-05.md)

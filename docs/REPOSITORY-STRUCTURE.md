@@ -1,12 +1,19 @@
 # Repository structure and ownership guide
 
-**Snapshot:** 2026-11-06, `main` after PR #446 and the documentation refresh at `e0feeb6ac3697d026d151f3fbb78796728a1e8da`. The repository-structure/navigation guide was introduced through PR #444 at `e3ca4de087dc87c215d5284e59c89bdb0bff2808`; PR #446 subsequently added the 28-row residual evidence register and generator/test projections. This guide describes observed tree ownership and navigation boundaries; it is not a claim that every file has been independently reviewed line by line.
+**Snapshot:** 2026-11-07, main at d2f942d0615df3da2a973a2709f8738f65da18d9, after PR #454. This guide describes observed tree ownership and navigation boundaries; it is not a claim that every file has been independently reviewed line by line.
 
 ## What this repository contains
 
+## Current 236-case and benchmark status — 2026-11-07
+
+The reconstructed 236-row cohort contains 15 exact standard-form runtime dispositions, 181 bounded profile-convention decisions, 12 original abstentions and 28 residual cases. The 40 residual cases have explicit no-audio engine-policy dispositions, but all 40 remain unresolved as speaker-specific IPA gold. Do not describe the 181 profile decisions as new categorical rules or the 40 engine-policy decisions as IPA adjudication. The historical 236/239 selector membership is reconstructed, not independently proven.
+
+Latest PR #454 diagnostics: UGTPHON Native 1,435/2,701 exact (53.1285%), CER 8.9418%; g2pK 1,435/2,703 (53.0892%), CER 9.2328%. SIGMORPHON 2021: Native 358/998 (35.8717%), CER 14.5598%; g2pK 353/999 (35.3353%), CER 14.8222%. These are Korean G2P/IPA diagnostics, not Ukrainian target accuracy or normative gold. See the [236-case integration record](KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md) and [2026-11-07 repository status](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md).
+
+
 A Python research package, a browser-based practical/research application, Korean phonology and lexical datasets, a Korean-to-Ukrainian IPA target layer, reproducible research tooling, and a public GitHub Pages service.
 
-At `main` commit `321e4a126167eab0ad31fc44ae22b587ee8c809c`, the recursive Git tree contains **832 entries** (790 files and 42 directories), including **177 Markdown files**, **394 files under `tests/`**, **64 scripts**, **18 GitHub Actions workflows**, and **13 schemas**. The `docs/` subtree contains 146 files and `research/` 56 files. These are point-in-time inventory counts, not measures of implementation completeness.
+At main commit d2f942d0615df3da2a973a2709f8738f65da18d9, the recursive Git tree contains **838 entries** (796 files and 42 directories), including **179 Markdown files**, **397 files under tests/**, **64 scripts**, **18 GitHub Actions workflows**, and **13 schemas**. The docs/ subtree contains 148 files and research/ 57 files. These are point-in-time inventory counts, not measures of implementation completeness. These are point-in-time inventory counts, not measures of implementation completeness.
 
 ## Top-level map
 

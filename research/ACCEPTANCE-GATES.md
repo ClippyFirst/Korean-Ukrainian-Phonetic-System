@@ -1,16 +1,43 @@
-# Continuation acceptance snapshot — five UGTPHON abstentions (2026-11-06)
+# Current acceptance snapshot — 2026-11-07
 
-Implementation branch: `fix/five-ugtphon-native-abstentions-final-release-2026-11-06`.
+**Main:** d2f942d0615df3da2a973a2709f8738f65da18d9 (PR #454 merged).
 
-| Case | Current disposition | Verification boundary |
-|---|---|---|
-| `칡칡이` | BLOCKED_SOURCE_IDENTITY_AND_AUDIO | Field-recorded folk-song heading `[철마면 민요 26]`; no audio/field notes; Kiwi/MeCab boundary agreement is not enough to establish the title's morphology |
-| `쫒아내면` | Exact typo-preserving R002 license added | Corpus-specific written-form surface only; not normalized to `쫓아내면`; tests pending CI |
-| `많앗구나유유유` | Exact typo-preserving R003 license added | Context identifies 많- + past -았-; NIKL §12(4); tests pending CI |
-| `삶의` | BLOCKED_SPECIALIST_IPA_ADJUDICATION | NIKL Hangul readings are attested; IPA and Ukrainian output remain withheld |
-| `무서웟어` | Exact typo-preserving R002 license added | Retains source single ㅅ; tests pending CI |
+## 236-case status
 
-Three licenses are full-form + exact-adjacent-pair only. Python and Browser positive/negative regressions are committed. Browser and paired Native-vs-g2pk diagnostics report 2,701/2,703 Native coverage and 2 unresolved cases; full multi-engine comparison and final regression CI remain pending. See the case-by-case report for sources and limitations.
+| Cohort disposition | Rows | Current acceptance |
+|---|---:|---|
+| Exact standard-form runtime dispositions | 15 | Exact, source-scoped runtime licenses; no spelling rewrite |
+| Profile-convention decisions | 181 | Bounded convention handling/non-promotion; not categorical rules or speaker IPA gold |
+| Original abstentions | 12 | Engine policy decided under no-audio constraint; speaker-specific IPA unresolved |
+| Residual unadjudicated cases | 28 | Engine policy decided under no-audio constraint; speaker-specific IPA unresolved |
+| **Total** | **236** | Reconstructed candidate cohort; original selector membership unproven |
+
+All 40 residual cases have explicit ENGINE_POLICY_RESOLVED_NO_AUDIO dispositions. Their separate speaker-specific IPA gold status remains UNRESOLVED_NO_AUDIO (40/40). This distinction is mandatory: policy completion is not pronunciation adjudication.
+
+## Latest benchmark evidence
+
+| Dataset | Engine | Scored | Exact | CER |
+|---|---|---:|---:|---:|
+| UGTPHON Korean test | Native | 2,701 | 1,435 (53.1285%) | 8.9418% |
+| UGTPHON Korean test | g2pK 0.9.4 | 2,703 | 1,435 (53.0892%) | 9.2328% |
+| SIGMORPHON 2021 Korean test | Native | 998 | 358 (35.8717%) | 14.5598% |
+| SIGMORPHON 2021 Korean test | g2pK 0.9.4 | 999 | 353 (35.3353%) | 14.8222% |
+
+These are diagnostic Korean G2P/IPA comparisons, not Ukrainian target accuracy or normative pronunciation gold. Multi-engine run [42292493822](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493822) passed; CharsiuG2P and ByT5 inference were skipped by policy. Paired UGTPHON run [42292493640](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493640) and system verification [42292493613](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493613) passed.
+
+## Remaining acceptance boundaries
+
+- **PARTIAL — original 236/239 cohort provenance:** candidate replay is reproducible, but the original selector/member list is not proven.
+- **UNRESOLVED_NO_AUDIO — 40 speaker-specific IPA claims:** no audio/speaker crosswalk; no guessed narrow IPA or Ukrainian gold.
+- **PARTIAL — Ukrainian target validation:** separate target-layer validation is not measured by Korean G2P benchmarks.
+- **PARTIAL — broad source-backed coverage:** continue only where the existing rule-coverage matrix identifies a gap with exact primary evidence and negative controls.
+- **DEFERRED — independent research certification:** no external reviewer outreach or correspondence is being undertaken. Without independent Korean IPA and Ukrainian target validation, do not claim research certification or authoritative release readiness.
+- **NOT VERIFIED — latest Pages live smoke:** confirm the current post-merge deployment and live interaction before calling deployment verified.
+
+**Readiness:** software-verified bounded research prototype; not independently research-certified or release-ready.
+
+---
+
 
 ---
 

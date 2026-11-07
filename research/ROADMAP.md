@@ -1,16 +1,24 @@
-# Continuation snapshot — five UGTPHON native abstentions (2026-11-06)
+# Current continuation — mainline status (2026-11-07)
 
-The focused review is documented in [UGTPHON five-abstention resolution](../docs/UGTPHON-FIVE-ABSTENTIONS-RESOLUTION-2026-11-06.md).
+**Current main:** d2f942d0615df3da2a973a2709f8738f65da18d9; PR #454 merged.
 
-- Three exact-form cases are implemented in Python and Browser: `쫒아내면` (R002), `많앗구나유유유` (R003), and `무서웟어` (R002). `칡칡이` remains blocked: the exact form is a field-recorded folk-song heading, with no audio; two-analyzer agreement does not establish the title's morphology or pronunciation.
-- `칡칡이` remains blocked from asserted IPA pending source-specific lexical/audio verification. `삶의` remains blocked from asserted IPA and Ukrainian output; NIKL supports Hangul `[살믜]/[살메]`, while `sal.mi`/`sal.me` remain diagnostic pending independent IPA review.
-- Exact-form Python and Browser regressions, including near-form negative controls, have been added. **Status: three-case implementation submitted; Browser and paired Native-vs-g2pk diagnostics complete; exact-head regression CI and full multi-engine comparison pending.** Do not mark DONE_VERIFIED until Python, Browser, build, and relevant benchmark/parity jobs pass.
-- No new productive R002/R003 heuristic has been introduced. Raw source spellings remain unchanged.
-- This continuation supersedes the earlier statement below that all five cases require abstention/no implementation.
+- **DONE_VERIFIED — PR #454 exact-form recovery:** three typo-preserving morphology licenses are implemented in Python and Browser for 쫒아내면, 많앗구나유유유, and 무서웟어. Positive and near-form negative controls passed. No spelling normalization or productive generalization was added.
+- **DONE_VERIFIED — UGTPHON paired diagnostic:** Native 1,435/2,701 exact (53.1285%), CER 8.9418%; g2pK 1,435/2,703 exact (53.0892%), CER 9.2328%. Native has two explicit abstentions; paired exact counts are equal.
+- **DONE_VERIFIED — multi-engine SIGMORPHON diagnostic:** Native 358/998 exact (35.8717%), CER 14.5598%; g2pK 353/999 exact (35.3353%), CER 14.8222%. This remains a diagnostic comparison, not normative IPA gold.
+- **DONE_VERIFIED — exact-head software CI:** Python 3.11/3.12/3.13, wheel install, browser tests/build, source-rights gate, generated research artifacts, exhaustive extraction, morphology diagnostics and multi-engine comparison passed.
+- **DONE_VERIFIED — 40 engine-policy dispositions:** all 40 no-audio cases have explicit policy decisions; 40/40 speaker-specific IPA gold claims remain unresolved.
+- **PARTIAL — 236-case cohort:** 15 exact runtime dispositions; 181 bounded profile-convention decisions; 12 abstentions + 28 residual cases. Historical selector membership remains reconstructed rather than proven.
+- **DEFERRED — external research review:** no reviewer outreach or correspondence is undertaken. Independent IPA/target validation remains necessary before research certification or authoritative release claims.
+- **NOT VERIFIED — latest Pages live smoke:** check the current post-merge deployment run before declaring deployment complete.
+
+The project remains a bounded research prototype. Optional CharsiuG2P and ByT5 inference were skipped by policy; no neural benchmark score is claimed. See [acceptance gates](ACCEPTANCE-GATES.md), [the 236-case integration record](../docs/KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md), and [the latest repository audit](../docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md).
 
 ---
 
-# Current continuation — 2026-11-06 (PR #443 merged)
+
+---
+
+# Historical continuation — 2026-11-06 (PR #443 merged; superseded by 2026-11-07 status)
 
 **Current `main`:** `bb972871a207b1f703503ade980a36cf3b976085`.  
 **Merged PR:** [#443](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/443).  

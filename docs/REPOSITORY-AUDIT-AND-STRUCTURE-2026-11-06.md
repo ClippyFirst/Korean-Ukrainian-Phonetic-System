@@ -1,6 +1,39 @@
 # Repository audit and structure — 2026-11-06
 
-## Scope and exact snapshot
+## Superseding current-main status — 2026-11-07
+
+**Current branch:** main. **Current commit:** d2f942d0615df3da2a973a2709f8738f65da18d9 (PR #454 merged). This section supersedes older snapshot statements below; the dated audit trail is retained.
+
+### 236-case task ledger
+
+| Work item | Status | Evidence / acceptance boundary |
+|---|---|---|
+| Reconstructed 236-row occurrence inventory | DONE_VERIFIED as an inventory | Candidate replay and registers exist; original historical 236/239 selector membership is not proven |
+| 15 exact standard-form runtime dispositions | DONE_VERIFIED | Ten exact integrations plus five pre-existing exact licenses; occurrence-scoped and source-backed |
+| 181 profile-convention decisions | DONE_VERIFIED as bounded decisions | Not 181 categorical sound-change rules and not speaker-specific IPA gold |
+| 12 original abstentions + 28 residual cases | DONE_VERIFIED for engine-policy disposition | All 40 have explicit no-audio engine-policy decisions; speaker-specific IPA remains UNRESOLVED_NO_AUDIO for all 40 |
+| Three exact typo-preserving UGTPHON recoveries | DONE_VERIFIED | PR #454 merged; Python/Browser positive and near-form negative tests passed |
+| Independent Korean IPA gold for 40 | DEFERRED / EVIDENCE-LIMITED | No source audio or speaker crosswalk; no guessed narrow IPA |
+| Independent Ukrainian target validation | DEFERRED | Korean G2P benchmarks do not measure target-layer quality |
+| External reviewer outreach | DEFERRED | Not part of this execution pass; no correspondence initiated |
+
+### Latest benchmark evidence
+
+- **UGTPHON Korean test** (275 source rows; 2,703 eligible token occurrences): Native scored 2,701, exact 1,435 (53.1285%), CER 8.9418%, two unresolved; g2pK scored 2,703, exact 1,435 (53.0892%), CER 9.2328%. On the 2,701 paired occurrences, exact counts are equal and Native CER is lower by 0.2856 percentage points.
+- **SIGMORPHON 2021 Korean test** (1,000 rows; 999 eligible words): Native scored 998, exact 358 (35.8717%), CER 14.5598%, one abstention; g2pK scored 999, exact 353 (35.3353%), CER 14.8222%. On the 998 paired words, Native exact-match rate is higher by about 0.50 percentage points and CER lower by about 0.25 points.
+- **Multi-engine run** [42292493822](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493822) passed and uploaded artifact 13540904691 (SHA-256 54adafb0f8233b8cbd9fc88dfb2308abd8831044bab6a4be7eca6ecd5850a3cf). Optional CharsiuG2P and ByT5 inference jobs were SKIPPED by policy. These are diagnostic comparisons, not normative IPA gold or Ukrainian transcription scores.
+- **Exact-head verification:** tests [42292493631](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493631), system verification [42292493613](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493613), master/research artifacts [42292493643](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493643), exhaustive extraction [42292493559](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493559), paired Native/g2pK [42292493640](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493640), and UGTPHON/multi-engine diagnostics [42292493815](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493815), [42292493822](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493822) all completed successfully. No local npm/pytest command is claimed in this connector-only session.
+
+### Repository structure snapshot
+
+At the pre-documentation main commit, the recursive tree had 838 entries (796 files, 42 directories), 179 Markdown files, 397 test files, 64 scripts, 18 workflows and 13 schemas; docs/ had 148 files and research/ 57 files. The tree count is an inventory, not a quality or completion metric. The current navigation remains README.md → docs/README.md → docs/REPOSITORY-STRUCTURE.md / docs/AGENT-WORKFLOWS.md; AGENTS.md is the repository task router; research truth remains in research/SOURCE-REGISTER.csv, research/RULE-COVERAGE.csv, research/ACCEPTANCE-GATES.md, research/DECISION-LOG.md and research/ROADMAP.md. The >1 MB append-only master handoff is preserved.
+
+**Readiness:** software-verified bounded research prototype; not independently research-certified or release-ready. Latest Pages deployment/live smoke must be checked on the post-merge main head.
+
+---
+
+## Historical audit baseline and scope
+
 
 Repository: [ClippyFirst/Korean-Ukrainian-Phonetic-System](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System).
 

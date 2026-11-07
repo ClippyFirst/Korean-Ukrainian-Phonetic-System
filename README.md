@@ -2,17 +2,46 @@
 
 Evidence-scoped Korean → Ukrainian phonetic rendering research prototype with a two-page browser service. The system separates Korean phonology and IPA from Ukrainian target adaptation, and preserves typed uncertainty rather than guessing unsupported pronunciations.
 
-## Current status — 2026-11-06
+## Current status — 2026-11-07
 
-PR [#446](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/446) was merged into `main` at `321e4a126167eab0ad31fc44ae22b587ee8c809c`. Its exact-head CI passed the browser/Python verification, Python 3.11/3.12/3.13 test matrix, wheel install, teacher-corpus audit, master-table/corpus generation, paired native/g2pk diagnostic, UGTPHON diagnostic, exhaustive test-case extraction, morphology-consensus diagnostic and mandatory multi-engine comparison. The conditional NIKL metadata crawl and optional CharsiuG2P/ByT5 inference jobs were skipped by policy, not passed.
+**Current branch:** main. **Starting commit for this documentation pass:** d2f942d0615df3da2a973a2709f8738f65da18d9. **Latest merged implementation:** PR [#454](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/454), merge commit d2f942d0615df3da2a973a2709f8738f65da18d9.
 
-The earlier PR #443 baseline remains part of the verification history: mandatory multi-engine diagnostic [42226435101](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435101) and system verification [42226435403](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435403) both passed on that exact head. These are historical baseline runs, separate from the newer PR #446 exact-head checks.
+### What the 236 cases mean
 
-Post-merge `main` verification on `321e4a126167eab0ad31fc44ae22b587ee8c809c`: tests matrix [42254523067](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254523067), system verification [42254523015](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254523015), and master/research artifact generation [42254523078](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254523078) passed. The Pages deployment [42254523031](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254523031) was cancelled when the subsequent documentation-only update superseded that push; the new deployment run [42254864628](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254864628) was queued on the current documentation commit `e0feeb6ac3697d026d151f3fbb78796728a1e8da`. Deployment/live smoke is not yet confirmed.
+The reconstructed 236-row cohort is **not 236 independently confirmed phonological rules**:
 
-The reconstructed 236-occurrence review cohort contains 15 exact standard-form runtime dispositions, 181 bounded profile-convention decisions, 12 IPA abstentions and 28 unadjudicated cases. PR #446 added a 28-row evidence register and generated-ledger projections, but **did not resolve or promote the 40 residual cases**. The 12 remain abstentions and the 28 remain unadjudicated; all require original token audio/speaker crosswalk and two independent Korean IPA annotations before any IPA or Ukrainian target gold can change. The 181 profile decisions are not 181 new categorical phonology rules. Original historical 236/239 cohort membership remains reconstructed, not proven.
+| Cohort disposition | Rows | What is actually established |
+|---|---:|---|
+| Exact standard-form runtime dispositions | 15 | Ten exact integrations plus five pre-existing exact licenses; no spelling rewrite |
+| Profile-convention decisions | 181 | Bounded broad/narrow or transcription-profile distinctions; not 181 new categorical rules or speaker-level IPA gold |
+| Original abstentions | 12 | Engine policy explicitly decided under the no-audio constraint; speaker-specific IPA remains unresolved |
+| Previously unadjudicated residuals | 28 | Engine policy explicitly decided under the no-audio constraint; speaker-specific IPA remains unresolved |
+| **Total** | **236** | Reconstructed candidate cohort; original historical selector membership is not independently proven |
 
-The scoped source-rights release gate reports no unresolved positively recorded redistribution item. This is not blanket legal clearance for every cited or referenced source; citation-only material is distinct from retained third-party content. **The project remains a bounded research prototype, not independently research-certified or release-ready.** See the [current repository audit](docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md), [research acceptance gates](research/ACCEPTANCE-GATES.md), and [28-row residual evidence register](research/kozak-kim-236-residual-review-2026-11-06.csv).
+Thus, **15/236 have exact standard-form runtime dispositions**. The 181 are handled as bounded profile decisions/non-promotions, not as a set of new production rules. The remaining 40 have explicit no-audio engine-policy dispositions (including conditional phrase-mode behavior where word boundaries are explicit), but **40/40 remain unresolved as speaker-specific IPA gold**. The original 236/239 cohort membership is reconstructed, not proven from the original selector/member list. See the [236-case integration record](docs/KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md), [40-case policy record](docs/KOZAK-KIM-40-NO-AUDIO-ADJUDICATION-2026-11-06.md), and machine-readable registers.
+
+### Latest measured pronunciation benchmarks
+
+The latest exact-head diagnostics are from PR #454 before its squash merge. They are Korean G2P comparisons, **not Ukrainian transcription accuracy**:
+
+| Dataset / engine | Scored | Exact match | CER | Coverage |
+|---|---:|---:|---:|---:|
+| UGTPHON Korean test — Native | 2,701 | 53.1285% (1,435) | 8.9418% | 99.9260% |
+| UGTPHON Korean test — g2pK 0.9.4 | 2,703 | 53.0892% (1,435) | 9.2328% | 100% |
+| SIGMORPHON 2021 Korean test — Native | 998 | 35.8717% (358) | 14.5598% | 99.90% of 999 eligible |
+| SIGMORPHON 2021 Korean test — g2pK 0.9.4 | 999 | 35.3353% (353) | 14.8222% | 100% |
+
+- UGTPHON paired comparison: 2,701 shared occurrences; same exact-match count, Native CER lower by 0.2856 percentage points. Native abstained on two occurrences rather than guessing.
+- SIGMORPHON paired comparison: 998 shared words; Native exact-match rate higher by about 0.50 percentage points and CER lower by about 0.25 points. The Native engine abstained on one word.
+- Multi-engine SIGMORPHON diagnostic: Native was 358/998 exact (35.8717%), ahead of g2pK (353/999; 35.3353%) and the other installed deterministic/phonemizer baselines in that run. This is a dataset- and convention-specific diagnostic, not proof of normative accuracy.
+- CharsiuG2P and ByT5 inference were skipped by policy; no neural score is claimed.
+
+Evidence: [UGTPHON diagnostic](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493640), [multi-engine comparison](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493822), and [exact-head system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493613).
+
+### Readiness and remaining work
+
+The repository is a **software-verified, bounded research prototype**. It is **not independently research-certified and not release-ready as an authoritative transcription standard**. Remaining substantive work is evidence-limited: original 236/239 cohort provenance, speaker-specific IPA evidence for the 40 no-audio cases, independent Ukrainian target validation if certification is pursued, broader source-backed rule coverage, and deployment/live-smoke confirmation on the latest main commit. No external reviewer outreach or correspondence is part of this execution pass.
+
 ## Documentation and repository map
 
 - [Documentation index](docs/README.md) — canonical navigation for users, developers and researchers.
