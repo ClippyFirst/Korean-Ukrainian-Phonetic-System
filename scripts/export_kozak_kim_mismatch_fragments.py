@@ -41,6 +41,21 @@ def graphemes(value: str) -> list[str]:
     return result
 
 
+def has_resyllabified_ui(source_token: str) -> bool:
+    """Return true only when 의 follows a Hangul syllable with a coda.
+
+    This source-orthography guard scopes the NIKL §5 resyllabification
+    exception; it must not classify ordinary onset-initial 의 as /ɰi/.
+    """
+    for index, char in enumerate(source_token):
+        if char != "의" or index == 0:
+            continue
+        previous = ord(source_token[index - 1]) - 0xAC00
+        if 0 <= previous < 11172 and previous % 28 != 0:
+            return True
+    return False
+
+
 def align(reference: str, prediction: str) -> list[dict[str, str]]:
     """Deterministic Levenshtein alignment over Unicode grapheme clusters."""
     a, b = graphemes(reference), graphemes(prediction)
@@ -81,6 +96,7 @@ def classify_fragments(
     fragments: list[dict[str, str]],
     strict_reference: str = "",
     strict_prediction: str = "",
+    source_token: str = "",
 ) -> list[dict[str, object]]:
     """Attach conservative candidate labels to each edit, not just its token.
 
@@ -93,6 +109,7 @@ def classify_fragments(
         and "kʰ" in strict_prediction
     )
     classified: list[dict[str, object]] = []
+    resyllabified_ui = has_resyllabified_ui(source_token)
     for index, fragment in enumerate(fragments):
         reference = fragment["reference_fragment"]
         prediction = fragment["kozak_fragment"]
@@ -140,6 +157,8 @@ def classify_fragments(
             labels.append("C09_vowel_length")
         if any(char in text for char in "ˈˌ"):
             labels.append("C10_stress")
+        if resyllabified_ui and "ɰ" in text:
+            labels.append("C13_NIKL_RESYLLABIFIED_UI")
         if not labels:
             labels.append("UNMAPPED_REQUIRES_REVIEW")
 
@@ -154,9 +173,10 @@ def candidate_clusters(
     fragments: list[dict[str, str]],
     strict_reference: str = "",
     strict_prediction: str = "",
+    source_token: str = "",
 ) -> list[str]:
     """Return the union of candidate labels and expose any unmapped edit."""
-    classified = classify_fragments(fragments, strict_reference, strict_prediction)
+    classified = classify_fragments(fragments, strict_reference, strict_prediction, source_token)
     labels = {
         label
         for fragment in classified
@@ -228,8 +248,9 @@ def build_rows(
         broad_fragments = align(broad_reference, broad_prediction) if broad_distance else []
         if not strict_fragments and not broad_fragments:
             continue
-        strict_classified = classify_fragments(strict_fragments, item["gold"], item["ipa"])
-        broad_classified = classify_fragments(broad_fragments, item["gold"], item["ipa"])
+        source_token = str(item.get("token", ""))
+        strict_classified = classify_fragments(strict_fragments, item["gold"], item["ipa"], source_token)
+        broad_classified = classify_fragments(broad_fragments, item["gold"], item["ipa"], source_token)
         labels = sorted({
             label
             for fragment in strict_classified + broad_classified
