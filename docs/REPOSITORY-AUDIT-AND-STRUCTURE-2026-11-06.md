@@ -563,7 +563,7 @@ Earlier repository wording that the PDF directly attested `칡칡이` was incorr
 ### 239 candidate replay
 
 - **DONE_VERIFIED — reconstructed candidate set:** the pinned pre-C11/C12 report (artifact 13148075070; ZIP SHA-256 `075ceff080decbb142492448c9344816bfb53f1e87fe563826668d037c053b89`; report SHA-256 `8c25e630ca828719b269aeb84c8037d9c40f881a0f15c2e4ddf9d427edffa0f9`) and historical classifier commit `8c335dd7031bdae59b3ef7db715b54f0fdc9bcd5` / blob `e0bb7f32d5b320d468e0bdcab0ed134c7a3278ec` were replayed.
-- Exact selection: Broad edit distance > 0; historical NFC/combining-mark grapheme alignment; Broad fragments only; pre-C11/C12 aggregate C01–C10 classifier; select only `UNMAPPED_REQUIRES_REVIEW`.
+- Exact selection: Broad edit distance > 0; historical NFC/combining-mark grapheme alignment; Broad fragments only; pre-C11/C12 historical aggregate labels C01–C07/C09/C10 (C08 not encoded); select only `UNMAPPED_REQUIRES_REVIEW`.
 - Result: 370 Broad mismatches → 239 unique candidate IDs; 111 source rows; 154 unique tokens. Exact set comparison with the tracked candidate-ID file: **239/239**, no missing or extra IDs.
 - Added `scripts/replay_kozak_239_candidate_selection.py` and unit tests. The script pins the report hash and fails closed if the candidate ID set differs.
 - **PARTIAL — original historical identity:** no contemporaneous original selector/member snapshot survives. The replay proves the reconstructed candidate set and its reproducibility, not that the original manual selection used precisely this algorithm. Do not describe 239/236 as confirmed engine defects.
