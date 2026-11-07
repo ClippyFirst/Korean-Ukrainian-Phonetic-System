@@ -553,3 +553,13 @@ test('Browser generic ㅢ rule preserves the diphthong when a coda resyllabifies
   assert.equal(result.pronunciation_status, 'resolved');
   assert.equal(result.ipa, 'hjʌ.bɰi');
 });
+
+
+test('Browser keeps ordinary consonant-onset ㅢ → [i] as a negative control', () => {
+  const canonical = readFileSync(
+    new URL('../data/korean/canonical_correspondence.csv', import.meta.url),
+    'utf8'
+  );
+  const engine = createEngine(canonical, '');
+  assert.equal(engine.convert('희망').ipa, 'hi.maŋ');
+});
