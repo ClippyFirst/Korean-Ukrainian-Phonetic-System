@@ -66,7 +66,8 @@ The current integration is on `main` at merge commit `bb972871a207b1f703503ade98
 - **BLOCKED — independent Korean IPA:** obtain two qualified independent annotations on frozen, source-linked tokens, reconcile disagreements and retain profile/uncertainty metadata. The reviewer-packet generator is preparation tooling, not evidence of completed review.
 - **BLOCKED — Ukrainian target validation:** independently review target adaptation on frozen IPA inputs, separately from Korean IPA adjudication.
 - **BLOCKED — 40 residual occurrences:** 12 abstentions plus 28 unadjudicated rows require token-level source/audio/speaker/prosody evidence or qualified independent IPA annotation.
-- **PARTIAL — historical cohort identity:** a reproducible reconstructed 236/239 inventory exists, but the original selector/member list is not proven.
+- **DONE_VERIFIED — reconstructed 239 candidate replay:** the pinned pre-C11/C12 Broad-only aggregate C01–C10 classifier reproduces 239 unique IDs and matches the tracked candidate snapshot 239/239; see the replay script and recovery manifest.
+- **PARTIAL — original historical identity:** the original contemporaneous selector/member snapshot was not preserved, so the replay verifies the reconstructed candidate cohort, not the original manual selection procedure.
 - **BLOCKED — broader source review:** the strict gate covers positively recorded redistribution; it does not grant rights to unrecorded or future reuse. Obtain item-level terms before adding retained source material.
 - **PARTIAL — broad coverage:** continue only where the current rule-coverage matrix identifies a concrete gap with primary-source evidence and cross-runtime acceptance.
 
