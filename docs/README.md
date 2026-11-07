@@ -27,16 +27,17 @@ This page is the entry point for project documentation. It distinguishes current
 
 ## Current project status — 2026-11-07
 
-**Integration branch:** `main`. **Audited starting commit:** `e72856c1f03bfb775805748f96ec23889ca2e60f`. PR [#456](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/456) is merged as `18f5529b9100ea6e4f7c176c9627bacf1fc52585`.
+**Integration branch:** `main`. **Audited starting commit:** `e72856c1f03bfb775805748f96ec23889ca2e60f`. PR [#456](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/456) is merged as `18f5529b9100ea6e4f7c176c9627bacf1fc52585`. The documentation and CI reconciliation is PR [#457](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/457), verified on head `ab6c7c69ba65b7fd5da4383d2105ef81a5bcb51d`.
 
-The current-main verification runs on `e72856c1` are **failed, not passed**:
-- [System verification run 42415278464](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42415278464): browser tests fail because the UGTPHON source-register row is malformed CSV (its opening quote is missing); Python tests expose the same malformed row and a pinned corpus-path mismatch in the reviewer-packet builder.
-- [Pages deployment run 42415278451](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42415278451): Python test jobs fail for the same reasons; build/deploy steps are skipped.
-- [Multi-engine run 42414467825](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42414467825): mandatory mismatch-queue export comparison fails at byte 554, line 1. No complete multi-engine result is claimed.
+The starting main-head runs `42415278464` and `42415278451` failed because of a malformed UGTPHON source-register CSV row and an incorrect pinned corpus-path expectation. PR #457 corrects both. Its exact-head verification is green:
+- [System verification 42416681845](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681845): Python regression/data integrity, browser tests, source redistribution rights gate, and public-page build all passed. The metadata-only NIKL inventory was skipped by workflow policy.
+- [Test matrix 42416681848](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681848): browser suite, Python 3.11/3.12/3.13, wheel installation, and teacher-corpus audit passed.
+- [Research artifacts 42416681843](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681843) and [exhaustive test-case extraction 42416681889](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681889) passed.
+- [Complete multi-engine run 42416681855](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681855) passed, including pinned corpus validation, benchmark adapters, multi-engine comparison, canonical mismatch-queue byte comparison, Browser Kozak Kim run, Native/Browser parity, SIGMORPHON comparison, and artifact upload.
 
-The source-only 40-case matrix and the 236-case policy counts remain as documented; all 40 residual occurrences still lack speaker-specific IPA gold. Korean G2P benchmark values are diagnostic comparisons, not Ukrainian-target accuracy or normative IPA gold. See the [project README](../README.md) for the current benchmark table and the [repository audit](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md) for the execution ledger.
+The earlier mismatch-queue failure was a serialization-only difference: generated LF plus a final newline versus committed CRLF without a final newline. Normalizing the generated artifact to the committed format reproduced the exact committed Git blob SHA `59c0f4f9bb4bc2b0040eeba196646e6ece2efc25`. The exporter now writes that canonical format and has a regression test. This does not change the review-queue data or linguistic classifications.
 
-**Readiness:** bounded, software-tested research prototype; not release-ready or independently research-certified. External IPA review, Ukrainian-target validation and source-cohort provenance remain separate acceptance requirements.
+**Readiness:** software verification is green on PR #457, but the project remains a bounded research prototype, not release-ready or independently research-certified. The 40 speaker-specific IPA gold cases remain unresolved; Ukrainian-target validation and independent linguistic review remain separate acceptance gates.
 
 ## 236-candidate engine work
 
