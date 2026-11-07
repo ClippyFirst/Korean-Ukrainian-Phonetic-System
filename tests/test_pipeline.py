@@ -998,6 +998,6 @@ def test_resyllabified_ui_preserves_nikl_ㅢ_variants_in_ipa():
     assert target["ipa"]["ipa"] == "sal.mɰi"
     assert target["ukrainian_orthography"] is None
     assert target["target_status"] == "unavailable"
-    assert target["target_unavailable_reason"] == "provisional_mapping_requires_review"
+    assert target["target_unavailable_reason"] == "lexical_target_reference_provisional"
     assert target["candidate_status"] == "provisional"
     assert target["lexical_target_reference"] == "салмий"
