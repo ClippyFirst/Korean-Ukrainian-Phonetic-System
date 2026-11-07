@@ -553,7 +553,7 @@ The Python research lexicon and Browser lexical overlay now preserve the distinc
 
 ## Addendum — correction of the 칡칡이 source citation (2026-11-07)
 
-A direct check of the cited Busan PDF at printed p. 587 (PDF page 596), lines 14284–14292, shows that `[철마면 민요 26]` is titled `칭칭이`, not `칡칡이`. The singer is identified as 이문찬 (male, born 1923), fieldwork date 1991-10-19, location 철마면 이곡리; the refrain includes `치기타 칭칭나네`, and the entry cites 이소라, 『양산의 민요』 (1992), p. 180. The National Gugak Center separately documents `칭칭이소리`.
+A corrected direct-page inspection of the cited Busan PDF distinguishes two entries: printed p. 586, lines 20611–20622, is `[철마면 민요 26] 칡칡이`, singer 이문춘 (male, born 1923), fieldwork 1991-10-19 at 철마면 이곡리; printed p. 548, lines 19372–19381, is the separate `[장안읍 민요 13] 칭칭이`, with different performers and locality. The p. 587/칭칭이 cross-reference used in the earlier addendum was erroneous. The National Gugak Center separately documents `칭칭이소리`.
 
 Earlier repository wording that the PDF directly attested `칡칡이` was incorrect and has been corrected in the source register, triage JSON, and five-abstention report. The evidence establishes a source mismatch, not a safe normalization: preserve benchmark `칡칡이`, do not rewrite it to `칭칭이`, and do not add a lexical IPA rule. The exact token remains fail-closed until a source explicitly attests it or documents its correction. No audio or reviewer outreach is requested.
 
@@ -579,7 +579,7 @@ The source register now contains 225 records (12 columns), including Seoul Corpu
 
 ### Source correction
 
-Direct reinspection of the cited Busan PDF confirms printed p. 587 (PDF p. 596) reads [철마면 민요 26] 칭칭이, not 칡칡이; exact full-text search finds no 칡칡이. The source register, triage JSON and test now preserve `BLOCKED_SOURCE_IDENTITY_AND_AUDIO`. Do not alias or normalize 칡칡이 to 칭칭이.
+Direct reinspection confirms printed p. 586 (PDF p. 595) reads [철마면 민요 26] 칡칡이; printed p. 548 is the distinct [장안읍 민요 13] 칭칭이. The exact title is source-attested; its morphology and pronunciation remain unassigned. Do not alias or normalize 칡칡이 to 칭칭이.
 
 ### Verification boundary
 
