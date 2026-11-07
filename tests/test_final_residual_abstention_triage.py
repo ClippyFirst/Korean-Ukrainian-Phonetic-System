@@ -38,7 +38,7 @@ def test_residual_abstention_register_is_complete_and_evidence_scoped():
     current = queue["currentSnapshot"]
     assert current["recoveredExactForms"] == ["쫒아내면", "많앗구나유유유", "무서웟어"]
     by_input = {case["input"]: case for case in cases}
-    assert by_input["칡칡이"]["currentDisposition"]["status"] == "SOURCE_ATTESTED_TITLE_PRESERVE_RAW_PRONUNCIATION_UNASSIGNED"
+    assert by_input["칡칡이"]["currentDisposition"]["status"] == "BLOCKED_SOURCE_IDENTITY_AND_AUDIO"
     assert by_input["삶의"]["currentDisposition"]["status"] == "SOURCE_ADJUDICATED_VARIANT_SET_SPEAKER_CHOICE_UNRESOLVED"
 
 
