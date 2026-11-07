@@ -6965,3 +6965,36 @@ The artifact discrepancy is therefore reconciled at source-file level. **Accepta
 ### 2026-11-06 — runtime guard and provenance update
 
 The native Python and browser shared-Broad optional [ɛ]~[e] metadata now cite Lee (2023), DOI 10.17959/sppm.2023.29.2.193, whose KCI abstract reports an incomplete, position-sensitive Seoul merger. Added native and browser regressions for the six residual sibilant token strings: shared-Broad canonical /s/ remains and no unsupported [ɕ] variant is emitted. The 대한민국 test preserves the existing length mark and treats [ɛ]~[e] as a non-selective research alternative. The legacy browser profile is unchanged for compatibility. The source register now contains 214 rows; the new study is citation-only and no redistribution rights are claimed. Exact-head CI and generated-artifact checks remain pending; no local shell/pytest/npm execution is claimed.
+
+
+### 2026-11-07 — repository structure, CI repair and mainline handoff
+
+**Integration result:** PR [#457](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/457) was squash-merged into `main` as `62ca357d1ff64bc0a113e30fc92e4ce2f1b5ffcc`, based on starting main commit `e72856c1f03bfb775805748f96ec23889ca2e60f`.
+
+**Changes included in the merge**
+- Repaired the malformed `SRC-UGTPHON-EMNLP-2026` source-register CSV record by restoring its opening quote.
+- Corrected the pinned UGTPHON corpus-path expectation to `naver-ai/UGTPHON/ko/test.json`; commit, blob and Apache-2.0 provenance pins were preserved.
+- Made the mismatch-queue exporter reproduce the canonical committed CRLF/no-trailing-newline bytes and added a regression test. The generated queue now passes the exact byte comparison.
+- Reconciled `README.md`, `docs/README.md`, `docs/REPOSITORY-STRUCTURE.md` and the dated repository audit without bulk-moving files or creating duplicate plans/registers.
+- Preserved PR #455 as closed/unmerged. No external review packets were distributed.
+
+**Verified evidence**
+- [PR #457 full multi-engine run 42416681855](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681855): all steps passed, including UGTPHON multi-engine comparison, mismatch queue export and byte comparison, Browser Kozak Kim, Native/Browser parity, SIGMORPHON comparison and artifact upload.
+- [System verification on PR head 42416681845](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681845): Python regression/data checks, browser regression, source redistribution rights gate and public page build passed.
+- [Test matrix 42416681848](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681848): browser suite, Python 3.11/3.12/3.13, wheel installation and teacher-corpus audit passed.
+- [Research artifact checks 42416681843](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681843) and [exhaustive test-case extraction 42416681889](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681889) passed.
+- Post-merge main checks on `62ca357d`: [system verification 42418241279](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42418241279), [test matrix 42418241284](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42418241284), [master/research artifacts 42418241294](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42418241294), and [GitHub Pages deployment plus live browser smoke 42418241365](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42418241365) all passed.
+- The metadata-only Official NIKL inventory job was skipped by workflow policy; it is not counted as a pass.
+- No local shell, `pytest`, or `npm` command is claimed as executed in this connector-only session.
+
+**Benchmark interpretation**
+- UGTPHON Korean test: 275 source rows, 2,703 eligible occurrences. Native 1,425/2,702 exact (CER 9.0130%); g2pK 1,435/2,703 (CER 9.2328%).
+- SIGMORPHON 2021 Korean lexical test: 1,000 source rows, 999 eligible occurrences. Native 359/998 exact (CER 14.5347%); g2pK 353/999 (CER 14.8222%).
+- These compare Korean G2P outputs against the supplied corpus annotations. They are not normative IPA adjudication or Ukrainian transcription accuracy.
+
+**Remaining acceptance blockers**
+- The 40 speaker-specific IPA gold cases remain unresolved because no source audio/speaker crosswalk and two independent Korean IPA annotations were supplied.
+- Ukrainian-target validation and independent linguistic acceptance remain separate requirements.
+- Generated holdout review packets are CI artifacts only; external reviewer distribution remains deferred.
+- Release certification remains deferred. The repository is a software-tested research prototype, not release-ready.
+
