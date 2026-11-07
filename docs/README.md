@@ -27,41 +27,17 @@ This page is the entry point for project documentation. It distinguishes current
 
 ## Current project status — 2026-11-07
 
-**Current branch:** main. **Starting commit for this documentation pass:** d2f942d0615df3da2a973a2709f8738f65da18d9. **Latest merged implementation:** PR [#454](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/454), merge commit d2f942d0615df3da2a973a2709f8738f65da18d9.
+**Integration branch:** `main`. **Audited starting commit:** `e72856c1f03bfb775805748f96ec23889ca2e60f`. PR [#456](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/456) is merged as `18f5529b9100ea6e4f7c176c9627bacf1fc52585`. The documentation and CI reconciliation is PR [#457](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/457), verified on head `ab6c7c69ba65b7fd5da4383d2105ef81a5bcb51d`.
 
-### What the 236 cases mean
+The starting main-head runs `42415278464` and `42415278451` failed because of a malformed UGTPHON source-register CSV row and an incorrect pinned corpus-path expectation. PR #457 corrects both. Its exact-head verification is green:
+- [System verification 42416681845](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681845): Python regression/data integrity, browser tests, source redistribution rights gate, and public-page build all passed. The metadata-only NIKL inventory was skipped by workflow policy.
+- [Test matrix 42416681848](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681848): browser suite, Python 3.11/3.12/3.13, wheel installation, and teacher-corpus audit passed.
+- [Research artifacts 42416681843](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681843) and [exhaustive test-case extraction 42416681889](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681889) passed.
+- [Complete multi-engine run 42416681855](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681855) passed, including pinned corpus validation, benchmark adapters, multi-engine comparison, canonical mismatch-queue byte comparison, Browser Kozak Kim run, Native/Browser parity, SIGMORPHON comparison, and artifact upload.
 
-The reconstructed 236-row cohort is **not 236 independently confirmed phonological rules**:
+The earlier mismatch-queue failure was a serialization-only difference: generated LF plus a final newline versus committed CRLF without a final newline. Normalizing the generated artifact to the committed format reproduced the exact committed Git blob SHA `59c0f4f9bb4bc2b0040eeba196646e6ece2efc25`. The exporter now writes that canonical format and has a regression test. This does not change the review-queue data or linguistic classifications.
 
-| Cohort disposition | Rows | What is actually established |
-|---|---:|---|
-| Exact standard-form runtime dispositions | 15 | Ten exact integrations plus five pre-existing exact licenses; no spelling rewrite |
-| Profile-convention decisions | 181 | Bounded broad/narrow or transcription-profile distinctions; not 181 new categorical rules or speaker-level IPA gold |
-| Original abstentions | 12 | Engine policy explicitly decided under the no-audio constraint; speaker-specific IPA remains unresolved |
-| Previously unadjudicated residuals | 28 | Engine policy explicitly decided under the no-audio constraint; speaker-specific IPA remains unresolved |
-| **Total** | **236** | Reconstructed candidate cohort; original historical selector membership is not independently proven |
-
-Thus, **15/236 have exact standard-form runtime dispositions**. The 181 are handled as bounded profile decisions/non-promotions, not as a set of new production rules. The remaining 40 have explicit no-audio engine-policy dispositions (including conditional phrase-mode behavior where word boundaries are explicit), but **40/40 remain unresolved as speaker-specific IPA gold**. The original 236/239 cohort membership is reconstructed, not proven from the original selector/member list. See the [236-case integration record](KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md), [40-case policy record](KOZAK-KIM-40-NO-AUDIO-ADJUDICATION-2026-11-06.md), and machine-readable registers.
-
-### Latest measured pronunciation benchmarks
-
-The latest exact-head diagnostics are from PR #454 before its squash merge. They are Korean G2P comparisons, **not Ukrainian transcription accuracy**:
-
-| Dataset / engine | Scored | Exact match | CER | Coverage |
-|---|---:|---:|---:|---:|
-| UGTPHON Korean test — Native | 2,701 | 53.1285% (1,435) | 8.9418% | 99.9260% |
-| UGTPHON Korean test — g2pK 0.9.4 | 2,703 | 53.0892% (1,435) | 9.2328% | 100% |
-| SIGMORPHON 2021 Korean test — Native | 998 | 35.8717% (358) | 14.5598% | 99.90% of 999 eligible |
-| SIGMORPHON 2021 Korean test — g2pK 0.9.4 | 999 | 35.3353% (353) | 14.8222% | 100% |
-
-- UGTPHON paired comparison: 2,701 shared occurrences; same exact-match count, Native CER lower by 0.2856 percentage points. Native abstained on two occurrences rather than guessing.
-- SIGMORPHON paired comparison: 998 shared words; Native exact-match rate higher by about 0.50 percentage points and CER lower by about 0.25 points. The Native engine abstained on one word.
-- Multi-engine SIGMORPHON diagnostic: Native was 358/998 exact (35.8717%), ahead of g2pK (353/999; 35.3353%) and the other installed deterministic/phonemizer baselines in that run. This is a dataset- and convention-specific diagnostic, not proof of normative accuracy.
-- CharsiuG2P and ByT5 inference were skipped by policy; no neural score is claimed.
-
-Evidence: [UGTPHON diagnostic](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493640), [multi-engine comparison](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493822), and [exact-head system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42292493613).
-
-For the authoritative task ledger and exact evidence, use the [current repository audit](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md), [research acceptance gates](../research/ACCEPTANCE-GATES.md), [research roadmap](../research/ROADMAP.md), and the linked 236/40-row registers.
+**Readiness:** software verification is green on PR #457, but the project remains a bounded research prototype, not release-ready or independently research-certified. The 40 speaker-specific IPA gold cases remain unresolved; Ukrainian-target validation and independent linguistic review remain separate acceptance gates.
 
 ## 236-candidate engine work
 

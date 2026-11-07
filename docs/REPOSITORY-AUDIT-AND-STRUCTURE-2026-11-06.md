@@ -2,7 +2,7 @@
 
 ## Superseding current-main status — 2026-11-07
 
-**Current branch:** main. **Implementation merge commit:** d2f942d0615df3da2a973a2709f8738f65da18d9 (PR #454 merged). The documentation status was first reconciled on main in commit 249c2e7ce7556a0acf07f7fe9cb6fe77ebd1e96c and then refined in commits 365bfd702faf75697b0a13dda897f6d007d2ae2a, 77956a8cc1f770907749f822cb0874c820f14e25, 45131bf0aec048f39c9c103c2aa10e695e21c12d and 89369e3337661f76588c469d2cd173534dcd5273; this section supersedes older snapshot statements below; the dated audit trail is retained.
+**Current branch:** main. **Audited starting commit for this continuation:** `e72856c1f03bfb775805748f96ec23889ca2e60f`. PR #456 is the latest merged implementation (squash merge `18f5529b9100ea6e4f7c176c9627bacf1fc52585`). The latest current-main CI state is recorded in the 2026-11-07 continuation below; it supersedes all older verification statements. The documentation status was first reconciled on main in commit 249c2e7ce7556a0acf07f7fe9cb6fe77ebd1e96c and then refined in commits 365bfd702faf75697b0a13dda897f6d007d2ae2a, 77956a8cc1f770907749f822cb0874c820f14e25, 45131bf0aec048f39c9c103c2aa10e695e21c12d and 89369e3337661f76588c469d2cd173534dcd5273; this section supersedes older snapshot statements below; the dated audit trail is retained.
 
 ### 236-case task ledger
 
@@ -619,3 +619,82 @@ The source crosswalk for all 40 no-audio occurrences remains complete at the eng
 - BLOCKED — original historical 236/239 selector membership: no contemporaneous original selector/member list has been recovered; the 239 replay verifies the reconstructed selection only.
 - BLOCKED — per-post copyright chain-of-title: the upstream subset-level Apache-2.0 declaration is documented, but it is not independent evidence that every original post author had authority to license their post.
 - PARTIAL — multi-engine diagnostic: run `42414467825` must finish the exporter/cmp, browser runtime parity and SIGMORPHON stages before its result is recorded.
+
+
+## 2026-11-07 — documentation structure and current-main CI reconciliation
+
+### Starting state and task ledger
+
+- Starting default branch: `main`, commit `e72856c1f03bfb775805748f96ec23889ca2e60f`.
+- Latest merged implementation preserved: PR #456, squash commit `18f5529b9100ea6e4f7c176c9627bacf1fc52585`.
+- The four supplied engineering references are already reviewed in [ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-06.md](ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-06.md) and routed through [AGENT-WORKFLOWS.md](AGENT-WORKFLOWS.md). No upstream code, skill text, assets or benchmark data are copied.
+- The current documentation architecture is retained: `README.md` for product overview; `docs/README.md` for navigation; `AGENTS.md` for task routing; `docs/AGENT-WORKFLOWS.md` and `.agents/skills/` for procedures; `docs/REPOSITORY-STRUCTURE.md` for ownership/data flow; existing research registers for evidence and acceptance; dated audit for continuation. No bulk rename or second master ledger is introduced.
+
+| Work item | Status at start of continuation | Evidence / next acceptance |
+|---|---|---|
+| PR #456 source-only adjudication and runtime integration | DONE_VERIFIED on its merged commit | Exact-head PR evidence is linked in README/audit; 40/40 speaker-specific IPA gold remains unresolved |
+| Four upstream workflow references | DONE_VERIFIED as process review | Existing pinned reference audit documents adoption and non-adoption boundaries |
+| Mainline documentation status | PARTIAL | README and docs index had conflicting/stale commit and benchmark snapshots; reconcile all navigation/status surfaces |
+| Source-register CSV integrity | TODO | CI reports malformed UGTPHON row; fix quoting and rerun browser/Python CSV consumers |
+| Reviewer-packet pinned source validation | TODO | CI expects `UGTPHON/ko/test.json`, while ledger records `naver-ai/UGTPHON/ko/test.json`; align exact path with pinned source manifest and regression expectations |
+| Multi-engine generated mismatch queue | BLOCKED pending reproduction | Run 42414467825 failed byte comparison at byte 554, line 1; regenerate from canonical inputs and compare exact artifact before claiming pass |
+| Independent speaker IPA gold / Ukrainian target review | BLOCKED / EVIDENCE-LIMITED | Requires source audio/speaker crosswalk and qualified independent reviewers; do not infer from corpus aggregate scores |
+| Release certification | DEFERRED | Research prototype is not independently certified; current-main CI/deployment must pass first |
+
+### Exact current-main verification evidence
+
+- System verification [42415278464](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42415278464), head `e72856c1f03bfb775805748f96ec23889ca2e60f`: FAILED. Browser suite reported malformed CSV in the source-register importer and downstream missing `rightsReviewStatus`; Python suite reported four reviewer-packet validation failures and a missing `SRC-UGTPHON-EMNLP-2026` lookup caused by the malformed source-register row.
+- Pages workflow [42415278451](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42415278451), same head: FAILED in Python regression jobs. Corpus strict validation passed; browser/build/deploy jobs were skipped after the Python failures.
+- Multi-engine workflow [42414467825](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42414467825), PR #456 head `53ba9168e1dedeab3a4308736a0997dea6151ffd`: FAILED only at the exported unresolved-review-queue byte comparison (byte 554, line 1). Mandatory comparison and tests ran, but this artifact gate did not pass; optional neural jobs were skipped by policy.
+- No local shell, `pytest`, or `npm` command is claimed: repository access in this session is through GitHub connector operations. CI results are the only execution evidence.
+
+### Reconciliation performed in this continuation
+
+- Correct the opening quote on the `SRC-UGTPHON-EMNLP-2026` source-register CSV row; this restores a valid 13-column record for Python and browser parsers.
+- Correct the pinned corpus path constant in `scripts/build_kozak_236_ipa_review_packets.py` to the exact path recorded by all 236 source-ledger rows: `naver-ai/UGTPHON/ko/test.json`. Commit/blob/license pins remain unchanged.
+- Align README, documentation index and repository-structure snapshot to the actual audited main head, current benchmark status and failed (not passed) current-main checks.
+- Preserve PR #455 as closed/unmerged. Its full independent-review packet workflow is not silently merged or enabled; no packet is generated, distributed or sent to any reviewer in this continuation.
+
+### Outstanding acceptance
+
+1. Re-run exact-head Python/browser CI after the CSV and corpus-path corrections; acceptance is all relevant tests green, no skips misreported as passes, and a successful static build.
+2. Re-run or independently reproduce the multi-engine export and exact-compare the generated mismatch queue; acceptance is byte-identical output from the canonical generator, not a hand-edited CSV.
+3. Confirm Pages deployment and live smoke on the resulting main commit.
+4. Keep the 40 speaker-specific IPA cases unresolved until audio/speaker-linked evidence and independent annotations exist; keep Ukrainian target review separate.
+5. Do not claim release readiness until the above software gates and the project's independent linguistic/target acceptance gates are met.
+
+
+### Final verified outcome — PR #457 head `ab6c7c69ba65b7fd5da4383d2105ef81a5bcb51d`
+
+| Work item | Final status | Evidence / acceptance |
+|---|---|---|
+| Repository documentation index and status reconciliation | DONE_VERIFIED | README, `docs/README.md`, `docs/REPOSITORY-STRUCTURE.md` and this audit now distinguish historical main-head failures from the verified PR state |
+| Source-register CSV integrity | DONE_VERIFIED | Opening quote repaired on `SRC-UGTPHON-EMNLP-2026`; Python and browser regression suites passed |
+| Pinned UGTPHON corpus path | DONE_VERIFIED | Reviewer-packet validator now expects exact `naver-ai/UGTPHON/ko/test.json`; pinned commit/blob/license values were not changed |
+| Canonical mismatch-queue serialization | DONE_VERIFIED | Exporter writes CRLF separators with no trailing separator; regression test added; generated output byte-compares successfully with committed queue |
+| Multi-engine benchmark and runtime parity | DONE_VERIFIED | Run [42416681855](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681855) passed all steps, including queue export/compare, Browser Kozak Kim, Native/Browser parity and SIGMORPHON |
+| Python/browser/packaging/research-artifact CI | DONE_VERIFIED | Runs [42416681845](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681845), [42416681848](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681848), [42416681843](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681843), [42416681889](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681889) all passed |
+| Independent speaker-specific IPA gold for 40 residual cases | BLOCKED / EVIDENCE-LIMITED | No source audio/speaker-linked evidence was supplied; no IPA forms were invented |
+| Ukrainian-target validation and independent linguistic acceptance | BLOCKED / EVIDENCE-LIMITED | Korean G2P benchmark results do not measure Ukrainian transcription; qualified target review remains necessary |
+| External reviewer distribution | DEFERRED | Holdout packets are generated as CI artifacts only; no reviewer was contacted and no packet was distributed |
+| Release certification | DEFERRED | Software CI is green on PR #457, but linguistic and Ukrainian-target acceptance gates remain open |
+
+#### Verified diagnostic results (not normative accuracy)
+
+- UGTPHON Korean test: 275 source rows, 2,703 eligible token occurrences. Native: 1,425/2,702 exact, CER 9.0130%; g2pK 0.9.4: 1,435/2,703 exact, CER 9.2328%.
+- SIGMORPHON 2021 Korean lexical test: 1,000 source rows, 999 eligible occurrences. Native: 359/998 exact, CER 14.5347%; g2pK 0.9.4: 353/999 exact, CER 14.8222%.
+- These are comparisons against the supplied corpus annotations and are convention-specific. They are not normative IPA adjudication, Ukrainian transcription scores, or proof of target orthographic correctness.
+- The multi-engine artifact is retained by Actions run [42416681855](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681855), artifact name `multi-engine-korean-ipa-diagnostic`, artifact ID `13592058477`.
+
+#### Repository and integration state
+
+- PR #456 remains merged at `18f5529b9100ea6e4f7c176c9627bacf1fc52585`.
+- PR #455 remains closed and unmerged; it was not revived or blindly ported.
+- PR #457 contains the documentation, source-register, pinned-path and canonical-export fixes. The branch is `docs/repository-structure-and-ci-reconciliation-2026-11-07`; its verified code/test head is `ab6c7c69ba65b7fd5da4383d2105ef81a5bcb51d`.
+- The repository had 24 branches at this audit point, including `main` and this working branch. Historical branches were preserved; no branch deletion or force-push was performed.
+- All execution evidence in this session came from GitHub Actions and GitHub repository APIs. No local `pytest`, `npm`, shell, or clean-install command is claimed as executed in this environment.
+- The metadata-only Official NIKL inventory workflow job was skipped by policy; it is not counted as a pass.
+
+#### Final readiness decision
+
+**Software verification: green on PR #457. Repository release readiness: PARTIAL RESEARCH PROTOTYPE.** The documentation and CI defects in scope are fixed and verified. The remaining blockers are linguistic evidence and Ukrainian-target acceptance, not the repository structure or the CSV/CI failures addressed here. Do not label the system release-ready until those independent acceptance criteria are met.

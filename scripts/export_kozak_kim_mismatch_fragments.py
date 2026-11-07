@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+from io import StringIO
 import unicodedata
 from pathlib import Path
 
@@ -306,6 +307,26 @@ def filter_unmapped_broad(rows: list[dict[str, str]]) -> list[dict[str, str]]:
     return [row for row in rows if row.get("has_unmapped_broad_fragments") == "true"]
 
 
+
+def write_csv(path: Path, rows: list[dict[str, str]]) -> None:
+    """Write the canonical review queue in the repository's pinned CSV byte format.
+
+    The committed review queue uses CRLF record separators and deliberately has
+    no trailing record separator. Keep that representation stable so the
+    benchmark's byte-for-byte drift check measures data changes, not platform
+    newline normalization.
+    """
+    buffer = StringIO(newline="")
+    writer = csv.DictWriter(buffer, fieldnames=FIELDS, lineterminator="\r\n")
+    writer.writeheader()
+    writer.writerows(rows)
+    payload = buffer.getvalue()
+    if payload.endswith("\r\n"):
+        payload = payload[:-2]
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(payload.encode("utf-8"))
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--report-json", type=Path, required=True)
@@ -327,11 +348,7 @@ def main() -> int:
         report, corpus_rows, args.corpus_revision or "", args.corpus_license or ""
     )
     rows = filter_unmapped_broad(all_rows) if args.only_unmapped_broad else all_rows
-    args.output_csv.parent.mkdir(parents=True, exist_ok=True)
-    with args.output_csv.open("w", encoding="utf-8", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=FIELDS, lineterminator="\n")
-        writer.writeheader()
-        writer.writerows(rows)
+    write_csv(args.output_csv, rows)
     print(json.dumps({
         "status": "DIAGNOSTIC_ONLY",
         "benchmark": report.get("benchmark"),

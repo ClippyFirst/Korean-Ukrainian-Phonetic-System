@@ -4,7 +4,7 @@ Evidence-scoped Korean → Ukrainian phonetic rendering research prototype with 
 
 ## Current status — 2026-11-07
 
-**Current integration branch:** `main`. **Starting commit for this continuation:** `1f220fcd7e3b44dab7302b37e2fe225812ee18a6`. **Latest merged implementation:** PR [#456](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/456), squash merge `18f5529b9100ea6e4f7c176c9627bacf1fc52585`.
+**Integration branch:** `main`. **Audited starting commit:** `e72856c1f03bfb775805748f96ec23889ca2e60f`. **Latest merged implementation:** PR [#456](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/456), squash merge `18f5529b9100ea6e4f7c176c9627bacf1fc52585`. The documentation/CI continuation is tracked separately from that already-merged implementation.
 
 ### What the 236 cases mean
 
@@ -22,21 +22,21 @@ Thus, **15/236 have exact standard-form runtime dispositions**. The 181 are hand
 
 ### Latest measured pronunciation benchmarks
 
-The latest exact-head diagnostics are from PR #454 before its squash merge. They are Korean G2P comparisons, **not Ukrainian transcription accuracy**:
+The latest paired Native/g2pK diagnostic is from PR #456; the complete multi-engine diagnostic was rerun successfully on PR #457. These are Korean G2P comparisons, **not Ukrainian transcription accuracy**:
 
 | Dataset / engine | Scored | Exact match | CER | Coverage |
 |---|---:|---:|---:|---:|
 | UGTPHON Korean test — Native | 2,702 | 52.7387% (1,425) | 9.0130% | 99.9630% |
 | UGTPHON Korean test — g2pK 0.9.4 | 2,703 | 53.0892% (1,435) | 9.2328% | 100% |
-| SIGMORPHON 2021 Korean test — Native | 998 | 35.8717% (358) | 14.5598% | 99.90% of 999 eligible |
+| SIGMORPHON 2021 Korean test — Native | 998 | 35.9719% (359) | 14.5347% | 99.90% of 999 eligible |
 | SIGMORPHON 2021 Korean test — g2pK 0.9.4 | 999 | 35.3353% (353) | 14.8222% | 100% |
 
-- UGTPHON paired comparison (run [42414467883](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42414467883)): 2,702 shared occurrences; g2pK exact-match delta versus Native `+0.003701`, while its CER delta is `+0.002207` (higher is worse). Native abstained on one occurrence; g2pK abstained on none. Diagnostic only, not normative gold.
-- SIGMORPHON paired comparison: 998 shared words; Native exact-match rate higher by about 0.50 percentage points and CER lower by about 0.25 points. The Native engine abstained on one word.
-- Multi-engine SIGMORPHON diagnostic: Native was 358/998 exact (35.8717%), ahead of g2pK (353/999; 35.3353%) and the other installed deterministic/phonemizer baselines in that run. This is a dataset- and convention-specific diagnostic, not proof of normative accuracy.
+- UGTPHON paired comparison (run [42414467883](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42414467883)): 2,702 shared occurrences; g2pK coverage-adjusted exact-match delta versus Native `+0.003700`, while its CER delta is `+0.002198` (higher is worse). Native abstained on one occurrence; g2pK abstained on none. Diagnostic only, not normative gold.
+- SIGMORPHON paired comparison in [multi-engine run 42416681855](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681855): 998 shared words; Native exact-match rate higher by 0.6366 percentage points and CER lower by 0.2875 points. The Native engine abstained on one word.
+- Multi-engine SIGMORPHON diagnostic: Native was 359/998 exact (35.9719%), ahead of g2pK (353/999; 35.3353%) and the other installed deterministic/phonemizer baselines in that run. This is a dataset- and convention-specific diagnostic, not proof of normative accuracy.
 - CharsiuG2P and ByT5 inference were skipped by policy; no neural score is claimed.
 
-Evidence: [latest paired Native/g2pK diagnostic](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42414467883), [source-only PR #456](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/456), and its exact-head [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42414467840). The multi-engine run [42414467825](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42414467825) was still running at the last check; no result is claimed. Historical mandatory baseline runs [42226435101](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435101) and [42226435403](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435403) remain linked as earlier evidence, not as the latest benchmark.
+Evidence: [latest paired Native/g2pK diagnostic](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42414467883), [source-only PR #456](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/456), and its exact-head [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42414467840). The complete [multi-engine diagnostic PR #457 run](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681855) passed, including the queue byte comparison, Browser Kozak Kim parity, and SIGMORPHON lexical benchmark. The earlier run [42414467825](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42414467825) failed only because generated CSV line endings differed from the committed canonical representation; PR #457 pins the format and verifies the exact output. PR #457's [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681845), [Python/browser test matrix](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681848), [research artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681843), and [exhaustive test-case extraction](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681889) all passed. Historical mandatory baseline runs [42226435101](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435101) and [42226435403](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435403) remain linked as earlier evidence, not as the latest benchmark.
 
 ### Readiness and remaining work
 

@@ -1,6 +1,16 @@
 # Repository structure and ownership guide
 
-**Snapshot:** 2026-11-07, after PR #456 (squash merge `18f5529b9100ea6e4f7c176c9627bacf1fc52585`) and the UGTPHON source-rights continuation. The latest mainline documentation commit at this snapshot is `f845e30729ca52f60831ac873b901676268db272`. This guide describes observed tree ownership and navigation boundaries; it is not a claim that every file has been independently reviewed line by line.
+**Snapshot:** 2026-11-07 at main commit `e72856c1f03bfb775805748f96ec23889ca2e60f`, after PR #456 (squash merge `18f5529b9100ea6e4f7c176c9627bacf1fc52585`). This point-in-time guide describes observed tree ownership and navigation boundaries; it is not a claim that every file has been independently reviewed line by line.
+
+## Latest verification snapshot — 2026-11-07
+
+The audited starting main commit was `e72856c1f03bfb775805748f96ec23889ca2e60f`. The two failed main-head runs at that snapshot were reconciled in PR [#457](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/457), verified on `ab6c7c69ba65b7fd5da4383d2105ef81a5bcb51d).
+
+PR #457's exact-head checks passed: [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681845), [Python/browser test matrix](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681848), [master/research artifact checks](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681843), [exhaustive test-case extraction](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681889), and [full multi-engine benchmark](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681855). The metadata-only NIKL inventory was skipped by policy; no claim of its execution is made.
+
+The initial failures were corrected without changing the source corpus pins or linguistic classifications: the UGTPHON source-register row was repaired as valid CSV, the exact `naver-ai/UGTPHON/ko/test.json` path was aligned in the reviewer-packet validator, and the mismatch-queue exporter was made byte-compatible with the committed CRLF/no-trailing-newline format. The full multi-engine run subsequently passed its exact artifact comparison, Browser Kozak Kim execution and Native/Browser parity audit.
+
+This point-in-time guide describes observed tree ownership and navigation boundaries; it is not a claim that every file has been independently reviewed line by line.
 
 ## What this repository contains
 
@@ -10,9 +20,9 @@ A Python research package, a browser-based practical/research application, Korea
 
 The reconstructed 236-row cohort contains 15 exact standard-form runtime dispositions, 181 bounded profile-convention decisions, 12 original abstentions and 28 residual cases. The 40 residual cases have explicit no-audio engine-policy dispositions, but all 40 remain unresolved as speaker-specific IPA gold. Do not describe the 181 profile decisions as new categorical rules or the 40 engine-policy decisions as IPA adjudication. The historical 236/239 selector membership is reconstructed, not independently proven.
 
-Latest paired UGTPHON diagnostic: Native 1,425/2,702 exact (52.7387%), CER 9.0130%; g2pK 1,435/2,703 (53.0892%), CER 9.2328%. SIGMORPHON 2021 figures retained from the prior exact-head run: Native 358/998 exact (35.8717%), CER 14.5598%; g2pK 353/999 (35.3353%), CER 14.8222%. These are Korean G2P/IPA diagnostics, not Ukrainian target accuracy or normative gold. The multi-engine run 42414467825 was pending at the last check.
+Latest paired UGTPHON diagnostic: Native 1,425/2,702 exact (52.7387%), CER 9.0130%; g2pK 1,435/2,703 (53.0892%), CER 9.2328%. SIGMORPHON 2021 figures retained from the prior exact-head run: Native 358/998 exact (35.8717%), CER 14.5598%; g2pK 353/999 (35.3353%), CER 14.8222%. These are Korean G2P/IPA diagnostics, not Ukrainian target accuracy or normative gold. The multi-engine run 42414467825 completed with a generated mismatch-queue artifact drift failure (byte 554, line 1); no complete multi-engine result is claimed.
 
-At main commit `45f1d266c7793b6c280ed3a1ec4565e309ec1cbb`, the recursive Git tree contains **848 entries** (805 files and 43 directories), including 183 Markdown files, 398 files under tests/, 65 scripts, 18 GitHub Actions workflows and 13 schemas. These are point-in-time inventory counts, not measures of implementation completeness.
+At main commit `e72856c1f03bfb775805748f96ec23889ca2e60f`, the recursive Git tree contains **848 entries** (805 files and 43 directories), including 183 Markdown files, 398 files under `tests/`, 65 scripts, 18 GitHub Actions workflows and 13 schemas, 150 files under `docs/` and 59 under `research/`. These are point-in-time inventory counts, not measures of implementation completeness.
 
 ## Top-level map
 
