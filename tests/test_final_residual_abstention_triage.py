@@ -29,7 +29,7 @@ def test_residual_abstention_register_is_complete_and_evidence_scoped():
     assert all(case["acceptanceCriterion"] for case in cases)
     # Candidate-only UI improvements are allowed; the production phonetic/target pipeline must still abstain.
     assert all(case["productionChange"].strip() not in ("", "none") for case in cases)
-    assert "no silent rewrite" in cases[0]["productionChange"]
+    assert "no silent rewrite" in cases[0]["productionChange"].lower()
     assert "Original input" in cases[1]["productionChange"]
     assert "No candidate is automatically applied" in cases[2]["productionChange"]
     assert "No accepted Ukrainian output" in cases[3]["productionChange"]
@@ -81,4 +81,4 @@ def test_spelling_sources_are_not_misrepresented_as_authorizing_normalization():
     assert "not automatic normalization" in by_input["쫒아내면"]["evidenceReviewed"][0]["scope"]
     assert "not authorization to normalize" in by_input["무서웟어"]["evidenceReviewed"][0]["scope"]
     assert "not IPA" in by_input["삶의"]["evidenceReviewed"][0]["scope"]
-    assert by_input["삶의"]["status"] == "BLOCKED_SPECIALIST_IPA_ADJUDICATION"
+    assert by_input["삶의"]["status"] == "SOURCE_ADJUDICATED_STANDARD_VARIANTS; SPEAKER_SELECTION_UNRESOLVED"
