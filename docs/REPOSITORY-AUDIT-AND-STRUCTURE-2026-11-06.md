@@ -10,11 +10,11 @@
 |---|---|---|
 | Reconstructed 236-row occurrence inventory | DONE_VERIFIED as an inventory | Candidate replay and registers exist; original historical 236/239 selector membership is not proven |
 | 15 exact standard-form runtime dispositions | DONE_VERIFIED | Ten exact integrations plus five pre-existing exact licenses; occurrence-scoped and source-backed |
-| 181 profile-convention decisions | DONE_VERIFIED as bounded decisions | Not 181 categorical sound-change rules and not speaker-specific IPA gold |
-| 12 original abstentions + 28 residual cases | DONE_VERIFIED for engine-policy disposition | All 40 have explicit no-audio engine-policy decisions; speaker-specific IPA remains UNRESOLVED_NO_AUDIO for all 40 |
+| 181 profile-convention decisions (181 profile-convention cases) | DONE_VERIFIED as bounded decisions | Not 181 categorical sound-change rules and not speaker-specific IPA gold |
+| 12 original abstentions + 28 residual cases | DONE_VERIFIED for engine-policy disposition | All 40 have explicit no-audio engine-policy decisions; the 12 abstentions + 28 unadjudicated cases remain UNRESOLVED_NO_AUDIO for speaker-specific IPA |
 | Three exact typo-preserving UGTPHON recoveries | DONE_VERIFIED | PR #454 merged; Python/Browser positive and near-form negative tests passed |
 | Independent Korean IPA gold for 40 | DEFERRED / EVIDENCE-LIMITED | No source audio or speaker crosswalk; no guessed narrow IPA |
-| Independent Ukrainian target validation | DEFERRED | Korean G2P benchmarks do not measure target-layer quality |
+| Independent Ukrainian target review / validation | DEFERRED | Korean G2P benchmarks do not measure target-layer quality |
 | External reviewer outreach | DEFERRED | Not part of this execution pass; no correspondence initiated |
 
 ### Latest benchmark evidence
