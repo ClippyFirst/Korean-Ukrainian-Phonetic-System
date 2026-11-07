@@ -300,3 +300,17 @@ def test_build_rows_rejects_duplicate_context_corpus_row_ids():
             "pinned-revision",
             "Apache-2.0",
         )
+
+
+
+def test_write_csv_uses_canonical_crlf_without_trailing_record_separator(tmp_path):
+    output = tmp_path / "queue.csv"
+    MODULE.write_csv(output, [{
+        field: ("x" if field == "occurrence_id" else "")
+        for field in MODULE.FIELDS
+    }])
+    payload = output.read_bytes()
+    assert b"\\r\\n" in payload
+    assert payload.count(b"\\n") == payload.count(b"\\r\\n")
+    assert not payload.endswith(b"\\r\\n")
+    assert payload.decode("utf-8").splitlines()[0].split(",") == MODULE.FIELDS
