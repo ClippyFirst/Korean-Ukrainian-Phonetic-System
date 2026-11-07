@@ -188,3 +188,17 @@ Exact-head checks on the PR head:
 - No post-fix multi-engine benchmark was run; the recovery PR changes only research metadata/tests and does not claim updated phonetic benchmark scores.
 
 Current research disposition remains: **239 reconstructed candidate IDs; 3 verified FIX overlaps; 236 candidate cases still unresolved**. RETAIN and ABSTAIN do not decrement the remaining count. Historical membership is still PARTIAL pending confirmation of the original aggregate selector; no independent IPA or Ukrainian-target gold is claimed.
+
+
+## Candidate-ID list validation — 2026-11-07
+
+The tracked file `research/kozak-kim-historical-239-candidate-ids-2026-11-05.txt` was counted directly: it contains **239 numeric IDs, all unique, with no duplicates**. This validates the file's cardinality and internal uniqueness only.
+
+It does **not** authenticate those IDs as the original historical 239-member cohort. The file is explicitly named a candidate-ID list; the original selection predicate / per-fragment C01–C10 assignment snapshot is still missing, and the list's membership cannot be independently replayed from the pinned mismatch export. Therefore:
+
+- retain the 239 IDs as a reconstructed candidate set;
+- do not relabel them as proven historical members;
+- do not promote the 236 review cohort to proven original membership;
+- keep the manifest status **PARTIAL / MEMBERSHIP RECONSTRUCTION BLOCKED** until the original predicate or assignment snapshot is recovered.
+
+This is a data-provenance limitation, not an audio limitation. It cannot be repaired by inventing IPA or by choosing a 239-row subset from the aggregate count.
