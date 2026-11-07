@@ -6990,7 +6990,7 @@ The native Python and browser shared-Broad optional [ɛ]~[e] metadata now cite L
 - Occurrence crosswalk: exact set equality with the 40-row engine-policy register (40 unique IDs; no missing/extra IDs).
 - Source crosswalk: zero source IDs missing from the source register.
 - Corrected the malformed R012 rule-coverage CSV row while updating R002 coverage for the ㅢ exception.
-- GitHub Actions for PR #456 were queued at the latest observed head; no pass is claimed until completed. The official NIKL metadata-only crawl remains skipped/blocked by HTTP 403. A local clone/test attempt was blocked by network/DNS access; no local pytest/npm result is claimed.
+- GitHub Actions for PR #456 were queued at the latest observed head; no pass is claimed until completed. The official NIKL metadata-only crawl remains skipped/blocked by HTTP 403. Local pytest/npm execution was not performed in this connector session; no local test result is claimed.
 
 ### Remaining genuine blockers / acceptance boundaries
 
