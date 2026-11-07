@@ -310,6 +310,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     const lexicalLongVowel=NIKL_LEXICAL_LONG_VOWEL_FORMS.get(exactWordFormAt(originalUnits,i))===originalUnits[i]?.char;
     const contextualUi=u.vowel==='ㅢ'&&u.onset!=='ㅇ'&&!u.__liaison;
     const defaultUi=u.vowel==='ㅢ'&&u.onset==='ㅇ';
+    const resyllabifiedUi=u.vowel==='ㅢ'&&Boolean(u.__liaison);
     const vowelJamo=contextualUi?'ㅣ':u.vowel;
     const onset=u.onset;
     // NIKL Standard Pronunciation Rule 5, exception 1: the glide in ㅕ is
@@ -340,7 +341,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     u.__effectiveCoda=u.coda;
 
     const o=get(map,'onset',onset),v=get(map,'vowel',vowelJamo),c=u.coda?get(map,'coda',u.coda):null;
-    const baseVowelIpa=(genitiveParticleUi||defaultUi)?'ɰi':palatalYeo?'ʌ':(v?.ipa||'');
+    const baseVowelIpa=(genitiveParticleUi||defaultUi||resyllabifiedUi)?'ɰi':palatalYeo?'ʌ':(v?.ipa||'');
     const vowelIpa=lexicalLongVowel?`${baseVowelIpa}ː`:baseVowelIpa;
     const ipaOnset=useSharedBroadIpaProfile?(o?.ipa||''):
       (J_VOWELS.has(u.vowel)&&onset==='ㅅ')?'ɕ':
