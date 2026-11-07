@@ -556,3 +556,31 @@ The Python research lexicon and Browser lexical overlay now preserve the distinc
 A direct check of the cited Busan PDF at printed p. 587 (PDF page 596), lines 14284–14292, shows that `[철마면 민요 26]` is titled `칭칭이`, not `칡칡이`. The singer is identified as 이문찬 (male, born 1923), fieldwork date 1991-10-19, location 철마면 이곡리; the refrain includes `치기타 칭칭나네`, and the entry cites 이소라, 『양산의 민요』 (1992), p. 180. The National Gugak Center separately documents `칭칭이소리`.
 
 Earlier repository wording that the PDF directly attested `칡칡이` was incorrect and has been corrected in the source register, triage JSON, and five-abstention report. The evidence establishes a source mismatch, not a safe normalization: preserve benchmark `칡칡이`, do not rewrite it to `칭칭이`, and do not add a lexical IPA rule. The exact token remains fail-closed until a source explicitly attests it or documents its correction. No audio or reviewer outreach is requested.
+
+
+## 2026-11-07 continuation — source-only evidence and 239 replay
+
+### 239 candidate replay
+
+- **DONE_VERIFIED — reconstructed candidate set:** the pinned pre-C11/C12 report (artifact 13148075070; ZIP SHA-256 `075ceff080decbb142492448c9344816bfb53f1e87fe563826668d037c053b89`; report SHA-256 `8c25e630ca828719b269aeb84c8037d9c40f881a0f15c2e4ddf9d427edffa0f9`) and historical classifier commit `8c335dd7031bdae59b3ef7db715b54f0fdc9bcd5` / blob `e0bb7f32d5b320d468e0bdcab0ed134c7a3278ec` were replayed.
+- Exact selection: Broad edit distance > 0; historical NFC/combining-mark grapheme alignment; Broad fragments only; pre-C11/C12 aggregate C01–C10 classifier; select only `UNMAPPED_REQUIRES_REVIEW`.
+- Result: 370 Broad mismatches → 239 unique candidate IDs; 111 source rows; 154 unique tokens. Exact set comparison with the tracked candidate-ID file: **239/239**, no missing or extra IDs.
+- Added `scripts/replay_kozak_239_candidate_selection.py` and unit tests. The script pins the report hash and fails closed if the candidate ID set differs.
+- **PARTIAL — original historical identity:** no contemporaneous original selector/member snapshot survives. The replay proves the reconstructed candidate set and its reproducibility, not that the original manual selection used precisely this algorithm. Do not describe 239/236 as confirmed engine defects.
+- After the three verified FIX overlaps (37, 704, 2031), 236 candidate rows remain: 213 without an individual disposition in the narrow registers, 22 overlapping ABSTAIN records, and one provisional RETAIN (1140, 출산). The later 15/181/12/28 disposition breakdown remains the current candidate-ledger classification.
+
+### Public Seoul Corpus source route
+
+OpenSLR SLR113 was checked directly. It lists the Seoul Corpus under CC BY-NC 2.0 and offers readme.tgz (27 MB), label.tgz (57 MB Praat TextGrid files), and sound.tgz (2.5 GB FLAC). The source register now records this explicit public route. Download attempts for label.tgz from both EU mirrors failed in this execution environment; the archive was not searched, so no exact 삶의 hit, speaker, timestamp or audio segment is claimed. The corpus cannot identify the unknown UGTPHON source speaker. CC BY-NC restrictions apply; no dataset files were redistributed or used for training.
+
+### Literature additions
+
+The source register now contains 225 records (12 columns), including Seoul Corpus metadata, Kim (2025) on context-conditioned 의 realization, Kim (2012) cine-MRI palatalization, Sung (2014) ultrasound lexical/post-lexical palatalization, Kim (2021) vowel-vowel transitions, and Shin (2013) optional /j/ formation/insertion. These abstract/metadata-level sources constrain overgeneralization; they do not provide token-specific IPA gold or authorize new runtime rules.
+
+### Source correction
+
+Direct reinspection of the cited Busan PDF confirms printed p. 587 (PDF p. 596) reads [철마면 민요 26] 칭칭이, not 칡칡이; exact full-text search finds no 칡칡이. The source register, triage JSON and test now preserve `BLOCKED_SOURCE_IDENTITY_AND_AUDIO`. Do not alias or normalize 칡칡이 to 칭칭이.
+
+### Verification boundary
+
+The source crosswalk for all 40 no-audio occurrences remains complete at the engine-policy level, while speaker-specific IPA remains `UNRESOLVED_NO_AUDIO` for 40/40. PR #456 exact-head CI for the replay script, source changes, and Rule 5 liaison fix is still queued/pending; no pass is claimed for that continuation. Repository readiness remains a bounded, source-backed research prototype, not an independently research-certified or authoritative transcription standard.
