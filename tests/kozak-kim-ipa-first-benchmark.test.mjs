@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
+import { createEngine } from '../src/app/engine.js';
 import {
   createBrowserKozakKimEngine,
   editDistance,
@@ -537,4 +539,17 @@ test('five previously integrated standard-rule cases remain covered', () => {
   for (const [word, surface] of Object.entries(expected)) {
     assert.equal(engine.convert(word, { morphologyMode: 'strict' }).surfaceHangul, surface, word);
   }
+});
+
+
+test('Browser generic ㅢ rule preserves the diphthong when a coda resyllabifies', () => {
+  const canonical = readFileSync(
+    new URL('../data/korean/canonical_correspondence.csv', import.meta.url),
+    'utf8'
+  );
+  const engine = createEngine(canonical, '');
+  const result = engine.convert('협의');
+
+  assert.equal(result.pronunciation_status, 'resolved');
+  assert.equal(result.ipa, 'hjʌ.bɰi');
 });
