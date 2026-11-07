@@ -30,7 +30,7 @@ def test_nikl_attested_particle_readings_for_salmui_are_explicit_variants():
     assert target["ukrainian_orthography"] is None
     assert target["target_status"] == "unavailable"
     assert target["ipa_is_diagnostic_only"] is False
-    assert target["lexical_target_reference"] == "салмі"
+    assert target["lexical_target_reference"] == "салмий"
     assert target["lexical_target_comparison"] == "unavailable_without_ipa_target"
 
 
