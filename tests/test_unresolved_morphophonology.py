@@ -6,23 +6,19 @@ def test_nikl_attested_particle_readings_for_salmui_are_explicit_variants():
     word = "\uc0b6\uc758"
     result = phoneticize_korean(word)
     assert result["surface_hangul"] == "\uc0b4\ubbdc"
-    assert result["ipa"]["ipa"] == "sal.mi"
+    assert result["ipa"]["ipa"] == "sal.mɰi"
     assert result["ipa"]["lexical_alternatives"] == [{
         "input": word,
         "surface_hangul": "\uc0b4\uba54",
         "ipa": "sal.me",
-        "status": "diagnostic_only_unresolved_pronunciation",
+        "status": "provisional",
         "source": "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5716&mn_id=217&pageIndex=225",
     }]
-    assert result["pronunciation_status"] == "unresolved"
-    assert result["ipa_is_diagnostic_only"] is True
-    assert result["ipa_status"] == "diagnostic_only_unresolved_pronunciation"
-    assert result["ipa_status_reason"] == "independent_ipa_adjudication_required"
-    assert any(
-        item["rule_id"] == "IPA_ADJUDICATION"
-        and item["status"] == "unresolved-ipa-adjudication"
-        for item in result["unresolved_contexts"]
-    )
+    assert result["pronunciation_status"] == "provisional"
+    assert result["ipa_is_diagnostic_only"] is False
+    assert result["ipa_status"] == "provisional"
+    assert result["ipa_status_reason"] is None
+    assert result["unresolved_contexts"] == []
     assert any(
         trace.get("rule_id") == "LEXICON"
         and trace.get("status") == "lexical-override"
@@ -32,8 +28,8 @@ def test_nikl_attested_particle_readings_for_salmui_are_explicit_variants():
     from korean_ukrainian.pipeline import transliterate_korean
     target = transliterate_korean(word)
     assert target["ukrainian_orthography"] is None
-    assert target["target_status"] == "unresolved"
-    assert target["ipa_is_diagnostic_only"] is True
+    assert target["target_status"] == "unavailable"
+    assert target["ipa_is_diagnostic_only"] is False
     assert target["lexical_target_reference"] == "салмі"
     assert target["lexical_target_comparison"] == "unavailable_without_ipa_target"
 
@@ -128,7 +124,7 @@ def test_three_native_abstentions_are_recovered_and_two_remain_ipa_gated():
     assert any(item["rule_id"] == "R002" for item in kudzu["unresolved_contexts"])
 
     life = phoneticize_korean("삶의")
-    assert life["pronunciation_status"] == "unresolved"
-    assert life["ipa_is_diagnostic_only"] is True
-    assert life["ipa_status"] == "diagnostic_only_unresolved_pronunciation"
-    assert any(item["rule_id"] == "IPA_ADJUDICATION" for item in life["unresolved_contexts"])
+    assert life["pronunciation_status"] == "provisional"
+    assert life["ipa_is_diagnostic_only"] is False
+    assert life["ipa_status"] == "provisional"
+    assert life["unresolved_contexts"] == []
