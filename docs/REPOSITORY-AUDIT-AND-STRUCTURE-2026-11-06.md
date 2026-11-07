@@ -546,7 +546,7 @@ This does not claim speaker-level acoustic IPA. The original occurrence register
 
 The earlier IPA hold for UGTPHON occurrence `dc_inside_2212` is superseded at the standard-variant level. NIKL MCFAQ 5716 directly names `삶의` and lists `[살믜]` and `[살메]`. The official Rule 5 commentary clarifies that the consonant-initial `ㅢ → [i]` exception does not apply when the preceding coda is resyllabified into the onset. The earlier project candidate `sal.mi` therefore applied the wrong exception.
 
-The Python research lexicon and Browser lexical overlay now preserve the distinct broad-IPA candidates `sal.mɰi` and `sal.me`; the same Rule 5 correction is applied to `협의` (`hjʌ.bɰi` versus `hjʌ.bi`). Regression tests cover both. The `ɰi → ий` Ukrainian correspondence remains provisional, so final target output is withheld and only a research candidate is exposed.
+The Python research lexicon and Browser lexical overlay now preserve the distinct broad-IPA candidates `sal.mɰi` and `sal.me`. The general Python and Browser pipelines now also track coda-resyllabification provenance so Rule 5's [i] exception is not applied to a resyllabified onset; `협의` is tested both with and without its lexical override (`hjʌ.bɰi` versus `hjʌ.bi`). The `ɰi → ий` Ukrainian correspondence remains provisional, so final target output is withheld and only a research candidate is exposed.
 
 **Revised five-abstention status:** three exact runtime recoveries; one source-adjudicated standard variant set (`삶의`); one remaining source-limited case (`칡칡이`). No speaker-specific variant or narrow IPA is claimed. No audio or external reviewer outreach is requested.
 
