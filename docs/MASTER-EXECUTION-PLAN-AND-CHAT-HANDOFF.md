@@ -7067,3 +7067,17 @@ These are research-context sources only. They do not test all exact UGTPHON targ
 The source register now contains **225 records**. OpenSLR SLR113 publicly lists the Seoul Corpus with a stated **CC BY-NC 2.0** license and downloadable archives: readme.tgz (27 MB), label.tgz (57 MB Praat TextGrid files), and sound.tgz (2.5 GB FLAC). This upgrades the previous generic corpus lead to a concrete public retrieval route.
 
 Attempted retrieval of the 57 MB label archive from both OpenSLR EU mirrors failed in this execution environment; direct container DNS resolution also failed. Therefore the TextGrid labels were not searched and no exact 삶의 token, speaker, timestamp or matching audio segment is confirmed. The archive is non-commercial under the listed license; no files were redistributed or used for training. Even if an exact 삶의 token is found in this corpus, it will provide a population-level comparison, not identify the unknown UGTPHON source speaker.
+
+
+## 2026-11-07 — exact 239-candidate replay verified
+
+The historical pre-C11/C12 Broad-only aggregate replay has now been independently re-executed from the pinned benchmark artifact:
+- Artifact 13148075070; ZIP SHA-256 `075ceff080decbb142492448c9344816bfb53f1e87fe563826668d037c053b89`.
+- Report SHA-256 `8c25e630ca828719b269aeb84c8037d9c40f881a0f15c2e4ddf9d427edffa0f9`.
+- Historical classifier commit `8c335dd7031bdae59b3ef7db715b54f0fdc9bcd5`, blob `e0bb7f32d5b320d468e0bdcab0ed134c7a3278ec`.
+- Selection: Broad distance > 0; historical grapheme alignment; Broad fragments only; aggregate pre-C11/C12 C01–C10 classifier; select only `UNMAPPED_REQUIRES_REVIEW`.
+- Output: 370 Broad mismatches → 239 unique IDs, 111 source rows, 154 tokens; candidate snapshot comparison is **239/239 exact**, no missing/extra IDs.
+
+The executable replay and tests are now in the repository at `scripts/replay_kozak_239_candidate_selection.py` and `tests/test_replay_kozak_239_candidate_selection.py`. The script pins the report SHA and verifies the full ID set. **DONE_VERIFIED** applies to reproducibility of the reconstructed candidate cohort. **PARTIAL** remains for original historical identity because the contemporaneous manual selector/member snapshot is not preserved; do not claim that the original selection used this exact replay or that 239/236 are confirmed defects.
+
+The current 236-row crosswalk remains 3 FIX overlaps removed, 22 ABSTAIN overlaps, 1 provisional RETAIN and 213 with no individual disposition in the narrow registers. The 15/181/12/28 candidate-ledger disposition breakdown is a separate classification axis. Exact-head CI for the new replay script and latest source/code changes is pending.
