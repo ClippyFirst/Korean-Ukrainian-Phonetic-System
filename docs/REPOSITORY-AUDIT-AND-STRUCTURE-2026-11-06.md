@@ -2,7 +2,7 @@
 
 ## Superseding current-main status — 2026-11-07
 
-**Current branch:** main. **Implementation merge commit:** d2f942d0615df3da2a973a2709f8738f65da18d9 (PR #454 merged). The documentation status was subsequently reconciled on main in commit 249c2e7ce7556a0acf07f7fe9cb6fe77ebd1e96c; this section supersedes older snapshot statements below; the dated audit trail is retained.
+**Current branch:** main. **Implementation merge commit:** d2f942d0615df3da2a973a2709f8738f65da18d9 (PR #454 merged). The documentation status was first reconciled on main in commit 249c2e7ce7556a0acf07f7fe9cb6fe77ebd1e96c and then refined in commits 365bfd702faf75697b0a13dda897f6d007d2ae2a, 77956a8cc1f770907749f822cb0874c820f14e25, 45131bf0aec048f39c9c103c2aa10e695e21c12d and 89369e3337661f76588c469d2cd173534dcd5273; this section supersedes older snapshot statements below; the dated audit trail is retained.
 
 ### 236-case task ledger
 
@@ -29,6 +29,14 @@
 At the pre-documentation main commit, the recursive tree had 838 entries (796 files, 42 directories), 179 Markdown files, 397 test files, 64 scripts, 18 workflows and 13 schemas; docs/ had 148 files and research/ 57 files. The tree count is an inventory, not a quality or completion metric. The current navigation remains README.md → docs/README.md → docs/REPOSITORY-STRUCTURE.md / docs/AGENT-WORKFLOWS.md; AGENTS.md is the repository task router; research truth remains in research/SOURCE-REGISTER.csv, research/RULE-COVERAGE.csv, research/ACCEPTANCE-GATES.md, research/DECISION-LOG.md and research/ROADMAP.md. The >1 MB append-only master handoff is preserved.
 
 **Readiness:** software-verified bounded research prototype; not independently research-certified or release-ready. Latest Pages deployment/live smoke must be checked on the post-merge main head.
+
+### Branch and PR reconciliation
+
+- PR #454 was squash-merged into main as d2f942d0615df3da2a973a2709f8738f65da18d9. Its final-release branch supplied the accepted exact-form implementation and benchmark evidence.
+- PR #447 and its 40-case no-audio engine-policy decisions are already integrated in main. The 40 policy dispositions do not change the 40 unresolved speaker-specific IPA-gold statuses.
+- PR #448 was closed as superseded: its documentation-only reconciliation was replaced by the updated mainline README, docs index, repository map, research index, acceptance gates, roadmap and audit.
+- PR #455 was closed without merge because its remaining unique scope couples rights/notice work with blinded external-review packet tooling. The user requested no letters or external review; no packets were generated or distributed and no reviewer was contacted. The branch is preserved for possible later use; its changes were not represented as merged.
+- The branch inventory contains 22 refs (main plus 21 supporting/historical branches). Main is the only active execution branch for this continuation. Remaining refs were compared against main; older/superseded attempts were not merged blindly because their histories diverge after squash merges and several represent earlier snapshots of work already accepted through PR #447/#454. No branch was deleted and no force-push was used.
 
 ---
 
