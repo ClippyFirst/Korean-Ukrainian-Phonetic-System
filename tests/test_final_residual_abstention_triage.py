@@ -39,7 +39,7 @@ def test_residual_abstention_register_is_complete_and_evidence_scoped():
     assert current["recoveredExactForms"] == ["쫒아내면", "많앗구나유유유", "무서웟어"]
     by_input = {case["input"]: case for case in cases}
     assert by_input["칡칡이"]["currentDisposition"]["status"] == "BLOCKED_SOURCE_IDENTITY_AND_AUDIO"
-    assert by_input["삶의"]["currentDisposition"]["status"] == "BLOCKED_SPECIALIST_IPA_ADJUDICATION"
+    assert by_input["삶의"]["currentDisposition"]["status"] == "SOURCE_ADJUDICATED_VARIANT_SET_SPEAKER_CHOICE_UNRESOLVED"
 
 
 def test_residual_cases_preserve_exact_spelling_and_ipa_acceptance_boundary():
@@ -58,10 +58,18 @@ def test_residual_cases_preserve_exact_spelling_and_ipa_acceptance_boundary():
             assert phonetics["ipa"]["ipa"], (form, phonetics)
             assert result["target_status"] in {"model-selected", "provisional", "unavailable"}, (form, result)
             assert result["analysis_status"] == "research-prototype", (form, result)
+        elif form == "삶의":
+            # NIKL resolves the standard variant set; speaker selection and
+            # the /ɰi/→Ukrainian mapping remain provisional without audio.
+            assert phonetics["pronunciation_status"] == "provisional", (form, phonetics)
+            assert phonetics["ipa_is_diagnostic_only"] is False, (form, phonetics)
+            assert phonetics["ipa"]["ipa"] == "sal.mɰi", (form, phonetics)
+            assert result["target_status"] == "unavailable", (form, result)
+            assert result["ukrainian_orthography"] is None, (form, result)
+            assert result["candidate_status"] == "provisional", (form, result)
         else:
-            # 칡칡이 (folk-song heading) and 삶의 remain blocked for different reasons.
-            expected_target_status = "unresolved"
-            assert result["target_status"] == expected_target_status, (form, result)
+            # 칡칡이 is source-attested as a title, but morphology and IPA remain unassigned.
+            assert result["target_status"] == "unresolved", (form, result)
             assert result["ukrainian_orthography"] is None, (form, result)
             assert result["candidate_orthography"] is None, (form, result)
             assert phonetics["pronunciation_status"] == "unresolved", (form, phonetics)
