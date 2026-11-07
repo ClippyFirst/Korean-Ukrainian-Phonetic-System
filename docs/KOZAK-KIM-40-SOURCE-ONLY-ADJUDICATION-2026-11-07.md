@@ -23,7 +23,7 @@ The label `UNRESOLVED_NO_AUDIO` in the original occurrence CSV is retained delib
 
 | Token(s) | Source-supported decision | What is not inferred |
 |---|---|---|
-| `오조오억배` | Keep broad /o.ʌ/ inside 오억; do not insert phonemic /j/ or /w/ from a transition. Keep the separate /o#o/ sequence at 조–오 distinct. | No narrow glide choice or token-specific connected-speech realization. |
+| `오조오억배` | Keep broad /o.ʌ/ inside 오억; do not insert phonemic /j/ or /w/ from a transition. Keep the separate /o.o/ sequence at 조–오 distinct. | No narrow glide choice or token-specific connected-speech realization. |
 | `문화체험공간`, `사전체험`, `만듬사전체험때` | In 체험, /h/ intervenes between /e/ and /ʌ/: /e.hʌ/. It is not adjacent-VV hiatus, so no extra /j/ is inserted. | No change to the lexical /h/ onset; no glide insertion inferred from unrelated VV experiments. |
 | `쇼` | NIKL says foreign-word 쇼 is read according to its Hangul spelling. Keep broad phonemic /s/. | NIKL does not provide IPA. Rounded coarticulation is not a categorical [ɕ] or [ɕʷ] segment. |
 | `홍콩영화들` | Rule 29 [붙임 2] permits n-insertion only when two explicitly segmented words are pronounced as one connected phrase. Phrase-mode path remains available for `홍콩 영화들`. | Compact `홍콩영화들` does not establish hidden spacing or prosodic grouping. |
@@ -70,6 +70,7 @@ The Seoul Corpus literature provides recordings and phonemic labels from 40 Seou
 - NIKL [Q&A 330322](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=330322): connected-phrase scope for Rule 29.
 - NIKL [Q&A 316146](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=261&pageIndex=1&qna_seq=316146): exact `첫 연애` prosodic alternatives.
 - NIKL [Q&A 332662](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=332662): `쇼` read according to Hangul spelling.
+- NIKL [Q&A 332091](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=332091): `-세요` is the shortened form of `-시어요`; [Q&A 321634](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=321634) directly documents `시어` → `셔`.
 - [Kim & Hong 2025](https://doi.org/10.30961/lr.2025.61.1.1); [Kang 2010, hiatus resolution](https://doi.org/10.3765/BLS.V36I1.3910).
 - [Kang 2010, lenis /s/ coarticulation](https://doi.org/10.17959/SPPM.2010.16.1.3); [Kang 2010, high-front + rounded context](https://www.semanticscholar.org/paper/bf95ee5d14eecfa8b4891aa949b4789063afd328); [Kim et al. 2021 EPG](https://doi.org/10.12963/csd.21815); [Sung 2014](https://doi.org/10.21437/Interspeech.2014-27).
 - [Jun 2015](https://doi.org/10.1017/S0952675715000275); [Jun 2021](https://doi.org/10.5334/GJGL.1401).
