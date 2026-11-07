@@ -135,7 +135,8 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
             else:
                 continue
             section="research /ɛ–e/ merger"
-        elif (syllable.nucleus=="ㅢ" and syllable.onset_from_coda):
+        elif (syllable.nucleus=="ㅢ" and i>0
+              and items[i-1].boundary_after!="word"):
             genitive_particle=_word_form_at(items,i) in _NIKL_GENITIVE_UI_PARTICLE_FORMS
             primary,alternate="ɰi","e" if genitive_particle else "i"
             section="§5"
