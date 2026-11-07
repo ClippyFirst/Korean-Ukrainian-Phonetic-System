@@ -4,7 +4,7 @@
 - **40 residual occurrences:** 17 distinct spellings have source-backed structural/broad-profile dispositions. Conditional phrase n-insertion, non-speech ㅠ, UGC spelling, /s/ before /jʌ/, /i.i/, and vowel-quality variants are explicitly bounded. All 40 retain `UNRESOLVED_NO_AUDIO` for speaker-specific IPA gold.
 - **ㅢ / liaison correction:** NIKL Rule 5 commentary excludes the post-consonantal [i] reading when the preceding coda resyllabifies into the onset. Python and Browser now preserve /ɰi/ in that context; ordinary consonant-onset ㅢ still maps to [i]. Regression tests include positive and negative controls.
 - **삶의:** exact NIKL forms [살믜]/[살메] are represented as project broad IPA /sal.mɰi/ and /sal.me/. The /ɰi/ → Ukrainian ий correspondence remains provisional and candidate-only.
-- **칡칡이:** the cited Busan PDF reads 칭칭이, not the benchmark token. This is a confirmed source mismatch; preserve the raw spelling and do not auto-correct or assign IPA.
+- **칡칡이:** the Busan volume directly attests `[철마면 민요 26] 칡칡이` at printed p. 586; `[장안읍 민요 13] 칭칭이` at p. 548 is a distinct entry with different performers/locality. Withdraw the earlier source-mismatch conclusion. Preserve the exact title; no IPA is supplied.
 - **External review/audio:** no audio is requested and no external reviewer outreach or letters are made under the current user scope. Do not claim speaker-specific acoustic gold.
 - **Current source register:** 226 records. The official NIKL metadata-only crawl remains skipped/blocked where the automated endpoint returns HTTP 403; a skipped job is not a successful crawl.
 - **Verification:** the latest exact-head Python and Browser workflows are pending; do not mark this continuation release-ready until they complete.
