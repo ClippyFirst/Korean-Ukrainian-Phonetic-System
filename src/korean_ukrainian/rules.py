@@ -484,11 +484,11 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                         break
                 if scope=="formal":
                     retained,moved=COMPLEX_LIAISON[a.coda]
-                    a.coda=retained; b.onset=moved or "ㅇ"; changed=True
+                    a.coda=retained; b.onset=moved or "ㅇ"; b.onset_from_coda=True; changed=True
                     applied_license_contexts.append(f"R002:formal:{word_form}:{pair}")
                 elif scope=="substantive":
                     representative=FINAL_REPRESENTATIVE.get(a.coda,a.coda)
-                    a.coda=""; b.onset=representative; changed=True
+                    a.coda=""; b.onset=representative; b.onset_from_coda=True; changed=True
                     applied_license_contexts.append(f"R002:substantive:{word_form}:{pair}")
                 else:
                     conditional_disabled=True
@@ -506,10 +506,10 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                             scope=parts[1]
                             break
                     if scope=="formal":
-                        b.onset=a.coda; a.coda=""; changed=True
+                        b.onset=a.coda; b.onset_from_coda=True; a.coda=""; changed=True
                         applied_license_contexts.append(f"R002:formal:{word_form}:{pair}")
                     elif scope=="substantive":
-                        b.onset=representative; a.coda=""; changed=True
+                        b.onset=representative; b.onset_from_coda=True; a.coda=""; changed=True
                         applied_license_contexts.append(f"R002:substantive:{word_form}:{pair}")
                     else:
                         conditional_disabled=True
