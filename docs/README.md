@@ -8,18 +8,19 @@ This page is the entry point for project documentation. It distinguishes current
 2. [Root agent instructions](../AGENTS.md) — repository-wide task routing and non-negotiable contracts.
 3. [Agent workflow guide](AGENT-WORKFLOWS.md) — maintained skills, task lifecycle, evidence rules and review/verification process.
 4. [Repository structure guide](REPOSITORY-STRUCTURE.md) — current component map, data ownership, runtime entry points, development commands and safe navigation.
-5. [Repository audit and structure — 2026-11-06](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md) — current continuation for repository, CI, 236-case, no-audio policy, source-rights and readiness status.
-6. [Engineering workflow reference audit — 2026-11-06](ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-06.md) — pinned review of Unlazy, Superpowers, Matt Pocock skills and Ponytail with explicit adoption boundaries.
-7. [Previous repository audit — 2026-11-04](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — historical snapshots; latest addendum 2026-11-05, including engine isolation and historical mismatch blockers.
-8. [Versioning policy](VERSIONING-POLICY.md) — independent browser and Python release streams.
-9. [Architecture](architecture.md) — concise system architecture.
-10. [Methodology](methodology.md) — linguistic and engineering methodology.
-11. [Ukrainian target layer](ukrainian-target-layer.md) — IPA-to-Ukrainian mapping contract.
-12. [Research index](../research/README.md) — active research programme and evidence workflow.
-13. [Research master directive](../research/MASTER-DIRECTIVE.md) — non-negotiable research and implementation constraints.
-14. [Acceptance gates](../research/ACCEPTANCE-GATES.md) — research and release acceptance criteria.
-15. [Decision log](../research/DECISION-LOG.md) — append-only consequential decisions.
-16. [Master execution plan and handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) — append-only historical execution record; use the newest dated section. If the current audit records that the oversized handoff could not be safely appended, the audit's latest superseding continuation is authoritative for that session.
+5. [40-case source-only adjudication — 2026-11-07](KOZAK-KIM-40-SOURCE-ONLY-ADJUDICATION-2026-11-07.md) — source-backed structural and broad-profile decisions for all 17 token spellings / 40 residual occurrences, with speaker-specific IPA limits kept separate.
+6. [Repository audit and structure — 2026-11-06](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md) — current continuation for repository, CI, 236-case, no-audio policy, source-rights and readiness status.
+7. [Engineering workflow reference audit — 2026-11-06](ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-06.md) — pinned review of Unlazy, Superpowers, Matt Pocock skills and Ponytail with explicit adoption boundaries.
+8. [Previous repository audit — 2026-11-04](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — historical snapshots; latest addendum 2026-11-05, including engine isolation and historical mismatch blockers.
+9. [Versioning policy](VERSIONING-POLICY.md) — independent browser and Python release streams.
+10. [Architecture](architecture.md) — concise system architecture.
+11. [Methodology](methodology.md) — linguistic and engineering methodology.
+12. [Ukrainian target layer](ukrainian-target-layer.md) — IPA-to-Ukrainian mapping contract.
+13. [Research index](../research/README.md) — active research programme and evidence workflow.
+14. [Research master directive](../research/MASTER-DIRECTIVE.md) — non-negotiable research and implementation constraints.
+15. [Acceptance gates](../research/ACCEPTANCE-GATES.md) — research and release acceptance criteria.
+16. [Decision log](../research/DECISION-LOG.md) — append-only consequential decisions.
+17. [Master execution plan and handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) — append-only historical execution record; use the newest dated section. If the current audit records that the oversized handoff could not be safely appended, the audit's latest superseding continuation is authoritative for that session.
 
 - [Licensing and permissions](LICENSING-AND-PERMISSIONS.md) — author identity, scientific-use permissions, technical permission boundary and third-party licence scope.
 
