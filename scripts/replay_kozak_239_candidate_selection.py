@@ -72,7 +72,7 @@ def align(reference: str, prediction: str) -> list[dict[str, str]]:
 
 
 def candidate_clusters(fragments: list[dict[str, str]]) -> list[str]:
-    """Exact pre-C11/C12 aggregate C01-C10 classifier at historical commit 8c335dd."""
+    """Historical aggregate label function at 8c335dd (C01-C07, C09, C10; no C08 label)."""
     text = "".join(item["reference_fragment"] + item["kozak_fragment"] for item in fragments)
     labels: list[str] = []
     if any(char in text for char in "ɭɾʎ"):
