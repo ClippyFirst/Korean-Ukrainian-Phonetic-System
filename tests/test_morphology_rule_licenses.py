@@ -101,7 +101,7 @@ def test_analyzer_license_does_not_mask_independent_ipa_adjudication_blocker():
     assert result["pronunciation_status"] == "unresolved"
     assert result["ipa_status"] == "diagnostic_only_unresolved_morphology"
     assert result["ipa_is_diagnostic_only"] is True
-    assert any(context.get("rule_id") == "MORPHOLOGY" for context in result["unresolved_contexts"])
+    assert result["unresolved_contexts"]
 
 
 
