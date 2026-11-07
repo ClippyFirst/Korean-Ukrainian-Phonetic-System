@@ -4,6 +4,7 @@
 
 - The reconstructed 236-case cohort has 15 exact standard-form runtime dispositions, 181 bounded profile-convention decisions, 12 original abstentions and 28 residual rows.
 - The 40 residual rows now have explicit no-audio engine-policy dispositions. A source-only pass now adjudicates all 17 distinct spellings across the 40 rows at the structural/broad-profile level; 40/40 remain unresolved only for speaker-specific IPA gold. No audio, speaker crosswalk or independent acoustic gold was created.
+- UGTPHON `삶의` now has an exact NIKL-backed standard variant set `[살믜]/[살메]`, project IPA `sal.mɰi`/`sal.me`, and a provisional Ukrainian target; `칡칡이` remains the sole source-limited item in the five-abstention set.
 - PR #454 adds three exact typo-preserving morphology licenses (쫒아내면, 많앗구나유유유, 무서웟어) in Python and Browser, with positive and near-form negative controls. 칡칡이 and 삶의 remain fail-closed.
 - Latest UGTPHON diagnostic: Native 1,435/2,701 exact (53.1285%), CER 8.9418%, two abstentions; g2pK 1,435/2,703 (53.0892%), CER 9.2328%. Paired exact count is equal; Native CER is lower by 0.2856 pp.
 - Latest SIGMORPHON 2021 diagnostic: Native 358/998 exact (35.8717%), CER 14.5598%; g2pK 353/999 (35.3353%), CER 14.8222%. Multi-engine workflow passed; optional CharsiuG2P/ByT5 inference skipped by policy.
