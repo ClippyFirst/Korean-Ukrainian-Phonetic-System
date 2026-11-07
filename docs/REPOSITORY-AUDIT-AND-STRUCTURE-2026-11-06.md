@@ -2,7 +2,7 @@
 
 ## Superseding current-main status — 2026-11-07
 
-**Current branch:** main. **Current commit:** d2f942d0615df3da2a973a2709f8738f65da18d9 (PR #454 merged). This section supersedes older snapshot statements below; the dated audit trail is retained.
+**Current branch:** main. **Implementation merge commit:** d2f942d0615df3da2a973a2709f8738f65da18d9 (PR #454 merged). The documentation status was subsequently reconciled on main in commit 249c2e7ce7556a0acf07f7fe9cb6fe77ebd1e96c; this section supersedes older snapshot statements below; the dated audit trail is retained.
 
 ### 236-case task ledger
 
