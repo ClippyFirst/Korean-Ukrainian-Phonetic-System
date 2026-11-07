@@ -38,7 +38,8 @@ These are diagnostic Korean G2P/IPA comparisons, not Ukrainian target accuracy o
 
 ## Remaining acceptance boundaries
 
-- **PARTIAL — original 236/239 cohort provenance:** candidate replay is reproducible, but the original selector/member list is not proven.
+- **DONE_VERIFIED — reconstructed 239 candidate replay:** the pinned pre-C11/C12 Broad-only aggregate C01–C10 classifier reproduces 239 unique IDs and matches the tracked candidate snapshot 239/239. See `scripts/replay_kozak_239_candidate_selection.py` and the historical recovery manifest.
+- **PARTIAL — original historical 236/239 identity:** the original contemporaneous selector/member snapshot is absent; the replay verifies the reconstructed candidate cohort, not that the original manual selection used precisely this operation.
 - **UNRESOLVED_NO_AUDIO — 40 speaker-specific IPA claims:** no audio/speaker crosswalk; no guessed narrow IPA or Ukrainian gold.
 - **PARTIAL — Ukrainian target validation:** separate target-layer validation is not measured by Korean G2P benchmarks.
 - **PARTIAL — broad source-backed coverage:** continue only where the existing rule-coverage matrix identifies a gap with exact primary evidence and negative controls.
