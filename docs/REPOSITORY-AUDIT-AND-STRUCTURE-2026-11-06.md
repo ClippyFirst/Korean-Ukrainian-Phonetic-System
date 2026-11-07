@@ -529,3 +529,14 @@ An initial Python assertion run [42260665657](https://github.com/ClippyFirst/Kor
 ## Addendum — UGTPHON five native abstentions (2026-11-06)
 
 The five residual Native G2P abstentions have been reviewed against the pinned UGTPHON rows and primary/source-specific evidence. Three exact-token cases now have Python/Browser R002/R003 licenses (`쫒아내면`, `많앗구나유유유`, `무서웟어`), with raw spelling retained and no generalization. Two remain blocked: `칡칡이` is a directly attested folk-song heading in the Busan oral-culture collection, but no audio/field notes establish its spoken realization; `삶의` has NIKL Hangul variants but no independent IPA adjudication. The prior folk-source register claim that the PDF text layer read `칭칭이` was corrected; opened PDF lines 20611–20622 read `칡칡이`. Implementation and tests are in PR #454; exact-head CI is pending on the final branch head. See [the focused case report](UGTPHON-FIVE-ABSTENTIONS-RESOLUTION-2026-11-06.md) and [the current triage register](../research/final-residual-abstention-triage-2026-10-25.json).
+
+
+## Addendum — source-only adjudication of the 40 residual occurrences (2026-11-07)
+
+The no-audio constraint has been addressed with public normative and scholarly sources. A separate source-only pass records a disposition for **all 17 distinct token spellings across 40 occurrence rows**. It distinguishes canonical broad structure, explicit morphology, conditional prosodic variants, non-speech emoticons, and research-only vowel variants. See [the source-only adjudication report](KOZAK-KIM-40-SOURCE-ONLY-ADJUDICATION-2026-11-07.md) and [the 17-token machine-readable register](../research/kozak-kim-40-source-adjudication-2026-11-07.csv).
+
+This does not claim speaker-level acoustic IPA. The original occurrence register retains `UNRESOLVED_NO_AUDIO` specifically for the 40 token/speaker IPA-gold claims. Published aggregate studies cannot determine the original speaker's narrow sibilant realization, vowel quality, speech rate or prosodic grouping. Compact `홍콩영화들`, `한국여자로` and `첫연애실패후` therefore remain unchanged unless a caller explicitly supplies segmentation/phrase mode; the engine does not infer hidden spaces.
+
+**Implementation decision:** no new runtime rule was added because the already-integrated Python and Browser policies match the source-backed boundaries. Jun (2021) was added to the source register to document the variable/gradient n-insertion evidence. All source IDs in the new 17-token register were checked against the source register. The new report/data artifacts require exact-head CI before they are marked fully verified.
+
+**Status correction:** source-based engine-policy adjudication is complete for the 40 occurrences; speaker-specific IPA gold is still unresolved for 40/40. These are separate acceptance axes and must not be conflated.
