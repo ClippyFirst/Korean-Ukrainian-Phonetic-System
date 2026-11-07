@@ -76,7 +76,7 @@ def nucleus_ipa(s:Syllable,*,phonemic=False,genitive_particle=False)->list[str]:
     # only in the broad surface-IPA representation.
     if not phonemic and s.nucleus=="ㅕ" and s.onset in {"ㅈ","ㅉ","ㅊ"}:
         return ["ʌ"]
-    # Exact genitive-particle forms retain principal [ɯi]; Rule 5's [e]
+    # Exact genitive-particle forms retain the principal project /ɰi/ form; Rule 5's [e]
     # alternative is emitted separately. Non-initial lexical ㅢ keeps [i].
     if not phonemic and genitive_particle and s.nucleus=="ㅢ":
         return ["ɰi"]
