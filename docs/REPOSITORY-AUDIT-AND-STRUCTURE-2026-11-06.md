@@ -662,3 +662,39 @@ The source crosswalk for all 40 no-audio occurrences remains complete at the eng
 3. Confirm Pages deployment and live smoke on the resulting main commit.
 4. Keep the 40 speaker-specific IPA cases unresolved until audio/speaker-linked evidence and independent annotations exist; keep Ukrainian target review separate.
 5. Do not claim release readiness until the above software gates and the project's independent linguistic/target acceptance gates are met.
+
+
+### Final verified outcome — PR #457 head `ab6c7c69ba65b7fd5da4383d2105ef81a5bcb51d`
+
+| Work item | Final status | Evidence / acceptance |
+|---|---|---|
+| Repository documentation index and status reconciliation | DONE_VERIFIED | README, `docs/README.md`, `docs/REPOSITORY-STRUCTURE.md` and this audit now distinguish historical main-head failures from the verified PR state |
+| Source-register CSV integrity | DONE_VERIFIED | Opening quote repaired on `SRC-UGTPHON-EMNLP-2026`; Python and browser regression suites passed |
+| Pinned UGTPHON corpus path | DONE_VERIFIED | Reviewer-packet validator now expects exact `naver-ai/UGTPHON/ko/test.json`; pinned commit/blob/license values were not changed |
+| Canonical mismatch-queue serialization | DONE_VERIFIED | Exporter writes CRLF separators with no trailing separator; regression test added; generated output byte-compares successfully with committed queue |
+| Multi-engine benchmark and runtime parity | DONE_VERIFIED | Run [42416681855](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681855) passed all steps, including queue export/compare, Browser Kozak Kim, Native/Browser parity and SIGMORPHON |
+| Python/browser/packaging/research-artifact CI | DONE_VERIFIED | Runs [42416681845](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681845), [42416681848](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681848), [42416681843](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681843), [42416681889](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681889) all passed |
+| Independent speaker-specific IPA gold for 40 residual cases | BLOCKED / EVIDENCE-LIMITED | No source audio/speaker-linked evidence was supplied; no IPA forms were invented |
+| Ukrainian-target validation and independent linguistic acceptance | BLOCKED / EVIDENCE-LIMITED | Korean G2P benchmark results do not measure Ukrainian transcription; qualified target review remains necessary |
+| External reviewer distribution | DEFERRED | Holdout packets are generated as CI artifacts only; no reviewer was contacted and no packet was distributed |
+| Release certification | DEFERRED | Software CI is green on PR #457, but linguistic and Ukrainian-target acceptance gates remain open |
+
+#### Verified diagnostic results (not normative accuracy)
+
+- UGTPHON Korean test: 275 source rows, 2,703 eligible token occurrences. Native: 1,425/2,702 exact, CER 9.0130%; g2pK 0.9.4: 1,435/2,703 exact, CER 9.2328%.
+- SIGMORPHON 2021 Korean lexical test: 1,000 source rows, 999 eligible occurrences. Native: 359/998 exact, CER 14.5347%; g2pK 0.9.4: 353/999 exact, CER 14.8222%.
+- These are comparisons against the supplied corpus annotations and are convention-specific. They are not normative IPA adjudication, Ukrainian transcription scores, or proof of target orthographic correctness.
+- The multi-engine artifact is retained by Actions run [42416681855](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681855), artifact name `multi-engine-korean-ipa-diagnostic`, artifact ID `13592058477`.
+
+#### Repository and integration state
+
+- PR #456 remains merged at `18f5529b9100ea6e4f7c176c9627bacf1fc52585`.
+- PR #455 remains closed and unmerged; it was not revived or blindly ported.
+- PR #457 contains the documentation, source-register, pinned-path and canonical-export fixes. The branch is `docs/repository-structure-and-ci-reconciliation-2026-11-07`; its verified code/test head is `ab6c7c69ba65b7fd5da4383d2105ef81a5bcb51d`.
+- The repository had 24 branches at this audit point, including `main` and this working branch. Historical branches were preserved; no branch deletion or force-push was performed.
+- All execution evidence in this session came from GitHub Actions and GitHub repository APIs. No local `pytest`, `npm`, shell, or clean-install command is claimed as executed in this environment.
+- The metadata-only Official NIKL inventory workflow job was skipped by policy; it is not counted as a pass.
+
+#### Final readiness decision
+
+**Software verification: green on PR #457. Repository release readiness: PARTIAL RESEARCH PROTOTYPE.** The documentation and CI defects in scope are fixed and verified. The remaining blockers are linguistic evidence and Ukrainian-target acceptance, not the repository structure or the CSV/CI failures addressed here. Do not label the system release-ready until those independent acceptance criteria are met.
