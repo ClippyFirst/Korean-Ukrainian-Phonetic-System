@@ -302,7 +302,8 @@ test('Browser preserves source-backed resyllabified ㅢ variants while withholdi
   assert.equal(life.variants.length, 1);
   assert.equal(life.variants[0].surface, '살메');
   assert.equal(life.variants[0].ipa, 'sal.me');
-  assert.equal(life.variants[0].ukrainian, 'салме');
+  assert.equal(life.variants[0].ukrainian, '');
+  assert.equal(life.variants[0].candidate_ukrainian, 'салме');
 
   const consultation = engine.convert('협의');
   assert.equal(consultation.pronunciation_status, 'resolved');
