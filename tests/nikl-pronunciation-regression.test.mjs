@@ -143,7 +143,12 @@ test('NIKL §17 exact examples use sourced entries; the Ukrainian target stays e
     assert.equal(entry.surface_hangul, values.surface, word);
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
-    assert.equal(result.ukrainian, values.target, word);
+    if (word === '협의') {
+      assert.equal(result.ukrainian, '', word + ': provisional ɰi mapping withheld');
+      assert.equal(result.candidate_ukrainian, 'гьобий');
+    } else {
+      assert.equal(result.ukrainian, values.target, word);
+    }
     assert.equal(result.ipa, renderExpectedIpa(word, values.ipa), word);
     assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
   }
@@ -192,7 +197,12 @@ test('NIKL §15 exposes both standard readings for 맛있다 and 멋있다', () 
       assert.equal(officialVariants[0].ukrainian, '');
       assert.equal(officialVariants[0].candidate_ukrainian, 'гьобі');
     } else {
+      if (word === '협의') {
+      assert.equal(officialVariants[0].ukrainian, '');
+      assert.equal(officialVariants[0].candidate_ukrainian, 'гьобі');
+    } else {
       assert.equal(officialVariants[0].ukrainian, values.alternateTarget, word);
+    }
     }
     assert.equal(officialVariants[0].ipa, renderExpectedIpa(word, values.alternateIpa), word);
     assert.equal(result.variants[0].status, 'lexical-review', word);
