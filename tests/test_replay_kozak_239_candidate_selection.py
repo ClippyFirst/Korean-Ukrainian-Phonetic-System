@@ -13,7 +13,7 @@ from replay_kozak_239_candidate_selection import (  # noqa: E402
 )
 
 
-def test_historical_classifier_uses_only_pre_c11_c12_c01_c10_aggregate_labels():
+def test_historical_aggregate_label_function_preserves_known_mapped_and_unmapped_controls():
     assert candidate_clusters(align("s", "ɕ")) == ["UNMAPPED_REQUIRES_REVIEW"]
     assert candidate_clusters(align("ɭ", "l")) == ["C01_C07_liquid_realization"]
     assert candidate_clusters(align("p̚", "p")) == ["C06_unreleased_coda"]
