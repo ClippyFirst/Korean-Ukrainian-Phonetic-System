@@ -6965,3 +6965,39 @@ The artifact discrepancy is therefore reconciled at source-file level. **Accepta
 ### 2026-11-06 — runtime guard and provenance update
 
 The native Python and browser shared-Broad optional [ɛ]~[e] metadata now cite Lee (2023), DOI 10.17959/sppm.2023.29.2.193, whose KCI abstract reports an incomplete, position-sensitive Seoul merger. Added native and browser regressions for the six residual sibilant token strings: shared-Broad canonical /s/ remains and no unsupported [ɕ] variant is emitted. The 대한민국 test preserves the existing length mark and treats [ɛ]~[e] as a non-selective research alternative. The legacy browser profile is unchanged for compatibility. The source register now contains 214 rows; the new study is citation-only and no redistribution rights are claimed. Exact-head CI and generated-artifact checks remain pending; no local shell/pytest/npm execution is claimed.
+
+
+## 2026-11-07 — no-audio, source-only continuation
+
+**Main base:** `1f220fcd7e3b44dab7302b37e2fe225812ee18a6`.  
+**Working branch:** `research/source-only-40-case-adjudication-2026-11-07`.  
+**PR:** [#456](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/456), current head at this handoff snapshot `02a57eb849c7fd2c7c67ddcc7a8d4618c43d50cf`; mergeable, exact-head CI pending.  
+**Scope:** no audio requested; no external reviewers contacted; no letters or review packets generated.
+
+### Source-backed work completed
+
+- All 40 residual occurrences (12 historical abstentions + 28 previously unadjudicated) now have source-based engine-policy dispositions across 17 distinct spellings. The 17-row matrix covers exactly the same 40 unique occurrence IDs as the original policy register; no missing or extra IDs. Every source ID in the matrix resolves in the 217-row source register.
+- The source-only decisions bound conditional n-insertion, broad sibilant representation, vowel hiatus/glide claims, phrase boundaries, honorific morphology, non-speech ㅠ strings, UGC spelling, and the [ɛ]~[e] research variant. These are engine-policy decisions, not speaker-specific IPA gold.
+- NIKL Rule 5's resyllabified-coda exception for ㅢ is now implemented generically in Python and Browser. R002 records coda-to-onset provenance; the IPA adapter preserves /ɰi/ when the onset came from a resyllabified coda, while ordinary consonant-onset ㅢ continues to yield [i]. Positive and negative tests cover both cases.
+- `삶의`: NIKL MCFAQ 5716 directly attests [살믜]/[살메]. The research lexicon preserves project broad-IPA variants /sal.mɰi/ and /sal.me/. The /ɰi/→Ukrainian ий mapping remains provisional and candidate-only.
+- `협의`: NIKL Rule 5 commentary attests [혀븨]/[혀비]; the lexicon preserves /hjʌ.bɰi/ and /hjʌ.bi/.
+- `칡칡이`: the cited Busan PDF actually reads [철마면 민요 26] 칭칭이, not 칡칡이. The National Gugak Center confirms 칭칭이 as an alternate name of 칭칭이소리. This is a source mismatch, not permission to autocorrect; preserve raw spelling and assign no IPA.
+- The 239 candidate-ID file contains 239 unique IDs, but the original selector/per-fragment C01–C10 assignment snapshot remains missing. Historical 236/239 membership is therefore still blocked and must not be represented as proven.
+
+### Verification performed in this continuation
+
+- CSV structure checks: source register 217 rows / 12 fields; source-adjudication matrix 17 rows; base lexical file 13 fields; IPA overlay 14 fields; rule coverage normalized to a consistent 16-field schema.
+- Occurrence crosswalk: exact set equality with the 40-row engine-policy register (40 unique IDs; no missing/extra IDs).
+- Source crosswalk: zero source IDs missing from the source register.
+- Corrected the malformed R012 rule-coverage CSV row while updating R002 coverage for the ㅢ exception.
+- GitHub Actions for PR #456 were queued at the latest observed head; no pass is claimed until completed. The official NIKL metadata-only crawl remains skipped/blocked by HTTP 403. A local clone/test attempt was blocked by network/DNS access; no local pytest/npm result is claimed.
+
+### Remaining genuine blockers / acceptance boundaries
+
+1. **CI:** complete exact-head Python, Browser, data/schema and research-artifact workflows; fix any failures and rerun.
+2. **Speaker-specific IPA:** 40/40 residual cases remain `UNRESOLVED_NO_AUDIO`. Do not invent narrow IPA, speaker dialect, rate, or prosodic grouping. No audio or external review outreach is requested under current scope.
+3. **Ukrainian target:** /ɰi/→ий remains provisional; source-based Korean IPA is not validation of Ukrainian listener intelligibility.
+4. **Historical cohort:** original 239 selection predicate or per-fragment C01–C10 assignment snapshot is still missing; the 239-ID file validates only its own count and uniqueness.
+5. **Source rights:** NIKL item-level marks and the Busan PDF's reuse terms are not fully cleared; cite sources but do not redistribute source text/figures.
+
+**Readiness:** improved, source-backed bounded research prototype; not independently research-certified and not release-ready as an authoritative Korean-to-Ukrainian transcription standard.
