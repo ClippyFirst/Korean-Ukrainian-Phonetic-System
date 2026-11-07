@@ -181,7 +181,7 @@ def main(argv: list[str] | None = None) -> int:
         "selected_occurrences": len(selected),
         "unique_source_rows": len({row["source_row_id"] for row in audit if row["occurrence_id"] in selected_set}),
         "unique_tokens": len({row["token"] for row in audit if row["occurrence_id"] in selected_set}),
-        "selection_rule": "Broad mismatch; historical NFC/combining-mark alignment; Broad fragments only; pre-C11/C12 aggregate C01-C10 classifier; select only UNMAPPED_REQUIRES_REVIEW",
+        "selection_rule": "Broad mismatch; historical NFC/combining-mark alignment; Broad fragments only; historical aggregate labels C01-C07/C09/C10 (C08 not encoded); select only UNMAPPED_REQUIRES_REVIEW",
         "historical_classifier_commit": "8c335dd7031bdae59b3ef7db715b54f0fdc9bcd5",
         "selected_ids_sha256": hashlib.sha256(",".join(map(str, selected)).encode("ascii")).hexdigest(),
     }
