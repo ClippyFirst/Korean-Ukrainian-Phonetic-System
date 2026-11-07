@@ -7,7 +7,9 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from replay_kozak_239_candidate_selection import (  # noqa: E402
     align,
     candidate_clusters,
-    select_broad_only_candidates,
+    load_candidate_ids,
+    load_replay_rows,
+    select_broad_only_candidates_from_rows,
 )
 
 
@@ -19,51 +21,28 @@ def test_historical_classifier_uses_only_pre_c11_c12_c01_c10_aggregate_labels():
 
 
 def test_replay_selects_broad_only_and_ignores_strict_mismatch_fragments():
-    report = {
-        "per_engine_occurrences": {
-            "clippyfirst_native": [
-                {
-                    "status": "scored",
-                    "occurrence_id": 1,
-                    "row_id": "source-a",
-                    "token": "가",
-                    "gold": "ɭ",
-                    "ipa": "l",
-                    "broad_candidate": {
-                        "distance": 1,
-                        "closest_gold": "s",
-                        "predicted": "ɕ",
-                    },
-                },
-                {
-                    "status": "scored",
-                    "occurrence_id": 2,
-                    "row_id": "source-b",
-                    "token": "나",
-                    "gold": "s",
-                    "ipa": "ɕ",
-                    "broad_candidate": {
-                        "distance": 1,
-                        "closest_gold": "ɭ",
-                        "predicted": "l",
-                    },
-                },
-                {
-                    "status": "scored",
-                    "occurrence_id": 3,
-                    "row_id": "source-c",
-                    "token": "다",
-                    "gold": "s",
-                    "ipa": "s",
-                    "broad_candidate": {
-                        "distance": 0,
-                        "closest_gold": "s",
-                        "predicted": "s",
-                    },
-                },
-            ]
-        }
-    }
-    selected, audit = select_broad_only_candidates(report)
+    rows = [
+        {
+            "occurrence_id": "1", "source_row_id": "source-a", "token": "가",
+            "broad_reference_ipa": "s", "broad_kozak_ipa": "ɕ", "broad_edit_distance": "1",
+        },
+        {
+            "occurrence_id": "2", "source_row_id": "source-b", "token": "나",
+            "broad_reference_ipa": "ɭ", "broad_kozak_ipa": "l", "broad_edit_distance": "1",
+        },
+    ]
+    selected, audit = select_broad_only_candidates_from_rows(rows)
     assert selected == [1]
     assert [row["occurrence_id"] for row in audit] == [1, 2]
+
+
+def test_full_historical_239_replay_matches_all_candidate_ids():
+    rows = load_replay_rows(ROOT / "research/kozak-kim-370-broad-only-replay-input-2026-11-07.csv")
+    selected, audit = select_broad_only_candidates_from_rows(rows)
+    candidate_ids = load_candidate_ids(ROOT / "research/kozak-kim-historical-239-candidate-ids-2026-11-05.txt")
+    assert len(audit) == 370
+    assert len(selected) == 239
+    assert selected == sorted(candidate_ids)
+    selected_set = set(selected)
+    assert len({row["source_row_id"] for row in audit if row["occurrence_id"] in selected_set}) == 111
+    assert len({row["token"] for row in audit if row["occurrence_id"] in selected_set}) == 154
