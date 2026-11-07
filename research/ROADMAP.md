@@ -1,6 +1,6 @@
 # Current continuation — mainline status (2026-11-07)
 
-**Mainline implementation baseline:** d2f942d0615df3da2a973a2709f8738f65da18d9; PR #454 merged.
+**Current main:** `1f220fcd7e3b44dab7302b37e2fe225812ee18a6` (documentation continuation after PR #454, merged as `d2f942d0615df3da2a973a2709f8738f65da18d9`).
 
 - **DONE_VERIFIED — PR #454 exact-form recovery:** three typo-preserving morphology licenses are implemented in Python and Browser for 쫒아내면, 많앗구나유유유, and 무서웟어. Positive and near-form negative controls passed. No spelling normalization or productive generalization was added.
 - **DONE_VERIFIED — UGTPHON paired diagnostic:** Native 1,435/2,701 exact (53.1285%), CER 8.9418%; g2pK 1,435/2,703 exact (53.0892%), CER 9.2328%. Native has two explicit abstentions; paired exact counts are equal.
@@ -11,7 +11,7 @@
 - **PARTIAL — five UGTPHON abstentions:** three exact typo-preserving runtime recoveries remain verified; `삶의` now has source-adjudicated standard variants and a research-only IPA crosswalk with provisional Ukrainian mapping; `칡칡이` is a confirmed source mismatch: the cited Busan PDF attests `칭칭이`, not the benchmark token. Preserve raw and do not auto-correct; exact-token IPA remains abstained. See [source-only report](../docs/KOZAK-KIM-40-SOURCE-ONLY-ADJUDICATION-2026-11-07.md) and [17-token register](kozak-kim-40-source-adjudication-2026-11-07.csv).
 - **PARTIAL — 236-case cohort:** 15 exact runtime dispositions; 181 bounded profile-convention decisions; 12 abstentions + 28 residual cases. Historical selector membership remains reconstructed rather than proven.
 - **DEFERRED — external research review:** no reviewer outreach or correspondence is undertaken. Independent IPA/target validation remains necessary before research certification or authoritative release claims.
-- **NOT VERIFIED — latest Pages live smoke:** check the current post-merge deployment run before declaring deployment complete.
+- **DONE_VERIFIED — latest Pages live smoke on main:** [run 42366560823](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42366560823) deployed the current main site and passed the live browser smoke. This PR does not modify site assets.
 
 The project remains a bounded research prototype. Optional CharsiuG2P and ByT5 inference were skipped by policy; no neural benchmark score is claimed. See [acceptance gates](ACCEPTANCE-GATES.md), [the 236-case integration record](../docs/KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md), and [the latest repository audit](../docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md).
 
