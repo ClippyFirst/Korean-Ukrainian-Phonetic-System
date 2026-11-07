@@ -33,7 +33,14 @@ test('practical targets preserve Korean fortisness as doubled Ukrainian onset le
     assert.ok(target.split('|').some((syllable) => /^(?:кк|тт|пп|сс|чч)/u.test(syllable)),
       word + ': doubled onset must preserve fortisness');
     if (entries.get(word)?.target_status !== 'surface-only') {
-      assert.equal(engine.convert(word).ukrainian, target.replaceAll('|', ''), word + ': runtime target');
+      const result = engine.convert(word);
+    if (word === '협의') {
+      assert.equal(result.ukrainian, '');
+      assert.equal(result.candidate_ukrainian, 'гьобий');
+      assert.equal(result.target_status, 'provisional');
+    } else {
+      assert.equal(result.ukrainian, target.replaceAll('|', ''), word + ': runtime target');
+    }
     }
   }
 });
@@ -64,7 +71,13 @@ test('word-initial lenis and affricate targets follow the declared Ukrainian map
   for (const [word, target] of Object.entries(expected)) {
     assert.equal(entries.get(word)?.target_syllables, target, word + ': target segmentation');
     const result = engine.convert(word);
-    assert.equal(result.ukrainian, target.replaceAll('|', ''), word + ': runtime target');
+    if (word === '협의') {
+      assert.equal(result.ukrainian, '', 'source-derived ɰi target remains candidate-only');
+      assert.equal(result.candidate_ukrainian, 'гьобий');
+      assert.equal(result.target_status, 'provisional');
+    } else {
+      assert.equal(result.ukrainian, target.replaceAll('|', ''), word + ': runtime target');
+    }
     assert.deepEqual(result.issues, [], word + ': unexpected unresolved issue');
   }
 });
@@ -150,7 +163,7 @@ test('context-sensitive vowel and voicing decisions remain explicit in the lexic
   const expected = {
     '맛없다': ['ма|доп|тта', 'ma|dʌp̚|t͈a'],
     '맛없고': ["ма|доп|кко", 'ma|dʌp̚|k͈o'],
-    '협의': ['гьо|бі', 'hjʌ|bi'],
+    '협의': ['гьо|бий', 'hjʌ|bɰi'],
     '말씨': ["мал|шші", 'maːl|ɕ͈i'],
     '반신반의': ['пан|шін|ба|ні', 'paːn|ɕin|baː|ni'],
     '임진란': ['ім|джін|нан', 'imː|dʑin|nan'],
@@ -173,7 +186,14 @@ test('context-sensitive vowel and voicing decisions remain explicit in the lexic
     assert.ok(row, 'missing lexical row: ' + word);
     assert.equal(row.target_syllables, target, word + ': target');
     assert.equal(row.ipa_syllables, ipa, word + ': IPA');
-    assert.equal(engine.convert(word).ukrainian, target.replaceAll('|', ''), word + ': runtime target');
+    const result = engine.convert(word);
+    if (word === '협의') {
+      assert.equal(result.ukrainian, '');
+      assert.equal(result.candidate_ukrainian, 'гьобий');
+      assert.equal(result.target_status, 'provisional');
+    } else {
+      assert.equal(result.ukrainian, target.replaceAll('|', ''), word + ': runtime target');
+    }
   }
 });
 

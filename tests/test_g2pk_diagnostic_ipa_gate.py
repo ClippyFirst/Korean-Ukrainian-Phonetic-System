@@ -10,9 +10,8 @@ def test_g2pk_does_not_import_kozak_nikl_surface_or_diagnostic_ipa_overlays(monk
             # the optional g2pK adapter to import that row's IPA or status.
             return "살믜" if text == "삶의" else text
 
-    assert pipeline.LEXICAL_PRONUNCIATIONS["삶의"]["ipa_adjudication_status"] == (
-        "diagnostic_only_unresolved_pronunciation"
-    )
+    assert pipeline.LEXICAL_PRONUNCIATIONS["삶의"]["input_kind"] == "variant-aware-research"
+    assert pipeline.LEXICAL_PRONUNCIATIONS["삶의"]["target_status"] == "provisional"
     monkeypatch.setattr(g2pk_engine, "_ENGINE", G2pSurfaceMatch())
 
     pronunciation = g2pk_engine.phoneticize_with_g2pk("삶의")

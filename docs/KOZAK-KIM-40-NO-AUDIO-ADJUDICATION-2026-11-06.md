@@ -80,3 +80,12 @@ These tests are committed to this branch and must be checked by the repository C
 | Does this make the entire 236-case cohort fully complete or the repository release-ready? | **No.** The historical cohort membership and independent IPA gold limitations remain. |
 
 The user's no-audio constraint is respected. Remaining uncertainty is explicit and does not silently leak into canonical IPA or Ukrainian output.
+
+
+## 2026-11-07 follow-up — source-only adjudication completed
+
+The no-audio constraint is now handled through a separate source-only pass rather than treating the absence of recordings as a blanket blocker. All 17 distinct token spellings across the 40 occurrence rows have a source-based structural/broad-profile disposition in [the 2026-11-07 adjudication report](KOZAK-KIM-40-SOURCE-ONLY-ADJUDICATION-2026-11-07.md) and [the 17-token machine-readable register](../research/kozak-kim-40-source-adjudication-2026-11-07.csv).
+
+This closes the **source-based engine-policy question** for all 40 occurrences: canonical broad sequences, explicit morphology, conditional Rule 29 variants, non-speech exclusion, and research-only vowel variants are now recorded separately. It does not change `speaker_ipa_gold_status=UNRESOLVED_NO_AUDIO`: no cited study supplies the identity, recording, prosodic grouping or token-level acoustic measurement for the original speaker. In particular, broad /s/ before /jʌ/ remains the source-supported engine representation; [ɕ] is not assigned categorically, and no individual `대한민국` vowel variant or compact-string n-insertion option is selected.
+
+The 17-token CSV references only source IDs present in `research/SOURCE-REGISTER.csv`. Jun (2021) was added to the source register because its peer-reviewed survey study directly supports the gradient/conditioned n-insertion boundary. No runtime change was justified: the existing Python and Browser policies already implement these source boundaries. Exact-head CI must still validate the documentation/data-only continuation.

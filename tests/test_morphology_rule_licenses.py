@@ -92,16 +92,19 @@ def test_analyzer_consensus_withholds_candidate_when_unspaced_phrase_boundary_is
     assert report["candidate_licenses"] == []
 
 
-def test_analyzer_license_does_not_mask_independent_ipa_adjudication_blocker():
+def test_source_adjudicated_ipa_stays_diagnostic_when_morphology_is_analyzer_only():
     analyses = [
         _analysis("mecab-ko", "삶의", [("삶", "NNG", 0, 1), ("의", "JX", 1, 2)]),
         _analysis("kiwi", "삶의", [("삶", "NNG", 0, 1), ("의", "JX", 1, 2)]),
     ]
     result = phoneticize_korean_with_analyzer_consensus("삶의", analyses)
-    assert result["pronunciation_status"] == "unresolved"
-    assert result["ipa_status"] == "diagnostic_only_unresolved_pronunciation"
+    assert result["pronunciation_status"] == "provisional"
+    # NIKL establishes the standard variant set for 삶의, but this call uses
+    # low-confidence analyzer morphology. Keep this particular output
+    # diagnostic-only rather than upgrading analyzer-derived execution to gold.
+    assert result["ipa_status"] == "diagnostic_only_analyzer_morphology"
     assert result["ipa_is_diagnostic_only"] is True
-    assert any(context.get("rule_id") == "IPA_ADJUDICATION" for context in result["unresolved_contexts"])
+    assert result["unresolved_contexts"] == []
 
 
 

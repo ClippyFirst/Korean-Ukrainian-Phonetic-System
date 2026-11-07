@@ -41,6 +41,19 @@ def graphemes(value: str) -> list[str]:
     return result
 
 
+NIKL_GENITIVE_UI_PARTICLE_FORMS = {
+    # Exact benchmark forms whose final 의 is the genitive particle.
+    # Do not infer this morphology from coda+의 alone: 협의 is lexical and
+    # follows the separate resyllabification/liaison rule.
+    "그놈의",
+    "자신의",
+    "대황본의",
+    "염전의",
+    "대한민국의",
+    "삶의",
+}
+
+
 def align(reference: str, prediction: str) -> list[dict[str, str]]:
     """Deterministic Levenshtein alignment over Unicode grapheme clusters."""
     a, b = graphemes(reference), graphemes(prediction)
@@ -81,6 +94,7 @@ def classify_fragments(
     fragments: list[dict[str, str]],
     strict_reference: str = "",
     strict_prediction: str = "",
+    source_token: str = "",
 ) -> list[dict[str, object]]:
     """Attach conservative candidate labels to each edit, not just its token.
 
@@ -93,6 +107,7 @@ def classify_fragments(
         and "kʰ" in strict_prediction
     )
     classified: list[dict[str, object]] = []
+    genitive_ui_particle = source_token in NIKL_GENITIVE_UI_PARTICLE_FORMS
     for index, fragment in enumerate(fragments):
         reference = fragment["reference_fragment"]
         prediction = fragment["kozak_fragment"]
@@ -140,6 +155,8 @@ def classify_fragments(
             labels.append("C09_vowel_length")
         if any(char in text for char in "ˈˌ"):
             labels.append("C10_stress")
+        if genitive_ui_particle and "ɰ" in text:
+            labels.append("C14_NIKL_GENITIVE_UI_PARTICLE")
         if not labels:
             labels.append("UNMAPPED_REQUIRES_REVIEW")
 
@@ -154,9 +171,10 @@ def candidate_clusters(
     fragments: list[dict[str, str]],
     strict_reference: str = "",
     strict_prediction: str = "",
+    source_token: str = "",
 ) -> list[str]:
     """Return the union of candidate labels and expose any unmapped edit."""
-    classified = classify_fragments(fragments, strict_reference, strict_prediction)
+    classified = classify_fragments(fragments, strict_reference, strict_prediction, source_token)
     labels = {
         label
         for fragment in classified
@@ -228,8 +246,9 @@ def build_rows(
         broad_fragments = align(broad_reference, broad_prediction) if broad_distance else []
         if not strict_fragments and not broad_fragments:
             continue
-        strict_classified = classify_fragments(strict_fragments, item["gold"], item["ipa"])
-        broad_classified = classify_fragments(broad_fragments, item["gold"], item["ipa"])
+        source_token = str(item.get("token", ""))
+        strict_classified = classify_fragments(strict_fragments, item["gold"], item["ipa"], source_token)
+        broad_classified = classify_fragments(broad_fragments, item["gold"], item["ipa"], source_token)
         labels = sorted({
             label
             for fragment in strict_classified + broad_classified

@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
+import { createEngine } from '../src/app/engine.js';
 import {
   createBrowserKozakKimEngine,
   editDistance,
@@ -289,18 +291,29 @@ test('browser Broad IPA benchmark report exposes the numeric v2 contract consume
 });
 
 
-test('Browser withholds project-derived IPA when independent lexical IPA adjudication is required', () => {
-  const result = createBrowserKozakKimEngine().convert('삶의');
+test('Browser preserves source-backed resyllabified ㅢ variants while withholding provisional Ukrainian output', () => {
+  const engine = createBrowserKozakKimEngine();
+  const life = engine.convert('삶의');
 
-  assert.equal(result.pronunciation_status, 'unresolved');
-  assert.equal(result.ipa, '');
-  assert.equal(result.ukrainian, '');
-  assert.equal(result.target_status, 'unavailable');
-  assert.equal(result.surfaceHangul, '살믜');
-  assert.equal(result.variants.length, 1);
-  assert.equal(result.variants[0].surface, '살메');
-  assert.equal(result.variants[0].ipa, '');
-  assert.equal(result.variants[0].ukrainian, '');
+  assert.equal(life.pronunciation_status, 'resolved');
+  assert.equal(life.ipa, 'sal.mɰi');
+  assert.equal(life.ukrainian, '');
+  assert.equal(life.candidate_ukrainian, 'салмий');
+  assert.equal(life.target_status, 'provisional');
+  assert.equal(life.surfaceHangul, '살믜');
+  assert.equal(life.variants.length, 1);
+  assert.equal(life.variants[0].surface, '살메');
+  assert.equal(life.variants[0].ipa, 'sal.me');
+  assert.equal(life.variants[0].ukrainian, '');
+  assert.equal(life.variants[0].candidate_ukrainian, 'салме');
+
+  const consultation = engine.convert('협의');
+  assert.equal(consultation.pronunciation_status, 'resolved');
+  assert.equal(consultation.ipa, 'hjʌ.bɰi');
+  assert.equal(consultation.ukrainian, '');
+  assert.equal(consultation.target_status, 'provisional');
+  assert.equal(consultation.variants[0].surface, '혀비');
+  assert.equal(consultation.variants[0].ipa, 'hjʌ.bi');
 });
 
 
@@ -526,4 +539,27 @@ test('five previously integrated standard-rule cases remain covered', () => {
   for (const [word, surface] of Object.entries(expected)) {
     assert.equal(engine.convert(word, { morphologyMode: 'strict' }).surfaceHangul, surface, word);
   }
+});
+
+
+test('Browser generic ㅢ rule preserves the diphthong when a coda resyllabifies', () => {
+  const canonical = readFileSync(
+    new URL('../data/korean/canonical_correspondence.csv', import.meta.url),
+    'utf8'
+  );
+  const engine = createEngine(canonical, '');
+  const result = engine.convert('협의');
+
+  assert.equal(result.pronunciation_status, 'resolved');
+  assert.equal(result.ipa, 'hjʌ.bɰi');
+});
+
+
+test('Browser keeps ordinary consonant-onset ㅢ → [i] as a negative control', () => {
+  const canonical = readFileSync(
+    new URL('../data/korean/canonical_correspondence.csv', import.meta.url),
+    'utf8'
+  );
+  const engine = createEngine(canonical, '');
+  assert.equal(engine.convert('희망').ipa, 'hi.maŋ');
 });

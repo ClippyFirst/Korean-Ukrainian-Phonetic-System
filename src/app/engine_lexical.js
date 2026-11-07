@@ -144,10 +144,13 @@ export function lexicalResult(text,entry,options={}){
       const variants=[{
         source:text,
         surface:alternateSurface,
-        ukrainian:mapped.map(item=>item.text).join(''),
+        ukrainian:candidateOnly?'':mapped.map(item=>item.text).join(''),
+        candidate_ukrainian:candidateOnly?mapped.map(item=>item.text).join(''):null,
+        candidate_status:candidateOnly?'provisional':null,
         ipa:renderLexicalIpa(text,alternateIpas),
         note:entry.variant_note||entry.rule_notes||'NIKL-listed alternate pronunciation; Ukrainian rendering remains provisional.',
-        status:targetReview?'lexical-review':'lexical'
+        status:targetReview?'lexical-review':'lexical',
+        target_status:targetReview?'provisional':'model-selected'
       }];
       return [...variants,...researchVowelVariants];
     })(),

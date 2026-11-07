@@ -112,7 +112,7 @@ def test_provisional_lexical_target_never_leaks_as_accepted_orthography():
     assert result["lexical_target_reference_status"] == "provisional"
     assert result["ukrainian_orthography"] is None
     assert result["target_status"] == "unavailable"
-    assert result["target_unavailable_reason"] == "provisional_lexical_target_requires_review"
+    assert result["target_unavailable_reason"] == "lexical_target_reference_provisional"
     assert result["candidate_orthography"]
     assert result["candidate_status"] == "provisional"
 
@@ -136,7 +136,7 @@ def test_python_transliteration_uses_ipa_derived_target_and_keeps_lexical_target
             # Provisional target mappings are candidate-only, not accepted output.
             assert value["ukrainian_orthography"] is None
             assert value["target_status"] == "unavailable"
-            assert value["target_unavailable_reason"] == "provisional_mapping_requires_review"
+            assert value["target_unavailable_reason"] == "lexical_target_reference_provisional"
             assert value["candidate_orthography"] == expected_reference
             assert value["candidate_status"] == "provisional"
             assert value["lexical_target_comparison"] == "unavailable_without_ipa_target"
@@ -530,7 +530,7 @@ def test_provisional_lexical_target_without_reference_never_becomes_accepted():
     result = transliterate_korean("한자")
     assert result["ukrainian_orthography"] is None
     assert result["target_status"] == "unavailable"
-    assert result["target_unavailable_reason"] == "provisional_lexical_target_requires_review"
+    assert result["target_unavailable_reason"] == "lexical_target_reference_provisional"
 
 
 def test_nikl_sino_korean_rieul_fortition_has_direct_qna_attestation():
@@ -975,3 +975,46 @@ def test_r013_rule_trace_preserves_multiple_exact_licenses_per_sentence():
     assert set(by_word) == {"존중시킬수도있지만", "내릴수있는"}
     assert by_word["존중시킬수도있지만"]["pair"] == "킬>수"
     assert by_word["내릴수있는"]["pair"] == "릴>수"
+
+
+def test_resyllabified_ui_preserves_nikl_ㅢ_variants_in_ipa():
+    from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
+
+    for word, primary, alternate in (
+        ("삶의", "sal.mɰi", "sal.me"),
+        ("협의", "hjʌ.bɰi", "hjʌ.bi"),
+    ):
+        result = phoneticize_korean(word)
+        assert result["ipa"]["ipa"] == primary
+        assert any(
+            item["ipa"] == alternate
+            for item in result["ipa"]["lexical_alternatives"]
+        ), word
+        assert result["pronunciation_status"] == "provisional"
+
+    # The IPA variant set is source-backed, but the /ɰi/ → Ukrainian target
+    # correspondence remains provisional and must not become accepted output.
+    target = transliterate_korean("삶의")
+    assert target["ipa"]["ipa"] == "sal.mɰi"
+    assert target["ukrainian_orthography"] is None
+    assert target["target_status"] == "unavailable"
+    assert target["target_unavailable_reason"] == "lexical_target_reference_provisional"
+    assert target["candidate_status"] == "provisional"
+    assert target["lexical_target_reference"] == "салмий"
+
+
+def test_resyllabified_coda_exception_for_ui_is_general_not_lexicon_only():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    # NIKL Rule 5 commentary names 협의[혀븨] as the exception: a preceding
+    # coda that becomes the next onset does not trigger ㅢ → [i].
+    result = phoneticize_korean("협의", include_research_lexical=False)
+    assert result["ipa"]["ipa"] == "hjʌ.bɰi"
+    assert result["pronunciation_status"] == "provisional"
+
+
+def test_lexical_consonant_onset_still_uses_postconsonantal_ui_to_i():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    result = phoneticize_korean("희망", include_research_lexical=False)
+    assert result["ipa"]["ipa"] == "hi.maŋ"

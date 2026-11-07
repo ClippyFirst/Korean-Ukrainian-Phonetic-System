@@ -175,10 +175,11 @@ def test_three_ugtphon_abstentions_are_resolved_and_two_cases_remain_gated():
     assert kudzu.get("ipa_is_diagnostic_only") is True
     assert any(context.get("rule_id") == "R002" for context in kudzu.get("unresolved_contexts", []))
 
-    # NIKL gives two Hangul readings for 삶의, not IPA. Keep this case blocked
-    # from asserted IPA gold until independent adjudication is recorded.
+    # NIKL gives two standard Hangul readings. Broad IPA is project-derived
+    # from Rule 5, not source-supplied IPA or speaker-specific gold.
     life = phoneticize_korean("삶의")
-    assert life.get("pronunciation_status") == "unresolved"
-    assert life.get("ipa_status") == "diagnostic_only_unresolved_pronunciation"
-    assert any(context.get("rule_id") == "IPA_ADJUDICATION"
-               for context in life.get("unresolved_contexts", []))
+    assert life.get("pronunciation_status") == "provisional"
+    assert life.get("ipa_status") == "provisional"
+    assert life.get("ipa_is_diagnostic_only") is False
+    assert life.get("unresolved_contexts") == []
+    assert life.get("ipa", {}).get("ipa") == "sal.mɰi"

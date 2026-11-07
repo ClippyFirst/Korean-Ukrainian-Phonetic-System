@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import csv
 import json
 import pytest
 import importlib.util
@@ -71,6 +72,70 @@ def test_candidate_clusters_keep_sibilant_place_separate():
     assert MODULE.candidate_clusters(fragments) == [
         "C11_sibilant_place_profile_boundary"
     ]
+
+
+def test_genitive_ui_particle_classification_is_exact_form_scoped():
+    fragments = [
+        {"op": "I", "reference_fragment": "", "kozak_fragment": "ɰ"},
+    ]
+    for token in ("그놈의", "자신의", "대황본의", "염전의", "대한민국의", "삶의"):
+        assert MODULE.candidate_clusters(fragments, source_token=token) == [
+            "C14_NIKL_GENITIVE_UI_PARTICLE"
+        ]
+
+    # 협의 is lexical: its ㅢ behavior comes from liaison provenance, not
+    # the genitive-particle exception. Do not infer particle morphology from
+    # the mere orthographic sequence coda+의.
+    assert MODULE.candidate_clusters(fragments, source_token="협의") == [
+        "UNMAPPED_REQUIRES_REVIEW"
+    ]
+    assert MODULE.candidate_clusters(fragments, source_token="주의") == [
+        "UNMAPPED_REQUIRES_REVIEW"
+    ]
+
+
+def test_genitive_ui_particle_label_does_not_hide_an_unrelated_unmapped_edit():
+    fragments = [
+        {"op": "I", "reference_fragment": "", "kozak_fragment": "ɰ"},
+        {"op": "S", "reference_fragment": "e", "kozak_fragment": "i"},
+    ]
+    assert MODULE.candidate_clusters(fragments, source_token="그놈의") == [
+        "C14_NIKL_GENITIVE_UI_PARTICLE",
+        "UNMAPPED_REQUIRES_REVIEW",
+    ]
+
+
+def test_build_rows_keeps_other_unmapped_fragment_after_genitive_ui_adjudication():
+    report = {
+        "per_engine_occurrences": {
+            "clippyfirst_native": [{
+                "occurrence_id": "341", "row_id": "r341", "token": "그놈의",
+                "surface_hangul": "그노믜", "gold": "kɯ.no.me", "ipa": "kɯ.no.mɰi",
+                "status": "scored", "distance": 2,
+                "broad_candidate": {
+                    "closest_gold": "kɯ.no.me", "predicted": "kɯ.no.mɰi", "distance": 2
+                },
+            }],
+            "g2pk_0_9_4": [{"occurrence_id": "341", "ipa": "kɯ.no.me", "distance": 0}],
+        },
+    }
+    row = MODULE.build_rows(report)[0]
+    assert "C14_NIKL_GENITIVE_UI_PARTICLE" in row["candidate_clusters"]
+    assert "UNMAPPED_REQUIRES_REVIEW" in row["candidate_clusters"]
+    assert row["has_unmapped_broad_fragments"] == "true"
+    assert MODULE.filter_unmapped_broad([row]) == [row]
+
+
+def test_mismatch_cluster_registry_ids_are_unique_and_c14_is_registered():
+    path = ROOT / "research/KOZAK-KIM-MASS-MISMATCH-CLUSTERS-2026-11-01.csv"
+    with path.open(encoding="utf-8", newline="") as stream:
+        rows = list(csv.DictReader(stream))
+    ids = [row["cluster_id"] for row in rows]
+    assert len(ids) == len(set(ids))
+    assert "C13" in ids
+    c14 = next(row for row in rows if row["cluster_id"] == "C14")
+    assert c14["unique_occurrences"] == "16"
+    assert c14["edit_operations"] == "16"
 
 
 def test_aspirated_velar_coarticulation_is_not_misclassified_as_h_aspiration():

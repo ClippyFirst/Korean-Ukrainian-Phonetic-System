@@ -841,14 +841,17 @@ def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_leve
     lexical_reference_status=lexical.get("target_status","model-selected") if lexical is not None else None
     # A provisional lexical target is a review reference, never an accepted
     # output merely because its IPA segments happen to have model-selected mappings.
-    if lexical_reference_status == "provisional" and orthographic is not None:
+    if lexical_reference_status == "provisional":
         target_mapping = dict(target_mapping)
-        target_mapping["candidate_orthography"] = orthographic
-        target_mapping["candidate_status"] = "provisional"
-        target_mapping["ukrainian_orthography"] = None
-        target_mapping["status"] = "unavailable"
-        target_mapping["reason"] = "provisional_lexical_target_requires_review"
-        orthographic = None
+        if orthographic is not None:
+            target_mapping["candidate_orthography"] = orthographic
+            target_mapping["candidate_status"] = "provisional"
+            target_mapping["ukrainian_orthography"] = None
+            target_mapping["status"] = "unavailable"
+            orthographic = None
+        if target_mapping.get("candidate_orthography") is not None:
+            target_mapping["candidate_status"] = "provisional"
+            target_mapping["reason"] = "lexical_target_reference_provisional"
     if lexical_reference is None:
         lexical_comparison="no_lexical_reference"
     elif orthographic is None:

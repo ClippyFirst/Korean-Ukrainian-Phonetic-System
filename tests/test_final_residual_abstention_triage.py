@@ -29,17 +29,17 @@ def test_residual_abstention_register_is_complete_and_evidence_scoped():
     assert all(case["acceptanceCriterion"] for case in cases)
     # Candidate-only UI improvements are allowed; the production phonetic/target pipeline must still abstain.
     assert all(case["productionChange"].strip() not in ("", "none") for case in cases)
-    assert "no silent rewrite" in cases[0]["productionChange"]
+    assert "no silent rewrite" in cases[0]["productionChange"].lower()
     assert "Original input" in cases[1]["productionChange"]
     assert "No candidate is automatically applied" in cases[2]["productionChange"]
-    assert "No accepted Ukrainian output" in cases[3]["productionChange"]
+    assert "strict target rendering withholds final Ukrainian output" in cases[3]["productionChange"]
     assert "Original input" in cases[4]["productionChange"]
     assert all("IPA" in " ".join(queue["policy"]) or "IPA" in case["status"] for case in cases)
     current = queue["currentSnapshot"]
     assert current["recoveredExactForms"] == ["쫒아내면", "많앗구나유유유", "무서웟어"]
     by_input = {case["input"]: case for case in cases}
-    assert by_input["칡칡이"]["currentDisposition"]["status"] == "BLOCKED_SOURCE_IDENTITY_AND_AUDIO"
-    assert by_input["삶의"]["currentDisposition"]["status"] == "BLOCKED_SPECIALIST_IPA_ADJUDICATION"
+    assert by_input["칡칡이"]["currentDisposition"]["status"] == "SOURCE_ATTESTED_TITLE_PRESERVE_RAW_PRONUNCIATION_UNASSIGNED"
+    assert by_input["삶의"]["currentDisposition"]["status"] == "SOURCE_ADJUDICATED_VARIANT_SET_SPEAKER_CHOICE_UNRESOLVED"
 
 
 def test_residual_cases_preserve_exact_spelling_and_ipa_acceptance_boundary():
@@ -58,10 +58,18 @@ def test_residual_cases_preserve_exact_spelling_and_ipa_acceptance_boundary():
             assert phonetics["ipa"]["ipa"], (form, phonetics)
             assert result["target_status"] in {"model-selected", "provisional", "unavailable"}, (form, result)
             assert result["analysis_status"] == "research-prototype", (form, result)
+        elif form == "삶의":
+            # NIKL resolves the standard variant set; speaker selection and
+            # the /ɰi/→Ukrainian mapping remain provisional without audio.
+            assert phonetics["pronunciation_status"] == "provisional", (form, phonetics)
+            assert phonetics["ipa_is_diagnostic_only"] is False, (form, phonetics)
+            assert phonetics["ipa"]["ipa"] == "sal.mɰi", (form, phonetics)
+            assert result["target_status"] == "unavailable", (form, result)
+            assert result["ukrainian_orthography"] is None, (form, result)
+            assert result["candidate_status"] == "provisional", (form, result)
         else:
-            # 칡칡이 (folk-song heading) and 삶의 remain blocked for different reasons.
-            expected_target_status = "unresolved"
-            assert result["target_status"] == expected_target_status, (form, result)
+            # 칡칡이 is source-attested as a title, but morphology and IPA remain unassigned.
+            assert result["target_status"] == "unresolved", (form, result)
             assert result["ukrainian_orthography"] is None, (form, result)
             assert result["candidate_orthography"] is None, (form, result)
             assert phonetics["pronunciation_status"] == "unresolved", (form, phonetics)
@@ -73,4 +81,4 @@ def test_spelling_sources_are_not_misrepresented_as_authorizing_normalization():
     assert "not automatic normalization" in by_input["쫒아내면"]["evidenceReviewed"][0]["scope"]
     assert "not authorization to normalize" in by_input["무서웟어"]["evidenceReviewed"][0]["scope"]
     assert "not IPA" in by_input["삶의"]["evidenceReviewed"][0]["scope"]
-    assert by_input["삶의"]["status"] == "BLOCKED_SPECIALIST_IPA_ADJUDICATION"
+    assert by_input["삶의"]["status"] == "SOURCE_ADJUDICATED_STANDARD_VARIANTS; SPEAKER_SELECTION_UNRESOLVED"

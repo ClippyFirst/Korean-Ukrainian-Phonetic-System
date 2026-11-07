@@ -283,3 +283,14 @@ No new Kozak Kim rule is warranted from this pass. Keep the broad IPA production
 The 28-row register records the six lenis-sibilant token strings (27 occurrence rows, including 22 repetitions of `아끼셔` in one source row) and the separate `대한민국` vowel-quality case. Each row carries the exact source-row/token crosswalk, reviewed evidence, source IDs, runtime non-action, and the specific evidence needed to reopen it. The 22 `아끼셔` occurrences count as one speaker/source family, not 22 independent confirmations. `쇼` is bounded by NIKL's answer that no separate standard pronunciation is prescribed for the foreign loanword; the acoustic /s/ study supports a distinct coarticulatory pattern, not a deterministic IPA segment. The `대한민국` optional [ɛ]~[e] variant remains research-only and non-selective in light of Lee (2023)'s incomplete, position-sensitive merger findings.
 
 The 236-case generator now consumes this register and emits five `residual_review_*` fields for the 28 rows. The 12 existing abstentions remain separately traceable through the existing individual-abstention ledger. Counts remain 15 standard-form/rule dispositions, 181 profile-convention dispositions, 12 abstentions, and 28 unadjudicated rows. **No production IPA, Ukrainian target, benchmark gold, or runtime rule changed.**
+
+
+## 2026-11-07 — source-only disposition of the 40 residual occurrences
+
+The original 236-row cohort counts remain 15 exact runtime dispositions, 181 profile-convention decisions, 12 ABSTAIN and 28 NOT_INDIVIDUALLY_ADJUDICATED. A separate source-based policy pass now covers **all 40 residual occurrences** (17 distinct spellings) without audio. It does not turn those 40 into speaker-specific IPA gold or change their historical review-status labels. See the [source-only report](../docs/KOZAK-KIM-40-SOURCE-ONLY-ADJUDICATION-2026-11-07.md) and [17-token crosswalk](kozak-kim-40-source-adjudication-2026-11-07.csv).
+
+The source-only pass resolves what can be decided from spelling, morphology, NIKL rules/Q&As and published phonetics: broad structure, explicit morpheme boundaries, conditional n-insertion, non-speech emoticons, and non-selective allophonic variants. It intentionally leaves unknown speaker-level choices unselected. All 40 retain `UNRESOLVED_NO_AUDIO` for speaker-specific IPA gold.
+
+The separate UGTPHON five-abstention queue also changed: 삶의 now has NIKL-backed standard variants [살믜]/[살메] and project IPA /sal.mɰi/~/sal.me/ (Ukrainian target provisional); 칡칡이 is confirmed as a source mismatch because the cited Busan PDF reads 칭칭이. Preserve the benchmark token and do not auto-correct it. No audio or external reviewer outreach is requested.
+
+The 2026-11-07 branch adds Python and Browser regressions for the resyllabified ㅢ variants in 삶의 and 협의; exact-head CI is pending. These are source-backed variant entries, not new productive phonological rules.

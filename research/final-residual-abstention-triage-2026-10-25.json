@@ -41,32 +41,42 @@
   "cases": [
     {
       "input": "칡칡이",
-      "status": "CANDIDATE_ONLY_SOURCE_MISMATCH; BLOCKED_SOURCE_VERIFICATION",
-      "observedIssue": "The token's lexical identity and morpheme boundary remain unknown. A source-index snippet labels a folk-song heading 칡칡이, but the extracted PDF text layer at [철마면 민요 26] reads 칭칭이 and gives the refrain 치기타 칭칭나네.",
+      "status": "SOURCE_ATTESTED_TITLE_PRESERVE_RAW_PRONUNCIATION_UNASSIGNED",
+      "observedIssue": "The exact title 칡칡이 is directly attested in the 2015 Busan oral-culture volume at printed p. 586 as [철마면 민요 26]. The entry records singer 이문춘 (male, born 1923), fieldwork 1991-10-19 at 철마면 이곡리, and three lyric lines including the refrain 치기타 칭칭나네. The volume separately records [장안읍 민요 13] 칭칭이 at printed p. 548 with different performers and locality. The titles must not be conflated. Neither entry supplies IPA or a pronunciation recording.",
       "evidenceReviewed": [
         {
           "url": "https://www.busandabom.net/data/history/ebook/EB_culture_song02.pdf",
-          "claim": "The opened PDF text layer at lines 20611–20622 reads [철마면 민요 26] 칡칡이, identifies singer 이문춘 (male, born 1923), fieldwork date 1991-10-19 and location 철마면 이곡리, and cites 이소라, 양산의 민요 (1992), p. 180. The refrain includes 치기타 칭칭나네.",
-          "scope": "Directly confirms the exact song heading and source metadata, but not its spoken realization. The text transcription alone does not establish whether 칡칡이 is a lexicalized title, a regional variant, or an editorial/transcription form; no audio/field notes were available."
+          "claim": "Direct PDF text inspection: printed p. 586, lines 20611–20622, [철마면 민요 26] title 칡칡이; singer 이문춘 (남, 1923); fieldwork 1991.10.19; 철마면 이곡리; refrain 치기타 칭칭나네; cites 이소라, 『양산의 민요』 (1992), p. 180.",
+          "scope": "Directly attests the exact benchmark spelling as a folk-song title and gives historical locality/singer/context; it does not give IPA or acoustic pronunciation."
         },
         {
-          "url": "https://www.gugak.go.kr/ency/topic/view/947",
-          "claim": "The National Gugak Center encyclopedia entry for 칭칭이소리 lists 칭칭이 among the song's alternate names and describes it as a folk song associated with Gyeongsang-do.",
-          "scope": "Independent text-only contextual evidence that 칭칭이 is a real folk-song label; it does not establish that the isolated input 칡칡이 refers to this song or verify the disputed source heading."
+          "url": "https://www.busandabom.net/data/history/ebook/EB_culture_song02.pdf",
+          "claim": "Separate entry [장안읍 민요 13] 칭칭이 at printed p. 548, lines 19372–19381, recorded at 장안읍 임랑노인회관 with different performers.",
+          "scope": "A distinct title/locality; it does not replace or normalize the 철마면 title 칡칡이."
+        },
+        {
+          "url": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=321743",
+          "claim": "NIKL Q&A explains Standard Pronunciation Rule 11: ㄺ is [ㄱ] before consonants and cites 칡과[칙꽈].",
+          "scope": "Supports only the relevant coda behavior in the cited environment; does not establish the complete pronunciation or morphological parsing of the song title 칡칡이."
+        },
+        {
+          "url": "https://www.korean.go.kr/common/download.do;front=8FC905E817C3CEBCB7DCCCC937402BE7?c_file_name=18981a7a-cebd-4dd1-90bf-a32d894c8835.pdf&file_path=reportData&o_file_name=2020%EB%85%84+%EC%A7%80%EC%97%AD%EC%96%B4+%EB%B3%B4%EC%99%84+%EC%A1%B0%EC%82%AC+%EA%B2%B0%EA%B3%BC+%EB%B3%B4%EA%B3%A0%EC%84%9C.pdf",
+          "claim": "NIKL 2020 regional-language report gives dialectal forms [칠기가, 칠기를, 칠기에] for 칡 and [칠기, 칠글, 칠게] as forms underlying 칡이/칡을/칡에.",
+          "scope": "Useful morphological/dialect context for 칡+vowel-initial particle liaison, but not a standard pronunciation or direct pronunciation of the folk-song title."
         }
       ],
-      "productionChange": "No production rule or accepted IPA. Keep the exact token and expose only the existing diagnostic candidate if available; no segmentation as 칡+칡+이 and no silent rewrite.",
-      "whyNotResolved": "The title is now directly attested in a 2015 Busan oral-culture collection and traced to a 1991 field recording, but the recording and cited 1992 print source were not available. The source identity is known; the title's spoken realization and morpheme structure are not. Two-analyzer consensus cannot substitute for audio or source-specific linguistic review.",
-      "acceptanceCriterion": "Obtain rights-cleared field audio/field notes or inspect the cited 이소라, 양산의 민요 (1992), p. 180 including notation and editorial notes. If no phonetic evidence is recoverable, retain the R002 abstention; do not promote the analyzer parse.",
+      "productionChange": "Preserve exact source spelling 칡칡이. No silent rewrite or alias to the separate title 칭칭이. No runtime rule or IPA entry is added until the title's morphological segmentation and pronunciation are independently supported.",
+      "whyNotResolved": "The primary source establishes the title and context, not the speaker's phonetic realization. NIKL Rule 11 and the 2020 dialect report constrain parts of the coda/liaison behavior but do not determine the complete lexicalized song-title pronunciation. The user provides no audio, and no exact-token audio or speaker crosswalk is available.",
+      "acceptanceCriterion": "Keep the source-attested spelling and source metadata. Promote IPA only if an authoritative pronunciation source explicitly gives the title or an accessible recording is tied to this exact 1991 performance. No audio or external review is requested.",
       "externalTextSearch": {
-        "checkedAt": "2026-11-06",
-        "scope": "Opened the 2015 Busan Metropolitan City Historical Compilation Committee PDF and inspected extracted text around printed pages 586–587 (PDF lines 20611–20622).",
-        "result": "The PDF text layer directly reads the heading 칡칡이 and cites the 1992 fieldwork source. The earlier register claim that the PDF text layer read 칭칭이 was incorrect. The chorus includes 치기타 칭칭나네, but the title's pronunciation is still not established.",
-        "status": "SOURCE_TITLE_ATTESTED_PRONUNCIATION_BLOCKED"
+        "checkedAt": "2026-11-07",
+        "scope": "Reopened the full Busan PDF from the indexed source result; inspected printed p. 586 / text lines 20611–20622 for 칡칡이 and printed p. 548 / lines 19372–19381 for the separate 칭칭이 entry; cross-checked NIKL Rule 11 Q&A 321743 and NIKL 2020 regional-language report.",
+        "result": "Exact title 칡칡이 is present at printed p. 586. The earlier source-mismatch conclusion came from conflating the separate 칭칭이 entry at p. 548 with the 철마면 entry and is withdrawn.",
+        "status": "SOURCE_ATTESTED_TITLE; PRONUNCIATION_UNASSIGNED_NO_AUDIO"
       },
       "currentDisposition": {
-        "status": "BLOCKED_SOURCE_IDENTITY_AND_AUDIO",
-        "reason": "The exact folk-song heading is confirmed, but no recording/field notes establish its spoken realization or morphology; analyzer consensus is insufficient."
+        "status": "SOURCE_ATTESTED_TITLE_PRESERVE_RAW_PRONUNCIATION_UNASSIGNED",
+        "reason": "The exact title is attested in the 2015 Busan volume at printed p. 586; source spelling is preserved, but no IPA or speaker-specific pronunciation is supplied."
       }
     },
     {
@@ -131,18 +141,23 @@
     },
     {
       "input": "삶의",
-      "status": "BLOCKED_SPECIALIST_IPA_ADJUDICATION",
-      "observedIssue": "NIKL permits two Korean surface readings; project-derived IPA candidates are not independent gold. Repository text audit also found an existing provisional lexical-table row with sal|mi / сал|мі and alternate sal|me / сал|ме; sal|mi does not match the separate diagnostic candidate sal.mɰi, so this notation/analysis difference must be explicitly reconciled rather than silently normalized.",
+      "status": "SOURCE_ADJUDICATED_STANDARD_VARIANTS; SPEAKER_SELECTION_UNRESOLVED",
+      "observedIssue": "NIKL directly gives the two standard Hangul readings [살믜] and [살메] for the exact token 삶의. Rule 5 commentary clarifies that the consonant-initial ㅢ→[i] exception does not apply when the preceding coda moves into the onset; the earlier sal|mi candidate was therefore incorrectly derived.",
       "evidenceReviewed": [
         {
-          "url": "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5716&mn_id=217&pageIndex=225",
-          "claim": "NIKL states that particle phrase 삶의 may be pronounced [살믜] or [살메].",
-          "scope": "Official Hangul surface-pronunciation notation, not IPA."
+          "url": "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5716",
+          "claim": "NIKL directly names 삶의 and gives [살믜]/[살메] under Standard Pronunciation Rule §5(다만 4).",
+          "scope": "Exact official Hangul surface forms; not IPA."
+        },
+        {
+          "url": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+          "claim": "Rule 5 commentary (lines 1399–1439) states that consonant-initial ㅢ→[i] does not apply when the consonant is a resyllabified coda, and that genitive particle 의 may be [에].",
+          "scope": "Normative rule interpretation for the exact structure of 삶의."
         },
         {
           "url": "https://doi.org/10.17959/SPPM.2016.22.1.35",
-          "claim": "Park, Cho & Han (2016) examine positional and grammatical variation in monophthongization of /의/.",
-          "scope": "Abstract-level contextual evidence only; exact form 삶의 was not directly measured and the study is not IPA gold for this token."
+          "claim": "Park, Cho & Han (2016) report [e] for 602/628 (95.86%) of monophthongized genitive-particle /ɨi/ tokens in the Seoul Corpus.",
+          "scope": "Population-level frequency, not speaker-specific or exact-token gold."
         }
       ],
       "reviewWorkflow": {
@@ -150,47 +165,46 @@
         "reviewerA": "research/ipa-review-packets/salmui-reviewer-A.json",
         "reviewerB": "research/ipa-review-packets/salmui-reviewer-B.json",
         "queueSha256": "c13b50fa336a81d94b82ad689195655cd2e2ca3b11843874c9d46ca2178cdfe3",
-        "submissionsStatus": "both_blank"
+        "submissionsStatus": "not_required_for_source_variant_set; no external outreach"
       },
-      "productionChange": "No accepted Ukrainian output. Keep diagnostic IPA candidates provisional; the blind packets contain only opaque case ID, Hangul input, instructions and blank review fields.",
-      "whyNotResolved": "The [살믜]/[살메] alternatives do not by themselves settle broad IPA, syllable boundary, variant status or Ukrainian target. No qualified independent submissions are present.",
-      "acceptanceCriterion": "Two independent qualified reviewers annotate broad IPA, convention/reference, syllable boundary, vowel-length assessment and uncertainty without seeing each other's work or source evidence. Validate and reconcile after both first passes are frozen; then conduct a separate Ukrainian-target review on frozen IPA. Reconcile the pre-existing lexical-table candidate sal|mi with the separate sal.mɰi notation explicitly after independent submissions; do not silently promote the CSV's provisional Ukrainian fields.",
+      "productionChange": "Corrected the research lexicon to distinguish project broad IPA /sal.mɰi/ for [살믜] and /sal.me/ for [살메]. The ɰi→ий Ukrainian correspondence remains provisional; strict target rendering withholds final Ukrainian output unless provisional research mode is explicitly requested.",
+      "whyNotResolved": "The normative variant set and its project broad-IPA representations are source-adjudicated. Only the unknown speaker's choice between the two variants remains unselected; aggregate Seoul-Corpus statistics cannot identify that speaker. No speaker-specific narrow IPA or Ukrainian target gold is claimed.",
+      "acceptanceCriterion": "Source-based acceptance is complete: preserve both standard variants and their distinct IPA representations. Do not choose a speaker-specific variant or promote the provisional Ukrainian mapping. No audio or external review is requested under the current project scope.",
       "repositoryTextFootprints": [
         {
           "path": "data/korean/lexical_pronunciations.csv",
-          "line": 644,
-          "status": "provisional",
+          "status": "source_adjudicated_variants_target_provisional",
           "existingCandidate": {
             "surface": "살믜",
-            "broadIpaLike": "sal|mi",
-            "ukrainian": "сал|мі"
+            "broadIpaLike": "sal|mɰi",
+            "ukrainian": "сал|мий"
           },
           "alternateCandidate": {
             "surface": "살메",
             "broadIpaLike": "sal|me",
             "ukrainian": "сал|ме"
           },
-          "interpretation": "Repository-internal candidate record only; not independent IPA evidence and not accepted Ukrainian target.",
-          "unresolvedDiscrepancy": "Existing table sal|mi versus residual triage candidate sal.mɰi for the Hangul surface notation [살믜]. Preserve both as unaccepted until independent review and reconciliation."
+          "interpretation": "The two Hangul surface forms are directly attested by NIKL. The IPA strings are project broad-IPA renderings, not IPA transcriptions supplied by NIKL. Ukrainian target mapping remains provisional.",
+          "unresolvedDiscrepancy": "The previous sal|mi candidate was corrected: Rule 5 commentary excludes the post-consonantal [i] exception when the preceding coda is resyllabified before ㅢ."
         }
       ],
       "reviewerRecruitment": {
         "issue": "https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/issues/337",
-        "status": "OPEN_NO_VERIFIED_SUBMISSIONS",
+        "status": "DEFERRED_USER_SCOPE_NO_OUTREACH",
         "countReceived": 0,
         "countVerified": 0,
-        "publicIssuePolicy": "No candidate IPA or source citations; preserve independent first-pass review.",
-        "nextAction": "Obtain two qualified independent packet submissions; validate queue fingerprint and reviewer qualifications; reconcile only after both are frozen."
+        "publicIssuePolicy": "No external reviewer outreach or correspondence under the user's source-only instruction.",
+        "nextAction": "No action. Preserve the source-backed variant set and leave speaker-specific choice unselected."
       },
       "externalTextSearch": {
-        "checkedAt": "2026-10-25",
-        "scope": "Public text-index search for an exact IPA transcription of 삶의 and sal.mɰi.",
-        "result": "No independent text source was found that supplies a case-specific IPA gold transcription. NIKL's [살믜]/[살메] remains official Hangul surface notation only; the existing CSV candidates remain provisional.",
-        "status": "BLOCKED_SPECIALIST_IPA_ADJUDICATION"
+        "checkedAt": "2026-11-07",
+        "scope": "Exact NIKL Q&A and full Rule 5 commentary plus peer-reviewed Seoul Corpus research.",
+        "result": "NIKL directly attests [살믜]/[살메]; Rule 5 commentary excludes the [i] reading in the resyllabified-coda context; Park et al. (2016) provide population-level frequency evidence for [e].",
+        "status": "SOURCE_VARIANT_SET_RESOLVED_SPEAKER_SELECTION_UNRESOLVED"
       },
       "currentDisposition": {
-        "status": "BLOCKED_SPECIALIST_IPA_ADJUDICATION",
-        "reason": "NIKL Hangul readings [살믜]/[살메] do not settle independent IPA."
+        "status": "SOURCE_ADJUDICATED_VARIANT_SET_SPEAKER_CHOICE_UNRESOLVED",
+        "reason": "Both normative standard variants and project broad-IPA renderings are now recorded; no source can identify which variant the unknown speaker used."
       }
     },
     {

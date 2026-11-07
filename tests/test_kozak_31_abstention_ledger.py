@@ -128,6 +128,6 @@ def test_current_2026_11_05_unmapped_queue_is_versioned_separately_from_historic
         if occurrence_id == "341":
             assert row["strict_kozak_ipa"] == "kɯ.no.mɰi"
             assert row["broad_kozak_ipa"] == "kɯnomɰi"
-            assert row["unmapped_broad_fragment_count"] == "2"
+            assert row["unmapped_broad_fragment_count"] == "1"
         else:
             assert row == historical_by_id[occurrence_id]

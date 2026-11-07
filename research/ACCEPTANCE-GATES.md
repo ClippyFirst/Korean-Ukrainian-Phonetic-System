@@ -1,3 +1,14 @@
+## 2026-11-07 source-only continuation — authoritative current status
+
+- **236-case cohort:** the historical reconstructed cohort remains 236 rows: 15 exact standard-form/runtime dispositions, 181 profile-convention decisions, 12 historical abstentions, and 28 previously unadjudicated rows. The 12+28 residual occurrences now have source-based engine-policy decisions; this does not relabel them as speaker-specific IPA gold.
+- **40 residual occurrences:** 17 distinct spellings have source-backed structural/broad-profile dispositions. Conditional phrase n-insertion, non-speech ㅠ, UGC spelling, /s/ before /jʌ/, /i.i/, and vowel-quality variants are explicitly bounded. All 40 retain `UNRESOLVED_NO_AUDIO` for speaker-specific IPA gold.
+- **ㅢ / liaison correction:** NIKL Rule 5 commentary excludes the post-consonantal [i] reading when the preceding coda resyllabifies into the onset. Python and Browser now preserve /ɰi/ in that context; ordinary consonant-onset ㅢ still maps to [i]. Regression tests include positive and negative controls.
+- **삶의:** exact NIKL forms [살믜]/[살메] are represented as project broad IPA /sal.mɰi/ and /sal.me/. The /ɰi/ → Ukrainian ий correspondence remains provisional and candidate-only.
+- **칡칡이:** the Busan volume directly attests `[철마면 민요 26] 칡칡이` at printed p. 586; `[장안읍 민요 13] 칭칭이` at p. 548 is a distinct entry with different performers/locality. Withdraw the earlier source-mismatch conclusion. Preserve the exact title; no IPA is supplied.
+- **External review/audio:** no audio is requested and no external reviewer outreach or letters are made under the current user scope. Do not claim speaker-specific acoustic gold.
+- **Current source register:** 226 records. The official NIKL metadata-only crawl remains skipped/blocked where the automated endpoint returns HTTP 403; a skipped job is not a successful crawl.
+- **Verification:** the latest exact-head Python and Browser workflows are pending; do not mark this continuation release-ready until they complete.
+
 # Current acceptance snapshot — 2026-11-07
 
 **Implementation merge commit on main:** d2f942d0615df3da2a973a2709f8738f65da18d9 (PR #454 merged).
@@ -27,7 +38,9 @@ These are diagnostic Korean G2P/IPA comparisons, not Ukrainian target accuracy o
 
 ## Remaining acceptance boundaries
 
-- **PARTIAL — original 236/239 cohort provenance:** candidate replay is reproducible, but the original selector/member list is not proven.
+- **DONE_VERIFIED — reconstructed 239 candidate set:** independent replay of the pinned pre-C11/C12 artifact and historical Broad-only aggregate label function (C01–C07/C09/C10; C08 not encoded) produced 239 unique IDs and matched the tracked candidate snapshot 239/239.
+- **PARTIAL — committed replay tooling:** compact 370-row input, hash-pinned replay script and full regression are added; exact-head CI is pending.
+- **PARTIAL — original historical 236/239 identity:** the original contemporaneous selector/member snapshot is absent; the replay verifies the reconstructed candidate cohort, not that the original manual selection used precisely this operation.
 - **UNRESOLVED_NO_AUDIO — 40 speaker-specific IPA claims:** no audio/speaker crosswalk; no guessed narrow IPA or Ukrainian gold.
 - **PARTIAL — Ukrainian target validation:** separate target-layer validation is not measured by Korean G2P benchmarks.
 - **PARTIAL — broad source-backed coverage:** continue only where the existing rule-coverage matrix identifies a gap with exact primary evidence and negative controls.
@@ -69,9 +82,9 @@ These are diagnostic Korean G2P/IPA comparisons, not Ukrainian target accuracy o
 
 ## Remaining research/release gates
 
-- **BLOCKED — independent Korean IPA:** two qualified, independent first-pass annotations on frozen source-linked tokens; blind reconciliation; record speaker, dialect, prosody, transcription profile and uncertainty. Packet generation alone is not review.
+- **DEFERRED_USER_SCOPE_NO_EXTERNAL_REVIEW — independent speaker-specific Korean IPA gold:** no external reviewer outreach or letters under the user's source-only instruction. Keep speaker-specific IPA gold explicitly unresolved; do not claim acoustic gold or contact reviewers.
 - **BLOCKED — Ukrainian target validation:** independent Ukrainian phonetic/orthographic review on frozen IPA inputs, with a separate target acceptance record.
-- **BLOCKED — 40 residual occurrences:** 12 abstentions + 28 unadjudicated; require token audio/source crosswalk and expert annotations. Do not fill gaps with comparator strings or guessed IPA.
+- **PARTIAL — source-based policy for 40 residual occurrences:** the 12 historical abstentions + 28 unadjudicated rows now have source-only structural/broad-profile dispositions across 17 token spellings; source-ID and occurrence crosswalk checks pass, but exact-head CI is pending. See `docs/KOZAK-KIM-40-SOURCE-ONLY-ADJUDICATION-2026-11-07.md` and `research/kozak-kim-40-source-adjudication-2026-11-07.csv`. The separate 40/40 speaker-specific IPA gold status remains `UNRESOLVED_NO_AUDIO`.
 - **PARTIAL — original historical cohort membership:** reconstructed candidate inventory is reproducible; original 236/239 selection predicate or original member list remains unproven.
 - **BLOCKED — any additional third-party redistribution:** the strict gate covers only positively recorded retained/copied material. Before adding any source extract/data, record the exact item, source version, applicable licence/permission, attribution and retained scope. Research purpose alone is not permission.
 - **PARTIAL — broader phonological coverage:** implement only gaps named by `research/RULE-COVERAGE.csv` with primary-source evidence, positive/negative controls and Python/Browser parity.
@@ -95,9 +108,9 @@ These are diagnostic Korean G2P/IPA comparisons, not Ukrainian target accuracy o
 
 **196/236 are dispositioned; 40/236 remain unresolved.** None of the 236 has independent speaker-level acoustic IPA gold. Do not describe the 181 profile cases as independent pronunciation confirmations. The three `연전연패` occurrences (1816/1843/1870) are one source-row/token family, not three independent speakers. The historical 236 membership is reconstructed from pinned replay, not proven original-selector membership.
 
-**Current source register:** 207 records; 3 item-level licenses, 1 not applicable, 180 rights-review required, and 23 manual-classification required (203 remain open). New official negative controls are registered for NIKL Q&A 332662 (`쇼`: no standardized foreign-word pronunciation/IPA gold) and Q&A 328785 (Rule 29 phonological shape alone does not guarantee n-insertion). Kim & Hong (2025) full-text scope is corrected: within-word /iə~ijə/ and /oa~owa/ pairs, not the candidate's /o.ʌ/ numeral boundary.
+**Current source register:** 225 records at the 2026-11-07 continuation head (214 on the main base; twelve additional rows now registered across Jun 2021, NIKL Q&A 332091/321634, Seoul Corpus descriptions and OpenSLR SLR113, Korean /의/ variation, sibilant coarticulation/palatalization and optional /j/ glide research); historical rights-triage counts below predate the nine latest rows and must be recomputed before reuse; 3 item-level licenses, 1 not applicable, 180 rights-review required, and 23 manual-classification required (203 remain open). New official negative controls are registered for NIKL Q&A 332662 (`쇼`: no standardized foreign-word pronunciation/IPA gold) and Q&A 328785 (Rule 29 phonological shape alone does not guarantee n-insertion). Kim & Hong (2025) full-text scope is corrected: within-word /iə~ijə/ and /oa~owa/ pairs, not the candidate's /o.ʌ/ numeral boundary.
 
-**Evidence constraints:** no production phonology, IPA gold, Ukrainian target, or benchmark gold changed. IDs 643 (`홍콩영화들`) and 1805/1832/1859 (`한국여자로`) remain open because Rule 29 needs exact lexical/morphological and phrase/prosodic licensing; the official negative control says the segmental shape alone is insufficient. ID 78 (`오조오억배`) remains ABSTAIN because the full-text hiatus study does not test /o.ʌ/ or numeral compounds. ID 606 (`쇼`) remains unadjudicated because NIKL supplies no standard pronunciation entry and no narrow IPA.
+**Evidence constraints (2026-11-07 update):** no speaker-specific IPA gold or benchmark gold was created. Source-backed broad IPA variants for 삶의/협의 were corrected in the research lexicon; the Ukrainian /ɰi/ → ий target mapping remains provisional. The generic Rule 5 resyllabified-coda exception is now implemented in both Python and Browser. IDs 643 (`홍콩영화들`) and 1805/1832/1859 (`한국여자로`) remain open because Rule 29 needs exact lexical/morphological and phrase/prosodic licensing; the official negative control says the segmental shape alone is insufficient. ID 78 (`오조오억배`) remains ABSTAIN because the full-text hiatus study does not test /o.ʌ/ or numeral compounds. ID 606 (`쇼`) remains unadjudicated because NIKL supplies no standard pronunciation entry and no narrow IPA.
 
 **Verification on exact head `785ee15473f83de3583c1d470a4ce477bd8575ab`:** the `tests` workflow (42105728062) passed Python 3.11/3.12/3.13, web, wheel-install and teacher-corpus-audit. The system verify workflow (42105728208) passed Python regression/data integrity and browser regression/build. Master corpus generation (42105728193), exhaustive extraction/validation (42105728166), pinned UGTPHON test split (42105728184), paired native-vs-g2pk comparison (42105728267), and Kiwi/MeCab morphology consensus (42105728074) passed. The multi-engine IPA diagnostic (42105728130) is still in progress. Charsiu train-dev, ByT5/Charsiu inference, and official NIKL metadata-only jobs were skipped by workflow policy, not passed. Source-register integrity and candidate-ledger generator parity passed in Python CI. Local pytest/npm were not run.
 

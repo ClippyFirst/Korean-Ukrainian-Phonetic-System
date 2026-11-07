@@ -529,3 +529,61 @@ An initial Python assertion run [42260665657](https://github.com/ClippyFirst/Kor
 ## Addendum — UGTPHON five native abstentions (2026-11-06)
 
 The five residual Native G2P abstentions have been reviewed against the pinned UGTPHON rows and primary/source-specific evidence. Three exact-token cases now have Python/Browser R002/R003 licenses (`쫒아내면`, `많앗구나유유유`, `무서웟어`), with raw spelling retained and no generalization. Two remain blocked: `칡칡이` is a directly attested folk-song heading in the Busan oral-culture collection, but no audio/field notes establish its spoken realization; `삶의` has NIKL Hangul variants but no independent IPA adjudication. The prior folk-source register claim that the PDF text layer read `칭칭이` was corrected; opened PDF lines 20611–20622 read `칡칡이`. Implementation and tests are in PR #454; exact-head CI is pending on the final branch head. See [the focused case report](UGTPHON-FIVE-ABSTENTIONS-RESOLUTION-2026-11-06.md) and [the current triage register](../research/final-residual-abstention-triage-2026-10-25.json).
+
+
+## Addendum — source-only adjudication of the 40 residual occurrences (2026-11-07)
+
+The no-audio constraint has been addressed with public normative and scholarly sources. A separate source-only pass records a disposition for **all 17 distinct token spellings across 40 occurrence rows**. It distinguishes canonical broad structure, explicit morphology, conditional prosodic variants, non-speech emoticons, and research-only vowel variants. See [the source-only adjudication report](KOZAK-KIM-40-SOURCE-ONLY-ADJUDICATION-2026-11-07.md) and [the 17-token machine-readable register](../research/kozak-kim-40-source-adjudication-2026-11-07.csv).
+
+This does not claim speaker-level acoustic IPA. The original occurrence register retains `UNRESOLVED_NO_AUDIO` specifically for the 40 token/speaker IPA-gold claims. Published aggregate studies cannot determine the original speaker's narrow sibilant realization, vowel quality, speech rate or prosodic grouping. Compact `홍콩영화들`, `한국여자로` and `첫연애실패후` therefore remain unchanged unless a caller explicitly supplies segmentation/phrase mode; the engine does not infer hidden spaces.
+
+**Implementation decision:** no new runtime rule was added because the already-integrated Python and Browser policies match the source-backed boundaries. Jun (2021) was added to the source register to document the variable/gradient n-insertion evidence. All source IDs in the new 17-token register were checked against the source register. The new report/data artifacts require exact-head CI before they are marked fully verified.
+
+**Status correction:** source-based engine-policy adjudication is complete for the 40 occurrences; speaker-specific IPA gold is still unresolved for 40/40. These are separate acceptance axes and must not be conflated.
+
+
+## Addendum — exact source adjudication for 삶의 (2026-11-07)
+
+The earlier IPA hold for UGTPHON occurrence `dc_inside_2212` is superseded at the standard-variant level. NIKL MCFAQ 5716 directly names `삶의` and lists `[살믜]` and `[살메]`. The official Rule 5 commentary clarifies that the consonant-initial `ㅢ → [i]` exception does not apply when the preceding coda is resyllabified into the onset. The earlier project candidate `sal.mi` therefore applied the wrong exception.
+
+The Python research lexicon and Browser lexical overlay now preserve the distinct broad-IPA candidates `sal.mɰi` and `sal.me`. The general Python and Browser pipelines now also track coda-resyllabification provenance so Rule 5's [i] exception is not applied to a resyllabified onset; `협의` is tested both with and without its lexical override (`hjʌ.bɰi` versus `hjʌ.bi`). The `ɰi → ий` Ukrainian correspondence remains provisional, so final target output is withheld and only a research candidate is exposed.
+
+**Revised five-abstention status:** three exact runtime recoveries; one source-adjudicated standard variant set (`삶의`); one remaining source-limited case (`칡칡이`). No speaker-specific variant or narrow IPA is claimed. No audio or external reviewer outreach is requested.
+
+
+## Addendum — correction of the 칡칡이 source citation (2026-11-07)
+
+A corrected direct-page inspection of the cited Busan PDF distinguishes two entries: printed p. 586, lines 20611–20622, is `[철마면 민요 26] 칡칡이`, singer 이문춘 (male, born 1923), fieldwork 1991-10-19 at 철마면 이곡리; printed p. 548, lines 19372–19381, is the separate `[장안읍 민요 13] 칭칭이`, with different performers and locality. The p. 587/칭칭이 cross-reference used in the earlier addendum was erroneous. The National Gugak Center separately documents `칭칭이소리`.
+
+Earlier repository wording that the PDF directly attested `칡칡이` was incorrect and has been corrected in the source register, triage JSON, and five-abstention report. The evidence establishes a source mismatch, not a safe normalization: preserve benchmark `칡칡이`, do not rewrite it to `칭칭이`, and do not add a lexical IPA rule. The exact token remains fail-closed until a source explicitly attests it or documents its correction. No audio or reviewer outreach is requested.
+
+
+## 2026-11-07 continuation — source-only evidence and 239 replay
+
+### 239 candidate replay
+
+- **DONE_VERIFIED — reconstructed candidate set:** the pinned pre-C11/C12 report (artifact 13148075070; ZIP SHA-256 `075ceff080decbb142492448c9344816bfb53f1e87fe563826668d037c053b89`; report SHA-256 `8c25e630ca828719b269aeb84c8037d9c40f881a0f15c2e4ddf9d427edffa0f9`) and historical classifier commit `8c335dd7031bdae59b3ef7db715b54f0fdc9bcd5` / blob `e0bb7f32d5b320d468e0bdcab0ed134c7a3278ec` were replayed.
+- Exact selection: Broad edit distance > 0; historical NFC/combining-mark grapheme alignment; Broad fragments only; pre-C11/C12 historical aggregate labels C01–C07/C09/C10 (C08 not encoded); select only `UNMAPPED_REQUIRES_REVIEW`.
+- Result: 370 Broad mismatches → 239 unique candidate IDs; 111 source rows; 154 unique tokens. Exact set comparison with the tracked candidate-ID file: **239/239**, no missing or extra IDs.
+- Added `scripts/replay_kozak_239_candidate_selection.py` and unit tests. The script pins the report hash and fails closed if the candidate ID set differs.
+- **PARTIAL — original historical identity:** no contemporaneous original selector/member snapshot survives. The replay proves the reconstructed candidate set and its reproducibility, not that the original manual selection used precisely this algorithm. Do not describe 239/236 as confirmed engine defects.
+- After the three verified FIX overlaps (37, 704, 2031), 236 candidate rows remain: 213 without an individual disposition in the narrow registers, 22 overlapping ABSTAIN records, and one provisional RETAIN (1140, 출산). The later 15/181/12/28 disposition breakdown remains the current candidate-ledger classification.
+
+### Public Seoul Corpus source route
+
+OpenSLR SLR113 was checked directly. It lists the Seoul Corpus under CC BY-NC 2.0 and offers readme.tgz (27 MB), label.tgz (57 MB Praat TextGrid files), and sound.tgz (2.5 GB FLAC). The source register now records this explicit public route. Download attempts for label.tgz from both EU mirrors failed in this execution environment; the archive was not searched, so no exact 삶의 hit, speaker, timestamp or audio segment is claimed. The corpus cannot identify the unknown UGTPHON source speaker. CC BY-NC restrictions apply; no dataset files were redistributed or used for training.
+
+### Literature additions
+
+The source register now contains 225 records (12 columns), including Seoul Corpus metadata, Kim (2025) on context-conditioned 의 realization, Kim (2012) cine-MRI palatalization, Sung (2014) ultrasound lexical/post-lexical palatalization, Kim (2021) vowel-vowel transitions, and Shin (2013) optional /j/ formation/insertion. These abstract/metadata-level sources constrain overgeneralization; they do not provide token-specific IPA gold or authorize new runtime rules.
+
+### Source correction
+
+Direct reinspection confirms printed p. 586 (PDF p. 595) reads [철마면 민요 26] 칡칡이; printed p. 548 is the distinct [장안읍 민요 13] 칭칭이. The exact title is source-attested; its morphology and pronunciation remain unassigned. Do not alias or normalize 칡칡이 to 칭칭이.
+
+### Verification boundary
+
+The source crosswalk for all 40 no-audio occurrences remains complete at the engine-policy level, while speaker-specific IPA remains `UNRESOLVED_NO_AUDIO` for 40/40. PR #456 exact-head CI for the replay script, source changes, and Rule 5 liaison fix is still queued/pending; no pass is claimed for that continuation. Repository readiness remains a bounded, source-backed research prototype, not an independently research-certified or authoritative transcription standard.
+
+
+**Durable replay input:** `research/kozak-kim-370-broad-only-replay-input-2026-11-07.csv` (370 rows, six fields; Git blob SHA `4335d6488a647f0e240dcc9f8aa24edc5f076a40`). The historical classifier was replayed against the original 370-row context ledger and independently against this compact input; both produced 239 IDs with exact 239/239 equality to the candidate snapshot. The regression now runs the complete 370-row replay in CI.

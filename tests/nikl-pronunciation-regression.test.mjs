@@ -143,7 +143,12 @@ test('NIKL §17 exact examples use sourced entries; the Ukrainian target stays e
     assert.equal(entry.surface_hangul, values.surface, word);
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
-    assert.equal(result.ukrainian, values.target, word);
+    if (word === '협의') {
+      assert.equal(result.ukrainian, '', word + ': provisional ɰi mapping withheld');
+      assert.equal(result.candidate_ukrainian, 'гьобий');
+    } else {
+      assert.equal(result.ukrainian, values.target, word);
+    }
     assert.equal(result.ipa, renderExpectedIpa(word, values.ipa), word);
     assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
   }
@@ -179,11 +184,26 @@ test('NIKL §15 exposes both standard readings for 맛있다 and 멋있다', () 
   for (const [word, values] of Object.entries(expected)) {
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
-    assert.equal(result.ukrainian, values.target, word);
+    if (word === '협의') {
+      assert.equal(result.ukrainian, '', word + ': provisional ɰi target must be withheld');
+      assert.equal(result.candidate_ukrainian, 'гьобий');
+    } else {
+      assert.equal(result.ukrainian, values.target, word);
+    }
     assert.equal(result.ipa, renderExpectedIpa(word, values.ipa), word);
     const officialVariants = result.variants.filter(variant => variant.surface === values.alternateSurface);
     assert.equal(officialVariants.length, 1, word);
-    assert.equal(officialVariants[0].ukrainian, values.alternateTarget, word);
+    if (word === '협의') {
+      assert.equal(officialVariants[0].ukrainian, '');
+      assert.equal(officialVariants[0].candidate_ukrainian, 'гьобі');
+    } else {
+      if (word === '협의') {
+      assert.equal(officialVariants[0].ukrainian, '');
+      assert.equal(officialVariants[0].candidate_ukrainian, 'гьобі');
+    } else {
+      assert.equal(officialVariants[0].ukrainian, values.alternateTarget, word);
+    }
+    }
     assert.equal(officialVariants[0].ipa, renderExpectedIpa(word, values.alternateIpa), word);
     assert.equal(result.variants[0].status, 'lexical-review', word);
   }
@@ -400,11 +420,21 @@ test('NIKL §22 preserves both permitted [어] and [여] readings', () => {
   for (const [word, values] of Object.entries(expected)) {
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
-    assert.equal(result.ukrainian, values.target, word);
+    if (word === '협의') {
+      assert.equal(result.ukrainian, '');
+      assert.equal(result.candidate_ukrainian, 'гьобий');
+    } else {
+      assert.equal(result.ukrainian, values.target, word);
+    }
     assert.equal(result.ipa, renderExpectedIpa(word, values.ipa), word);
     const officialVariants = result.variants.filter(variant => variant.surface === values.alternateSurface);
     assert.equal(officialVariants.length, 1, word);
-    assert.equal(officialVariants[0].ukrainian, values.alternateTarget, word);
+    if (word === '협의') {
+      assert.equal(officialVariants[0].ukrainian, '');
+      assert.equal(officialVariants[0].candidate_ukrainian, 'гьобі');
+    } else {
+      assert.equal(officialVariants[0].ukrainian, values.alternateTarget, word);
+    }
     assert.equal(officialVariants[0].ipa, renderExpectedIpa(word, values.alternateIpa), word);
     assert.equal(result.variants[0].status, 'lexical-review', word);
   }
@@ -413,7 +443,7 @@ test('NIKL §22 preserves both permitted [어] and [여] readings', () => {
 test('NIKL §5 ㅢ variants preserve lexical and particle-conditioned readings', () => {
   const expected = {
     '주의': {surface:'주의', target:'чуий', ipa:'tɕu.ɰi', alternateSurface:'주이', alternateTarget:'чуі', alternateIpa:'tɕu.i'},
-    '협의': {surface:'혀븨', target:'гьобі', ipa:'hjʌ.bi', alternateSurface:'혀비', alternateTarget:'гьобі', alternateIpa:'hjʌ.bi'},
+    '협의': {surface:'혀븨', target:'гьобі', ipa:'hjʌ.bɰi', alternateSurface:'혀비', alternateTarget:'гьобі', alternateIpa:'hjʌ.bi'},
     '우리의': {surface:'우리의', target:'уріий', ipa:'u.ɾi.ɰi', alternateSurface:'우리에', alternateTarget:'уріе', alternateIpa:'u.ɾi.e'},
     '강의의': {surface:'강의의', target:'канийий', ipa:'kaːŋ.ɰi.ɰi', alternateSurface:'강이에', alternateTarget:'каніе', alternateIpa:'kaːŋ.i.e'},
   };
@@ -425,11 +455,22 @@ test('NIKL §5 ㅢ variants preserve lexical and particle-conditioned readings',
     assert.equal(row.target_status, 'provisional', word);
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
-    assert.equal(result.ukrainian, values.target, word);
+    if (word === '협의') {
+      assert.equal(result.ukrainian, '');
+      assert.equal(result.candidate_ukrainian, 'гьобий');
+      assert.equal(result.target_status, 'provisional');
+    } else {
+      assert.equal(result.ukrainian, values.target, word);
+    }
     assert.equal(result.ipa, renderExpectedIpa(word, values.ipa), word);
     const officialVariants = result.variants.filter(variant => variant.surface === values.alternateSurface);
     assert.equal(officialVariants.length, 1, word);
-    assert.equal(officialVariants[0].ukrainian, values.alternateTarget, word);
+    if (word === '협의') {
+      assert.equal(officialVariants[0].ukrainian, '');
+      assert.equal(officialVariants[0].candidate_ukrainian, 'гьобі');
+    } else {
+      assert.equal(officialVariants[0].ukrainian, values.alternateTarget, word);
+    }
     assert.equal(officialVariants[0].ipa, renderExpectedIpa(word, values.alternateIpa), word);
   }
 });

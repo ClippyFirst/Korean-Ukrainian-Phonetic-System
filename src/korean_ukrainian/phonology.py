@@ -1,5 +1,5 @@
 from __future__ import annotations
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass, asdict, field
 from .hangul import decompose_hangul
 
 L_JAMO = tuple("ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ")
@@ -11,7 +11,11 @@ VOWEL_IPA = {"ㅏ":["a"],"ㅐ":["ɛ"],"ㅑ":["ja"],"ㅒ":["jɛ"],"ㅓ":["ʌ"],"�
 @dataclass
 class Syllable:
     text:str; index:int; L:int; V:int; T:int; onset:str; nucleus:str; coda:str; boundary_after:str="same_word"
-    def to_dict(self): return asdict(self)
+    onset_from_coda:bool=field(default=False,repr=False,compare=False)
+    def to_dict(self):
+        data=asdict(self)
+        data.pop("onset_from_coda",None)
+        return data
 
 def parse_syllables(text:str)->list[Syllable]:
     result=[]

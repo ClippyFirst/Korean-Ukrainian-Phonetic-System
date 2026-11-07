@@ -76,14 +76,14 @@ def nucleus_ipa(s:Syllable,*,phonemic=False,genitive_particle=False)->list[str]:
     # only in the broad surface-IPA representation.
     if not phonemic and s.nucleus=="ㅕ" and s.onset in {"ㅈ","ㅉ","ㅊ"}:
         return ["ʌ"]
-    # Exact genitive-particle forms retain principal [ɯi]; Rule 5's [e]
+    # Exact genitive-particle forms retain the principal project /ɰi/ form; Rule 5's [e]
     # alternative is emitted separately. Non-initial lexical ㅢ keeps [i].
     if not phonemic and genitive_particle and s.nucleus=="ㅢ":
         return ["ɰi"]
-    # Korean standard pronunciation: ㅢ in a syllable with a consonant
-    # onset is realized as [i]. Keep the underlying /ɰi/ at the phonemic
-    # level; ㅇ+ㅢ remains lexically/morphologically ambiguous.
-    if s.nucleus=="ㅢ" and s.onset!="ㅇ" and not phonemic:
+    # NIKL Rule 5(다만 3): ㅢ in a consonant-onset syllable is [i],
+    # except when that onset is a preceding coda resyllabified by liaison.
+    # Rule 5 commentary explicitly gives 협의[혀븨] as this exception.
+    if s.nucleus=="ㅢ" and s.onset!="ㅇ" and not s.onset_from_coda and not phonemic:
         return ["i"]
     return [VOWEL_IPA[s.nucleus][0]]
 
@@ -100,6 +100,9 @@ def render_syllable_sequence(items:list[Syllable],rendered:list[str])->str:
     return ipa
 
 _NIKL_GENITIVE_UI_PARTICLE_FORMS={"그놈의","자신의"}
+# Exact source records below provide their complete ㅢ variant sets; do not
+# add a generic non-initial [i] alternative on top of those lexical decisions.
+_NIKL_EXACT_UI_VARIANT_FORMS={"삶의"}
 # NIKL Korean Basic Dictionary entry 70710: 유사성[유ː사썽].
 _NIKL_LEXICAL_LONG_VOWEL_FORMS={"유사성":"유"}
 
@@ -136,7 +139,8 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
                 continue
             section="research /ɛ–e/ merger"
         elif (syllable.nucleus=="ㅢ" and i>0
-              and items[i-1].boundary_after!="word"):
+              and items[i-1].boundary_after!="word"
+              and _word_form_at(items,i) not in _NIKL_EXACT_UI_VARIANT_FORMS):
             genitive_particle=_word_form_at(items,i) in _NIKL_GENITIVE_UI_PARTICLE_FORMS
             primary,alternate="ɰi","e" if genitive_particle else "i"
             section="§5"

@@ -2,7 +2,7 @@
 
 ## Status
 
-**PARTIAL / MEMBERSHIP RECONSTRUCTION BLOCKED.** The original full benchmark occurrence artifact has now been recovered and hash-pinned. The exact 239-member subset is still not reconstructable from the tracked triage export because no artifact records a stable `historical_239_member` flag or the executable selection/cluster-assignment snapshot that produced the narrative count. This file records what is recovered and what is still missing; it is not the 239-row ledger.
+**DONE_VERIFIED — reconstructed 239-candidate replay; PARTIAL — original historical identity.** The pinned pre-C11/C12 report and historical aggregate C01–C10 classifier reproduce 239 unique Broad-only candidate IDs, and the output matches the tracked candidate-ID snapshot exactly (239/239, no missing or extra IDs). The original contemporaneous selector/list was not preserved, so the replay establishes a reproducible reconstructed cohort but cannot prove that the original manual selection used precisely this selector. This file records both evidence states and does not equate the 239 candidates with 239 confirmed defects.
 
 ## Recovered primary benchmark artifact
 
@@ -188,3 +188,53 @@ Exact-head checks on the PR head:
 - No post-fix multi-engine benchmark was run; the recovery PR changes only research metadata/tests and does not claim updated phonetic benchmark scores.
 
 Current research disposition remains: **239 reconstructed candidate IDs; 3 verified FIX overlaps; 236 candidate cases still unresolved**. RETAIN and ABSTAIN do not decrement the remaining count. Historical membership is still PARTIAL pending confirmation of the original aggregate selector; no independent IPA or Ukrainian-target gold is claimed.
+
+
+## Candidate-ID list validation — 2026-11-07 (superseded by exact replay below)
+
+The tracked file `research/kozak-kim-historical-239-candidate-ids-2026-11-05.txt` contains **239 numeric IDs, all unique**. At the time of this note, only cardinality had been checked; the exact replay below now validates the reconstructed selection as well.
+
+## Exact Broad-only pre-C11/C12 replay — 2026-11-07
+
+The original benchmark artifact and historical classifier were downloaded/fetched and replayed independently.
+
+| Input / output | Verified value |
+|---|---|
+| Benchmark workflow run | [41453407662](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41453407662) |
+| Artifact ID | 13148075070 |
+| Artifact ZIP SHA-256 | `075ceff080decbb142492448c9344816bfb53f1e87fe563826668d037c053b89` |
+| Report SHA-256 | `8c25e630ca828719b269aeb84c8037d9c40f881a0f15c2e4ddf9d427edffa0f9` |
+| Report scope | 2,703 eligible UGTPHON Korean token occurrences; multi-engine diagnostic v6 |
+| Historical classifier commit | `8c335dd7031bdae59b3ef7db715b54f0fdc9bcd5` |
+| Historical classifier blob | `e0bb7f32d5b320d468e0bdcab0ed134c7a3278ec` |
+| Broad mismatch superset | 370 occurrences |
+| Replayed candidate set | 239 unique IDs; 111 source rows; 154 unique tokens |
+| Candidate snapshot comparison | **239/239 exact match**, zero missing, zero extra |
+
+### Exact selection semantics
+
+1. Iterate Native scored occurrences in the pinned report.
+2. Keep only occurrences whose Broad candidate edit distance is greater than zero (370 rows).
+3. Align the Broad candidate's `closest_gold` and `predicted` strings with the historical NFC + Unicode-combining-mark Levenshtein aligner.
+4. Pass the concatenated **Broad fragments only** to the historical aggregate label function from commit `8c335dd`. That function labels C01–C07, C09 and C10; C08 was not encoded in this function. The exporter’s ordinary `build_rows()` path passes strict + Broad fragments together, so this Broad-only replay is an interpretation of the historical triage note, not proof of the original manual selector.
+5. Select an occurrence only when the aggregate classifier returns exactly `UNMAPPED_REQUIRES_REVIEW`.
+
+This yields the exact 239 IDs in the tracked candidate list. It is an occurrence-level aggregate selector; it is not a per-fragment assignment system. A separate per-fragment interpretation produces a different population (269) and must not be substituted.
+
+### Reproducible implementation
+
+The repository now includes:
+- `research/kozak-kim-370-broad-only-replay-input-2026-11-07.csv` — compact 370-row Broad reference/prediction input extracted from the pinned context ledger; Git blob SHA `4335d6488a647f0e240dcc9f8aa24edc5f076a40`;
+- `scripts/replay_kozak_239_candidate_selection.py` — verifies that input Git blob, reproduces the historical Broad-only aggregate classifier and fails unless the candidate-ID file matches exactly;
+- `tests/test_replay_kozak_239_candidate_selection.py` — classifier controls plus a full 370-row replay asserting 239/239 exact candidate-ID equality;
+- the original 239-ID candidate snapshot and this manifest.
+
+The full replay was independently executed against the downloaded artifact in this continuation; the candidate ID sets matched exactly. Exact-head GitHub CI for the new script/test is pending and must pass before marking the repository implementation `DONE_VERIFIED`.
+
+### Correct status boundary
+
+- **DONE_VERIFIED — reconstructed candidate replay:** exact 239-ID output is reproduced from hash-pinned historical inputs and matches the tracked candidate list 239/239.
+- **PARTIAL — original historical identity:** the original contemporaneous selector/member snapshot is absent. The replay is a well-supported reconstruction of the historical aggregate rule, not proof that the original manual selection used that exact operation.
+- **DONE_VERIFIED — current disposition crosswalk:** three FIX overlaps (37, 704, 2031) are removed, leaving 236 candidate occurrences; 22 overlap the abstention ledger, one (1140, 출산) is provisional RETAIN, and 213 have no individual disposition in the narrow registers.
+- **Not a defect count:** neither 239 nor 236 is a count of confirmed software errors. Benchmark mismatches are diagnostic and may reflect profile convention, source annotation, or unresolved evidence.
+- This is a data-provenance issue, not an audio limitation. No IPA, pronunciation, or Ukrainian target is inferred by the replay.

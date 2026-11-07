@@ -83,12 +83,13 @@ test('every unique Hangul token in the integrated NIKL passage has an accepted o
 
     for (const variant of result.variants || []) {
       const variantAdapted = ipaTargetForSource(token, variant.ipa, {allowProvisional:true});
-      if (variantAdapted.unknown || variantAdapted.text !== variant.ukrainian) {
+      const runtimeVariantTarget = variant.ukrainian || variant.candidate_ukrainian || '';
+      if (variantAdapted.unknown || variantAdapted.text !== runtimeVariantTarget) {
         failures.push({
           token,
           kind: 'variant-ipa-target-divergence',
           ipa: variant.ipa,
-          runtimeUkrainian: variant.ukrainian,
+          runtimeUkrainian: runtimeVariantTarget,
           adapterUkrainian: variantAdapted.text,
           unknownIpa: variantAdapted.unknown,
         });
@@ -134,12 +135,13 @@ test('every Hangul-only lexical entry and licensed alternate is reproducible fro
     }
     for (const variant of result.variants || []) {
       const variantAdapted = ipaTargetForSource(row.input, variant.ipa, {allowProvisional:true});
-      if (variantAdapted.unknown || variantAdapted.text !== variant.ukrainian) {
+      const runtimeVariantTarget = variant.ukrainian || variant.candidate_ukrainian || '';
+      if (variantAdapted.unknown || variantAdapted.text !== runtimeVariantTarget) {
         failures.push({
           input: row.input,
           kind: 'variant',
           ipa: variant.ipa,
-          runtimeUkrainian: variant.ukrainian,
+          runtimeUkrainian: runtimeVariantTarget,
           adapterUkrainian: variantAdapted.text,
           unknownIpa: variantAdapted.unknown,
         });
