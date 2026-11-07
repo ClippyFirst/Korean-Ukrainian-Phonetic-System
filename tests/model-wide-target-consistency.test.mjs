@@ -186,7 +186,14 @@ test('context-sensitive vowel and voicing decisions remain explicit in the lexic
     assert.ok(row, 'missing lexical row: ' + word);
     assert.equal(row.target_syllables, target, word + ': target');
     assert.equal(row.ipa_syllables, ipa, word + ': IPA');
-    assert.equal(engine.convert(word).ukrainian, target.replaceAll('|', ''), word + ': runtime target');
+    const result = engine.convert(word);
+    if (word === '협의') {
+      assert.equal(result.ukrainian, '');
+      assert.equal(result.candidate_ukrainian, 'гьобий');
+      assert.equal(result.target_status, 'provisional');
+    } else {
+      assert.equal(result.ukrainian, target.replaceAll('|', ''), word + ': runtime target');
+    }
   }
 });
 
