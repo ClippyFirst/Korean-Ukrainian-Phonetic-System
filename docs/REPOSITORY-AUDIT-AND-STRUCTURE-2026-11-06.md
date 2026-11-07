@@ -584,3 +584,6 @@ Direct reinspection of the cited Busan PDF confirms printed p. 587 (PDF p. 596) 
 ### Verification boundary
 
 The source crosswalk for all 40 no-audio occurrences remains complete at the engine-policy level, while speaker-specific IPA remains `UNRESOLVED_NO_AUDIO` for 40/40. PR #456 exact-head CI for the replay script, source changes, and Rule 5 liaison fix is still queued/pending; no pass is claimed for that continuation. Repository readiness remains a bounded, source-backed research prototype, not an independently research-certified or authoritative transcription standard.
+
+
+**Durable replay input:** `research/kozak-kim-370-broad-only-replay-input-2026-11-07.csv` (370 rows, six fields; Git blob SHA `4335d6488a647f0e240dcc9f8aa24edc5f076a40`). The historical classifier was replayed against the original 370-row context ledger and independently against this compact input; both produced 239 IDs with exact 239/239 equality to the candidate snapshot. The regression now runs the complete 370-row replay in CI.
