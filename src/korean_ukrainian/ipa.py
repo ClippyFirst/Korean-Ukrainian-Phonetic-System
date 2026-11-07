@@ -80,10 +80,10 @@ def nucleus_ipa(s:Syllable,*,phonemic=False,genitive_particle=False)->list[str]:
     # alternative is emitted separately. Non-initial lexical ㅢ keeps [i].
     if not phonemic and genitive_particle and s.nucleus=="ㅢ":
         return ["ɰi"]
-    # Korean standard pronunciation: ㅢ in a syllable with a consonant
-    # onset is realized as [i]. Keep the underlying /ɰi/ at the phonemic
-    # level; ㅇ+ㅢ remains lexically/morphologically ambiguous.
-    if s.nucleus=="ㅢ" and s.onset!="ㅇ" and not phonemic:
+    # NIKL Rule 5(다만 3): ㅢ in a consonant-onset syllable is [i],
+    # except when that onset is a preceding coda resyllabified by liaison.
+    # Rule 5 commentary explicitly gives 협의[혀븨] as this exception.
+    if s.nucleus=="ㅢ" and s.onset!="ㅇ" and not s.onset_from_coda and not phonemic:
         return ["i"]
     return [VOWEL_IPA[s.nucleus][0]]
 
