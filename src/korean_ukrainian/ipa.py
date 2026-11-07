@@ -100,6 +100,9 @@ def render_syllable_sequence(items:list[Syllable],rendered:list[str])->str:
     return ipa
 
 _NIKL_GENITIVE_UI_PARTICLE_FORMS={"그놈의","자신의"}
+# Exact source records below provide their complete ㅢ variant sets; do not
+# add a generic non-initial [i] alternative on top of those lexical decisions.
+_NIKL_EXACT_UI_VARIANT_FORMS={"삶의","협의"}
 # NIKL Korean Basic Dictionary entry 70710: 유사성[유ː사썽].
 _NIKL_LEXICAL_LONG_VOWEL_FORMS={"유사성":"유"}
 
@@ -136,7 +139,8 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
                 continue
             section="research /ɛ–e/ merger"
         elif (syllable.nucleus=="ㅢ" and i>0
-              and items[i-1].boundary_after!="word"):
+              and items[i-1].boundary_after!="word"
+              and _word_form_at(items,i) not in _NIKL_EXACT_UI_VARIANT_FORMS):
             genitive_particle=_word_form_at(items,i) in _NIKL_GENITIVE_UI_PARTICLE_FORMS
             primary,alternate="ɰi","e" if genitive_particle else "i"
             section="§5"
