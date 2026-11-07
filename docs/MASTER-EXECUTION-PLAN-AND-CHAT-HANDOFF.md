@@ -7001,3 +7001,49 @@ The native Python and browser shared-Broad optional [ɛ]~[e] metadata now cite L
 5. **Source rights:** NIKL item-level marks and the Busan PDF's reuse terms are not fully cleared; cite sources but do not redistribute source text/figures.
 
 **Readiness:** improved, source-backed bounded research prototype; not independently research-certified and not release-ready as an authoritative Korean-to-Ukrainian transcription standard.
+
+
+## 2026-11-07 — final source correction and CI failure repair
+
+**Latest verified working head at note creation:** `86a7a8448d2a990e33e1986976b74bb81e141fa8` (PR #456 branch; CI pending).  
+**Source register:** 220 records, 12 columns.  
+**No-audio boundary:** unchanged; no user audio, public audio segment, or external review was used to manufacture token-specific IPA.
+
+### Corrected primary-source finding: 칡칡이
+
+A direct reinspection of the cited Busan PDF exposed an earlier page/transcription error in the working branch. The PDF's printed p. 587 (PDF page 596), lines 14284–14292, reads **[철마면 민요 26] 칭칭이**, singer 이문찬 (male, born 1923), fieldwork 1991-10-19, 철마면 이곡리, refrain 치기타 칭칭나네. A full extracted-text search finds no occurrence of **칡칡이**. The earlier claim that printed p. 586 attested 칡칡이 is withdrawn.
+
+The source register, residual triage JSON, README, and regression test have been corrected:
+- `칡칡이` is `BLOCKED_SOURCE_IDENTITY_AND_AUDIO`;
+- do not normalize or alias it to `칭칭이`;
+- NIKL Q&A 321743 licenses only the coda behavior in `칡과[칙꽈]`, not the full string;
+- no IPA, lexical entry, or runtime rule is added.
+
+The National Gugak Center's `칭칭이소리` entry is cultural context for the separate title `칭칭이`, not evidence for `칡칡이`.
+
+### CI failure diagnosis and repair
+
+The first PR #456 Python CI attempt exposed two stale assertions:
+1. The residual-triage test expected the old blocked status after a later source-register edit had temporarily marked 칡칡이 source-attested. The source correction above restored the correct blocked status and the test now expects that fail-closed disposition.
+2. The analyzer-consensus test expected `삶의` IPA to become accepted/provisional when the analyzer-derived morphology license was applied. That conflicts with the adapter contract: analyzer consensus is low-confidence and remains diagnostic-only even when NIKL establishes a standard variant set. The test was renamed and now expects `diagnostic_only_analyzer_morphology`; it does not downgrade the separate source-backed strict-mode IPA variant set.
+
+Both fixes are committed. The exact-head test/system/browser and research workflows were queued after the corrections; do not mark them passed until the run conclusions are available. The initial failing logs and subsequent corrections are preserved in the PR timeline.
+
+### Undermind literature intake
+
+Three additional records were added to `research/SOURCE-REGISTER.csv` (220 total):
+- Yun et al. (2015), Seoul Corpus: 40 speakers, spontaneous interview speech, approx. 220,000 phrasal words and phonemic annotation; does not establish an exact 삶의 occurrence.
+- Yun (2017), Seoul Corpus: Praat TextGrid, approx. 1,135,263 phoneme tokens; confirms corpus annotation design, not current legal retrieval or exact token presence.
+- Kim (2025), realization of 의: abstract reports multiple context-conditioned realizations; abstract-only, so no new runtime rule is inferred.
+
+The already registered Park, Cho & Han (2016) full-text study reports 602/628 (95.86%) monophthongized genitive /ɨi/ tokens as [e]. This is population-level evidence, not an exact 삶의 speaker match. Both source-backed broad candidates /sal.mɰi/ and /sal.me/ remain available; no speaker-specific selection and no Ukrainian target promotion follows.
+
+### Current acceptance
+
+- **DONE_VERIFIED:** 40-occurrence source crosswalk, 17-row matrix coverage, source-ID resolution, Rule 5 liaison-provenance fix implementation, source-register expansion and correction, regression assertions aligned with evidence.
+- **PARTIAL pending exact-head CI:** PR #456 tests, Browser and research artifacts after the latest source correction.
+- **UNRESOLVED_NO_AUDIO:** speaker-specific IPA for all 40 residual cases; no audio or speaker crosswalk.
+- **BLOCKED:** historical 236/239 cohort membership proof; original selector/C01–C10 assignment snapshot missing.
+- **PARTIAL:** Ukrainian target mapping for /ɰi/ and independent Ukrainian intelligibility; source rights at item level; official NIKL live metadata crawl (HTTP 403/skip).
+
+**Readiness:** source-backed bounded research prototype, not independently research-certified or release-ready as an authoritative standard.
