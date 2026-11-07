@@ -549,3 +549,10 @@ The earlier IPA hold for UGTPHON occurrence `dc_inside_2212` is superseded at th
 The Python research lexicon and Browser lexical overlay now preserve the distinct broad-IPA candidates `sal.mɰi` and `sal.me`; the same Rule 5 correction is applied to `협의` (`hjʌ.bɰi` versus `hjʌ.bi`). Regression tests cover both. The `ɰi → ий` Ukrainian correspondence remains provisional, so final target output is withheld and only a research candidate is exposed.
 
 **Revised five-abstention status:** three exact runtime recoveries; one source-adjudicated standard variant set (`삶의`); one remaining source-limited case (`칡칡이`). No speaker-specific variant or narrow IPA is claimed. No audio or external reviewer outreach is requested.
+
+
+## Addendum — correction of the 칡칡이 source citation (2026-11-07)
+
+A direct check of the cited Busan PDF at printed p. 587 (PDF page 596), lines 14284–14292, shows that `[철마면 민요 26]` is titled `칭칭이`, not `칡칡이`. The singer is identified as 이문찬 (male, born 1923), fieldwork date 1991-10-19, location 철마면 이곡리; the refrain includes `치기타 칭칭나네`, and the entry cites 이소라, 『양산의 민요』 (1992), p. 180. The National Gugak Center separately documents `칭칭이소리`.
+
+Earlier repository wording that the PDF directly attested `칡칡이` was incorrect and has been corrected in the source register, triage JSON, and five-abstention report. The evidence establishes a source mismatch, not a safe normalization: preserve benchmark `칡칡이`, do not rewrite it to `칭칭이`, and do not add a lexical IPA rule. The exact token remains fail-closed until a source explicitly attests it or documents its correction. No audio or reviewer outreach is requested.
