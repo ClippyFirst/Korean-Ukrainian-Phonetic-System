@@ -179,11 +179,21 @@ test('NIKL §15 exposes both standard readings for 맛있다 and 멋있다', () 
   for (const [word, values] of Object.entries(expected)) {
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
-    assert.equal(result.ukrainian, values.target, word);
+    if (word === '협의') {
+      assert.equal(result.ukrainian, '', word + ': provisional ɰi target must be withheld');
+      assert.equal(result.candidate_ukrainian, 'гьобий');
+    } else {
+      assert.equal(result.ukrainian, values.target, word);
+    }
     assert.equal(result.ipa, renderExpectedIpa(word, values.ipa), word);
     const officialVariants = result.variants.filter(variant => variant.surface === values.alternateSurface);
     assert.equal(officialVariants.length, 1, word);
-    assert.equal(officialVariants[0].ukrainian, values.alternateTarget, word);
+    if (word === '협의') {
+      assert.equal(officialVariants[0].ukrainian, '');
+      assert.equal(officialVariants[0].candidate_ukrainian, 'гьобі');
+    } else {
+      assert.equal(officialVariants[0].ukrainian, values.alternateTarget, word);
+    }
     assert.equal(officialVariants[0].ipa, renderExpectedIpa(word, values.alternateIpa), word);
     assert.equal(result.variants[0].status, 'lexical-review', word);
   }
