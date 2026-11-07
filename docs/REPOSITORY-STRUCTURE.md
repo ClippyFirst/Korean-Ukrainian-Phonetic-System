@@ -1,12 +1,13 @@
 # Repository structure and ownership guide
 
-**Snapshot:** 2026-11-07 at main commit `e72856c1f03bfb775805748f96ec23889ca2e60f`, after PR #456 (squash merge `18f5529b9100ea6e4f7c176c9627bacf1fc52585`). This is a point-in-time map, not a claim that every file has been independently reviewed line by line. This guide describes observed tree ownership and navigation boundaries; it is not a claim that every file has been independently reviewed line by line.
+**Snapshot:** 2026-11-07 at main commit `e72856c1f03bfb775805748f96ec23889ca2e60f`, after PR #456 (squash merge `18f5529b9100ea6e4f7c176c9627bacf1fc52585`). This point-in-time guide describes observed tree ownership and navigation boundaries; it is not a claim that every file has been independently reviewed line by line.
 
-## What this repository contains
 ## Latest verification snapshot — 2026-11-07
 
 The latest main commit at the start of this continuation was `e72856c1f03bfb775805748f96ec23889ca2e60f`. Current-main system verification run [42415278464](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42415278464) and Pages run [42415278451](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42415278451) both failed in Python/browser test steps; their build/deploy stages were skipped. The shared root cause is a malformed `SRC-UGTPHON-EMNLP-2026` CSV row (missing opening quote), alongside a reviewer-packet validator expecting `UGTPHON/ko/test.json` while the pinned candidate ledger records `naver-ai/UGTPHON/ko/test.json`. The multi-engine run [42414467825](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42414467825) separately failed its generated mismatch-queue byte comparison. Do not treat these runs as successful verification.
 
+
+## What this repository contains
 
 A Python research package, a browser-based practical/research application, Korean phonology and lexical datasets, a Korean-to-Ukrainian IPA target layer, reproducible research tooling, source-rights records and a public GitHub Pages service.
 
@@ -16,7 +17,7 @@ The reconstructed 236-row cohort contains 15 exact standard-form runtime disposi
 
 Latest paired UGTPHON diagnostic: Native 1,425/2,702 exact (52.7387%), CER 9.0130%; g2pK 1,435/2,703 (53.0892%), CER 9.2328%. SIGMORPHON 2021 figures retained from the prior exact-head run: Native 358/998 exact (35.8717%), CER 14.5598%; g2pK 353/999 (35.3353%), CER 14.8222%. These are Korean G2P/IPA diagnostics, not Ukrainian target accuracy or normative gold. The multi-engine run 42414467825 completed with a generated mismatch-queue artifact drift failure (byte 554, line 1); no complete multi-engine result is claimed.
 
-At main commit `e72856c1f03bfb775805748f96ec23889ca2e60f`, the recursive Git tree contains **848 entries** (805 files and 43 directories), including 183 Markdown files, 398 files under `tests/`, 65 scripts, 18 GitHub Actions workflows and 13 schemas, 150 files under `docs/` and 59 under `research/`. These are inventory counts, not measures of implementation completeness. These are point-in-time inventory counts, not measures of implementation completeness.
+At main commit `e72856c1f03bfb775805748f96ec23889ca2e60f`, the recursive Git tree contains **848 entries** (805 files and 43 directories), including 183 Markdown files, 398 files under `tests/`, 65 scripts, 18 GitHub Actions workflows and 13 schemas, 150 files under `docs/` and 59 under `research/`. These are point-in-time inventory counts, not measures of implementation completeness.
 
 ## Top-level map
 
