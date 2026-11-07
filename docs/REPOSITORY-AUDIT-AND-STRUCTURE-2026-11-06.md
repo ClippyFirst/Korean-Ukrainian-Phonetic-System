@@ -698,3 +698,12 @@ The source crosswalk for all 40 no-audio occurrences remains complete at the eng
 #### Final readiness decision
 
 **Software verification: green on PR #457. Repository release readiness: PARTIAL RESEARCH PROTOTYPE.** The documentation and CI defects in scope are fixed and verified. The remaining blockers are linguistic evidence and Ukrainian-target acceptance, not the repository structure or the CSV/CI failures addressed here. Do not label the system release-ready until those independent acceptance criteria are met.
+
+
+### Mainline merge record — 2026-11-07
+
+- PR #457 was squash-merged into `main` as `62ca357d1ff64bc0a113e30fc92e4ce2f1b5ffcc`, parent `e72856c1f03bfb775805748f96ec23889ca2e60f`.
+- Post-merge [system verification 42418241279](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42418241279), [test matrix 42418241284](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42418241284), [research artifacts 42418241294](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42418241294), and [GitHub Pages deployment plus live browser smoke 42418241365](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42418241365) all completed successfully on the merge commit.
+- The large existing [master execution plan and chat handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) was updated in place with the merge SHA, test evidence, benchmark scope and remaining blockers. It was not replaced by a duplicate handoff.
+- A final handoff-only documentation branch `docs/final-main-handoff-2026-11-07` carries this in-place update and the synchronized README/index/structure/audit references. It does not change runtime code, source data, or benchmark outputs.
+- Final readiness remains **PARTIAL RESEARCH PROTOTYPE**: repository and software verification are green; independent speaker IPA gold for the 40 residual cases and Ukrainian-target acceptance remain evidence-limited. No release certification is claimed.
