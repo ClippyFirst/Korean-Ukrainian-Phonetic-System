@@ -1011,3 +1011,10 @@ def test_resyllabified_coda_exception_for_ㅢ_is_general_not_lexicon_only():
     result = phoneticize_korean("협의", include_research_lexical=False)
     assert result["ipa"]["ipa"] == "hjʌ.bɰi"
     assert result["pronunciation_status"] == "provisional"
+
+
+def test_lexical_consonant_onset_still_uses_postconsonantal_ㅢ_to_i():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    result = phoneticize_korean("희망", include_research_lexical=False)
+    assert result["ipa"]["ipa"] == "hi.maŋ"
