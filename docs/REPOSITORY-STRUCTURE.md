@@ -1,6 +1,6 @@
 # Repository structure and ownership guide
 
-**Snapshot:** 2026-11-07, main at d2f942d0615df3da2a973a2709f8738f65da18d9, after PR #454. This guide describes observed tree ownership and navigation boundaries; it is not a claim that every file has been independently reviewed line by line.
+**Snapshot:** 2026-11-07, after PR #454 and the mainline documentation reconciliation (latest preceding docs commit 249c2e7ce7556a0acf07f7fe9cb6fe77ebd1e96c). The implementation merge commit is d2f942d0615df3da2a973a2709f8738f65da18d9. This guide describes observed tree ownership and navigation boundaries; it is not a claim that every file has been independently reviewed line by line.
 
 ## What this repository contains
 
