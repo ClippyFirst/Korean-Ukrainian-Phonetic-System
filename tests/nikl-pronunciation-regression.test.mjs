@@ -423,7 +423,7 @@ test('NIKL §22 preserves both permitted [어] and [여] readings', () => {
 test('NIKL §5 ㅢ variants preserve lexical and particle-conditioned readings', () => {
   const expected = {
     '주의': {surface:'주의', target:'чуий', ipa:'tɕu.ɰi', alternateSurface:'주이', alternateTarget:'чуі', alternateIpa:'tɕu.i'},
-    '협의': {surface:'혀븨', target:'гьобі', ipa:'hjʌ.bi', alternateSurface:'혀비', alternateTarget:'гьобі', alternateIpa:'hjʌ.bi'},
+    '협의': {surface:'혀븨', target:'гьобі', ipa:'hjʌ.bɰi', alternateSurface:'혀비', alternateTarget:'гьобі', alternateIpa:'hjʌ.bi'},
     '우리의': {surface:'우리의', target:'уріий', ipa:'u.ɾi.ɰi', alternateSurface:'우리에', alternateTarget:'уріе', alternateIpa:'u.ɾi.e'},
     '강의의': {surface:'강의의', target:'канийий', ipa:'kaːŋ.ɰi.ɰi', alternateSurface:'강이에', alternateTarget:'каніе', alternateIpa:'kaːŋ.i.e'},
   };
