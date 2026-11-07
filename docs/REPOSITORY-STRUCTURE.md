@@ -4,8 +4,13 @@
 
 ## Latest verification snapshot — 2026-11-07
 
-The latest main commit at the start of this continuation was `e72856c1f03bfb775805748f96ec23889ca2e60f`. Current-main system verification run [42415278464](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42415278464) and Pages run [42415278451](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42415278451) both failed in Python/browser test steps; their build/deploy stages were skipped. The shared root cause is a malformed `SRC-UGTPHON-EMNLP-2026` CSV row (missing opening quote), alongside a reviewer-packet validator expecting `UGTPHON/ko/test.json` while the pinned candidate ledger records `naver-ai/UGTPHON/ko/test.json`. The multi-engine run [42414467825](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42414467825) separately failed its generated mismatch-queue byte comparison. Do not treat these runs as successful verification.
+The audited starting main commit was `e72856c1f03bfb775805748f96ec23889ca2e60f`. The two failed main-head runs at that snapshot were reconciled in PR [#457](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/457), verified on `ab6c7c69ba65b7fd5da4383d2105ef81a5bcb51d).
 
+PR #457's exact-head checks passed: [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681845), [Python/browser test matrix](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681848), [master/research artifact checks](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681843), [exhaustive test-case extraction](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681889), and [full multi-engine benchmark](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681855). The metadata-only NIKL inventory was skipped by policy; no claim of its execution is made.
+
+The initial failures were corrected without changing the source corpus pins or linguistic classifications: the UGTPHON source-register row was repaired as valid CSV, the exact `naver-ai/UGTPHON/ko/test.json` path was aligned in the reviewer-packet validator, and the mismatch-queue exporter was made byte-compatible with the committed CRLF/no-trailing-newline format. The full multi-engine run subsequently passed its exact artifact comparison, Browser Kozak Kim execution and Native/Browser parity audit.
+
+This point-in-time guide describes observed tree ownership and navigation boundaries; it is not a claim that every file has been independently reviewed line by line.
 
 ## What this repository contains
 
