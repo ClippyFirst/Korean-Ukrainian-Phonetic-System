@@ -1,14 +1,14 @@
 # Current continuation — mainline benchmark and 236-case status (2026-11-07)
 
-**Current branch:** main; latest merged commit d2f942d0615df3da2a973a2709f8738f65da18d9 (PR #454).
+**Main base for this continuation:** `1f220fcd7e3b44dab7302b37e2fe225812ee18a6` (documentation continuation after PR #454, merged as `d2f942d0615df3da2a973a2709f8738f65da18d9`). **Current work:** PR #456, branch `research/source-only-40-case-adjudication-2026-11-07`.
 
 - The reconstructed 236-case cohort has 15 exact standard-form runtime dispositions, 181 bounded profile-convention decisions, 12 original abstentions and 28 residual rows.
 - The 40 residual rows now have explicit no-audio engine-policy dispositions. A source-only pass now adjudicates all 17 distinct spellings across the 40 rows at the structural/broad-profile level; 40/40 remain unresolved only for speaker-specific IPA gold. No audio, speaker crosswalk or independent acoustic gold was created.
 - UGTPHON `삶의` now has an exact NIKL-backed standard variant set `[살믜]/[살메]`, project IPA `sal.mɰi`/`sal.me`, and a provisional Ukrainian target; `칡칡이` is now a confirmed source mismatch: the cited Busan PDF attests `칭칭이`, not the benchmark token; preserve raw and do not auto-correct.
-- PR #454 adds three exact typo-preserving morphology licenses (쫒아내면, 많앗구나유유유, 무서웟어) in Python and Browser, with positive and near-form negative controls. 칡칡이 and 삶의 remain fail-closed.
+- PR #454 added three exact typo-preserving morphology licenses (쫒아내면, 많앗구나유유유, 무서웟어) in Python and Browser. The current continuation source-adjudicates 삶의 as [살믜]/[살메] with research IPA /sal.mɰi/~/sal.me/ and provisional Ukrainian target; 칡칡이 remains fail-closed as a confirmed source mismatch and is not rewritten to 칭칭이.
 - Latest UGTPHON diagnostic: Native 1,435/2,701 exact (53.1285%), CER 8.9418%, two abstentions; g2pK 1,435/2,703 (53.0892%), CER 9.2328%. Paired exact count is equal; Native CER is lower by 0.2856 pp.
 - Latest SIGMORPHON 2021 diagnostic: Native 358/998 exact (35.8717%), CER 14.5598%; g2pK 353/999 (35.3353%), CER 14.8222%. Multi-engine workflow passed; optional CharsiuG2P/ByT5 inference skipped by policy.
-- Exact-head CI on PR #454 passed: Python 3.11/3.12/3.13, wheel installation, web tests/build, source-rights gate, generated research artifacts, exhaustive test-case extraction, paired Native/g2pK, UGTPHON, morphology diagnostics and multi-engine comparison. No local shell test is claimed from this connector-only session.
+- Exact-head CI on PR #454 passed: Python 3.11/3.12/3.13, wheel installation, web tests/build, source-rights gate, generated research artifacts, exhaustive test-case extraction, paired Native/g2pK, UGTPHON, morphology diagnostics and multi-engine comparison. PR #456 adds source-only decisions and Rule 5 liaison/IPA regressions; its exact-head CI is pending. No local shell test is claimed from this connector-only session.
 - Readiness: software-verified bounded research prototype; not independently research-certified or release-ready. No reviewer outreach or correspondence was undertaken.
 
 See the [source-only 40-case adjudication](../docs/KOZAK-KIM-40-SOURCE-ONLY-ADJUDICATION-2026-11-07.md), [17-token source matrix](kozak-kim-40-source-adjudication-2026-11-07.csv), [236-case integration record](../docs/KOZAK-KIM-236-ENGINE-INTEGRATION-2026-11-06.md), [40-case no-audio decision record](../docs/KOZAK-KIM-40-NO-AUDIO-ADJUDICATION-2026-11-06.md), and [acceptance gates](ACCEPTANCE-GATES.md).
