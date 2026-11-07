@@ -165,3 +165,16 @@ The Python and browser engines now support exact NIKL §29 [붙임 2] phrase ins
 The other cases receive bounded no-change decisions: no categorical /j/ in `오조오억배` or `체험`; preserve broad /i/ hiatus in `자기이입하네`; keep broad /s/ for the /jʌ/ and /jo/ sibilant cases; retain the non-selective [ɛ]~[e] research candidate for `대한민국`; preserve raw `ㅠ` emoticons as non-speech rather than pronouncing their canonicalized `유` form. The existing standalone-jamo test now includes `ㅠㅠ`.
 
 **Status:** 40/40 engine-policy dispositions are complete; 40/40 speaker-specific narrow IPA claims remain explicitly unadjudicated without audio. This does not change the 236-case gold-status counts or release-readiness classification. See [the detailed no-audio adjudication](KOZAK-KIM-40-NO-AUDIO-ADJUDICATION-2026-11-06.md).
+
+
+## 2026-11-07 source-only continuation — the 40 residual cases
+
+The no-audio constraint has now been handled through official Korean sources and peer-reviewed literature. The 12 historical ABSTAIN and 28 NOT_INDIVIDUALLY_ADJUDICATED rows have **source-based engine-policy dispositions** for all 40 occurrences, grouped into 17 distinct token spellings. The complete crosswalk is [the 40-case source-only report](KOZAK-KIM-40-SOURCE-ONLY-ADJUDICATION-2026-11-07.md) and [its machine-readable 17-token register](../research/kozak-kim-40-source-adjudication-2026-11-07.csv).
+
+This does **not** relabel the 12/28 source-review statuses as token-specific IPA gold. Those statuses remain historically accurate for independent per-token pronunciation adjudication; the separate engine-policy axis is now source-adjudicated. All 40 retain `speaker_ipa_gold_status=UNRESOLVED_NO_AUDIO`. No speaker-specific narrow IPA, prosodic grouping or dialect choice is fabricated.
+
+The source-backed dispositions are deliberately bounded: preserve /o.ʌ/ in 오억 without inserting a phonemic glide; recognize that 체험 is /e.hʌ/ with intervening /h/; keep n-insertion conditional on explicit phrase segmentation and connected prosody; retain broad /s/ before /jʌ/ rather than categorical [ɕ]; preserve /i.i/ in 자기이입하네; exclude raw ㅠ emoticons from G2P; preserve stylized UGC spelling; and retain [ɛ]~[e] as a non-selective research variant set for 대한민국. No general productive rule is added from comparator strings.
+
+A separate five-abstention follow-up also corrected the exact ㅢ profile: NIKL directly attests 삶의[살믜]/[살메], now represented as research-only broad IPA /sal.mɰi/ and /sal.me/; the Ukrainian /ɰi/→ий mapping remains provisional. The cited Busan source for 칡칡이 actually reads 칭칭이, so the benchmark spelling is preserved and not auto-corrected.
+
+**Acceptance boundary:** source-based engine policy is complete for the 40 occurrences. Speaker-specific IPA gold remains unresolved for 40/40. This is a bounded source-backed runtime policy, not an independently annotated acoustic benchmark or research certification. Exact-head CI for this continuation remains pending.
