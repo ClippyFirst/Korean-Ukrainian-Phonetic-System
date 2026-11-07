@@ -112,7 +112,7 @@ def test_provisional_lexical_target_never_leaks_as_accepted_orthography():
     assert result["lexical_target_reference_status"] == "provisional"
     assert result["ukrainian_orthography"] is None
     assert result["target_status"] == "unavailable"
-    assert result["target_unavailable_reason"] == "provisional_lexical_target_requires_review"
+    assert result["target_unavailable_reason"] == "lexical_target_reference_provisional"
     assert result["candidate_orthography"]
     assert result["candidate_status"] == "provisional"
 
@@ -136,7 +136,7 @@ def test_python_transliteration_uses_ipa_derived_target_and_keeps_lexical_target
             # Provisional target mappings are candidate-only, not accepted output.
             assert value["ukrainian_orthography"] is None
             assert value["target_status"] == "unavailable"
-            assert value["target_unavailable_reason"] == "provisional_mapping_requires_review"
+            assert value["target_unavailable_reason"] == "lexical_target_reference_provisional"
             assert value["candidate_orthography"] == expected_reference
             assert value["candidate_status"] == "provisional"
             assert value["lexical_target_comparison"] == "unavailable_without_ipa_target"
@@ -530,7 +530,7 @@ def test_provisional_lexical_target_without_reference_never_becomes_accepted():
     result = transliterate_korean("한자")
     assert result["ukrainian_orthography"] is None
     assert result["target_status"] == "unavailable"
-    assert result["target_unavailable_reason"] == "provisional_lexical_target_requires_review"
+    assert result["target_unavailable_reason"] == "lexical_target_reference_provisional"
 
 
 def test_nikl_sino_korean_rieul_fortition_has_direct_qna_attestation():
