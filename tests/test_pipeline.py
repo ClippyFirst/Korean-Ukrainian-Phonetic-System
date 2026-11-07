@@ -1003,7 +1003,7 @@ def test_resyllabified_ui_preserves_nikl_ㅢ_variants_in_ipa():
     assert target["lexical_target_reference"] == "салмий"
 
 
-def test_resyllabified_coda_exception_for_ㅢ_is_general_not_lexicon_only():
+def test_resyllabified_coda_exception_for_ui_is_general_not_lexicon_only():
     from korean_ukrainian.pipeline import phoneticize_korean
 
     # NIKL Rule 5 commentary names 협의[혀븨] as the exception: a preceding
@@ -1013,7 +1013,7 @@ def test_resyllabified_coda_exception_for_ㅢ_is_general_not_lexicon_only():
     assert result["pronunciation_status"] == "provisional"
 
 
-def test_lexical_consonant_onset_still_uses_postconsonantal_ㅢ_to_i():
+def test_lexical_consonant_onset_still_uses_postconsonantal_ui_to_i():
     from korean_ukrainian.pipeline import phoneticize_korean
 
     result = phoneticize_korean("희망", include_research_lexical=False)
