@@ -93,7 +93,7 @@ The same Rule 5 correction is applied to the 협의 lexical control: [혀븨] is
 
 ## 2026-11-07 source correction — 칡칡이 is not the cited song title
 
-The primary Busan PDF has now been checked at the exact entry: printed p. 587 (PDF page 596), lines 14284–14292. It reads `[철마면 민요 26] 칭칭이`, identifies singer 이문찬 (male, born 1923), fieldwork on 1991-10-19 at 철마면 이곡리, gives the refrain `치기타 칭칭나네`, and cites 이소라, 『양산의 민요』 (1992), p. 180. The National Gugak Center separately confirms `칭칭이소리` as a Gyeongsang folk-song label.
+The primary Busan PDF has now been checked at the exact entry: printed p. 587 (PDF page 596), lines 14284–14292. It reads `[철마면 민요 26] 칭칭이`, identifies singer 이문찬 (male, born 1923), fieldwork on 1991-10-19 at 철마면 이곡리, gives the refrain `치기타 칭칭나네`, and cites 이소라, 『양산의 민요』 (1992), p. 180. The [National Gugak Center encyclopedia](https://www.gugak.go.kr/ency/topic/view/947) separately lists `칭칭이` among the alternate names of `칭칭이소리` and places it in the Gyeongsang folk-song tradition.
 
 The source does **not** attest `칡칡이`. Earlier repository notes incorrectly described the PDF as reading `칡칡이`; the source register and triage JSON have been corrected. This establishes a source mismatch, not the intended correction. Do not rewrite `칡칡이` to `칭칭이`, do not segment it as `칡+칡+이`, and do not assign IPA. Preserve the exact benchmark spelling and keep the abstention until a source explicitly attests that exact token or documents its correction.
 
