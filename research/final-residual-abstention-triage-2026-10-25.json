@@ -60,7 +60,7 @@
           "scope": "Separate cultural context only. It does not correct or replace the independently attested 1991 title 칡칡이."
         }
       ],
-      "productionChange": "No runtime rule, alias, surface rewrite or IPA is added. Preserve the exact source spelling 칡칡이. A conditional compositional reading could be derived only if the title is independently shown to segment as 칡+칡+-이; do not promote such a hypothesis to a lexical output.",
+      "productionChange": "No silent rewrite, runtime rule, alias, surface rewrite or IPA is added. Preserve the exact source spelling 칡칡이. A conditional compositional reading could be derived only if the title is independently shown to segment as 칡+칡+-이; do not promote such a hypothesis to a lexical output.",
       "whyNotResolved": "The primary text confirms the title, but gives no pronunciation. The title may be lexicalized or dialectal; the internal reduplication and grammatical status of final 이 are not established. NIKL Rule 11 explains 칡과[칙꽈] but cannot by itself determine the full title's syllabification or final liaison.",
       "acceptanceCriterion": "Only add a lexical IPA entry if an authoritative text source explicitly gives the pronunciation or confirms the title's morphological segmentation. Otherwise preserve the source-attested spelling and keep pronunciation unassigned. No audio or external review is requested.",
       "externalTextSearch": {
