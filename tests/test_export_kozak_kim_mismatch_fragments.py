@@ -73,6 +73,47 @@ def test_candidate_clusters_keep_sibilant_place_separate():
     ]
 
 
+def test_resyllabified_ui_exception_is_scoped_to_coda_plus_의():
+    assert MODULE.has_resyllabified_ui("삶의") is True
+    assert MODULE.has_resyllabified_ui("협의") is True
+    assert MODULE.has_resyllabified_ui("대황본의") is True
+    assert MODULE.has_resyllabified_ui("염전의") is True
+    assert MODULE.has_resyllabified_ui("주의") is False
+    assert MODULE.has_resyllabified_ui("희망") is False
+
+
+def test_source_adjudicated_resyllabified_ui_is_not_an_unmapped_broad_queue_item():
+    fragments = [
+        {"op": "I", "reference_fragment": "", "kozak_fragment": "ɰ"},
+    ]
+    assert MODULE.candidate_clusters(fragments, source_token="협의") == [
+        "C13_NIKL_RESYLLABIFIED_UI"
+    ]
+    assert MODULE.candidate_clusters(fragments, source_token="주의") == [
+        "UNMAPPED_REQUIRES_REVIEW"
+    ]
+
+
+def test_build_rows_excludes_only_source_adjudicated_resyllabified_ui_from_unmapped_queue():
+    report = {
+        "per_engine_occurrences": {
+            "clippyfirst_native": [{
+                "occurrence_id": "1", "row_id": "r1", "token": "협의",
+                "surface_hangul": "혀븨", "gold": "hjʌbi", "ipa": "hjʌbɰi",
+                "status": "scored", "distance": 1,
+                "broad_candidate": {
+                    "closest_gold": "hjʌbi", "predicted": "hjʌbɰi", "distance": 1
+                },
+            }],
+            "g2pk_0_9_4": [{"occurrence_id": "1", "ipa": "hjʌbi", "distance": 0}],
+        },
+    }
+    row = MODULE.build_rows(report)[0]
+    assert row["candidate_clusters"] == "C13_NIKL_RESYLLABIFIED_UI"
+    assert row["has_unmapped_broad_fragments"] == "false"
+    assert MODULE.filter_unmapped_broad([row]) == []
+
+
 def test_aspirated_velar_coarticulation_is_not_misclassified_as_h_aspiration():
     fragments = [
         {"op": "S", "reference_fragment": "k", "kozak_fragment": "kʰ"},
