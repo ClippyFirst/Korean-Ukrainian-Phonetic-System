@@ -1,6 +1,6 @@
 # Current acceptance snapshot — 2026-11-07
 
-**Main:** d2f942d0615df3da2a973a2709f8738f65da18d9 (PR #454 merged).
+**Implementation merge commit on main:** d2f942d0615df3da2a973a2709f8738f65da18d9 (PR #454 merged).
 
 ## 236-case status
 
