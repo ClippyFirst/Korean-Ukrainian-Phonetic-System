@@ -56,7 +56,26 @@ Paired mode deltas on common source-resolved occurrences:
 
 Interpretation: Strict has the best coverage-adjusted Exact and the lowest CER on this corpus. Soft and Super-soft do not improve Exact on the common scored subsets; they introduce heuristic/fallback strata and lower source-resolved coverage. The corpus is spontaneous speech and its transcription conventions differ from the project’s rule-based canonical profile, so these are diagnostic results—not an independently adjudicated universal accuracy claim. Do not tune rules on this corpus and then call it a sealed holdout.
 
-Evidence: [Seoul preflight and three-mode benchmark run 42490612299](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42490612299), artifact `13621490886`. The metadata-only inventory and aggregate mode report are retained; raw word pairs remain temporary CI data.
+#### Phonemic IPA benchmark from the `phoneme` tier
+
+The primary annotation paper documents the phoneme inventory and IPA correspondence in Table 3 (Yun et al., 2015, DOI `10.13064/KSSS.2015.7.2.103`). A versioned adapter, `data/korean/ipa/seoul-corpus-phonemic-ipa-v1.json`, maps all 36 observed phone symbols. It explicitly expands the paper's `ʨ` affricate notation to `tɕ` and its asterisk fortis notation to the IPA combining mark `͈`; non-speech/unmapped labels are excluded rather than guessed.
+
+- 1,134,781 phone intervals map through the 36-symbol adapter.
+- 70,660 non-phone or unmapped intervals are excluded; their raw labels are not exported.
+- **231,625 word-level IPA pairs** are aligned to the Hangul `pWord.ortho.` tier. Six words with cross-boundary phone intervals and one word containing a non-phone/unmapped label are excluded.
+- This is phonemic IPA, not narrow phonetic gold. It does not encode context-conditioned voicing, release detail, speaker-specific variation or every allophonic place change.
+
+| Kozak Kim mode | Source-resolved scored | Coverage | Exact scored-only | Exact coverage-adjusted | CER scored-only | Broad candidate Exact | Broad candidate CER | Heuristic | Typed fallback |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Strict | 224,763 / 231,625 | 97.0375% | 14.1166% | 13.6984% | 39.9210% | 14.1224% | 40.1832% | 0 | 0 |
+| Soft | 201,515 / 231,625 | 87.0005% | 14.7969% | 12.8734% | 40.8696% | 14.8034% | 41.1359% | 26,057 | 0 |
+| Super-soft | 193,389 / 231,625 | 83.4923% | 15.3788% | 12.8402% | 40.4053% | 15.3856% | 40.6759% | 38,236 | 29 |
+
+Paired comparisons: Strict vs Soft has 201,515 common scored occurrences, 6,481 output changes, 793 Strict exact wins and zero Soft exact wins. Strict vs Super-soft has 193,389 common, 5,837 changes, 788 Strict exact wins and zero Super-soft exact wins. Soft and Super-soft produce identical source-resolved IPA outputs on all 193,389 common occurrences; Super-soft changes only the status/fallback classification there.
+
+Interpretation: Strict has the best coverage-adjusted Exact and lowest CER in this phonemic reference. The higher scored-only Exact of Soft/Super-soft is a selection effect: they score fewer source-resolved occurrences and classify more cases as heuristic. Because this gold is phonemic while the engine profiles retain phonetic/allophonic detail, raw Exact/CER are diagnostic and must not be presented as narrow-IPA acceptance. This benchmark is not Ukrainian target validation.
+
+Evidence: [Seoul preflight, surface and phonemic-IPA benchmark run 42491208142](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491208142), artifact `13622140135`. The artifact contains metadata and aggregate metrics only; raw word/IPA pairs remain temporary CI data.
 
 ### Remaining evidence limits
 
