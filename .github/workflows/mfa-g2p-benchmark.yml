@@ -103,6 +103,9 @@ jobs:
 
       - name: Run MFA Hangul and Jamo models on both frozen datasets
         shell: bash -el {0}
+        env:
+          UGT_PHON_COMMIT: ef0d5a09c2ea1874c7206020f875cbd9cfea2f54
+          SIGMORPHON_COMMIT: 821bcdece5a47820872215969f275004b0abe80c
         run: |
           set -euo pipefail
           models="$RUNNER_TEMP/mfa-models"
