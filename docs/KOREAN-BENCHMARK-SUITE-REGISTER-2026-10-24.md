@@ -636,3 +636,17 @@ The portfolio contains **five distinct Korean pronunciation-reference datasets**
 - LDC2003L02 Korean Telephone Conversations Lexicon: 25,251 lexical entries with Hangul, Yale, pronunciation, frequency and morphology fields; useful alternate sixth candidate, but access is governed by the LDC User Agreement for Non-Members and requires a paid licence.
 - CJKI Korean Phonetic Database (120,000+ IPA entries) and Nexdata Korean Pronunciation Dictionary (444,202 entries): commercial products; not included without an appropriate licence.
 - Seoul Corpus label-only archive is acquired and parsed; two three-mode diagnostic tracks (Hangul surface and phonemic IPA) are complete. Its phonemic adapter remains research-only pending independent Korean phonetics review. KsponSpeech and NIKL 2022 remain access/terms-gated.
+
+
+## 2026-11-08 mode-completeness addendum
+
+The five previously executed tracks remain historical completed evidence. A sixth mode-specific SIGMORPHON track is now automated but awaits exact-main verification. The complete Kozak Kim mode matrix is UGTPHON IPA (3 modes), SIGMORPHON IPA (3 modes), Seoul Hangul surface (3 modes), and Seoul phonemic IPA (3 modes). The 10-engine comparisons on UGTPHON/SIGMORPHON remain Strict-compatible external baselines; they do not have Kozak Kim Soft/Super-soft policies. The morphology-consensus Strict/Soft harness is separately labelled and is not a substitute for the Browser three-mode results.
+
+Acceptance metrics are explicitly split:
+- candidate_output_availability_rate: non-empty typed candidate outputs / all eligible occurrences; includes actual heuristic and typed fallback candidates, excludes unresolved passthrough and errors.
+- source_resolved_coverage_rate: source-resolved IPA outputs / all eligible occurrences; only these feed source-resolved Exact/CER.
+- Exact scored-only, coverage-adjusted Exact, CER scored-only, and status-stratum counts must be reported together.
+
+Required invariant: candidate availability must be monotonic Strict ≤ Soft ≤ Super-soft, with Super-soft exactly 100% on every compatible benchmark. This is an output-availability requirement, not a correctness requirement. No excluded row may be removed from the denominator to satisfy it. The reconstructed 236-case cohort remains non-gold and is not eligible for accuracy scoring.
+
+Implementation paths and pending verification are recorded in [methodology](methodology.md#mode-coverage-and-output-availability-contract-2026-11-08). Do not count the new SIGMORPHON three-mode track as executed until its exact-main artifact passes the new gates.
