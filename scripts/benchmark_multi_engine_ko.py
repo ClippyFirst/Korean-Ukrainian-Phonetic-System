@@ -1742,7 +1742,19 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "eSpeak": "eSpeak NG system package via phonemizer==3.3.0; exact runtime version recorded in CI logs",
         },
         "limitations": [
-            ("UGTPHON contains noisy user-generated text, not a balanced official standard-pronunciation test set." if "UGTPHON" in args.benchmark_name else "SIGMORPHON is a lexical word-level test set, not a sentence-context or normative NIKL test set."),
+            (
+                "UGTPHON contains noisy user-generated text, not a balanced official standard-pronunciation test set."
+                if "UGTPHON" in args.benchmark_name else
+                "SIGMORPHON is a WikiPron-derived lexical word-level test set, not a sentence-context or normative NIKL test set."
+                if "SIGMORPHON" in args.benchmark_name else
+                "Seoul Corpus references are phonemic word-level IPA aligned to orthographic intervals, not narrow phonetic gold."
+                if "Seoul" in args.benchmark_name else
+                "K-SPAN is a lexical surface-phonetic database with distinct modern and conservative reference tracks; it is not a sentence-context test."
+                if "K-SPAN" in args.benchmark_name else
+                "IPA-Dict Korean is a Wiktionary-derived broad-phonemic lexicon; its lineage overlaps SIGMORPHON and it is not an independent holdout."
+                if "IPA-Dict" in args.benchmark_name else
+                "This is a lexical diagnostic set; inspect its source provenance, transcription level, and overlap before treating it as an independent holdout."
+            ),
             "IPA conventions differ between systems and reference annotations; exact match and CER are diagnostic, not absolute truth.",
             "g2pk output is converted through the project's segment renderer, which shares a representation layer with the native system and may bias comparison.",
             "KoG2P uses a documented custom phone alphabet; the explicit adapter is lossy, and its score must be read with adapter limitations.",
