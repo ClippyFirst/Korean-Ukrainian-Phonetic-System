@@ -516,12 +516,12 @@ jobs:
           set -euo pipefail
           for mode in strict soft super-soft; do
             suffix="$mode"
-            node scripts/benchmark_kozak_kim_browser.mjs \\
-              --corpus "$RUNNER_TEMP/sigmorphon-kor-test.json" \\
-              --split test \\
-              --mode "$mode" \\
-              --benchmark-name "SIGMORPHON 2021 Korean lexical IPA diagnostic" \\
-              --dataset-source "sigmorphon/2021-task1@821bcdece5a47820872215969f275004b0abe80c:data/medium/kor_test.tsv; CC BY-SA 3.0; 1,000 paired word/IPA rows" \\
+            node scripts/benchmark_kozak_kim_browser.mjs \
+              --corpus "$RUNNER_TEMP/sigmorphon-kor-test.json" \
+              --split test \
+              --mode "$mode" \
+              --benchmark-name "SIGMORPHON 2021 Korean lexical IPA diagnostic" \
+              --dataset-source "sigmorphon/2021-task1@821bcdece5a47820872215969f275004b0abe80c:data/medium/kor_test.tsv; CC BY-SA 3.0; 1,000 paired word/IPA rows" \
               --output "$RUNNER_TEMP/kozak-kim-browser-sigmorphon-$suffix-report.json"
           done
           python - "$RUNNER_TEMP" <<'PY'
