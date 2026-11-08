@@ -25,11 +25,11 @@ This page is the entry point for project documentation. It distinguishes current
 
 - [Licensing and permissions](LICENSING-AND-PERMISSIONS.md) — author identity, scientific-use permissions, technical permission boundary and third-party licence scope.
 
-## Current project status — 2026-11-07
+## Current project status — 2026-11-08
 
-**Integration branch:** `main`. **PR #457 merge commit:** `62ca357d1ff64bc0a113e30fc92e4ce2f1b5ffcc`. Audited starting commit: `e72856c1f03bfb775805748f96ec23889ca2e60f`. PR [#456](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/456) remains the feature integration, merged as `18f5529b9100ea6e4f7c176c9627bacf1fc52585`.
+**Integration branch:** `main`. Latest runtime integration: PR [#461](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/461), merged as `b014d0107a47c3117c7dcbdd8d403f7fca3c7d41`; it exposes the 40 source adjudications in the browser and Python Kozak Kim runtime metadata. PR [#460](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/460), merged as `1e97152e505c75fe294d56befd978789b719d59e`, establishes that audio is not an acceptance gate for source-based decisions. Earlier audited starting commit and PR verification snapshots are retained below as historical evidence.
 
-The starting main-head runs `42415278464` and `42415278451` failed because of a malformed UGTPHON source-register CSV row and an incorrect pinned corpus-path expectation. PR #457 corrects both. Its exact-head verification is green:
+The following PR #457 CI details are a historical verification snapshot, not the latest main-head result. The starting main-head runs `42415278464` and `42415278451` failed because of a malformed UGTPHON source-register CSV row and an incorrect pinned corpus-path expectation. PR #457 corrects both. Its exact-head verification is green:
 - [System verification 42416681845](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681845): Python regression/data integrity, browser tests, source redistribution rights gate, and public-page build all passed. The metadata-only NIKL inventory was skipped by workflow policy.
 - [Test matrix 42416681848](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681848): browser suite, Python 3.11/3.12/3.13, wheel installation, and teacher-corpus audit passed.
 - [Research artifacts 42416681843](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681843) and [exhaustive test-case extraction 42416681889](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681889) passed.
