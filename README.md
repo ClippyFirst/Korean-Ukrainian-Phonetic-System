@@ -65,6 +65,10 @@ python -m pytest
 
 Optional research extras and CLI/API dependencies are listed in `pyproject.toml`; install only the extras needed for the task. See [CLI and API documentation](docs/cli-and-api.md) before using those interfaces.
 
+## Benchmark results — one place for all engines and modes
+
+The complete consolidated score tables are now in the [Korean benchmark results dashboard](docs/BENCHMARK-RESULTS-2026-11-08.md): 10 engines × Strict/Broad on UGTPHON and SIGMORPHON, all executed Kozak Kim modes on UGTPHON and Seoul SLR113, and MFA Hangul/Jamo. The page also marks unexecuted mode/dataset combinations explicitly. The [full benchmark suite register](docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md) remains the detailed evidence and history source.
+
 ## Benchmark interpretation
 
 The repository includes multiple different evaluation tracks. Keep these distinctions intact:

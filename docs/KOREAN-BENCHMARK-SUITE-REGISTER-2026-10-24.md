@@ -1,5 +1,7 @@
 ## Exact-main benchmark checkpoint — 2026-11-08
 
+**Reader-facing consolidated tables:** [Korean benchmark results dashboard](BENCHMARK-RESULTS-2026-11-08.md). This dashboard is a navigation/presentation layer; this register remains the detailed canonical history and evidence record.
+
 The path-filtered multi-engine workflow completed successfully on main benchmark code commit `b548436d0fce9af4672fc5902d6670cbc134bd70`: [run 42487350896](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487350896), artifact `13621335293` (SHA-256 `c286d7e4f1ee02d40e1a9977e792eeb73bce12b32b658a8b3c4166c612ccc1a8`). The run contains the 10-engine UGTPHON and SIGMORPHON reports, per-occurrence mismatch ledger, unresolved review queue, three Browser Kozak Kim mode reports, Native/Browser parity report, and readiness audit. This is the current-main benchmark code snapshot; later documentation-only main commit(s) do not change the measured runtime.
 
 ### Five executable benchmark tracks

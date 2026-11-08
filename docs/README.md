@@ -15,6 +15,10 @@ The isolated [MFA Korean G2P v2.0.0 benchmark](KOREAN-BENCHMARK-SUITE-REGISTER-2
 
 This page is the entry point for project documentation. It distinguishes current operating contracts from dated research records and append-only execution history.
 
+## Benchmark results — consolidated dashboard
+
+[**Open all engine and mode results**](BENCHMARK-RESULTS-2026-11-08.md) — 10-engine Strict/Broad tables, Browser Strict/Soft/Super-soft, Seoul surface and phonemic IPA modes, MFA Hangul/Jamo, and an explicit executed/pending matrix. Detailed provenance and historical evidence remain in the [benchmark suite register](KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md).
+
 ## Start here
 
 1. [Project README](../README.md) — product overview, installation entry points, public service, runtime modes and limitations.
