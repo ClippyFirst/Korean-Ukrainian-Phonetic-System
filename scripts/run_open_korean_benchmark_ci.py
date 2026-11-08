@@ -129,14 +129,14 @@ def run(workdir: Path, sample_size: int = 1000, seed: int = 20261108) -> Path:
     for url in SEOUL_URLS:
         try:
             _download(url, seoul_archive)
+            if _sha256(seoul_archive) != SEOUL_SHA256:
+                raise ValueError(f"SLR113 mirror returned an unexpected archive hash: {url}")
             last_error = None
             break
         except Exception as exc:
             last_error = exc
     if last_error is not None:
         raise RuntimeError(f"all SLR113 label archive mirrors failed: {last_error}") from last_error
-    if _sha256(seoul_archive) != SEOUL_SHA256:
-        raise ValueError("SLR113 label archive SHA-256 differs from the pinned source")
     textgrid_root = _extract_seoul_archive(seoul_archive, seoul_root)
 
     inventory = workdir / "seoul-corpus-inventory.json"
@@ -219,7 +219,7 @@ def run(workdir: Path, sample_size: int = 1000, seed: int = 20261108) -> Path:
             "--hangul-to-ipa-root", env["HANGUL_TO_IPA_ROOT"],
             "--phonemize-root", env["PHONEMIZE_BASELINE_DIR"],
             "--phonemize-output", str(phonemize),
-            "--timing-repetitions", "0",
+            "--timing-repetitions", "1",
         ]
         _run(command, env, stdout)
         result = json.loads(report.read_text(encoding="utf-8"))
