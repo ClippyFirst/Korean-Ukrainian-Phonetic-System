@@ -460,6 +460,56 @@ jobs:
           print("Scored independent candidates:", ", ".join(usable))
           PY
 
+      - name: Run Browser Kozak Kim Strict, Soft and Super-soft on SIGMORPHON lexical gold
+        run: |
+          set -euo pipefail
+          for mode in strict soft super-soft; do
+            suffix="$mode"
+            node scripts/benchmark_kozak_kim_browser.mjs \\
+              --corpus "$RUNNER_TEMP/sigmorphon-kor-test.json" \\
+              --split test \\
+              --mode "$mode" \\
+              --benchmark-name "SIGMORPHON 2021 Korean lexical IPA diagnostic" \\
+              --dataset-source "sigmorphon/2021-task1@821bcdece5a47820872215969f275004b0abe80c:data/medium/kor_test.tsv; CC BY-SA 3.0; 1,000 paired word/IPA rows" \\
+              --output "$RUNNER_TEMP/kozak-kim-browser-sigmorphon-$suffix-report.json"
+          done
+          python - "$RUNNER_TEMP" <<'PY'
+          import json, sys
+          from pathlib import Path
+          root = Path(sys.argv[1])
+          reports = {}
+          for mode in ("strict", "soft", "super-soft"):
+              path = root / f"kozak-kim-browser-sigmorphon-{mode}-report.json"
+              report = json.loads(path.read_text(encoding="utf-8"))
+              assert report["benchmark"] == "SIGMORPHON 2021 Korean lexical IPA diagnostic"
+              assert report["morphology_mode"] == mode
+              assert report["eligible_tokens"] == 1000, (mode, report["eligible_tokens"])
+              assert report["output_available_tokens"] <= report["eligible_tokens"]
+              assert report["scored_tokens"] <= report["output_available_tokens"]
+              assert report["engine_errors"] == 0, (mode, report["engine_errors"])
+              reports[mode] = report
+          assert reports["soft"]["output_available_tokens"] >= reports["strict"]["output_available_tokens"]
+          assert reports["super-soft"]["output_available_tokens"] >= reports["soft"]["output_available_tokens"]
+          assert reports["super-soft"]["output_available_tokens"] == reports["super-soft"]["eligible_tokens"], (
+              "Super-soft must emit a typed candidate for every eligible Hangul occurrence; "
+              "unresolved passthrough is not availability"
+          )
+          for mode, report in reports.items():
+              print(mode, {
+                  "eligible": report["eligible_tokens"],
+                  "source_resolved_scored": report["scored_tokens"],
+                  "source_resolved_coverage": report["coverage_rate"],
+                  "candidate_available": report["output_available_tokens"],
+                  "candidate_availability": report["output_availability_rate"],
+                  "exact_scored_only": report["exact_match_rate"],
+                  "exact_coverage_adjusted": report["coverage_adjusted_exact_match_rate"],
+                  "cer": report["character_error_rate"],
+                  "heuristic": report["heuristic_tokens"],
+                  "typed_fallback": report["typed_fallback_tokens"],
+                  "unresolved": report["unresolved_tokens"],
+              })
+          PY
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -478,6 +528,9 @@ jobs:
             ${{ runner.temp }}/sigmorphon-kor-test.tsv
             ${{ runner.temp }}/sigmorphon-README.md
             ${{ runner.temp }}/sigmorphon-multi-engine-ipa-report.json
+            ${{ runner.temp }}/kozak-kim-browser-sigmorphon-strict-report.json
+            ${{ runner.temp }}/kozak-kim-browser-sigmorphon-soft-report.json
+            ${{ runner.temp }}/kozak-kim-browser-sigmorphon-super-soft-report.json
             ${{ runner.temp }}/sigmorphon-multi-engine-ipa-stdout.json
             ${{ runner.temp }}/sigmorphon-phonemize-predictions.json
             ${{ runner.temp }}/v3-training-readiness.json
