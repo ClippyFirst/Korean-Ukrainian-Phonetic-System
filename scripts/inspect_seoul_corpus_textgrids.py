@@ -18,7 +18,7 @@ POINT_RE = re.compile(r'points\s*:\s*size\s*=\s*(\d+)', re.MULTILINE)
 
 def decode_text(path: Path) -> str:
     raw = path.read_bytes()
-    for encoding in ("utf-8-sig", "cp949", "euc-kr"):
+    for encoding in ("utf-8-sig", "utf-16", "utf-16-le", "utf-16-be", "cp949", "euc-kr"):
         try:
             return raw.decode(encoding)
         except UnicodeDecodeError:
