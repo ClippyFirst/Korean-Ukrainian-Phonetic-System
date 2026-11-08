@@ -524,6 +524,6 @@ The portfolio target is **five distinct Korean pronunciation-reference datasets*
 ### Search findings not counted among the five selected datasets
 
 - Mun, Kim & Ko (2022) paper-associated 130-row hand-transcribed G2P gold corpus: valuable rule-phenomenon challenge set, but the upstream repository does not expose a reuse licence; remains blocked pending written permission or a separately licensed release.
-- LDC2003L02 Korean Telephone Conversations Lexicon: 25,251 lexical entries with Hangul, Yale, pronunciation, frequency and morphology fields; useful alternate sixth candidate, but paid/licensed access is required.
+- LDC2003L02 Korean Telephone Conversations Lexicon: 25,251 lexical entries with Hangul, Yale, pronunciation, frequency and morphology fields; useful alternate sixth candidate, but access is governed by the LDC User Agreement for Non-Members and requires a paid licence.
 - CJKI Korean Phonetic Database (120,000+ IPA entries) and Nexdata Korean Pronunciation Dictionary (444,202 entries): commercial products; not included without an appropriate licence.
 - Seoul Corpus is the only newly selected candidate with a clearly stated open download and explicit licence suitable for immediate non-commercial ingestion; its custom phone inventory still requires validation before IPA scoring.
