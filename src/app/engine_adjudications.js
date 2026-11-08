@@ -1,6 +1,6 @@
 import registry from '../korean_ukrainian/source_adjudications.json' with { type: 'json' };
 
-const HANGUL_OR_JAMO = /[\\u1100-\\u11ff\\u3130-\\u318f\\uac00-\\ud7a3]/u;
+const HANGUL_OR_JAMO = /[\u1100-\u11ff\u3130-\u318f\uac00-\ud7a3]/u;
 
 function hasKoreanBoundary(text, start, end) {
   const before = start > 0 ? [...text.slice(0, start)].at(-1) : '';
