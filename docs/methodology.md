@@ -75,7 +75,7 @@ Paired comparisons: Strict vs Soft has 201,515 common scored occurrences, 6,481 
 
 Interpretation: Strict has the best coverage-adjusted Exact and lowest CER in this phonemic reference. The higher scored-only Exact of Soft/Super-soft is a selection effect: they score fewer source-resolved occurrences and classify more cases as heuristic. Because this gold is phonemic while the engine profiles retain phonetic/allophonic detail, raw Exact/CER are diagnostic and must not be presented as narrow-IPA acceptance. This benchmark is not Ukrainian target validation.
 
-Evidence: [Seoul preflight, surface and phonemic-IPA benchmark run 42491208142](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491208142), artifact `13622140135`. The artifact contains metadata and aggregate metrics only; raw word/IPA pairs remain temporary CI data.
+Evidence: [Seoul preflight, surface and phonemic-IPA benchmark run 42492152654](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42492152654), artifact `13621892753`. The artifact contains metadata and aggregate metrics only; raw word/IPA pairs remain temporary CI data.
 
 ### Remaining evidence limits
 
