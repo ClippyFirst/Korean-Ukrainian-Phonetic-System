@@ -557,3 +557,12 @@ Run `41870455614` was cancelled twice: attempt 1 while `Run multi-engine compari
 - Code commit 536cd44460bbd225fcd76f592bfe6e3077a245a4; fallback-exclusion tests added in e1e393b3518b6c69685ad00a179ab8996d18ef71. Pages deployment [42495903310](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42495903310): **PASS**.
 
 - Documentation refresh commit `09efa609368df914b38020b8a74ec7c4a1fb4cd6` triggered a new exact-head CI set: tests 42496173562, System Verify 42496173554, and master artifacts 42496173617. These were queued/in progress at this update; final status must be checked before claiming exact-head completion.
+
+
+### Final exact-main CI checkpoint — 2026-11-08
+
+- Main SHA `84f2fbd9a90cf6e6d8a8f5e634f7c8989bab7ecc`.
+- Tests [42496221194](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42496221194): **PASS** across Python 3.11/3.12/3.13, Web/npm, wheel install and teacher-corpus audit.
+- System Verify [42496221320](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42496221320): **PASS** for Browser regression/build and Python regression/data integrity; NIKL metadata-only inventory **SKIPPED**.
+- Master/research artifacts [42496221352](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42496221352): **PASS**.
+- Code-bearing Pages deployment passed on e1e393b3518b6c69685ad00a179ab8996d18ef71 (run 42495903310); later commits are documentation-only.
