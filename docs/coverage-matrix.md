@@ -4,7 +4,7 @@
 - Current source register: 230 records; all rows have 12 fields after CSV quoting repair. Latest source-register generation: [42491874837](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874837).
 - Latest full test suite on the preceding code/docs snapshot: [42491874801](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874801) **PASS** (Python 3.11/3.12/3.13, web/npm tests and build, wheel install, teacher-corpus audit).
 - Latest System Verify: [42491874749](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874749) **PASS** (Python regression/data integrity and Browser regression/build).
-- Seoul corpus preflight and both three-mode benchmarks: [42491208142](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491208142) **PASS**; artifact `13622140135`.
+- Seoul corpus preflight and both three-mode benchmarks: [42492152654](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42492152654) **PASS**; artifact `13621892753`.
 - The only known unsuccessful runs in this continuation were intermediate documentation/source-register commits with stale test expectations or a CSV quoting error; both were corrected and the later complete suite passed. No test failures remain on the latest verified source-register commit.
 - GitHub Pages deployment on the latest pre-audit commit was queued/in progress at the time of this refresh; deployment is not claimed.
 - No open PRs were returned by the repository's open-PR API listing at inspection. No branches were deleted, no force-push or release occurred.
@@ -15,7 +15,7 @@
 **Benchmark code snapshot:** `668dbad14568e8472594937558500500102b3f95`.  
 **Branch:** `main` (kept in place; no new branch or PR).  
 **Full 10-engine run:** [42487350896](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487350896), artifact `13621335293`.  
-**Seoul label/surface/phonemic-IPA run:** [42491208142](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491208142), artifact `13622140135`.
+**Seoul label/surface/phonemic-IPA run:** [42492152654](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42492152654), artifact `13621892753`.
 
 ### Benchmark execution ledger
 
@@ -36,7 +36,7 @@
 - 240/240 TextGrid files parsed; 1,680 tiers and 2,671,221 interval annotations.
 - 231,626 aligned Hangul word pairs; 231,625 aligned phonemic IPA pairs.
 - 36 phone symbols mapped to phonemic IPA using versioned `data/korean/ipa/seoul-corpus-phonemic-ipa-v1.json`; 70,660 non-phone/unmapped intervals excluded without exporting their label text.
-- CC BY-NC 2.0: no TextGrid files, audio or word/IPA pair JSON are committed or uploaded. Disclosure: intermediate artifact 13621412269 contains a distinct phoneme-tier label inventory, including some short laughter-tag text, but no TextGrid/audio/word-pair data; it expires 2026-12-08. Final artifact 13622140135 contains aggregate metadata/metrics only; subsequent workflow artifacts now have 7-day retention.
+- CC BY-NC 2.0: no TextGrid files, audio or word/IPA pair JSON are committed or uploaded. Disclosure: intermediate artifact 13621412269 contains a distinct phoneme-tier label inventory, including some short laughter-tag text, but no TextGrid/audio/word-pair data; it expires 2026-12-08. Final artifact 13621892753 contains aggregate metadata/metrics only; subsequent workflow artifacts now have 7-day retention.
 
 ### Three-mode Seoul outcomes
 
@@ -59,7 +59,7 @@ Strict has the best coverage-adjusted Exact and lowest CER in both Seoul referen
 
 ### Verification on benchmark code snapshot 668dbad
 
-- Seoul corpus inventory + three-mode surface + three-mode phonemic IPA workflow: **PASS**, run 42491208142.
+- Seoul corpus inventory + three-mode surface + three-mode phonemic IPA workflow: **PASS**, run 42492152654.
 - Python/browser/web/wheel/teacher-corpus tests: **PASS**, run 42491208107.
 - System verification (Python regression/data integrity, browser regression/build): **PASS**, run 42491208109.
 - Master table and research corpus artifacts: **PASS**, run 42491208162.
