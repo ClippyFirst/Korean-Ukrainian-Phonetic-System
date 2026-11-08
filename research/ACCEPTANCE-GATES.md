@@ -1619,7 +1619,7 @@ Additional regression scope: the native Python and browser shared-Broad profiles
 |---|---|---|
 | Strict | DONE_VERIFIED as a diagnostic benchmark | Current-main ten-engine UGTPHON/SIGMORPHON measurements are Strict-path results. Preserve coverage/abstention denominators and label them corpus-convention diagnostics, not independent normative IPA gold. |
 | Soft | PARTIAL — UGTPHON diagnostic measured; broader corpus suite incomplete | Exact-main run [42487169477](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487169477), artifact `13620331011`: 2,703/2,703 coverage, 1,425 exact (52.7192%), CER 9.0123%. Paired with Strict on 2,702 common occurrences: no Exact/CER delta; one additional occurrence resolved; three unique-word IPA/status changes. Next: score Soft on SIGMORPHON and the eligible 236 cohort, retaining same-profile/variant and occurrence-level paired denominators. Keep analyzer-consensus and boundary-gated counterfactuals separate. |
-| Super-soft | TODO — accuracy result pending artifact review | The browser benchmark now runs Strict, Soft and Super-soft on the same UGTPHON occurrence IDs via `scripts/benchmark_kozak_kim_browser.mjs --mode`. Exact-main workflow [42487350896](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487350896) was in progress at last inspection. Review its Super-soft report, confirm the profile contract, and keep heuristic/typed orthographic-phonemic fallback out of source-resolved IPA Exact/CER. Then extend to compatible SIGMORPHON and the eligible 236-case cohort. |
+| Super-soft | PARTIAL — UGTPHON Browser diagnostic measured; broader acceptance incomplete | Exact-main run [42487350896](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487350896), artifact `13621335293`: 2,239/2,703 source-resolved scored (82.834% coverage), 1,258 exact (56.1858% scored-only; 46.5409% coverage-adjusted), CER 7.8191%; 464 heuristic rows, zero typed fallback rows. This is a distinct profile from Strict; scored-only gains do not establish accuracy improvement. Next: score compatible strata on SIGMORPHON and the eligible 236 cohort, retain fallback types separately, and obtain independent review of the profile. |
 
 ### Required common evaluation for the 236-candidate cohort
 
@@ -1631,7 +1631,7 @@ Additional regression scope: the native Python and browser shared-Broad profiles
 - Run the same three-mode matrix on the pinned UGTPHON and SIGMORPHON sets where compatible; do not compare different denominators without a paired subset report.
 - Evaluate IPA-to-Ukrainian target rendering separately on frozen IPA inputs with independent Ukrainian target references; Korean G2P scores do not validate target quality.
 
-**Current disposition:** Strict benchmark = DONE_VERIFIED diagnostic; Soft benchmark = PARTIAL; Super-soft accuracy benchmark = TODO; unified three-mode 236-case evaluation = TODO. This is an explicit research/benchmark gate, not a blocker to the already accepted source-based engine-policy dispositions.
+**Current disposition:** Strict benchmark = DONE_VERIFIED diagnostic; Soft benchmark = PARTIAL; Super-soft benchmark = PARTIAL as an UGTPHON diagnostic but not accepted for accuracy claims; unified three-mode 236-case evaluation = TODO. This is an explicit research/benchmark gate, not a blocker to the already accepted source-based engine-policy dispositions.
 
 
 ## 2026-11-08 — five-dataset G2P benchmark portfolio
