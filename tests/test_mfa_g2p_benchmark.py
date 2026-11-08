@@ -2,6 +2,10 @@ from __future__ import annotations
 
 import sys
 import types
+from pathlib import Path
+
+SCRIPTS = Path(__file__).resolve().parents[1] / "scripts"
+sys.path.insert(0, str(SCRIPTS))
 
 import pytest
 
