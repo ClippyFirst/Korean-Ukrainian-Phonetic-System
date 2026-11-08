@@ -1018,3 +1018,47 @@ def test_lexical_consonant_onset_still_uses_postconsonantal_ui_to_i():
 
     result = phoneticize_korean("희망", include_research_lexical=False)
     assert result["ipa"]["ipa"] == "hi.maŋ"
+
+def test_all_40_source_adjudications_are_exposed_by_python_runtime_without_rewriting_ipa():
+    from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
+    from korean_ukrainian.source_adjudications import registry_metadata, source_adjudications_for_input
+
+    metadata = registry_metadata()
+    assert metadata == {"version": 1, "accepted_occurrence_count": 40, "adjudication_count": 17}
+
+    expected = {
+        "오조오억배": "NUMERAL_VOWEL_TRANSITION",
+        "문화체험공간": "CHE험_NO_GLIDE",
+        "쇼": "SHOW_ROUNDED_SIBILANT",
+        "홍콩영화들": "HONGKONG_MOVIE_N_INSERTION",
+        "사전체험": "CHE험_NO_GLIDE",
+        "모션어디서": "JEO_LOANWORD_SIBILANT",
+        "만듬사전체험때": "CHE험_NO_GLIDE",
+        "자기이입하네": "SELF_INSERTION_VOWEL_HIATUS",
+        "뿌셔우우": "STYLIZED_UGC_SIBILANT",
+        "뿌셔우우우": "STYLIZED_UGC_SIBILANT",
+        "아끼셔": "HONORIFIC_SI_EO_CONTRACTION",
+        "한국여자로": "KOREAN_WOMAN_N_INSERTION",
+        "대한민국": "DAEHANMINGUK_MID_FRONT_VOWEL",
+        "첫연애실패후": "FIRST_LOVE_PROSODIC_N_INSERTION",
+        "포지션을": "JEO_LOANWORD_SIBILANT",
+    }
+    for token, family in expected.items():
+        matches = source_adjudications_for_input(token)
+        assert any(item["case_family"] == family for item in matches), token
+
+    repeated = source_adjudications_for_input("아끼셔")
+    assert next(item for item in repeated if item["case_family"] == "HONORIFIC_SI_EO_CONTRACTION")["occurrence_ids"] == [
+        "1414", "1417", "1420", "1423", "1426", "1429", "1432", "1435", "1438", "1441", "1444",
+        "1447", "1450", "1453", "1456", "1459", "1462", "1465", "1468", "1471", "1474", "1477"
+    ]
+
+    compact = phoneticize_korean("홍콩영화들")
+    phrase = phoneticize_korean("홍콩 영화들", boundary_mode="phrase", n_insertion_licensed=True)
+    assert compact["source_adjudications"][0]["runtime_action"] == "conditional-rule29-explicit-connected-phrase-only"
+    assert phrase["source_adjudications"][0]["matched_form"] == "홍콩 영화들"
+    assert compact["ipa"]["ipa"] != "" and phrase["ipa"]["ipa"] != ""
+
+    normalized_emoticon_lookalike = "유유유유유유유유유유유유유유유유유유유유"
+    assert not source_adjudications_for_input(normalized_emoticon_lookalike)
+    assert transliterate_korean("쇼")["source_adjudications"][0]["case_family"] == "SHOW_ROUNDED_SIBILANT"

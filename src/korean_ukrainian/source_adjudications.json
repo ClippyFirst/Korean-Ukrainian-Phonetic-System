@@ -1,0 +1,446 @@
+{
+  "schema_version": 1,
+  "source_register": "research/kozak-kim-40-source-adjudication-2026-11-07.csv",
+  "accepted_occurrence_count": 40,
+  "adjudication_count": 17,
+  "adjudications": [
+    {
+      "adjudication_id": "SRC40-NUMERAL_VOWEL_TRANSITION",
+      "case_family": "NUMERAL_VOWEL_TRANSITION",
+      "token": "오조오억배",
+      "occurrence_ids": [
+        "78"
+      ],
+      "source_adjudication_status": "SOURCE_RESOLVED_CANONICAL_BROAD",
+      "evidence_ids": [
+        "SRC-UGTPHON-RAW-SOURCE",
+        "SRC-KIM-HONG-2025-HIATUS-TRANSITIONS-GLIDES"
+      ],
+      "claim_ids": [
+        "CLM40-001",
+        "CLM40-002"
+      ],
+      "structural_analysis": "오조 + 오억 + 배; distinguish the /o.o/ sequence at 조–오 from /o.ʌ/ inside 오억.",
+      "accepted_policy": "Retain the canonical broad sequence /o.ʌ/ in 오억 and do not insert a phonemic /j/ or /w/ merely from a transition. No narrow glide choice is made.",
+      "claim_limit": "Kim & Hong test /iə~ijə/ and /oa~owa/ in other lexical contexts, not 오억 or this numeral compound. Source literature supports withholding an inserted phoneme, not a claim about this speaker's narrow transition.",
+      "runtime_match_forms": [
+        "오조오억배"
+      ],
+      "runtime_action": "retain-broad-vowel-sequence-no-phonemic-glide-insertion"
+    },
+    {
+      "adjudication_id": "SRC40-CHE험_NO_GLIDE",
+      "case_family": "CHE험_NO_GLIDE",
+      "token": "문화체험공간",
+      "occurrence_ids": [
+        "257"
+      ],
+      "source_adjudication_status": "SOURCE_RESOLVED_CANONICAL_BROAD",
+      "evidence_ids": [
+        "SRC-UGTPHON-RAW-SOURCE"
+      ],
+      "claim_ids": [
+        "CLM40-003"
+      ],
+      "structural_analysis": "체험 = 체 + 험; the second syllable begins with ㅎ and its vowel ㅓ.",
+      "accepted_policy": "The sequence is /e.hʌ/ with intervening /h/; it is not adjacent-VV hiatus. Retain the /h/ onset and /ʌ/ vowel; do not insert /j/.",
+      "claim_limit": "The studies do not test these complete compounds. The conclusion is structural: the proposed extra hiatus glide is not licensed because /h/ intervenes.",
+      "runtime_match_forms": [
+        "문화체험공간"
+      ],
+      "runtime_action": "retain-h-onset-no-hiatus-glide-insertion"
+    },
+    {
+      "adjudication_id": "SRC40-SHOW_ROUNDED_SIBILANT",
+      "case_family": "SHOW_ROUNDED_SIBILANT",
+      "token": "쇼",
+      "occurrence_ids": [
+        "606"
+      ],
+      "source_adjudication_status": "SOURCE_RESOLVED_PHONEMIC_NOT_NARROW",
+      "evidence_ids": [
+        "SRC-NIKL-QNA-332662",
+        "SRC-NIKL-ROMANIZATION",
+        "SRC-NIKL-PHONETICS-1993"
+      ],
+      "claim_ids": [
+        "CLM40-004",
+        "CLM40-023",
+        "CLM40-024"
+      ],
+      "structural_analysis": "쇼 is a Hangul rendering of a foreign-word syllable; NIKL says to pronounce according to the Hangul spelling.",
+      "accepted_policy": "Retain phonemic /s/; NIKL's general description predicts [ʃ] before the /j/ onglide in ㅛ, but no token-level narrow realization is established.",
+      "claim_limit": "NIKL Q&A 332662 says to follow Hangul spelling but gives no IPA. The NIKL phonetics article describes [ʃ] before [j] generally; it does not establish this speaker's exact realization. The source uses [ʃ], not [ɕ].",
+      "runtime_match_forms": [
+        "쇼"
+      ],
+      "runtime_action": "retain-phonemic-s-general-sh-profile-expectation-no-token-narrow-ipa"
+    },
+    {
+      "adjudication_id": "SRC40-HONGKONG_MOVIE_N_INSERTION",
+      "case_family": "HONGKONG_MOVIE_N_INSERTION",
+      "token": "홍콩영화들",
+      "occurrence_ids": [
+        "643"
+      ],
+      "source_adjudication_status": "SOURCE_RESOLVED_CONDITIONAL",
+      "evidence_ids": [
+        "SRC-NIKL-QNA-330322",
+        "SRC-JUN21"
+      ],
+      "claim_ids": [
+        "CLM40-005",
+        "CLM40-006"
+      ],
+      "structural_analysis": "Potential segmentation: 홍콩 + 영화들; the compact corpus token does not encode a phrase boundary.",
+      "accepted_policy": "N-insertion is available only when the two words are explicitly segmented and pronounced as one connected phrase; no automatic rewrite is licensed for compact 홍콩영화들.",
+      "claim_limit": "Rule 29 [붙임 2] establishes a conditional connected-phrase path, not the prosody of this corpus occurrence. Jun's studies show gradient, conditioned n-insertion. Keep compact input unchanged.",
+      "runtime_match_forms": [
+        "홍콩영화들",
+        "홍콩 영화들"
+      ],
+      "runtime_action": "conditional-rule29-explicit-connected-phrase-only"
+    },
+    {
+      "adjudication_id": "SRC40-CHE험_NO_GLIDE",
+      "case_family": "CHE험_NO_GLIDE",
+      "token": "사전체험",
+      "occurrence_ids": [
+        "813"
+      ],
+      "source_adjudication_status": "SOURCE_RESOLVED_CANONICAL_BROAD",
+      "evidence_ids": [
+        "SRC-UGTPHON-RAW-SOURCE"
+      ],
+      "claim_ids": [
+        "CLM40-003"
+      ],
+      "structural_analysis": "체험 = 체 + 험; the second syllable begins with ㅎ and its vowel ㅓ.",
+      "accepted_policy": "The sequence is /e.hʌ/ with intervening /h/; it is not adjacent-VV hiatus. Retain the /h/ onset and /ʌ/ vowel; do not insert /j/.",
+      "claim_limit": "The studies do not test these complete compounds. The conclusion is structural: the proposed extra hiatus glide is not licensed because /h/ intervenes.",
+      "runtime_match_forms": [
+        "사전체험"
+      ],
+      "runtime_action": "retain-h-onset-no-hiatus-glide-insertion"
+    },
+    {
+      "adjudication_id": "SRC40-JEO_LOANWORD_SIBILANT",
+      "case_family": "JEO_LOANWORD_SIBILANT",
+      "token": "모션어디서",
+      "occurrence_ids": [
+        "843"
+      ],
+      "source_adjudication_status": "SOURCE_RESOLVED_PHONEMIC_NOT_NARROW",
+      "evidence_ids": [
+        "SRC-KANG-2010-KOREAN-SIBILANT-COARTICULATION",
+        "SRC-NIKL-ROMANIZATION",
+        "SRC-NIKL-PHONETICS-1993"
+      ],
+      "claim_ids": [
+        "CLM40-007",
+        "CLM40-008",
+        "CLM40-023",
+        "CLM40-024"
+      ],
+      "structural_analysis": "Loanword syllables 션/션을 contain /s/ before the ㅕ sequence /jʌ/.",
+      "accepted_policy": "Retain phonemic /s/; NIKL's general description gives [ʃ] before the /j/ onglide in ㅕ. Treat this as a profile-level expected allophone, not speaker-specific narrow IPA; do not relabel it [ɕ].",
+      "claim_limit": "Kang (2010) acoustically tests /i, ye, ya/ and separately /yo, yu/, not these exact /jʌ/ loanword contexts. NIKL's 1993 description gives a general [ʃ] before [j] but is not token-level acoustic evidence; its symbol is [ʃ], not [ɕ].",
+      "runtime_match_forms": [
+        "모션어디서"
+      ],
+      "runtime_action": "retain-phonemic-s-general-sh-profile-expectation-no-token-narrow-ipa"
+    },
+    {
+      "adjudication_id": "SRC40-CHE험_NO_GLIDE",
+      "case_family": "CHE험_NO_GLIDE",
+      "token": "만듬사전체험때",
+      "occurrence_ids": [
+        "853"
+      ],
+      "source_adjudication_status": "SOURCE_RESOLVED_CANONICAL_BROAD",
+      "evidence_ids": [
+        "SRC-UGTPHON-RAW-SOURCE"
+      ],
+      "claim_ids": [
+        "CLM40-003"
+      ],
+      "structural_analysis": "체험 = 체 + 험; the second syllable begins with ㅎ and its vowel ㅓ.",
+      "accepted_policy": "The sequence is /e.hʌ/ with intervening /h/; it is not adjacent-VV hiatus. Retain the /h/ onset and /ʌ/ vowel; do not insert /j/.",
+      "claim_limit": "The studies do not test these complete compounds. The conclusion is structural: the proposed extra hiatus glide is not licensed because /h/ intervenes.",
+      "runtime_match_forms": [
+        "만듬사전체험때"
+      ],
+      "runtime_action": "retain-h-onset-no-hiatus-glide-insertion"
+    },
+    {
+      "adjudication_id": "SRC40-SELF_INSERTION_VOWEL_HIATUS",
+      "case_family": "SELF_INSERTION_VOWEL_HIATUS",
+      "token": "자기이입하네",
+      "occurrence_ids": [
+        "899"
+      ],
+      "source_adjudication_status": "SOURCE_RESOLVED_CANONICAL_BROAD",
+      "evidence_ids": [
+        "SRC-UGTPHON-RAW-SOURCE",
+        "SRC-SHIN-2013-OPTIONAL-J-GLIDE",
+        "SRC-KIM-HONG-2025-HIATUS-TRANSITIONS-GLIDES"
+      ],
+      "claim_ids": [
+        "CLM40-009",
+        "CLM40-010",
+        "CLM40-011"
+      ],
+      "structural_analysis": "자기 + 이입 + 하네 contains adjacent /i.i/ across a morphological/word boundary.",
+      "accepted_policy": "Retain the broad /i.i/ sequence; do not delete a nucleus or insert an extra /j/ as a categorical rule.",
+      "claim_limit": "The studies show context-sensitive transition/glide behaviour and optional /j/ formation/insertion affected by speech rate, but do not directly test this exact /i.i/ boundary. Retain the broad sequence without categorical nucleus deletion or /j/ insertion; no speaker-specific coalescence choice is supported.",
+      "runtime_match_forms": [
+        "자기이입하네"
+      ],
+      "runtime_action": "retain-broad-i-i-no-categorical-coalescence-or-glide-insertion"
+    },
+    {
+      "adjudication_id": "SRC40-STYLIZED_UGC_SIBILANT",
+      "case_family": "STYLIZED_UGC_SIBILANT",
+      "token": "뿌셔우우",
+      "occurrence_ids": [
+        "1155"
+      ],
+      "source_adjudication_status": "SOURCE_RESOLVED_PHONEMIC_NOT_NARROW",
+      "evidence_ids": [
+        "SRC-UGTPHON-RAW-SOURCE",
+        "SRC-NIKL-ROMANIZATION",
+        "SRC-NIKL-PHONETICS-1993"
+      ],
+      "claim_ids": [
+        "CLM40-012",
+        "CLM40-023",
+        "CLM40-024"
+      ],
+      "structural_analysis": "뿌셔 is a playful/nonstandard UGC spelling with unresolved lexical intent.",
+      "accepted_policy": "Preserve the source spelling and underlying /s/; NIKL's general description predicts [ʃ] before the /j/ onglide in ㅕ, but the playful lexical intent and token-level realization remain unknown.",
+      "claim_limit": "No lexical normalization or speaker-specific narrow IPA is supported. The NIKL description is a general profile expectation [ʃ] before [j], not a token recording; it does not use [ɕ].",
+      "runtime_match_forms": [
+        "뿌셔우우"
+      ],
+      "runtime_action": "preserve-stylized-source-spelling-no-lexical-normalization"
+    },
+    {
+      "adjudication_id": "SRC40-STYLIZED_UGC_SIBILANT",
+      "case_family": "STYLIZED_UGC_SIBILANT",
+      "token": "뿌셔우우우",
+      "occurrence_ids": [
+        "1157"
+      ],
+      "source_adjudication_status": "SOURCE_RESOLVED_PHONEMIC_NOT_NARROW",
+      "evidence_ids": [
+        "SRC-UGTPHON-RAW-SOURCE",
+        "SRC-NIKL-ROMANIZATION",
+        "SRC-NIKL-PHONETICS-1993"
+      ],
+      "claim_ids": [
+        "CLM40-012",
+        "CLM40-023",
+        "CLM40-024"
+      ],
+      "structural_analysis": "뿌셔 is a playful/nonstandard UGC spelling with unresolved lexical intent.",
+      "accepted_policy": "Preserve the source spelling and underlying /s/; NIKL's general description predicts [ʃ] before the /j/ onglide in ㅕ, but the playful lexical intent and token-level realization remain unknown.",
+      "claim_limit": "No lexical normalization or speaker-specific narrow IPA is supported. The NIKL description is a general profile expectation [ʃ] before [j], not a token recording; it does not use [ɕ].",
+      "runtime_match_forms": [
+        "뿌셔우우우"
+      ],
+      "runtime_action": "preserve-stylized-source-spelling-no-lexical-normalization"
+    },
+    {
+      "adjudication_id": "SRC40-NON_SPEECH_ㅠ_EMOTICON",
+      "case_family": "NON_SPEECH_ㅠ_EMOTICON",
+      "token": "유유유유유유유유유유유유유유유유유유유유유유유유유유유유유유유유유유유유유유유유유유유유유정액싸고",
+      "occurrence_ids": [
+        "1219"
+      ],
+      "source_adjudication_status": "SOURCE_RESOLVED_NON_SPEECH",
+      "evidence_ids": [
+        "SRC-UGTPHON-RAW-SOURCE"
+      ],
+      "claim_ids": [
+        "CLM40-013"
+      ],
+      "structural_analysis": "The original source span contains repeated compatibility-jamo ㅠ emoticons; the normalized corpus token substitutes 유 in the stored string.",
+      "accepted_policy": "Treat the raw ㅠ span as affective/non-speech notation, preserve it literally, and exclude it from G2P. Do not transcribe normalized 유 as spoken /ju/.",
+      "claim_limit": "The normalized token string is not the raw orthographic source. The original source context is authoritative for this exclusion; no phonetic IPA exists for the emoticon span.",
+      "runtime_match_forms": [],
+      "runtime_action": "source-classification-accepted-runtime-span-boundary-recheck-required"
+    },
+    {
+      "adjudication_id": "SRC40-NON_SPEECH_ㅠ_EMOTICON",
+      "case_family": "NON_SPEECH_ㅠ_EMOTICON",
+      "token": "씨발쎅스쎅스쎅스보지자지보지지섹스유유유유유유유유유유유유",
+      "occurrence_ids": [
+        "1288"
+      ],
+      "source_adjudication_status": "SOURCE_RESOLVED_NON_SPEECH",
+      "evidence_ids": [
+        "SRC-UGTPHON-RAW-SOURCE"
+      ],
+      "claim_ids": [
+        "CLM40-013"
+      ],
+      "structural_analysis": "The original source span contains repeated compatibility-jamo ㅠ emoticons; the normalized corpus token substitutes 유 in the stored string.",
+      "accepted_policy": "Treat the raw ㅠ span as affective/non-speech notation, preserve it literally, and exclude it from G2P. Do not transcribe normalized 유 as spoken /ju/.",
+      "claim_limit": "The normalized token string is not the raw orthographic source. The original source context is authoritative for this exclusion; no phonetic IPA exists for the emoticon span.",
+      "runtime_match_forms": [],
+      "runtime_action": "source-classification-accepted-runtime-span-boundary-recheck-required"
+    },
+    {
+      "adjudication_id": "SRC40-HONORIFIC_SI_EO_CONTRACTION",
+      "case_family": "HONORIFIC_SI_EO_CONTRACTION",
+      "token": "아끼셔",
+      "occurrence_ids": [
+        "1414",
+        "1417",
+        "1420",
+        "1423",
+        "1426",
+        "1429",
+        "1432",
+        "1435",
+        "1438",
+        "1441",
+        "1444",
+        "1447",
+        "1450",
+        "1453",
+        "1456",
+        "1459",
+        "1462",
+        "1465",
+        "1468",
+        "1471",
+        "1474",
+        "1477"
+      ],
+      "source_adjudication_status": "SOURCE_RESOLVED_PHONEMIC_NOT_NARROW",
+      "evidence_ids": [
+        "SRC-NIKL-QNA-332091",
+        "SRC-NIKL-MCFAQ-6288",
+        "SRC-KANG-2010-KOREAN-SIBILANT-COARTICULATION",
+        "SRC-NIKL-ROMANIZATION",
+        "SRC-NIKL-PHONETICS-1993"
+      ],
+      "claim_ids": [
+        "CLM40-014",
+        "CLM40-015",
+        "CLM40-017",
+        "CLM40-023",
+        "CLM40-024"
+      ],
+      "structural_analysis": "아끼-시-어 → 아끼셔; the ㅅ in the honorific ending is lenis /s/. The fortis /k͈/ in 끼 is a separate consonant.",
+      "accepted_policy": "Retain underlying /s/ in the honorific ending; NIKL's general description predicts [ʃ] before the /j/ onglide in ㅕ. This is a profile-level expectation, not speaker-specific narrow IPA.",
+      "claim_limit": "NIKL morphology sources do not directly attest the exact no-요 token 아끼셔. Kang's acoustic study does not test /s+jʌ/. NIKL's general phonetics description gives [ʃ] before [j], not a token-specific result and not [ɕ].",
+      "runtime_match_forms": [
+        "아끼셔"
+      ],
+      "runtime_action": "retain-broad-lenis-s-general-sh-profile-expectation-no-exact-narrow-ipa"
+    },
+    {
+      "adjudication_id": "SRC40-KOREAN_WOMAN_N_INSERTION",
+      "case_family": "KOREAN_WOMAN_N_INSERTION",
+      "token": "한국여자로",
+      "occurrence_ids": [
+        "1805",
+        "1832",
+        "1859"
+      ],
+      "source_adjudication_status": "SOURCE_RESOLVED_CONDITIONAL",
+      "evidence_ids": [
+        "SRC-NIKL-QNA-330322",
+        "SRC-JUN15"
+      ],
+      "claim_ids": [
+        "CLM40-018",
+        "CLM40-019"
+      ],
+      "structural_analysis": "Potential segmentation: 한국 + 여자로; compact corpus token does not prove the phrase boundary or prosodic grouping.",
+      "accepted_policy": "N-insertion is permitted only in explicit connected-phrase mode when 한국 여자로 is supplied as one prosodic unit; no automatic rewrite for compact 한국여자로.",
+      "claim_limit": "NIKL Q&A 330322 gives a general two-word example, not this exact phrase. The corpus token does not carry prosodic-boundary evidence.",
+      "runtime_match_forms": [
+        "한국여자로",
+        "한국 여자로"
+      ],
+      "runtime_action": "conditional-rule29-explicit-connected-phrase-only"
+    },
+    {
+      "adjudication_id": "SRC40-DAEHANMINGUK_MID_FRONT_VOWEL",
+      "case_family": "DAEHANMINGUK_MID_FRONT_VOWEL",
+      "token": "대한민국",
+      "occurrence_ids": [
+        "1885"
+      ],
+      "source_adjudication_status": "SOURCE_RESOLVED_VARIANT_SET",
+      "evidence_ids": [
+        "SRC-LEE-2021-EEPSILON-MERGER",
+        "SRC-LEE-2023-SEOUL-MID-FRONT-VOWEL-POSITION"
+      ],
+      "claim_ids": [
+        "CLM40-020",
+        "CLM40-021"
+      ],
+      "structural_analysis": "대한민국 begins with the ㅐ vowel in 대; the Seoul /ɛ/–/e/ merger is group- and position-sensitive.",
+      "accepted_policy": "Keep the canonical broad profile and retain [ɛ]~[e] only as a research variant set; do not choose one realization for this speaker.",
+      "claim_limit": "Published group-level merger studies cannot identify the unknown speaker's dialect, age, vowel quality or duration. No token-specific IPA variant is selected.",
+      "runtime_match_forms": [
+        "대한민국"
+      ],
+      "runtime_action": "retain-canonical-broad-vowel-expose-research-only-epsilon-e-variant"
+    },
+    {
+      "adjudication_id": "SRC40-FIRST_LOVE_PROSODIC_N_INSERTION",
+      "case_family": "FIRST_LOVE_PROSODIC_N_INSERTION",
+      "token": "첫연애실패후",
+      "occurrence_ids": [
+        "2215"
+      ],
+      "source_adjudication_status": "SOURCE_RESOLVED_CONDITIONAL",
+      "evidence_ids": [
+        "SRC-NIKL-QNA-316146"
+      ],
+      "claim_ids": [
+        "CLM40-022"
+      ],
+      "structural_analysis": "The substring 첫 연애 has a documented prosodic contrast; the compact corpus token continues with 실패후.",
+      "accepted_policy": "Preserve multiple source-backed readings for the phrase: connected [천녀내], pause [첟#여내], and liaison without n-insertion [처뎌내]. Do not select one for compact 첫연애실패후.",
+      "claim_limit": "NIKL directly addresses 첫 연애, not the full concatenated token. The occurrence lacks prosodic boundary evidence, so all three remain conditional.",
+      "runtime_match_forms": [
+        "첫연애실패후",
+        "첫 연애"
+      ],
+      "runtime_action": "preserve-three-source-backed-prosodic-alternatives-no-choice-for-compact-token"
+    },
+    {
+      "adjudication_id": "SRC40-JEO_LOANWORD_SIBILANT",
+      "case_family": "JEO_LOANWORD_SIBILANT",
+      "token": "포지션을",
+      "occurrence_ids": [
+        "2489"
+      ],
+      "source_adjudication_status": "SOURCE_RESOLVED_PHONEMIC_NOT_NARROW",
+      "evidence_ids": [
+        "SRC-KANG-2010-KOREAN-SIBILANT-COARTICULATION",
+        "SRC-NIKL-ROMANIZATION",
+        "SRC-NIKL-PHONETICS-1993"
+      ],
+      "claim_ids": [
+        "CLM40-007",
+        "CLM40-008",
+        "CLM40-023",
+        "CLM40-024"
+      ],
+      "structural_analysis": "Loanword syllables 션/션을 contain /s/ before the ㅕ sequence /jʌ/.",
+      "accepted_policy": "Retain phonemic /s/; NIKL's general description gives [ʃ] before the /j/ onglide in ㅕ. Treat this as a profile-level expected allophone, not speaker-specific narrow IPA; do not relabel it [ɕ].",
+      "claim_limit": "Kang (2010) acoustically tests /i, ye, ya/ and separately /yo, yu/, not these exact /jʌ/ loanword contexts. NIKL's 1993 description gives a general [ʃ] before [j] but is not token-level acoustic evidence; its symbol is [ʃ], not [ɕ].",
+      "runtime_match_forms": [
+        "포지션을"
+      ],
+      "runtime_action": "retain-phonemic-s-general-sh-profile-expectation-no-token-narrow-ipa"
+    }
+  ]
+}

@@ -135,3 +135,22 @@ PR [#446](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/4
 The disposition remains 15 exact standard-form runtime cases, 181 profile-convention decisions, 12 abstentions and 28 unadjudicated cases. The 28-row evidence review is complete as a traceability/evidence review, not as token-level IPA adjudication. All 40 residual cases remain blocked on original audio and speaker crosswalk, two independent Korean broad/narrow IPA annotations with syllable/prosodic boundaries, blind reconciliation, and a separate Ukrainian target review. See the [residual register](../research/kozak-kim-236-residual-review-2026-11-06.csv), [current audit](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md) and [acceptance gates](../research/ACCEPTANCE-GATES.md).
 
 Exact-head PR CI passed the required software and diagnostic jobs; post-merge tests, system verification and master/research artifact generation passed (runs [42254523067](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254523067), [42254523015](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254523015), [42254523078](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254523078)). The Pages deployment run [42254523031](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254523031) was cancelled by the subsequent documentation-only push; replacement deployment [42254864628](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42254864628) was queued on `main` commit `e0feeb6ac3697d026d151f3fbb78796728a1e8da`. No local shell, npm or pytest run is claimed for the connector-only session.
+
+
+## 2026-11-08 runtime adjudication integration — PR #461
+
+The 40 source-based adjudications are now wired into the Kozak Kim runtime result metadata in both browser and Python paths. The shared registry is `src/korean_ukrainian/source_adjudications.json`; browser matching is in `src/app/engine_adjudications.js`, and Python matching is in `src/korean_ukrainian/source_adjudications.py`. Python wheel package data includes the same JSON registry.
+
+The registry contains 17 adjudication families and all 40 occurrence IDs. Fifteen distinct source forms are runtime-matchable using exact Korean-script boundaries. The two non-speech `ㅠ` source rows remain registered but intentionally do not match normalized `유` strings until the raw source offsets are revalidated. This is not an audio blocker.
+
+The integration attaches source IDs, claim IDs, occurrence IDs, accepted status and a bounded runtime action. It does not mutate source text, Korean IPA or Ukrainian target output. Existing Rule 29 behavior for `홍콩 영화들`, `한국 여자로` and `첫 연애` remains conditional on explicit spacing and phrase mode. Do not interpret source-policy acceptance as speaker-specific narrow IPA gold.
+
+PR [#461](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/461) exact-head verification on `87e7bb32611e7042c7f0ecf5df1d1fd5ac49aa5b`:
+- Python regression/data-integrity workflow [42463790481](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42463790481): passed.
+- Browser regression, source-rights gate and public-page build [42463790481](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42463790481): browser tests, rights gate, public-page build and generated-page verification all passed.
+- Test matrix [42463790417](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42463790417): Python 3.11, 3.12 and 3.13 passed; browser tests/build and wheel build passed.
+- Browser G2P integration [42463790446](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42463790446): npm tests and build passed.
+- Master/research artifact generation [42463790433](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42463790433): master table and strict corpus generation passed.
+- Optional Charsiu queue and official NIKL metadata-only inventory were skipped by policy; neither is counted as a pass.
+
+Local shell/npm/pytest commands were not run in this connector-only environment. The CI evidence above is the actual verification source. The PR remains open pending merge; non-required diagnostic jobs are recorded separately in the canonical audit.
