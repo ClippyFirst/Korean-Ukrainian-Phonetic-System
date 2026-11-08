@@ -28,7 +28,7 @@ function loadPairs(path) {
   return [...counts.values()];
 }
 
-function evaluateMode(pairs, engine, mode, totalOccurrences) {
+export function evaluateMode(pairs, engine, mode, totalOccurrences) {
   let scored=0, exact=0, distanceTotal=0, referenceChars=0;
   let broadScored=0, broadExact=0, broadDistanceTotal=0, broadReferenceChars=0;
   let unresolved=0, partial=0, heuristic=0, typedFallback=0, targetUnavailable=0, targetProvisional=0, errors=0;
@@ -45,7 +45,13 @@ function evaluateMode(pairs, engine, mode, totalOccurrences) {
       const trace=Array.isArray(result.trace)?result.trace:[];
       const fallback=result.phonetic_result_type==='mixed-surface-ipa-and-orthographic-fallback'||
         trace.some(item=>item?.status==='super-soft-orthographic-fallback'||item?.phoneticResultType==='orthographic-phonemic-fallback');
-      if(fallback) typedFallback+=pair.weight;
+      if(fallback){
+        typedFallback+=pair.weight;
+        // Typed orthographic fallback is coverage, not source-resolved IPA.
+        abstentionPenaltyDistance+=[...pair.gold].length*pair.weight;
+        outputs.set(JSON.stringify([pair.source,pair.gold]),{status:'typed_fallback',predicted:null,exact:false,weight:pair.weight});
+        continue;
+      }
       const status=result.pronunciation_status??(result.ipa?'resolved':'unresolved');
       if(status==='heuristic'){heuristic+=pair.weight;abstentionPenaltyDistance+=[...pair.gold].length*pair.weight;outputs.set(JSON.stringify([pair.source,pair.gold]),{status,predicted:null,exact:false,weight:pair.weight});continue;}
       if(status==='partial'){partial+=pair.weight;abstentionPenaltyDistance+=[...pair.gold].length*pair.weight;outputs.set(JSON.stringify([pair.source,pair.gold]),{status,predicted:null,exact:false,weight:pair.weight});continue;}
