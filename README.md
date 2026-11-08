@@ -4,7 +4,7 @@ Evidence-scoped Korean → Ukrainian phonetic rendering research prototype with 
 
 ## Current status — 2026-11-08
 
-**Integration branch:** `main`. **Audited starting commit:** `e72856c1f03bfb775805748f96ec23889ca2e60f`. **Latest feature integration:** PR [#456](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/456), squash merge `18f5529b9100ea6e4f7c176c9627bacf1fc52585`. **Latest maintenance/documentation integration:** PR [#457](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/457), squash merge `62ca357d1ff64bc0a113e30fc92e4ce2f1b5ffcc`.
+**Integration branch:** `main`. **Latest runtime integration:** PR [#461](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/461), squash merge `b014d0107a47c3117c7dcbdd8d403f7fca3c7d41` (40 source adjudications). **Audio acceptance clarification:** PR [#460](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/460), squash merge `1e97152e505c75fe294d56befd978789b719d59e`. Earlier feature and maintenance integrations remain documented in the audit history.
 
 ### What the 236 cases mean
 
