@@ -98,3 +98,24 @@ test('all three Kozak Kim modes have separate documented benchmark contracts and
     assert.ok(gates.includes(term), 'acceptance gates must include ' + term);
   }
 });
+
+
+test('five-dataset Korean G2P portfolio records access and representation gates', () => {
+  const portfolio = readFileSync(new URL('../docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md', import.meta.url), 'utf8');
+  const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
+  for (const dataset of [
+    'UGTPHON Korean test',
+    'SIGMORPHON 2021 Korean public paired lexical file',
+    'Seoul Corpus (OpenSLR SLR113)',
+    'KsponSpeech',
+    'Korean Telephone Conversations Lexicon (LDC2003L02)'
+  ]) {
+    assert.ok(portfolio.includes(dataset), 'benchmark register must include ' + dataset);
+  }
+  assert.match(portfolio, /CC BY-NC 2\.0/u);
+  assert.match(portfolio, /AIHub manual download/u);
+  assert.match(portfolio, /LDC User Agreement/u);
+  assert.match(portfolio, /Five-dataset execution policy/u);
+  assert.match(readme, /Five-dataset Korean G2P benchmark portfolio/u);
+  assert.match(readme, /does not mean five completed benchmark runs/u);
+});
