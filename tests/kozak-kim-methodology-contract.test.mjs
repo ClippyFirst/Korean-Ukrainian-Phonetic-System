@@ -84,17 +84,17 @@ test('all three Kozak Kim modes have separate documented benchmark contracts and
     '**Soft**',
     '**Super-soft**',
     'MEASURED_DIAGNOSTIC on UGTPHON',
-    'NOT_BENCHMARKED_FOR_ACCURACY',
+    'MEASURED_DIAGNOSTIC; not accuracy acceptance',
     'typed orthographic-phonemic fallback',
     'same input occurrences',
     '236-candidate'
   ]) {
     assert.ok(methodology.includes(term), 'methodology must include ' + term);
   }
-  for (const term of ['Strict', 'Soft', 'Super-soft', 'Measured diagnostic on UGTPHON', 'No accepted IPA accuracy benchmark yet']) {
+  for (const term of ['Strict', 'Soft', 'Super-soft', 'Measured diagnostic on UGTPHON', 'Measured diagnostic, not accuracy acceptance']) {
     assert.ok(readme.includes(term), 'README must distinguish ' + term);
   }
-  for (const term of ['Strict | DONE_VERIFIED', 'Soft | PARTIAL', 'Super-soft | TODO', 'unified three-mode 236-case evaluation = TODO']) {
+  for (const term of ['Strict | DONE_VERIFIED', 'Soft | PARTIAL', 'Super-soft | PARTIAL', 'unified three-mode 236-case evaluation = TODO']) {
     assert.ok(gates.includes(term), 'acceptance gates must include ' + term);
   }
 });
