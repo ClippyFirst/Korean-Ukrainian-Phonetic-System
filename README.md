@@ -604,3 +604,20 @@ Latest pinned train/test diagnostic (2026-11-01): on 2,624 paired tokens, train-
 ### Five-dataset Korean G2P benchmark portfolio
 
 The benchmark register now tracks five distinct Korean pronunciation-reference datasets: UGTPHON, SIGMORPHON 2021, Seoul Corpus (OpenSLR SLR113), KsponSpeech, and the NIKL Daily Conversation Speech Corpus 2022. UGTPHON and SIGMORPHON have 10-engine IPA comparisons; Seoul now has separate three-mode Hangul-surface and phonemic-IPA tracks. KsponSpeech and NIKL 2022 remain access/terms-gated; LDC remains an alternate licensed sixth candidate. **Five executable evaluation tracks span three datasets; this is not five independent corpora.** See the [five-dataset register, source pins, licence gates and scoring policy](docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md#2026-11-08--five-dataset-korean-g2p-benchmark-portfolio).
+
+
+## 2026-11-08 benchmark-mode completeness correction
+
+The five previously executed evaluation tracks remain five completed tracks across three datasets. A sixth, mode-specific track has now been wired into the multi-engine workflow: Kozak Kim Browser **Strict / Soft / Super-soft on the same pinned SIGMORPHON 2021 Korean test occurrences**. It is not counted as executed until exact-main CI produces and validates all three reports.
+
+The complete mode-compatibility target is:
+- UGTPHON Korean test: Kozak Kim Browser Strict / Soft / Super-soft.
+- SIGMORPHON 2021 Korean test: Kozak Kim Browser Strict / Soft / Super-soft.
+- Seoul Corpus Hangul surface: Strict / Soft / Super-soft.
+- Seoul Corpus phonemic IPA: Strict / Soft / Super-soft.
+
+The 10-engine comparisons on UGTPHON and SIGMORPHON remain **Strict IPA baseline comparisons**. Strict / Soft / Super-soft are Kozak Kim operating policies, not settings that can be imposed on unrelated external engines. The morphology-consensus diagnostic is a separate research harness and is not a substitute for any of the three runtime modes. The 236-case candidate cohort is not independent pronunciation gold and must not be scored as if it were.
+
+**Do not conflate two denominators:** source-resolved scoring coverage (**source_resolved_coverage_rate**) excludes heuristic, partial, unresolved, typed-fallback and engine-error outputs; candidate output availability (**candidate_output_availability_rate**) includes an explicitly typed heuristic/fallback candidate only when an actual candidate exists, and excludes unresolved passthrough. Exact and CER remain source-resolved accuracy measures. The acceptance contract requires candidate availability to be monotonic Strict ≤ Soft ≤ Super-soft and Super-soft to reach 100% on every compatible benchmark. This is not a 100% accuracy requirement.
+
+The implementation and acceptance matrix are maintained in [the mode-specific methodology contract](docs/methodology.md#mode-coverage-and-output-availability-contract-2026-11-08). The SIGMORPHON three-mode run and exact-main CI evidence are pending; no scores are claimed before those artifacts exist.
