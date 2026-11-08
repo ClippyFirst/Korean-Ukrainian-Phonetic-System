@@ -17,6 +17,11 @@ on:
       - "scripts/benchmark_phonemize_adapter.cjs"
       - "scripts/benchmark_ugtphon_ko.py"
       - "scripts/convert_sigmorphon_ko.py"
+      - "scripts/prepare_korean_open_benchmarks.py"
+      - "scripts/summarize_korean_benchmark_reports.py"
+      - "scripts/run_open_korean_benchmark_ci.py"
+      - "tests/test_korean_open_benchmarks.py"
+      - "tests/test_summarize_korean_benchmark_reports.py"
       - "src/korean_ukrainian/**"
       - "src/app/engine*.js"
       - "data/korean/**"
@@ -26,7 +31,7 @@ on:
     paths:
       - "scripts/benchmark_multi_engine_ko.py"
       - "scripts/export_kozak_kim_mismatch_fragments.py"
-      - "tests/test_export_kozak_kim_mismatch_fragments.py"
+      - "tests/test_export_kozak_kim_mismatch_fragments.py tests/test_korean_open_benchmarks.py tests/test_summarize_korean_benchmark_reports.py"
       - "research/kozak-kim-unmapped-mismatch-review-queue-2026-11-05.csv"
       - "scripts/benchmark_kozak_kim_browser.mjs"
       - "src/app/engine_convert.js"
@@ -50,6 +55,11 @@ on:
       - "tests/test_contextual_g2p_benchmark.py"
       - "tests/test_compare_neural_with_multiengine.py"
       - "scripts/convert_sigmorphon_ko.py"
+      - "scripts/prepare_korean_open_benchmarks.py"
+      - "scripts/summarize_korean_benchmark_reports.py"
+      - "scripts/run_open_korean_benchmark_ci.py"
+      - "tests/test_korean_open_benchmarks.py"
+      - "tests/test_summarize_korean_benchmark_reports.py"
       - "src/korean_ukrainian/**"
       - "data/korean/**"
 
@@ -65,7 +75,7 @@ jobs:
   multi-engine-ipa:
     name: Pinned multi-engine IPA comparison (Python 3.12)
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -555,6 +565,19 @@ jobs:
       - name: Run Browser three-mode regression suite
         run: node --test tests/kozak-kim-ipa-first-benchmark.test.mjs
 
+      - name: Run open Korean benchmark matrix (Seoul, K-SPAN, IPA-Dict)
+        env:
+          KOG2P_ROOT: ${{ runner.temp }}/KoG2P
+          KOG2PADVANCED_ROOT: ${{ runner.temp }}/KoG2Padvanced
+          HANGUL_TO_IPA_ROOT: ${{ runner.temp }}/hangul_to_ipa
+          PHONEMIZE_BASELINE_DIR: ${{ runner.temp }}/phonemize-baseline
+        run: |
+          set -euo pipefail
+          python scripts/run_open_korean_benchmark_ci.py \
+            --workdir "$RUNNER_TEMP/open-korean-benchmarks-work" \
+            --sample-size 1000 \
+            --seed 20261108
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -580,6 +603,9 @@ jobs:
             ${{ runner.temp }}/sigmorphon-phonemize-predictions.json
             ${{ runner.temp }}/v3-training-readiness.json
             ${{ runner.temp }}/ipa-holdout-review-packets/
+            ${{ runner.temp }}/open-korean-benchmark-summary.json
+            ${{ runner.temp }}/open-korean-benchmarks-work/prepared/manifest.json
+            ${{ runner.temp }}/open-korean-benchmarks-work/prepared/source-sha256.txt
           if-no-files-found: warn
           retention-days: 30
 
