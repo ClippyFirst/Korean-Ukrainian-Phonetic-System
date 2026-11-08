@@ -4,6 +4,20 @@
 
 The path-filtered multi-engine workflow completed successfully on main benchmark code commit `b548436d0fce9af4672fc5902d6670cbc134bd70`: [run 42487350896](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487350896), artifact `13621335293` (SHA-256 `c286d7e4f1ee02d40e1a9977e792eeb73bce12b32b658a8b3c4166c612ccc1a8`). The run contains the 10-engine UGTPHON and SIGMORPHON reports, per-occurrence mismatch ledger, unresolved review queue, three Browser Kozak Kim mode reports, Native/Browser parity report, and readiness audit. This is the current-main benchmark code snapshot; later documentation-only main commit(s) do not change the measured runtime.
 
+### Five executable benchmark tracks
+
+These are **five evaluation tracks across three datasets**, not five independent corpora:
+
+| Track | Dataset | Evaluation | Status |
+|---|---|---|---|
+| 1 | UGTPHON | 10-engine Strict IPA and Broad-profile sensitivity | Executed |
+| 2 | SIGMORPHON 2021 Korean | 10-engine Strict IPA and Broad-profile sensitivity | Executed |
+| 3 | UGTPHON | Kozak Kim Browser Strict / Soft / Super-soft | Executed |
+| 4 | Seoul Corpus SLR113 | Kozak Kim three-mode Hangul surface pronunciation | Executed; no audio |
+| 5 | Seoul Corpus SLR113 | Kozak Kim three-mode phonemic IPA via the versioned 36-symbol adapter | Executed; no audio |
+
+KsponSpeech and NIKL 2022 remain additional candidate datasets, but access/terms have not been cleared and they are not scored. The five-track count must not be represented as five independent corpora or five independently adjudicated gold standards.
+
 ### Ten-engine Strict IPA results
 
 | Engine | UGTPHON exact | UGTPHON CER | SIGMORPHON exact | SIGMORPHON CER |
