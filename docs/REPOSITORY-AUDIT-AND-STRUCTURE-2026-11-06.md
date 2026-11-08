@@ -707,3 +707,50 @@ The source crosswalk for all 40 no-audio occurrences remains complete at the eng
 - The large existing [master execution plan and chat handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) was updated in place with the merge SHA, test evidence, benchmark scope and remaining blockers. It was not replaced by a duplicate handoff.
 - A final handoff-only documentation branch `docs/final-main-handoff-2026-11-07` carries this in-place update and the synchronized README/index/structure/audit references. It does not change runtime code, source data, or benchmark outputs.
 - Final readiness remains **PARTIAL RESEARCH PROTOTYPE**: repository and software verification are green; independent speaker IPA gold for the 40 residual cases and Ukrainian-target acceptance remain evidence-limited. No release certification is claimed.
+
+
+### Runtime integration of the 40 source adjudications — 2026-11-08 (PR #461)
+
+#### Task ledger
+
+| Task | Status | Evidence / boundary |
+|---|---|---|
+| Reconcile the 40 occurrence rows to the 17 source adjudication families | DONE_VERIFIED | Shared JSON registry contains 17 records and exactly 40 occurrence IDs; source adjudication CSV remains canonical evidence record. |
+| Expose source adjudication metadata in the Kozak Kim browser engine | DONE_VERIFIED | `createEngine().convert()` attaches exact-boundary matches, evidence IDs, claim IDs, occurrence IDs and runtime action. The separate g2pK `convertSurface()` baseline is deliberately not annotated. |
+| Expose the same metadata in the Python native pipeline | DONE_VERIFIED | `phoneticize_korean()` and `transliterate_korean()` return the same registry version/counts and matched source adjudications. |
+| Package the shared registry for Python distributions | DONE_VERIFIED | `pyproject.toml` includes `source_adjudications.json` as package data; wheel build passed. |
+| Add regression tests | DONE_VERIFIED | New browser test file and Python pipeline regression; Python and browser suites passed. |
+| Runtime-match all source forms whose raw spelling is stable | DONE_VERIFIED | 15 distinct forms have exact Korean-script-boundary matching. This is a metadata/policy overlay, not a phonological rewrite. |
+| Apply the two raw `ㅠ` non-speech spans automatically | BLOCKED | Source adjudication is accepted, but normalized corpus tokens contain `유`; exact raw-span offsets must be revalidated before slicing. No normalized `유` lookalike is matched. Audio is not required. |
+| Promote speaker-specific narrow IPA for the 40 occurrences | DEFERRED | Optional acoustic annotation is outside the accepted source-policy scope; 0/40 is not a blocker. |
+| Independently certify Ukrainian target choices | TODO | Separate target-layer review/acceptance remains outside this integration. |
+
+#### Implementation and evidence
+
+- Starting `main`: `1e97152e505c75fe294d56befd978789b719d59e`.
+- Work branch: `research/integrate-40-source-adjudications-2026-11-08`.
+- PR: [#461 — Integrate 40 source adjudications into runtime policy](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/461).
+- Exact code/test head verified by CI: `87e7bb32611e7042c7f0ecf5df1d1fd5ac49aa5b`. Subsequent commits on the PR branch are documentation-only.
+- New shared registry: `src/korean_ukrainian/source_adjudications.json` (17 adjudication families, 40 occurrence IDs).
+- Runtime adapters: `src/app/engine_adjudications.js` and `src/korean_ukrainian/source_adjudications.py`.
+- The registry is metadata-only by design: it does not alter Hangul, IPA, or Ukrainian output. It records the accepted broad/source policy and its evidence. Existing Rule 29 phrase behavior remains conditional on explicit spacing and phrase mode. No hidden boundaries, speaker-specific narrow segments, or unsupported lexical normalizations are inferred.
+- The two normalized `ㅠ` corpus records are included in the registry but have empty runtime match forms; normalized `유` is not treated as an emoticon. This prevents false positives until raw-span offsets are checked.
+
+#### Exact-head checks
+
+On code/test head `87e7bb3`:
+
+- [Test matrix 42463790417](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42463790417): `python -m pytest -q` passed on Python 3.11, 3.12 and 3.13; `npm test` and `npm run build` passed; wheel build passed; teacher-corpus audit passed.
+- [System verification 42463790481](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42463790481): Python regression/data integrity, browser regression, source redistribution rights gate, public-page build and generated-page verification passed. Metadata-only NIKL inventory was skipped by policy.
+- [Browser G2P integration 42463790446](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42463790446): browser tests and production build passed.
+- [Master/research artifacts 42463790433](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42463790433): master table generation and strict corpus generation passed.
+- [Pinned UGTPHON split 42463790439](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42463790439) and [paired Native/g2pK diagnostic 42463790451](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42463790451) passed.
+- [Optional g2pK integration 42463790480](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42463790480), [research morphology adapter smoke 42463790646](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42463790646), and [exhaustive test-case extraction 42463790393](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42463790393) passed.
+- The multi-engine diagnostic [42463790426](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42463790426) was cancelled; optional Charsiu inference and metadata-only NIKL inventory were skipped. These are not counted as passes and are not required for this source-metadata integration.
+- No local shell/npm/pytest command is claimed; repository write and CI operations were performed through GitHub APIs.
+
+#### Final readiness
+
+The 40 source-based adjudications are accepted without audio and are now represented in both Kozak Kim runtime result surfaces. The two non-speech rows remain registered but are not automatically sliced until raw boundaries are revalidated. This completes the requested source-policy integration without changing phonological output or manufacturing narrow IPA.
+
+Repository status remains **PARTIAL RESEARCH PROTOTYPE**, not release-ready or independently research-certified. The outstanding blockers are raw `ㅠ` span-boundary validation, independent Ukrainian target review, broader research acceptance and any future optional speaker-specific acoustic annotation. PR #461 is open pending merge; no external release or deployment action was taken.
