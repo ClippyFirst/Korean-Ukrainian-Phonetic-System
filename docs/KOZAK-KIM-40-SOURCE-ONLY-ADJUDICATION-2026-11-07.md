@@ -15,9 +15,10 @@ The source-only pass adjudicates **all 17 distinct token spellings across all 40
 - **22 `아끼셔` rows:** one repeated source-row/token family, not 22 independent speakers or recordings.
 - **No invented narrow IPA:** no speaker-specific allophone, glide, vowel quality, or prosodic variant is guessed.
 - **No new categorical runtime rule:** the existing engine policy already matches the source-supported boundary. Phrase-level Rule 29 remains explicitly conditional.
-- **Speaker-specific IPA gold remains 0/40:** this is a separate claim and remains unresolved without the original recording/speaker crosswalk.
+- **Repository acceptance: 40/40 source-based decisions accepted without audio.** Audio and speaker identity are not acceptance prerequisites.
+- **Speaker-specific acoustic IPA gold: 0/40, non-blocking and out of scope.** This optional annotation would require recordings and a speaker crosswalk, but its absence does not block source-based phonological adjudication, broad IPA policy, Ukrainian adaptation, or repository acceptance.
 
-The label `UNRESOLVED_NO_AUDIO` in the original occurrence CSV is retained deliberately: it means *speaker-specific IPA gold is unavailable*, not that the engine has no source-based policy.
+The legacy `speaker_ipa_gold_status=UNRESOLVED_NO_AUDIO` field is retained for traceability only. It describes the separate speaker-specific acoustic annotation dimension; it is explicitly **non-blocking** and must not be used as the acceptance status for source adjudications. The new `source_acceptance_status` column in the occurrence policy CSV records the actual acceptance decision independently.
 
 ## Source-based adjudication
 
@@ -83,7 +84,7 @@ The evidence ledger is the authoritative mapping from each adjudication row to a
 
 `VERIFIED_PRIMARY_PAGE` means the official source page was opened and its relevant statement checked. `VERIFIED_KCI_PUBLISHER_ABSTRACT` or `VERIFIED_DOI_METADATA` means publisher/index metadata and abstract were checked, not necessarily the full experimental paper. `INDIRECT_FOR_TARGET` means the study supports a general mechanism but did not test the adjudicated token. `TARGET_CONTEXT_NOT_COVERED`, `AUDIO_ABSENT`, and `RAW_OFFSETS_REQUIRE_REVALIDATION` are explicit evidence limits, not resolved claims.
 
-**Result:** the 40 occurrences have source-linked policy decisions, but this update does not claim 40 acoustically proven IPA forms. Speaker-specific narrow IPA gold remains 0/40 without recordings and a speaker/source crosswalk. The exact `아끼셔` no-`요` contraction and raw emoticon offsets remain evidence-limited items.
+**Result:** all 40 occurrences are accepted for the repository's source-based adjudication and engine-policy scope without audio. The 0/40 speaker-specific narrow IPA annotation count is a separate, optional research dimension and is not a blocker. Evidence limits remain explicit: the exact no-`요` form `아끼셔` is not directly attested by the cited morphology pages; compact n-insertion candidates retain conditional phrase-mode policies rather than inferred hidden prosody; and raw emoticon span offsets must be revalidated before automated runtime slicing. None of these limits makes audio a prerequisite for accepting the supported source-based decisions.
 
 ## Research source links
 
@@ -118,7 +119,7 @@ No runtime rule was added in this pass because the current engine policy already
 4. Raw `ㅠ` emoticons remain outside G2P.
 5. Broad /i.i/ and /o.ʌ/ are not rewritten by unverified hiatus rules.
 
-**Acceptance outcome:** source-based engine policy is adjudicated for all 40 occurrences. Speaker-specific narrow IPA gold remains unavailable for 40/40, and the exact prosodic realization of compact n-insertion candidates remains conditional. This is a source-grounded production-policy result, not an independently annotated acoustic benchmark.
+**Acceptance outcome:** 40/40 source-based engine-policy decisions are accepted without audio. Speaker-specific narrow IPA gold is an optional, non-blocking annotation dimension (0/40), not a release gate. Compact n-insertion cases are accepted as conditional policies, and no hidden prosodic grouping is inferred. The emoticon classification is accepted; exact span offsets remain a separate runtime-boundary check. This is a source-grounded production-policy result, not an independently annotated acoustic benchmark.
 
 ## 2026-11-07 benchmark-fragment taxonomy correction
 
@@ -138,3 +139,12 @@ This benchmark classification is distinct from the runtime liaison-provenance co
 
 Of the 16 strict fragments, only the `그놈의` occurrence remains in the broad unmapped review queue, because that occurrence also has a separate unresolved /e/ versus /i/ fragment. The other 15 are source-adjudicated variants, not speaker-specific IPA gold. No Ukrainian target is promoted by this classification.
 
+
+
+## 2026-11-08 acceptance clarification: audio is not a gate
+
+The repository's target is a source-grounded Korean-to-Ukrainian pronunciation policy, not speaker diarization or acoustic phonetic annotation. Therefore, audio is **not required** to accept an adjudication when authoritative orthographic, morphological, phonological, normative-pronunciation, and corpus sources support the decision at the required level.
+
+Acceptance is based on the `source_acceptance_status` field in `research/kozak-kim-40-no-audio-engine-policy-2026-11-06.csv`. The legacy `speaker_ipa_gold_status=UNRESOLVED_NO_AUDIO` records only that speaker-specific acoustic gold was not annotated. It is not an acceptance blocker and must not be interpreted as an unfinished source adjudication.
+
+The accepted scope includes broad/profile-level IPA and explicit conditional rules. It does not claim an unknown speaker's exact narrow realization. Conditional phrase-level processes remain conditional where the compact corpus spelling does not encode boundaries; this is a correct accepted policy, not an unresolved task. The raw emoticon spans are accepted as non-speech source material; their exact subspan offsets must be checked before automated slicing, independently of audio.
