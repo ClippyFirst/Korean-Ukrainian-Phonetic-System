@@ -32,7 +32,7 @@ The five-track count is not five independent corpora. KsponSpeech and NIKL 2022 
 - 231,626 aligned Hangul word pairs; 231,625 aligned phonemic IPA pairs.
 - 36 observed phone symbols mapped using Table 3 of Yun et al. (2015), DOI `10.13064/KSSS.2015.7.2.103`.
 - 1,134,781 phone intervals mapped; 70,660 non-phone/unmapped intervals excluded. Seven word intervals were excluded from phone-to-word IPA scoring (six boundary conflicts, one non-phone/unmapped label).
-- Raw corpus labels, audio and pair JSON files remain temporary CI data. The CC BY-NC 2.0 corpus is not committed or uploaded.
+- Raw TextGrid files, audio and word/IPA pair JSON files remain temporary CI data and are not committed or uploaded. Disclosure: an intermediate diagnostic artifact 13621412269 contains a distinct phoneme-tier label inventory, including some short laughter-tag text; it does not contain TextGrid/audio/word-pair data and expires 2026-12-08. The final artifact 13622140135 aggregates those labels into symbol/category counts only. Subsequent workflow artifacts now have 7-day retention.
 
 ### Mode results and interpretation
 
