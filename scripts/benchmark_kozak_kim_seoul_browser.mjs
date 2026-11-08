@@ -134,8 +134,10 @@ export function evaluateMode(pairs, engine, mode, totalOccurrences) {
       unique_source_gold_pairs: pairs.length,
       scored_occurrences: scored,
       coverage: totalOccurrences ? scored / totalOccurrences : null,
+      source_resolved_coverage: totalOccurrences ? scored / totalOccurrences : null,
       output_available_occurrences: outputAvailable,
       output_availability_rate: totalOccurrences ? outputAvailable / totalOccurrences : null,
+      candidate_output_availability_rate: totalOccurrences ? outputAvailable / totalOccurrences : null,
       exact_matches: exact,
       exact_match_rate_scored_only: scored ? exact / scored : null,
       exact_match_rate_coverage_adjusted: totalOccurrences ? exact / totalOccurrences : null,
@@ -183,6 +185,13 @@ function main() {
     const totalOccurrences = pairs.reduce((sum, pair) => sum + pair.weight, 0);
     const engine = createBrowserKozakKimEngine();
     const results = MODES.map(mode => evaluateMode(pairs, engine, mode, totalOccurrences));
+    const availability = results.map(result => result.summary.output_available_occurrences);
+    if (availability[1] < availability[0] || availability[2] < availability[1]) {
+      throw new Error('Candidate output availability must be monotonic: Strict <= Soft <= Super-soft');
+    }
+    if (availability[2] !== totalOccurrences) {
+      throw new Error('Super-soft candidate output availability must be 100%; got ' + availability[2] + '/' + totalOccurrences);
+    }
     const report = {
       schema_version: 1,
       benchmark: 'Seoul Corpus word-level Hangul pronunciation diagnostic',
