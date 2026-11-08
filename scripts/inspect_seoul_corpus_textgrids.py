@@ -73,6 +73,9 @@ def build_inventory(root: Path, pairs_output: Path | None = None) -> dict:
     failures = []
     paired_tier_pairs = paired_interval_slots = aligned_boundaries = 0
     nonempty_orthography = nonempty_pronunciation = hangul_pairs = aligned_hangul_pairs = 0
+    phoneme_label_counts: Counter[str] = Counter()
+    ortho_tier_formats = [Counter(), Counter()]
+    prono_tier_formats = [Counter(), Counter()]
     tier_pair_count_mismatches = interval_count_mismatches = 0
     word_pairs = []
     for path in files:
@@ -93,6 +96,20 @@ def build_inventory(root: Path, pairs_output: Path | None = None) -> dict:
                 ortho_tiers.append(tier)
             elif tier["name"] == "pWord.prono.":
                 prono_tiers.append(tier)
+            elif tier["name"] == "phoneme":
+                phoneme_label_counts.update(interval["label"].strip() for interval in tier["intervals"] if interval["label"].strip())
+        for tier_index, tier in enumerate(ortho_tiers[:2]):
+            for interval in tier["intervals"]:
+                label = interval["label"].strip()
+                if not label: ortho_tier_formats[tier_index]["empty"] += 1
+                elif HANGUL_WORD_RE.fullmatch(label): ortho_tier_formats[tier_index]["hangul_only"] += 1
+                else: ortho_tier_formats[tier_index]["other_nonempty"] += 1
+        for tier_index, tier in enumerate(prono_tiers[:2]):
+            for interval in tier["intervals"]:
+                label = interval["label"].strip()
+                if not label: prono_tier_formats[tier_index]["empty"] += 1
+                elif HANGUL_WORD_RE.fullmatch(label): prono_tier_formats[tier_index]["hangul_only"] += 1
+                else: prono_tier_formats[tier_index]["other_nonempty"] += 1
         if len(ortho_tiers) != len(prono_tiers):
             tier_pair_count_mismatches += 1
         for ortho, prono in zip(ortho_tiers, prono_tiers):
@@ -132,6 +149,11 @@ def build_inventory(root: Path, pairs_output: Path | None = None) -> dict:
         "tier_name_counts": dict(sorted(tier_counts.items())),
         "interval_annotations_total": interval_total,
         "point_annotations_total": point_total,
+        "phoneme_label_counts": dict(sorted(phoneme_label_counts.items())),
+        "word_tier_duplicate_name_format_counts": {
+            "pWord.ortho.": [dict(sorted(counter.items())) for counter in ortho_tier_formats],
+            "pWord.prono.": [dict(sorted(counter.items())) for counter in prono_tier_formats],
+        },
         "word_tier_alignment": {
             "orthography_tiers": tier_counts.get("IntervalTier:pWord.ortho.", 0),
             "pronunciation_tiers": tier_counts.get("IntervalTier:pWord.prono.", 0),
