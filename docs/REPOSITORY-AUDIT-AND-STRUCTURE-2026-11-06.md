@@ -907,3 +907,13 @@ The current documentation previously described Strict, Soft and Super-soft as th
 **Canonical records updated:** `docs/methodology.md` now defines the three-mode benchmark contract; `README.md` summarizes each mode and its actual evidence status; `research/ACCEPTANCE-GATES.md` records Strict = DONE_VERIFIED diagnostic, Soft = PARTIAL, Super-soft = TODO, and the common 236-case evaluation = TODO. A methodology-contract regression protects these distinctions.
 
 **No benchmark score is newly claimed by this documentation update.** No runtime code or IPA output was changed. The next executable benchmark work is to produce an exact-head Soft report, implement the Super-soft stratified scorer, and run all three modes on the pinned 236 occurrence ledger plus compatible pinned external splits. A broad-profile score is a sensitivity analysis, not permission to erase phonological contrasts or manufacture gold.
+
+
+### Documentation-contract verification on `1ac56bfc705826cff0d9040397dff71db1188ab2`
+
+- Browser regression tests and build: **PASS** — run [42486756706](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42486756706).
+- Python regression/data integrity: **PASS** — run [42486756706](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42486756706).
+- Python 3.11/3.12/3.13, wheel installation, web tests, teacher-corpus audit: **PASS** — run [42486756688](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42486756688).
+- Corpus generation: **PASS** — run [42486756926](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42486756926).
+- Official NIKL metadata-only inventory: **SKIPPED**, not a pass.
+- These runs verify the documentation-contract regression and repository software gates. They do not generate or validate the missing current Soft/Super-soft accuracy benchmarks.
