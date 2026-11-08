@@ -1,0 +1,175 @@
+name: MFA Korean G2P external benchmark
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/benchmark_mfa_g2p.py"
+      - "tests/test_mfa_g2p_benchmark.py"
+      - ".github/workflows/mfa-g2p-benchmark.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: mfa-korean-g2p-\${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  mfa-korean-g2p:
+    name: MFA v2 Korean Hangul and Jamo G2P
+    runs-on: ubuntu-22.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install the compatible MFA 2.0.0 runtime
+        uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-name: mfa-benchmark
+          create-args: >-
+            python=3.10
+            montreal-forced-aligner=2.0.0
+            pip
+          cache-environment: true
+
+      - name: Install the pinned Hangul-to-Jamo input adapter
+        shell: bash -el {0}
+        run: |
+          set -euo pipefail
+          python -m pip install "jamo==0.4.1"
+          mfa --help >/dev/null
+          python --version
+          mfa --version || true
+
+      - name: Download the two pinned CC BY 4.0 model releases and verify licence notices
+        shell: bash -el {0}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/mfa-models"
+          curl --fail --location --retry 3 \
+            "https://github.com/MontrealCorpusTools/mfa-models/releases/download/g2p-korean_mfa-v2.0.0/korean_mfa.zip" \
+            --output "$RUNNER_TEMP/mfa-models/korean_mfa.zip"
+          curl --fail --location --retry 3 \
+            "https://github.com/MontrealCorpusTools/mfa-models/releases/download/g2p-korean_jamo_mfa-v2.0.0/korean_jamo_mfa.zip" \
+            --output "$RUNNER_TEMP/mfa-models/korean_jamo_mfa.zip"
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/MontrealCorpusTools/mfa-models/6e81f3def94c0203cd5076238c71d9b33bffb6f2/g2p/korean/mfa/v2.0.0/LICENSE" \
+            --output "$RUNNER_TEMP/mfa-models/korean_mfa-LICENSE"
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/MontrealCorpusTools/mfa-models/6e81f3def94c0203cd5076238c71d9b33bffb6f2/g2p/korean/jamo_mfa/v2.0.0/LICENSE" \
+            --output "$RUNNER_TEMP/mfa-models/korean_jamo_mfa-LICENSE"
+          grep -qi "Creative Commons Attribution 4.0" "$RUNNER_TEMP/mfa-models/korean_mfa-LICENSE"
+          grep -qi "Creative Commons Attribution 4.0" "$RUNNER_TEMP/mfa-models/korean_jamo_mfa-LICENSE"
+          sha256sum "$RUNNER_TEMP/mfa-models/"*.zip
+          ls -lh "$RUNNER_TEMP/mfa-models/"*.zip
+          echo "Model releases are downloaded to the runner only; no model weights are committed or redistributed."
+
+      - name: Fetch the pinned UGTPHON and SIGMORPHON test inputs
+        shell: bash -el {0}
+        env:
+          UGT_PHON_COMMIT: ef0d5a09c2ea1874c7206020f875cbd9cfea2f54
+          SIGMORPHON_COMMIT: 821bcdece5a47820872215969f275004b0abe80c
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/naver-ai/UGTPHON/$UGT_PHON_COMMIT/ko/test.json" \
+            --output "$RUNNER_TEMP/ko-test.json"
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/naver-ai/UGTPHON/$UGT_PHON_COMMIT/ko/LICENSE" \
+            --output "$RUNNER_TEMP/ko-LICENSE"
+          grep -q "Apache License, Version 2.0" "$RUNNER_TEMP/ko-LICENSE"
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/sigmorphon/2021-task1/$SIGMORPHON_COMMIT/data/medium/kor_test.tsv" \
+            --output "$RUNNER_TEMP/sigmorphon-kor-test.tsv"
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/sigmorphon/2021-task1/$SIGMORPHON_COMMIT/README.md" \
+            --output "$RUNNER_TEMP/sigmorphon-README.md"
+          grep -qi "Creative Commons Attribution-ShareAlike 3.0" "$RUNNER_TEMP/sigmorphon-README.md"
+          python scripts/convert_sigmorphon_ko.py \
+            --input "$RUNNER_TEMP/sigmorphon-kor-test.tsv" \
+            --output "$RUNNER_TEMP/sigmorphon-kor-test.json" \
+            --expected-rows 1000
+          python - "$RUNNER_TEMP/ko-test.json" "$RUNNER_TEMP/sigmorphon-kor-test.json" <<'PY'
+          import json, sys
+          from pathlib import Path
+          for name in sys.argv[1:]:
+              rows = json.loads(Path(name).read_text(encoding="utf-8"))
+              assert rows and all(row.get("lang") == "ko" and row.get("split") == "test" for row in rows)
+              print(f"Validated {Path(name).name}: {len(rows)} rows")
+          PY
+
+      - name: Run MFA Hangul and Jamo models on both frozen datasets
+        shell: bash -el {0}
+        run: |
+          set -euo pipefail
+          models="$RUNNER_TEMP/mfa-models"
+          ugt="$RUNNER_TEMP/ko-test.json"
+          sig="$RUNNER_TEMP/sigmorphon-kor-test.json"
+          sha_hangul="$(sha256sum "$models/korean_mfa.zip" | cut -d' ' -f1)"
+          sha_jamo="$(sha256sum "$models/korean_jamo_mfa.zip" | cut -d' ' -f1)"
+          python scripts/benchmark_mfa_g2p.py \
+            --corpus "$ugt" --model "$models/korean_mfa.zip" --model-kind hangul \
+            --model-sha256 "$sha_hangul" --dataset-source "UGTPHON@$UGT_PHON_COMMIT/ko/test.json; Apache-2.0" \
+            --output "$RUNNER_TEMP/mfa-ugtphon-hangul.json"
+          python scripts/benchmark_mfa_g2p.py \
+            --corpus "$ugt" --model "$models/korean_jamo_mfa.zip" --model-kind jamo \
+            --model-sha256 "$sha_jamo" --dataset-source "UGTPHON@$UGT_PHON_COMMIT/ko/test.json; Apache-2.0" \
+            --output "$RUNNER_TEMP/mfa-ugtphon-jamo.json"
+          python scripts/benchmark_mfa_g2p.py \
+            --corpus "$sig" --model "$models/korean_mfa.zip" --model-kind hangul \
+            --model-sha256 "$sha_hangul" --dataset-source "SIGMORPHON 2021@$SIGMORPHON_COMMIT/data/medium/kor_test.tsv; CC BY-SA 3.0; pinned public paired lexical file" \
+            --output "$RUNNER_TEMP/mfa-sigmorphon-hangul.json"
+          python scripts/benchmark_mfa_g2p.py \
+            --corpus "$sig" --model "$models/korean_jamo_mfa.zip" --model-kind jamo \
+            --model-sha256 "$sha_jamo" --dataset-source "SIGMORPHON 2021@$SIGMORPHON_COMMIT/data/medium/kor_test.tsv; CC BY-SA 3.0; pinned public paired lexical file" \
+            --output "$RUNNER_TEMP/mfa-sigmorphon-jamo.json"
+
+      - name: Validate report schemas, denominators, and fail-closed phone adapters
+        shell: bash -el {0}
+        run: |
+          set -euo pipefail
+          python - "$RUNNER_TEMP" <<'PY'
+          import json, sys
+          from pathlib import Path
+          root = Path(sys.argv[1])
+          expected = {
+              "mfa-ugtphon-hangul.json": 2703,
+              "mfa-ugtphon-jamo.json": 2703,
+              "mfa-sigmorphon-hangul.json": 1000,
+              "mfa-sigmorphon-jamo.json": 1000,
+          }
+          for filename, denominator in expected.items():
+              report = json.loads((root / filename).read_text(encoding="utf-8"))
+              assert report["schema_version"] == 1
+              assert report["eligible_occurrences"] == denominator, (filename, report["eligible_occurrences"])
+              assert report["candidate_output_occurrences"] > 0, filename
+              assert report["engine_errors"] == 0, filename
+              assert len(report["occurrences"]) == denominator, filename
+              assert report["candidate_output_occurrences"] + report["missing_predictions"] == denominator
+              assert report["model_sha256"] and len(report["model_sha256"]) == 64
+              print(filename, {
+                  "eligible": denominator,
+                  "available": report["candidate_output_occurrences"],
+                  "coverage": report["coverage_rate"],
+                  "exact_scored_only": report["exact_match_rate_scored_only"],
+                  "exact_coverage_adjusted": report["coverage_adjusted_exact_match_rate"],
+                  "CER": report["character_error_rate"],
+                  "model_sha256": report["model_sha256"],
+                  "runtime_ms": report["runtime"]["runtime_ms"],
+              })
+          PY
+
+      - name: Upload aggregate benchmark reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: mfa-korean-g2p-reports
+          path: |
+            \${{ runner.temp }}/mfa-ugtphon-hangul.json
+            \${{ runner.temp }}/mfa-ugtphon-jamo.json
+            \${{ runner.temp }}/mfa-sigmorphon-hangul.json
+            \${{ runner.temp }}/mfa-sigmorphon-jamo.json
+          if-no-files-found: error
+          retention-days: 7
