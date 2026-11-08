@@ -69,6 +69,26 @@ The successful pinned run 42416681855 also compared ten engines, not only Native
 | hangul_to_ipa 2026 | 16.2412% | 24.8054% | 8.9089% | 29.8448% |
 | eSpeak NG Korean | 8.1391% | 33.6101% | 4.3043% | 40.7236% |
 
+
+#### Broad-profile sensitivity re-score (research-only)
+
+The same PR #457 artifact also contains a separately versioned `broad-candidate-ipa-v2` sensitivity score using `korean-broad-candidate-sensitivity-v1`. This is **not** a blanket removal of IPA diacritics: it records feature loss and retains stop aspiration, fortisness, vowel length, unreleased codas, and the /s–ɕ–ʃ/ place distinctions. It does collapse selected distinctions (including lateral place, palatal nasality, several h-realizations, fricative aspiration, stress, and selected quality diacritics). These values are historical PR #457 artifact results, not yet the replacement exact-main run 42487350896, which is still executing.
+
+| Engine | UGTPHON broad exact | UGTPHON CER | SIGMORPHON broad exact | SIGMORPHON CER |
+|---|---:|---:|---:|---:|
+| ClippyFirst Native | 86.23% (2,330/2,702) | 2.14% | 69.84% (697/998) | 6.15% |
+| g2pK 0.9.4 | 85.72% (2,317/2,703) | 2.37% | 68.67% (686/999) | 6.46% |
+| g2p-ko 1.0.0 | 84.83% (2,293/2,703) | 2.54% | 69.07% (690/999) | 6.31% |
+| KoG2Padvanced 2022 | 70.29% (1,900/2,703) | 4.93% | 59.76% (597/999) | 8.78% |
+| phonemize 2.0.1 | 70.33% (1,901/2,703) | 7.73% | 58.26% (582/999) | 9.31% |
+| KoG2P 2019 | 40.77% (1,102/2,703) | 13.35% | 34.53% (345/999) | 14.39% |
+| kokorog2p 0.9.15 | 28.49% (770/2,703) | 20.39% | 20.42% (204/999) | 23.18% |
+| HAMA 1.7.0 | 28.30% (765/2,703) | 18.98% | 27.53% (275/999) | 19.99% |
+| hangul_to_ipa 2026 | 25.75% (696/2,703) | 19.61% | 17.22% (172/999) | 23.48% |
+| eSpeak NG Korean | 12.06% (326/2,703) | 29.92% | 6.71% (67/999) | 36.34% |
+
+Interpretation: under this broad sensitivity profile Native leads Exact and CER on both corpora; g2pK and g2p-ko remain close. These are not independent normative IPA gold results, and they do not establish Ukrainian target accuracy. Do not compare this table directly with the Strict table above as if the references were unchanged: the sensitivity profile deliberately collapses a declared subset of reference/prediction features. The exact-main rerun is [42487350896](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487350896); its final artifact supersedes this historical PR artifact after review.
+
 These are Korean IPA diagnostics under the pinned datasets and normalization, not Ukrainian target scores or normative gold. CharsiuG2P and ByT5 inference were skipped by policy. Full scored counts and methodological limitations are in the [current audit](docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md#current-main-continuation--2026-11-08-documentation-and-benchmark-reconciliation).
 ### IPA-to-Ukrainian renderer — separate validation status
 
