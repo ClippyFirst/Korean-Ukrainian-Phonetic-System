@@ -946,3 +946,17 @@ The benchmark suite register now defines five distinct Korean pronunciation-refe
 **TODO/BLOCKED:** Seoul TextGrid parser and symbol adapter; KsponSpeech AIHub acquisition and terms; LDC2003L02 licensed acquisition; Super-soft stratified accuracy scorer; unified three-mode evaluation on all compatible datasets. Do not claim five completed runs.
 
 **No raw restricted datasets were committed.** The three new datasets are source-registered only; no unlicensed or access-controlled data was downloaded or redistributed.
+
+
+### Strict/Soft UGTPHON result inspected — run `42487169477`
+
+Exact-main morphology diagnostic succeeded and artifact `13620331011` was downloaded and parsed.
+
+| Mode | Attempted | Scored | Coverage | Exact | CER |
+|---|---:|---:|---:|---:|---:|
+| Strict | 2,703 | 2,702 | 99.9630% | 1,425/2,702 = 52.7387% | 9.0130% |
+| Soft | 2,703 | 2,703 | 100.0000% | 1,425/2,703 = 52.7192% | 9.0123% |
+
+On the common 2,702-occurrence subset, Strict and Soft are identical: 1,425 exact matches (52.7387%) and CER 9.0130% for both; exact and CER paired deltas are zero. Soft resolves one additional occurrence and changes three unique-word outputs/statuses, but it does not improve paired accuracy. Runtime errors: zero. This is a UGTPHON-only diagnostic, not evidence for SIGMORPHON, the 236-case cohort, or Super-soft. The analyzer-consensus variant is separately labelled diagnostic-only and is not the Soft mode.
+
+**Disposition:** Soft = MEASURED_DIAGNOSTIC on UGTPHON / PARTIAL overall. Remaining: SIGMORPHON and 236-case compatible-row scoring; exact IPA-profile alignment must be reported for each mode.
