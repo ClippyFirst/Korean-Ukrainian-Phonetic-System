@@ -108,7 +108,7 @@ test('five-dataset Korean G2P portfolio records access and representation gates'
     'SIGMORPHON 2021 Korean public paired lexical file',
     'Seoul Corpus (OpenSLR SLR113)',
     'KsponSpeech',
-    'Korean Telephone Conversations Lexicon (LDC2003L02)'
+    'NIKL Daily Conversation Speech Corpus 2022'
   ]) {
     assert.ok(portfolio.includes(dataset), 'benchmark register must include ' + dataset);
   }
