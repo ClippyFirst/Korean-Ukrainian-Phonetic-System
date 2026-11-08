@@ -43,7 +43,8 @@ export function evaluateMode(pairs, engine, mode, totalOccurrences) {
       if(result.target_status==='unavailable') targetUnavailable+=pair.weight;
       if(result.target_status==='provisional'||result.candidate_status==='provisional') targetProvisional+=pair.weight;
       const trace=Array.isArray(result.trace)?result.trace:[];
-      if(typeof result.ipa==='string'&&result.ipa.length>0)outputAvailable+=pair.weight;
+      const status=result.pronunciation_status??(result.ipa?'resolved':'unresolved');
+      if(status!=='unresolved'&&typeof result.ipa==='string'&&result.ipa.length>0)outputAvailable+=pair.weight;
       const fallback=result.phonetic_result_type==='mixed-surface-ipa-and-orthographic-fallback'||
         trace.some(item=>item?.status==='super-soft-orthographic-fallback'||item?.phoneticResultType==='orthographic-phonemic-fallback');
       if(fallback){
@@ -53,7 +54,6 @@ export function evaluateMode(pairs, engine, mode, totalOccurrences) {
         outputs.set(JSON.stringify([pair.source,pair.gold]),{status:'typed_fallback',predicted:null,exact:false,weight:pair.weight});
         continue;
       }
-      const status=result.pronunciation_status??(result.ipa?'resolved':'unresolved');
       if(status==='heuristic'){heuristic+=pair.weight;abstentionPenaltyDistance+=[...pair.gold].length*pair.weight;outputs.set(JSON.stringify([pair.source,pair.gold]),{status,predicted:null,exact:false,weight:pair.weight});continue;}
       if(status==='partial'){partial+=pair.weight;abstentionPenaltyDistance+=[...pair.gold].length*pair.weight;outputs.set(JSON.stringify([pair.source,pair.gold]),{status,predicted:null,exact:false,weight:pair.weight});continue;}
       if(status==='unresolved'||!result.ipa){unresolved+=pair.weight;abstentionPenaltyDistance+=[...pair.gold].length*pair.weight;outputs.set(JSON.stringify([pair.source,pair.gold]),{status:'unresolved',predicted:null,exact:false,weight:pair.weight});continue;}
