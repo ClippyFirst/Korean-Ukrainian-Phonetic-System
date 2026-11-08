@@ -30,6 +30,7 @@ def _multi_engine(path: Path, track: str) -> dict[str, Any]:
     for name in report["engine_order"]:
         source = report["engines"][name]
         result = {key: source.get(key) for key in ENGINE_METRICS}
+        result["runtime"] = source.get("unique_word_engine_status", {}).get("runtime")
         broad = source.get("broad_candidate", {})
         result["broad_candidate"] = {
             key: broad.get(key) for key in (
