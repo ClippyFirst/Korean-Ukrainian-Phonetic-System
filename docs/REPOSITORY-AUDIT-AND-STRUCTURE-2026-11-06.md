@@ -753,7 +753,15 @@ On code/test head `87e7bb3`:
 
 The 40 source-based adjudications are accepted without audio and are now represented in both Kozak Kim runtime result surfaces. The two non-speech rows remain registered but are not automatically sliced until raw boundaries are revalidated. This completes the requested source-policy integration without changing phonological output or manufacturing narrow IPA.
 
-Repository status remains **PARTIAL RESEARCH PROTOTYPE**, not release-ready or independently research-certified. The outstanding blockers are raw `ㅠ` span-boundary validation, independent Ukrainian target review, broader research acceptance and any future optional speaker-specific acoustic annotation. PR #461 is open pending merge; no external release or deployment action was taken.
+Repository status remains **PARTIAL RESEARCH PROTOTYPE**, not release-ready or independently research-certified. The outstanding blockers are raw `ㅠ` span-boundary validation, independent Ukrainian target review, broader research acceptance and any future optional speaker-specific acoustic annotation. PR #461 was squash-merged into `main` as `b014d0107a47c3117c7dcbdd8d403f7fca3c7d41`; no external release or deployment action was taken.
 
 
 The existing master execution handoff was not rewritten: the GitHub file-read operation returned an empty content body for its existing blob, so a safe in-place append could not be made through this interface. This dated audit addendum is the superseding continuation for this task; the historical handoff blob was preserved unchanged.
+
+
+#### Mainline merge confirmation — 2026-11-08
+
+- PR [#461](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/461) was squash-merged; merge commit: `b014d0107a47c3117c7dcbdd8d403f7fca3c7d41`.
+- The merged `main` branch was re-read after merge. The shared registry, Python adapter, browser adapter, engine wiring, tests and audit record are present on `main`; the registry contains 17 adjudication rows and all 40 unique occurrence IDs.
+- Exact code/test head `87e7bb32611e7042c7f0ecf5df1d1fd5ac49aa5b` passed the listed PR-head Python, browser, build, source-rights, corpus, and research smoke checks. The commits between that code/test head and the final PR head `111fc7042a99b047fb809eed85b36e86d2b03d43` were documentation-only. The squash merge contains the same code and test state.
+- The GitHub workflow-run lookup for the merge commit returned no push-triggered run records (the available commit workflow lookup is PR-triggered only); therefore no post-merge CI result is claimed. The exact-head PR checks above are the verification evidence.
