@@ -174,7 +174,7 @@ function fullSurfaceHangul(result, token) {
   return null;
 }
 
-export function evaluateRows(rows, engine, morphologyMode = 'strict') {
+export function evaluateRows(rows, engine, morphologyMode = 'strict', benchmarkName = 'Korean canonical-token IPA diagnostic', datasetSource = null) {
   if (!['strict', 'soft', 'super-soft'].includes(morphologyMode)) {
     throw new TypeError('morphologyMode must be strict, soft, or super-soft');
   }
@@ -192,6 +192,7 @@ export function evaluateRows(rows, engine, morphologyMode = 'strict') {
   let targetUnavailableTokens = 0;
   let targetProvisionalTokens = 0;
   let engineErrors = 0;
+  let outputAvailableTokens = 0;
   let profileMetadata = null;
 
   for (const row of rows) {
@@ -221,6 +222,10 @@ export function evaluateRows(rows, engine, morphologyMode = 'strict') {
         const trace = Array.isArray(result.trace) ? result.trace : [];
         const hasTypedFallback = result.phonetic_result_type === 'mixed-surface-ipa-and-orthographic-fallback' ||
           trace.some(item => item?.status === 'super-soft-orthographic-fallback' || item?.phoneticResultType === 'orthographic-phonemic-fallback');
+        const pronunciationStatus = result.pronunciation_status ?? (result.ipa ? 'resolved' : 'unresolved');
+        // Candidate availability includes explicit heuristic/typed-fallback outputs,
+        // but never unresolved passthrough or an empty IPA result.
+        if (pronunciationStatus !== 'unresolved' && result.ipa) outputAvailableTokens += 1;
         if (hasTypedFallback) typedFallbackTokens += 1;
         if (profileMetadata === null) {
           profileMetadata = {
@@ -234,7 +239,6 @@ export function evaluateRows(rows, engine, morphologyMode = 'strict') {
         if (result.target_status === 'provisional' || result.candidate_status === 'provisional') {
           targetProvisionalTokens += 1;
         }
-        const pronunciationStatus = result.pronunciation_status ?? (result.ipa ? 'resolved' : 'unresolved');
         if (pronunciationStatus === 'unresolved' || !result.ipa) {
           unresolvedTokens += 1;
           if (unresolvedExamples.length < 100) {
@@ -345,7 +349,8 @@ export function evaluateRows(rows, engine, morphologyMode = 'strict') {
   );
 
   return {
-    benchmark: 'UGTPHON Korean canonical-token diagnostic',
+    benchmark: benchmarkName,
+    dataset_source: datasetSource,
     broad_candidate_benchmark: 'broad-candidate-ipa-v2',
     broad_candidate_benchmark_version: 2,
     engine: 'Kozak Kim browser deterministic JavaScript engine',
@@ -364,6 +369,8 @@ export function evaluateRows(rows, engine, morphologyMode = 'strict') {
     eligible_tokens: eligibleTokens,
     scored_tokens: scoredTokens,
     coverage_rate: eligibleTokens ? Number((scoredTokens / eligibleTokens).toFixed(6)) : null,
+    output_available_tokens: outputAvailableTokens,
+    output_availability_rate: eligibleTokens ? Number((outputAvailableTokens / eligibleTokens).toFixed(6)) : null,
     exact_matches: exactMatches,
     exact_match_rate: scoredTokens ? Number((exactMatches / scoredTokens).toFixed(6)) : null,
     coverage_adjusted_exact_match_rate: eligibleTokens ? Number((exactMatches / eligibleTokens).toFixed(6)) : null,
@@ -414,7 +421,7 @@ export function evaluateRows(rows, engine, morphologyMode = 'strict') {
       'The broad_candidate_* metrics use the shared versioned korean-broad-candidate-sensitivity-v1 profile; they are research-only and do not replace strict headline metrics.',
       'The report exposes prediction and selected-reference feature-loss counts. The profile collapses lateral place/retroflexion, palatal nasality, several h-like realizations, fricative aspiration, stress and selected quality diacritics.',
       'Stop aspiration, fortisness, vowel length, unreleased codas and the s/ɕ/ʃ place distinctions are retained. Sibilant-profile disagreements therefore remain visible and require independent adjudication.',
-      'The UGTPHON test split has been inspected during project research; treat this run as diagnostic, not as an untouched independent holdout.',
+      'This is a dataset-specific diagnostic; verify split provenance and training overlap before describing it as an untouched independent holdout.',
       'Only resolved pronunciation records are scored. Partial, heuristic, unresolved, typed fallback, and engine-error records are counted separately.',
       'Super-soft orthographic-phonemic fallback and low-confidence heuristic outputs are coverage only; they are never counted as source-resolved IPA accuracy.'
     ]
@@ -423,14 +430,14 @@ export function evaluateRows(rows, engine, morphologyMode = 'strict') {
 
 function loadCorpus(path, expectedSplit) {
   const rows = JSON.parse(readFileSync(path, 'utf8'));
-  if (!Array.isArray(rows)) throw new TypeError('UGTPHON corpus root must be a JSON array');
+  if (!Array.isArray(rows)) throw new TypeError('Korean benchmark corpus root must be a JSON array');
   const seen = new Set();
   for (const [index, row] of rows.entries()) {
     if (!row || typeof row !== 'object' || !Array.isArray(row.tokens)) {
       throw new TypeError('UGTPHON row ' + index + ' must be an object with a tokens array');
     }
     if (row.lang !== 'ko' || row.split !== expectedSplit) {
-      throw new Error('UGTPHON row ' + index + ' is not from Korean ' + expectedSplit);
+      throw new Error('Korean benchmark row ' + index + ' is not from Korean ' + expectedSplit);
     }
     if (seen.has(row.id)) throw new Error('duplicate UGTPHON row id: ' + row.id);
     seen.add(row.id);
@@ -448,6 +455,8 @@ function main() {
   const split = value('--split') ?? 'test';
   const outputPath = value('--output');
   const morphologyMode = value('--mode') ?? 'strict';
+  const benchmarkName = value('--benchmark-name') ?? 'Korean canonical-token IPA diagnostic';
+  const datasetSource = value('--dataset-source');
   if (!corpusPath) {
     process.stderr.write('Usage: node scripts/benchmark_kozak_kim_browser.mjs --corpus ko-test.json [--split test] [--mode strict|soft|super-soft] [--output report.json]\n');
     process.exitCode = 2;
@@ -455,13 +464,13 @@ function main() {
   }
   try {
     const rows = loadCorpus(corpusPath, split);
-    const report = evaluateRows(rows, createBrowserKozakKimEngine(), morphologyMode);
+    const report = evaluateRows(rows, createBrowserKozakKimEngine(), morphologyMode, benchmarkName, datasetSource);
     const rendered = JSON.stringify(report, null, 2) + '\n';
     if (outputPath) {
       writeFileSync(outputPath, rendered, 'utf8');
       const summary = Object.fromEntries([
         'engine', 'split', 'morphology_mode', 'ipa_profile', 'ipa_profile_status', 'eligible_tokens',
-        'scored_tokens', 'coverage_rate', 'exact_matches', 'exact_match_rate',
+        'scored_tokens', 'coverage_rate', 'output_available_tokens', 'output_availability_rate', 'exact_matches', 'exact_match_rate',
         'coverage_adjusted_exact_match_rate', 'character_error_rate',
         'unresolved_tokens', 'partial_tokens', 'heuristic_tokens', 'typed_fallback_tokens', 'source_resolved_scored_tokens',
         'target_unavailable_tokens', 'target_provisional_tokens', 'engine_errors'
