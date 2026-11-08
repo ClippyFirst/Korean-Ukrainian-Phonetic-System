@@ -117,5 +117,5 @@ test('five-dataset Korean G2P portfolio records access and representation gates'
   assert.match(portfolio, /LDC User Agreement/u);
   assert.match(portfolio, /Five-dataset execution policy/u);
   assert.match(readme, /Five-dataset Korean G2P benchmark portfolio/u);
-  assert.match(readme, /does not mean five completed benchmark runs/u);
+  assert.match(readme, /Five executable evaluation tracks span three datasets/u);
 });
