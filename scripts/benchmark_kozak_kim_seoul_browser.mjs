@@ -48,7 +48,7 @@ function loadPairs(path) {
 }
 
 export function evaluateMode(pairs, engine, mode, totalOccurrences) {
-  let scored = 0, exact = 0, distanceTotal = 0, referenceChars = 0;
+  let scored = 0, exact = 0, distanceTotal = 0, referenceChars = 0, outputAvailable = 0;
   let unresolved = 0, partial = 0, heuristic = 0, typedFallback = 0;
   let targetUnavailable = 0, targetProvisional = 0, errors = 0;
   let abstentionPenaltyDistance = 0;
@@ -68,6 +68,8 @@ export function evaluateMode(pairs, engine, mode, totalOccurrences) {
       if (result.target_status === 'unavailable') targetUnavailable += pair.weight;
       if (result.target_status === 'provisional' || result.candidate_status === 'provisional') targetProvisional += pair.weight;
       const trace = Array.isArray(result.trace) ? result.trace : [];
+      const candidateSurface = surfaceFor(result, pair.source);
+      if (candidateSurface !== null) outputAvailable += pair.weight;
       const fallback = result.phonetic_result_type === 'mixed-surface-ipa-and-orthographic-fallback' ||
         trace.some(item => item?.status === 'super-soft-orthographic-fallback' ||
           item?.phoneticResultType === 'orthographic-phonemic-fallback');
@@ -100,7 +102,7 @@ export function evaluateMode(pairs, engine, mode, totalOccurrences) {
         outputs.set(JSON.stringify([pair.source, pair.gold]), { status: 'unresolved', predicted: null, exact: false, distance: null, weight: pair.weight });
         continue;
       }
-      const predicted = surfaceFor(result, pair.source);
+      const predicted = candidateSurface;
       if (predicted === null) {
         unresolved += pair.weight;
         abstentionPenaltyDistance += [...pair.gold].length * pair.weight;
@@ -129,6 +131,8 @@ export function evaluateMode(pairs, engine, mode, totalOccurrences) {
       unique_source_gold_pairs: pairs.length,
       scored_occurrences: scored,
       coverage: totalOccurrences ? scored / totalOccurrences : null,
+      output_available_occurrences: outputAvailable,
+      output_availability_rate: totalOccurrences ? outputAvailable / totalOccurrences : null,
       exact_matches: exact,
       exact_match_rate_scored_only: scored ? exact / scored : null,
       exact_match_rate_coverage_adjusted: totalOccurrences ? exact / totalOccurrences : null,
