@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - "scripts/inspect_seoul_corpus_textgrids.py"
+      - "scripts/benchmark_kozak_kim_seoul_browser.mjs"
       - "tests/test_seoul_corpus_textgrid_inventory.py"
       - ".github/workflows/seoul-corpus-inventory.yml"
 
@@ -19,7 +20,7 @@ concurrency:
 jobs:
   inspect-label-archive:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - name: Run synthetic TextGrid inventory tests
@@ -46,19 +47,29 @@ jobs:
         run: |
           python scripts/inspect_seoul_corpus_textgrids.py --root "$RUNNER_TEMP/seoul-labels" --output seoul-corpus-inventory.json
 
-      - name: Preserve metadata-only inventory artifact
+      - name: Benchmark Strict, Soft and Super-soft on aligned Seoul word pairs
+        id: benchmark
+        if: steps.inventory.outcome == 'success'
+        continue-on-error: true
+        run: |
+          node scripts/benchmark_kozak_kim_seoul_browser.mjs \
+            --corpus "$RUNNER_TEMP/seoul-word-pairs.json" \
+            --output "$RUNNER_TEMP/seoul-surface-benchmark.json"
+
+      - name: Preserve metadata-only benchmark artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: seoul-corpus-metadata-inventory
           path: |
-            seoul-corpus-inventory.json
+            ${{ runner.temp }}/seoul-corpus-inventory.json
+            ${{ runner.temp }}/seoul-surface-benchmark.json
             seoul-label-archive.sha256
           if-no-files-found: warn
           retention-days: 30
 
       - name: Require complete archive parsing
-        if: steps.inventory.outcome == 'failure'
+        if: steps.inventory.outcome == 'failure' || steps.benchmark.outcome == 'failure'
         run: |
-          echo "One or more TextGrid files were not parsed. Inspect the metadata artifact before implementing a corpus converter."
+          echo "The Seoul archive inventory or three-mode surface benchmark failed. Inspect the metadata artifact and runner logs before accepting this corpus."
           exit 1
