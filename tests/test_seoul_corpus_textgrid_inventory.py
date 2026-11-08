@@ -49,6 +49,7 @@ class SeoulTextGridInventoryTests(unittest.TestCase):
             root = Path(tmp)
             (root / "good.TextGrid").write_text(LONG_TEXTGRID, encoding="utf-8")
             (root / "bad.TextGrid").write_text("not a TextGrid", encoding="utf-8")
+            (root / "._good.TextGrid").write_bytes(b"AppleDouble metadata")
             result = build_inventory(root)
             self.assertEqual(result["files_found"], 2)
             self.assertEqual(result["files_parsed"], 1)
