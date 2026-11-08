@@ -44,3 +44,35 @@ test('Seoul phonemic IPA scorer excludes typed orthographic fallback from accura
   assert.equal(result.summary.cer_with_abstentions_as_deletions, 1);
   assert.equal(result.outputs.get(JSON.stringify(['학교', 'hak̚k͈jo'])).status, 'typed_fallback');
 });
+
+const unresolvedPassthroughEngine = {
+  convert() {
+    return {
+      ipa: '',
+      surfaceHangul: '학교',
+      pronunciation_status: 'unresolved',
+      phonetic_result_type: 'unresolved',
+      trace: [],
+      ipa_profile: 'clippyfirst-korean-broad-v1',
+      ipa_profile_version: 1,
+      ipa_profile_status: 'unadjudicated-cross-runtime',
+      target_status: 'unavailable',
+    };
+  },
+};
+
+test('unresolved Hangul passthrough is not counted as candidate availability', () => {
+  const pairs = [{ source: '학교', gold: '학꾜', weight: 1 }];
+  const result = evaluateSurface(pairs, unresolvedPassthroughEngine, 'strict', 1);
+  assert.equal(result.summary.scored_occurrences, 0);
+  assert.equal(result.summary.output_available_occurrences, 0);
+  assert.equal(result.summary.output_availability_rate, 0);
+});
+
+test('unresolved empty IPA is not counted as candidate availability', () => {
+  const pairs = [{ source: '학교', gold: 'hak̚k͈jo', weight: 1 }];
+  const result = evaluateIpa(pairs, unresolvedPassthroughEngine, 'strict', 1);
+  assert.equal(result.summary.scored_occurrences, 0);
+  assert.equal(result.summary.output_available_occurrences, 0);
+  assert.equal(result.summary.output_availability_rate, 0);
+});
