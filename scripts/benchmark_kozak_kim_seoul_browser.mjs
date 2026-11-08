@@ -69,11 +69,11 @@ export function evaluateMode(pairs, engine, mode, totalOccurrences) {
       if (result.target_status === 'provisional' || result.candidate_status === 'provisional') targetProvisional += pair.weight;
       const trace = Array.isArray(result.trace) ? result.trace : [];
       const candidateSurface = surfaceFor(result, pair.source);
-      if (candidateSurface !== null) outputAvailable += pair.weight;
       const fallback = result.phonetic_result_type === 'mixed-surface-ipa-and-orthographic-fallback' ||
         trace.some(item => item?.status === 'super-soft-orthographic-fallback' ||
           item?.phoneticResultType === 'orthographic-phonemic-fallback');
       if (fallback) {
+        if (candidateSurface !== null) outputAvailable += pair.weight;
         typedFallback += pair.weight;
         // An orthographic-phonemic fallback is a typed coverage outcome, not
         // source-resolved pronunciation. Keep it out of Exact/CER and paired wins.
@@ -85,12 +85,14 @@ export function evaluateMode(pairs, engine, mode, totalOccurrences) {
       }
       const status = result.pronunciation_status ?? (result.ipa ? 'resolved' : 'unresolved');
       if (status === 'heuristic') {
+        if (candidateSurface !== null) outputAvailable += pair.weight;
         heuristic += pair.weight;
         abstentionPenaltyDistance += [...pair.gold].length * pair.weight;
         outputs.set(JSON.stringify([pair.source, pair.gold]), { status, predicted: null, exact: false, distance: null, weight: pair.weight });
         continue;
       }
       if (status === 'partial') {
+        if (candidateSurface !== null) outputAvailable += pair.weight;
         partial += pair.weight;
         abstentionPenaltyDistance += [...pair.gold].length * pair.weight;
         outputs.set(JSON.stringify([pair.source, pair.gold]), { status, predicted: null, exact: false, distance: null, weight: pair.weight });
@@ -109,6 +111,7 @@ export function evaluateMode(pairs, engine, mode, totalOccurrences) {
         outputs.set(JSON.stringify([pair.source, pair.gold]), { status: 'unresolved_surface', predicted: null, exact: false, distance: null, weight: pair.weight });
         continue;
       }
+      outputAvailable += pair.weight;
       const distance = editDistance(predicted, pair.gold);
       const isExact = distance === 0;
       scored += pair.weight;
