@@ -136,11 +136,11 @@ def run_mfa_g2p(
         raise ValueError("model-input normalization collapsed distinct source words")
     with tempfile.TemporaryDirectory(prefix="mfa-korean-g2p-") as temp:
         root = Path(temp)
-        input_path, output_path = root / "words.g2p", root / "predictions.dict"
+        input_path, output_path = root / "words.txt", root / "predictions.dict"
         input_path.write_text("\n".join(prepared) + "\n", encoding="utf-8")
         started = time.perf_counter()
         completed = subprocess.run(
-            [mfa_command, "g2p", str(input_path), str(model_path), str(output_path)],
+            [mfa_command, "g2p", str(model_path), str(input_path), str(output_path)],
             capture_output=True, text=True, check=False, timeout=timeout_seconds,
         )
         elapsed_ms = (time.perf_counter() - started) * 1000
