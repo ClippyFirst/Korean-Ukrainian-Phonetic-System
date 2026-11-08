@@ -46,7 +46,11 @@ export function sourceAdjudicationsForInput(source) {
 export function attachSourceAdjudications(source, result) {
   return {
     ...result,
-    source_adjudication_registry_version: registry.schema_version,
+    source_adjudication_registry: {
+      version: registry.schema_version,
+      accepted_occurrence_count: registry.accepted_occurrence_count,
+      adjudication_count: registry.adjudication_count
+    },
     source_adjudications: sourceAdjudicationsForInput(source)
   };
 }
