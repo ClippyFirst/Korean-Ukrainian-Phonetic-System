@@ -39,6 +39,25 @@ The latest paired Native/g2pK diagnostic is from PR #456; the complete multi-eng
 Evidence: [latest paired Native/g2pK diagnostic](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42414467883), [source-only PR #456](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/456), and its exact-head [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42414467840). The complete [multi-engine diagnostic PR #457 run](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681855) passed, including the queue byte comparison, Browser Kozak Kim parity, and SIGMORPHON lexical benchmark. The earlier run [42414467825](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42414467825) failed only because generated CSV line endings differed from the committed canonical representation; PR #457 pins the format and verifies the exact output. PR #457's [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681845), [Python/browser test matrix](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681848), [research artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681843), and [exhaustive test-case extraction](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681889) all passed. Historical mandatory baseline runs [42226435101](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435101) and [42226435403](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435403) remain linked as earlier evidence, not as the latest benchmark.
 
 
+
+### Latest full multi-engine diagnostic
+
+The successful pinned run 42416681855 also compared ten engines, not only Native and g2pK:
+
+| Engine | UGTPHON exact | UGTPHON CER | SIGMORPHON exact | SIGMORPHON CER |
+|---|---:|---:|---:|---:|
+| ClippyFirst Native | 52.7387% | 9.0130% | 35.9719% | 14.5347% |
+| g2pK 0.9.4 | 53.0892% | 9.2328% | 35.3353% | 14.8222% |
+| g2p-ko 1.0.0 | 52.4602% | 9.3928% | 35.6356% | 14.6970% |
+| KoG2Padvanced 2022 | 47.3178% | 10.6815% | 32.6326% | 15.8237% |
+| phonemize 2.0.1 | 42.5453% | 14.3531% | 28.9289% | 17.4387% |
+| KoG2P 2019 | 27.3030% | 19.5122% | 18.7187% | 21.8327% |
+| kokorog2p 0.9.15 | 18.3130% | 26.5352% | 9.6096% | 30.7336% |
+| HAMA 1.7.0 | 16.9071% | 25.1081% | 12.7127% | 27.6164% |
+| hangul_to_ipa 2026 | 16.2412% | 24.8054% | 8.9089% | 29.8448% |
+| eSpeak NG Korean | 8.1391% | 33.6101% | 4.3043% | 40.7236% |
+
+These are Korean IPA diagnostics under the pinned datasets and normalization, not Ukrainian target scores or normative gold. CharsiuG2P and ByT5 inference were skipped by policy. Full scored counts and methodological limitations are in the [current audit](docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md#current-main-continuation--2026-11-08-documentation-and-benchmark-reconciliation).
 ### IPA-to-Ukrainian renderer — separate validation status
 
 The ClippyFirst IPA renderer is the downstream target adapter, not a Korean G2P engine:
