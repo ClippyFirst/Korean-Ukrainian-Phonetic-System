@@ -35,6 +35,31 @@ Important interpretation: these are three separate runtime policies and three di
 
 The exact-head parity report matched all 2,703 occurrence identities and all 2,703 surface-Hangul outputs. On the 2,702 resolved occurrences, raw IPA and broad IPA matched 2,702/2,702 (100%); coverage/abstention states also matched. Both sides declared `clippyfirst-korean-broad-v1`, version 1, with the same profile contract. This establishes measured parity for the strict configuration on this dataset, not universal parity across every rule/input or the Soft/Super-soft modes.
 
+### Seoul Corpus: third executable dataset and word-surface benchmark
+
+The OpenSLR SLR113 label archive was downloaded in CI and parsed without downloading audio. Archive SHA-256: `63c3f8ffa6976307a732689d6c5be7b2db4ec20f14bf276faf98c886add0d24b`. The archive is licensed CC BY-NC 2.0; no corpus labels or audio are committed or included in the benchmark artifact.
+
+- 240/240 TextGrid files parsed; 1,680 interval tiers and 2,671,221 interval annotations.
+- Tier inventory: 480 `pWord.ortho.`, 480 `pWord.prono.`, 240 `phoneme`, 240 `utt.ortho.`, and 240 `utt.prono.` tiers. Duplicate tier names are preserved and paired by occurrence order.
+- 604,576 paired word-tier interval slots; 604,564 have matching start/end boundaries within 0.1 ms. The 12 boundary mismatches are excluded.
+- **231,626 aligned Hangul-only orthography→pronunciation word occurrences**, 54,868 unique source/reference pairs and 37,749 unique source forms.
+- Audio was not used. This is a Hangul surface-pronunciation benchmark, not IPA Exact/CER and not Ukrainian target validation.
+
+| Kozak Kim mode | Source-resolved scored | Coverage | Exact scored-only | Exact coverage-adjusted | CER scored-only | Heuristic | Typed fallback | Unresolved |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Strict | 224,764 / 231,626 | 97.0375% | 57.1537% | 55.4605% | 24.5421% | 0 | 0 | 6,862 |
+| Soft | 201,516 / 231,626 | 87.0006% | 56.2055% | 48.8991% | 26.3641% | 26,057 | 0 | 4,053 |
+| Super-soft | 193,390 / 231,626 | 83.4924% | 56.8509% | 47.4662% | 26.3118% | 38,236 | 29 | 0 |
+
+Paired mode deltas on common source-resolved occurrences:
+- Strict vs Soft: 201,516 common; 8,031 outputs changed; Strict had 778 exact wins, Soft had 0.
+- Strict vs Super-soft: 193,390 common; 7,553 outputs changed; Strict had 771 exact wins, Super-soft had 0.
+- Soft vs Super-soft: 193,390 common; **zero output changes**. Super-soft changes status/fallback classification, not the source-resolved surface predictions in this common set.
+
+Interpretation: Strict has the best coverage-adjusted Exact and the lowest CER on this corpus. Soft and Super-soft do not improve Exact on the common scored subsets; they introduce heuristic/fallback strata and lower source-resolved coverage. The corpus is spontaneous speech and its transcription conventions differ from the project’s rule-based canonical profile, so these are diagnostic results—not an independently adjudicated universal accuracy claim. Do not tune rules on this corpus and then call it a sealed holdout.
+
+Evidence: [Seoul preflight and three-mode benchmark run 42490612299](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42490612299), artifact `13621490886`. The metadata-only inventory and aggregate mode report are retained; raw word pairs remain temporary CI data.
+
 ### Remaining evidence limits
 
 - The Broad sensitivity profile remains `research-only-unadjudicated`; its feature collapses are documented and are not normative IPA gold.
