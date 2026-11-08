@@ -29,8 +29,8 @@ Full 10-engine artifact: [run 42487350896](https://github.com/ClippyFirst/Korean
 - 231,626 aligned Hangul surface word pairs (54,868 unique source/reference pairs).
 - 36 observed phoneme symbols mapped through `data/korean/ipa/seoul-corpus-phonemic-ipa-v1.json`, derived from Yun et al. (2015), Table 3, DOI `10.13064/KSSS.2015.7.2.103`.
 - 1,134,781 mapped phone tokens; 70,660 non-phone/unmapped intervals excluded. 231,625 word-level phonemic IPA pairs generated; six phone-boundary conflicts and one non-phone/unmapped word excluded.
-- No TextGrid files, audio, or word/IPA pair JSON are committed or uploaded. Disclosure: intermediate artifact 13621412269 contains a distinct phoneme-tier label inventory, including some short laughter-tag text, but not full TextGrid/audio/word-pair data; it expires 2026-12-08. Final artifact 13623272235 (rerun 42495867492) was inspected and contains aggregate metadata/metrics only, with no raw label-value map; future artifacts are retained 7 days. The corpus is CC BY-NC 2.0.
-- Seoul workflow: [run 42495867492](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42495867492), artifact `13623272235`.
+- No TextGrid files, audio, or word/IPA pair JSON are committed or uploaded. Disclosure: intermediate artifact 13621412269 contains a distinct phoneme-tier label inventory, including some short laughter-tag text, but not full TextGrid/audio/word-pair data; it expires 2026-12-08. Final artifact 13623457737 (rerun 42496539257) was inspected and contains aggregate metadata/metrics only, with no raw label-value map; future artifacts are retained 7 days. The corpus is CC BY-NC 2.0.
+- Seoul workflow: [run 42496539257](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42496539257), artifact `13623457737`.
 
 ### Seoul mode results
 
@@ -59,7 +59,7 @@ Strict has the best coverage-adjusted Exact and lowest CER in both Seoul referen
 | Workflow | Result | Evidence |
 |---|---|---|
 | 10-engine UGTPHON + SIGMORPHON, three Browser modes and Native/Browser parity | **PASS** | [42487350896](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487350896) |
-| Seoul TextGrid inventory + surface + phonemic IPA, all three modes | **PASS** | [42495867492](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42495867492) |
+| Seoul TextGrid inventory + surface + phonemic IPA, all three modes | **PASS** | [42496539257](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42496539257) |
 | Python 3.11/3.12/3.13, web/npm tests and build, wheel install, teacher-corpus audit | **PASS** | [42491874801](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874801) on `de1d9b10f31e4ea730fc7c5940753c42f54ab3a1` |
 | Python regression/data integrity and Browser regression/build | **PASS** | [42491874749](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874749) on `de1d9b10f31e4ea730fc7c5940753c42f54ab3a1` |
 | Master table and research corpus artifacts | **PASS** | [42491874837](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874837) on `de1d9b10f31e4ea730fc7c5940753c42f54ab3a1` |
@@ -161,7 +161,7 @@ Paired comparisons: Strict vs Soft has 201,515 common scored occurrences, 6,481 
 
 Interpretation: Strict has the best coverage-adjusted Exact and lowest CER in this phonemic reference. The higher scored-only Exact of Soft/Super-soft is a selection effect: they score fewer source-resolved occurrences and classify more cases as heuristic. Because this gold is phonemic while the engine profiles retain phonetic/allophonic detail, raw Exact/CER are diagnostic and must not be presented as narrow-IPA acceptance. This benchmark is not Ukrainian target validation.
 
-Evidence: [Seoul preflight, surface and phonemic-IPA benchmark run 42495867492](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42495867492), artifact `13623272235`. The artifact contains metadata and aggregate metrics only; raw word/IPA pairs remain temporary CI data.
+Evidence: [Seoul preflight, surface and phonemic-IPA benchmark run 42496539257](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42496539257), artifact `13623457737`. The artifact contains metadata and aggregate metrics only; raw word/IPA pairs remain temporary CI data.
 
 ### Remaining evidence limits
 
@@ -1146,10 +1146,20 @@ The first successful Seoul artifact (run 42492152654 / artifact 13621892753) exp
 
 **Correction implemented:** both scripts/benchmark_kozak_kim_seoul_browser.mjs and scripts/benchmark_kozak_kim_seoul_ipa.mjs now classify typed fallback as a separate outcome before the heuristic branch. It is excluded from Exact/CER and paired resolved-output comparisons. tests/kozak-kim-seoul-benchmark.test.mjs verifies this independently for Hangul surface and phonemic IPA.
 
-- Corrected exact-code benchmark run [42495867492](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42495867492), artifact 13623272235: PASS for inventory, surface benchmark and phonemic IPA benchmark.
+- Corrected exact-code benchmark run [42496539257](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42496539257), artifact 13623457737: PASS for inventory, surface benchmark and phonemic IPA benchmark.
 - Corrected Super-soft status counts: **38,207 heuristic + 29 typed fallback**; previously reported combined/overlapping heuristic count 38,236 is superseded. Scored occurrence counts, coverage, Exact and CER remain unchanged because fallback was already excluded from scoring.
 - Full tests [42495903258](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42495903258): PASS across Python 3.11/3.12/3.13, wheel install, web tests/build, teacher corpus audit. System Verify [42495903331](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42495903331): PASS for browser regression/build and Python regression/data integrity; optional official NIKL metadata inventory was skipped.
 - Fallback code commit: 536cd44460bbd225fcd76f592bfe6e3077a245a4; regression-test commit: e1e393b3518b6c69685ad00a179ab8996d18ef71.
 - GitHub Pages deployment for e1e393b3518b6c69685ad00a179ab8996d18ef71: **PASS**, run [42495903310](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42495903310).
 
 This does not change the research interpretation: Strict has the best coverage-adjusted Exact and lowest CER in both Seoul reference layers; Soft and Super-soft do not beat Strict on the paired common-scored subset. Seoul remains a non-commercial diagnostic corpus, not independently adjudicated narrow IPA gold or Ukrainian-target validation.
+
+
+## 2026-11-08 — candidate-output availability separated from scored coverage
+
+The Seoul scorer now reports candidate output availability separately from source-resolved scoring coverage. This avoids presenting heuristic/fallback output as accuracy and also avoids treating an unresolved Hangul passthrough as a pronunciation candidate.
+- Hangul surface candidate output availability: Strict 224,764/231,626 (97.0375%); Soft 227,573/231,626 (98.2502%); Super-soft 231,626/231,626 (100%).
+- Phonemic IPA candidate output availability: Strict 224,763/231,625 (97.0375%); Soft 227,572/231,625 (98.2502%); Super-soft 231,625/231,625 (100%).
+- Source-resolved coverage is unchanged: surface 97.0375% / 87.0006% / 83.4924%; IPA 97.0375% / 87.0005% / 83.4923% for Strict / Soft / Super-soft. The candidate-availability metric is not an accuracy score.
+- Corrected output-availability artifact: run [42496539257](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42496539257), artifact `13623457737`.
+- Unit tests for typed fallback and unresolved passthrough exclusion are included in test run [42496551366](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42496551366) (**PASS**). System Verify [42496551350](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42496551350) (**PASS**; NIKL metadata-only inventory skipped).
