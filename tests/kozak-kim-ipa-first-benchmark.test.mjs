@@ -563,3 +563,54 @@ test('Browser keeps ordinary consonant-onset ㅢ → [i] as a negative control',
   const engine = createEngine(canonical, '');
   assert.equal(engine.convert('희망').ipa, 'hi.maŋ');
 });
+
+
+test('browser benchmark runs Strict, Soft and Super-soft separately and excludes typed fallbacks from IPA accuracy', () => {
+  const row = { id: 'mode-row', split: 'test', tokens: [{ canonical: '가', phoneme: 'ka' }] };
+  const calls = [];
+  const engine = {
+    convert(_word, options) {
+      calls.push(options);
+      if (options.morphologyMode === 'super-soft') {
+        return {
+          ipa: 'ka',
+          pronunciation_status: 'heuristic',
+          phonetic_result_type: 'mixed-surface-ipa-and-orthographic-fallback',
+          ipa_profile: 'browser-super-soft-maximum-coverage-v1',
+          trace: [{
+            source: '가',
+            status: 'super-soft-orthographic-fallback',
+            phoneticResultType: 'orthographic-phonemic-fallback'
+          }]
+        };
+      }
+      return {
+        ipa: 'ka',
+        pronunciation_status: 'resolved',
+        phonetic_result_type: 'surface-ipa',
+        ipa_profile: options.ipaProfile ?? 'browser-soft-profile',
+        ipa_profile_status: 'unadjudicated-cross-runtime',
+        trace: []
+      };
+    }
+  };
+
+  const strict = evaluateRows([row], engine, 'strict');
+  const soft = evaluateRows([row], engine, 'soft');
+  const superSoft = evaluateRows([row], engine, 'super-soft');
+
+  assert.equal(strict.morphology_mode, 'strict');
+  assert.equal(soft.morphology_mode, 'soft');
+  assert.equal(superSoft.morphology_mode, 'super-soft');
+  assert.equal(calls[0].ipaProfile, 'clippyfirst-korean-broad-v1');
+  assert.equal(calls[1].ipaProfile, undefined);
+  assert.equal(calls[2].ipaProfile, undefined);
+  assert.equal(strict.scored_tokens, 1);
+  assert.equal(soft.scored_tokens, 1);
+  assert.equal(superSoft.scored_tokens, 0);
+  assert.equal(superSoft.heuristic_tokens, 1);
+  assert.equal(superSoft.typed_fallback_tokens, 1);
+  assert.equal(superSoft.source_resolved_scored_tokens, 0);
+  assert.equal(superSoft.records[0].typed_fallback, true);
+  assert.throws(() => evaluateRows([row], engine, 'unknown'), /morphologyMode/u);
+});
