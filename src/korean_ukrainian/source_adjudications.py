@@ -5,7 +5,7 @@ import re
 from functools import lru_cache
 from importlib.resources import files
 
-_KOREAN_BOUNDARY = re.compile(r"[\\u1100-\\u11ff\\u3130-\\u318f\\uac00-\\ud7a3]")
+_KOREAN_BOUNDARY = re.compile(r"[\u1100-\u11ff\u3130-\u318f\uac00-\ud7a3]")
 
 @lru_cache(maxsize=1)
 def _registry() -> dict:
