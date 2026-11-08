@@ -29,7 +29,7 @@ function loadPairs(path) {
 }
 
 export function evaluateMode(pairs, engine, mode, totalOccurrences) {
-  let scored=0, exact=0, distanceTotal=0, referenceChars=0;
+  let scored=0, exact=0, distanceTotal=0, referenceChars=0, outputAvailable=0;
   let broadScored=0, broadExact=0, broadDistanceTotal=0, broadReferenceChars=0;
   let unresolved=0, partial=0, heuristic=0, typedFallback=0, targetUnavailable=0, targetProvisional=0, errors=0;
   let abstentionPenaltyDistance=0;
@@ -43,6 +43,7 @@ export function evaluateMode(pairs, engine, mode, totalOccurrences) {
       if(result.target_status==='unavailable') targetUnavailable+=pair.weight;
       if(result.target_status==='provisional'||result.candidate_status==='provisional') targetProvisional+=pair.weight;
       const trace=Array.isArray(result.trace)?result.trace:[];
+      if(typeof result.ipa==='string'&&result.ipa.length>0)outputAvailable+=pair.weight;
       const fallback=result.phonetic_result_type==='mixed-surface-ipa-and-orthographic-fallback'||
         trace.some(item=>item?.status==='super-soft-orthographic-fallback'||item?.phoneticResultType==='orthographic-phonemic-fallback');
       if(fallback){
@@ -77,6 +78,7 @@ export function evaluateMode(pairs, engine, mode, totalOccurrences) {
   return {summary:{
     mode,...profile,eligible_occurrences:totalOccurrences,unique_source_ipa_pairs:pairs.length,
     scored_occurrences:scored,coverage:totalOccurrences?scored/totalOccurrences:null,
+    output_available_occurrences:outputAvailable,output_availability_rate:totalOccurrences?outputAvailable/totalOccurrences:null,
     exact_matches:exact,exact_match_rate_scored_only:scored?exact/scored:null,
     exact_match_rate_coverage_adjusted:totalOccurrences?exact/totalOccurrences:null,
     cer_scored_only:referenceChars?distanceTotal/referenceChars:null,
