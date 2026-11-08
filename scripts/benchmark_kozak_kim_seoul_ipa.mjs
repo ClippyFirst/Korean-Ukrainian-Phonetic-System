@@ -77,8 +77,8 @@ export function evaluateMode(pairs, engine, mode, totalOccurrences) {
   const totalGoldChars=pairs.reduce((sum,pair)=>sum+[...pair.gold].length*pair.weight,0);
   return {summary:{
     mode,...profile,eligible_occurrences:totalOccurrences,unique_source_ipa_pairs:pairs.length,
-    scored_occurrences:scored,coverage:totalOccurrences?scored/totalOccurrences:null,
-    output_available_occurrences:outputAvailable,output_availability_rate:totalOccurrences?outputAvailable/totalOccurrences:null,
+    scored_occurrences:scored,coverage:totalOccurrences?scored/totalOccurrences:null,source_resolved_coverage:totalOccurrences?scored/totalOccurrences:null,
+    output_available_occurrences:outputAvailable,output_availability_rate:totalOccurrences?outputAvailable/totalOccurrences:null,candidate_output_availability_rate:totalOccurrences?outputAvailable/totalOccurrences:null,
     exact_matches:exact,exact_match_rate_scored_only:scored?exact/scored:null,
     exact_match_rate_coverage_adjusted:totalOccurrences?exact/totalOccurrences:null,
     cer_scored_only:referenceChars?distanceTotal/referenceChars:null,
@@ -112,6 +112,13 @@ function main(){
   try{
     const pairs=loadPairs(corpusPath),totalOccurrences=pairs.reduce((sum,p)=>sum+p.weight,0);
     const engine=createBrowserKozakKimEngine(),results=MODES.map(mode=>evaluateMode(pairs,engine,mode,totalOccurrences));
+    const availability=results.map(result=>result.summary.output_available_occurrences);
+    if(availability[1]<availability[0]||availability[2]<availability[1]){
+      throw new Error('Candidate output availability must be monotonic: Strict <= Soft <= Super-soft');
+    }
+    if(availability[2]!==totalOccurrences){
+      throw new Error('Super-soft candidate output availability must be 100%; got '+availability[2]+'/'+totalOccurrences);
+    }
     const report={
       schema_version:1,benchmark:'Seoul Corpus phonemic IPA word-level diagnostic',
       source:'OpenSLR SLR113 phoneme tier aligned to pWord.ortho.',
