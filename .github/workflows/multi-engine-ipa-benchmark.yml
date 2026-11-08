@@ -536,7 +536,7 @@ jobs:
               report = json.loads(path.read_text(encoding="utf-8"))
               assert report["benchmark"] == "SIGMORPHON 2021 Korean lexical IPA diagnostic"
               assert report["morphology_mode"] == mode
-              assert report["eligible_tokens"] == 999, (mode, report["eligible_tokens"])
+              assert report["eligible_tokens"] == expected_tokens, (mode, report["eligible_tokens"], expected_tokens)
               assert report["output_available_tokens"] <= report["eligible_tokens"]
               assert report["scored_tokens"] <= report["output_available_tokens"]
               assert report["engine_errors"] == 0, (mode, report["engine_errors"])
