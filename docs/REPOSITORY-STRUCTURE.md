@@ -28,7 +28,7 @@ The reconstructed 236-row cohort contains 15 exact standard-form runtime disposi
 
 Historical snapshot only: its UGTPHON paired values are superseded by the current 2026-11-08 table below; its SIGMORPHON values are likewise superseded. Preserve this paragraph as dated audit history, not as the current benchmark statement.
 
-At main commit `e72856c1f03bfb775805748f96ec23889ca2e60f`, the recursive Git tree contains **848 entries** (805 files and 43 directories), including 183 Markdown files, 398 files under `tests/`, 65 scripts, 18 GitHub Actions workflows and 13 schemas, 150 files under `docs/` and 59 under `research/`. These are point-in-time inventory counts, not measures of implementation completeness.
+At the current documentation inventory check on main commit `f786c746d2f744b611acda0bc02f81d93c448487`, the recursive Git tree contains **853 entries** (810 files and 43 directories), including 183 Markdown files, 399 files under `tests/`, 65 scripts, 18 GitHub Actions workflows and 13 schemas, 150 files under `docs/` and 60 under `research/`. These are point-in-time inventory counts, not measures of implementation completeness.
 
 
 ## IPA target renderer ownership and validation boundary
