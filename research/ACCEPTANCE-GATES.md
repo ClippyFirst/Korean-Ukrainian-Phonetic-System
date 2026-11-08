@@ -1563,3 +1563,25 @@ Additional regression scope: the native Python and browser shared-Broad profiles
 | Validate exact source provenance before licensed external packet generation | DONE_VERIFIED | Builder checks pinned source path, commit, blob and declared licence for every row, plus the canonical source-register entry and accompanying notices. |
 | Conduct independent 236-case review and Ukrainian target review | TODO / BLOCKED | No reviewer annotations or packets have been supplied/generated. Acceptance requires two independent qualified Korean IPA passes, blind reconciliation, and a separate Ukrainian-reader target review. |
 | Resolve original 236/239 selector membership and source post chain-of-title uncertainty | BLOCKED | The historical selector/member snapshot and per-post copyright authority are not independently established; disclose both limitations and do not claim legal certainty. |
+
+## 2026-11-08 — separate Kozak Kim mode benchmark acceptance
+
+**Mode contract:** Strict, Soft, and Super-soft are three operating policies of the same Kozak Kim engine. They are separate evaluation subjects; none may inherit another mode's benchmark score.
+
+| Mode | Current status | Evidence / next acceptance condition |
+|---|---|---|
+| Strict | DONE_VERIFIED as a diagnostic benchmark | Current-main ten-engine UGTPHON/SIGMORPHON measurements are Strict-path results. Preserve coverage/abstention denominators and label them corpus-convention diagnostics, not independent normative IPA gold. |
+| Soft | PARTIAL — benchmark implementation exists; current exact-head score not recorded | `scripts/benchmark_morphology_ipa_delta.py` and `.github/workflows/morphology-consensus-diagnostic.yml` provide paired Strict/Soft UGTPHON scoring. Run on the current main SHA; publish exact/CER, coverage, abstentions, heuristic counts, changed occurrence IDs and paired deltas. Keep analyzer-consensus and boundary-gated counterfactuals separate from Soft. |
+| Super-soft | TODO — accuracy benchmark absent | Browser mode and coverage/fallback tests exist, but no accepted independent IPA accuracy score is recorded. Add a same-occurrence benchmark that stratifies source-resolved IPA, low-confidence heuristic IPA, typed orthographic-phonemic fallback, and target availability. Score only reference-compatible IPA strata; report fallback coverage separately. |
+
+### Required common evaluation for the 236-candidate cohort
+
+- Run all three modes on the same pinned 236 occurrence IDs, with the same input text, reference selection, IPA profile, and scoring denominator policy. Preserve row-level predictions and provenance.
+- Keep the cohort strata separate: 15 exact standard-form runtime dispositions; 181 profile-convention cases; 40 source-based engine-policy cases. This cohort is not 236 independent IPA gold labels. Do not score a row as gold merely because its engine policy is resolved.
+- Produce Strict-reference and broad-profile sensitivity views. Broad normalization must use the versioned, loss-audited operations; no blanket diacritic deletion, no collapsing /s/, /ɕ/, and /ʃ/, and no converting unresolved speaker-specific IPA into a selected variant.
+- For each mode report attempted/eligible/scored, coverage, unresolved, partial, heuristic, typed-fallback, runtime errors, Exact, CER, and paired per-occurrence Exact wins/losses and CER deltas. CER must use one fixed reference variant and character denominator across paired modes.
+- Super-soft typed fallback must never be included in the source-resolved IPA accuracy numerator. Publish its coverage and fallback-type counts separately.
+- Run the same three-mode matrix on the pinned UGTPHON and SIGMORPHON sets where compatible; do not compare different denominators without a paired subset report.
+- Evaluate IPA-to-Ukrainian target rendering separately on frozen IPA inputs with independent Ukrainian target references; Korean G2P scores do not validate target quality.
+
+**Current disposition:** Strict benchmark = DONE_VERIFIED diagnostic; Soft benchmark = PARTIAL; Super-soft accuracy benchmark = TODO; unified three-mode 236-case evaluation = TODO. This is an explicit research/benchmark gate, not a blocker to the already accepted source-based engine-policy dispositions.
