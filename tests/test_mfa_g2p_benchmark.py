@@ -28,7 +28,8 @@ def test_hangul_model_receives_nfc_precomposed_hangul():
 
 def test_jamo_model_uses_explicit_hangul_to_jamo_adapter(monkeypatch):
     fake = types.ModuleType("jamo")
-    fake.hangul_to_hcj = lambda value: "ㅎㅏㄴㄱㅜㄱ"
+    fake.h2j = lambda value: "한국"
+    fake.j2hcj = lambda value: "ㅎㅏㄴㄱㅜㄱ"
     monkeypatch.setitem(sys.modules, "jamo", fake)
     assert prepare_model_input("한국", "jamo") == "ㅎㅏㄴㄱㅜㄱ"
 
