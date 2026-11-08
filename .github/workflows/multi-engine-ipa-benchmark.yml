@@ -330,7 +330,8 @@ jobs:
           node scripts/benchmark_kozak_kim_browser.mjs \
             --corpus "$RUNNER_TEMP/ko-test.json" \
             --split test \
-            --output "$RUNNER_TEMP/kozak-kim-browser-ugtphon-report.json"          node scripts/benchmark_kozak_kim_browser.mjs \
+            --output "$RUNNER_TEMP/kozak-kim-browser-ugtphon-report.json"
+          node scripts/benchmark_kozak_kim_browser.mjs \
             --corpus "$RUNNER_TEMP/ko-test.json" \
             --split test \
             --mode soft \
