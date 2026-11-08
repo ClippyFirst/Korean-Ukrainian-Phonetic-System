@@ -138,7 +138,10 @@ def _read_nikl_word_index(archive_path: Path) -> dict[int, str]:
 def _load_kspan(path: Path, nikl_zip: Path, expected_rows: int | None = 63836) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
     word_index = _read_nikl_word_index(nikl_zip)
     with path.open("r", encoding="utf-8-sig", newline="") as stream:
-        reader = csv.DictReader(stream)
+        header = stream.readline()
+        delimiter = "\t" if header.count("\t") > header.count(",") else ","
+        stream.seek(0)
+        reader = csv.DictReader(stream, delimiter=delimiter)
         required = {"WordNum", "ModernKey", "ConservativeKey", "ModernPhon", "ConservativePhon"}
         if not reader.fieldnames or not required.issubset(reader.fieldnames):
             raise ValueError(f"K-SPAN schema missing fields: {sorted(required - set(reader.fieldnames or []))}")
@@ -196,6 +199,7 @@ def _load_kspan(path: Path, nikl_zip: Path, expected_rows: int | None = 63836) -
         "source": "K-SPAN 2.1, kspan_base.csv (Dataverse file 1010), joined to NIKL MKUFS2 일반어휘통계.txt",
         "license": "K-SPAN CC0 1.0; NIKL MKUFS2 Korean Open Government License Type 1 (attribution)",
         "raw_rows": len(source_rows),
+        "source_delimiter": delimiter,
         "matched_hangul_rows": len(modern),
         "non_hangul_rows": non_hangul,
         "unmatched_word_numbers": 0,
