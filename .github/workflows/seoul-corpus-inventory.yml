@@ -78,7 +78,7 @@ jobs:
             ${{ runner.temp }}/seoul-phonemic-ipa-benchmark.json
             seoul-label-archive.sha256
           if-no-files-found: warn
-          retention-days: 30
+          retention-days: 7
 
       - name: Require complete archive parsing
         if: steps.inventory.outcome == 'failure' || steps.benchmark.outcome == 'failure' || steps.ipa_benchmark.outcome == 'failure'
