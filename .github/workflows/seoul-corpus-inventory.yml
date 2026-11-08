@@ -34,11 +34,11 @@ jobs:
           sha256sum "$RUNNER_TEMP/seoul-label.tgz" | tee seoul-label-archive.sha256
           tar -tzf "$RUNNER_TEMP/seoul-label.tgz" >/dev/null
           tar -xzf "$RUNNER_TEMP/seoul-label.tgz" -C "$RUNNER_TEMP/seoul-labels"
-          echo "Archive top-level paths:"
-          tar -tzf "$RUNNER_TEMP/seoul-label.tgz" | head -40
-          echo "Extracted file count and sample paths:"
-          find "$RUNNER_TEMP/seoul-labels" -type f | wc -l
-          find "$RUNNER_TEMP/seoul-labels" -type f | head -40
+          test -f "$RUNNER_TEMP/seoul-labels/label-TextGrid.zip"
+          unzip -q "$RUNNER_TEMP/seoul-labels/label-TextGrid.zip" -d "$RUNNER_TEMP/seoul-labels/textgrids"
+          echo "Extracted TextGrid count and sample paths:"
+          find "$RUNNER_TEMP/seoul-labels/textgrids" -type f | wc -l
+          find "$RUNNER_TEMP/seoul-labels/textgrids" -type f | head -40
 
       - name: Inventory TextGrid structure only
         id: inventory
