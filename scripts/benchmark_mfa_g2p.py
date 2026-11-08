@@ -69,12 +69,12 @@ def prepare_model_input(word: str, model_kind: str) -> str:
     if model_kind != "jamo":
         raise ValueError(f"unsupported MFA model kind: {model_kind!r}")
     try:
-        from jamo import hangul_to_jamo
+        from jamo import hangul_to_hcj
     except ImportError as exc:
         raise RuntimeError("the pinned 'jamo' package is required for the Jamo MFA model") from exc
-    decomposed = "".join(hangul_to_jamo(normalized))
-    if not decomposed or any(not ("\u1100" <= char <= "\u11ff") for char in decomposed):
-        raise ValueError(f"Hangul-to-Jamo adapter produced unexpected output: {decomposed!r}")
+    decomposed = "".join(hangul_to_hcj(normalized))
+    if not decomposed or any(not ("\u3130" <= char <= "\u318f") for char in decomposed):
+        raise ValueError(f"Hangul-to-compatibility-Jamo adapter produced unexpected output: {decomposed!r}")
     return decomposed
 
 
@@ -164,7 +164,7 @@ def run_mfa_g2p(
         "g2p_threshold": 1.0,
         "strict_graphemes": True,
         "num_jobs": 3,
-        "model_input_normalization": "NFC Hangul" if model_kind == "hangul" else "NFC Hangul -> jamo.hangul_to_jamo (jamo==0.4.1)",
+        "model_input_normalization": "NFC Hangul" if model_kind == "hangul" else "NFC Hangul -> jamo.hangul_to_hcj (jamo==0.4.1)",
         "mfa_stdout_tail": completed.stdout[-1000:],
         "mfa_stderr_tail": completed.stderr[-1000:],
     }
