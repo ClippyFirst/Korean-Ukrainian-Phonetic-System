@@ -29,6 +29,33 @@ The Kozak Kim browser engine is implemented in `src/app/`: `engine.js` is its en
 
 These are three policies within one native engine, not three separate engines. Super-soft's 100% coverage target is a software coverage contract for the defined modern Hangul syllable inventory; it is not a 100% pronunciation-accuracy claim. The browser UI exposes Strict, Soft, and Super-soft. Python CLI/API support is narrower and must not be assumed to have Super-soft parity.
 
+### Mode-specific benchmark contract (three separate Kozak Kim result sets)
+
+The three modes must be documented and benchmarked as separate configurations. They share the same underlying deterministic engine and the same IPA/target boundary, but they have different acceptance policies and therefore different coverage/accuracy trade-offs. Never publish one aggregate “Kozak Kim score” without identifying the mode, IPA profile, corpus revision, denominator, and unresolved/fallback policy.
+
+| Kozak Kim mode | What is evaluated | Existing benchmark evidence | Current evidence status |
+|---|---|---|---|
+| **Strict** | Canonical/source-licensed IPA only; unresolved cases remain abstentions and are reported as coverage loss, not silently removed from the headline denominator. | The pinned multi-engine UGTPHON and SIGMORPHON diagnostics measure the strict Native path. Latest current-main paired/multi-engine evidence is linked from the [current audit](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md#current-main-continuation--2026-11-08-documentation-and-benchmark-reconciliation). | **MEASURED_DIAGNOSTIC** — current strict scores exist; they are corpus/convention diagnostics, not independent normative IPA gold. |
+| **Soft** | The same inputs and gold as Strict, with only the documented closed-set formal-ending hypotheses enabled. Report changed outputs, newly resolved cases, heuristic-rule counts, coverage, Exact, CER, and paired per-occurrence deltas against Strict. | `scripts/benchmark_morphology_ipa_delta.py` implements strict/soft paired scoring on UGTPHON; `.github/workflows/morphology-consensus-diagnostic.yml` runs and archives it alongside morphology diagnostics. | **PARTIAL / NEEDS_CURRENT_PINNED_RESULT** — the benchmark machinery exists, but this documentation snapshot does not establish a current-main, exact-head Soft score. Do not copy Strict metrics into the Soft column or present analyzer-consensus/boundary-gated counterfactuals as Soft results. |
+| **Super-soft** | Browser-only maximum-coverage tier, scored separately from its IPA fallback type: source-resolved IPA, low-confidence heuristic IPA, typed orthographic-phonemic fallback, and Ukrainian candidate availability must have separate counts. Report exact/CER only for strata with a defensible compatible IPA reference; fallback coverage is not pronunciation accuracy. | Current tests cover the mode's fallback behavior, uncertainty labels/brackets, and the 11,172 modern precomposed Hangul coverage contract. | **NOT_BENCHMARKED_FOR_ACCURACY** — no comparable independent IPA gold benchmark or accepted Super-soft Exact/CER result is recorded. The 100% inventory coverage target is not an accuracy result. |
+
+#### Required three-mode benchmark matrix
+
+For every pinned corpus and for the reconstructed 236-candidate Kozak Kim cohort, run Strict, Soft, and Super-soft on the exact same input occurrences and retain a row-level ledger. Publish, per mode:
+
+- attempted, eligible, scored, unresolved, partial, heuristic, fallback, runtime-error and Ukrainian-target-unavailable counts;
+- coverage and coverage-adjusted Exact, plus scored-only Exact with its denominator;
+- CER with one fixed reference-variant/character denominator across paired modes; report paired per-occurrence Exact wins/losses and CER deltas;
+- strict-reference scores and a separately labelled broad-profile sensitivity score, including every lossy normalization operation and feature-loss count;
+- for Super-soft, typed-fallback strata and fallback-only coverage separately from source-resolved IPA accuracy;
+- mode-to-mode output/status changes, exact occurrence IDs, and source/profile/version hashes.
+
+The 236-case review is not a 236-row gold set. The 15 standard-form dispositions, 181 profile-convention decisions, and 40 source-policy decisions must remain separately stratified. In particular, broad/narrow convention differences must not be auto-labelled as engine errors or erased by blanket diacritic stripping. For each row, use only source-supported broad-profile references; otherwise mark the score as convention-sensitive or unscorable. The 40 source-policy decisions do not create speaker-specific IPA gold.
+
+A valid comparison must include two complementary views: (1) each mode against the same reference and same denominator policy, and (2) paired Strict-vs-Soft-vs-Super-soft changes on the common scored subset. Report coverage separately so a mode cannot improve its score by abstaining, and report fallback strata so Super-soft cannot appear more accurate merely by always producing a candidate.
+
+The existing ten-engine comparison remains a Strict-path diagnostic; it is not a benchmark of all three Kozak Kim modes. The ordinary g2pK path remains a separate external baseline, not a fourth Kozak mode. The IPA-to-Ukrainian target renderer must be evaluated in a separate downstream benchmark with frozen IPA inputs and independent Ukrainian target review.
+
 **Canonical researcher-facing explanation:** [the service methodology page](https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/system.html#methodology-02c-kozak-kim), with [ordinary-mode g2pK details](https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/system.html#methodology-02a).
 
 ## How to interpret the comparative measurements
