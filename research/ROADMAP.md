@@ -3,7 +3,7 @@
 **Starting main:** e24cf7caff745fb612080aef6a33c8058f4144cc. **Latest runtime integration:** PR #461, squash merge b014d0107a47c3117c7dcbdd8d403f7fca3c7d41.
 
 - **DONE_VERIFIED — 40 source-policy decisions:** all 17 adjudication families / 40 occurrence IDs are represented in shared browser and Python runtime metadata. This is provenance/policy metadata, not a phonological or IPA rewrite. Two raw ㅠ rows remain unmatched until offsets are validated.
-- **DONE_VERIFIED — latest UGTPHON pair:** Native 1,425/2,702 exact (52.7387%), CER 9.0130%; g2pK 1,435/2,703 (53.0892%), CER 9.2328%. Paired g2pK exact +0.3700 pp; Native CER lower by 0.2198 pp.
+- **DONE_VERIFIED — latest UGTPHON pair:** Native 1,425/2,702 exact (52.7387%), CER 9.0130%; g2pK 1,435/2,703 (53.0892%), CER 9.2328%. Paired g2pK exact +0.3701 pp; Native CER lower by 0.2198 pp.
 - **DONE_VERIFIED — latest SIGMORPHON pair:** Native 359/998 exact (35.9719%), CER 14.5347%; g2pK 353/999 (35.3353%), CER 14.8222%. Native leads on both paired metrics.
 - **DONE_VERIFIED — full multi-engine benchmark:** PR #457 run 42416681855 passed mandatory deterministic/phonemizer comparisons, mismatch export, Browser same-occurrence and Native/Browser parity. CharsiuG2P and ByT5 inference skipped by policy. PR #461 multi-engine attempt cancelled.
 - **DONE_VERIFIED — main CI after PR #461:** tests 42464216274, system verification 42464216259, master/research artifacts 42464216261 and Pages deployment 42464216267 all succeeded on starting main.
