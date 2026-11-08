@@ -45,7 +45,7 @@ jobs:
         id: inventory
         continue-on-error: true
         run: |
-          python scripts/inspect_seoul_corpus_textgrids.py --root "$RUNNER_TEMP/seoul-labels" --output seoul-corpus-inventory.json
+          python scripts/inspect_seoul_corpus_textgrids.py --root "$RUNNER_TEMP/seoul-labels/textgrids" --output "$RUNNER_TEMP/seoul-corpus-inventory.json" --pairs-output "$RUNNER_TEMP/seoul-word-pairs.json"
 
       - name: Benchmark Strict, Soft and Super-soft on aligned Seoul word pairs
         id: benchmark
