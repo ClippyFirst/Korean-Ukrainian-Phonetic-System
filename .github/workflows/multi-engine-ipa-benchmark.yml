@@ -26,6 +26,7 @@ on:
       - "src/korean_ukrainian/**"
       - "src/app/engine*.js"
       - "data/korean/**"
+      - "research/SOURCE-REGISTER.csv"
       - ".github/workflows/multi-engine-ipa-benchmark.yml"
   # Documentation-only edits are checked by the repository verification workflows; do not rerun CPU G2P inference for prose changes.
   pull_request:
@@ -63,6 +64,7 @@ on:
       - "tests/test_summarize_korean_benchmark_reports.py"
       - "src/korean_ukrainian/**"
       - "data/korean/**"
+      - "research/SOURCE-REGISTER.csv"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
