@@ -29,8 +29,8 @@ Full 10-engine artifact: [run 42487350896](https://github.com/ClippyFirst/Korean
 - 231,626 aligned Hangul surface word pairs (54,868 unique source/reference pairs).
 - 36 observed phoneme symbols mapped through `data/korean/ipa/seoul-corpus-phonemic-ipa-v1.json`, derived from Yun et al. (2015), Table 3, DOI `10.13064/KSSS.2015.7.2.103`.
 - 1,134,781 mapped phone tokens; 70,660 non-phone/unmapped intervals excluded. 231,625 word-level phonemic IPA pairs generated; six phone-boundary conflicts and one non-phone/unmapped word excluded.
-- No TextGrid files, audio, or word/IPA pair JSON are committed or uploaded. Disclosure: intermediate artifact 13621412269 contains a distinct phoneme-tier label inventory, including some short laughter-tag text, but not full TextGrid/audio/word-pair data; it expires 2026-12-08. Final artifact 13622140135 contains aggregate metadata/metrics only; future artifacts are retained 7 days. The corpus is CC BY-NC 2.0.
-- Seoul workflow: [run 42491208142](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491208142), artifact `13622140135`.
+- No TextGrid files, audio, or word/IPA pair JSON are committed or uploaded. Disclosure: intermediate artifact 13621412269 contains a distinct phoneme-tier label inventory, including some short laughter-tag text, but not full TextGrid/audio/word-pair data; it expires 2026-12-08. Final artifact 13621892753 (rerun 42492152654) was inspected and contains aggregate metadata/metrics only, with no raw label-value map; future artifacts are retained 7 days. The corpus is CC BY-NC 2.0.
+- Seoul workflow: [run 42492152654](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42492152654), artifact `13621892753`.
 
 ### Seoul mode results
 
@@ -59,7 +59,7 @@ Strict has the best coverage-adjusted Exact and lowest CER in both Seoul referen
 | Workflow | Result | Evidence |
 |---|---|---|
 | 10-engine UGTPHON + SIGMORPHON, three Browser modes and Native/Browser parity | **PASS** | [42487350896](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487350896) |
-| Seoul TextGrid inventory + surface + phonemic IPA, all three modes | **PASS** | [42491208142](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491208142) |
+| Seoul TextGrid inventory + surface + phonemic IPA, all three modes | **PASS** | [42492152654](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42492152654) |
 | Python 3.11/3.12/3.13, web/npm tests and build, wheel install, teacher-corpus audit | **PASS** | [42491874801](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874801) on `de1d9b10f31e4ea730fc7c5940753c42f54ab3a1` |
 | Python regression/data integrity and Browser regression/build | **PASS** | [42491874749](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874749) on `de1d9b10f31e4ea730fc7c5940753c42f54ab3a1` |
 | Master table and research corpus artifacts | **PASS** | [42491874837](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874837) on `de1d9b10f31e4ea730fc7c5940753c42f54ab3a1` |
@@ -161,7 +161,7 @@ Paired comparisons: Strict vs Soft has 201,515 common scored occurrences, 6,481 
 
 Interpretation: Strict has the best coverage-adjusted Exact and lowest CER in this phonemic reference. The higher scored-only Exact of Soft/Super-soft is a selection effect: they score fewer source-resolved occurrences and classify more cases as heuristic. Because this gold is phonemic while the engine profiles retain phonetic/allophonic detail, raw Exact/CER are diagnostic and must not be presented as narrow-IPA acceptance. This benchmark is not Ukrainian target validation.
 
-Evidence: [Seoul preflight, surface and phonemic-IPA benchmark run 42491208142](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491208142), artifact `13622140135`. The artifact contains metadata and aggregate metrics only; raw word/IPA pairs remain temporary CI data.
+Evidence: [Seoul preflight, surface and phonemic-IPA benchmark run 42492152654](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42492152654), artifact `13621892753`. The artifact contains metadata and aggregate metrics only; raw word/IPA pairs remain temporary CI data.
 
 ### Remaining evidence limits
 
