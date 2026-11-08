@@ -369,8 +369,10 @@ export function evaluateRows(rows, engine, morphologyMode = 'strict', benchmarkN
     eligible_tokens: eligibleTokens,
     scored_tokens: scoredTokens,
     coverage_rate: eligibleTokens ? Number((scoredTokens / eligibleTokens).toFixed(6)) : null,
+    source_resolved_coverage_rate: eligibleTokens ? Number((scoredTokens / eligibleTokens).toFixed(6)) : null,
     output_available_tokens: outputAvailableTokens,
     output_availability_rate: eligibleTokens ? Number((outputAvailableTokens / eligibleTokens).toFixed(6)) : null,
+    candidate_output_availability_rate: eligibleTokens ? Number((outputAvailableTokens / eligibleTokens).toFixed(6)) : null,
     exact_matches: exactMatches,
     exact_match_rate: scoredTokens ? Number((exactMatches / scoredTokens).toFixed(6)) : null,
     coverage_adjusted_exact_match_rate: eligibleTokens ? Number((exactMatches / eligibleTokens).toFixed(6)) : null,
@@ -470,7 +472,7 @@ function main() {
       writeFileSync(outputPath, rendered, 'utf8');
       const summary = Object.fromEntries([
         'engine', 'split', 'morphology_mode', 'ipa_profile', 'ipa_profile_status', 'eligible_tokens',
-        'scored_tokens', 'coverage_rate', 'output_available_tokens', 'output_availability_rate', 'exact_matches', 'exact_match_rate',
+        'scored_tokens', 'coverage_rate', 'source_resolved_coverage_rate', 'output_available_tokens', 'output_availability_rate', 'candidate_output_availability_rate', 'exact_matches', 'exact_match_rate',
         'coverage_adjusted_exact_match_rate', 'character_error_rate',
         'unresolved_tokens', 'partial_tokens', 'heuristic_tokens', 'typed_fallback_tokens', 'source_resolved_scored_tokens',
         'target_unavailable_tokens', 'target_provisional_tokens', 'engine_errors'
