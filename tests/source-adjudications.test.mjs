@@ -38,5 +38,5 @@ test('adjudication metadata never rewrites engine phonetic or target fields', ()
   assert.equal(attached.ukrainian, result.ukrainian);
   assert.equal(attached.status, result.status);
   assert.equal(attached.source_adjudications.length, 1);
-  assert.equal(attached.source_adjudication_registry_version, 1);
+  assert.deepEqual(attached.source_adjudication_registry, { version: 1, accepted_occurrence_count: 40, adjudication_count: 17 });
 });
