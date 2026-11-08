@@ -142,9 +142,10 @@ jobs:
           expected = {
               "mfa-ugtphon-hangul.json": 2703,
               "mfa-ugtphon-jamo.json": 2703,
-              "mfa-sigmorphon-hangul.json": 1000,
-              "mfa-sigmorphon-jamo.json": 1000,
+              "mfa-sigmorphon-hangul.json": 999,
+              "mfa-sigmorphon-jamo.json": 999,
           }
+          print("SIGMORPHON input: 1,000 paired rows; shared scorer eligibility: 999 rows after Hangul/usable-gold filtering.")
           for filename, denominator in expected.items():
               report = json.loads((root / filename).read_text(encoding="utf-8"))
               assert report["schema_version"] == 1
