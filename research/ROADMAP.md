@@ -1,4 +1,23 @@
-# Current continuation — mainline status (2026-11-07)
+# Current continuation — mainline status (2026-11-08)
+
+**Starting main:** e24cf7caff745fb612080aef6a33c8058f4144cc. **Latest runtime integration:** PR #461, squash merge b014d0107a47c3117c7dcbdd8d403f7fca3c7d41.
+
+- **DONE_VERIFIED — 40 source-policy decisions:** all 17 adjudication families / 40 occurrence IDs are represented in shared browser and Python runtime metadata. This is provenance/policy metadata, not a phonological or IPA rewrite. Two raw ㅠ rows remain unmatched until offsets are validated.
+- **DONE_VERIFIED — latest UGTPHON pair:** Native 1,425/2,702 exact (52.7387%), CER 9.0130%; g2pK 1,435/2,703 (53.0892%), CER 9.2328%. Paired g2pK exact +0.3700 pp; Native CER lower by 0.2198 pp.
+- **DONE_VERIFIED — latest SIGMORPHON pair:** Native 359/998 exact (35.9719%), CER 14.5347%; g2pK 353/999 (35.3353%), CER 14.8222%. Native leads on both paired metrics.
+- **DONE_VERIFIED — full multi-engine benchmark:** PR #457 run 42416681855 passed mandatory deterministic/phonemizer comparisons, mismatch export, Browser same-occurrence and Native/Browser parity. CharsiuG2P and ByT5 inference skipped by policy. PR #461 multi-engine attempt cancelled.
+- **DONE_VERIFIED — main CI after PR #461:** tests 42464216274, system verification 42464216259, master/research artifacts 42464216261 and Pages deployment 42464216267 all succeeded on starting main.
+- **Renderer:** downstream IPA-to-Ukrainian adapter remains separately tested (644 canonical + 46 alternate rows, 28 overrides), but its 24-form holdout lacks IPA/Ukrainian gold. Independent target accuracy is not established.
+- **Native trend:** no general regression proven. UGTPHON exact match lower than 2026-10-24 but CER better; SIGMORPHON exact match and CER both better. Profiles/counts differ; controlled same-occurrence old/new comparison needed for causal attribution.
+- **BLOCKED:** independent Ukrainian target validation; original historical 236/239 selector proof; raw ㅠ offset validation.
+- **DEFERRED:** speaker-specific narrow IPA for the 40 source-policy cases; no audio is required for the accepted source-based policy and no audio/reviewer outreach was initiated.
+- **Readiness:** software-verified bounded research prototype; not independently research-certified or release-ready.
+
+See [acceptance gates](ACCEPTANCE-GATES.md), [research index](README.md), and the [current repository audit](../docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md#current-main-continuation--2026-11-08-documentation-and-benchmark-reconciliation).
+
+---
+
+# Historical continuation — mainline status (2026-11-07; superseded by 2026-11-08)
 
 **Current main:** `1f220fcd7e3b44dab7302b37e2fe225812ee18a6` (documentation continuation after PR #454, merged as `d2f942d0615df3da2a973a2709f8738f65da18d9`).
 
