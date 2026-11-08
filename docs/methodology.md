@@ -83,7 +83,7 @@ Evidence: [Seoul preflight, surface and phonemic-IPA benchmark run 42491208142](
 - UGTPHON has been inspected during project research; SIGMORPHON is a public paired lexical file with transcription-convention and possible training-overlap limitations.
 - The two benchmark datasets do not validate Ukrainian target rendering.
 - Neural ByT5 and CharsiuG2P jobs were skipped under the existing default-off research policy.
-- Seoul Corpus, KsponSpeech, and NIKL 2022 remain separate access/terms/format-gated corpus candidates; they are not included in this run.
+- Seoul Corpus now has two separately scored three-mode tracks (Hangul surface and phonemic IPA) from the CC BY-NC 2.0 TextGrid labels; audio is not used. KsponSpeech and NIKL 2022 remain access/terms-gated and unscored.
 
 Reproduce from [run 42487350896](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487350896), artifact `13621335293`.
 
