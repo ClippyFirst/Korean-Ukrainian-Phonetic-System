@@ -38,6 +38,22 @@ The latest paired Native/g2pK diagnostic is from PR #456; the complete multi-eng
 
 Evidence: [latest paired Native/g2pK diagnostic](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42414467883), [source-only PR #456](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/456), and its exact-head [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42414467840). The complete [multi-engine diagnostic PR #457 run](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681855) passed, including the queue byte comparison, Browser Kozak Kim parity, and SIGMORPHON lexical benchmark. The earlier run [42414467825](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42414467825) failed only because generated CSV line endings differed from the committed canonical representation; PR #457 pins the format and verifies the exact output. PR #457's [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681845), [Python/browser test matrix](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681848), [research artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681843), and [exhaustive test-case extraction](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681889) all passed. Historical mandatory baseline runs [42226435101](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435101) and [42226435403](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42226435403) remain linked as earlier evidence, not as the latest benchmark.
 
+
+### IPA-to-Ukrainian renderer — separate validation status
+
+The ClippyFirst IPA renderer is the downstream target adapter, not a Korean G2P engine:
+
+**Korean text → Korean phonological analysis → IPA → ClippyFirst IPA renderer → Ukrainian practical orthography.**
+
+- Python: src/korean_ukrainian/ipa_target_renderer.py; browser: src/app/engine_ipa.js.
+- The renderer accepts IPA and returns Ukrainian target text with mapping status/trace. It does not independently derive Korean pronunciation from Hangul.
+- Regression tests reproduce 644 canonical lexical pronunciation rows and 46 alternate IPA rows; the explicit override registry contains 28 traceable mappings. These counts establish implementation reproducibility, not independent Ukrainian target accuracy.
+- The recovered 24-form target-renderer holdout still has no IPA gold and no Ukrainian gold for any row. No renderer exact-match/CER accuracy score is therefore available.
+- Unknown/ambiguous IPA fails closed; provisional mappings remain explicitly gated. Length is retained in IPA/provenance and is not automatically written as an extra Ukrainian grapheme.
+
+**Native trend interpretation:** the latest UGTPHON exact-match rate is lower than the 2026-10-24 snapshot, but its CER is better; SIGMORPHON exact match and CER are both better. Since historical profile/reference conventions and eligible counts are not perfectly identical, this does not establish a general Native regression. Current paired results remain mixed by metric: g2pK has a small UGTPHON exact-match lead, while Native has lower UGTPHON CER and leads on SIGMORPHON exact match/CER. See the [current audit reconciliation](docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md#current-main-continuation--2026-11-08-documentation-and-benchmark-reconciliation).
+
+
 ### Readiness and remaining work
 
 The repository is a **software-verified, bounded research prototype**; it remains a **research prototype, not independently research-certified or release-ready** as an authoritative transcription standard. Remaining substantive work is evidence-limited: original 236/239 cohort provenance, speaker-specific IPA evidence for the 40 no-audio cases, independent Ukrainian target validation if certification is pursued, broader source-backed rule coverage, and deployment/live-smoke confirmation on the latest main commit. No external reviewer outreach or correspondence is part of this execution pass.
