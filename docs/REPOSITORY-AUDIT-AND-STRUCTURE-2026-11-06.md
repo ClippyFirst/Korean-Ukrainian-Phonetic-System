@@ -754,3 +754,6 @@ On code/test head `87e7bb3`:
 The 40 source-based adjudications are accepted without audio and are now represented in both Kozak Kim runtime result surfaces. The two non-speech rows remain registered but are not automatically sliced until raw boundaries are revalidated. This completes the requested source-policy integration without changing phonological output or manufacturing narrow IPA.
 
 Repository status remains **PARTIAL RESEARCH PROTOTYPE**, not release-ready or independently research-certified. The outstanding blockers are raw `ㅠ` span-boundary validation, independent Ukrainian target review, broader research acceptance and any future optional speaker-specific acoustic annotation. PR #461 is open pending merge; no external release or deployment action was taken.
+
+
+The existing master execution handoff was not rewritten: the GitHub file-read operation returned an empty content body for its existing blob, so a safe in-place append could not be made through this interface. This dated audit addendum is the superseding continuation for this task; the historical handoff blob was preserved unchanged.
