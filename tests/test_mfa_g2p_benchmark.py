@@ -83,3 +83,5 @@ def test_report_separates_candidate_availability_from_accuracy_coverage():
     assert report["coverage_adjusted_exact_match_rate"] == pytest.approx(2 / 3)
     assert [item["status"] for item in report["occurrences"]] == ["scored", "scored", "missing"]
     assert report["engine_errors"] == 0
+    assert report["inference_policy"]["strict_graphemes"] is True
+    assert report["inference_policy"]["num_pronunciations"] == 1
