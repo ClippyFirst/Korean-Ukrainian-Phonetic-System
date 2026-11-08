@@ -1,5 +1,18 @@
 # Documentation map
 
+## Latest mainline status — 2026-11-08
+
+**Main:** `05137e2ce3c03c72a9e4de6754e9a6f29855cb47` · **working branch:** `main` · **open PRs:** 0 · **branch refs:** 29 total (28 historical/supporting refs retained).
+
+Exact-head GitHub Actions on this main commit: [Tests #42514516177](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42514516177), [System Verify #42514516144](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42514516144), [Master/research artifacts #42514516025](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42514516025), and [Pages deployment/live smoke #42514516081](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42514516081) all **PASS**.
+
+The isolated [MFA Korean G2P v2.0.0 benchmark](KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md#2026-11-08--mfa-korean-g2p-v200-diagnostic-execution) is **DONE_VERIFIED** (run [42513951588](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42513951588), artifact [13630946780](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42513951588/artifacts/13630946780)). Its Hangul/Jamo variants are one model family and remain comparison-only. Independent review of the 56-phone identity-to-IPA assumption and training-data overlap is still open.
+
+**Readiness:** software-verified, evidence-scoped research prototype; not independently research-certified or release-ready. See the [current audit](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md) and [repository structure guide](REPOSITORY-STRUCTURE.md) for the task ledger and ownership map.
+
+---
+
+
 This page is the entry point for project documentation. It distinguishes current operating contracts from dated research records and append-only execution history.
 
 ## Start here

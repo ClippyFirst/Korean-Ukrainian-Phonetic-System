@@ -1,3 +1,64 @@
+## Current mainline continuation — documentation and external MFA benchmark (2026-11-08)
+
+**Starting commit:** `05137e2ce3c03c72a9e4de6754e9a6f29855cb47`  
+**Working branch:** `main` (no new branch or PR created)  
+**Repository default branch:** `main`  
+**Open PRs at inspection:** none  
+**Branch refs:** 29 total, including `main` (28 non-main historical/supporting refs remain present). No branch was force-updated or deleted. Prior branch reconciliation is retained below; old branch names are not active integration targets.
+
+### Verified repository state
+
+The latest main-head push workflows on `05137e2ce3c03c72a9e4de6754e9a6f29855cb47` completed successfully:
+
+| Workflow | Result | Run |
+|---|---|---|
+| Tests (browser, Python matrix, package/wheel and corpus audits) | **PASS** | [42514516177](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42514516177) |
+| System Verify (Python regression/data integrity, browser regression/build and release guards) | **PASS** | [42514516144](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42514516144) |
+| Master table and research corpus artifacts | **PASS** | [42514516025](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42514516025) |
+| GitHub Pages deployment and live smoke | **PASS** | [42514516081](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42514516081) |
+
+These are exact-head GitHub Actions results. No local shell, npm, pytest, or clean-install command was executed in this connector-only session.
+
+### External MFA Korean G2P diagnostic — DONE_VERIFIED
+
+The separately isolated MFA v2.0.0 benchmark completed on code head `23d62390242e2f6a8bfffe07de0f4c7b0672c88a`: [workflow run 42513951588](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42513951588), [aggregate artifact 13630946780](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42513951588/artifacts/13630946780), SHA-256 `469ffb31f9721afa2272454e9854fb6453de9e213e19def78549db2a7ba16b32`.
+
+| Dataset | Model profile | Eligible | Candidate availability | Exact (scored-only) | CER | PER |
+|---|---|---:|---:|---:|---:|---:|
+| UGTPHON test | MFA Hangul | 2,703 | 99.0381% | 15.1289% | 27.3038% | 28.5421% |
+| UGTPHON test | MFA Jamo | 2,703 | 100% | 16.0562% | 24.5200% | 25.5353% |
+| SIGMORPHON 2021 Korean | MFA Hangul | 999 | 99.8999% | 24.6493% | 17.3079% | 20.6270% |
+| SIGMORPHON 2021 Korean | MFA Jamo | 999 | 100% | 24.8248% | 17.1632% | 20.4528% |
+
+**Interpretation and limits:** Hangul and Jamo are two input/model variants from one MFA family, not two independent engines. The SIGMORPHON source has 1,000 raw rows; 999 satisfy the shared scorer's eligibility filter. MFA is an isolated comparison-only baseline; it does not feed the production IPA→Ukrainian pipeline. The 56-symbol phone inventory is enforced, but the identity-to-IPA assumption still needs independent Korean phonetics review. Model/dictionary training lineage and overlap with benchmark sources remain open. Model-card WER/PER figures are not these project-run scores.
+
+### Current task ledger
+
+| Area | State | Evidence / acceptance boundary |
+|---|---|---|
+| Main-head software verification | **DONE_VERIFIED** | Four exact-head workflows above pass. |
+| MFA Hangul/Jamo diagnostic execution | **DONE_VERIFIED** | Four dataset/model reports, checksums, strict grapheme handling, top-1 policy and artifact verified. |
+| MFA phone-inventory linguistic interpretation | **PARTIAL** | 56 symbols are allow-listed; independent confirmation that every identity-mapped phone is IPA remains required. |
+| MFA training-data lineage and overlap | **TODO** | Inspect upstream dictionary/model training sources and overlap with UGTPHON, SIGMORPHON/WikiPron and other registered datasets. |
+| Independent Korean IPA review | **BLOCKED** | Requires qualified independent reviewer and a reviewable symbol/profile packet. |
+| Independent Ukrainian target validation | **BLOCKED** | Requires independently sourced/adjudicated Korean IPA and Ukrainian receiving-language review; current renderer regression is not accuracy certification. |
+| Historical 236/239 candidate membership proof | **PARTIAL** | Reconstructed candidate cohort remains useful, but the original selector/list has not been independently recovered. |
+| Raw `ㅠ` source-span matching | **BLOCKED** | Revalidate raw source offsets before matching the two non-speech rows to normalized runtime strings. |
+| KsponSpeech / NIKL 2022 | **BLOCKED** | Account/portal access and exact dataset terms are not cleared. |
+| ByT5 / CharsiuG2P inference | **DEFERRED** | Existing default-off research policy; not counted as a pass. |
+
+**Readiness:** software-verified, evidence-scoped research prototype. **Not release-ready and not independently research-certified.** The successful software workflows and executed benchmarks do not close specialist linguistic review, source-lineage, or Ukrainian target-accuracy gates.
+
+### Repository workflow decision
+
+The four external references are already reviewed in [ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-06.md](ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-06.md). Their useful practices—explicit acceptance gates, exact-head evidence, composable skills, root-cause debugging, focused regression tests and reproducible benchmark reporting—are adopted selectively. Their code, skills, hooks, state stores, artwork and benchmark data are not vendored. The existing canonical registers and workflows remain authoritative; no duplicate planning or gate framework is introduced.
+
+### Branch policy for this continuation
+
+All new work in this continuation is committed directly to `main`, as requested. No open PRs existed at inspection. The 28 non-main refs are historical/supporting refs; they are not merged blindly or deleted as a cosmetic cleanup. The repository's earlier audit records the previous full branch comparison and branch trees inspected at that time. Physically reducing the GitHub branch list to only `main` is a separate destructive ref-deletion operation; it is not necessary to consolidate code already present on `main`, and is intentionally not performed here.
+
+---
+
 ## Final continuation audit — 2026-11-08
 
 ### Repository and commit state

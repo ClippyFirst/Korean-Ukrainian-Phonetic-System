@@ -1,22 +1,118 @@
 # Repository structure and ownership guide
 
-**Current documentation snapshot:** 2026-11-08. This guide was reconciled from main commit e24cf7caff745fb612080aef6a33c8058f4144cc, after PR #461 (40 source-policy adjudications) merged at b014d0107a47c3117c7dcbdd8d403f7fca3c7d41. The documentation continuation is committed directly to main, as requested by the repository owner. This is a navigation/ownership map, not a claim that every file has been independently reviewed line by line.
+**Current documentation snapshot:** 2026-11-08.  
+**Current main:** `05137e2ce3c03c72a9e4de6754e9a6f29855cb47`.  
+**Working branch:** `main`; this continuation adds no branch or PR.  
+**Scope:** navigation, component ownership, data boundaries, verification entry points and repository maintenance. This is not a claim that every file has been independently reviewed line by line.
 
-## Current verification snapshot — 2026-11-08
+## Current mainline verification
 
-The starting main commit e24cf7caff745fb612080aef6a33c8058f4144cc has successful push-triggered runs: [tests 42464216274](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42464216274), [system verification 42464216259](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42464216259), [master/research artifacts 42464216261](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42464216261), and [Pages deployment 42464216267](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42464216267). All four concluded successfully.
+All four push-triggered workflows completed successfully on `05137e2ce3c03c72a9e4de6754e9a6f29855cb47`:
 
-The latest applicable Korean G2P measurements are the paired UGTPHON run [42414467883](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42414467883) and complete multi-engine run [42416681855](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681855), both from the immediately preceding output-changing PRs #456/#457. PR #461 only adds source-policy metadata and does not change Hangul, IPA or Ukrainian output. The multi-engine attempt on PR #461 was cancelled and is not counted as a result. Optional CharsiuG2P and ByT5 inference were skipped by policy.
+- [Tests — 42514516177](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42514516177) — PASS.
+- [System Verify — 42514516144](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42514516144) — PASS.
+- [Master table / research artifacts — 42514516025](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42514516025) — PASS.
+- [GitHub Pages deployment / live smoke — 42514516081](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42514516081) — PASS.
 
-The earlier 2026-11-07 snapshot below is retained as history; the current benchmark and 236-case reconciliation is in the current audit [addendum](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md#current-main-continuation--2026-11-08-documentation-and-benchmark-reconciliation).
+These are GitHub Actions results on the exact main SHA above. They are not local command executions.
 
-The audited starting main commit was `e72856c1f03bfb775805748f96ec23889ca2e60f`. The two failed main-head runs at that snapshot were reconciled in PR [#457](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/457), verified on `ab6c7c69ba65b7fd5da4383d2105ef81a5bcb51d).
+## Navigation by reader task
 
-PR #457's exact-head checks and post-merge main checks passed: [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681845), [Python/browser test matrix](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681848), [master/research artifact checks](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681843), [exhaustive test-case extraction](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681889), and [full multi-engine benchmark](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681855). The metadata-only NIKL inventory was skipped by policy; no claim of its execution is made.
+| If you need to… | Start here |
+|---|---|
+| Understand the project, use the web app, CLI or API | [Root README](../README.md), [web-service user guide](WEB-SERVICE-USER-GUIDE.md), [CLI/API guide](cli-and-api.md) |
+| Find the canonical documentation | [Documentation map](README.md) |
+| Understand runtime architecture and IPA-first boundaries | [Architecture](architecture.md), [methodology](methodology.md), [IPA target layer](ukrainian-target-layer.md) |
+| Change browser/Python behavior | [Root AGENTS.md](../AGENTS.md), [agent workflow guide](AGENT-WORKFLOWS.md), the owning `.agents/skills/` procedure |
+| Change or validate Korean phonology | [Korean phonology](korean-phonology.md), [rule coverage matrix](../research/RULE-COVERAGE.csv), [source register](../research/SOURCE-REGISTER.csv) |
+| Evaluate a G2P engine or dataset | [Benchmark suite register](KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md), [acceptance gates](../research/ACCEPTANCE-GATES.md) |
+| Change Ukrainian rendering | [Ukrainian target layer](ukrainian-target-layer.md), [target contract](../data/correspondence/target_contract.csv) |
+| Add or assess a source | [Research index](../research/README.md), [source discovery queue](../research/SOURCE-DISCOVERY-QUEUE.csv), [licensing guide](LICENSING-AND-PERMISSIONS.md) |
+| Understand the latest status and blockers | [Current repository audit](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md) |
+| Review consequential decisions | [Decision log](../research/DECISION-LOG.md) |
+| Continue a previous session | [Master execution plan and handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md), using the latest dated section and the current audit where it supersedes the oversized handoff |
 
-Post-merge main verification [42418241279](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42418241279), test matrix [42418241284](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42418241284), research artifacts [42418241294](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42418241294), and Pages deployment/live smoke [42418241365](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42418241365) all passed on `62ca357d`. The initial failures were corrected without changing the source corpus pins or linguistic classifications: the UGTPHON source-register row was repaired as valid CSV, the exact `naver-ai/UGTPHON/ko/test.json` path was aligned in the reviewer-packet validator, and the mismatch-queue exporter was made byte-compatible with the committed CRLF/no-trailing-newline format. The full multi-engine run subsequently passed its exact artifact comparison, Browser Kozak Kim execution and Native/Browser parity audit.
+## Runtime and benchmark entry points
 
-This point-in-time guide describes observed tree ownership and navigation boundaries; it is not a claim that every file has been independently reviewed line by line.
+| Concern | Canonical implementation / workflow | Boundary |
+|---|---|---|
+| Python package | `src/korean_ukrainian/` | Installable package; version stream is defined in [versioning policy](VERSIONING-POLICY.md). |
+| Browser application | `src/app/`, `index.html`, `public/` | Browser runtime and public web service; keep parity with Python where behavior is shared. |
+| Native Korean phonology and IPA | `src/korean_ukrainian/phonology.py`, `ipa.py`, `pipeline.py` | Korean analysis and IPA result precede Ukrainian target rendering. |
+| Ukrainian IPA renderer | `src/korean_ukrainian/ipa_target_renderer.py`, `src/app/engine_ipa.js` | Downstream IPA→Ukrainian adapter; never a direct Hangul substitution path. |
+| Isolated g2pK baseline | `src/vendor/g2pk/`, its adapter and dedicated workflows | Comparison baseline; no Kozak Kim overlays. |
+| External MFA benchmark | `scripts/benchmark_mfa_g2p.py`, `.github/workflows/mfa-g2p-benchmark.yml` | Comparison-only; Hangul and Jamo are one model family. |
+| Other multi-engine benchmarks | `scripts/benchmark_multi_engine_ko.py`, `.github/workflows/multi-engine-ipa-benchmark.yml` | Pinned adapters and datasets; read per-run eligibility and exclusions. |
+| Research morphology diagnostics | `src/korean_ukrainian/research_morphology.py`, dedicated scripts/workflows | Research-only unless explicit acceptance gates promote behavior. |
+| Canonical linguistic data | `data/korean/`, `data/correspondence/` | Structured source of truth; generated files must be regenerated and drift-checked. |
+| Research evidence and decisions | `research/` | Source provenance, acceptance, decisions, coverage and review queues. |
+| Tests | `tests/` | Browser, Python, parity, rights, data and generated-artifact checks. |
+| Automation | `.github/workflows/` | CI, benchmark, audit, build and Pages deployment definitions. |
+
+## MFA external baseline — executed 2026-11-08
+
+The isolated MFA v2.0.0 workflow passed: [run 42513951588](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42513951588), artifact [13630946780](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42513951588/artifacts/13630946780).
+
+| Dataset | Model | Availability | Exact | CER | PER |
+|---|---|---:|---:|---:|---:|
+| UGTPHON | Hangul | 99.0381% | 15.1289% | 27.3038% | 28.5421% |
+| UGTPHON | Jamo | 100% | 16.0562% | 24.5200% | 25.5353% |
+| SIGMORPHON 2021 Korean | Hangul | 99.8999% | 24.6493% | 17.3079% | 20.6270% |
+| SIGMORPHON 2021 Korean | Jamo | 100% | 24.8248% | 17.1632% | 20.4528% |
+
+The raw SIGMORPHON file contains 1,000 rows; 999 pass the shared scorer's eligibility filter. The benchmark uses top-1, strict grapheme handling and an allow-list of 56 MFA phones. The phone-to-IPA identity assumption still needs independent specialist review. MFA remains outside production.
+
+## Data and evidence ownership
+
+- `data/korean/rules.csv`, `rule_scope.csv`, `rule_ordering.csv`, `realization_environments.csv` and `phonotactics.csv` hold structured phonological rule information.
+- `data/korean/lexical_pronunciations.csv`, lexical additions and IPA realization/override files hold lexical evidence and explicit exceptions; do not silently convert research candidates into production gold.
+- `data/korean/ipa/` holds versioned IPA normalization/reference adapters, with source conventions and exclusions recorded alongside each profile.
+- `data/correspondence/` and `data/korean/canonical_correspondence.csv` hold target correspondence and canonical mapping material; inspect schemas and provenance before editing.
+- `research/SOURCE-REGISTER.csv` is the source inventory; `research/RULE-COVERAGE.csv` maps rule evidence to implementation/tests; `research/ACCEPTANCE-GATES.md` owns acceptance status; `research/DECISION-LOG.md` is append-only.
+- `reports/` contains generated/derived reports. Do not hand-edit generated output when a canonical input and generator exist.
+- `licenses/`, `LICENSE` and `public/THIRD_PARTY_NOTICES.txt` document distinct project and third-party rights. The root custom licence is not an OSI-approved open-source licence.
+
+## Development commands
+
+The authoritative command list is in `package.json` and `pyproject.toml`; inspect scripts before execution because names and environments can evolve.
+
+```bash
+# Browser tests and production build
+npm test
+npm run build
+
+# Python tests
+python -m pytest
+
+# Install the Python project in editable mode (review pyproject.toml first)
+python -m pip install -e ".[dev]"
+
+# Build a wheel (the CI workflow also tests wheel installation)
+python -m build
+```
+
+For benchmark reproduction, prefer the pinned workflow or documented script invocation in the benchmark register. Do not infer reproducibility from the presence of a script alone.
+
+## Safe change sequence
+
+1. Read root `AGENTS.md`, the relevant focused skill and the owning source/evidence register.
+2. Inspect the current main state, callers, tests, schemas, generators and workflows before editing.
+3. For behavior changes, add a regression that fails for the intended reason; fix the root cause rather than patching a symptom.
+4. Keep Korean orthography, structural/morphological analysis, Korean phonology, IPA/typed uncertainty and Ukrainian target rendering as explicit stages.
+5. Update canonical data first and regenerate derived artifacts through their generator.
+6. Run the focused tests, then the repository-defined CI matrix and parity/rights/data gates relevant to the change.
+7. Record exact commit/run IDs and distinguish PASS, FAIL, SKIPPED, CANCELLED and NOT RUN.
+8. Update the existing audit/register/handoff in place; do not create a duplicate plan or second source of truth.
+
+## Branch and history policy
+
+`main` is the only active integration branch for the current owner-directed continuation. Historical/supporting refs may remain for recovery and auditability; their existence does not mean they are active development targets. No branch should be deleted or force-updated merely to make the branch list look tidy. Inspect open PRs and compare any proposed branch changes before merging; never merge a stale branch solely because its name looks unfinished.
+
+## Structure inventory and limitations
+
+The repository is intentionally not reorganized by bulk-moving historical research files. The flat, dated `docs/` and `research/` namespaces preserve stable links and audit history. Use this guide and [documentation map](README.md) as the curated navigation layer instead of renaming old records.
+
+Counts and file inventories in historical audit sections are point-in-time snapshots; do not treat them as current counts. The current tree is large and includes 100+ research/documentation records, data, schemas, workflows, scripts, and both Python/browser runtimes. The full recursive tree at `05137e2ce3c03c72a9e4de6754e9a6f29855cb47` is the authoritative inventory for this snapshot.
 
 ## What this repository contains
 
