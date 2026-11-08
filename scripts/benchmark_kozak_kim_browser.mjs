@@ -270,7 +270,10 @@ export function evaluateRows(rows, engine, morphologyMode = 'strict') {
             occurrence_id: occurrenceId,
             id: row.id, token: canonical, gold: goldRaw, status: pronunciationStatus,
             surface_hangul: fullSurfaceHangul(result, canonical),
-            target_status: result.target_status ?? null, predicted: null
+            target_status: result.target_status ?? null,
+            phonetic_result_type: result.phonetic_result_type ?? null,
+            typed_fallback: hasTypedFallback,
+            predicted: null
           });
           continue;
         }
