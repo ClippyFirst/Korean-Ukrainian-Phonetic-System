@@ -6,7 +6,7 @@ This continuation executed the existing benchmark and corpus-access work rather 
 
 - Starting main commit: `893619785c8fc7c8417cc8da0690d84fcb8d8dbb`.
 - Benchmark code snapshot: `668dbad14568e8472594937558500500102b3f95`.
-- Main before final audit closure: `de1d9b10f31e4ea730fc7c5940753c42f54ab3a1` (the final audit commit follows this revision).
+- Main before final audit closure: `54e7f5a5a342b44a0b26d80b2427191156c144ec` (the final audit commit follows this revision).
 - Full 10-engine benchmark: [run 42487350896](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487350896), artifact `13621335293`.
 - Seoul corpus ingestion and two additional three-mode benchmarks: [run 42491208142](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491208142), artifact `13622140135`.
 
@@ -62,7 +62,7 @@ On benchmark code snapshot `668dbad14568e8472594937558500500102b3f95`:
 | 10-engine UGTPHON + SIGMORPHON + three browser modes + Native/Browser parity | **PASS** | [42487350896](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487350896) |
 | Seoul metadata-only corpus preflight tests | **PASS** | Included in run 42491208142 |
 
-Latest source-register/docs closure on `de1d9b10f31e4ea730fc7c5940753c42f54ab3a1`: tests [42491874801](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874801) **PASS** (Python 3.11/3.12/3.13, Web/npm tests/build, wheel install, teacher-corpus audit); System Verify [42491874749](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874749) **PASS**; master artifacts [42491874837](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874837) **PASS**. Source register has 230 rows and all rows parse as 12 CSV fields.\n\nNo claim is made that GitHub Pages deployment completed; it was queued at the time of the benchmark snapshot. Neural ByT5 and CharsiuG2P remained skipped under existing default-off policy. The container's direct network download attempt was unavailable; GitHub Actions successfully retrieved the public archive. No local full repository test run is claimed; CI is the verification source.
+Latest source-register/docs closure before this handoff refresh on `54e7f5a5a342b44a0b26d80b2427191156c144ec`: tests [42491874801](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874801) **PASS** (Python 3.11/3.12/3.13, Web/npm tests/build, wheel install, teacher-corpus audit); System Verify [42491874749](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874749) **PASS**; master artifacts [42491874837](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874837) **PASS**. Source register has 230 rows and all rows parse as 12 CSV fields.\n\nNo claim is made that GitHub Pages deployment completed; it was queued at the time of the benchmark snapshot. Neural ByT5 and CharsiuG2P remained skipped under existing default-off policy. The container's direct network download attempt was unavailable; GitHub Actions successfully retrieved the public archive. No local full repository test run is claimed; CI is the verification source.
 
 ## PRs, branches and merge decisions
 
