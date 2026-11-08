@@ -47,7 +47,7 @@ function loadPairs(path) {
   return [...counts.values()];
 }
 
-function evaluateMode(pairs, engine, mode, totalOccurrences) {
+export function evaluateMode(pairs, engine, mode, totalOccurrences) {
   let scored = 0, exact = 0, distanceTotal = 0, referenceChars = 0;
   let unresolved = 0, partial = 0, heuristic = 0, typedFallback = 0;
   let targetUnavailable = 0, targetProvisional = 0, errors = 0;
@@ -71,7 +71,16 @@ function evaluateMode(pairs, engine, mode, totalOccurrences) {
       const fallback = result.phonetic_result_type === 'mixed-surface-ipa-and-orthographic-fallback' ||
         trace.some(item => item?.status === 'super-soft-orthographic-fallback' ||
           item?.phoneticResultType === 'orthographic-phonemic-fallback');
-      if (fallback) typedFallback += pair.weight;
+      if (fallback) {
+        typedFallback += pair.weight;
+        // An orthographic-phonemic fallback is a typed coverage outcome, not
+        // source-resolved pronunciation. Keep it out of Exact/CER and paired wins.
+        abstentionPenaltyDistance += [...pair.gold].length * pair.weight;
+        outputs.set(JSON.stringify([pair.source, pair.gold]), {
+          status: 'typed_fallback', predicted: null, exact: false, distance: null, weight: pair.weight
+        });
+        continue;
+      }
       const status = result.pronunciation_status ?? (result.ipa ? 'resolved' : 'unresolved');
       if (status === 'heuristic') {
         heuristic += pair.weight;
