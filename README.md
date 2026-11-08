@@ -99,7 +99,7 @@ Evidence: [Seoul preflight, surface and phonemic-IPA benchmark run 42491208142](
 - UGTPHON has been inspected during project research; SIGMORPHON is a public paired lexical file with transcription-convention and possible training-overlap limitations.
 - The two benchmark datasets do not validate Ukrainian target rendering.
 - Neural ByT5 and CharsiuG2P jobs were skipped under the existing default-off research policy.
-- Seoul Corpus, KsponSpeech, and NIKL 2022 remain separate access/terms/format-gated corpus candidates; they are not included in this run.
+- Seoul Corpus is now included in two separate three-mode tracks (Hangul surface and phonemic IPA) in run 42491208142. KsponSpeech and NIKL 2022 remain access/terms-gated and unscored.
 
 Reproduce from [run 42487350896](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487350896), artifact `13621335293`.
 
@@ -599,4 +599,4 @@ Latest pinned train/test diagnostic (2026-11-01): on 2,624 paired tokens, train-
 
 ### Five-dataset Korean G2P benchmark portfolio
 
-The benchmark register now tracks five distinct Korean pronunciation-reference datasets: UGTPHON, SIGMORPHON 2021, Seoul Corpus (OpenSLR SLR113), KsponSpeech, and the NIKL Daily Conversation Speech Corpus 2022. Only UGTPHON and SIGMORPHON currently have executable multi-engine IPA comparisons; Seoul is selected for phone-label ingestion, while KsponSpeech and NIKL 2022 require access/terms checks and separate Hangul-surface scoring contracts. The LDC Korean Telephone Conversations Lexicon is retained as an alternate licensed sixth candidate. **Five datasets in the portfolio does not mean five completed benchmark runs.** See the [five-dataset register, source pins, licence gates and scoring policy](docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md#2026-11-08--five-dataset-korean-g2p-benchmark-portfolio).
+The benchmark register now tracks five distinct Korean pronunciation-reference datasets: UGTPHON, SIGMORPHON 2021, Seoul Corpus (OpenSLR SLR113), KsponSpeech, and the NIKL Daily Conversation Speech Corpus 2022. UGTPHON and SIGMORPHON have 10-engine IPA comparisons; Seoul now has separate three-mode Hangul-surface and phonemic-IPA tracks. KsponSpeech and NIKL 2022 remain access/terms-gated; LDC remains an alternate licensed sixth candidate. **Five executable evaluation tracks span three datasets; this is not five independent corpora.** See the [five-dataset register, source pins, licence gates and scoring policy](docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md#2026-11-08--five-dataset-korean-g2p-benchmark-portfolio).
