@@ -147,10 +147,10 @@ The integration attaches source IDs, claim IDs, occurrence IDs, accepted status 
 
 PR [#461](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/461) exact-head verification on `87e7bb32611e7042c7f0ecf5df1d1fd5ac49aa5b`:
 - Python regression/data-integrity workflow [42463790481](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42463790481): passed.
-- Browser regression, source-rights gate and public-page build [42463790481](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42463790481): tests and rights gate passed; build and generated-page verification were still running at this snapshot.
-- Test matrix [42463790417](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42463790417): Python 3.11 and 3.13 passed; Python 3.12 was still running at this snapshot; browser tests/build and wheel build passed.
+- Browser regression, source-rights gate and public-page build [42463790481](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42463790481): browser tests, rights gate, public-page build and generated-page verification all passed.
+- Test matrix [42463790417](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42463790417): Python 3.11, 3.12 and 3.13 passed; browser tests/build and wheel build passed.
 - Browser G2P integration [42463790446](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42463790446): npm tests and build passed.
 - Master/research artifact generation [42463790433](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42463790433): master table and strict corpus generation passed.
 - Optional Charsiu queue and official NIKL metadata-only inventory were skipped by policy; neither is counted as a pass.
 
-Local shell/npm/pytest commands were not run in this connector-only environment. The CI evidence above is the actual verification source; update this section after all remaining jobs complete and the PR is merged.
+Local shell/npm/pytest commands were not run in this connector-only environment. The CI evidence above is the actual verification source. The PR remains open pending merge; non-required diagnostic jobs are recorded separately in the canonical audit.
