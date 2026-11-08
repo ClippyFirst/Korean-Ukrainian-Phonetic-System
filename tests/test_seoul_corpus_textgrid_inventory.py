@@ -30,19 +30,57 @@ item [2]:
     xmin = 0
     xmax = 1
     intervals: size = 3
+    intervals [1]:
+        xmin = 0
+        xmax = 0.25
+        text = "p"
+    intervals [2]:
+        xmin = 0.25
+        xmax = 0.5
+        text = "h"
+    intervals [3]:
+        xmin = 0.5
+        xmax = 1
+        text = "o"
+'''
+
+PAIR_TEXTGRID = '''File type = "ooTextFile"
+Object class = "TextGrid"
+xmin = 0
+xmax = 1
+tiers? <exists>
+size = 2
+item [1]:
+    class = "IntervalTier"
+    name = "pWord.ortho."
+    xmin = 0
+    xmax = 1
+    intervals: size = 1
+    intervals [1]:
+        xmin = 0
+        xmax = 1
+        text = "학교"
+item [2]:
+    class = "IntervalTier"
+    name = "pWord.prono."
+    xmin = 0
+    xmax = 1
+    intervals: size = 1
+    intervals [1]:
+        xmin = 0
+        xmax = 1
+        text = "학꾜"
 '''
 
 class SeoulTextGridInventoryTests(unittest.TestCase):
-    def test_reads_tier_names_and_counts_without_exporting_labels(self):
+    def test_reads_tier_names_and_counts(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "sample.TextGrid"
             path.write_text(LONG_TEXTGRID, encoding="utf-8")
             result = inspect_textgrid(path)
-            self.assertEqual(result["tiers"], [
-                {"class": "IntervalTier", "name": "word", "interval_count": 2, "point_count": 0},
-                {"class": "IntervalTier", "name": "phone", "interval_count": 3, "point_count": 0},
-            ])
-            self.assertNotIn("REDACTED-TEST-WORD", str(result))
+            self.assertEqual([tier["name"] for tier in result["tiers"]], ["word", "phone"])
+            self.assertEqual([tier["interval_count"] for tier in result["tiers"]], [2, 3])
+            self.assertEqual(result["tiers"][0]["intervals"][0]["label"], "REDACTED-TEST-WORD")
 
     def test_reads_utf16_textgrid(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -51,7 +89,7 @@ class SeoulTextGridInventoryTests(unittest.TestCase):
             result = inspect_textgrid(path)
             self.assertEqual(result["tiers"][0]["name"], "word")
 
-    def test_inventory_counts_unparsed_files(self):
+    def test_inventory_counts_unparsed_files_and_ignores_appledouble(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             (root / "good.TextGrid").write_text(LONG_TEXTGRID, encoding="utf-8")
@@ -63,6 +101,19 @@ class SeoulTextGridInventoryTests(unittest.TestCase):
             self.assertEqual(result["files_failed"], 1)
             self.assertEqual(result["interval_annotations_total"], 5)
             self.assertEqual(result["tier_name_counts"]["IntervalTier:word"], 1)
+
+    def test_reports_aligned_word_pronunciation_tiers_without_exporting_text(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "paired.TextGrid").write_text(PAIR_TEXTGRID, encoding="utf-8")
+            result = build_inventory(root)
+            alignment = result["word_tier_alignment"]
+            self.assertEqual(alignment["paired_tier_pairs"], 1)
+            self.assertEqual(alignment["paired_interval_slots"], 1)
+            self.assertEqual(alignment["same_time_boundaries"], 1)
+            self.assertEqual(alignment["both_hangul_word_pairs"], 1)
+            self.assertNotIn("학교", str(result))
+            self.assertNotIn("학꾜", str(result))
 
 if __name__ == "__main__":
     unittest.main()
