@@ -791,6 +791,40 @@ The latest measured Korean G2P comparison remains the paired PR #456 diagnostic 
 - The full multi-engine run [42416681855](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681855) passed its mandatory deterministic/phonemizer comparison, queue/artifact comparison, Browser same-occurrence execution and Native/Browser parity. Optional CharsiuG2P and ByT5 inference were skipped by policy; they are not passes and have no score.
 - These are dataset/reference-convention diagnostics for Korean G2P. They do not measure Ukrainian target quality and are not normative pronunciation gold.
 
+### Full pinned multi-engine comparison — latest successful run 42416681855
+
+Strict IPA scoring on the pinned UGTPHON Korean test split (275 source rows; 2,703 eligible occurrences), same normalization and reference convention:
+
+| Engine | Exact | CER | Coverage |
+|---|---:|---:|---:|
+| ClippyFirst Native | 1,425/2,702 (52.7387%) | 9.0130% | 99.9630% |
+| g2pK 0.9.4 | 1,435/2,703 (53.0892%) | 9.2328% | 100% |
+| g2p-ko 1.0.0 | 1,418/2,703 (52.4602%) | 9.3928% | 100% |
+| KoG2Padvanced 2022 | 1,279/2,703 (47.3178%) | 10.6815% | 100% |
+| phonemize 2.0.1 | 1,150/2,703 (42.5453%) | 14.3531% | 100% |
+| KoG2P 2019 | 738/2,703 (27.3030%) | 19.5122% | 100% |
+| kokorog2p 0.9.15 | 495/2,703 (18.3130%) | 26.5352% | 100% |
+| HAMA 1.7.0 | 457/2,703 (16.9071%) | 25.1081% | 100% |
+| hangul_to_ipa 2026 | 439/2,703 (16.2412%) | 24.8054% | 100% |
+| eSpeak NG Korean | 220/2,703 (8.1391%) | 33.6101% | 100% |
+
+Strict IPA scoring on the pinned SIGMORPHON 2021 Korean test split (1,000 source rows; 999 eligible occurrences):
+
+| Engine | Exact | CER | Coverage |
+|---|---:|---:|---:|
+| ClippyFirst Native | 359/998 (35.9719%) | 14.5347% | 99.90% |
+| g2pK 0.9.4 | 353/999 (35.3353%) | 14.8222% | 100% |
+| g2p-ko 1.0.0 | 356/999 (35.6356%) | 14.6970% | 100% |
+| KoG2Padvanced 2022 | 326/999 (32.6326%) | 15.8237% | 100% |
+| phonemize 2.0.1 | 289/999 (28.9289%) | 17.4387% | 100% |
+| KoG2P 2019 | 187/999 (18.7187%) | 21.8327% | 100% |
+| HAMA 1.7.0 | 127/999 (12.7127%) | 27.6164% | 100% |
+| kokorog2p 0.9.15 | 96/999 (9.6096%) | 30.7336% | 100% |
+| hangul_to_ipa 2026 | 89/999 (8.9089%) | 29.8448% | 100% |
+| eSpeak NG Korean | 43/999 (4.3043%) | 40.7236% | 100% |
+
+Run 42416681855 is the latest successful full multi-engine artifact. Optional CharsiuG2P and ByT5 neural inference were skipped by policy and have no score. The report's separate broad-candidate sensitivity profile is research-only and must not replace strict scoring.
+
 ### Did ClippyFirst Native deteriorate?
 
 **No general deterioration is established.** A superficial comparison with the 2026-10-24 UGTPHON snapshot shows Native exact match lower by about 0.4440 percentage points (53.1827% → 52.7387%), but CER improves by about 0.1753 points (9.1883% → 9.0130%). On SIGMORPHON, the current Native exact match is higher by about 0.1645 points (35.8074% → 35.9719%) and CER improves by about 0.1690 points (14.7037% → 14.5347%). The eligible/scored counts and profile/reference conventions are not identical across all historical snapshots, so these deltas are descriptive, not a controlled regression experiment. The defensible conclusion is metric- and corpus-dependent movement, not a demonstrated global regression. To prove a code-induced regression, rerun the same pinned corpora, exact normalizer/profile, same occurrence IDs, and old/new engine revisions in one paired workflow.
