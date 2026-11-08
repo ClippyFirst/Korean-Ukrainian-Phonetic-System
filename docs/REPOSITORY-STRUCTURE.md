@@ -183,3 +183,16 @@ PR [#461](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/4
 - Optional Charsiu queue and official NIKL metadata-only inventory were skipped by policy; neither is counted as a pass.
 
 Local shell/npm/pytest commands were not run in this connector-only environment. The CI evidence above is the actual verification source. The PR remains open pending merge; non-required diagnostic jobs are recorded separately in the canonical audit.
+
+
+## 2026-11-08 — benchmark mode ownership and execution map
+
+The existing directory structure remains intentionally stable; no bulk moves or duplicate skill/plan systems were introduced. Benchmark responsibilities are:
+
+- scripts/benchmark_kozak_kim_browser.mjs — shared Browser Kozak Kim token-level IPA scorer for UGTPHON and SIGMORPHON; dataset identity and source are explicit report metadata.
+- scripts/benchmark_kozak_kim_seoul_browser.mjs — Seoul word-level Hangul surface scorer.
+- scripts/benchmark_kozak_kim_seoul_ipa.mjs — Seoul word-level phonemic IPA scorer via the versioned adapter.
+- .github/workflows/multi-engine-ipa-benchmark.yml — pinned external Strict-compatible engine comparisons plus three-mode Kozak Kim reports for UGTPHON and SIGMORPHON.
+- tests/kozak-kim-ipa-first-benchmark.test.mjs and tests/kozak-kim-seoul-benchmark.test.mjs — metric semantics, typed fallback, unresolved passthrough and output-availability regressions.
+
+The canonical metric and compatibility contract is [methodology — mode coverage and output availability](methodology.md#mode-coverage-and-output-availability-contract-2026-11-08). Do not label third-party engines as Kozak Kim modes; do not treat the morphology-consensus diagnostic as a replacement mode; do not score the reconstructed 236-case candidate cohort as gold.
