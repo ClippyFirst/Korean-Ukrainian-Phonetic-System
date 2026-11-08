@@ -27,3 +27,6 @@ where=["src"]
 
 [tool.setuptools.data-files]
 "share/korean-ukrainian-phonetic-system" = ["data/korean/*.csv"]
+
+[tool.setuptools.package-data]
+korean_ukrainian = ["source_adjudications.json"]
