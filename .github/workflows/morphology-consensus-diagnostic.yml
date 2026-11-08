@@ -2,6 +2,12 @@ name: Korean morphology-consensus IPA diagnostic
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "src/korean_ukrainian/**"
+      - "scripts/benchmark_morphology_ipa_delta.py"
+      - ".github/workflows/morphology-consensus-diagnostic.yml"
   pull_request:
     paths:
       - "src/korean_ukrainian/**"
