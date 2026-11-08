@@ -5,6 +5,8 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+
+import jsonschema
 from typing import Any
 
 
@@ -35,8 +37,10 @@ def _multi_engine(path: Path, track: str) -> dict[str, Any]:
         result["broad_candidate"] = {
             key: broad.get(key) for key in (
                 "scored_tokens", "exact_matches", "exact_match_rate",
-                "character_error_rate", "coverage_adjusted_exact_match_rate",
-                "bootstrap_95pct_ci",
+                "character_error_rate", "phoneme_error_rate",
+                "phonological_feature_error_rate_proxy", "coverage",
+                "coverage_adjusted_exact_match_rate", "abstentions_or_unresolved",
+                "engine_errors_on_token_loop", "bootstrap_95pct_ci",
             )
         }
         engines[name] = result
@@ -50,6 +54,9 @@ def _multi_engine(path: Path, track: str) -> dict[str, Any]:
         "unique_hangul_words": report.get("unique_hangul_words"),
         "engine_order": report.get("engine_order"),
         "native_ipa_profile": report.get("native_ipa_profile"),
+        "broad_candidate_profile": report.get("broad_candidate_profile"),
+        "normalization": report.get("normalization"),
+        "supplemental_metrics_status": report.get("supplemental_metrics_status"),
         "engines": engines,
         "limitations": report.get("limitations", []),
     }
@@ -84,13 +91,16 @@ def summarize(
 ) -> dict[str, Any]:
     multi = [_named_path(item) for item in multi_engine]
     modes = [_named_path(item) for item in browser]
-    return {
+    result = {
         "schema_version": 1,
         "report_scope": "aggregate-only; token-level source text, IPA labels, mismatch examples and occurrence ledgers are omitted",
         "manifest": json.loads(manifest_path.read_text(encoding="utf-8")),
         "multi_engine_tracks": [_multi_engine(path, name) for name, path in multi],
         "browser_mode_tracks": [_browser(path, name) for name, path in modes],
     }
+    schema_path = Path(__file__).resolve().parents[1] / "schemas/korean-benchmark-summary.schema.json"
+    jsonschema.validate(instance=result, schema=json.loads(schema_path.read_text(encoding="utf-8")))
+    return result
 
 
 def main() -> int:
