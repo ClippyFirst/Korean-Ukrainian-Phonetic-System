@@ -38,7 +38,7 @@ jobs:
           unzip -q "$RUNNER_TEMP/seoul-labels/label-TextGrid.zip" -d "$RUNNER_TEMP/seoul-labels/textgrids"
           echo "Extracted TextGrid count and sample paths:"
           find "$RUNNER_TEMP/seoul-labels/textgrids" -type f | wc -l
-          find "$RUNNER_TEMP/seoul-labels/textgrids" -type f | head -40
+          find "$RUNNER_TEMP/seoul-labels/textgrids" -type f | sed -n "1,40p"
 
       - name: Inventory TextGrid structure only
         id: inventory
