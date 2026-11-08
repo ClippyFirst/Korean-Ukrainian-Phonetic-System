@@ -1,6 +1,6 @@
 ## 2026-11-08 closure — documentation and source-register reconciliation
 
-- Main before this matrix refresh: `a77fdf04203a078f1680392675a2b6e4ae620298`; benchmark/runtime snapshot remains `668dbad14568e8472594937558500500102b3f95`.
+- Main before this matrix refresh: `54e7f5a5a342b44a0b26d80b2427191156c144ec`; benchmark/runtime snapshot remains `668dbad14568e8472594937558500500102b3f95`.
 - Current source register: 230 records; all rows have 12 fields after CSV quoting repair. Latest source-register generation: [42491874837](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874837).
 - Latest full test suite on the preceding code/docs snapshot: [42491874801](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874801) **PASS** (Python 3.11/3.12/3.13, web/npm tests and build, wheel install, teacher-corpus audit).
 - Latest System Verify: [42491874749](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874749) **PASS** (Python regression/data integrity and Browser regression/build).
