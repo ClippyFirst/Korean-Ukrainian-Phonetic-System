@@ -7,6 +7,8 @@ on:
     paths:
       - "scripts/inspect_seoul_corpus_textgrids.py"
       - "scripts/benchmark_kozak_kim_seoul_browser.mjs"
+      - "scripts/benchmark_kozak_kim_seoul_ipa.mjs"
+      - "data/korean/ipa/seoul-corpus-phonemic-ipa-v1.json"
       - "tests/test_seoul_corpus_textgrid_inventory.py"
       - ".github/workflows/seoul-corpus-inventory.yml"
 
@@ -45,7 +47,7 @@ jobs:
         id: inventory
         continue-on-error: true
         run: |
-          python scripts/inspect_seoul_corpus_textgrids.py --root "$RUNNER_TEMP/seoul-labels/textgrids" --output "$RUNNER_TEMP/seoul-corpus-inventory.json" --pairs-output "$RUNNER_TEMP/seoul-word-pairs.json"
+          python scripts/inspect_seoul_corpus_textgrids.py --root "$RUNNER_TEMP/seoul-labels/textgrids" --output "$RUNNER_TEMP/seoul-corpus-inventory.json" --pairs-output "$RUNNER_TEMP/seoul-word-pairs.json" --ipa-pairs-output "$RUNNER_TEMP/seoul-ipa-word-pairs.json"
 
       - name: Benchmark Strict, Soft and Super-soft on aligned Seoul word pairs
         id: benchmark
@@ -56,6 +58,15 @@ jobs:
             --corpus "$RUNNER_TEMP/seoul-word-pairs.json" \
             --output "$RUNNER_TEMP/seoul-surface-benchmark.json"
 
+      - name: Benchmark Strict, Soft and Super-soft against Seoul phonemic IPA
+        id: ipa_benchmark
+        if: steps.inventory.outcome == 'success'
+        continue-on-error: true
+        run: |
+          node scripts/benchmark_kozak_kim_seoul_ipa.mjs \
+            --corpus "$RUNNER_TEMP/seoul-ipa-word-pairs.json" \
+            --output "$RUNNER_TEMP/seoul-phonemic-ipa-benchmark.json"
+
       - name: Preserve metadata-only benchmark artifacts
         if: always()
         uses: actions/upload-artifact@v4
@@ -64,12 +75,13 @@ jobs:
           path: |
             ${{ runner.temp }}/seoul-corpus-inventory.json
             ${{ runner.temp }}/seoul-surface-benchmark.json
+            ${{ runner.temp }}/seoul-phonemic-ipa-benchmark.json
             seoul-label-archive.sha256
           if-no-files-found: warn
           retention-days: 30
 
       - name: Require complete archive parsing
-        if: steps.inventory.outcome == 'failure' || steps.benchmark.outcome == 'failure'
+        if: steps.inventory.outcome == 'failure' || steps.benchmark.outcome == 'failure' || steps.ipa_benchmark.outcome == 'failure'
         run: |
           echo "The Seoul archive inventory or three-mode surface benchmark failed. Inspect the metadata artifact and runner logs before accepting this corpus."
           exit 1
