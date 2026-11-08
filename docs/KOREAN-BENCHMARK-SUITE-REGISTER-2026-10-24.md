@@ -189,7 +189,7 @@ These are candidates for ingestion or derived, provenance-preserving fixtures, n
 | CJKI Korean Phonetic Database (KPD) | Vendor describes 120,000+ Korean entries with IPA, POS, and phonological attributes. | **BLOCKED pending commercial access and written reuse terms**; do not copy/vendor its data absent permission. https://www.cjk.org/data/korean/nlp/korean-phonetic-database/ |
 | Nexdata Korean Pronunciation Dictionary | Public GitHub landing page describes 444,202 linguist-produced word/pronunciation entries, but explicitly labels the dataset commercial. | **BLOCKED pending license/access**; the GitHub README is not an open data license. https://github.com/Nexdata-AI/444202-Korean-Pronunciation-Dictionary |
 | KoBALT-700 | Expert-authored linguistic questions, including phonetics/phonology and morphology. | Use as a **source for designing challenge categories**, not as direct G2P gold; its multiple-choice tasks are not word-to-IPA pairs. https://knlp.snu.ac.kr/research/benchmarks |
-| Seoul Corpus / OpenSLR SLR113 | 240 TextGrid files, 2,671,221 intervals, 231,626 aligned Hangul orthography→pronunciation word pairs; 54,868 unique source/reference pairs. CC BY-NC 2.0. | **EXECUTED — third executable dataset**. Exact-head run [42490612299](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42490612299), artifact `13621490886`; all three Kozak Kim modes scored separately. Label-only, no audio, no corpus files committed. Surface-Hangul diagnostic, not IPA gold. Source: https://openslr.org/113/ |
+| Seoul Corpus / OpenSLR SLR113 | 240 TextGrid files, 2,671,221 intervals, 231,626 aligned Hangul orthography→pronunciation word pairs; 54,868 unique source/reference pairs. CC BY-NC 2.0. | **EXECUTED — two three-mode diagnostic tracks**. Exact-head run [42491208142](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491208142), artifact `13622140135`; 231,626 Hangul surface pairs and 231,625 phonemic IPA pairs. Label-only, no audio, no raw corpus files committed. The phonemic reference is not narrow IPA. Source: https://openslr.org/113/ |
 
 ### Recommended benchmark portfolio
 
@@ -607,7 +607,7 @@ The 2026 EMNLP paper's Korean ablation reports PERnc 47.5 Word→Word, 28.1 Sent
 
 ## 2026-11-08 — five-dataset Korean G2P benchmark portfolio
 
-The portfolio target is **five distinct Korean pronunciation-reference datasets**, not five normalization settings on one corpus. The first two are the currently executable multi-engine IPA benchmarks. Three additional external datasets have now been verified as concrete candidates; their access/annotation constraints are recorded below. Do not claim five completed benchmark runs until the three gated datasets have been lawfully acquired, parsed, and scored.
+The portfolio contains **five distinct Korean pronunciation-reference datasets**. Three are now executed (UGTPHON, SIGMORPHON 2021 and Seoul Corpus), producing five evaluation tracks. KsponSpeech and NIKL 2022 remain access/terms-gated. Do not confuse five evaluation tracks with five independent corpora or five independently adjudicated gold standards.
 
 | # | Dataset / source | Gold/reference type and value | License/access status | Benchmark decision and present status |
 |---:|---|---|---|---|
@@ -631,4 +631,4 @@ The portfolio target is **five distinct Korean pronunciation-reference datasets*
 - Mun, Kim & Ko (2022) paper-associated 130-row hand-transcribed G2P gold corpus: valuable rule-phenomenon challenge set, but the upstream repository does not expose a reuse licence; remains blocked pending written permission or a separately licensed release.
 - LDC2003L02 Korean Telephone Conversations Lexicon: 25,251 lexical entries with Hangul, Yale, pronunciation, frequency and morphology fields; useful alternate sixth candidate, but access is governed by the LDC User Agreement for Non-Members and requires a paid licence.
 - CJKI Korean Phonetic Database (120,000+ IPA entries) and Nexdata Korean Pronunciation Dictionary (444,202 entries): commercial products; not included without an appropriate licence.
-- Seoul Corpus is the only newly selected candidate with a clearly stated open download and explicit licence suitable for immediate non-commercial ingestion; its custom phone inventory still requires validation before IPA scoring.
+- Seoul Corpus label-only archive is acquired and parsed; two three-mode diagnostic tracks (Hangul surface and phonemic IPA) are complete. Its phonemic adapter remains research-only pending independent Korean phonetics review. KsponSpeech and NIKL 2022 remain access/terms-gated.
