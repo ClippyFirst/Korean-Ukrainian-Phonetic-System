@@ -917,3 +917,32 @@ The current documentation previously described Strict, Soft and Super-soft as th
 - Corpus generation: **PASS** — run [42486756926](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42486756926).
 - Official NIKL metadata-only inventory: **SKIPPED**, not a pass.
 - These runs verify the documentation-contract regression and repository software gates. They do not generate or validate the missing current Soft/Super-soft accuracy benchmarks.
+
+
+## 2026-11-08 continuation — five-dataset benchmark portfolio and exact-main reruns
+
+### Portfolio expansion
+
+The benchmark suite register now defines five distinct Korean pronunciation-reference datasets: (1) UGTPHON Korean test, (2) SIGMORPHON 2021 Korean public paired lexical file, (3) Seoul Corpus / OpenSLR SLR113, (4) KsponSpeech, and (5) LDC Korean Telephone Conversations Lexicon LDC2003L02. This is a five-dataset portfolio, not a claim that all five have already been scored.
+
+- UGTPHON and SIGMORPHON are the two runnable IPA datasets already wired into the multi-engine workflow.
+- Seoul Corpus is selected as a non-commercial, phonetically labelled TextGrid suite (CC BY-NC 2.0); tier schema, phone inventory and audited phone-to-IPA mapping remain ingestion gates. Audio is not mandatory if the labels themselves suffice.
+- KsponSpeech has orthographic/pronunciation dual transcription according to the corpus paper, but requires AIHub manual download and original access-term review; score Hangul surface pronunciation separately from IPA.
+- LDC2003L02 has 25,251 lexical entries and an explicit LDC User Agreement access path; it requires a suitable licence and phonetic-field inspection before use.
+- The 130-row Mun, Kim & Ko gold corpus remains an unlicensed research candidate and is not one of the five selected datasets. Commercial CJKI/Nexdata products remain excluded pending licensing.
+
+### Current-main benchmark automation
+
+- Added a path-filtered `push` trigger to `.github/workflows/multi-engine-ipa-benchmark.yml`, so a relevant main-branch benchmark/code change runs the pinned 10-engine suite without enabling neural inference by default. Exact-main run [42487094098](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487094098) was started from `a42aaeebb71012f7d4bc1dce62936a24215097e0`; inspect its final artifact before publishing scores.
+- Added a path-filtered `push` trigger to `.github/workflows/morphology-consensus-diagnostic.yml` so relevant main changes produce a separate Strict/Soft paired UGTPHON report. Analyzer-consensus output remains diagnostic and must not be relabelled as a third production mode score.
+- The new triggers do not enable CharsiuG2P or ByT5; both remain default-off/skipped unless a separate explicit research opt-in is used.
+
+### Status
+
+**DONE_VERIFIED:** five datasets researched and registered with distinct annotation/representation and licence/access gates; main-branch automation added for exact-head multi-engine and Strict/Soft diagnostics.
+
+**PARTIAL:** two datasets are wired and can be scored; exact-main full multi-engine and Strict/Soft reports are pending artifact inspection.
+
+**TODO/BLOCKED:** Seoul TextGrid parser and symbol adapter; KsponSpeech AIHub acquisition and terms; LDC2003L02 licensed acquisition; Super-soft stratified accuracy scorer; unified three-mode evaluation on all compatible datasets. Do not claim five completed runs.
+
+**No raw restricted datasets were committed.** The three new datasets are source-registered only; no unlicensed or access-controlled data was downloaded or redistributed.
