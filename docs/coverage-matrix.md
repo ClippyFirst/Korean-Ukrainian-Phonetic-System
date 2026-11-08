@@ -1,10 +1,10 @@
 ## 2026-11-08 closure — documentation and source-register reconciliation
 
 - Main before this matrix refresh: `54c50b819f0d18188626f1407373d5de21960ddf`; benchmark/runtime snapshot remains `668dbad14568e8472594937558500500102b3f95`.
-- Current source register: 230 records; all rows have 12 fields after CSV quoting repair. Latest source-register generation: [42492418499](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42492418499). Latest clean Seoul metadata artifact [13621892753](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42492152654) has 7-day retention and no raw label-value map.
+- Current source register: 230 records; all rows have 12 fields after CSV quoting repair. Latest source-register generation: [42492418499](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42492418499). Latest clean Seoul metadata artifact [13623272235](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42495867492) has 7-day retention and no raw label-value map.
 - Latest full test suite on the preceding code/docs snapshot: [42492418635](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42492418635) **PASS** (Python 3.11/3.12/3.13, web/npm tests and build, wheel install, teacher-corpus audit).
 - Latest System Verify: [42492418484](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42492418484) **PASS** (Python regression/data integrity and Browser regression/build).
-- Seoul corpus preflight and both three-mode benchmarks: [42492152654](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42492152654) **PASS**; artifact `13621892753`.
+- Seoul corpus preflight and both three-mode benchmarks: [42495867492](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42495867492) **PASS**; artifact `13623272235`.
 - The only known unsuccessful runs in this continuation were intermediate documentation/source-register commits with stale test expectations or a CSV quoting error; both were corrected and the later complete suite passed. No test failures remain on the latest verified source-register commit.
 - GitHub Pages deployment on the latest pre-audit commit was queued/in progress at the time of this refresh; deployment is not claimed.
 - No open PRs were returned by the repository's open-PR API listing at inspection. No branches were deleted, no force-push or release occurred.
@@ -15,7 +15,7 @@
 **Benchmark code snapshot:** `668dbad14568e8472594937558500500102b3f95`.  
 **Branch:** `main` (kept in place; no new branch or PR).  
 **Full 10-engine run:** [42487350896](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487350896), artifact `13621335293`.  
-**Seoul label/surface/phonemic-IPA run:** [42492152654](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42492152654), artifact `13621892753`.
+**Seoul label/surface/phonemic-IPA run:** [42495867492](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42495867492), artifact `13623272235`.
 
 ### Benchmark execution ledger
 
@@ -36,7 +36,7 @@
 - 240/240 TextGrid files parsed; 1,680 tiers and 2,671,221 interval annotations.
 - 231,626 aligned Hangul word pairs; 231,625 aligned phonemic IPA pairs.
 - 36 phone symbols mapped to phonemic IPA using versioned `data/korean/ipa/seoul-corpus-phonemic-ipa-v1.json`; 70,660 non-phone/unmapped intervals excluded without exporting their label text.
-- CC BY-NC 2.0: no TextGrid files, audio or word/IPA pair JSON are committed or uploaded. Disclosure: intermediate artifact 13621412269 contains a distinct phoneme-tier label inventory, including some short laughter-tag text, but no TextGrid/audio/word-pair data; it expires 2026-12-08. Final artifact 13621892753 contains aggregate metadata/metrics only; subsequent workflow artifacts now have 7-day retention.
+- CC BY-NC 2.0: no TextGrid files, audio or word/IPA pair JSON are committed or uploaded. Disclosure: intermediate artifact 13621412269 contains a distinct phoneme-tier label inventory, including some short laughter-tag text, but no TextGrid/audio/word-pair data; it expires 2026-12-08. Final artifact 13623272235 contains aggregate metadata/metrics only; subsequent workflow artifacts now have 7-day retention.
 
 ### Three-mode Seoul outcomes
 
@@ -44,10 +44,10 @@
 |---|---|---:|---:|---:|---:|---:|
 | Hangul surface | Strict | 97.0375% | 57.1537% | 55.4605% | 24.5421% | 0 / 0 |
 | Hangul surface | Soft | 87.0006% | 56.2055% | 48.8991% | 26.3641% | 26,057 / 0 |
-| Hangul surface | Super-soft | 83.4924% | 56.8509% | 47.4662% | 26.3118% | 38,236 / 29 |
+| Hangul surface | Super-soft | 83.4924% | 56.8509% | 47.4662% | 26.3118% | 38,207 / 29 |
 | Phonemic IPA | Strict | 97.0375% | 14.1166% | 13.6984% | 39.9210% | 0 / 0 |
 | Phonemic IPA | Soft | 87.0005% | 14.7969% | 12.8734% | 40.8696% | 26,057 / 0 |
-| Phonemic IPA | Super-soft | 83.4923% | 15.3788% | 12.8402% | 40.4053% | 38,236 / 29 |
+| Phonemic IPA | Super-soft | 83.4923% | 15.3788% | 12.8402% | 40.4053% | 38,207 / 29 |
 
 Strict has the best coverage-adjusted Exact and lowest CER in both Seoul reference layers. Soft and Super-soft do not win exact matches on the paired common-scored subsets; Soft and Super-soft surface outputs are identical on their common scored set. These are diagnostics only: the IPA reference is phonemic and the browser profile is marked `unadjudicated-cross-runtime`; do not treat this as narrow-IPA or Ukrainian-target acceptance.
 
@@ -59,7 +59,7 @@ Strict has the best coverage-adjusted Exact and lowest CER in both Seoul referen
 
 ### Verification on benchmark code snapshot 668dbad
 
-- Seoul corpus inventory + three-mode surface + three-mode phonemic IPA workflow: **PASS**, run 42492152654.
+- Seoul corpus inventory + three-mode surface + three-mode phonemic IPA workflow: **PASS**, run 42495867492.
 - Python/browser/web/wheel/teacher-corpus tests: **PASS**, run 42491208107.
 - System verification (Python regression/data integrity, browser regression/build): **PASS**, run 42491208109.
 - Master table and research corpus artifacts: **PASS**, run 42491208162.
@@ -545,3 +545,13 @@ Run `41870455614` was cancelled twice: attempt 1 while `Run multi-engine compari
 - Original g2pK 0.9.4 remains pinned and unmodified. No g2pK vendor file or external baseline was changed.
 - Research readiness: comparative diagnostic evidence is materially stronger; independent IPA gold, independent Ukrainian target review, item-level NIKL reuse verification, C12 audio/prosody crosswalk, historical 239-case adjudication, and names/loans/Hanja/regional-style coverage remain open.
 - Release status: **research prototype**, not research-certified and not release-ready.
+
+
+## 2026-11-08 — Seoul scorer fallback-stratum correction and final CI checkpoint
+
+- Audit found that 29 Super-soft orthographic-fallback rows were counted in both the heuristic and typed-fallback counters. They were already excluded from source-resolved Exact/CER; the issue was overlapping status counts, not inflated accuracy.
+- Updated both Seoul benchmark scorers to classify typed fallback as its own mutually exclusive outcome and to exclude it from paired source-resolved comparisons. Added Node regression tests for both Hangul-surface and phonemic-IPA scorers.
+- Corrected Seoul artifact [13623272235](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42495867492): Super-soft now reports 38,207 heuristic + 29 typed-fallback occurrences, with source-resolved scored counts and all Exact/CER metrics unchanged. No raw corpus or word/IPA pair data is uploaded.
+- Seoul workflow run 42495867492: **PASS** (TextGrid inventory, Hangul surface scorer, phonemic IPA scorer).
+- Tests run [42495903258](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42495903258): **PASS** (Python 3.11/3.12/3.13, Web/npm tests and build, wheel install, teacher-corpus audit). System Verify [42495903331](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42495903331): **PASS** (Browser regression/build and Python regression/data integrity; optional NIKL inventory skipped).
+- Code commit 536cd44460bbd225fcd76f592bfe6e3077a245a4; fallback-exclusion tests added in e1e393b3518b6c69685ad00a179ab8996d18ef71. Pages deployment for the latter commit was still running at the time of this matrix update.
