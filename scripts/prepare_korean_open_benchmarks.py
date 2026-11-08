@@ -97,13 +97,17 @@ def _hangul_words_from_json(path: Path) -> set[str]:
 
 def _read_nikl_word_index(archive_path: Path) -> dict[int, str]:
     with zipfile.ZipFile(archive_path) as archive:
-        candidates = [
+        all_txt = [
             info for info in archive.infolist()
             if PurePosixPath(info.filename).name.endswith(".txt")
-            and ("일반어휘통계" in PurePosixPath(info.filename).name or info.file_size >= 1_000_000)
         ]
+        named = [
+            info for info in all_txt
+            if "일반어휘통계" in PurePosixPath(info.filename).name
+        ]
+        candidates = named or [info for info in all_txt if info.file_size >= 1_000_000]
         if not candidates:
-            raise ValueError("NIKL archive does not contain the expected large 일반어휘통계 TXT file")
+            raise ValueError("NIKL archive does not contain the expected 일반어휘통계 TXT file")
         info = max(candidates, key=lambda item: item.file_size)
         raw = archive.read(info.filename)
 
