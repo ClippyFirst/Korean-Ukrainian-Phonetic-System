@@ -1,9 +1,9 @@
 ## 2026-11-08 closure — documentation and source-register reconciliation
 
-- Main before this matrix refresh: `54e7f5a5a342b44a0b26d80b2427191156c144ec`; benchmark/runtime snapshot remains `668dbad14568e8472594937558500500102b3f95`.
-- Current source register: 230 records; all rows have 12 fields after CSV quoting repair. Latest source-register generation: [42491874837](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874837).
-- Latest full test suite on the preceding code/docs snapshot: [42491874801](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874801) **PASS** (Python 3.11/3.12/3.13, web/npm tests and build, wheel install, teacher-corpus audit).
-- Latest System Verify: [42491874749](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874749) **PASS** (Python regression/data integrity and Browser regression/build).
+- Main before this matrix refresh: `54c50b819f0d18188626f1407373d5de21960ddf`; benchmark/runtime snapshot remains `668dbad14568e8472594937558500500102b3f95`.
+- Current source register: 230 records; all rows have 12 fields after CSV quoting repair. Latest source-register generation: [42492418499](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42492418499). Latest clean Seoul metadata artifact [13621892753](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42492152654) has 7-day retention and no raw label-value map.
+- Latest full test suite on the preceding code/docs snapshot: [42492418635](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42492418635) **PASS** (Python 3.11/3.12/3.13, web/npm tests and build, wheel install, teacher-corpus audit).
+- Latest System Verify: [42492418484](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42492418484) **PASS** (Python regression/data integrity and Browser regression/build).
 - Seoul corpus preflight and both three-mode benchmarks: [42492152654](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42492152654) **PASS**; artifact `13621892753`.
 - The only known unsuccessful runs in this continuation were intermediate documentation/source-register commits with stale test expectations or a CSV quoting error; both were corrected and the later complete suite passed. No test failures remain on the latest verified source-register commit.
 - GitHub Pages deployment on the latest pre-audit commit was queued/in progress at the time of this refresh; deployment is not claimed.
