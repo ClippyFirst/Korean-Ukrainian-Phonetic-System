@@ -29,8 +29,8 @@ Full 10-engine artifact: [run 42487350896](https://github.com/ClippyFirst/Korean
 - 231,626 aligned Hangul surface word pairs (54,868 unique source/reference pairs).
 - 36 observed phoneme symbols mapped through `data/korean/ipa/seoul-corpus-phonemic-ipa-v1.json`, derived from Yun et al. (2015), Table 3, DOI `10.13064/KSSS.2015.7.2.103`.
 - 1,134,781 mapped phone tokens; 70,660 non-phone/unmapped intervals excluded. 231,625 word-level phonemic IPA pairs generated; six phone-boundary conflicts and one non-phone/unmapped word excluded.
-- No TextGrid files, audio, or word/IPA pair JSON are committed or uploaded. Disclosure: intermediate artifact 13621412269 contains a distinct phoneme-tier label inventory, including some short laughter-tag text, but not full TextGrid/audio/word-pair data; it expires 2026-12-08. Final artifact 13621892753 (rerun 42492152654) was inspected and contains aggregate metadata/metrics only, with no raw label-value map; future artifacts are retained 7 days. The corpus is CC BY-NC 2.0.
-- Seoul workflow: [run 42492152654](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42492152654), artifact `13621892753`.
+- No TextGrid files, audio, or word/IPA pair JSON are committed or uploaded. Disclosure: intermediate artifact 13621412269 contains a distinct phoneme-tier label inventory, including some short laughter-tag text, but not full TextGrid/audio/word-pair data; it expires 2026-12-08. Final artifact 13623272235 (rerun 42495867492) was inspected and contains aggregate metadata/metrics only, with no raw label-value map; future artifacts are retained 7 days. The corpus is CC BY-NC 2.0.
+- Seoul workflow: [run 42495867492](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42495867492), artifact `13623272235`.
 
 ### Seoul mode results
 
@@ -38,10 +38,10 @@ Full 10-engine artifact: [run 42487350896](https://github.com/ClippyFirst/Korean
 |---|---|---:|---:|---:|---:|---:|
 | Hangul surface | Strict | 97.0375% | 57.1537% | 55.4605% | 24.5421% | 0 / 0 |
 | Hangul surface | Soft | 87.0006% | 56.2055% | 48.8991% | 26.3641% | 26,057 / 0 |
-| Hangul surface | Super-soft | 83.4924% | 56.8509% | 47.4662% | 26.3118% | 38,236 / 29 |
+| Hangul surface | Super-soft | 83.4924% | 56.8509% | 47.4662% | 26.3118% | 38,207 / 29 |
 | Phonemic IPA | Strict | 97.0375% | 14.1166% | 13.6984% | 39.9210% | 0 / 0 |
 | Phonemic IPA | Soft | 87.0005% | 14.7969% | 12.8734% | 40.8696% | 26,057 / 0 |
-| Phonemic IPA | Super-soft | 83.4923% | 15.3788% | 12.8402% | 40.4053% | 38,236 / 29 |
+| Phonemic IPA | Super-soft | 83.4923% | 15.3788% | 12.8402% | 40.4053% | 38,207 / 29 |
 
 Strict has the best coverage-adjusted Exact and lowest CER in both Seoul reference layers. On common scored subsets Strict wins every Exact comparison; Soft and Super-soft have higher scored-only Exact only because they score fewer source-resolved cases. Soft and Super-soft outputs are identical on their common scored set. The IPA reference is phonemic, not narrow phonetic gold; the adapter and cross-runtime profile remain unadjudicated by an independent specialist. These scores do not validate Ukrainian target rendering.
 
@@ -59,7 +59,7 @@ Strict has the best coverage-adjusted Exact and lowest CER in both Seoul referen
 | Workflow | Result | Evidence |
 |---|---|---|
 | 10-engine UGTPHON + SIGMORPHON, three Browser modes and Native/Browser parity | **PASS** | [42487350896](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487350896) |
-| Seoul TextGrid inventory + surface + phonemic IPA, all three modes | **PASS** | [42492152654](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42492152654) |
+| Seoul TextGrid inventory + surface + phonemic IPA, all three modes | **PASS** | [42495867492](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42495867492) |
 | Python 3.11/3.12/3.13, web/npm tests and build, wheel install, teacher-corpus audit | **PASS** | [42491874801](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874801) on `de1d9b10f31e4ea730fc7c5940753c42f54ab3a1` |
 | Python regression/data integrity and Browser regression/build | **PASS** | [42491874749](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874749) on `de1d9b10f31e4ea730fc7c5940753c42f54ab3a1` |
 | Master table and research corpus artifacts | **PASS** | [42491874837](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874837) on `de1d9b10f31e4ea730fc7c5940753c42f54ab3a1` |
@@ -133,7 +133,7 @@ The OpenSLR SLR113 label archive was downloaded in CI and parsed without downloa
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | Strict | 224,764 / 231,626 | 97.0375% | 57.1537% | 55.4605% | 24.5421% | 0 | 0 | 6,862 |
 | Soft | 201,516 / 231,626 | 87.0006% | 56.2055% | 48.8991% | 26.3641% | 26,057 | 0 | 4,053 |
-| Super-soft | 193,390 / 231,626 | 83.4924% | 56.8509% | 47.4662% | 26.3118% | 38,236 | 29 | 0 |
+| Super-soft | 193,390 / 231,626 | 83.4924% | 56.8509% | 47.4662% | 26.3118% | 38,207 | 29 | 0 |
 
 Paired mode deltas on common source-resolved occurrences:
 - Strict vs Soft: 201,516 common; 8,031 outputs changed; Strict had 778 exact wins, Soft had 0.
@@ -155,13 +155,13 @@ The primary annotation paper documents the phoneme inventory and IPA corresponde
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
 | Strict | 224,763 / 231,625 | 97.0375% | 14.1166% | 13.6984% | 39.9210% | 14.1224% | 40.1832% | 0 | 0 |
 | Soft | 201,515 / 231,625 | 87.0005% | 14.7969% | 12.8734% | 40.8696% | 14.8034% | 41.1359% | 26,057 | 0 |
-| Super-soft | 193,389 / 231,625 | 83.4923% | 15.3788% | 12.8402% | 40.4053% | 15.3856% | 40.6759% | 38,236 | 29 |
+| Super-soft | 193,389 / 231,625 | 83.4923% | 15.3788% | 12.8402% | 40.4053% | 15.3856% | 40.6759% | 38,207 | 29 |
 
 Paired comparisons: Strict vs Soft has 201,515 common scored occurrences, 6,481 output changes, 793 Strict exact wins and zero Soft exact wins. Strict vs Super-soft has 193,389 common, 5,837 changes, 788 Strict exact wins and zero Super-soft exact wins. Soft and Super-soft produce identical source-resolved IPA outputs on all 193,389 common occurrences; Super-soft changes only the status/fallback classification there.
 
 Interpretation: Strict has the best coverage-adjusted Exact and lowest CER in this phonemic reference. The higher scored-only Exact of Soft/Super-soft is a selection effect: they score fewer source-resolved occurrences and classify more cases as heuristic. Because this gold is phonemic while the engine profiles retain phonetic/allophonic detail, raw Exact/CER are diagnostic and must not be presented as narrow-IPA acceptance. This benchmark is not Ukrainian target validation.
 
-Evidence: [Seoul preflight, surface and phonemic-IPA benchmark run 42492152654](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42492152654), artifact `13621892753`. The artifact contains metadata and aggregate metrics only; raw word/IPA pairs remain temporary CI data.
+Evidence: [Seoul preflight, surface and phonemic-IPA benchmark run 42495867492](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42495867492), artifact `13623272235`. The artifact contains metadata and aggregate metrics only; raw word/IPA pairs remain temporary CI data.
 
 ### Remaining evidence limits
 
@@ -1138,3 +1138,18 @@ Exact-main morphology diagnostic succeeded and artifact `13620331011` was downlo
 On the common 2,702-occurrence subset, Strict and Soft are identical: 1,425 exact matches (52.7387%) and CER 9.0130% for both; exact and CER paired deltas are zero. Soft resolves one additional occurrence and changes three unique-word outputs/statuses, but it does not improve paired accuracy. Runtime errors: zero. This is a UGTPHON-only diagnostic, not evidence for SIGMORPHON, the 236-case cohort, or Super-soft. The analyzer-consensus variant is separately labelled diagnostic-only and is not the Soft mode.
 
 **Disposition:** Soft = MEASURED_DIAGNOSTIC on UGTPHON / PARTIAL overall. Remaining: SIGMORPHON and 236-case compatible-row scoring; exact IPA-profile alignment must be reported for each mode.
+
+
+## 2026-11-08 final continuation — Seoul benchmark accounting correction
+
+The first successful Seoul artifact (run 42492152654 / artifact 13621892753) exposed a reporting-accounting issue: 29 Super-soft typed orthographic-fallback rows were included in both the heuristic and typed-fallback counters. Code inspection confirmed that those rows were already excluded from source-resolved Exact/CER because the runtime marked them heuristic; accuracy metrics were therefore unchanged. The counters were not mutually exclusive, however, which made the status breakdown misleading.
+
+**Correction implemented:** both scripts/benchmark_kozak_kim_seoul_browser.mjs and scripts/benchmark_kozak_kim_seoul_ipa.mjs now classify typed fallback as a separate outcome before the heuristic branch. It is excluded from Exact/CER and paired resolved-output comparisons. tests/kozak-kim-seoul-benchmark.test.mjs verifies this independently for Hangul surface and phonemic IPA.
+
+- Corrected exact-code benchmark run [42495867492](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42495867492), artifact 13623272235: PASS for inventory, surface benchmark and phonemic IPA benchmark.
+- Corrected Super-soft status counts: **38,207 heuristic + 29 typed fallback**; previously reported combined/overlapping heuristic count 38,236 is superseded. Scored occurrence counts, coverage, Exact and CER remain unchanged because fallback was already excluded from scoring.
+- Full tests [42495903258](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42495903258): PASS across Python 3.11/3.12/3.13, wheel install, web tests/build, teacher corpus audit. System Verify [42495903331](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42495903331): PASS for browser regression/build and Python regression/data integrity; optional official NIKL metadata inventory was skipped.
+- Fallback code commit: 536cd44460bbd225fcd76f592bfe6e3077a245a4; regression-test commit: e1e393b3518b6c69685ad00a179ab8996d18ef71.
+- GitHub Pages deployment for e1e393b3518b6c69685ad00a179ab8996d18ef71 was still in progress at this audit checkpoint; do not claim it completed until the workflow reports success.
+
+This does not change the research interpretation: Strict has the best coverage-adjusted Exact and lowest CER in both Seoul reference layers; Soft and Super-soft do not beat Strict on the paired common-scored subset. Seoul remains a non-commercial diagnostic corpus, not independently adjudicated narrow IPA gold or Ukrainian-target validation.
