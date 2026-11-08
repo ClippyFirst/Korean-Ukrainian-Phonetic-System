@@ -1205,3 +1205,45 @@ All changes above were pushed directly to main. Current code head at the start o
 ### Readiness
 
 The repository remains a software-verified research prototype, not release-ready. Adding complete mode execution and availability gates improves benchmark coverage but does not provide independent Korean phonetics certification or Ukrainian-target acceptance.
+
+
+## 2026-11-08 continuation — exact-main CI and branch reconciliation
+
+**Main at this checkpoint:** `5814de6a77745feca7cc7683e6594d67289c2b23`. The stale statement that PR #461 remained open has been corrected in `docs/REPOSITORY-STRUCTURE.md`. GitHub's current open-PR query returned **0 open PRs**; PR #461 is already merged.
+
+### Exact-head verification evidence
+
+On `1912ea24e78ca03fe8483292efb31960d11c1c1e` (the parent of the documentation-only correction above), the following push workflows completed successfully:
+
+- [tests 42506324942](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42506324942): PASS — npm tests/build, Python 3.11/3.12/3.13, wheel installation, teacher-corpus audit.
+- [System Verify 42506324960](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42506324960): PASS — Python regression/data integrity, browser regression/build, source redistribution rights gate. Official NIKL metadata-only inventory: SKIPPED.
+- [Master/research artifact generation 42506325185](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42506325185): PASS — master table and strict research corpus artifacts generated.
+- [GitHub Pages 42506324909](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42506324909): PASS — Python checks, browser tests/build, deployment and live browser smoke test.
+
+The documentation-only correction at `5814de6a77745feca7cc7683e6594d67289c2b23` has its own tests, verify, master-artifact and Pages workflows queued as runs 42506815536, 42506815808, 42506815555 and 42506815519 respectively; these are **PENDING** at this checkpoint.
+
+The new multi-engine benchmark run [42506225213](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42506225213) is **IN_PROGRESS** on code head `c757cd02fee87e7313e52352602ec4ef879a7def`. Dataset downloads, pinned external engine/license validation, benchmark adapter tests, training-readiness audit and independent holdout packet generation have passed. The main benchmark step is still running; Browser UGTPHON/SIGMORPHON three-mode stages and artifacts have not yet completed. No new SIGMORPHON score or final three-mode pass is claimed. Optional ByT5 and Charsiu inference jobs were SKIPPED by policy.
+
+### Branch and PR reconciliation
+
+The repository has 27 non-main branches and no open PRs. All 27 branch heads were compared against main using commit-range/file-stat comparisons. High-risk research and fix branches were additionally tree-compared against current main: `research/source-only-40-case-adjudication`, `research/integrate-40-source-adjudications`, both 40-case evidence branches, `research/no-audio-40-case-adjudication`, `audit/kozak-236-source-rights`, `fix/five-ugtphon-native-abstentions-final-release`, `fix/source-rights-redistribution-scope` and `docs/agent-workflow-structure`. These inspected branch trees contained no branch-only files; main contains the current/superseding versions. Several branches have long ahead/behind histories because earlier PRs were squash-merged; commit counts alone are not evidence of unmerged content. No branch was deleted, force-updated or blindly merged. Keep historical branches untouched unless a later exact-file audit finds unique, still-valid work.
+
+### Source-adjudication integration status
+
+The 40 source-based decisions are already integrated into main as a provenance/policy annotation layer: 40 occurrence rows, 17 adjudication families, Python and browser adapters, and regression tests. This metadata layer deliberately does not rewrite Korean IPA or Ukrainian output. Speaker-specific narrow IPA remains unresolved/non-blocking and is not claimed as gold.
+
+### Current task ledger
+
+| Task | Status | Evidence / remaining acceptance |
+|---|---|---|
+| 40 source-based policy adjudications and metadata integration | DONE_VERIFIED | Main registry declares 40 occurrences / 17 families; browser regression and full Python/browser CI pass. |
+| Main Python, npm, browser build, wheel and rights gates | DONE_VERIFIED on 1912ea2 | Runs 42506324942 and 42506324960 passed. |
+| Master/research artifact generation | DONE_VERIFIED on 1912ea2 | Run 42506325185 passed. |
+| Pages deployment and live browser smoke | DONE_VERIFIED on 1912ea2 | Run 42506324909 passed. |
+| Three-mode UGTPHON and SIGMORPHON benchmark gates | PARTIAL | Run 42506225213 still in progress; inspect all reports/artifacts and enforce equal denominators, zero errors, monotonic availability and Super-soft 100%. |
+| Full verification on latest docs-only head 5814de6 | PARTIAL | Runs 42506815536 / 42506815808 / 42506815555 / 42506815519 queued. |
+| Optional ByT5 / Charsiu inference | DEFERRED | Explicitly skipped by policy; not a pass. |
+| Official NIKL metadata-only inventory | DEFERRED | Skipped by policy; not a pass. |
+| Speaker-specific IPA gold and Ukrainian-target certification | BLOCKED / OUT OF SCOPE | No speaker-linked audio/gold and no independent Ukrainian target acceptance; broad source-policy decisions do not imply these. |
+
+**Readiness:** software-verified research prototype. Not release-ready or independently research-certified until the new multi-engine run and latest-head workflows complete, and independent Korean/Ukrainian linguistic acceptance is obtained.
