@@ -1,6 +1,6 @@
 # Kozak Kim: source-only adjudication of the 40 residual occurrences
 
-**Date:** 2026-11-07  
+**Date:** 2026-11-07; evidence reconciliation: 2026-11-08  
 **Base:** `main` at `1f220fcd7e3b44dab7302b37e2fe225812ee18a6`  
 **Branch:** `research/source-only-40-case-adjudication-2026-11-07`  
 **Primary register:** [17-token source adjudication CSV](../research/kozak-kim-40-source-adjudication-2026-11-07.csv)  
@@ -25,18 +25,18 @@ The label `UNRESOLVED_NO_AUDIO` in the original occurrence CSV is retained delib
 |---|---|---|
 | `오조오억배` | Keep broad /o.ʌ/ inside 오억; do not insert phonemic /j/ or /w/ from a transition. Keep the separate /o.o/ sequence at 조–오 distinct. | No narrow glide choice or token-specific connected-speech realization. |
 | `문화체험공간`, `사전체험`, `만듬사전체험때` | In 체험, /h/ intervenes between /e/ and /ʌ/: /e.hʌ/. It is not adjacent-VV hiatus, so no extra /j/ is inserted. | No change to the lexical /h/ onset; no glide insertion inferred from unrelated VV experiments. |
-| `쇼` | NIKL says foreign-word 쇼 is read according to its Hangul spelling. Keep broad phonemic /s/. | NIKL does not provide IPA. Rounded coarticulation is not a categorical [ɕ] or [ɕʷ] segment. |
+| `쇼` | NIKL says to follow Hangul spelling; its phonetics article describes ㅅ as [ʃ] before [j], and ㅛ is a diphthong. Retain underlying /s/ and record [ʃ] as a general profile expectation. | No token-specific narrow IPA; the NIKL source uses [ʃ], not [ɕ] or [ɕʷ]. |
 | `홍콩영화들` | Rule 29 [붙임 2] permits n-insertion only when two explicitly segmented words are pronounced as one connected phrase. Phrase-mode path remains available for `홍콩 영화들`. | Compact `홍콩영화들` does not establish hidden spacing or prosodic grouping. |
-| `모션어디서`, `포지션을` | Keep broad /s/ before /jʌ/ in the loanword syllables. | Available acoustic [ɕ]-like evidence is for other high-front contexts; it does not establish categorical [ɕ] before /jʌ/. |
+| `모션어디서`, `포지션을` | Retain underlying /s/; NIKL's general phonetic description predicts [ʃ] before the /j/ onglide in ㅕ. | Kang's acoustic study does not measure these exact /jʌ/ loanword tokens; NIKL's [ʃ] is a profile-level expectation, not speaker-specific narrow gold and not [ɕ]. |
 | `자기이입하네` | Preserve the broad /i.i/ sequence. Do not delete a vowel nucleus or insert an extra /j/ categorically. | No speaker-specific hiatus resolution or coalescence. |
-| `뿌셔우우`, `뿌셔우우우` | Preserve playful UGC spelling; if read from Hangul, retain broad /s/ rather than adding a special [ɕ] rule. | Do not normalize to another lexical form or claim the intended lexeme/narrow sound is known. |
+| `뿌셔우우`, `뿌셔우우우` | Preserve playful UGC spelling and underlying /s/; NIKL's general description predicts [ʃ] before the /j/ onglide in ㅕ. | Do not normalize the lexeme or claim a speaker-specific narrow realization; [ʃ] is a general profile expectation, not [ɕ] token gold. |
 | Two normalized records containing repeated `유` | The source context contains raw compatibility-jamo `ㅠ` emoticons. Preserve raw `ㅠ` and exclude those spans from G2P. | Do not treat normalized `유` as spoken /ju/; the emoticon has no IPA target. |
-| 22 occurrences of `아끼셔` | Morphology is 아끼-시-어 → 아끼셔. The ㅅ in the honorific ending is lenis /s/; /k͈/ in 끼 is a different consonant. Keep broad /s/ before /jʌ/. | No categorical [ɕ], no fortis reinterpretation, and no speaker-specific narrow realization. |
+| 22 occurrences of `아끼셔` | Candidate morphology is 아끼-시-어 → 아끼셔; the ㅅ belongs to the honorific ending, not the fortis /k͈/ in 끼. Retain underlying /s/; NIKL's general description predicts [ʃ] before /j/. | The exact no-요 contraction is not directly attested by the cited NIKL pages; [ʃ] is a general profile expectation, not speaker-specific narrow gold. |
 | Three occurrences of `한국여자로` | Conditional Rule 29 path for explicit `한국 여자로` in connected-phrase mode. | Compact token does not establish the boundary or prosodic grouping; no automatic rewrite. |
 | `대한민국` | Retain canonical broad vowel; preserve [ɛ]~[e] only as a research variant set. | Group-level merger studies cannot select this speaker's vowel quality or length. |
 | `첫연애실패후` | NIKL Q&A directly documents three readings for `첫 연애`: connected [천녀내], pause [첟#여내], and liaison without n-insertion [처뎌내]. | No choice among these for the compact corpus token or its full phrase. |
 
-The machine-readable matrix records one row per distinct spelling, all occurrence IDs, morphological/structural analysis, source IDs, and the exact claim limit. It intentionally does not add an IPA string where the sources do not establish one.
+The adjudication matrix records one row per source adjudication, all occurrence IDs, structural analysis, source IDs, claim IDs, and claim limits. The companion [claim-level evidence ledger](../research/kozak-kim-40-adjudication-evidence-claims-2026-11-08.csv) records one atomic claim per row and exactly one source per row. It intentionally does not add an IPA string where the sources do not establish one.
 
 ## Why these source decisions are justified
 
@@ -48,7 +48,7 @@ The three 체험 forms are a simpler structural case: the sequence is /e.hʌ/, n
 
 ### Sibilants
 
-Kang's acoustic study reports context-sensitive changes in the first 30 ms of lenis /s/ before /i, ye, ya/; it separately reports that /yo, yu/ have a different spectral pattern. The five-speaker EPG study compares /s/ and fortis /s*/ in /i, a, u/ contexts and finds articulatory differences, but it does not test /jʌ/ or the exact honorific contraction. The palatalization study by Sung also finds speaker- and morphology-sensitive gestural effects. Together, these sources support keeping the phonemic/broad contrast and rejecting a blanket spelling-triggered [ɕ] rule; they do not prove that every token is phonetically [s]. [Kan10d] [Kan10e] [Kim21c] [Sun14]
+NIKL's 1993 phonetics article *자음의 발음* states that ㅅ has the value [s] generally and is realized near the palate as [ʃ] before [i] or [j]. NIKL's Romanization page classifies ㅕ and ㅛ as diphthongs (yeo/yo), so the written ㅕ/ㅛ contexts in this cohort contain the relevant /j/ onglide. This supports underlying /s/ with a general profile-level [ʃ] expectation in those contexts; it does not provide acoustic measurements for these exact UGTPHON tokens, and [ʃ] must not be silently relabeled [ɕ]. Kang's acoustic study independently reports context-sensitive changes in the first 30 ms of lenis /s/ before /i, ye, ya/ and a distinct spectral pattern before /yo, yu/; it does not measure the exact /jʌ/ tokens. The five-speaker EPG study compares /s/ and fortis /s*/ in /i, a, u/ contexts, while Sung reports speaker- and morphology-sensitive palatalization gestures. None supplies speaker-specific narrow IPA for this corpus. [SRC-NIKL-PHONETICS-1993] [SRC-NIKL-ROMANIZATION] [Kan10d] [Kan10e] [Kim21c] [Sun14]
 
 For `쇼`, NIKL says to pronounce the foreign word according to Hangul spelling, but does not provide an IPA transcription. The separate rounded-segment acoustic paper reports a labio-palatalized spectral pattern, not a canonical segment symbol. Thus the engine keeps broad /s/ and does not invent [ɕʷ]. [SRC-NIKL-QNA-332662]
 
@@ -64,13 +64,34 @@ The Seoul /ɛ/–/e/ literature finds merger and residual differentiation condit
 
 The Seoul Corpus literature provides recordings and phonemic labels from 40 Seoul Korean speakers. The study of 2,370 /ɨi/ tokens reports that 602/628 (95.86%) monophthongized genitive tokens were [e], while 94.40% of monophthongized tokens overall were [i]. This supports retaining both source-derived broad candidates /sal.mɰi/ and /sal.me/ for NIKL [살믜]/[살메], but the genitive aggregate does not select this token. The Seoul Corpus is described as 40-speaker spontaneous speech with phonemic/TextGrid annotation. OpenSLR SLR113 publicly lists the label and sound archives under CC BY-NC 2.0, giving a concrete non-commercial retrieval route; however, the 57 MB TextGrid archive could not be downloaded in this environment, so no exact `삶의` hit, speaker, timestamp or matching audio segment is confirmed. A 2025 abstract on 의 variation reports additional context-conditioned realizations but was not used to add a runtime rule. Thus this literature can inform the variant inventory but cannot choose a speaker-specific realization for a particular `삶의` token. [Unk16l] [Yun15] [Yun17b]
 
+## 2026-11-08 claim-level source reconciliation
+
+The evidence ledger is the authoritative mapping from each adjudication row to atomic claims and their individual sources. Every ledger row has exactly one `source_id`, a source URL, an evidence-type label, a directness label, the supported proposition, and an explicit claim limit. The adjudication CSV's `claim_ids` column points to those rows. Multiple sources are not bundled as if they proved the same proposition.
+
+### Corrections and evidence boundaries
+
+- **Incorrect citation removed:** `SRC-NIKL-QNA-321634` concerns the adjective `시다` (“sour”), not the honorific prefinal ending `-시-`. It is retained in the evidence ledger only as an explicitly excluded source and is no longer attached to the `아끼셔` adjudication.
+- **Replacement evidence:** NIKL Q&A 332091 discusses `-세요` as the shortened form of `-시어요`; NIKL MCFAQ 6288 explicitly describes `-셔요` as a shortened form of `-시어요`. Neither directly attests the exact no-`요` token `아끼셔`. The parse `아끼-시-어` is therefore a source-supported morphological analysis, but the exact token contraction remains qualified rather than claimed as a directly documented dictionary example.
+- **Sibilant evidence corrected:** NIKL's 1993 phonetics article *자음의 발음* states that ㅅ has the value [s] generally and is realized near the palate as [ʃ] before [i] or [j]. NIKL's Romanization page classifies ㅕ and ㅛ as diphthongs (yeo/yo), supporting a /j/ onglide in the relevant written syllables. This supplies a general Standard Korean [ʃ] profile expectation for `쇼`, `모션어디서`, `포지션을`, `뿌셔…`, and `아끼셔`. It is not a recording or acoustic measurement of these 40 tokens, and the source symbol is [ʃ], not [ɕ]. Kang (2010) independently measures /s/ before /i, ye, ya/ and separately /yo, yu/, but not the exact /jʌ/ tokens. Therefore retain the underlying phoneme /s/, expose [ʃ] only as a source-backed profile expectation where the /j/ environment is present, and do not claim speaker-specific narrow IPA.
+- **N-insertion:** NIKL Q&A 330322 directly establishes the connected-phrase condition in Rule 29 supplement 2. Jun (2015, 2021) independently supports variable/gradient application. Neither source establishes the prosodic grouping of compact corpus tokens `홍콩영화들` or `한국여자로`.
+- **First-love phrase:** NIKL Q&A 316146 directly covers the spaced substring `첫 연애`, not the full compact token `첫연애실패후`. Its three alternatives remain conditional; no one is selected for the occurrence.
+- **Glide/hiatus:** Kim & Hong (2025) directly study /iə~ijə/ and /oa~owa/, not `오억` or `자기이입하네`. Shin (2013) studies optional /j/ formation/insertion in other structures. These papers justify caution against categorical insertion, not a speaker-specific transcription.
+- **UGTPHON source-only claims:** the upstream `ko/test.json` was fetched and checked at commit `59380491d5a797308c475f7d0007dcf6c4be00af` (275 records). The claim ledger records exact source-row IDs, including `multilexnorm2026_1922`, `multilexnorm2026_1954`, `multilexnorm2026_1999`, `multilexnorm2026_2004`, `dc_inside_2024`, `dc_inside_2035`, `dc_inside_2110`, `dc_inside_2124`, `dc_inside_2135`, `dc_inside_2170`, `dc_inside_2227`, `dc_inside_2232`, and `dc_inside_2544`. The raw `ㅠ` material and its normalized `유` rendering are confirmed in source records `dc_inside_2124` and `dc_inside_2135`; exact sub-span boundaries still require validation before automated runtime exclusion.
+- **Vowel merger:** Lee & Cho (2021) and Lee (2023) provide population-level evidence about /e/–/ɛ/ variation. Neither identifies the unknown speaker or the acoustic realization of `대한민국`.
+
+### Status interpretation
+
+`VERIFIED_PRIMARY_PAGE` means the official source page was opened and its relevant statement checked. `VERIFIED_KCI_PUBLISHER_ABSTRACT` or `VERIFIED_DOI_METADATA` means publisher/index metadata and abstract were checked, not necessarily the full experimental paper. `INDIRECT_FOR_TARGET` means the study supports a general mechanism but did not test the adjudicated token. `TARGET_CONTEXT_NOT_COVERED`, `AUDIO_ABSENT`, and `RAW_OFFSETS_REQUIRE_REVALIDATION` are explicit evidence limits, not resolved claims.
+
+**Result:** the 40 occurrences have source-linked policy decisions, but this update does not claim 40 acoustically proven IPA forms. Speaker-specific narrow IPA gold remains 0/40 without recordings and a speaker/source crosswalk. The exact `아끼셔` no-`요` contraction and raw emoticon offsets remain evidence-limited items.
+
 ## Research source links
 
 - NIKL [Standard Pronunciation Rules](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002), especially Rule 29 and supplement 2.
 - NIKL [Q&A 330322](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=330322): connected-phrase scope for Rule 29.
 - NIKL [Q&A 316146](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=261&pageIndex=1&qna_seq=316146): exact `첫 연애` prosodic alternatives.
-- NIKL [Q&A 332662](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=332662): `쇼` read according to Hangul spelling.
-- NIKL [Q&A 332091](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=332091): `-세요` is the shortened form of `-시어요`; [Q&A 321634](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=321634) directly documents `시어` → `셔`.
+- NIKL [Q&A 332662](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=332662): `쇼` read according to Hangul spelling; NIKL [Romanization of Korean](https://www.korean.go.kr/front_eng/roman/roman_01.do): ㅕ/ㅛ classified as diphthongs; NIKL [Song (1993), 자음의 발음](https://www.korean.go.kr/nkview/nklife/1993_1/1993_0101.pdf): ㅅ [s] generally, [ʃ] before [i] or [j].
+- NIKL [Q&A 332091](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=332091): analysis of `-세요` and `-시-`; NIKL [MCFAQ 6288](https://korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=6288&mn_id=217&pageIndex=1): `-셔요` as shortened `-시어요`. Q&A 321634 is excluded because it concerns adjective `시다`, not honorific `-시-`.
 - [Kim & Hong 2025](https://doi.org/10.30961/lr.2025.61.1.1); [Kang 2010, hiatus resolution](https://doi.org/10.3765/BLS.V36I1.3910).
 - [Kang 2010, lenis /s/ coarticulation](https://doi.org/10.17959/SPPM.2010.16.1.3); [Kang 2010, high-front + rounded context](https://www.semanticscholar.org/paper/bf95ee5d14eecfa8b4891aa949b4789063afd328); [Kim et al. 2021 EPG](https://doi.org/10.12963/csd.21815); [Sung 2014](https://doi.org/10.21437/Interspeech.2014-27).
 - [Jun 2015](https://doi.org/10.1017/S0952675715000275); [Jun 2021](https://doi.org/10.5334/GJGL.1401).
