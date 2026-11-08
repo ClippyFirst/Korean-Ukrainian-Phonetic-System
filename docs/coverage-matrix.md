@@ -1,3 +1,76 @@
+## 2026-11-08 — five benchmark tracks and Seoul corpus import (DONE_VERIFIED diagnostic scope)
+
+**Starting main:** `893619785c8fc7c8417cc8da0690d84fcb8d8dbb`.  
+**Benchmark code snapshot:** `668dbad14568e8472594937558500500102b3f95`.  
+**Branch:** `main` (kept in place; no new branch or PR).  
+**Full 10-engine run:** [42487350896](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487350896), artifact `13621335293`.  
+**Seoul label/surface/phonemic-IPA run:** [42491208142](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491208142), artifact `13622140135`.
+
+### Benchmark execution ledger
+
+| Track | State | Evidence / acceptance boundary |
+|---|---|---|
+| UGTPHON 10-engine Strict IPA + Broad sensitivity | **DONE_VERIFIED** | 2,703 eligible occurrences; 10 engines; Strict Exact/CER and separate research-only Broad sensitivity in artifact 13621335293. |
+| SIGMORPHON 2021 Korean 10-engine Strict IPA + Broad sensitivity | **DONE_VERIFIED** | 999 eligible occurrences; 10 engines; lexical paired dataset, transcription-convention/training-overlap caveats remain. |
+| UGTPHON Kozak Kim Strict / Soft / Super-soft | **DONE_VERIFIED diagnostic** | All three modes run on identical 2,703 occurrences; mode-specific profiles, heuristic rows and fallback types reported separately. |
+| Seoul SLR113 Hangul surface pronunciation | **DONE_VERIFIED diagnostic** | 231,626 aligned word occurrences; no audio; CC BY-NC 2.0; raw pairs only in temporary CI. |
+| Seoul SLR113 phonemic IPA | **DONE_VERIFIED diagnostic** | 231,625 word IPA pairs; 36-symbol adapter from Yun et al. (2015) Table 3; 1,134,781 mapped phone tokens; phonemic, not narrow phonetic gold. |
+
+**Count clarification:** five executable benchmark tracks span **three datasets** (UGTPHON, SIGMORPHON, Seoul Corpus). They are not five independent corpora or five independently adjudicated gold standards. The portfolio still lists KsponSpeech and NIKL 2022 as additional candidate datasets; both remain access/terms-gated and unscored.
+
+### Seoul corpus import evidence
+
+- Retrieved only the OpenSLR SLR113 label archive; no sound archive/audio was downloaded.
+- Archive SHA-256: `63c3f8ffa6976307a732689d6c5be7b2db4ec20f14bf276faf98c886add0d24b`.
+- 240/240 TextGrid files parsed; 1,680 tiers and 2,671,221 interval annotations.
+- 231,626 aligned Hangul word pairs; 231,625 aligned phonemic IPA pairs.
+- 36 phone symbols mapped to phonemic IPA using versioned `data/korean/ipa/seoul-corpus-phonemic-ipa-v1.json`; 70,660 non-phone/unmapped intervals excluded without exporting their label text.
+- CC BY-NC 2.0: no raw corpus labels, audio or word-pair files committed or uploaded. The benchmark artifacts contain only aggregate metrics and metadata.
+
+### Three-mode Seoul outcomes
+
+| Reference | Mode | Coverage | Exact scored-only | Exact coverage-adjusted | CER scored-only | Heuristic / fallback |
+|---|---|---:|---:|---:|---:|---:|
+| Hangul surface | Strict | 97.0375% | 57.1537% | 55.4605% | 24.5421% | 0 / 0 |
+| Hangul surface | Soft | 87.0006% | 56.2055% | 48.8991% | 26.3641% | 26,057 / 0 |
+| Hangul surface | Super-soft | 83.4924% | 56.8509% | 47.4662% | 26.3118% | 38,236 / 29 |
+| Phonemic IPA | Strict | 97.0375% | 14.1166% | 13.6984% | 39.9210% | 0 / 0 |
+| Phonemic IPA | Soft | 87.0005% | 14.7969% | 12.8734% | 40.8696% | 26,057 / 0 |
+| Phonemic IPA | Super-soft | 83.4923% | 15.3788% | 12.8402% | 40.4053% | 38,236 / 29 |
+
+Strict has the best coverage-adjusted Exact and lowest CER in both Seoul reference layers. Soft and Super-soft do not win exact matches on the paired common-scored subsets; Soft and Super-soft surface outputs are identical on their common scored set. These are diagnostics only: the IPA reference is phonemic and the browser profile is marked `unadjudicated-cross-runtime`; do not treat this as narrow-IPA or Ukrainian-target acceptance.
+
+### Runtime parity and retained implementation
+
+- Native/Browser Strict parity: 2,703/2,703 surface outputs; 2,702/2,702 resolved raw IPA and Broad IPA outputs; profile contract matches.
+- Existing production engine, the 236-case review queue, and source-backed lexical controls were preserved. No new pronunciation rules or lexical exceptions were promoted from this corpus.
+- Original g2pK 0.9.4 vendor baseline remains preserved; external engines remain comparison-only.
+
+### Verification on benchmark code snapshot 668dbad
+
+- Seoul corpus inventory + three-mode surface + three-mode phonemic IPA workflow: **PASS**, run 42491208142.
+- Python/browser/web/wheel/teacher-corpus tests: **PASS**, run 42491208107.
+- System verification (Python regression/data integrity, browser regression/build): **PASS**, run 42491208109.
+- Master table and research corpus artifacts: **PASS**, run 42491208162.
+- GitHub Pages deployment was queued at the time of this snapshot; deployment is not claimed.
+- The exact-main 10-engine benchmark workflow run 42487350896 completed successfully. Neural ByT5 and CharsiuG2P remained skipped under existing default-off policy.
+
+### Remaining task ledger
+
+| Item | State | Blocker / acceptance criterion |
+|---|---|---|
+| Independent review of Seoul phoneme-to-IPA adapter | **TODO** | A Korean phonetics reviewer must approve Table 3 serialization choices (ʨ→tɕ, asterisk fortis→͈) and the phonemic-vs-phonetic comparison boundary. |
+| Ukrainian target renderer validation on Seoul | **DEFERRED** | Seoul references are Hangul/phonemic IPA only; requires separately adjudicated Ukrainian target references. |
+| KsponSpeech benchmark | **BLOCKED** | AIHub access/account and original dataset terms; HF mirror's empty license field is not permission. |
+| NIKL 2022 Daily Conversation benchmark | **BLOCKED** | NIKL portal application and exact corpus license/terms; no access token/data obtained. |
+| SIGMORPHON overlap/convention audit | **PARTIAL** | Establish source split and any training overlap before treating as sealed holdout. |
+| Full 236-case independent linguistic adjudication | **PARTIAL** | 213 not individually adjudicated, 22 ABSTAIN, 1 provisional RETAIN; do not promote to gold or production rules. |
+| Neural ByT5 / CharsiuG2P comparison | **DEFERRED** | Existing policy keeps these optional/off; requires model/runtime and dataset provenance review. |
+| Release readiness | **NOT READY** | Independent linguistic review, Ukrainian target validation, corpus rights clearance, and full holdout adjudication remain incomplete. |
+
+
+---
+
 ## 2026-11-04 — Kozak Kim mainline consolidation (MERGED)
 
 **Main commit:** `e628096e7d1a06ed355de27936c42fa732f4f6b6`. Merged PRs: #415, #416, #417, #419, #422, #423, #426 and #433. Cumulative PRs #422 and #426 superseded intermediate PRs #420/#421 and #424/#425 respectively; PR #433 superseded #432. Superseded PRs were closed; branches remain untouched for owner cleanup.
