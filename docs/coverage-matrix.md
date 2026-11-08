@@ -36,7 +36,7 @@
 - 240/240 TextGrid files parsed; 1,680 tiers and 2,671,221 interval annotations.
 - 231,626 aligned Hangul word pairs; 231,625 aligned phonemic IPA pairs.
 - 36 phone symbols mapped to phonemic IPA using versioned `data/korean/ipa/seoul-corpus-phonemic-ipa-v1.json`; 70,660 non-phone/unmapped intervals excluded without exporting their label text.
-- CC BY-NC 2.0: no raw corpus labels, audio or word-pair files committed or uploaded. The benchmark artifacts contain only aggregate metrics and metadata.
+- CC BY-NC 2.0: no TextGrid files, audio or word/IPA pair JSON are committed or uploaded. Disclosure: intermediate artifact 13621412269 contains a distinct phoneme-tier label inventory, including some short laughter-tag text, but no TextGrid/audio/word-pair data; it expires 2026-12-08. Final artifact 13622140135 contains aggregate metadata/metrics only; subsequent workflow artifacts now have 7-day retention.
 
 ### Three-mode Seoul outcomes
 
