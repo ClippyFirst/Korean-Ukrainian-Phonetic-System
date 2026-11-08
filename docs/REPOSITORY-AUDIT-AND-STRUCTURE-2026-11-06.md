@@ -890,3 +890,20 @@ GitHub reports no open PRs. PR #461 is merged. The branch inventory still contai
 | Release certification | DEFERRED | Research/target validation and release gates remain incomplete; no release is authorized by this documentation pass |
 
 **Readiness:** software-verified bounded research prototype. Not independently research-certified and not release-ready as an authoritative Korean-to-Ukrainian transcription standard.
+
+
+## 2026-11-08 continuation — three Kozak Kim modes and separate benchmark status
+
+The current documentation previously described Strict, Soft and Super-soft as three policies, but did not give each mode an equally explicit benchmark status. This continuation corrects that gap without changing runtime behavior.
+
+| Mode | Benchmark status at this audit | Evidence and limitation |
+|---|---|---|
+| Strict | DONE_VERIFIED as a diagnostic | Current ten-engine UGTPHON/SIGMORPHON benchmark results in README and the current-main acceptance section evaluate the strict Native path. They remain corpus-convention diagnostics, not independent IPA gold. |
+| Soft | PARTIAL | `scripts/benchmark_morphology_ipa_delta.py` implements paired Strict/Soft UGTPHON scoring and the morphology-consensus workflow archives the report. No current-main exact-head Soft score was established in this documentation pass; no Strict score is copied into this row. |
+| Super-soft | TODO for accuracy evaluation | Browser implementation, fallback labeling and modern Hangul coverage tests exist. The 11,172-syllable coverage contract is not an IPA accuracy benchmark; no accepted independent gold score is available. |
+
+**236-case consequence:** the reconstructed cohort must now be benchmarked in all three modes on identical occurrence IDs, but it is not a gold set. Preserve the 15 exact standard-form, 181 profile-convention, and 40 source-policy strata. The 181 convention cases require evidence-based broad-profile references or an explicit unscorable/convention-sensitive status; the 40 source-policy decisions do not establish speaker-specific IPA gold. Strict, Soft and Super-soft must each report coverage, unresolved/partial/heuristic/fallback counts, Exact, CER, paired per-occurrence changes and a separately labelled broad-profile sensitivity view. Super-soft typed fallback coverage must not be counted as source-resolved IPA accuracy.
+
+**Canonical records updated:** `docs/methodology.md` now defines the three-mode benchmark contract; `README.md` summarizes each mode and its actual evidence status; `research/ACCEPTANCE-GATES.md` records Strict = DONE_VERIFIED diagnostic, Soft = PARTIAL, Super-soft = TODO, and the common 236-case evaluation = TODO. A methodology-contract regression protects these distinctions.
+
+**No benchmark score is newly claimed by this documentation update.** No runtime code or IPA output was changed. The next executable benchmark work is to produce an exact-head Soft report, implement the Super-soft stratified scorer, and run all three modes on the pinned 236 occurrence ledger plus compatible pinned external splits. A broad-profile score is a sensitivity analysis, not permission to erase phonological contrasts or manufacture gold.
