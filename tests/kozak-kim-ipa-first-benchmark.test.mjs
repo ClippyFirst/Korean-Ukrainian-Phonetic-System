@@ -611,6 +611,41 @@ test('browser benchmark runs Strict, Soft and Super-soft separately and excludes
   assert.equal(superSoft.heuristic_tokens, 1);
   assert.equal(superSoft.typed_fallback_tokens, 1);
   assert.equal(superSoft.source_resolved_scored_tokens, 0);
+  assert.equal(strict.output_available_tokens, 1);
+  assert.equal(soft.output_available_tokens, 1);
+  assert.equal(superSoft.output_available_tokens, 1);
+  assert.equal(superSoft.output_availability_rate, 1);
   assert.equal(superSoft.records[0].typed_fallback, true);
   assert.throws(() => evaluateRows([row], engine, 'unknown'), /morphologyMode/u);
+});
+
+
+test('browser benchmark labels non-UGTPHON datasets and reports candidate availability separately from IPA accuracy', () => {
+  const row = { id: 'sigmorphon-row', lang: 'ko', split: 'test', tokens: [{ canonical: '가', phoneme: 'ka' }] };
+  const engine = {
+    convert() {
+      return {
+        ipa: 'ka',
+        pronunciation_status: 'heuristic',
+        phonetic_result_type: 'surface-ipa',
+        ipa_profile: 'browser-soft-profile',
+        trace: []
+      };
+    }
+  };
+  const report = evaluateRows(
+    [row],
+    engine,
+    'soft',
+    'SIGMORPHON 2021 Korean lexical IPA diagnostic',
+    'sigmorphon/2021-task1@pinned: data/medium/kor_test.tsv'
+  );
+  assert.equal(report.benchmark, 'SIGMORPHON 2021 Korean lexical IPA diagnostic');
+  assert.equal(report.dataset_source, 'sigmorphon/2021-task1@pinned: data/medium/kor_test.tsv');
+  assert.equal(report.eligible_tokens, 1);
+  assert.equal(report.scored_tokens, 0);
+  assert.equal(report.coverage_rate, 0);
+  assert.equal(report.output_available_tokens, 1);
+  assert.equal(report.output_availability_rate, 1);
+  assert.equal(report.heuristic_tokens, 1);
 });
