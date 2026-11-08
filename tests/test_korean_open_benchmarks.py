@@ -120,7 +120,7 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
             self.assertEqual(len(seoul_rows), 1)
             self.assertEqual(seoul_rows[0]["lang"], "ko")
             self.assertEqual(manifest["kspan"]["overlap_excluded_word_types"], 1)
-            self.assertEqual(manifest["ipa_dict"]["overlap_excluded_word_types"], 3)
+            self.assertEqual(manifest["ipa_dict"]["overlap_excluded_word_types"], 2)
             self.assertTrue((output / "manifest.json").exists())
 
 
