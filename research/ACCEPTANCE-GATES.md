@@ -75,7 +75,7 @@ Paired comparisons: Strict vs Soft has 201,515 common scored occurrences, 6,481 
 
 Interpretation: Strict has the best coverage-adjusted Exact and lowest CER in this phonemic reference. The higher scored-only Exact of Soft/Super-soft is a selection effect: they score fewer source-resolved occurrences and classify more cases as heuristic. Because this gold is phonemic while the engine profiles retain phonetic/allophonic detail, raw Exact/CER are diagnostic and must not be presented as narrow-IPA acceptance. This benchmark is not Ukrainian target validation.
 
-Evidence: [Seoul preflight, surface and phonemic-IPA benchmark run 42491208142](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491208142), artifact `13622140135`. The artifact contains metadata and aggregate metrics only; raw word/IPA pairs remain temporary CI data.
+Evidence: [Seoul preflight, surface and phonemic-IPA benchmark run 42492152654](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42492152654), artifact `13621892753`. The artifact contains metadata and aggregate metrics only; raw word/IPA pairs remain temporary CI data.
 
 ### Remaining evidence limits
 
@@ -83,7 +83,7 @@ Evidence: [Seoul preflight, surface and phonemic-IPA benchmark run 42491208142](
 - UGTPHON has been inspected during project research; SIGMORPHON is a public paired lexical file with transcription-convention and possible training-overlap limitations.
 - The two benchmark datasets do not validate Ukrainian target rendering.
 - Neural ByT5 and CharsiuG2P jobs were skipped under the existing default-off research policy.
-- Seoul Corpus has two executed three-mode diagnostic tracks in run 42491208142; KsponSpeech and NIKL 2022 remain access/terms-gated and unscored.
+- Seoul Corpus has two executed three-mode diagnostic tracks in run 42492152654; KsponSpeech and NIKL 2022 remain access/terms-gated and unscored.
 
 Reproduce from [run 42487350896](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487350896), artifact `13621335293`.
 
@@ -1686,7 +1686,7 @@ Additional regression scope: the native Python and browser shared-Broad profiles
 |---|---|---|
 | UGTPHON Korean test | DONE_VERIFIED historically; current-main rerun queued/in progress under run 42487094098 | Inspect exact-head artifact and per-engine ledger; keep strict and broad sensitivity metrics separate. |
 | SIGMORPHON 2021 Korean public paired file | DONE_VERIFIED historically; current-main rerun queued/in progress under run 42487094098 | Inspect exact-head artifact; preserve README/file-schema caveat and eligible denominator. |
-| Seoul Corpus SLR113 | DONE_VERIFIED diagnostic; specialist acceptance PARTIAL | 240/240 TextGrids parsed; 231,626 Hangul surface pairs and 231,625 phonemic IPA pairs scored in all three modes. 36-symbol Table 3 adapter versioned. Independent Korean phonetics review remains required; phonemic reference is not narrow IPA. Run 42491208142, artifact 13622140135. |
+| Seoul Corpus SLR113 | DONE_VERIFIED diagnostic; specialist acceptance PARTIAL | 240/240 TextGrids parsed; 231,626 Hangul surface pairs and 231,625 phonemic IPA pairs scored in all three modes. 36-symbol Table 3 adapter versioned. Independent Korean phonetics review remains required; phonemic reference is not narrow IPA. Run 42492152654, artifact 13621892753. |
 | KsponSpeech | BLOCKED — access and original dataset terms | Obtain via AIHub under verified terms; confirm dual orthography/pronunciation files and exclude uncertain/noise annotations. Benchmark surface pronunciation separately from IPA. Hugging Face mirror's empty license field is not a licence. |
 | NIKL Daily Conversation Speech Corpus 2022 | BLOCKED — portal access and corpus-specific terms | Apply through the official NIKL corpus portal; verify v1.0 files and terms; use the pronunciation transcription tier as Hangul surface gold with speaker/region strata. The 630-hour construction report describes double orthographic/pronunciation transcription and manual full inspection; the 54,536-utterance coda-cluster subset is a strong focused evaluation set. Audio is not mandatory if transcription tiers suffice. |
 
