@@ -1,3 +1,14 @@
+## 2026-11-08 closure — documentation and source-register reconciliation
+
+- Main before this matrix refresh: `a77fdf04203a078f1680392675a2b6e4ae620298`; benchmark/runtime snapshot remains `668dbad14568e8472594937558500500102b3f95`.
+- Current source register: 230 records; all rows have 12 fields after CSV quoting repair. Latest source-register generation: [42491874837](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874837).
+- Latest full test suite on the preceding code/docs snapshot: [42491874801](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874801) **PASS** (Python 3.11/3.12/3.13, web/npm tests and build, wheel install, teacher-corpus audit).
+- Latest System Verify: [42491874749](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874749) **PASS** (Python regression/data integrity and Browser regression/build).
+- Seoul corpus preflight and both three-mode benchmarks: [42491208142](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491208142) **PASS**; artifact `13622140135`.
+- The only known unsuccessful runs in this continuation were intermediate documentation/source-register commits with stale test expectations or a CSV quoting error; both were corrected and the later complete suite passed. No test failures remain on the latest verified source-register commit.
+- GitHub Pages deployment on the latest pre-audit commit was queued/in progress at the time of this refresh; deployment is not claimed.
+- No open PRs were returned by the repository's open-PR API listing at inspection. No branches were deleted, no force-push or release occurred.
+
 ## 2026-11-08 — five benchmark tracks and Seoul corpus import (DONE_VERIFIED diagnostic scope)
 
 **Starting main:** `893619785c8fc7c8417cc8da0690d84fcb8d8dbb`.  
