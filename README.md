@@ -60,6 +60,13 @@ The successful pinned run 42416681855 also compared ten engines, not only Native
 These are Korean IPA diagnostics under the pinned datasets and normalization, not Ukrainian target scores or normative gold. CharsiuG2P and ByT5 inference were skipped by policy. Full scored counts and methodological limitations are in the [current audit](docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md#current-main-continuation--2026-11-08-documentation-and-benchmark-reconciliation).
 ### IPA-to-Ukrainian renderer — separate validation status
 
+The repository has two distinct IPA stages, and the phrase “project IPA renderer” must be qualified:
+
+- Korean surface Hangul → broad IPA: src/korean_ukrainian/ipa.py, function realize_syllables(). The g2pK adapter first receives g2pK's Hangul pronunciation spelling and then uses this shared project module to derive IPA. Native also uses this IPA realization layer after its own Korean analysis. Therefore the Native/g2pK comparison does not compare two independently implemented IPA encoders.
+- IPA → Ukrainian: src/korean_ukrainian/ipa_target_renderer.py. This downstream target adapter is not used to calculate Korean IPA exact-match/CER benchmark scores.
+
+The full multi-engine comparison has further adapter dependencies: g2p-ko and KoG2Padvanced surface outputs are also converted through the shared project broad-IPA adapter; kokorog2p is g2pK-derived rather than a fully independent algorithm lineage. Read the ten-engine table as a comparison of pronunciation-surface systems under a shared, explicit IPA representation layer, not ten independent IPA encoders.
+
 The ClippyFirst IPA renderer is the downstream target adapter, not a Korean G2P engine:
 
 **Korean text → Korean phonological analysis → IPA → ClippyFirst IPA renderer → Ukrainian practical orthography.**
