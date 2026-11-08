@@ -203,6 +203,11 @@ def build_report(
     exact_matches = sum(bool(item["exact"]) for item in scored)
     char_errors = sum(int(item["distance"]) for item in scored)
     reference_characters = sum(int(item["reference_length"]) for item in scored)
+    phoneme_errors = sum(int(item["phoneme_distance"]) for item in scored)
+    reference_phonemes = sum(int(item["reference_phoneme_count"]) for item in scored)
+    feature_weighted_errors = sum(float(item["feature_weighted_distance"]) for item in scored)
+    feature_reference_phonemes = sum(int(item["feature_reference_phoneme_count"]) for item in scored)
+    unsupported_feature_segments = sum(int(item["unsupported_feature_segments"]) for item in scored)
     metadata = MODEL_METADATA[model_kind]
     return {
         "schema_version": 1,
@@ -224,6 +229,13 @@ def build_report(
         "character_errors": char_errors,
         "reference_characters": reference_characters,
         "character_error_rate": round(char_errors / reference_characters, 6) if reference_characters else None,
+        "phoneme_errors": phoneme_errors,
+        "reference_phonemes": reference_phonemes,
+        "phoneme_error_rate": round(phoneme_errors / reference_phonemes, 6) if reference_phonemes else None,
+        "feature_weighted_errors": round(feature_weighted_errors, 6),
+        "feature_reference_phonemes": feature_reference_phonemes,
+        "feature_weighted_error_rate": round(feature_weighted_errors / feature_reference_phonemes, 6) if feature_reference_phonemes else None,
+        "unsupported_feature_segments": unsupported_feature_segments,
         "engine_errors": 0,
         "missing_predictions": len(items) - len(scored),
         "runtime": runtime,
