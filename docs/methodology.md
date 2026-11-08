@@ -268,3 +268,47 @@ Normative source: National Institute of Korean Language, *한국어 어문 규�
 The [methodology claims-and-evidence register](METHODOLOGY-CLAIMS-AND-EVIDENCE-REGISTER-2026-10-30.md) maps each public statement to code, tests, sources, benchmark runs, denominators and evidence limits. The [methodology review and adjudication record](METHODOLOGY-DEBATE-REVIEW-2026-10-30.md) documents the structured academic, evidence and engineering review perspectives used to challenge those claims.
 
 The review record is a record of analytical procedures, not independent human expert review. Independent Korean IPA adjudication and independent Ukrainian target review remain separate blocked acceptance gates.
+
+
+## Mode coverage and output availability contract — 2026-11-08
+
+### Scope: run all three Kozak Kim policies on every compatible benchmark
+
+Strict, Soft and Super-soft are three Kozak Kim runtime policies with different acceptance/fallback behavior and separate declared IPA profiles. They are not three interchangeable IPA normalizers, and they are not configuration flags for unrelated third-party engines.
+
+| Benchmark input / reference layer | Strict | Soft | Super-soft | Current state |
+|---|---:|---:|---:|---|
+| UGTPHON Korean test, canonical token → IPA | Required | Required | Required | Three Browser reports already exist; explicit availability gate added |
+| SIGMORPHON 2021 Korean test, lexical token → IPA | Required | Required | Required | Newly wired into the multi-engine workflow; exact-main CI pending |
+| Seoul Corpus, word-level Hangul surface | Required | Required | Required | Three-mode report exists; monotonic/100% availability gate added |
+| Seoul Corpus, word-level phonemic IPA | Required | Required | Required | Three-mode report exists; monotonic/100% availability gate added |
+| UGTPHON and SIGMORPHON external-engine comparison | Strict-compatible baseline | Not applicable | Not applicable | These are independent engines, not Kozak modes |
+| 236-case reconstructed candidate cohort | Candidate diagnostics only | Candidate diagnostics only | Candidate diagnostics only | Not an independently adjudicated gold set; no accuracy score is licensed |
+
+The 10-engine UGTPHON/SIGMORPHON comparisons remain useful and must be preserved. Their Strict-only status is not a missing Soft/Super-soft setting: the third-party engines do not implement the Kozak Kim operating policies. The Kozak Kim engine itself must nevertheless be run in all three modes against both compatible IPA datasets, and in all three modes against both Seoul reference layers.
+
+### Two distinct coverage metrics
+
+Let N be the fixed set of eligible source occurrences for one benchmark track and let all three modes use exactly the same occurrence IDs and denominator.
+
+1. **Candidate output availability** (candidate_output_availability_rate): the number of occurrences for which the mode emits a non-empty, explicitly typed pronunciation candidate divided by N. It includes resolved outputs and actual heuristic/typed-fallback candidates. It excludes unresolved/empty results, unresolved identity passthrough and engine errors. It is an output-availability metric, not accuracy.
+2. **Source-resolved scoring coverage** (source_resolved_coverage_rate): the number of source-resolved IPA outputs eligible for Exact/CER divided by N. Heuristic, partial, typed orthographic fallback, unresolved and engine-error cases remain outside the Exact/CER numerator and source-resolved denominator.
+3. **Exact, scored-only**: exact matches divided by source-resolved scored occurrences.
+4. **Exact, coverage-adjusted**: exact matches divided by all eligible occurrences. This prevents a mode from appearing better merely by abstaining on difficult rows.
+5. **CER, scored-only**: edit distance over source-resolved predictions and references. Where supported, also report CER with abstentions as deletions; never relabel fallback as an IPA prediction.
+
+The acceptance ordering is availability(Strict) ≤ availability(Soft) ≤ availability(Super-soft). Super-soft is the maximum-coverage tier and must emit an actual typed candidate for **100% of eligible occurrences** on every compatible benchmark. A result copied through unchanged from the source because the engine could not resolve it is not a candidate. This requirement does not mean 100% Exact, does not promote heuristic/fallback outputs into gold, and does not lower the denominator.
+
+Source-resolved scoring coverage is allowed to be lower in Soft/Super-soft than in Strict when more outputs are explicitly classified as heuristic or typed fallback. That is not a contradiction: candidate availability and source-resolved accuracy answer different questions. Always publish both, alongside heuristic, partial, typed-fallback, unresolved and error counts.
+
+### Implementation and gates added on 2026-11-08
+
+- scripts/benchmark_kozak_kim_browser.mjs now accepts an explicit benchmark name and source citation, labels non-UGTPHON inputs correctly, and emits both source_resolved_coverage_rate and candidate_output_availability_rate without changing the legacy metric fields.
+- .github/workflows/multi-engine-ipa-benchmark.yml now runs Kozak Kim Browser Strict/Soft/Super-soft on the pinned SIGMORPHON test file, in addition to the existing UGTPHON three-mode runs. It validates identical 1,000-occurrence denominators, zero engine errors, monotonic candidate availability and 100% Super-soft candidate availability.
+- The same workflow now validates the UGTPHON three-mode reports under the same metric contract.
+- scripts/benchmark_kozak_kim_seoul_browser.mjs and scripts/benchmark_kozak_kim_seoul_ipa.mjs expose explicit source-resolved/candidate-availability aliases and fail if availability is non-monotonic or Super-soft is below 100%.
+- Node regressions verify that heuristic/typed fallback candidates count as available but not as source-resolved IPA accuracy, and that unresolved passthrough does not count as available.
+
+### Verification status
+
+The implementation changes are committed directly to main, as requested. The GitHub connector in this session did not expose Actions check-run listings or a manual workflow-dispatch action; the exact-main push workflow's result therefore remains **PENDING_VERIFICATION** here. Do not mark these new gates DONE_VERIFIED until the exact-head workflow run is inspected and all tests pass. No local npm test, browser test or pytest run is claimed from this connector-only session. The previously recorded Seoul results (including 100% Super-soft candidate availability on both reference layers) remain the last measured values; no new SIGMORPHON mode scores are asserted.
