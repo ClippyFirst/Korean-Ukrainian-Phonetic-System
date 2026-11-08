@@ -14,7 +14,7 @@ permissions:
   actions: read
 
 concurrency:
-  group: mfa-korean-g2p-\${{ github.ref }}
+  group: mfa-korean-g2p-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -170,9 +170,9 @@ jobs:
         with:
           name: mfa-korean-g2p-reports
           path: |
-            \${{ runner.temp }}/mfa-ugtphon-hangul.json
-            \${{ runner.temp }}/mfa-ugtphon-jamo.json
-            \${{ runner.temp }}/mfa-sigmorphon-hangul.json
-            \${{ runner.temp }}/mfa-sigmorphon-jamo.json
+            ${{ runner.temp }}/mfa-ugtphon-hangul.json
+            ${{ runner.temp }}/mfa-ugtphon-jamo.json
+            ${{ runner.temp }}/mfa-sigmorphon-hangul.json
+            ${{ runner.temp }}/mfa-sigmorphon-jamo.json
           if-no-files-found: error
           retention-days: 7
