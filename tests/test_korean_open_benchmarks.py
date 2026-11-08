@@ -48,7 +48,7 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
             ["2", "rk", "rk", "rk", "ka", "ka", "1"] + ["0"] * 12,
         ]
         with path.open("w", encoding="utf-8", newline="") as stream:
-            writer = csv.writer(stream)
+            writer = csv.writer(stream, delimiter="\t")
             writer.writerow(fields)
             writer.writerows(rows)
 
@@ -67,6 +67,7 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
             self.assertEqual([row["tokens"][0]["phoneme"] for row in modern], ["kijʌk", "ka"])
             self.assertEqual([row["tokens"][0]["phoneme"] for row in conservative], ["kijʌk", "ka"])
             self.assertEqual(metadata["key_worldbet_integrity_mismatches"], 0)
+            self.assertEqual(metadata["source_delimiter"], "\t")
 
     def test_kspan_row_count_gate_detects_dataset_drift(self):
         with tempfile.TemporaryDirectory() as directory:
