@@ -1,3 +1,50 @@
+## Exact-main benchmark checkpoint — 2026-11-08
+
+The path-filtered multi-engine workflow completed successfully on main benchmark code commit `b548436d0fce9af4672fc5902d6670cbc134bd70`: [run 42487350896](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487350896), artifact `13621335293` (SHA-256 `c286d7e4f1ee02d40e1a9977e792eeb73bce12b32b658a8b3c4166c612ccc1a8`). The run contains the 10-engine UGTPHON and SIGMORPHON reports, per-occurrence mismatch ledger, unresolved review queue, three Browser Kozak Kim mode reports, Native/Browser parity report, and readiness audit. This is the current-main benchmark code snapshot; later documentation-only main commit(s) do not change the measured runtime.
+
+### Ten-engine Strict IPA results
+
+| Engine | UGTPHON exact | UGTPHON CER | SIGMORPHON exact | SIGMORPHON CER |
+|---|---:|---:|---:|---:|
+| ClippyFirst Native | 52.7387% (1,425/2,702) | 9.0130% | 35.9719% (359/998) | 14.5347% |
+| g2pK 0.9.4 | 53.0892% (1,435/2,703) | 9.2328% | 35.3353% (353/999) | 14.8222% |
+| g2p-ko 1.0.0 | 52.4602% (1,418/2,703) | 9.3928% | 35.6356% (356/999) | 14.6970% |
+| KoG2Padvanced 2022 | 47.3178% (1,279/2,703) | 10.6815% | 32.6326% (326/999) | 15.8237% |
+| phonemize 2.0.1 | 42.5453% (1,150/2,703) | 14.3531% | 28.9289% (289/999) | 17.4387% |
+| KoG2P 2019 | 27.3030% (738/2,703) | 19.5122% | 18.7187% (187/999) | 21.8327% |
+| kokorog2p 0.9.15 | 18.3130% (495/2,703) | 26.5352% | 9.6096% (96/999) | 30.7336% |
+| HAMA 1.7.0 | 16.9071% (457/2,703) | 25.1081% | 12.7127% (127/999) | 27.6164% |
+| hangul_to_ipa 2026 | 16.2412% (439/2,703) | 24.8054% | 8.9089% (89/999) | 29.8448% |
+| eSpeak NG Korean | 8.1391% (220/2,703) | 33.6101% | 4.3043% (43/999) | 40.7236% |
+
+The Native path abstained on one eligible occurrence in each dataset (2,702/2,703 UGTPHON; 998/999 SIGMORPHON); all other engines scored all eligible occurrences. On UGTPHON, g2pK has a marginally higher scored-only Exact rate, while Native has lower CER. On SIGMORPHON, Native leads both Exact and CER. This is not a universal winner claim. Broad-profile sensitivity results are separately recorded in the README and full artifact; the profile is research-only and deliberately lossy.
+
+### Three Browser Kozak Kim modes — same 2,703 UGTPHON occurrences
+
+| Mode | IPA profile | Source-resolved scored | Coverage | Exact (scored-only) | Coverage-adjusted Exact | CER | Heuristic rows | Typed fallback rows |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| Strict | clippyfirst-korean-broad-v1 | 2,702 | 99.963% | 52.7387% | 52.7192% | 9.0130% | 0 | 0 |
+| Soft | browser-legacy-contextual-v1 | 2,423 | 89.641% | 54.7668% | 49.0936% | 7.8785% | 280 | 0 |
+| Super-soft | browser-super-soft-maximum-coverage-v1 | 2,239 | 82.834% | 56.1858% | 46.5409% | 7.8191% | 464 | 0 |
+
+Important interpretation: these are three separate runtime policies and three different IPA profile IDs. The Soft/Super-soft scored-only Exact and CER are calculated only on their source-resolved rows; their coverage-adjusted Exact makes the abstention/heuristic trade-off visible. Soft and Super-soft's higher scored-only Exact must not be read as accuracy improvement: they score fewer source-resolved rows and have 280/464 heuristic rows, respectively. No typed fallback was emitted in this particular UGTPHON run. The earlier morphology-consensus Soft result (100% coverage on its separate harness) is a different benchmark protocol and must not be substituted for this Browser mode-specific report.
+
+### Native/Browser parity
+
+The exact-head parity report matched all 2,703 occurrence identities and all 2,703 surface-Hangul outputs. On the 2,702 resolved occurrences, raw IPA and broad IPA matched 2,702/2,702 (100%); coverage/abstention states also matched. Both sides declared `clippyfirst-korean-broad-v1`, version 1, with the same profile contract. This establishes measured parity for the strict configuration on this dataset, not universal parity across every rule/input or the Soft/Super-soft modes.
+
+### Remaining evidence limits
+
+- The Broad sensitivity profile remains `research-only-unadjudicated`; its feature collapses are documented and are not normative IPA gold.
+- UGTPHON has been inspected during project research; SIGMORPHON is a public paired lexical file with transcription-convention and possible training-overlap limitations.
+- The two benchmark datasets do not validate Ukrainian target rendering.
+- Neural ByT5 and CharsiuG2P jobs were skipped under the existing default-off research policy.
+- Seoul Corpus, KsponSpeech, and NIKL 2022 remain separate access/terms/format-gated corpus candidates; they are not included in this run.
+
+Reproduce from [run 42487350896](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487350896), artifact `13621335293`.
+
+---
+
 # Repository audit and structure — 2026-11-06
 
 ## Superseding current-main status — 2026-11-07
