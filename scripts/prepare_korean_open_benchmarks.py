@@ -131,7 +131,7 @@ def _read_nikl_word_index(archive_path: Path) -> dict[int, str]:
     return by_record
 
 
-def _load_kspan(path: Path, nikl_zip: Path) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+def _load_kspan(path: Path, nikl_zip: Path, expected_rows: int | None = 63836) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
     word_index = _read_nikl_word_index(nikl_zip)
     with path.open("r", encoding="utf-8-sig", newline="") as stream:
         reader = csv.DictReader(stream)
@@ -186,8 +186,8 @@ def _load_kspan(path: Path, nikl_zip: Path) -> tuple[list[dict[str, Any]], list[
             f"K-SPAN keystroke/Worldbet integrity check failed: {len(worldbet_mismatches)} mismatches; "
             f"first={worldbet_mismatches[:5]}"
         )
-    if len(source_rows) != 63836:
-        raise ValueError(f"K-SPAN 2.1 row-count drift: expected 63836, got {len(source_rows)}")
+    if expected_rows is not None and len(source_rows) != expected_rows:
+        raise ValueError(f"K-SPAN row-count drift: expected {expected_rows}, got {len(source_rows)}")
     metadata = {
         "source": "K-SPAN 2.1, kspan_base.csv (Dataverse file 1010), joined to NIKL MKUFS2 일반어휘통계.txt",
         "license": "K-SPAN CC0 1.0; NIKL MKUFS2 Korean Open Government License Type 1 (attribution)",
@@ -311,6 +311,7 @@ def prepare(
     output_dir: Path,
     sample_size: int = 1000,
     seed: int = 20261108,
+    expected_kspan_rows: int | None = 63836,
 ) -> dict[str, Any]:
     if sample_size < 1:
         raise ValueError("sample_size must be >= 1")
@@ -319,7 +320,7 @@ def prepare(
     sig_words = _hangul_words_from_json(sigmorphon_json)
     baseline_excluded = ugt_words | sig_words
 
-    kspan_modern, kspan_conservative, kspan_meta = _load_kspan(kspan_csv, nikl_zip)
+    kspan_modern, kspan_conservative, kspan_meta = _load_kspan(kspan_csv, nikl_zip, expected_kspan_rows)
     kspan_words = {row["canonical"] for row in kspan_modern}
     kspan_overlap = kspan_words & baseline_excluded
     kspan_modern_eligible = [row for row in kspan_modern if row["canonical"] not in baseline_excluded]
