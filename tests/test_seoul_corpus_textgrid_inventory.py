@@ -44,6 +44,13 @@ class SeoulTextGridInventoryTests(unittest.TestCase):
             ])
             self.assertNotIn("REDACTED-TEST-WORD", str(result))
 
+    def test_reads_utf16_textgrid(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "utf16.TextGrid"
+            path.write_text(LONG_TEXTGRID, encoding="utf-16")
+            result = inspect_textgrid(path)
+            self.assertEqual(result["tiers"][0]["name"], "word")
+
     def test_inventory_counts_unparsed_files(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
