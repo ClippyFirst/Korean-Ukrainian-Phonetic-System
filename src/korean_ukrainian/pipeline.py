@@ -9,6 +9,7 @@ from .ipa import generate_vowel_variants, realize_syllables
 from .ukrainian_adapter import UkrainianTargetAdapter
 from .orthography import render_sequence
 from .ipa_target_renderer import render_ipa_sequence_to_ukrainian, render_profiled_ipa_to_ukrainian
+from .source_adjudications import source_adjudications_for_input, registry_metadata
 
 _LEXICON_PATH=Path(__file__).resolve().parents[2]/"data"/"korean"/"lexical_pronunciations.csv"
 _INSTALLED_LEXICON_PATH=Path(sysconfig.get_path("data"))/"share"/"korean-ukrainian-phonetic-system"/"lexical_pronunciations.csv"
@@ -341,6 +342,8 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
     })
     return {
         "input":text,
+        "source_adjudication_registry":registry_metadata(),
+        "source_adjudications":source_adjudications_for_input(text),
         "surface_hangul":surface_hangul,
         "surface_syllables":[x.to_dict() for x in items],
         "rules":all_traces,
@@ -891,6 +894,8 @@ def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_leve
 
     return {
         "input":text,
+        "source_adjudication_registry":surface["source_adjudication_registry"],
+        "source_adjudications":surface["source_adjudications"],
         "orthography":analyze_korean(text),
         "phonology":phonologize_korean(text),
         "phonetics":surface,
