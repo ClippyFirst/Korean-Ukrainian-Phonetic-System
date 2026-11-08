@@ -24,7 +24,7 @@ from benchmark_ugtphon_ko import normalize_ipa
 MFA_KOREAN_V2_PHONES = frozenset("""
 b d dʑ e eː h i iː j k kʰ k̚ k͈ m n o oː p pʰ p̚ p͈
 s sʰ s͈ t tɕ tɕʰ tɕ͈ tʰ t̚ t͈ u uː w x ç ŋ ɐ ɕʰ ɕ͈
-ɛ ɛː ɡ ɣ ɥ ɦ ɨ ɨː ɭ ɰ ɲ ɸ ɾ ʌ ʌː ʎ ʝ β
+ɡ ɣ ɥ ɦ ɨ ɨː ɭ ɰ ɲ ɸ ɾ ʌ ʌː ʎ ʝ β
 """.split())
 
 MODEL_METADATA = {
