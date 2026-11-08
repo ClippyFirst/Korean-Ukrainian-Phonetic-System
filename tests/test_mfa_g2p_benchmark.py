@@ -36,11 +36,11 @@ def test_model_input_rejects_mixed_or_non_hangul_tokens():
 
 def test_mfa_output_parser_preserves_documented_ipa_phone_sequence():
     parsed = parse_mfa_dictionary_output(
-        "학교 0.7 h a k̚ k j o\n",
+        "학교 0.7 h ɐ k̚ k j o\n",
         {"학교"},
     )
-    assert parsed["학교"]["ipa"] == "hak̚kjo"
-    assert parsed["학교"]["mfa_phones"] == ["h", "a", "k̚", "k", "j", "o"]
+    assert parsed["학교"]["ipa"] == "hɐk̚kjo"
+    assert parsed["학교"]["mfa_phones"] == ["h", "ɐ", "k̚", "k", "j", "o"]
 
 
 def test_mfa_output_parser_rejects_phones_without_an_explicit_ipa_mapping():
@@ -50,22 +50,22 @@ def test_mfa_output_parser_rejects_phones_without_an_explicit_ipa_mapping():
 
 def test_mfa_output_parser_rejects_duplicate_and_unexpected_words():
     with pytest.raises(ValueError, match="duplicate pronunciation"):
-        parse_mfa_dictionary_output("학교 h a\n학교 h a\n", {"학교"})
+        parse_mfa_dictionary_output("학교 h ɐ\n학교 h a\n", {"학교"})
     with pytest.raises(ValueError, match="unexpected output word"):
-        parse_mfa_dictionary_output("없는 h a\n", {"학교"})
+        parse_mfa_dictionary_output("없는 h ɐ\n", {"학교"})
 
 
 def test_report_separates_candidate_availability_from_accuracy_coverage():
     rows = [
         {"id": "row-1", "tokens": [
-            {"canonical": "학교", "phoneme": "hak"},
-            {"canonical": "학교", "phoneme": "hak"},
+            {"canonical": "학교", "phoneme": "hɐk"},
+            {"canonical": "학교", "phoneme": "hɐk"},
         ]},
         {"id": "row-2", "tokens": [
             {"canonical": "물가", "phoneme": "mul"},
         ]},
     ]
-    predictions = {"학교": {"ipa": "hak", "mfa_phones": ["h", "a", "k"]}}
+    predictions = {"학교": {"ipa": "hɐk", "mfa_phones": ["h", "ɐ", "k"]}}
     report = build_report(
         rows, predictions, model_kind="hangul", model_sha256="a" * 64,
         dataset_source="synthetic regression fixture", runtime={"runtime_ms": 1.0},
