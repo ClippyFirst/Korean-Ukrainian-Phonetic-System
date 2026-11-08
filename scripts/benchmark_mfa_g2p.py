@@ -138,7 +138,7 @@ def run_mfa_g2p(
         root = Path(temp)
         input_path, output_path = root / "words.txt", root / "predictions.dict"
         config_path = root / "mfa-g2p-config.yaml"
-        config_path.write_text("num_pronunciations: 1\ng2p_threshold: 1.0\n", encoding="utf-8")
+        config_path.write_text("num_pronunciations: 1\ng2p_threshold: 1.0\nstrict_graphemes: true\n", encoding="utf-8")
         input_path.write_text("\n".join(prepared) + "\n", encoding="utf-8")
         started = time.perf_counter()
         completed = subprocess.run(
@@ -162,6 +162,7 @@ def run_mfa_g2p(
         "model_input_kind": model_kind,
         "num_pronunciations": 1,
         "g2p_threshold": 1.0,
+        "strict_graphemes": True,
         "num_jobs": 3,
         "model_input_normalization": "NFC Hangul" if model_kind == "hangul" else "NFC Hangul -> jamo.hangul_to_jamo (jamo==0.4.1)",
         "mfa_stdout_tail": completed.stdout[-1000:],
@@ -209,7 +210,7 @@ def build_report(
         "engine": "Montreal Forced Aligner",
         "model": metadata,
         "model_sha256": model_sha256,
-        "inference_policy": {"num_pronunciations": 1, "g2p_threshold": 1.0, "num_jobs": 3},
+        "inference_policy": {"num_pronunciations": 1, "g2p_threshold": 1.0, "strict_graphemes": True, "num_jobs": 3},
         "dataset_source": dataset_source,
         "eligible_occurrences": len(items),
         "unique_source_forms": len(words),
