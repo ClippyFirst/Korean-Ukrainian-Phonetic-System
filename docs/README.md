@@ -113,3 +113,8 @@ Research use does not itself waive copyright. A citation-only source is differen
 - [UGTPHON Korean-subset source-rights audit](KOZAK-236-SOURCE-RIGHTS-AUDIT-2026-11-06.md) — pinned source, Apache-2.0 declaration, residual chain-of-title caveat and distribution limits.
 - [236-case independent review protocol](KOZAK-236-INDEPENDENT-REVIEW.md) — blind reviewer packet contract, private coordinator map and separate Ukrainian target acceptance.
 - [Third-party licences and notices](../licenses/README.md) — licence texts and notices for retained third-party research material, separate from the root project-code licence.
+
+
+## Current benchmark execution contract
+
+The canonical mode-coverage matrix, denominator definitions, Super-soft 100% candidate-availability requirement and exact-main verification status live in [methodology — mode coverage and output availability](methodology.md#mode-coverage-and-output-availability-contract-2026-11-08). Keep benchmark navigation here; do not duplicate the scoring rules in a second register.
