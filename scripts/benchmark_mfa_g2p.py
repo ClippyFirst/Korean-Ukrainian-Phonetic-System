@@ -33,6 +33,7 @@ MODEL_METADATA = {
         "model_version": "2.0.0",
         "release_tag": "g2p-korean_mfa-v2.0.0",
         "asset": "korean_mfa.zip",
+        "sha256": "b7b19314b141e20b9714bed8d6eb80d3c291ae3f4d282ffdb643468fedce18d8",
         "license": "CC BY 4.0 (upstream model declaration; archive checked at runtime)",
         "training_words": 48665,
         "reported_heldout_words": 5407,
@@ -45,6 +46,7 @@ MODEL_METADATA = {
         "model_version": "2.0.0",
         "release_tag": "g2p-korean_jamo_mfa-v2.0.0",
         "asset": "korean_jamo_mfa.zip",
+        "sha256": "8068b669bf39fa11b9e606e8961d434c7811e9437e71eb1840f841ed4cb63398",
         "license": "CC BY 4.0 (upstream model declaration; archive checked at runtime)",
         "training_words": 48682,
         "reported_heldout_words": 5409,
@@ -134,7 +136,7 @@ def run_mfa_g2p(
         raise ValueError("model-input normalization collapsed distinct source words")
     with tempfile.TemporaryDirectory(prefix="mfa-korean-g2p-") as temp:
         root = Path(temp)
-        input_path, output_path = root / "words.txt", root / "predictions.dict"
+        input_path, output_path = root / "words.g2p", root / "predictions.dict"
         input_path.write_text("\n".join(prepared) + "\n", encoding="utf-8")
         started = time.perf_counter()
         completed = subprocess.run(
@@ -245,13 +247,19 @@ def main() -> int:
     items, words = _load_rows_and_words(rows)
     if not items or not words:
         raise ValueError("corpus has no eligible Hangul/IPA occurrences")
+    actual_sha256 = hashlib.sha256(args.model.read_bytes()).hexdigest()
+    expected_sha256 = MODEL_METADATA[args.model_kind]["sha256"]
+    if args.model_sha256 != actual_sha256:
+        raise ValueError("supplied model SHA-256 does not match the downloaded archive")
+    if actual_sha256 != expected_sha256:
+        raise ValueError(f"model archive checksum drift: expected {expected_sha256}, found {actual_sha256}")
     predictions, runtime = run_mfa_g2p(
         words, args.model, args.model_kind,
         mfa_command=args.mfa_command, timeout_seconds=args.timeout_seconds,
     )
     report = build_report(
         rows, predictions, model_kind=args.model_kind,
-        model_sha256=args.model_sha256, dataset_source=args.dataset_source,
+        model_sha256=actual_sha256, dataset_source=args.dataset_source,
         runtime=runtime,
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
