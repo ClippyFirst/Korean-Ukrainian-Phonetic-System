@@ -6,7 +6,7 @@ This continuation executed the existing benchmark and corpus-access work rather 
 
 - Starting main commit: `893619785c8fc7c8417cc8da0690d84fcb8d8dbb`.
 - Benchmark code snapshot: `668dbad14568e8472594937558500500102b3f95`.
-- Main branch at handoff preparation: `10e537b54ee9267616bcf5db903e31d900a98320` (the handoff/audit updates themselves follow this revision).
+- Main before this handoff refresh: `b07ce97560a0f07f43795c84d97f7291255355d6` (the handoff/audit closure commits follow this revision).
 - Full 10-engine benchmark: [run 42487350896](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487350896), artifact `13621335293`.
 - Seoul corpus ingestion and two additional three-mode benchmarks: [run 42491208142](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491208142), artifact `13622140135`.
 
@@ -36,8 +36,8 @@ The five-track count is not five independent corpora. KsponSpeech and NIKL 2022 
 
 ### Mode results and interpretation
 
-- On Seoul Hangul surface: Strict 97.0375% coverage, 57.1537% scored-only Exact, 55.4605% coverage-adjusted Exact, 24.5421% CER. Soft and Super-soft have lower coverage-adjusted Exact and worse CER.
-- On Seoul phonemic IPA: Strict 97.0375% coverage, 14.1166% scored-only Exact, 13.6984% coverage-adjusted Exact, 39.9210% CER. Soft and Super-soft have higher scored-only Exact only because they score fewer source-resolved cases; strict wins every exact comparison on the common scored subsets.
+- On Seoul Hangul surface: Strict 97.0375% coverage, 57.1537% scored-only Exact, 55.4605% coverage-adjusted Exact, 24.5421% CER. Soft 87.0006% coverage / 48.8991% adjusted Exact / 26.3641% CER; Super-soft 83.4924% / 47.4662% / 26.3118%.
+- On Seoul phonemic IPA: Strict 97.0375% coverage, 14.1166% scored-only Exact, 13.6984% coverage-adjusted Exact, 39.9210% CER. Soft 87.0005% / 12.8734% adjusted Exact / 40.8696% CER; Super-soft 83.4923% / 12.8402% / 40.4053%. Soft/Super-soft scored-only Exact is higher only because they score fewer source-resolved cases; strict wins every exact comparison on common scored subsets.
 - The phonemic reference is not narrow phonetic gold. The mapping adapter explicitly serializes `ʨ` as `tɕ` and asterisk fortis markers as `͈`; independent Korean phonetics review remains required.
 - Native/Browser Strict parity on UGTPHON: 2,703/2,703 surface outputs and 2,702/2,702 resolved raw IPA/Broad IPA outputs.
 - No production pronunciation rules or lexical exceptions were promoted from Seoul Corpus.
