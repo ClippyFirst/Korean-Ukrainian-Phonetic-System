@@ -1,0 +1,59 @@
+name: Seoul Corpus label archive preflight
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/inspect_seoul_corpus_textgrids.py"
+      - "tests/test_seoul_corpus_textgrid_inventory.py"
+      - ".github/workflows/seoul-corpus-inventory.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: seoul-corpus-inventory
+  cancel-in-progress: true
+
+jobs:
+  inspect-label-archive:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run synthetic TextGrid inventory tests
+        run: python -m pytest -q tests/test_seoul_corpus_textgrid_inventory.py
+
+      - name: Download the public 57 MB label archive (audio is not downloaded)
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/seoul-labels"
+          curl --fail --location --retry 3 --retry-delay 2 "https://openslr.elda.org/resources/113/label.tgz" --output "$RUNNER_TEMP/seoul-label.tgz" ||
+            curl --fail --location --retry 3 --retry-delay 2 "https://openslr.trmal.net/resources/113/label.tgz" --output "$RUNNER_TEMP/seoul-label.tgz"
+          sha256sum "$RUNNER_TEMP/seoul-label.tgz" | tee seoul-label-archive.sha256
+          tar -tzf "$RUNNER_TEMP/seoul-label.tgz" >/dev/null
+          tar -xzf "$RUNNER_TEMP/seoul-label.tgz" -C "$RUNNER_TEMP/seoul-labels"
+
+      - name: Inventory TextGrid structure only
+        id: inventory
+        continue-on-error: true
+        run: |
+          python scripts/inspect_seoul_corpus_textgrids.py --root "$RUNNER_TEMP/seoul-labels" --output seoul-corpus-inventory.json
+
+      - name: Preserve metadata-only inventory artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seoul-corpus-metadata-inventory
+          path: |
+            seoul-corpus-inventory.json
+            seoul-label-archive.sha256
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Require complete archive parsing
+        if: steps.inventory.outcome == 'failure'
+        run: |
+          echo "One or more TextGrid files were not parsed. Inspect the metadata artifact before implementing a corpus converter."
+          exit 1
