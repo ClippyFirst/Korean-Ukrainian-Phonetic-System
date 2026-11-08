@@ -33,6 +33,15 @@ At the current documentation inventory check on main commit `f786c746d2f744b611a
 
 ## IPA target renderer ownership and validation boundary
 
+## Korean surface-to-IPA adapter (upstream of the target renderer)
+
+Do not confuse the Korean IPA realization module with the Ukrainian target renderer:
+
+- src/korean_ukrainian/ipa.py / realize_syllables(): Korean surface Hangul → broad IPA. The g2pK adapter uses this module to render g2pK's Hangul pronunciation output; Native shares the same IPA realization layer.
+- src/korean_ukrainian/ipa_target_renderer.py: IPA → Ukrainian practical orthography. This is downstream and is not used to score Korean G2P IPA exact match/CER.
+
+The paired Native/g2pK and selected multi-engine comparisons therefore share an IPA representation adapter. g2p-ko and KoG2Padvanced surface outputs also pass through it; kokorog2p is g2pK-derived. The benchmark is not a comparison of ten fully independent IPA encoders.
+
 The IPA-to-Ukrainian renderer is a downstream adapter, separate from the Korean G2P engines:
 
 - Python: `src/korean_ukrainian/ipa_target_renderer.py`.
