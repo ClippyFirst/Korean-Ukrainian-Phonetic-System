@@ -161,6 +161,8 @@ jobs:
                   "exact_scored_only": report["exact_match_rate_scored_only"],
                   "exact_coverage_adjusted": report["coverage_adjusted_exact_match_rate"],
                   "CER": report["character_error_rate"],
+                  "PER": report["phoneme_error_rate"],
+                  "feature_weighted_error_rate": report["feature_weighted_error_rate"],
                   "model_sha256": report["model_sha256"],
                   "runtime_ms": report["runtime"]["runtime_ms"],
               })
