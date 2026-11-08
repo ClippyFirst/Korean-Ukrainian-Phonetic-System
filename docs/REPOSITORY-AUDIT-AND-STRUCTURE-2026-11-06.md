@@ -1,3 +1,89 @@
+## Final continuation audit — 2026-11-08
+
+### Repository and commit state
+
+- Starting main commit for this continuation: `893619785c8fc7c8417cc8da0690d84fcb8d8dbb`.
+- Work remained directly on `main`, following the existing owner preference; no branch was created.
+- Runtime/benchmark code snapshot: `668dbad14568e8472594937558500500102b3f95`.
+- Main immediately before this final audit update: `ef39cb5f0a7429b86d9770c85e6e3b0d1760494d`.
+- The final commit is the commit containing this audit update; its exact SHA is provided in the final execution report.
+- Open-PR API listing returned no open PRs at inspection. No user branches were deleted, no force-push occurred, no PR was merged blindly and no release was published.
+
+### Completed outcomes
+
+**Five executable benchmark tracks across three datasets** (not five independent corpora):
+
+1. UGTPHON — 10-engine Strict IPA and Broad sensitivity.
+2. SIGMORPHON 2021 Korean — 10-engine Strict IPA and Broad sensitivity.
+3. UGTPHON — Kozak Kim Browser Strict / Soft / Super-soft.
+4. Seoul SLR113 — Kozak Kim three-mode Hangul surface pronunciation.
+5. Seoul SLR113 — Kozak Kim three-mode phonemic IPA via the versioned 36-symbol adapter.
+
+Full 10-engine artifact: [run 42487350896](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487350896), artifact `13621335293`. Native/Browser Strict parity matched 2,703/2,703 surface outputs and 2,702/2,702 resolved raw IPA and Broad IPA outputs.
+
+### Seoul Corpus import and benchmark
+
+- OpenSLR SLR113 label archive downloaded in GitHub Actions only; audio archive not downloaded.
+- Label archive SHA-256: `63c3f8ffa6976307a732689d6c5be7b2db4ec20f14bf276faf98c886add0d24b`.
+- 240/240 TextGrid files parsed; 1,680 interval tiers; 2,671,221 interval annotations.
+- 231,626 aligned Hangul surface word pairs (54,868 unique source/reference pairs).
+- 36 observed phoneme symbols mapped through `data/korean/ipa/seoul-corpus-phonemic-ipa-v1.json`, derived from Yun et al. (2015), Table 3, DOI `10.13064/KSSS.2015.7.2.103`.
+- 1,134,781 mapped phone tokens; 70,660 non-phone/unmapped intervals excluded. 231,625 word-level phonemic IPA pairs generated; six phone-boundary conflicts and one non-phone/unmapped word excluded.
+- No raw labels, word pairs, IPA pairs or audio are committed or uploaded. The corpus is CC BY-NC 2.0; benchmark artifacts contain aggregate metadata and metrics only.
+- Seoul workflow: [run 42491208142](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491208142), artifact `13622140135`.
+
+### Seoul mode results
+
+| Reference | Mode | Coverage | Exact scored-only | Exact coverage-adjusted | CER scored-only | Heuristic / typed fallback |
+|---|---|---:|---:|---:|---:|---:|
+| Hangul surface | Strict | 97.0375% | 57.1537% | 55.4605% | 24.5421% | 0 / 0 |
+| Hangul surface | Soft | 87.0006% | 56.2055% | 48.8991% | 26.3641% | 26,057 / 0 |
+| Hangul surface | Super-soft | 83.4924% | 56.8509% | 47.4662% | 26.3118% | 38,236 / 29 |
+| Phonemic IPA | Strict | 97.0375% | 14.1166% | 13.6984% | 39.9210% | 0 / 0 |
+| Phonemic IPA | Soft | 87.0005% | 14.7969% | 12.8734% | 40.8696% | 26,057 / 0 |
+| Phonemic IPA | Super-soft | 83.4923% | 15.3788% | 12.8402% | 40.4053% | 38,236 / 29 |
+
+Strict has the best coverage-adjusted Exact and lowest CER in both Seoul reference layers. On common scored subsets Strict wins every Exact comparison; Soft and Super-soft have higher scored-only Exact only because they score fewer source-resolved cases. Soft and Super-soft outputs are identical on their common scored set. The IPA reference is phonemic, not narrow phonetic gold; the adapter and cross-runtime profile remain unadjudicated by an independent specialist. These scores do not validate Ukrainian target rendering.
+
+### Documentation, data and tests updated
+
+- README, methodology, benchmark suite register, acceptance gates, source register, coverage matrix, repository audit and master handoff updated in place.
+- Source register: 230 records; 12-column CSV integrity checked after repairing quoting.
+- Added metadata-only Seoul TextGrid inventory script and tests; added temporary word-pair extraction and separate Hangul surface / phonemic IPA benchmark runners.
+- Added the versioned 36-symbol phonemic IPA adapter JSON with explicit affricate and fortis serialization notes.
+- Existing IPA-first pipeline, production engine, 236-case review queue, source-backed lexical controls and original g2pK 0.9.4 vendor baseline preserved.
+- No production phonology or lexical exception was promoted from Seoul results.
+
+### Verification actually completed
+
+| Workflow | Result | Evidence |
+|---|---|---|
+| 10-engine UGTPHON + SIGMORPHON, three Browser modes and Native/Browser parity | **PASS** | [42487350896](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487350896) |
+| Seoul TextGrid inventory + surface + phonemic IPA, all three modes | **PASS** | [42491208142](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491208142) |
+| Python 3.11/3.12/3.13, web/npm tests and build, wheel install, teacher-corpus audit | **PASS** | [42491874801](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874801) on `de1d9b10f31e4ea730fc7c5940753c42f54ab3a1` |
+| Python regression/data integrity and Browser regression/build | **PASS** | [42491874749](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874749) on `de1d9b10f31e4ea730fc7c5940753c42f54ab3a1` |
+| Master table and research corpus artifacts | **PASS** | [42491874837](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42491874837) on `de1d9b10f31e4ea730fc7c5940753c42f54ab3a1` |
+
+Intermediate CI failures during this continuation were not hidden: early Seoul inventory attempts exposed nested ZIP layout, AppleDouble sidecars, UTF-16 encoding and a counter bug; intermediate docs/source-register runs exposed stale test wording and CSV quoting. Each issue was corrected, and the later complete test and system-verification workflows above passed. No local full-repository pytest/npm run is claimed; GitHub Actions is the verification evidence. GitHub Pages deployment was cancelled by subsequent commits and is not claimed as deployed. Neural ByT5 and CharsiuG2P remained skipped under the existing default-off policy.
+
+### Remaining task ledger
+
+| Task | State | Blocker / acceptance criterion |
+|---|---|---|
+| Independent review of Seoul phoneme-to-IPA adapter | **TODO** | Korean phonetics reviewer to approve Table 3 serialization (ʨ→tɕ; asterisk fortis→͈) and phonemic-vs-phonetic comparison boundary. |
+| Ukrainian target renderer validation on Seoul | **DEFERRED** | Seoul contains Hangul and phonemic IPA gold, not independently adjudicated Ukrainian target forms. |
+| KsponSpeech | **BLOCKED** | AIHub access/account and original dataset terms; Hugging Face mirror's empty license field is not permission. |
+| NIKL 2022 Daily Conversation | **BLOCKED** | NIKL portal application and exact corpus license/terms; no access token/data obtained. |
+| SIGMORPHON sealed-holdout status | **PARTIAL** | Verify source split and training overlap before calling it a sealed holdout. |
+| 236-case independent adjudication | **PARTIAL** | 213 cases not individually adjudicated, 22 ABSTAIN, 1 provisional RETAIN; no promotion to gold or production. |
+| Neural ByT5 / CharsiuG2P | **DEFERRED** | Existing default-off policy; requires model/runtime and data provenance review. |
+| Release readiness | **NOT READY** | Independent linguistic review, Ukrainian target validation, corpus-rights review and full holdout adjudication remain incomplete. |
+
+**Final disposition:** software-verified research prototype; not independently research-certified and not release-ready. The five benchmark tracks are reproducible, but the three datasets have different reference conventions and the Seoul phonemic IPA adapter still requires specialist review.
+
+
+---
+
 ## Exact-main benchmark checkpoint — 2026-11-08
 
 The path-filtered multi-engine workflow completed successfully on main benchmark code commit `b548436d0fce9af4672fc5902d6670cbc134bd70`: [run 42487350896](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487350896), artifact `13621335293` (SHA-256 `c286d7e4f1ee02d40e1a9977e792eeb73bce12b32b658a8b3c4166c612ccc1a8`). The run contains the 10-engine UGTPHON and SIGMORPHON reports, per-occurrence mismatch ledger, unresolved review queue, three Browser Kozak Kim mode reports, Native/Browser parity report, and readiness audit. This is the current-main benchmark code snapshot; later documentation-only main commit(s) do not change the measured runtime.
