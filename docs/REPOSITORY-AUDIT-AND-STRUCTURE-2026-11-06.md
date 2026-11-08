@@ -829,6 +829,15 @@ Run 42416681855 is the latest successful full multi-engine artifact. Optional Ch
 
 **No general deterioration is established.** A superficial comparison with the 2026-10-24 UGTPHON snapshot shows Native exact match lower by about 0.4440 percentage points (53.1827% → 52.7387%), but CER improves by about 0.1753 points (9.1883% → 9.0130%). On SIGMORPHON, the current Native exact match is higher by about 0.1645 points (35.8074% → 35.9719%) and CER improves by about 0.1690 points (14.7037% → 14.5347%). The eligible/scored counts and profile/reference conventions are not identical across all historical snapshots, so these deltas are descriptive, not a controlled regression experiment. The defensible conclusion is metric- and corpus-dependent movement, not a demonstrated global regression. To prove a code-induced regression, rerun the same pinned corpora, exact normalizer/profile, same occurrence IDs, and old/new engine revisions in one paired workflow.
 
+### Two IPA stages — do not conflate their names
+
+The benchmark phrase “g2pK + project IPA renderer” refers to the Korean surface-to-IPA realization module, not the Ukrainian target renderer:
+
+- Korean surface Hangul → broad IPA: src/korean_ukrainian/ipa.py, function realize_syllables(). The g2pK adapter obtains g2pK's Hangul pronunciation spelling and calls this module; Native uses the same IPA realization layer after its own Korean analysis. The comparison therefore shares an IPA representation layer and is not a comparison of independent IPA encoders.
+- IPA → Ukrainian practical orthography: src/korean_ukrainian/ipa_target_renderer.py and browser src/app/engine_ipa.js. This downstream adapter is not part of the Korean IPA exact-match/CER benchmark.
+
+The multi-engine workflow also routes g2p-ko and KoG2Padvanced Hangul surface outputs through the shared project broad-IPA adapter. kokorog2p is g2pK-derived, not a fully independent phonological lineage. KoG2P uses a custom phone alphabet with a lossy explicit adapter. Consequently, the ten-engine table compares pronunciation-surface systems under documented adapter constraints; it must not be described as ten independent IPA encoders. The benchmark script records these limitations explicitly.
+
 ### IPA renderer — separate component and separate acceptance question
 
 The ClippyFirst IPA target renderer is the downstream adapter, not a Korean G2P engine:
