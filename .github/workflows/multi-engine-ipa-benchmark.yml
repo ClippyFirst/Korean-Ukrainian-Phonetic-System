@@ -330,7 +330,16 @@ jobs:
           node scripts/benchmark_kozak_kim_browser.mjs \
             --corpus "$RUNNER_TEMP/ko-test.json" \
             --split test \
-            --output "$RUNNER_TEMP/kozak-kim-browser-ugtphon-report.json"
+            --output "$RUNNER_TEMP/kozak-kim-browser-ugtphon-report.json"          node scripts/benchmark_kozak_kim_browser.mjs \
+            --corpus "$RUNNER_TEMP/ko-test.json" \
+            --split test \
+            --mode soft \
+            --output "$RUNNER_TEMP/kozak-kim-browser-ugtphon-soft-report.json"
+          node scripts/benchmark_kozak_kim_browser.mjs \
+            --corpus "$RUNNER_TEMP/ko-test.json" \
+            --split test \
+            --mode super-soft \
+            --output "$RUNNER_TEMP/kozak-kim-browser-ugtphon-super-soft-report.json"
 
       - name: Audit Native and Browser Kozak Kim runtime parity
         run: |
@@ -460,6 +469,8 @@ jobs:
             ${{ runner.temp }}/kozak-kim-unmapped-mismatch-review-queue.csv
             ${{ runner.temp }}/kozak-kim-browser-ugtphon-report.json
             ${{ runner.temp }}/kozak-kim-runtime-parity-report.json
+            ${{ runner.temp }}/kozak-kim-browser-ugtphon-soft-report.json
+            ${{ runner.temp }}/kozak-kim-browser-ugtphon-super-soft-report.json
             ${{ runner.temp }}/multi-engine-ipa-stdout.json
             ${{ runner.temp }}/phonemize-predictions.json
             ${{ runner.temp }}/ko-LICENSE
