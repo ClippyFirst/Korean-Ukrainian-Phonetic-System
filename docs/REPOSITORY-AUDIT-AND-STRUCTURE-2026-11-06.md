@@ -923,12 +923,13 @@ The current documentation previously described Strict, Soft and Super-soft as th
 
 ### Portfolio expansion
 
-The benchmark suite register now defines five distinct Korean pronunciation-reference datasets: (1) UGTPHON Korean test, (2) SIGMORPHON 2021 Korean public paired lexical file, (3) Seoul Corpus / OpenSLR SLR113, (4) KsponSpeech, and (5) LDC Korean Telephone Conversations Lexicon LDC2003L02. This is a five-dataset portfolio, not a claim that all five have already been scored.
+The benchmark suite register now defines five distinct Korean pronunciation-reference datasets: (1) UGTPHON Korean test, (2) SIGMORPHON 2021 Korean public paired lexical file, (3) Seoul Corpus / OpenSLR SLR113, (4) KsponSpeech, and (5) NIKL Daily Conversation Speech Corpus 2022. This is a five-dataset portfolio, not a claim that all five have already been scored.
 
 - UGTPHON and SIGMORPHON are the two runnable IPA datasets already wired into the multi-engine workflow.
 - Seoul Corpus is selected as a non-commercial, phonetically labelled TextGrid suite (CC BY-NC 2.0); tier schema, phone inventory and audited phone-to-IPA mapping remain ingestion gates. Audio is not mandatory if the labels themselves suffice.
 - KsponSpeech has orthographic/pronunciation dual transcription according to the corpus paper, but requires AIHub manual download and original access-term review; score Hangul surface pronunciation separately from IPA.
-- LDC2003L02 has 25,251 lexical entries and an explicit LDC User Agreement access path; it requires a suitable licence and phonetic-field inspection before use.
+- NIKL 2022 has 630+ hours, 2,000+ speakers and dual spelling/pronunciation transcription according to the official construction report; the corpus requires portal access and corpus-specific terms review. A published 54,536-utterance coda-cluster subset is a focused benchmark candidate.
+- LDC2003L02 remains an alternate sixth candidate: 25,251 lexical entries under paid LDC access; not counted among the five selected datasets.
 - The 130-row Mun, Kim & Ko gold corpus remains an unlicensed research candidate and is not one of the five selected datasets. Commercial CJKI/Nexdata products remain excluded pending licensing.
 
 ### Current-main benchmark automation
