@@ -109,9 +109,6 @@ def _extract_phone_pairs(source_tier: dict | None, phone_tier: dict | None, coun
         labels = [phone["label"].strip() for phone in overlapping]
         if any(label not in PHONE_TO_IPA for label in labels):
             counters["words_with_non_phone_or_unmapped_labels"] += 1
-            for label in labels:
-                if label not in PHONE_TO_IPA:
-                    counters["non_phone_labels"][ _marker_category(label) ] += 1
             continue
         ipa = "".join(PHONE_TO_IPA[label] for label in labels)
         if not ipa:
