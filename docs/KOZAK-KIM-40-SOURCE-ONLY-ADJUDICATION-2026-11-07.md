@@ -148,3 +148,16 @@ The repository's target is a source-grounded Korean-to-Ukrainian pronunciation p
 Acceptance is based on the `source_acceptance_status` field in `research/kozak-kim-40-no-audio-engine-policy-2026-11-06.csv`. The legacy `speaker_ipa_gold_status=UNRESOLVED_NO_AUDIO` records only that speaker-specific acoustic gold was not annotated. It is not an acceptance blocker and must not be interpreted as an unfinished source adjudication.
 
 The accepted scope includes broad/profile-level IPA and explicit conditional rules. It does not claim an unknown speaker's exact narrow realization. Conditional phrase-level processes remain conditional where the compact corpus spelling does not encode boundaries; this is a correct accepted policy, not an unresolved task. The raw emoticon spans are accepted as non-speech source material; their exact subspan offsets must be checked before automated slicing, independently of audio.
+
+
+## 2026-11-08 runtime integration — PR #461
+
+The 17 adjudication families and all 40 occurrence IDs are now represented in the shared, versioned runtime registry `src/korean_ukrainian/source_adjudications.json`. Both the browser engine and Python pipeline attach bounded, exact-form `source_adjudications` metadata to their result objects. The registry is packaged with the Python distribution. This makes the accepted decision, evidence IDs, claim IDs, occurrence IDs, and implementation constraint inspectable at runtime.
+
+This is deliberately a **policy/traceability integration, not a new phonological rewrite**. The source adjudications mostly confirm conservative behavior already implemented: preserve broad vowel sequences, do not add categorical glides/coalescence, retain underlying /s/ rather than inventing [ɕ], keep [ɛ]~[e] research-only, preserve stylized spellings, and apply Rule 29 only in explicitly spaced connected-phrase mode. The registry does not rewrite Hangul, IPA, or Ukrainian output. It must not be interpreted as speaker-specific narrow IPA gold.
+
+The exact-form matcher requires a Korean-script boundary, so a substring inside a longer Korean eojeol is not silently promoted. The three conditional Rule 29 families expose metadata for their compact source token and explicit spaced phrase; only the existing phrase-mode rule can change the phonological result when the user actually supplies the boundary and selects phrase mode.
+
+**Two of the 40 occurrence rows are intentionally not auto-matched:** the original raw source contained compatibility-jamo `ㅠ` emoticon spans, while the corpus's normalized token strings contain `유`. The accepted source classification remains in the registry, but the runtime does not mistake normalized `유` for spoken /ju/ or slice the string. Exact raw-span offsets must be revalidated before a source-preserving non-speech span can be applied automatically. This is an implementation-boundary check, not an audio dependency.
+
+Regression coverage checks all 15 runtime-matchable distinct token forms, the 22-occurrence `아끼셔` family, both explicit phrase forms, the no-match behavior for normalized `유` lookalikes, and the invariant that attaching adjudication metadata does not mutate IPA or Ukrainian output. PR #461 CI is the acceptance oracle; no local test result is claimed from the connector-only environment.
