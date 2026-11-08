@@ -6,6 +6,8 @@ The intended pipeline is:
 
 `Korean orthography → structural and morphophonological analysis → Korean surface IPA → ClippyFirst IPA correspondence → Ukrainian practical orthography`.
 
+Terminology boundary: this target renderer is not the Korean surface-to-IPA module in src/korean_ukrainian/ipa.py. That upstream module's realize_syllables() function derives broad IPA from an already determined Korean surface Hangul form. The g2pK comparison adapter uses it to convert g2pK's Hangul pronunciation spelling to IPA; the Native path shares the same IPA realization layer. Neither that adapter nor the IPA-to-Ukrainian target renderer should be described as the other.
+
 The production target renderer is `src/korean_ukrainian/ipa_target_renderer.py`. It accepts IPA only; it does not accept Hangul or Jamo as mapping inputs. It reads `data/korean/canonical_correspondence.csv` plus explicit sequence overrides in `data/korean/ipa_target_overrides.csv`, applies longest-match tokenization, and returns a per-segment trace with mapping ID, status, provenance, word/syllable indices and length-marker handling.
 
 ## Runtime ownership and optional dependency
