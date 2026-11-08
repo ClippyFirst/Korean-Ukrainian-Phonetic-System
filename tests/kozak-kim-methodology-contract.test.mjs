@@ -71,3 +71,30 @@ test('RR and Hanja are described as parallel outputs, not pronunciation inputs',
   assert.match(system, /184 079 словникових читань у 19 групах/u);
   assert.match(system, /RR не є входом IPA чи українського адаптера/u);
 });
+
+
+test('all three Kozak Kim modes have separate documented benchmark contracts and honest statuses', () => {
+  const methodology = readFileSync(new URL('../docs/methodology.md', import.meta.url), 'utf8');
+  const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
+  const gates = readFileSync(new URL('../research/ACCEPTANCE-GATES.md', import.meta.url), 'utf8');
+
+  for (const term of [
+    'Mode-specific benchmark contract',
+    '**Strict**',
+    '**Soft**',
+    '**Super-soft**',
+    'NEEDS_CURRENT_PINNED_RESULT',
+    'NOT_BENCHMARKED_FOR_ACCURACY',
+    'typed orthographic-phonemic fallback',
+    'same input occurrences',
+    '236-candidate'
+  ]) {
+    assert.ok(methodology.includes(term), 'methodology must include ' + term);
+  }
+  for (const term of ['Strict', 'Soft', 'Super-soft', 'current-main score not yet established', 'No accepted IPA accuracy benchmark yet']) {
+    assert.ok(readme.includes(term), 'README must distinguish ' + term);
+  }
+  for (const term of ['Strict | DONE_VERIFIED', 'Soft | PARTIAL', 'Super-soft | TODO', 'unified three-mode 236-case evaluation = TODO']) {
+    assert.ok(gates.includes(term), 'acceptance gates must include ' + term);
+  }
+});
