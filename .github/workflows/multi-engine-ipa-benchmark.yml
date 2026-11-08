@@ -342,6 +342,46 @@ jobs:
             --mode super-soft \
             --output "$RUNNER_TEMP/kozak-kim-browser-ugtphon-super-soft-report.json"
 
+      - name: Validate UGTPHON mode availability separately from IPA accuracy
+        run: |
+          set -euo pipefail
+          python - "$RUNNER_TEMP" <<'PY'
+          import json, sys
+          from pathlib import Path
+          root = Path(sys.argv[1])
+          reports = {}
+          for mode in ("strict", "soft", "super-soft"):
+              path = root / f"kozak-kim-browser-ugtphon{('-' + mode) if mode != 'strict' else ''}-report.json"
+              report = json.loads(path.read_text(encoding="utf-8"))
+              assert report["morphology_mode"] == mode
+              assert report["eligible_tokens"] == 2703
+              assert report["source_resolved_coverage_rate"] == report["coverage_rate"]
+              assert report["output_available_tokens"] <= report["eligible_tokens"]
+              assert report["scored_tokens"] <= report["output_available_tokens"]
+              assert report["engine_errors"] == 0
+              reports[mode] = report
+          assert reports["soft"]["output_available_tokens"] >= reports["strict"]["output_available_tokens"]
+          assert reports["super-soft"]["output_available_tokens"] >= reports["soft"]["output_available_tokens"]
+          assert reports["super-soft"]["output_available_tokens"] == reports["super-soft"]["eligible_tokens"], (
+              "Super-soft must emit a typed candidate for every eligible Hangul occurrence; "
+              "unresolved passthrough is not availability"
+          )
+          for mode, report in reports.items():
+              print(mode, {
+                  "eligible": report["eligible_tokens"],
+                  "source_resolved_scored": report["scored_tokens"],
+                  "source_resolved_coverage": report["source_resolved_coverage_rate"],
+                  "candidate_available": report["output_available_tokens"],
+                  "candidate_availability": report["candidate_output_availability_rate"],
+                  "exact_scored_only": report["exact_match_rate"],
+                  "exact_coverage_adjusted": report["coverage_adjusted_exact_match_rate"],
+                  "cer": report["character_error_rate"],
+                  "heuristic": report["heuristic_tokens"],
+                  "typed_fallback": report["typed_fallback_tokens"],
+                  "unresolved": report["unresolved_tokens"],
+              })
+          PY
+
       - name: Audit Native and Browser Kozak Kim runtime parity
         run: |
           set -euo pipefail
