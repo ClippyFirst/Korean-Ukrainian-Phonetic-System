@@ -223,3 +223,8 @@ Newly reconciled resources:
 - **Mun, Kim & Ko (2022) 130-row hand-transcribed golden corpus:** remains the strongest rule-phenomenon candidate, but formal use is blocked by missing explicit data reuse permission/licence.
 
 No external model or dataset was silently imported, vendored, or scored in this documentation pass. The next executable external-baseline task is MFA v2.0.0, subject to exact model/dictionary pinning and a lossless phone-to-IPA adapter. The IPA_G2P-Testing discrepancy is an investigation task, not an accuracy result.
+
+
+Additional resources reconciled in this pass:
+- **Korean Word-IPA Dictionary / IPA-Dict Korean:** Wiktionary-derived CC BY-SA lexical IPA resource; IPA_G2P-Testing reports 62,676 entries. It is a candidate supplementary lexicon, but not independent from SIGMORPHON/WikiPron; exact snapshot and overlap audit are mandatory.
+- **Zeroth-Korean / OpenSLR SLR40:** CC BY 4.0 speech corpus; OpenSLR reports 51.6h training (22,263 utterances, 105 speakers) and 1.2h test (457 utterances, 10 speakers), with a lexicon. It is registered as an adjacent speech/lexicon resource, not G2P gold until the pronunciation symbols and lexicon schema are audited. Audio is not mandatory for this registration.
