@@ -765,3 +765,85 @@ The existing master execution handoff was not rewritten: the GitHub file-read op
 - The merged `main` branch was re-read after merge. The shared registry, Python adapter, browser adapter, engine wiring, tests and audit record are present on `main`; the registry contains 17 adjudication rows and all 40 unique occurrence IDs.
 - Exact code/test head `87e7bb32611e7042c7f0ecf5df1d1fd5ac49aa5b` passed the listed PR-head Python, browser, build, source-rights, corpus, and research smoke checks. The commits between that code/test head and the final PR head `111fc7042a99b047fb809eed85b36e86d2b03d43` were documentation-only. The squash merge contains the same code and test state.
 - The GitHub workflow-run lookup for the merge commit returned no push-triggered run records (the available commit workflow lookup is PR-triggered only); therefore no post-merge CI result is claimed. The exact-head PR checks above are the verification evidence.
+
+
+---
+
+## Current-main continuation — 2026-11-08 (documentation and benchmark reconciliation)
+
+**Starting main for this continuation:** e24cf7caff745fb612080aef6a33c8058f4144cc.  
+**Latest runtime integration already on this starting commit:** PR [#461](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/461), squash merge b014d0107a47c3117c7dcbdd8d403f7fca3c7d41.  
+**Integration policy:** the owner designated main; this continuation writes documentation directly to main. No new task branch is created.
+
+### Current benchmark state — distinguish G2P from target rendering
+
+The latest measured Korean G2P comparison remains the paired PR #456 diagnostic and the full pinned multi-engine PR #457 diagnostic. PR #461 is metadata-only: its shared 40-case adjudication registry attaches provenance/policy metadata and explicitly does not change Hangul, IPA, or Ukrainian output. Therefore the PR #456/#457 pronunciation measurements remain the latest applicable measurements for the current output behavior; the cancelled multi-engine run on PR #461 is not a result and does not supersede them.
+
+| Dataset / engine | Scored | Exact match | CER | Coverage |
+|---|---:|---:|---:|---:|
+| UGTPHON — ClippyFirst Native | 2,702 | 52.7387% (1,425) | 9.0130% | 99.9630% |
+| UGTPHON — g2pK 0.9.4 | 2,703 | 53.0892% (1,435) | 9.2328% | 100% |
+| SIGMORPHON 2021 — ClippyFirst Native | 998 | 35.9719% (359) | 14.5347% | 99.90% of 999 eligible |
+| SIGMORPHON 2021 — g2pK 0.9.4 | 999 | 35.3353% (353) | 14.8222% | 100% |
+
+- Paired UGTPHON evidence: [run 42414467883](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42414467883). On 2,702 shared occurrences, g2pK's exact-match rate is +0.3700 percentage points relative to Native, while its CER is 0.2198 points higher (worse). Native abstains on one occurrence; g2pK abstains on none.
+- Paired SIGMORPHON evidence: [run 42416681855](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681855). On 998 shared words, Native's exact-match rate is +0.6366 percentage points higher and its CER is 0.2875 points lower (better).
+- The full multi-engine run [42416681855](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681855) passed its mandatory deterministic/phonemizer comparison, queue/artifact comparison, Browser same-occurrence execution and Native/Browser parity. Optional CharsiuG2P and ByT5 inference were skipped by policy; they are not passes and have no score.
+- These are dataset/reference-convention diagnostics for Korean G2P. They do not measure Ukrainian target quality and are not normative pronunciation gold.
+
+### Did ClippyFirst Native deteriorate?
+
+**No general deterioration is established.** A superficial comparison with the 2026-10-24 UGTPHON snapshot shows Native exact match lower by about 0.4440 percentage points (53.1827% → 52.7387%), but CER improves by about 0.1753 points (9.1883% → 9.0130%). On SIGMORPHON, the current Native exact match is higher by about 0.1645 points (35.8074% → 35.9719%) and CER improves by about 0.1690 points (14.7037% → 14.5347%). The eligible/scored counts and profile/reference conventions are not identical across all historical snapshots, so these deltas are descriptive, not a controlled regression experiment. The defensible conclusion is metric- and corpus-dependent movement, not a demonstrated global regression. To prove a code-induced regression, rerun the same pinned corpora, exact normalizer/profile, same occurrence IDs, and old/new engine revisions in one paired workflow.
+
+### IPA renderer — separate component and separate acceptance question
+
+The ClippyFirst IPA target renderer is the downstream adapter, not a Korean G2P engine:
+
+**Korean source → Korean phonological analysis → IPA → ClippyFirst IPA-to-Ukrainian renderer → Ukrainian practical orthography.**
+
+- Python implementation: src/korean_ukrainian/ipa_target_renderer.py; browser implementation: src/app/engine_ipa.js. The renderer accepts IPA as its input contract and returns mapping traces/status; it must not independently infer Korean pronunciation from Hangul.
+- Existing regression coverage reproduces 644 canonical lexical pronunciation rows and 46 alternate IPA rows through the IPA renderer; the override register contains 28 explicit, traceable mappings. These are implementation/reproducibility checks, not independent target-accuracy scores.
+- The recovered 24-form target-renderer holdout is present at data/korean/benchmarks/target-renderer-holdout-24.csv, but all 24 rows still have ipa_gold_status=not_available and ukrainian_gold_status=not_available. It is therefore not a scored gold benchmark.
+- The renderer fails closed for unknown or ambiguous IPA and keeps provisional mappings explicitly gated. Length is retained in IPA/provenance but is not automatically represented by an extra Ukrainian grapheme.
+- **Acceptance status:** renderer implementation and Python/browser parity are software-tested; independent Ukrainian phonetic/orthographic target accuracy remains unverified. Do not infer renderer quality from UGTPHON or SIGMORPHON G2P scores.
+
+### 236-case status after PR #461
+
+| Disposition | Rows | Current interpretation |
+|---|---:|---|
+| Exact standard-form runtime dispositions | 15 | Ten exact integrations plus five pre-existing exact licenses |
+| Profile-convention decisions | 181 | Bounded transcription-profile decisions, not 181 new categorical rules |
+| Original abstentions | 12 | Engine policy now explicit; speaker-specific IPA remains unresolved |
+| Previously unadjudicated residuals | 28 | Engine policy now explicit; speaker-specific IPA remains unresolved |
+| **Total** | **236** | Reconstructed occurrence cohort; original historical selector membership is not proven |
+
+PR #461 integrates 17 adjudication families covering all 40 residual occurrence IDs into shared browser/Python runtime metadata. This is a source-policy/provenance overlay, not a phonological rewrite or speaker-specific IPA annotation. Two raw ㅠ non-speech rows remain registered but intentionally unmatched until raw-span offsets are revalidated. The 40 source-policy dispositions are accepted without audio; speaker-specific narrow IPA is optional/out of scope, not a blocker for that accepted policy.
+
+### Exact current-main verification and repository state
+
+Starting main e24cf7c has four latest push-triggered workflows completed successfully:
+
+- [Tests matrix 42464216274](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42464216274) — success.
+- [System verification 42464216259](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42464216259) — success.
+- [Master/research artifacts 42464216261](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42464216261) — success.
+- [GitHub Pages deployment 42464216267](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42464216267) — success.
+
+PR #461's exact code/test head 87e7bb32611e7042c7f0ecf5df1d1fd5ac49aa5b separately passed Python 3.11/3.12/3.13, browser tests/build, wheel packaging, source-rights, corpus and research checks. Its full multi-engine diagnostic was cancelled; no new multi-engine score is claimed for PR #461. The current-main push workflows above passed after merge. No local shell, pytest or npm commands were run in this connector-only session.
+
+GitHub reports no open PRs. PR #461 is merged. The branch inventory still contains historical/supporting branches; they are preserved as audit history, not active integration targets. No branches were deleted or force-updated. Main is the only integration branch for this continuation.
+
+### Task ledger and remaining acceptance
+
+| Task | Status | Evidence / acceptance boundary |
+|---|---|---|
+| Consolidated documentation map and ownership guide | DONE_VERIFIED | Existing docs index, structure guide and agent workflow guide are retained and refreshed below; no duplicate master plan created |
+| Four upstream workflow references | DONE_VERIFIED | Existing pinned audit covers Unlazy, Superpowers, Matt Pocock skills and Ponytail with adoption boundaries; no upstream code/skills vendored |
+| Current Native/g2pK and multi-engine results | DONE_VERIFIED as diagnostic evidence | Latest successful paired and multi-engine artifacts linked above; optional neural jobs explicitly skipped |
+| IPA renderer implementation/reproducibility | DONE_VERIFIED as software behavior | 644 canonical + 46 alternate lexical mappings, 28 override rows and browser/Python parity tests |
+| Independent Ukrainian target accuracy | BLOCKED / evidence-limited | 24-form target holdout has no IPA or Ukrainian gold; acceptance requires frozen IPA inputs and independent qualified Ukrainian phonetic/orthographic review |
+| Original 236/239 historical cohort identity | BLOCKED | Original selector/member list or equivalent provenance is missing; reconstructed cohort must not be described as historically proven |
+| Raw ㅠ non-speech span matching | BLOCKED | Revalidate original raw offsets before automated slicing; do not match normalized 유 |
+| Broader independent Korean IPA certification | DEFERRED / evidence-limited | Source-policy closure is accepted without audio; speaker-specific narrow IPA is optional and requires appropriate source context/reviewer scope if pursued |
+| Release certification | DEFERRED | Research/target validation and release gates remain incomplete; no release is authorized by this documentation pass |
+
+**Readiness:** software-verified bounded research prototype. Not independently research-certified and not release-ready as an authoritative Korean-to-Ukrainian transcription standard.
