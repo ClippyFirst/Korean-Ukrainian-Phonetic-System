@@ -182,7 +182,7 @@ PR [#461](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/4
 - Master/research artifact generation [42463790433](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42463790433): master table and strict corpus generation passed.
 - Optional Charsiu queue and official NIKL metadata-only inventory were skipped by policy; neither is counted as a pass.
 
-Local shell/npm/pytest commands were not run in this connector-only environment. The CI evidence above is the actual verification source. The PR remains open pending merge; non-required diagnostic jobs are recorded separately in the canonical audit.
+Local shell/npm/pytest commands were not run in this connector-only environment. The CI evidence above is the actual verification source. PR #461 was squash-merged into main as `b014d0107a47c3117c7dcbdd8d403f7fca3c7d41`; the latest open-PR query returned zero open PRs. Non-required diagnostic jobs are recorded separately in the canonical audit.
 
 
 ## 2026-11-08 — benchmark mode ownership and execution map
