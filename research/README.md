@@ -1,3 +1,20 @@
+# Current continuation — mainline benchmark, renderer and 236-case status (2026-11-08)
+
+**Starting main:** e24cf7caff745fb612080aef6a33c8058f4144cc. **Latest runtime merge:** PR #461, merge commit b014d0107a47c3117c7dcbdd8d403f7fca3c7d41. This continuation supersedes the 2026-11-07 status below.
+
+- **DONE_VERIFIED — 236-case runtime policy:** 15 exact standard-form dispositions, 181 bounded profile-convention decisions, and 40 source-policy dispositions (12 former abstentions + 28 residual cases). PR #461 exposes the 17 adjudication families / 40 occurrence IDs in browser and Python metadata. It does not rewrite Hangul, IPA or Ukrainian output. Two raw ㅠ non-speech rows remain intentionally unmatched pending raw-span offset validation.
+- **DONE_VERIFIED — latest paired UGTPHON diagnostic:** Native 1,425/2,702 exact (52.7387%), CER 9.0130%, coverage 99.9630%; g2pK 1,435/2,703 exact (53.0892%), CER 9.2328%, coverage 100%. On 2,702 paired occurrences, g2pK exact-match rate is +0.3700 pp; Native CER is lower by 0.2198 pp. Native abstains once.
+- **DONE_VERIFIED — latest SIGMORPHON diagnostic:** Native 359/998 exact (35.9719%), CER 14.5347%; g2pK 353/999 (35.3353%), CER 14.8222%. On 998 paired words Native leads exact match by 0.6366 pp and CER by 0.2875 pp.
+- **DONE_VERIFIED — full multi-engine diagnostic:** PR #457 run 42416681855 passed mandatory comparison, mismatch queue, Browser same-occurrence execution and Native/Browser parity. CharsiuG2P and ByT5 inference were skipped by policy, not passed. PR #461's later multi-engine attempt was cancelled and is not a score.
+- **Renderer boundary:** IPA-to-Ukrainian rendering is a downstream adapter, not Korean G2P. Existing tests reproduce 644 canonical lexical rows + 46 alternate IPA rows; 28 explicit overrides are registered. The 24-form renderer holdout has no IPA gold or Ukrainian gold, so independent target accuracy is not scored.
+- **Native trend:** no general regression is established. Relative to 2026-10-24, UGTPHON exact match is lower but CER is better; SIGMORPHON exact match and CER are both better. Historical profile/reference conventions and scored counts are not perfectly identical, so these are descriptive comparisons, not a controlled regression test.
+- **DONE_VERIFIED — current-main CI:** starting main runs 42464216274 (tests), 42464216259 (system verification), 42464216261 (master/research artifacts), and 42464216267 (Pages deployment) all succeeded.
+- **Readiness:** software-verified bounded research prototype; not independently research-certified or release-ready. Independent Ukrainian target validation, proof of original historical 236/239 membership and raw ㅠ span validation remain open. Speaker-specific narrow IPA for the 40 cases is optional/out of scope under the accepted no-audio policy, not a blocker to the source-policy decisions.
+
+See the [current repository audit](../docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md#current-main-continuation--2026-11-08-documentation-and-benchmark-reconciliation), [repository structure guide](../docs/REPOSITORY-STRUCTURE.md), [IPA target contract](../docs/ukrainian-target-layer.md), and [four-repository workflow reference audit](../docs/ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-06.md).
+
+---
+
 # Current continuation — mainline benchmark and 236-case status (2026-11-07)
 
 **Main base for this continuation:** `1f220fcd7e3b44dab7302b37e2fe225812ee18a6` (documentation continuation after PR #454, merged as `d2f942d0615df3da2a973a2709f8738f65da18d9`). **Current work:** PR #456, branch `research/source-only-40-case-adjudication-2026-11-07`.
@@ -18,7 +35,7 @@ See the [source-only 40-case adjudication](../docs/KOZAK-KIM-40-SOURCE-ONLY-ADJU
 # Korean–Ukrainian Phonetic System: Research Programme
 
 Status: evidence-scoped research prototype. Mandatory multi-engine diagnostic comparison and exact-head software verification passed on PR #443; independent Korean IPA review, independent Ukrainian target review, original historical cohort membership proof and residual token-level evidence remain open. The scoped source-redistribution gate passes for positively recorded redistributed material; it is not blanket legal clearance.
-Last updated: 2026-11-07.
+Last updated: 2026-11-08.
 
 See [engineering workflow reference audit](../docs/ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-06.md) for the pinned review of all four supplied repositories and project-specific adoption decisions.
 
