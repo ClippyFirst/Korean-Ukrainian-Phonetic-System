@@ -174,7 +174,10 @@ function fullSurfaceHangul(result, token) {
   return null;
 }
 
-export function evaluateRows(rows, engine) {
+export function evaluateRows(rows, engine, morphologyMode = 'strict') {
+  if (!['strict', 'soft', 'super-soft'].includes(morphologyMode)) {
+    throw new TypeError('morphologyMode must be strict, soft, or super-soft');
+  }
   const records = [];
   const unresolvedExamples = [];
   const errorExamples = [];
@@ -185,6 +188,7 @@ export function evaluateRows(rows, engine) {
   let unresolvedTokens = 0;
   let partialTokens = 0;
   let heuristicTokens = 0;
+  let typedFallbackTokens = 0;
   let targetUnavailableTokens = 0;
   let targetProvisionalTokens = 0;
   let engineErrors = 0;
@@ -210,7 +214,14 @@ export function evaluateRows(rows, engine) {
       eligibleTokens += 1;
       const occurrenceId = String(eligibleTokens - 1);
       try {
-        const result = engine.convert(canonical, { morphologyMode: 'strict', ipaProfile: 'clippyfirst-korean-broad-v1' });
+        const engineOptions = morphologyMode === 'strict'
+          ? { morphologyMode, ipaProfile: 'clippyfirst-korean-broad-v1' }
+          : { morphologyMode };
+        const result = engine.convert(canonical, engineOptions);
+        const trace = Array.isArray(result.trace) ? result.trace : [];
+        const hasTypedFallback = result.phonetic_result_type === 'mixed-surface-ipa-and-orthographic-fallback' ||
+          trace.some(item => item?.status === 'super-soft-orthographic-fallback' || item?.phoneticResultType === 'orthographic-phonemic-fallback');
+        if (hasTypedFallback) typedFallbackTokens += 1;
         if (profileMetadata === null) {
           profileMetadata = {
             ipa_profile: result.ipa_profile ?? null,
@@ -237,7 +248,8 @@ export function evaluateRows(rows, engine) {
             occurrence_id: occurrenceId,
             id: row.id, token: canonical, gold: goldRaw, status: pronunciationStatus,
             surface_hangul: fullSurfaceHangul(result, canonical),
-            target_status: result.target_status ?? null, predicted: null
+            target_status: result.target_status ?? null, phonetic_result_type: result.phonetic_result_type ?? null,
+            typed_fallback: hasTypedFallback, predicted: null
           });
           continue;
         }
@@ -247,7 +259,8 @@ export function evaluateRows(rows, engine) {
             occurrence_id: occurrenceId,
             id: row.id, token: canonical, gold: goldRaw, status: pronunciationStatus,
             surface_hangul: fullSurfaceHangul(result, canonical),
-            target_status: result.target_status ?? null, predicted: null
+            target_status: result.target_status ?? null, phonetic_result_type: result.phonetic_result_type ?? null,
+            typed_fallback: hasTypedFallback, predicted: null
           });
           continue;
         }
@@ -297,6 +310,8 @@ export function evaluateRows(rows, engine) {
           broad_candidate_gold_feature_loss_counts: broadClosest?.audit.feature_loss_counts ?? {},
           pronunciation_status: pronunciationStatus,
           target_status: result.target_status ?? null,
+          phonetic_result_type: result.phonetic_result_type ?? null,
+          typed_fallback: hasTypedFallback,
           overall_status: result.status ?? null
         });
       } catch (error) {
@@ -332,7 +347,7 @@ export function evaluateRows(rows, engine) {
     broad_candidate_benchmark_version: 2,
     engine: 'Kozak Kim browser deterministic JavaScript engine',
     purpose: 'direct browser-engine IPA diagnostic; not normative acceptance or Ukrainian orthography validation',
-    morphology_mode: 'strict',
+    morphology_mode: morphologyMode,
     split: rows[0]?.split ?? null,
     ...(
       profileMetadata ?? {
@@ -371,6 +386,8 @@ export function evaluateRows(rows, engine) {
     unresolved_tokens: unresolvedTokens,
     partial_tokens: partialTokens,
     heuristic_tokens: heuristicTokens,
+    typed_fallback_tokens: typedFallbackTokens,
+    source_resolved_scored_tokens: scoredTokens,
     target_unavailable_tokens: targetUnavailableTokens,
     target_provisional_tokens: targetProvisionalTokens,
     skipped_non_hangul_or_multitoken: skippedNonHangul,
@@ -387,13 +404,16 @@ export function evaluateRows(rows, engine) {
       'Predictions use token.canonical and are scored against token.phoneme; raw token.text normalization is a separate diagnostic.',
       'This script imports src/app/engine.js and exercises the browser-side Kozak Kim engine, not the ordinary g2pK adapter or Python reference engine.',
       'IPA is scored whenever pronunciation_status is resolved, even if the Ukrainian target adapter reports unavailable; target status is reported separately.',
-      'This benchmark explicitly selects clippyfirst-korean-broad-v1, the same IPA profile as the Python Native runtime; browser-legacy-contextual-v1 remains the default for other callers.',
+      morphologyMode === 'strict'
+        ? 'Strict explicitly selects clippyfirst-korean-broad-v1, the same IPA profile as the Python Native runtime.'
+        : 'Soft and Super-soft use their runtime-declared IPA profiles; profile metadata is reported and must not be assumed identical to Strict.',
       'The selected broad IPA profile remains unadjudicated-cross-runtime. A high benchmark score does not establish normative IPA correctness.',
       'The broad_candidate_* metrics use the shared versioned korean-broad-candidate-sensitivity-v1 profile; they are research-only and do not replace strict headline metrics.',
       'The report exposes prediction and selected-reference feature-loss counts. The profile collapses lateral place/retroflexion, palatal nasality, several h-like realizations, fricative aspiration, stress and selected quality diacritics.',
       'Stop aspiration, fortisness, vowel length, unreleased codas and the s/ɕ/ʃ place distinctions are retained. Sibilant-profile disagreements therefore remain visible and require independent adjudication.',
       'The UGTPHON test split has been inspected during project research; treat this run as diagnostic, not as an untouched independent holdout.',
-      'Only resolved pronunciation records are scored. Partial, heuristic, unresolved, and engine-error records are counted separately.'
+      'Only resolved pronunciation records are scored. Partial, heuristic, unresolved, typed fallback, and engine-error records are counted separately.',
+      'Super-soft orthographic-phonemic fallback and low-confidence heuristic outputs are coverage only; they are never counted as source-resolved IPA accuracy.'
     ]
   };
 }
@@ -424,22 +444,23 @@ function main() {
   const corpusPath = value('--corpus');
   const split = value('--split') ?? 'test';
   const outputPath = value('--output');
+  const morphologyMode = value('--mode') ?? 'strict';
   if (!corpusPath) {
-    process.stderr.write('Usage: node scripts/benchmark_kozak_kim_browser.mjs --corpus ko-test.json [--split test] [--output report.json]\n');
+    process.stderr.write('Usage: node scripts/benchmark_kozak_kim_browser.mjs --corpus ko-test.json [--split test] [--mode strict|soft|super-soft] [--output report.json]\n');
     process.exitCode = 2;
     return;
   }
   try {
     const rows = loadCorpus(corpusPath, split);
-    const report = evaluateRows(rows, createBrowserKozakKimEngine());
+    const report = evaluateRows(rows, createBrowserKozakKimEngine(), morphologyMode);
     const rendered = JSON.stringify(report, null, 2) + '\n';
     if (outputPath) {
       writeFileSync(outputPath, rendered, 'utf8');
       const summary = Object.fromEntries([
-        'engine', 'split', 'ipa_profile', 'ipa_profile_status', 'eligible_tokens',
+        'engine', 'split', 'morphology_mode', 'ipa_profile', 'ipa_profile_status', 'eligible_tokens',
         'scored_tokens', 'coverage_rate', 'exact_matches', 'exact_match_rate',
         'coverage_adjusted_exact_match_rate', 'character_error_rate',
-        'unresolved_tokens', 'partial_tokens', 'heuristic_tokens',
+        'unresolved_tokens', 'partial_tokens', 'heuristic_tokens', 'typed_fallback_tokens', 'source_resolved_scored_tokens',
         'target_unavailable_tokens', 'target_provisional_tokens', 'engine_errors'
       ].map(key => [key, report[key]]));
       process.stdout.write(JSON.stringify(summary, null, 2) + '\n');
