@@ -14,10 +14,12 @@ import urllib.request
 import zipfile
 from pathlib import Path
 
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 from scripts.prepare_korean_open_benchmarks import prepare
 from scripts.summarize_korean_benchmark_reports import summarize
-
-ROOT = Path(__file__).resolve().parents[1]
 KSPAN_URL = "https://dataverse.no/api/access/datafile/1010"
 KSPAN_DOC_URL = "https://dataverse.no/api/access/datafile/1009"
 KSPAN_METADATA_URL = "https://dataverse.no/dataset.xhtml?persistentId=doi:10.18710/TWM79F"
@@ -60,6 +62,13 @@ def _download(url: str, destination: Path, timeout: int = 180) -> None:
 
 def _sha256(path: Path) -> str:
     digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+def _md5(path: Path) -> str:
+    digest = hashlib.md5()
     with path.open("rb") as stream:
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(chunk)
@@ -121,6 +130,10 @@ def run(workdir: Path, sample_size: int = 1000, seed: int = 20261108) -> Path:
     ipa_dict = workdir / "ipa-dict-ko.txt"
     _download(KSPAN_URL, kspan_csv)
     _download(KSPAN_DOC_URL, kspan_doc)
+    if _md5(kspan_csv) != "a0753c4f2421eb071d76b730eb87cbeb":
+        raise ValueError("K-SPAN kspan_base.csv MD5 differs from the pinned Dataverse v2.1 file")
+    if _md5(kspan_doc) != "2bf63cc0704a2fe3b4c40445192af77a":
+        raise ValueError("K-SPAN kspan_doc.pdf MD5 differs from the pinned Dataverse v2.1 file")
     _download(NIKL_ZIP_URL, nikl_zip)
     _download(IPA_DICT_URL, ipa_dict)
 
@@ -142,13 +155,14 @@ def run(workdir: Path, sample_size: int = 1000, seed: int = 20261108) -> Path:
     inventory = workdir / "seoul-corpus-inventory.json"
     seoul_word_pairs = workdir / "seoul-word-pairs.json"
     seoul_ipa_pairs = workdir / "seoul-ipa-word-pairs.json"
+    inspect_log = workdir / "seoul-textgrid-inspection.json"
     _run([
         sys.executable, str(ROOT / "scripts/inspect_seoul_corpus_textgrids.py"),
         "--root", str(textgrid_root),
         "--output", str(inventory),
         "--pairs-output", str(seoul_word_pairs),
         "--ipa-pairs-output", str(seoul_ipa_pairs),
-    ], os.environ.copy())
+    ], os.environ.copy(), inspect_log)
 
     manifest = prepare(
         kspan_csv=kspan_csv,
