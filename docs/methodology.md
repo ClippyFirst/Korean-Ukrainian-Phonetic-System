@@ -75,7 +75,11 @@ Paired comparisons: Strict vs Soft has 201,515 common scored occurrences, 6,481 
 
 Interpretation: Strict has the best coverage-adjusted Exact and lowest CER in this phonemic reference. The higher scored-only Exact of Soft/Super-soft is a selection effect: they score fewer source-resolved occurrences and classify more cases as heuristic. Because this gold is phonemic while the engine profiles retain phonetic/allophonic detail, raw Exact/CER are diagnostic and must not be presented as narrow-IPA acceptance. This benchmark is not Ukrainian target validation.
 
-Evidence: [Seoul preflight, surface and phonemic-IPA benchmark run 42495867492](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42495867492), artifact `13623272235`. The artifact contains metadata and aggregate metrics only; raw word/IPA pairs remain temporary CI data.
+Evidence: [Seoul preflight, surface and phonemic-IPA benchmark run 42496539257](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42496539257), artifact `13623457737`. The artifact contains metadata and aggregate metrics only; raw word/IPA pairs remain temporary CI data.
+
+
+
+**Candidate output availability is now reported separately from source-resolved scoring coverage.** It counts non-abstained candidate outputs (including explicitly labelled heuristic and typed fallback) and is not an accuracy metric. On the Hangul surface track, candidate output availability is Strict **224,764/231,626 (97.0375%)**, Soft **227,573/231,626 (98.2502%)**, Super-soft **231,626/231,626 (100%)**. On the phonemic-IPA track it is Strict **224,763/231,625 (97.0375%)**, Soft **227,572/231,625 (98.2502%)**, Super-soft **231,625/231,625 (100%)**. Source-resolved scored coverage remains 97.0375% / 87.0006% / 83.4924% (surface) and 97.0375% / 87.0005% / 83.4923% (IPA) for Strict / Soft / Super-soft. The additional availability comes from heuristic/fallback outputs; it does not change Exact/CER numerators or establish accuracy gains. Unresolved source passthrough is not counted as an available candidate.
 
 ### Remaining evidence limits
 
