@@ -23,6 +23,8 @@ test('Seoul Hangul surface scorer excludes typed orthographic fallback from accu
   const pairs = [{ source: '학교', gold: '학꾜', weight: 2 }];
   const result = evaluateSurface(pairs, typedFallbackEngine, 'super-soft', 2);
   assert.equal(result.summary.scored_occurrences, 0);
+  assert.equal(result.summary.output_available_occurrences, 2);
+  assert.equal(result.summary.output_availability_rate, 1);
   assert.equal(result.summary.exact_matches, 0);
   assert.equal(result.summary.typed_fallback_occurrences, 2);
   assert.equal(result.summary.cer_scored_only, null);
