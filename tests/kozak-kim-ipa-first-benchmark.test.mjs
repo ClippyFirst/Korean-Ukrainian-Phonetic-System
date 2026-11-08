@@ -615,6 +615,8 @@ test('browser benchmark runs Strict, Soft and Super-soft separately and excludes
   assert.equal(soft.output_available_tokens, 1);
   assert.equal(superSoft.output_available_tokens, 1);
   assert.equal(superSoft.output_availability_rate, 1);
+  assert.equal(strict.source_resolved_coverage_rate, strict.coverage_rate);
+  assert.equal(superSoft.candidate_output_availability_rate, 1);
   assert.equal(superSoft.records[0].typed_fallback, true);
   assert.throws(() => evaluateRows([row], engine, 'unknown'), /morphologyMode/u);
 });
