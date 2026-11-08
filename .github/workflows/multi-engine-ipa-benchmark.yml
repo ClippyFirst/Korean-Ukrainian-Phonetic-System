@@ -539,9 +539,19 @@ jobs:
               --output "$RUNNER_TEMP/kozak-kim-browser-sigmorphon-$suffix-report.json"
           done
           python - "$RUNNER_TEMP" <<'PY'
-          import json, sys
+          import json, re, sys
           from pathlib import Path
           root = Path(sys.argv[1])
+          corpus_rows = json.loads((root / "sigmorphon-kor-test.json").read_text(encoding="utf-8"))
+          expected_tokens = sum(
+              1
+              for row in corpus_rows
+              for token in row.get("tokens", [])
+              if isinstance(token.get("canonical"), str)
+              and re.fullmatch(r"[\\uac00-\\ud7a3]+", token["canonical"])
+              and isinstance(token.get("phoneme"), str)
+              and token["phoneme"].strip()
+          )
           reports = {}
           for mode in ("strict", "soft", "super-soft"):
               path = root / f"kozak-kim-browser-sigmorphon-{mode}-report.json"
