@@ -137,10 +137,12 @@ def run_mfa_g2p(
     with tempfile.TemporaryDirectory(prefix="mfa-korean-g2p-") as temp:
         root = Path(temp)
         input_path, output_path = root / "words.txt", root / "predictions.dict"
+        config_path = root / "mfa-g2p-config.yaml"
+        config_path.write_text("num_pronunciations: 1\ng2p_threshold: 1.0\n", encoding="utf-8")
         input_path.write_text("\n".join(prepared) + "\n", encoding="utf-8")
         started = time.perf_counter()
         completed = subprocess.run(
-            [mfa_command, "g2p", str(model_path), str(input_path), str(output_path), "--num_jobs", "1"],
+            [mfa_command, "g2p", str(model_path), str(input_path), str(output_path), "--num_jobs", "1", "--config_path", str(config_path)],
             capture_output=True, text=True, check=False, timeout=timeout_seconds,
         )
         elapsed_ms = (time.perf_counter() - started) * 1000
@@ -158,6 +160,9 @@ def run_mfa_g2p(
         "runtime_ms": round(elapsed_ms, 3),
         "unique_input_words": len(words),
         "model_input_kind": model_kind,
+        "num_pronunciations": 1,
+        "g2p_threshold": 1.0,
+        "num_jobs": 1,
         "model_input_normalization": "NFC Hangul" if model_kind == "hangul" else "NFC Hangul -> jamo.hangul_to_jamo (jamo==0.4.1)",
         "mfa_stdout_tail": completed.stdout[-1000:],
         "mfa_stderr_tail": completed.stderr[-1000:],
@@ -204,6 +209,7 @@ def build_report(
         "engine": "Montreal Forced Aligner",
         "model": metadata,
         "model_sha256": model_sha256,
+        "inference_policy": {"num_pronunciations": 1, "g2p_threshold": 1.0, "num_jobs": 1},
         "dataset_source": dataset_source,
         "eligible_occurrences": len(items),
         "unique_source_forms": len(words),
