@@ -49,7 +49,7 @@ Object class = "TextGrid"
 xmin = 0
 xmax = 1
 tiers? <exists>
-size = 2
+size = 3
 item [1]:
     class = "IntervalTier"
     name = "pWord.ortho."
@@ -70,6 +70,16 @@ item [2]:
         xmin = 0
         xmax = 1
         text = "학꾜"
+item [3]:
+    class = "IntervalTier"
+    name = "phoneme"
+    xmin = 0
+    xmax = 1
+    intervals: size = 1
+    intervals [1]:
+        xmin = 0
+        xmax = 1
+        text = "p0"
 '''
 
 class SeoulTextGridInventoryTests(unittest.TestCase):
@@ -102,7 +112,7 @@ class SeoulTextGridInventoryTests(unittest.TestCase):
             self.assertEqual(result["interval_annotations_total"], 5)
             self.assertEqual(result["tier_name_counts"]["IntervalTier:word"], 1)
 
-    def test_reports_aligned_word_pronunciation_tiers_without_exporting_text(self):
+    def test_reports_aligned_word_pronunciation_and_phone_tiers(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             (root / "paired.TextGrid").write_text(PAIR_TEXTGRID, encoding="utf-8")
@@ -112,6 +122,8 @@ class SeoulTextGridInventoryTests(unittest.TestCase):
             self.assertEqual(alignment["paired_interval_slots"], 1)
             self.assertEqual(alignment["same_time_boundaries"], 1)
             self.assertEqual(alignment["both_hangul_word_pairs"], 1)
+            self.assertEqual(result["phoneme_label_counts"]["p0"], 1)
+            self.assertEqual(result["word_tier_duplicate_name_format_counts"]["pWord.ortho."][0]["hangul_only"], 1)
             self.assertNotIn("학교", str(result))
             self.assertNotIn("학꾜", str(result))
             pairs_path = root / "ephemeral-pairs.json"
