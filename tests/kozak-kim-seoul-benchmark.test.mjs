@@ -36,6 +36,8 @@ test('Seoul phonemic IPA scorer excludes typed orthographic fallback from accura
   const pairs = [{ source: '학교', gold: 'hak̚k͈jo', weight: 2 }];
   const result = evaluateIpa(pairs, typedFallbackEngine, 'super-soft', 2);
   assert.equal(result.summary.scored_occurrences, 0);
+  assert.equal(result.summary.output_available_occurrences, 2);
+  assert.equal(result.summary.output_availability_rate, 1);
   assert.equal(result.summary.exact_matches, 0);
   assert.equal(result.summary.typed_fallback_occurrences, 2);
   assert.equal(result.summary.cer_scored_only, null);
