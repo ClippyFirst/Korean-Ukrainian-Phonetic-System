@@ -1589,7 +1589,7 @@ Additional regression scope: the native Python and browser shared-Broad profiles
 
 ## 2026-11-08 — five-dataset G2P benchmark portfolio
 
-**Portfolio target:** five distinct Korean pronunciation-reference datasets are now registered in `docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md`: UGTPHON, SIGMORPHON 2021, Seoul Corpus SLR113, KsponSpeech, and LDC2003L02 Korean Telephone Conversations Lexicon.
+**Portfolio target:** five distinct Korean pronunciation-reference datasets are now registered in `docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md`: UGTPHON, SIGMORPHON 2021, Seoul Corpus SLR113, KsponSpeech, and NIKL Daily Conversation Speech Corpus 2022.
 
 | Dataset | Current acceptance status | Next acceptance criterion |
 |---|---|---|
@@ -1597,7 +1597,7 @@ Additional regression scope: the native Python and browser shared-Broad profiles
 | SIGMORPHON 2021 Korean public paired file | DONE_VERIFIED historically; current-main rerun queued/in progress under run 42487094098 | Inspect exact-head artifact; preserve README/file-schema caveat and eligible denominator. |
 | Seoul Corpus SLR113 | PARTIAL — selected, no score | Acquire CC BY-NC 2.0 label archive; validate TextGrid tiers, phone inventory, boundaries, and symbol mapping; only then run same-input engines. Audio is not mandatory if the label tiers suffice. |
 | KsponSpeech | BLOCKED — access and original dataset terms | Obtain via AIHub under verified terms; confirm dual orthography/pronunciation files and exclude uncertain/noise annotations. Benchmark surface pronunciation separately from IPA. Hugging Face mirror's empty license field is not a licence. |
-| LDC2003L02 Korean Telephone Conversations Lexicon | BLOCKED — paid LDC licence | Obtain suitable licence; inspect phonetic field and variants; run lexical comparison only after authorized access and mapping validation. |
+| NIKL Daily Conversation Speech Corpus 2022 | BLOCKED — portal access and corpus-specific terms | Apply through the official NIKL corpus portal; verify v1.0 files and terms; use the pronunciation transcription tier as Hangul surface gold with speaker/region strata. The 630-hour construction report describes double orthographic/pronunciation transcription and manual full inspection; the 54,536-utterance coda-cluster subset is a strong focused evaluation set. Audio is not mandatory if transcription tiers suffice. |
 
 Do not count portfolio membership as completed evaluation. The current target is two executable IPA corpora plus three independently useful, source-verified candidate datasets with explicit access gates. No raw restricted dataset is to be committed to the repository.
 
