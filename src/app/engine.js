@@ -5,6 +5,7 @@
 import { parseCsv, decompose, createMap } from './engine_shared.js';
 import { convertText } from './engine_convert.js';
 import { ipaSyllableToUkrainian, ipaSyllablesToUkrainian, ipaTargetForSource, ipaTargetForProfile } from './engine_ipa.js';
+import { attachSourceAdjudications } from './engine_adjudications.js';
 
 export { decompose, parseCsv } from './engine_shared.js';
 export { ipaSyllableToUkrainian, ipaSyllablesToUkrainian, ipaTargetForSource };
@@ -129,10 +130,10 @@ export function createEngine(csv, lexiconCsv=''){
   const map=createMap(csv);
   const lexicon=new Map(parseCsv(lexiconCsv).map(r=>[r.input,r]));
   return{
-    convert:function(text,options={}){const mode=options.morphologyMode==='super-soft'?'super-soft':options.morphologyMode;const result=convertText(text,map,lexicon,false,{...options,morphologyMode:mode,preserveUnresolvedSource:options.preserveUnresolvedSource??(mode==='super-soft'||(/[가-힣]/u.test(text)&&/[^가-힣]/u.test(text)))});const gated=applyProfileGate(text,result,options);return mode==='super-soft'?attachSuperSoftCoverage(text,gated):gated},
+    convert:function(text,options={}){const mode=options.morphologyMode==='super-soft'?'super-soft':options.morphologyMode;const result=convertText(text,map,lexicon,false,{...options,morphologyMode:mode,preserveUnresolvedSource:options.preserveUnresolvedSource??(mode==='super-soft'||(/[가-힣]/u.test(text)&&/[^가-힣]/u.test(text)))});const gated=applyProfileGate(text,result,options);const adjudicated=attachSourceAdjudications(text,gated);return mode==='super-soft'?attachSuperSoftCoverage(text,adjudicated):adjudicated},
     // G2P surface text is already normalized; derive IPA/target without
     // re-running coda, liaison, assimilation, or fortition rules.
-    convertSurface:function(text,options={}){const result=convertText(text,map,new Map(),true,{...options,morphologyMode:'strict',surfaceMode:true,preserveUnresolvedSource:/[가-힣]/u.test(text)&&/[^가-힣]/u.test(text)});return applyProfileGate(text,result,options)},
+    convertSurface:function(text,options={}){const result=convertText(text,map,new Map(),true,{...options,morphologyMode:'strict',surfaceMode:true,preserveUnresolvedSource:/[가-힣]/u.test(text)&&/[^가-힣]/u.test(text)});return attachSourceAdjudications(text,applyProfileGate(text,result,options))},
     decompose
   };
 }
