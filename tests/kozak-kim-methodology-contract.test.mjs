@@ -83,7 +83,7 @@ test('all three Kozak Kim modes have separate documented benchmark contracts and
     '**Strict**',
     '**Soft**',
     '**Super-soft**',
-    'NEEDS_CURRENT_PINNED_RESULT',
+    'MEASURED_DIAGNOSTIC on UGTPHON',
     'NOT_BENCHMARKED_FOR_ACCURACY',
     'typed orthographic-phonemic fallback',
     'same input occurrences',
