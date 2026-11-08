@@ -1,8 +1,14 @@
 # Repository structure and ownership guide
 
-**Snapshot:** 2026-11-07 at main commit `e72856c1f03bfb775805748f96ec23889ca2e60f`, after PR #456 (squash merge `18f5529b9100ea6e4f7c176c9627bacf1fc52585`). This point-in-time guide describes observed tree ownership and navigation boundaries; it is not a claim that every file has been independently reviewed line by line.
+**Current documentation snapshot:** 2026-11-08. This guide was reconciled from main commit e24cf7caff745fb612080aef6a33c8058f4144cc, after PR #461 (40 source-policy adjudications) merged at b014d0107a47c3117c7dcbdd8d403f7fca3c7d41. The documentation continuation is committed directly to main, as requested by the repository owner. This is a navigation/ownership map, not a claim that every file has been independently reviewed line by line.
 
-## Latest verification snapshot — 2026-11-07
+## Current verification snapshot — 2026-11-08
+
+The starting main commit e24cf7caff745fb612080aef6a33c8058f4144cc has successful push-triggered runs: [tests 42464216274](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42464216274), [system verification 42464216259](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42464216259), [master/research artifacts 42464216261](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42464216261), and [Pages deployment 42464216267](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42464216267). All four concluded successfully.
+
+The latest applicable Korean G2P measurements are the paired UGTPHON run [42414467883](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42414467883) and complete multi-engine run [42416681855](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42416681855), both from the immediately preceding output-changing PRs #456/#457. PR #461 only adds source-policy metadata and does not change Hangul, IPA or Ukrainian output. The multi-engine attempt on PR #461 was cancelled and is not counted as a result. Optional CharsiuG2P and ByT5 inference were skipped by policy.
+
+The earlier 2026-11-07 snapshot below is retained as history; the current benchmark and 236-case reconciliation is in the current audit [addendum](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md#current-main-continuation--2026-11-08-documentation-and-benchmark-reconciliation).
 
 The audited starting main commit was `e72856c1f03bfb775805748f96ec23889ca2e60f`. The two failed main-head runs at that snapshot were reconciled in PR [#457](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/457), verified on `ab6c7c69ba65b7fd5da4383d2105ef81a5bcb51d).
 
@@ -16,13 +22,27 @@ This point-in-time guide describes observed tree ownership and navigation bounda
 
 A Python research package, a browser-based practical/research application, Korean phonology and lexical datasets, a Korean-to-Ukrainian IPA target layer, reproducible research tooling, source-rights records and a public GitHub Pages service.
 
-## Current 236-case and benchmark status — 2026-11-07
+## Previous 236-case and benchmark snapshot — 2026-11-07
 
 The reconstructed 236-row cohort contains 15 exact standard-form runtime dispositions, 181 bounded profile-convention decisions, 12 original abstentions and 28 residual cases. The 40 residual cases have explicit no-audio engine-policy dispositions, but all 40 remain unresolved as speaker-specific IPA gold. Do not describe the 181 profile decisions as new categorical rules or the 40 engine-policy decisions as IPA adjudication. The historical 236/239 selector membership is reconstructed, not independently proven.
 
-Latest paired UGTPHON diagnostic: Native 1,425/2,702 exact (52.7387%), CER 9.0130%; g2pK 1,435/2,703 (53.0892%), CER 9.2328%. SIGMORPHON 2021 figures retained from the prior exact-head run: Native 358/998 exact (35.8717%), CER 14.5598%; g2pK 353/999 (35.3353%), CER 14.8222%. These are Korean G2P/IPA diagnostics, not Ukrainian target accuracy or normative gold. The multi-engine run 42414467825 completed with a generated mismatch-queue artifact drift failure (byte 554, line 1); no complete multi-engine result is claimed.
+Historical snapshot only: its UGTPHON paired values are superseded by the current 2026-11-08 table below; its SIGMORPHON values are likewise superseded. Preserve this paragraph as dated audit history, not as the current benchmark statement.
 
 At main commit `e72856c1f03bfb775805748f96ec23889ca2e60f`, the recursive Git tree contains **848 entries** (805 files and 43 directories), including 183 Markdown files, 398 files under `tests/`, 65 scripts, 18 GitHub Actions workflows and 13 schemas, 150 files under `docs/` and 59 under `research/`. These are point-in-time inventory counts, not measures of implementation completeness.
+
+
+## IPA target renderer ownership and validation boundary
+
+The IPA-to-Ukrainian renderer is a downstream adapter, separate from the Korean G2P engines:
+
+- Python: `src/korean_ukrainian/ipa_target_renderer.py`.
+- Browser: `src/app/engine_ipa.js`.
+- Input contract: an explicit IPA sequence (or a profile-adjudicated IPA result); output: Ukrainian practical orthography, status, and a mapping trace.
+- It must not infer Korean pronunciation directly from Hangul or bypass the Korean phonology/IPA stage.
+- Existing tests reproduce 644 canonical lexical rows and 46 alternate IPA rows; the explicit override table contains 28 mappings. These are regression/reproducibility checks, not independent Ukrainian target-accuracy scores.
+- The recovered 24-form renderer holdout has no IPA gold and no Ukrainian gold for any row. Independent Ukrainian target validation is therefore still open.
+
+For current G2P scores, Native-versus-g2pK interpretation, the 236-case disposition and current-main verification, use the dated [2026-11-08 audit continuation](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md#current-main-continuation--2026-11-08-documentation-and-benchmark-reconciliation). Do not use renderer reproducibility counts as Korean G2P accuracy, or Korean G2P scores as renderer accuracy.
 
 ## Top-level map
 
