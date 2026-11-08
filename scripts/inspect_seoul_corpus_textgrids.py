@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Inventory Seoul Corpus Praat TextGrid structure without exporting labels."""
+"""Inventory Seoul Corpus Praat TextGrids and optionally extract ephemeral word pairs."""
 from __future__ import annotations
 import argparse
 import json
@@ -23,6 +23,8 @@ INTERVAL_ITEM_RE = re.compile(
     re.MULTILINE,
 )
 HANGUL_WORD_RE = re.compile(r'^[\uac00-\ud7a3]+$')
+BOUNDARY_TOLERANCE = 1e-4
+ARCHIVE_SHA256 = "63c3f8ffa6976307a732689d6c5be7b2db4ec20f14bf276faf98c886add0d24b"
 
 def decode_text(path: Path) -> str:
     raw = path.read_bytes()
@@ -63,15 +65,16 @@ def inspect_textgrid(path: Path) -> dict:
         })
     return {"tiers": tiers}
 
-def build_inventory(root: Path) -> dict:
+def build_inventory(root: Path, pairs_output: Path | None = None) -> dict:
     files = sorted(p for p in root.rglob("*") if p.is_file() and p.suffix.lower() == ".textgrid" and not p.name.startswith("._"))
     tier_counts: Counter[str] = Counter()
     class_counts: Counter[str] = Counter()
     interval_total = point_total = parsed = 0
     failures = []
     paired_tier_pairs = paired_interval_slots = aligned_boundaries = 0
-    nonempty_orthography = nonempty_pronunciation = hangul_pairs = 0
+    nonempty_orthography = nonempty_pronunciation = hangul_pairs = aligned_hangul_pairs = 0
     tier_pair_count_mismatches = interval_count_mismatches = 0
+    word_pairs = []
     for path in files:
         try:
             result = inspect_textgrid(path)
@@ -98,7 +101,8 @@ def build_inventory(root: Path) -> dict:
                 interval_count_mismatches += 1
             for left, right in zip(ortho["intervals"], prono["intervals"]):
                 paired_interval_slots += 1
-                if abs(left["start"] - right["start"]) <= 1e-4 and abs(left["end"] - right["end"]) <= 1e-4:
+                aligned = abs(left["start"] - right["start"]) <= BOUNDARY_TOLERANCE and abs(left["end"] - right["end"]) <= BOUNDARY_TOLERANCE
+                if aligned:
                     aligned_boundaries += 1
                 source = left["label"].strip()
                 target = right["label"].strip()
@@ -108,12 +112,18 @@ def build_inventory(root: Path) -> dict:
                     nonempty_pronunciation += 1
                 if HANGUL_WORD_RE.fullmatch(source) and HANGUL_WORD_RE.fullmatch(target):
                     hangul_pairs += 1
+                    if aligned:
+                        aligned_hangul_pairs += 1
+                        word_pairs.append({"source": source, "gold": target})
+    if pairs_output is not None:
+        pairs_output.parent.mkdir(parents=True, exist_ok=True)
+        pairs_output.write_text(json.dumps(word_pairs, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
     return {
         "schema_version": 1,
         "dataset": "Seoul Corpus / OpenSLR SLR113",
-        "scope": "metadata-only inventory; label strings are inspected in memory but never exported",
+        "scope": "metadata-only inventory; pair data is optionally written to an ephemeral CI file and is not committed or uploaded",
         "license": "CC BY-NC 2.0",
-        "archive_sha256": "63c3f8ffa6976307a732689d6c5be7b2db4ec20f14bf276faf98c886add0d24b",
+        "archive_sha256": ARCHIVE_SHA256,
         "files_found": len(files),
         "files_parsed": parsed,
         "files_failed": len(failures),
@@ -133,6 +143,7 @@ def build_inventory(root: Path) -> dict:
             "nonempty_orthography_intervals": nonempty_orthography,
             "nonempty_pronunciation_intervals": nonempty_pronunciation,
             "both_hangul_word_pairs": hangul_pairs,
+            "aligned_hangul_word_pairs": aligned_hangul_pairs,
         },
         "parse_failures_sample": failures[:50],
     }
@@ -141,8 +152,9 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--pairs-output", type=Path, help="optional ephemeral JSON array of aligned Hangul word pairs")
     args = parser.parse_args()
-    report = build_inventory(args.root)
+    report = build_inventory(args.root, args.pairs_output)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({k: v for k, v in report.items() if k != "parse_failures_sample"}, ensure_ascii=False, indent=2))
