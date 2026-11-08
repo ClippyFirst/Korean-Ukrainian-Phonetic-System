@@ -1,5 +1,86 @@
 # Korean–Ukrainian Phonetic System
 
+A research-oriented Korean-to-Ukrainian pronunciation system. It analyzes Korean structure and pronunciation, represents the result as IPA (or an explicitly typed unresolved result), and only then adapts that result to Ukrainian practical orthography.
+
+> **Project status:** software-verified, evidence-scoped research prototype. It is not independently research-certified or release-ready. Passing software tests does not establish complete phonological coverage, independent IPA gold, Ukrainian target accuracy, or rights clearance for every candidate dataset.
+
+## At a glance
+
+- **Primary purpose:** render Korean pronunciation in Ukrainian script, not perform ordinary letter-by-letter romanization.
+- **Pipeline:** Korean source orthography → structural and supported morphological analysis → Korean phonology → IPA / typed uncertainty → Ukrainian target adaptation → Ukrainian practical orthography.
+- **Runtimes:** browser application and Python package, with CLI/API and research adapters documented separately.
+- **Core principle:** Korean phonology and IPA remain separate from the Ukrainian receiving-language layer. Unsupported or uncertain cases must remain visible; external G2P models are comparison baselines, not silent production fallbacks.
+- **Research evidence:** source register, rule coverage, benchmark suite register, acceptance gates and decision log are maintained as distinct canonical records.
+- **Licensing:** the root project uses a custom, purpose-limited licence; it is **not** an OSI-approved open-source licence. Third-party code and datasets retain their own terms.
+
+## Start here
+
+| Goal | Entry point |
+|---|---|
+| Understand the project and current measured results | This README — [current benchmark checkpoint](#exact-main-benchmark-checkpoint--2026-11-08), [status and readiness](#current-status--2026-11-08) |
+| Navigate all documentation | [Documentation map](docs/README.md) |
+| Understand directories, modules and data ownership | [Repository structure guide](docs/REPOSITORY-STRUCTURE.md) |
+| Understand the processing architecture | [Architecture](docs/architecture.md), [methodology](docs/methodology.md) |
+| Review Korean rules and evidence | [Korean phonology](docs/korean-phonology.md), [source register](research/SOURCE-REGISTER.csv), [rule coverage](research/RULE-COVERAGE.csv) |
+| Review Ukrainian adaptation | [Ukrainian target layer](docs/ukrainian-target-layer.md) |
+| Reproduce or assess benchmarks | [Benchmark suite register](docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md), [acceptance gates](research/ACCEPTANCE-GATES.md) |
+| Understand research status and next steps | [Research programme](research/README.md), [current repository audit](docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md) |
+| Understand agent/developer workflows | [AGENTS.md](AGENTS.md), [agent workflow guide](docs/AGENT-WORKFLOWS.md) |
+| Understand reuse permissions | [LICENSE](LICENSE), [licensing guide](docs/LICENSING-AND-PERMISSIONS.md) |
+
+## Quick start
+
+### Browser application
+
+Requires Node.js **22.12.0 or newer**.
+
+```bash
+npm install
+npm run dev
+```
+
+Run the browser tests and production build:
+
+```bash
+npm test
+npm run build
+```
+
+The release-oriented local check is:
+
+```bash
+npm run check:release
+```
+
+It runs the browser test suite, source-rights audit and production build. It does not replace the Python test matrix or specialist linguistic review.
+
+### Python package
+
+Requires Python **3.11 or newer**.
+
+```bash
+python -m pip install -e ".[dev]"
+python -m pytest
+```
+
+Optional research extras and CLI/API dependencies are listed in `pyproject.toml`; install only the extras needed for the task. See [CLI and API documentation](docs/cli-and-api.md) before using those interfaces.
+
+## Benchmark interpretation
+
+The repository includes multiple different evaluation tracks. Keep these distinctions intact:
+
+- internal unit/regression suites are not independent public benchmark datasets;
+- model-card numbers are not scores measured by this repository;
+- Hangul/Jamo variants of one model family are not independent engines;
+- candidate availability is not source-resolved accuracy coverage;
+- phonemic IPA references are not narrow phonetic gold;
+- Korean G2P accuracy does not validate Ukrainian target rendering.
+
+The isolated MFA v2.0.0 Hangul/Jamo diagnostic is recorded as **DONE_VERIFIED** in the [benchmark register](docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md). It is comparison-only and still has open phone-inventory interpretation and training-data overlap reviews.
+
+---
+
+
 ## Exact-main benchmark checkpoint — 2026-11-08
 
 The path-filtered multi-engine workflow completed successfully on main benchmark code commit `b548436d0fce9af4672fc5902d6670cbc134bd70`: [run 42487350896](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487350896), artifact `13621335293` (SHA-256 `c286d7e4f1ee02d40e1a9977e792eeb73bce12b32b658a8b3c4166c612ccc1a8`). The run contains the 10-engine UGTPHON and SIGMORPHON reports, per-occurrence mismatch ledger, unresolved review queue, three Browser Kozak Kim mode reports, Native/Browser parity report, and readiness audit. This is the current-main benchmark code snapshot; later documentation-only main commit(s) do not change the measured runtime.
