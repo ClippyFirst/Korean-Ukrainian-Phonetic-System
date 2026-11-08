@@ -682,3 +682,21 @@ This section records external resources discovered outside the five-dataset port
 | [Zeroth-Korean / OpenSLR SLR40](https://openslr.org/40/) | OpenSLR declares CC BY 4.0; published catalogue describes 51.6 hours of training speech (22,263 utterances, 105 speakers) and 1.2 hours of test speech (457 utterances, 10 speakers), plus a lexicon and language-model assets. MFA's corpus catalogue reports 52.87 hours, 22,720 utterances and 115 speakers for its Zeroth package. | **Adjacent speech/lexicon resource, not automatically a G2P gold set.** ASR transcripts are not necessarily pronunciation-form references; the lexicon's phone symbols and provenance need inspection. Audio is optional and is not a prerequisite for registering the text/lexicon resource. | **PARTIAL — source and licence identified, schema not audited.** Inspect the lexicon and test transcript package; if it contains usable Hangul→pronunciation entries, benchmark those as a separate lexicon/surface track. Otherwise keep it as ASR-domain robustness context, not G2P accuracy gold. |
 
 The Korean Word-IPA Dictionary, IPA-Dict Korean subset, and SIGMORPHON WikiPron-derived file must be treated as a potentially overlapping Wiktionary lineage. They are not three independent gold datasets. Zeroth is a separate speech corpus lineage, but its ASR transcript text must not be mistaken for phonetic pronunciation labels.
+
+
+## 2026-11-08 — MFA Korean G2P v2.0.0 diagnostic execution
+
+**Status: PARTIAL / executable comparison baseline integrated; benchmark run failed only in the final report-denominator assertion and is being corrected.** Workflow: [run 42512114864](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42512114864), code head `6ae11bfc2e619464273c83d66476d98a75074b43`. Both official CC BY 4.0 v2.0.0 model archives were downloaded at runtime, SHA-256 checked, and not committed. MFA 2.0.0 and `jamo==0.4.1` were pinned in the isolated benchmark environment. The adapter accepts only the published 56-phone inventory and fails closed on unknown symbols; outputs remain comparison-only IPA and are not fed into ClippyFirst's production pipeline.
+
+### Observed results (run 42512114864)
+
+| Dataset | MFA model | Eligible occurrences | Candidate availability | Exact (scored-only) | CER | PER | Feature-weighted error rate | Engine errors |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| UGTPHON test | Hangul | 2,703 | 99.0381% (2,677) | 15.1289% | 27.3038% | 28.5421% | 9.7728% | 0 |
+| UGTPHON test | Jamo | 2,703 | 100% (2,703) | 16.0562% | 24.5200% | 25.5353% | 6.3079% | 0 |
+| SIGMORPHON 2021 Korean test | Hangul | 999 | 99.8999% (998) | 24.6493% | 17.3079% | 20.6270% | 4.2841% | 0 |
+| SIGMORPHON 2021 Korean test | Jamo | 999 | 100% (999) | 24.8248% | 17.1632% | 20.4528% | 4.0951% | 0 |
+
+The pinned SIGMORPHON TSV contains 1,000 paired rows; the shared benchmark loader admits 999 occurrences under its Hangul-token and usable-gold eligibility filters. The workflow's first validation incorrectly expected all 1,000 raw rows to be eligible. It is corrected to validate the actual 999 eligible occurrences while retaining the 1,000-row source-file check. No score is computed for the excluded raw row. The run's report generation completed for all four model/dataset combinations; the final validation step failed on this denominator mismatch, so the reports were not uploaded and the run is not marked fully verified until the corrected workflow passes.
+
+The observed project scores are not comparable to model-card WER/PER without matching their held-out data, normalization and metric definitions. MFA Hangul/Jamo are two model variants from one family, not independent engines or datasets. Jamo has better observed scores on both diagnostic sets in this run, but this is not evidence to promote it into production. Acceptance still requires a green corrected workflow, downloadable aggregate artifacts, model/dictionary lineage and overlap review, and an independent review of the 56-symbol identity-to-IPA assumption.
