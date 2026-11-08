@@ -1585,3 +1585,20 @@ Additional regression scope: the native Python and browser shared-Broad profiles
 - Evaluate IPA-to-Ukrainian target rendering separately on frozen IPA inputs with independent Ukrainian target references; Korean G2P scores do not validate target quality.
 
 **Current disposition:** Strict benchmark = DONE_VERIFIED diagnostic; Soft benchmark = PARTIAL; Super-soft accuracy benchmark = TODO; unified three-mode 236-case evaluation = TODO. This is an explicit research/benchmark gate, not a blocker to the already accepted source-based engine-policy dispositions.
+
+
+## 2026-11-08 — five-dataset G2P benchmark portfolio
+
+**Portfolio target:** five distinct Korean pronunciation-reference datasets are now registered in `docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md`: UGTPHON, SIGMORPHON 2021, Seoul Corpus SLR113, KsponSpeech, and LDC2003L02 Korean Telephone Conversations Lexicon.
+
+| Dataset | Current acceptance status | Next acceptance criterion |
+|---|---|---|
+| UGTPHON Korean test | DONE_VERIFIED historically; current-main rerun queued/in progress under run 42487094098 | Inspect exact-head artifact and per-engine ledger; keep strict and broad sensitivity metrics separate. |
+| SIGMORPHON 2021 Korean public paired file | DONE_VERIFIED historically; current-main rerun queued/in progress under run 42487094098 | Inspect exact-head artifact; preserve README/file-schema caveat and eligible denominator. |
+| Seoul Corpus SLR113 | PARTIAL — selected, no score | Acquire CC BY-NC 2.0 label archive; validate TextGrid tiers, phone inventory, boundaries, and symbol mapping; only then run same-input engines. Audio is not mandatory if the label tiers suffice. |
+| KsponSpeech | BLOCKED — access and original dataset terms | Obtain via AIHub under verified terms; confirm dual orthography/pronunciation files and exclude uncertain/noise annotations. Benchmark surface pronunciation separately from IPA. Hugging Face mirror's empty license field is not a licence. |
+| LDC2003L02 Korean Telephone Conversations Lexicon | BLOCKED — paid LDC licence | Obtain suitable licence; inspect phonetic field and variants; run lexical comparison only after authorized access and mapping validation. |
+
+Do not count portfolio membership as completed evaluation. The current target is two executable IPA corpora plus three independently useful, source-verified candidate datasets with explicit access gates. No raw restricted dataset is to be committed to the repository.
+
+**Mode requirement:** on every compatible dataset, Kozak Kim Strict, Soft, and Super-soft remain separate configurations. For surface-pronunciation corpora, score each mode's typed output only against a compatible representation; never relabel Hangul surface CER as IPA accuracy. Super-soft typed fallback coverage is not source-resolved IPA accuracy.
