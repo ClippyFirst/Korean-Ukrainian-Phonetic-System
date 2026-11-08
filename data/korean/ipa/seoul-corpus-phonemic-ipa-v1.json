@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "profile_id": "seoul-corpus-phonemic-ipa-v1",
+  "version": 1,
+  "reference_level": "phonemic",
+  "source": {
+    "title": "The Korean Corpus of Spontaneous Speech",
+    "authors": "Yun, Yoon, Park, Lee, Cho, Kang, Byun, Hahn & Kim",
+    "year": 2015,
+    "doi": "10.13064/KSSS.2015.7.2.103",
+    "table": "Table 3 — Korean phoneme set used for labeling",
+    "source_page": "https://www.researchgate.net/publication/282475115_The_Korean_Corpus_of_Spontaneous_Speech",
+    "license": "OpenSLR SLR113 corpus: CC BY-NC 2.0"
+  },
+  "mapping": {
+    "p0": "p",
+    "ph": "pʰ",
+    "pp": "p͈",
+    "t0": "t",
+    "th": "tʰ",
+    "tt": "t͈",
+    "k0": "k",
+    "kh": "kʰ",
+    "kk": "k͈",
+    "s0": "s",
+    "ss": "s͈",
+    "c0": "tɕ",
+    "ch": "tɕʰ",
+    "cc": "tɕ͈",
+    "hh": "h",
+    "mm": "m",
+    "nn": "n",
+    "ng": "ŋ",
+    "ll": "l",
+    "ii": "i",
+    "ee": "e",
+    "aa": "a",
+    "xx": "ɨ",
+    "vv": "ə",
+    "uu": "u",
+    "oo": "o",
+    "wa": "wa",
+    "wv": "wə",
+    "xi": "ɨi",
+    "ye": "je",
+    "ya": "ja",
+    "yv": "jə",
+    "yu": "ju",
+    "yo": "jo",
+    "wi": "wi",
+    "we": "we"
+  },
+  "serialization_notes": [
+    "The paper prints the three alveolopalatal affricate symbols as ʨ, ʨʰ and ʨ*. This adapter serializes ʨ as tɕ, preserving the same affricate category in the project's IPA string convention.",
+    "The paper uses an asterisk for fortis consonants (p*, t*, k*, s*, ʨ*); this adapter serializes fortisness with the IPA combining mark ͈.",
+    "This is the paper's broad phonemic inventory, not narrow phonetic transcription. It does not encode context-conditioned voicing, place variation, release detail or speaker-specific allophony."
+  ],
+  "exclusions": {
+    "non_speech_markers": "Labels such as <SIL>, <LAUGH>, <NOISE>, <VOCNOISE>, <IVER>, <UNKNOWN> and <PRIVATE.INFO> are excluded from IPA word scoring.",
+    "unknown_symbols": "Any non-empty phoneme-tier label absent from this mapping is excluded and counted; no guessed mapping is permitted."
+  },
+  "usage": "Research benchmark adapter only. Do not treat its scores as normative narrow-IPA accuracy or as Ukrainian target validation."
+}
