@@ -1,3 +1,23 @@
+## 2026-11-08 current-main acceptance continuation — authoritative status
+
+**Starting main:** e24cf7caff745fb612080aef6a33c8058f4144cc. **Latest runtime merge:** PR #461 at b014d0107a47c3117c7dcbdd8d403f7fca3c7d41. This section supersedes the 2026-11-07 snapshot below.
+
+- **DONE_VERIFIED — current-main software CI:** tests 42464216274, system verification 42464216259, master/research artifacts 42464216261 and Pages deployment 42464216267 all succeeded on starting main.
+- **DONE_VERIFIED — current Korean G2P diagnostics:** paired UGTPHON run 42414467883 and full multi-engine run 42416681855 remain the latest applicable output measurements. PR #461 only adds source-policy metadata; its multi-engine attempt was cancelled and is not a result.
+- **UGTPHON:** Native 1,425/2,702 exact (52.7387%), CER 9.0130%; g2pK 1,435/2,703 exact (53.0892%), CER 9.2328%. On 2,702 shared cases g2pK leads exact match by 0.3700 pp; Native CER is lower by 0.2198 pp.
+- **SIGMORPHON:** Native 359/998 exact (35.9719%), CER 14.5347%; g2pK 353/999 exact (35.3353%), CER 14.8222%. On 998 shared words Native leads exact match by 0.6366 pp and CER by 0.2875 pp.
+- **Renderer:** the IPA-to-Ukrainian target adapter is not part of the Korean G2P scoring. Its 644 canonical + 46 alternate lexical regression rows, 28 explicit overrides and Python/browser parity tests establish reproducibility, not independent Ukrainian target accuracy. The 24-form renderer holdout has no IPA or Ukrainian gold.
+- **236 cases:** 15 exact standard-form runtime dispositions; 181 profile-convention decisions; 40 source-policy dispositions now integrated as metadata (12 former abstentions + 28 residual cases). These do not create speaker-specific narrow IPA gold or alter pronunciation output.
+- **BLOCKED — independent Ukrainian target validation:** freeze IPA inputs and obtain independent qualified Ukrainian phonetic/orthographic review; acceptance must score target output separately from Korean G2P.
+- **BLOCKED — historical cohort identity:** original 236/239 selector/member evidence is not preserved; reconstructed inventory is not historical membership proof.
+- **BLOCKED — raw ㅠ span matching:** validate original raw offsets before automatic non-speech slicing; never match normalized 유.
+- **DEFERRED — speaker-specific narrow IPA for 40 cases:** not required for the accepted source-based engine policy; only pursue with appropriate source context and qualified review.
+- **Readiness:** software-verified bounded research prototype, not independently research-certified or release-ready.
+
+Do not infer Native regression from one exact-match metric: UGTPHON exact match declined relative to the 2026-10-24 snapshot while CER improved; SIGMORPHON exact match and CER both improved. Historical profiles and scored counts differ, so a controlled old/new same-occurrence rerun is required to establish a code-induced regression.
+
+---
+
 ## 2026-11-07 source-only continuation — authoritative current status
 
 - **236-case cohort:** the historical reconstructed cohort remains 236 rows: 15 exact standard-form/runtime dispositions, 181 profile-convention decisions, 12 historical abstentions, and 28 previously unadjudicated rows. The 12+28 residual occurrences now have source-based engine-policy decisions; this does not relabel them as speaker-specific IPA gold.
