@@ -1163,3 +1163,45 @@ The Seoul scorer now reports candidate output availability separately from sourc
 - Source-resolved coverage is unchanged: surface 97.0375% / 87.0006% / 83.4924%; IPA 97.0375% / 87.0005% / 83.4923% for Strict / Soft / Super-soft. The candidate-availability metric is not an accuracy score.
 - Corrected output-availability artifact: run [42496539257](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42496539257), artifact `13623457737`.
 - Unit tests for typed fallback and unresolved passthrough exclusion are included in test run [42496551366](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42496551366) (**PASS**). System Verify [42496551350](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42496551350) (**PASS**; NIKL metadata-only inventory skipped).
+
+
+## 2026-11-08 continuation — all-mode benchmark completeness
+
+### Task ledger
+
+| Task | Status | Evidence / acceptance criterion |
+|---|---|---|
+| Preserve the 10-engine UGTPHON and SIGMORPHON Strict-compatible comparisons | DONE_VERIFIED (historical exact-head evidence) | Existing reports and pinned external engines are preserved; they are not Soft/Super-soft-capable engines. |
+| Add explicit candidate-output availability to the Kozak Kim Browser benchmark | PARTIAL | Script and regression changes committed; exact-main CI must verify the new fields and tests. |
+| Run UGTPHON Browser Strict/Soft/Super-soft with monotonic/100% availability gates | PARTIAL | Workflow validation added; exact-main CI pending. |
+| Run SIGMORPHON Browser Strict/Soft/Super-soft on the same 1,000 eligible occurrences | PARTIAL | Three invocations and artifact upload added; exact-main CI pending. |
+| Enforce monotonic and 100% Super-soft candidate availability on Seoul Hangul surface | PARTIAL | Runtime benchmark gate added; exact-main CI pending. |
+| Enforce monotonic and 100% Super-soft candidate availability on Seoul phonemic IPA | PARTIAL | Runtime benchmark gate added; exact-main CI pending. |
+| Score the reconstructed 236-case cohort as accuracy gold | DEFERRED / NOT ACCEPTED | It is not an independently adjudicated reference set; do not manufacture Exact/CER. |
+| Apply Kozak Kim mode labels to the ten external engines | DEFERRED / NOT APPLICABLE | Those independent engines do not implement Kozak Kim's mode policies. |
+
+### Metric contract
+
+The former ambiguous coverage label is now accompanied by explicit fields:
+- candidate_output_availability_rate counts an actual non-empty candidate, including typed heuristic/fallback, but excludes unresolved passthrough and errors.
+- source_resolved_coverage_rate counts only source-resolved outputs eligible for IPA Exact/CER.
+- Super-soft must be monotonic and exactly 100% candidate-available on every compatible benchmark; this is not a 100% accuracy claim.
+
+### Implementation commits on main
+
+- da564643fc495bc554d77a88b7a0ff486618ae51 — generic dataset label/source support and candidate availability fields in the Browser benchmark.
+- 11f020097ec37988ca7c6355518c0e311dd093e3 — initial mode-availability regression.
+- bc5f57153cfe3a0d23781425ce1a46cf6e02a482 — three SIGMORPHON mode invocations and artifact collection.
+- 40b84c08a96eb8538835e2349247d1eefbd8701c — Seoul surface monotonic/100% availability gate.
+- e560866c95481c707c43f57f7cd382ac03c05b88 — Seoul phonemic-IPA monotonic/100% availability gate.
+- 97d7a7b97f951d8f8052da4e39028f3748a4afcb — UGTPHON workflow validation.
+- c757cd02fee87e7313e52352602ec4ef879a7def — explicit Browser metric aliases.
+- 7032d3a4abf0e7c97caec1d7ae91de08c0a18c6a — regression for explicit metric aliases.
+
+### Verification and blockers
+
+All changes above were pushed directly to main. Current code head at the start of this addendum: 7032d3a4abf0e7c97caec1d7ae91de08c0a18c6a. The GitHub connector exposed neither Actions check-run listing nor workflow dispatch in this session, and no local repository checkout is available; therefore exact-head CI is **PENDING_VERIFICATION**, not PASS. Acceptance requires the multi-engine workflow, Python/browser test matrix, system verification and generated-artifact checks to pass on the final documentation head. If Super-soft candidate availability is below 100% on any compatible corpus, inspect the unresolved occurrence ledger and implement a typed candidate or preserve a specific, documented unsupported-input blocker; never count raw input passthrough as success.
+
+### Readiness
+
+The repository remains a software-verified research prototype, not release-ready. Adding complete mode execution and availability gates improves benchmark coverage but does not provide independent Korean phonetics certification or Ukrainian-target acceptance.
