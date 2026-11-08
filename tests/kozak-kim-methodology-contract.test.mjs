@@ -113,7 +113,7 @@ test('five-dataset Korean G2P portfolio records access and representation gates'
     assert.ok(portfolio.includes(dataset), 'benchmark register must include ' + dataset);
   }
   assert.match(portfolio, /CC BY-NC 2\.0/u);
-  assert.match(portfolio, /AIHub manual download/u);
+  assert.match(portfolio, /AIHub account\/manual download/u);
   assert.match(portfolio, /LDC User Agreement/u);
   assert.match(portfolio, /Five-dataset execution policy/u);
   assert.match(readme, /Five-dataset Korean G2P benchmark portfolio/u);
