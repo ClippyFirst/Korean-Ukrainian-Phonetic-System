@@ -80,6 +80,8 @@ def test_report_separates_candidate_availability_from_accuracy_coverage():
     assert report["source_resolved_scored_occurrences"] == 2
     assert report["coverage_rate"] == pytest.approx(2 / 3)
     assert report["exact_matches"] == 2
+    assert report["phoneme_error_rate"] == 0
+    assert report["feature_weighted_error_rate"] == 0
     assert report["coverage_adjusted_exact_match_rate"] == pytest.approx(2 / 3)
     assert [item["status"] for item in report["occurrences"]] == ["scored", "scored", "missing"]
     assert report["engine_errors"] == 0
