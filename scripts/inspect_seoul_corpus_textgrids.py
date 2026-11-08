@@ -44,7 +44,7 @@ def inspect_textgrid(path: Path) -> dict:
     return {"tiers": tiers}
 
 def build_inventory(root: Path) -> dict:
-    files = sorted(p for p in root.rglob("*") if p.is_file() and p.suffix.lower() == ".textgrid")
+    files = sorted(p for p in root.rglob("*") if p.is_file() and p.suffix.lower() == ".textgrid" and not p.name.startswith("._"))
     tier_counts: Counter[str] = Counter()
     class_counts: Counter[str] = Counter()
     interval_total = point_total = parsed = 0
