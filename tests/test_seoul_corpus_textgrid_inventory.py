@@ -1,4 +1,5 @@
 from __future__ import annotations
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -122,12 +123,16 @@ class SeoulTextGridInventoryTests(unittest.TestCase):
             self.assertEqual(alignment["paired_interval_slots"], 1)
             self.assertEqual(alignment["same_time_boundaries"], 1)
             self.assertEqual(alignment["both_hangul_word_pairs"], 1)
-            self.assertEqual(result["phoneme_label_counts"]["p0"], 1)
+            self.assertEqual(result["phoneme_adapter"]["mapped_symbol_counts"]["p0"], 1)
+            self.assertEqual(result["phone_word_alignment"]["words_with_mapped_phones"], 1)
             self.assertEqual(result["word_tier_duplicate_name_format_counts"]["pWord.ortho."][0]["hangul_only"], 1)
             self.assertNotIn("학교", str(result))
             self.assertNotIn("학꾜", str(result))
             pairs_path = root / "ephemeral-pairs.json"
-            build_inventory(root, pairs_path)
+            ipa_pairs_path = root / "ephemeral-ipa-pairs.json"
+            build_inventory(root, pairs_path, ipa_pairs_path)
+            ipa_pairs = json.loads(ipa_pairs_path.read_text(encoding="utf-8"))
+            self.assertEqual(ipa_pairs, [{"source": "학교", "gold": "p"}])
             pairs = pairs_path.read_text(encoding="utf-8")
             self.assertIn('"source":"학교"', pairs)
             self.assertIn('"gold":"학꾜"', pairs)
