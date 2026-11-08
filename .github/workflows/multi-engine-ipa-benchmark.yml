@@ -8,6 +8,19 @@ on:
         required: false
         type: boolean
         default: false
+  push:
+    branches: [main]
+    paths:
+      - "scripts/benchmark_multi_engine_ko.py"
+      - "scripts/benchmark_kozak_kim_browser.mjs"
+      - "scripts/benchmark_kozak_kim_vs_g2pk_browser.mjs"
+      - "scripts/benchmark_phonemize_adapter.cjs"
+      - "scripts/benchmark_ugtphon_ko.py"
+      - "scripts/convert_sigmorphon_ko.py"
+      - "src/korean_ukrainian/**"
+      - "src/app/engine*.js"
+      - "data/korean/**"
+      - ".github/workflows/multi-engine-ipa-benchmark.yml"
   # Documentation-only edits are checked by the repository verification workflows; do not rerun CPU G2P inference for prose changes.
   pull_request:
     paths:
