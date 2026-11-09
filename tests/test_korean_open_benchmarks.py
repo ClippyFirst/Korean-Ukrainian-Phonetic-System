@@ -67,6 +67,35 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
         self.assertEqual(worldbet_to_ipa("xki"), "xki")
         self.assertEqual(worldbet_to_ipa("ix"), "ɨ")
 
+    def test_kspan_full_join_accepts_distinct_dubeolsik_ae_eo_worldbet_values(self):
+        # Exercise the complete CSV -> NIKL WordNum join -> key/Worldbet
+        # integrity -> IPA path, not only the two isolated lookup entries.
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            nikl = root / "nikl.zip"
+            kspan = root / "kspan.csv"
+            self._write_nikl_zip(nikl)
+            fields = [
+                "WordNum", "ModernKey", "ConservativeKey", "OrthographyKey",
+                "ModernPhon", "ConservativePhon", "SyllableCount",
+                "OrthographyNumNeighbors", "OrthographyMeanNeighborFreq",
+                "ModernNumNeighbors", "ModernMeanNeighborFreq",
+                "ConservativeNumNeighbors", "ConservativeMeanNeighborFreq",
+                "OrthographyNumNeighborsSyll", "OrthographyMeanNeighborFreqSyll",
+                "ModernNumNeighborsSyll", "ModernMeanNeighborFreqSyll",
+                "ConservativeNumNeighborsSyll", "ConservativeMeanNeighborFreqSyll",
+            ]
+            with kspan.open("w", encoding="utf-8", newline="") as stream:
+                writer = csv.writer(stream, delimiter="\\t")
+                writer.writerow(fields)
+                writer.writerow(["3", "o", "p", "o", "E", "e", "1"] + ["0"] * 12)
+
+            modern, conservative, metadata = _load_kspan(kspan, nikl, expected_rows=1)
+            self.assertEqual(modern[0]["canonical"], "나")
+            self.assertEqual(modern[0]["phonemes"], "ɛ")
+            self.assertEqual(conservative[0]["phonemes"], "e")
+            self.assertEqual(metadata["key_worldbet_integrity_mismatches"], 0)
+
     def test_unknown_kspan_key_is_not_silently_guessed(self):
         with self.assertRaisesRegex(ValueError, "unknown K-SPAN"):
             key_to_worldbet("rlur?")
