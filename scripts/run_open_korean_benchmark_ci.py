@@ -25,6 +25,10 @@ KSPAN_BUNDLE_URL = (
     "?persistentId=doi:10.18710/TWM79F&format=original"
 )
 KSPAN_METADATA_URL = "https://dataverse.no/dataset.xhtml?persistentId=doi:10.18710/TWM79F"
+KSPAN_FILE_URLS = {
+    "kspan_base.csv": "https://dataverse.no/api/access/datafile/1010",
+    "kspan_doc.pdf": "https://dataverse.no/api/access/datafile/1009",
+}
 KSPAN_EXPECTED_MD5 = {
     "kspan_base.csv": "a0753c4f2421eb071d76b730eb87cbeb",
     "kspan_doc.pdf": "2bf63cc0704a2fe3b4c40445192af77f",
@@ -102,6 +106,54 @@ def _extract_kspan_dataset_bundle(bundle_path: Path, destination: Path) -> tuple
     return extracted["kspan_base.csv"], extracted["kspan_doc.pdf"]
 
 
+def _download_kspan_sources(workdir: Path) -> tuple[Path, Path]:
+    """Fetch the pinned K-SPAN v2.1 files, falling back to individual file IDs.
+
+    Dataverse's versioned bundle endpoint can be denied independently of its
+    public per-file access endpoints. A fallback is safe only because both
+    individual files are checked against the exact published v2.1 MD5 values.
+    """
+    workdir.mkdir(parents=True, exist_ok=True)
+    bundle = workdir / "kspan-dataverse-v2.1.zip"
+    try:
+        _download(KSPAN_BUNDLE_URL, bundle)
+    except RuntimeError as bundle_error:
+        print(
+            "K-SPAN versioned bundle endpoint unavailable; trying pinned public "
+            f"file IDs 1010/1009: {bundle_error}",
+            file=sys.stderr,
+            flush=True,
+        )
+        paths = {
+            filename: workdir / filename
+            for filename in ("kspan_base.csv", "kspan_doc.pdf")
+        }
+        try:
+            for filename, url in KSPAN_FILE_URLS.items():
+                _download(url, paths[filename])
+        except RuntimeError as file_error:
+            raise RuntimeError(
+                "K-SPAN v2.1 download failed through both the versioned bundle "
+                f"and pinned individual file endpoints; bundle error: {bundle_error}; "
+                f"individual-file error: {file_error}"
+            ) from file_error
+        sources = paths
+    else:
+        csv_path, doc_path = _extract_kspan_dataset_bundle(bundle, workdir)
+        sources = {"kspan_base.csv": csv_path, "kspan_doc.pdf": doc_path}
+
+    for filename, source_path in sources.items():
+        actual_hash = _md5(source_path)
+        expected_hash = KSPAN_EXPECTED_MD5[filename]
+        if actual_hash != expected_hash:
+            raise ValueError(
+                f"K-SPAN {filename} MD5 mismatch for Dataverse v2.1 source: "
+                f"expected {expected_hash}, got {actual_hash} "
+                f"({source_path.stat().st_size} bytes; prefix={source_path.read_bytes()[:8].hex()})"
+            )
+    return sources["kspan_base.csv"], sources["kspan_doc.pdf"]
+
+
 def _extract_seoul_archive(archive_path: Path, destination: Path) -> Path:
     destination.mkdir(parents=True, exist_ok=True)
     with tarfile.open(archive_path, "r:gz") as archive:
@@ -151,23 +203,11 @@ def run(workdir: Path, sample_size: int = 1000, seed: int = 20261108) -> Path:
     if "Korean data provided by" not in ipa_credits or "CC BY-SA" not in ipa_credits:
         raise ValueError("pinned IPA-Dict README does not document Korean source attribution/license")
 
-    kspan_bundle = workdir / "kspan-dataverse-v2.1.zip"
     nikl_zip = workdir / "nikl-frequency.zip"
     ipa_dict = workdir / "ipa-dict-ko.txt"
-    # Download one immutable dataset version so both K-SPAN source files come from
-    # the same published snapshot. format=original preserves the saved CSV rather
-    # than Dataverse's tab-delimited archival representation.
-    _download(KSPAN_BUNDLE_URL, kspan_bundle)
-    kspan_csv, kspan_doc = _extract_kspan_dataset_bundle(kspan_bundle, workdir)
-    for source_path in (kspan_csv, kspan_doc):
-        actual_hash = _md5(source_path)
-        expected_hash = KSPAN_EXPECTED_MD5[source_path.name]
-        if actual_hash != expected_hash:
-            raise ValueError(
-                f"K-SPAN {source_path.name} MD5 mismatch for Dataverse v2.1 bundle: "
-                f"expected {expected_hash}, got {actual_hash} "
-                f"({source_path.stat().st_size} bytes; prefix={source_path.read_bytes()[:8].hex()})"
-            )
+    # Prefer one immutable versioned bundle; if Dataverse denies that route,
+    # fetch the exact published file IDs and enforce the same immutable MD5 pins.
+    kspan_csv, kspan_doc = _download_kspan_sources(workdir)
     _download(NIKL_ZIP_URL, nikl_zip)
     _download(IPA_DICT_URL, ipa_dict)
 
