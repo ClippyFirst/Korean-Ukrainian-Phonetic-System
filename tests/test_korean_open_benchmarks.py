@@ -86,6 +86,29 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
             writer.writerow(fields)
             writer.writerows(rows)
 
+    def test_nikl_word_index_supports_utf16_little_and_big_endian_exports(self):
+        text = "순위 빈도 표제어 동형어 품사\\n1 500 기역 - 명사\\n2 400 가 - 명사\\n"
+        for encoding, bom in (("utf-16-le", b""), ("utf-16-be", b""), ("utf-16", b"")):
+            with self.subTest(encoding=encoding), tempfile.TemporaryDirectory() as directory:
+                archive_path = Path(directory) / "nikl.zip"
+                encoded = text.encode(encoding)
+                # Add BOMs for the generic utf-16 codec; explicit endian cases
+                # exercise the BOM-less byte-pattern detector.
+                if encoding == "utf-16":
+                    encoded = b"\\xff\\xfe" + text.encode("utf-16-le")
+                with zipfile.ZipFile(archive_path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+                    archive.writestr("MKUFS2/일반어휘통계.txt", encoded)
+                index = _read_nikl_word_index(archive_path)
+                self.assertEqual(index, {1: "기역", 2: "가"})
+
+    def test_nikl_word_index_rejects_unrecognized_encoding_with_actionable_error(self):
+        with tempfile.TemporaryDirectory() as directory:
+            archive_path = Path(directory) / "nikl.zip"
+            with zipfile.ZipFile(archive_path, "w") as archive:
+                archive.writestr("MKUFS2/일반어휘통계.txt", bytes(range(256)) * 8)
+            with self.assertRaisesRegex(ValueError, "numbered word records"):
+                _read_nikl_word_index(archive_path)
+
     def test_nikl_word_index_and_kspan_worldbet_integrity(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
