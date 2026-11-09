@@ -241,3 +241,13 @@ Remaining MFA acceptance gates:
 - **TODO:** inspect and audit model dictionary/training lineage overlap with SIGMORPHON/WikiPron/UGTPHON; do not treat the two MFA variants as independent.
 - **BLOCKED / expert review:** independently validate the complete 56-symbol MFA phone inventory and identity-to-IPA mapping; unknown symbols currently fail closed, but that alone does not prove the published phone symbols are phonetic IPA.
 - **DEFERRED:** do not add MFA to production, runtime dependencies or Ukrainian target rendering. The current integration is a research comparison only.
+
+
+## 2026-11-09 continuation — K-SPAN Worldbet parser correction
+
+- The first x patch was based on an unverified interpretation of x as a postfix centralization mark. That interpretation was not supported by the K-SPAN documentation and has been removed; do not reuse it.
+- The K-SPAN converter now treats standalone Worldbet x as the voiceless velar fricative segment /x/, while preserving the longer K-SPAN vowel tokens ix and ixi through longest-match parsing. This matches published Worldbet symbol examples and avoids the earlier false diacritic behavior.
+- Regression test added for the exact previously failing prefix xki (xki → xki in IPA); existing ix and ixi behavior is retained.
+- The source row integrity check remains strict: key_to_worldbet(key) must equal the source Worldbet field before IPA conversion. Unmapped symbols still raise with WordNum, track, field and source value context.
+- Relevant public evidence: K-SPAN 2.1 documents the dataset as ASCII phonetic forms and reports 63,836 observations; official documentation file MD5 is 2bf63cc0704a2fe3b4c40445192af77f. Worldbet references identify x as the velar fricative value. Sources: https://dataverse.no/dataset.xhtml?persistentId=doi:10.18710/TWM79F ; https://www.scielo.org.mx/pdf/cys/v15n1/v15n1v15n1a10.pdf
+- Code/test commits: bc4948205fe69900f9b7e4e2f7b0c37643d90ef3, e873a286f2a730fcd2bf450fd5211ae62d769180. Exact-head multi-engine workflow 42596610032 is queued as of 2026-11-09 09:52 UTC; no claim is made yet that the 63,836-row open matrix passed.
