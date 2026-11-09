@@ -680,7 +680,7 @@ Implementation paths and pending verification are recorded in [methodology](meth
 
 ## 2026-11-08 — external benchmark discoveries: expanded register
 
-This section records external resources discovered outside the long-term five-corpus acquisition portfolio above. They must remain visible in the project register even when they are not yet admissible as scored gold. **The five-dataset portfolio and eight complementary internal suites are not an exhaustive list of external benchmark resources.** External published metrics are reference claims, not ClippyFirst run results.
+This section records external resources discovered outside the long-term five-corpus acquisition portfolio above. They must remain visible in the project register even when they are not yet admissible as scored gold. **The long-term five-corpus acquisition portfolio and eight complementary internal suites are not an exhaustive list of external benchmark resources.** External published metrics are reference claims, not ClippyFirst run results.
 
 | External resource | What was verified | Suitability | State / next acceptance gate |
 |---|---|---|---|
