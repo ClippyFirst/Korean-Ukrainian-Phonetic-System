@@ -208,6 +208,17 @@ def run(workdir: Path, sample_size: int = 1000, seed: int = 20261108) -> Path:
     # Prefer one immutable versioned bundle; if Dataverse denies that route,
     # fetch the exact published file IDs and enforce the same immutable MD5 pins.
     kspan_csv, kspan_doc = _download_kspan_sources(workdir)
+    # Print the publisher-supplied encoding table before validating the corpus.
+    # This is diagnostic evidence only; the adapter mapping remains hard-coded
+    # and is never inferred from benchmark labels.
+    from pypdf import PdfReader
+
+    kspan_doc_text = "\\n".join(page.extract_text() or "" for page in PdfReader(str(kspan_doc)).pages)
+    if not kspan_doc_text.strip():
+        raise ValueError("K-SPAN 2.1 documentation PDF contains no extractable text")
+    print("BEGIN OFFICIAL K-SPAN 2.1 DOCUMENT TEXT", file=sys.stderr, flush=True)
+    print(kspan_doc_text, file=sys.stderr, flush=True)
+    print("END OFFICIAL K-SPAN 2.1 DOCUMENT TEXT", file=sys.stderr, flush=True)
     _download(NIKL_ZIP_URL, nikl_zip)
     _download(IPA_DICT_URL, ipa_dict)
 
