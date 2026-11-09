@@ -42,7 +42,7 @@ WORLDBET_TO_IPA = {
     "j^": "jʌ", "w^": "wʌ", "wE": "wɛ",
     "wa": "wa", "we": "we", "je": "je", "jE": "jɛ",
     "ja": "ja", "jo": "jo", "ju": "ju",
-    "p": "p", "t": "t", "k": "k", "s": "s",
+    "p": "p", "t": "t", "k": "k", "s": "s", "x": "x",
     "m": "m", "n": "n", "N": "ŋ", "l": "l", "h": "h",
     "a": "a", "^": "ʌ", "o": "o", "u": "u",
     "i": "i", "e": "e", "E": "ɛ", "7": "ø", "y": "y",
@@ -69,12 +69,6 @@ def worldbet_to_ipa(value: str) -> str:
             raise ValueError(f"unmapped K-SPAN Worldbet sequence at offset {index}: {value[index:index+8]!r}")
         segment = WORLDBET_TO_IPA[match]
         index += len(match)
-        # Worldbet's mid-centralization diacritic is a postfix modifier (x).
-        # Keep it attached to the preceding segment in IPA rather than
-        # silently dropping it or treating it as an independent phone.
-        if index < len(value) and value[index] == "x":
-            segment += "\u033d"
-            index += 1
         out.append(segment)
     return "".join(out)
 
