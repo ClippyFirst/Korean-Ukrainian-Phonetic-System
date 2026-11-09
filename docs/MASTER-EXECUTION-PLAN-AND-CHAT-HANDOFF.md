@@ -374,3 +374,30 @@ Main commit `92ed43866aad08aaa1d5a81134d9935456e98bd5` exposed one stale documen
 | Research/release certification | BLOCKED / PARTIAL | Independent Korean phonetics review, phone-inventory adjudication, holdout/training overlap review, Ukrainian target gold and outstanding source-rights decisions. |
 
 No merge, release publication or branch deletion has been performed in this continuation. The next action is to wait for the corrected run [42576636761](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42576636761), inspect its exact artifacts and gate results, then merge #463 only if every required step passes. The repository remains an evidence-scoped research prototype, not independently research-certified or release-ready.
+
+## 2026-11-09 continuation — K-SPAN checksum correction and benchmark rerun
+
+### Exact source correction
+
+- The previous K-SPAN CI attempt successfully downloaded the version 2.1 Dataverse bundle and verified `kspan_base.csv`, but rejected `kspan_doc.pdf`.
+- The rejection was caused by an incorrect expected checksum in the benchmark script, not by a corrupt archive or a reason to weaken integrity validation. The script expected `2bf63cc0704a2fe3b4c40445192af77a`; the official DataverseNO file page for `kspan_doc.pdf` (file ID 1009, dataset version 2.1) publishes `2bf63cc0704a2fe3b4c40445192af77f`. The downloaded PDF's actual MD5 is the latter, with a PDF signature and 738,354 bytes.
+- Corrected `scripts/run_open_korean_benchmark_ci.py` to the repository-published MD5 `2bf63cc0704a2fe3b4c40445192af77f`. CSV and PDF are still extracted from the same pinned Dataverse v2.1 bundle and both checksums remain enforced.
+- Added earlier in the same PR branch: a bundle-extraction helper and tests for exact file selection and ambiguous duplicate filenames.
+
+### Exact-head verification
+
+- Benchmark PR #463 head: `72bcb727d7c8ddf2ddd359f0d3abc4f3056d4ef6`.
+- Tests [42584666555](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42584666555) — PASS.
+- System verification [42584666728](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42584666728) — PASS.
+- Exhaustive test-case register [42584666813](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42584666813) — PASS.
+- External UGTPHON diagnostic [42584666591](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42584666591) — PASS.
+- Master/research artifacts [42584666655](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42584666655) — PASS.
+- Multi-engine diagnostic [42584666543](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42584666543) is still IN_PROGRESS in step 13, “Run multi-engine comparison”; no failure is recorded. The remaining UGTPHON/SIGMORPHON Browser steps and the open Seoul/K-SPAN/IPA-Dict matrix are downstream and have not yet run on this exact head.
+- The prior run [42582634269](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42582634269) completed the ten-engine UGTPHON and SIGMORPHON runs, Browser three-mode audits and parity checks, but its open-matrix step failed solely on the erroneous PDF checksum above. Do not treat its open-matrix dataset reports as completed.
+
+### Current disposition
+
+- Main remains at `4778ac435a4be54c4e7e7b73605369ff5f85677a`; this continuation record does not change runtime code.
+- PR #463 remains OPEN and mergeable, but is not ready to merge until the exact-head multi-engine job, all downstream open-matrix steps, artifact upload and schema validation pass.
+- PR #462 remains OPEN and superseded in scope; leave it untouched until #463 passes and is merged.
+- No benchmark metric, dataset accuracy result or release certification is inferred from the checksum correction.
