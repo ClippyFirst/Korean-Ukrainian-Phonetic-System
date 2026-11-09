@@ -67,8 +67,15 @@ def worldbet_to_ipa(value: str) -> str:
         match = next((key for key in _WORLDBET_KEYS if value.startswith(key, index)), None)
         if match is None:
             raise ValueError(f"unmapped K-SPAN Worldbet sequence at offset {index}: {value[index:index+8]!r}")
-        out.append(WORLDBET_TO_IPA[match])
+        segment = WORLDBET_TO_IPA[match]
         index += len(match)
+        # Worldbet's centralized diacritic is a postfix modifier (x).
+        # Keep it attached to the preceding segment in IPA rather than
+        # silently dropping it or treating it as an independent phone.
+        if index < len(value) and value[index] == "x":
+            segment += "\u033d"
+            index += 1
+        out.append(segment)
     return "".join(out)
 
 
@@ -199,7 +206,13 @@ def _load_kspan(path: Path, nikl_zip: Path, expected_rows: int | None = 63836) -
             if worldbet != declared_worldbet:
                 worldbet_mismatches.append(f"{word_num}:{track}:{worldbet}!={declared_worldbet}")
                 continue
-            ipa = worldbet_to_ipa(worldbet)
+            try:
+                ipa = worldbet_to_ipa(worldbet)
+            except ValueError as exc:
+                raise ValueError(
+                    f"K-SPAN Worldbet conversion failed for WordNum {word_num} "
+                    f"({track}, field={world_field}, value={worldbet!r}): {exc}"
+                ) from exc
             if not ipa:
                 raise ValueError(f"empty K-SPAN IPA for WordNum {word_num} ({track})")
             target.append({
