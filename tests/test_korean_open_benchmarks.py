@@ -89,11 +89,11 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
 
     def test_kspan_key_and_worldbet_mapping_examples(self):
         # Dubeolsik O/P keys are ㅐ/ㅔ respectively; K-SPAN Worldbet
-        # distinguishes their values as E/e. Keep this regression explicit.
-        self.assertEqual(key_to_worldbet("o"), "E")
-        self.assertEqual(key_to_worldbet("p"), "e")
-        self.assertEqual(key_to_ipa("o"), "ɛ")
-        self.assertEqual(key_to_ipa("p"), "e")
+        # distinguishes their values as e/E. Keep this regression explicit.
+        self.assertEqual(key_to_worldbet("o"), "e")
+        self.assertEqual(key_to_worldbet("p"), "E")
+        self.assertEqual(key_to_ipa("o"), "e")
+        self.assertEqual(key_to_ipa("p"), "ɛ")
         self.assertEqual(key_to_worldbet("rlur"), "kij^k")
         self.assertEqual(key_to_ipa("rlur"), "kijʌk")
         self.assertEqual(key_to_worldbet("rk"), "ka")
@@ -129,12 +129,12 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
             with kspan.open("w", encoding="utf-8", newline="") as stream:
                 writer = csv.writer(stream, delimiter="\t")
                 writer.writerow(fields)
-                writer.writerow(["3", "o", "p", "o", "E", "e", "1"] + ["0"] * 12)
+                writer.writerow(["3", "o", "p", "o", "e", "E", "1"] + ["0"] * 12)
 
             modern, conservative, metadata = _load_kspan(kspan, nikl, expected_rows=1)
             self.assertEqual(modern[0]["canonical"], "나")
-            self.assertEqual(modern[0]["phonemes"], "ɛ")
-            self.assertEqual(conservative[0]["phonemes"], "e")
+            self.assertEqual(modern[0]["phonemes"], "e")
+            self.assertEqual(conservative[0]["phonemes"], "ɛ")
             self.assertEqual(metadata["key_worldbet_integrity_mismatches"], 0)
 
     def test_unknown_kspan_key_is_not_silently_guessed(self):
