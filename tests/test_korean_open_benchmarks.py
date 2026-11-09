@@ -88,14 +88,14 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
                 _extract_kspan_dataset_bundle(bundle, root / "sources")
 
     def test_kspan_key_and_worldbet_mapping_examples(self):
-        # Dubeolsik O/P keys are ㅐ/ㅔ respectively; K-SPAN Worldbet
-        # distinguishes their values as e/E. Keep this regression explicit.
-        self.assertEqual(key_to_worldbet("o"), "e")
-        self.assertEqual(key_to_worldbet("p"), "E")
-        self.assertEqual(key_to_ipa("o"), "e")
-        self.assertEqual(key_to_ipa("p"), "ɛ")
+        # Dubeolsik O/P keys are ㅐ/ㅔ respectively; WorldBet E/e represent
+        # /ɛ/ and /e/ in the K-SPAN encoding.
+        self.assertEqual(key_to_worldbet("o"), "E")
+        self.assertEqual(key_to_worldbet("p"), "e")
+        self.assertEqual(key_to_ipa("o"), "ɛ")
+        self.assertEqual(key_to_ipa("p"), "e")
         self.assertEqual(key_to_worldbet("rlur"), "kij^k")
-        self.assertEqual(key_to_ipa("rlur"), "kijʌk")
+        self.assertEqual(key_to_ipa("rlur"), "kijɐk")
         self.assertEqual(key_to_worldbet("rk"), "ka")
         self.assertEqual(key_to_ipa("rk"), "ka")
         # K-SPAN 2.1 kspan_doc.pdf, Table 1: key m -> WorldBet ix -> IPA ɯ;
@@ -103,14 +103,14 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
         self.assertEqual(worldbet_to_ipa("p*thtc}hNixwE"), "p͈tʰtɕʰŋɯwɛ")
         self.assertEqual(worldbet_to_ipa("ix"), "ɯ")
         self.assertEqual(worldbet_to_ipa("ixi"), "ɯi")
+        self.assertEqual(worldbet_to_ipa("j^w^"), "jɐwɐ")
         self.assertEqual(key_to_ipa("m"), "ɯ")
         self.assertEqual(key_to_ipa("7"), "ɯi")
         # Standalone WorldBet x is a consonant symbol, not the K-SPAN ix vowel.
         self.assertEqual(worldbet_to_ipa("xki"), "xki")
 
-    def test_kspan_full_join_uses_surface_worldbet_not_key_equality(self):
-        # Exercise CSV -> NIKL WordNum join -> published surface WorldBet -> IPA.
-        # Key-derived and surface-phonetic representations are distinct fields.
+    def test_kspan_full_join_enforces_key_worldbet_integrity(self):
+        # Exercise CSV -> NIKL WordNum join -> paired key/WorldBet encodings -> IPA.
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             nikl = root / "nikl.zip"
@@ -135,8 +135,27 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
             self.assertEqual(modern[0]["canonical"], "나")
             self.assertEqual(modern[0]["phonemes"], "ɛ")
             self.assertEqual(conservative[0]["phonemes"], "e")
-            self.assertEqual(metadata["key_surface_diagnostic_mismatches"], 2)
-            self.assertEqual(metadata["key_surface_diagnostic_mismatches_by_track"], {"modern": 1, "conservative": 1})
+            self.assertEqual(metadata["key_worldbet_integrity_mismatches"], 0)
+            self.assertEqual(
+                metadata["key_worldbet_integrity_mismatches_by_track"],
+                {"modern": 0, "conservative": 0},
+            )
+
+
+    def test_kspan_key_worldbet_mismatch_is_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            nikl = root / "nikl.zip"
+            kspan = root / "kspan.csv"
+            self._write_nikl_zip(nikl)
+            self._write_kspan(kspan)
+            with kspan.open("r", encoding="utf-8", newline="") as stream:
+                rows = list(csv.reader(stream, delimiter="\\t"))
+            rows[1][4] = "kij^t"
+            with kspan.open("w", encoding="utf-8", newline="") as stream:
+                csv.writer(stream, delimiter="\\t").writerows(rows)
+            with self.assertRaisesRegex(ValueError, "keystroke/WorldBet integrity check failed"):
+                _load_kspan(kspan, nikl, expected_rows=None)
 
     def test_unknown_kspan_key_is_not_silently_guessed(self):
         with self.assertRaisesRegex(ValueError, "unknown K-SPAN"):
@@ -204,7 +223,7 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
             self.assertEqual([row["canonical"] for row in modern], ["기역", "가"])
             self.assertEqual([row["tokens"][0]["phoneme"] for row in modern], ["kijʌk", "ka"])
             self.assertEqual([row["tokens"][0]["phoneme"] for row in conservative], ["kijʌk", "ka"])
-            self.assertEqual(metadata["key_surface_diagnostic_mismatches"], 0)
+            self.assertEqual(metadata["key_worldbet_integrity_mismatches"], 0)
             self.assertEqual(metadata["source_delimiter"], "\t")
 
     def test_kspan_row_count_gate_detects_dataset_drift(self):
