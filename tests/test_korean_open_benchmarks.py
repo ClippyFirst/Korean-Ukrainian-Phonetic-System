@@ -56,10 +56,9 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
         self.assertEqual(key_to_worldbet("rk"), "ka")
         self.assertEqual(key_to_ipa("rk"), "ka")
         self.assertEqual(worldbet_to_ipa("p*thtc}hNixwE"), "p͈tʰtɕʰŋɨwɛ")
-        # Worldbet x is a postfix centralization diacritic, not an
-        # independent segment. It must attach to the preceding base phone.
-        self.assertEqual(worldbet_to_ipa("axki"), "a\u033dki")
-        self.assertEqual(worldbet_to_ipa("exki"), "e\u033dki")
+        # In Worldbet x is a consonant symbol (voiceless velar
+        # fricative), not a postfix diacritic. Keep it as its own segment.
+        self.assertEqual(worldbet_to_ipa("xki"), "xki")
         self.assertEqual(worldbet_to_ipa("ix"), "ɨ")
 
     def test_unknown_kspan_key_is_not_silently_guessed(self):
