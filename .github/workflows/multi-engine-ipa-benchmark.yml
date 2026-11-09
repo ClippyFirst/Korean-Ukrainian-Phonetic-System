@@ -29,6 +29,9 @@ on:
       - "research/SOURCE-REGISTER.csv"
       - ".github/workflows/multi-engine-ipa-benchmark.yml"
   # Documentation-only edits are checked by the repository verification workflows; do not rerun CPU G2P inference for prose changes.
+  # For pull_request events, GitHub evaluates path filters from the base branch.
+  # Keep this workflow path in the base filter so edits here can refresh the benchmark run
+  # when the PR adds new dataset adapters, schemas, or test files.
   pull_request:
     paths:
       - "scripts/benchmark_multi_engine_ko.py"
