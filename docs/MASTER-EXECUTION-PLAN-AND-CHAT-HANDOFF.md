@@ -443,3 +443,13 @@ No merge, release publication or branch deletion has been performed in this cont
 - The source row integrity check remains strict: key_to_worldbet(key) must equal the source Worldbet field before IPA conversion. Unmapped symbols still raise with WordNum, track, field and source value context.
 - Relevant public evidence: K-SPAN 2.1 documents the dataset as ASCII phonetic forms and reports 63,836 observations; official documentation file MD5 is 2bf63cc0704a2fe3b4c40445192af77f. Worldbet references identify x as the velar fricative value. Sources: https://dataverse.no/dataset.xhtml?persistentId=doi:10.18710/TWM79F ; https://www.scielo.org.mx/pdf/cys/v15n1/v15n1a10.pdf
 - Code/test commits: bc4948205fe69900f9b7e4e2f7b0c37643d90ef3, e873a286f2a730fcd2bf450fd5211ae62d769180. Exact-head multi-engine workflow 42596610032 is queued as of 2026-11-09 09:52 UTC; no claim is made yet that the 63,836-row open matrix passed.
+
+
+## 2026-11-09 continuation — K-SPAN vowel key-map correction
+
+- Re-examined the full-matrix failure from run 42596610032. The 22,843 K-SPAN integrity mismatches were not evidence that Key and Phon fields are independent. The intended integrity contract remains one-key encoding → Worldbet and must remain strict.
+- Root cause: the KEY_TO_WORLDBET table had the two Dubeolsik vowel keys reversed: o (ㅐ) was mapped to e, while p (ㅔ) was mapped to E. Corrected to o → E and p → e, consistent with the source keyboard assignment and K-SPAN's distinct /ɛ/ vs /e/ Worldbet values.
+- Added explicit regression assertions for key_to_worldbet("o"/"p") and key_to_ipa("o"/"p").
+- Commits: mapping fix 22625d22777d97a9cf326dc0c8f730e08167903f; regression tests 5a03b5e18451babe5fa79ef98cdb16b0b6fb8b08.
+- Verification on the latest test commit: repository Verify workflow run 42605775613 passed; Python regression/data-integrity and browser regression/build jobs both succeeded. This is not yet a full K-SPAN corpus acceptance result.
+- Remaining acceptance gate: rerun .github/workflows/multi-engine-ipa-benchmark.yml against this corrected commit and verify the full 63,836-row K-SPAN input, both modern/conservative tracks, all subsequent matrix steps, and uploaded artifacts. The previous full run failed at the K-SPAN integrity check before completing the open Korean matrix. Do not mark K-SPAN full-matrix validation complete until that run passes.
