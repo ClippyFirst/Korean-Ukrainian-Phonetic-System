@@ -27,6 +27,10 @@ The NIKL metadata-only inventory was skipped by workflow policy. These are GitHu
 - PR [#462](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/462) remains open and unmerged. It is a narrower verification change superseded in intended scope by #463; do not merge both workflow changes.
 - The main-only side of the branch comparison contains 21 commits affecting 10 paths, including current contributor, PR-template, README, documentation navigation and benchmark-register updates. Reconcile those files explicitly after the benchmark branch passes; do not merge the dirty branch blindly.
 
+
+
+GitHub's paginated branch search returned **31 refs total** (including `main` and this documentation branch). The 30 non-main refs include active benchmark PR branches and historical research/fix/documentation branches. No historical branch was deleted or force-updated; branch removal is not needed to make the default branch authoritative and would destroy potentially useful audit history.
+
 ## Current readiness
 
 Mainline software checks are green, but the five-dataset benchmark matrix is still **PARTIAL**. The project remains a software-verified, evidence-scoped research prototype, not independently research-certified or release-ready. See the [current audit](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md#current-continuation--2026-11-09-documentation-and-pr-reconciliation), [benchmark results](BENCHMARK-RESULTS-2026-11-08.md), [acceptance gates](../research/ACCEPTANCE-GATES.md) and [master handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md).

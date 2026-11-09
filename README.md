@@ -27,6 +27,7 @@ A research-oriented Korean-to-Ukrainian pronunciation system. It analyzes Korean
 | Reproduce or assess benchmarks | [Benchmark suite register](docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md), [acceptance gates](research/ACCEPTANCE-GATES.md) |
 | Understand research status and next steps | [Research programme](research/README.md), [current repository audit](docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md) |
 | Understand agent/developer workflows | [AGENTS.md](AGENTS.md), [agent workflow guide](docs/AGENT-WORKFLOWS.md) |
+| Compare the four supplied engineering workflow references | [Pinned reference audit](docs/ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-06.md) |
 | Understand reuse permissions | [LICENSE](LICENSE), [licensing guide](docs/LICENSING-AND-PERMISSIONS.md) |
 
 ## Latest repository checkpoint — 2026-11-09

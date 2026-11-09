@@ -30,6 +30,10 @@ NIKL metadata-only inventory: SKIPPED by policy. No local shell, npm or pytest c
 
 PR [#462](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/462) remains OPEN / UNMERGED. It is the narrower earlier SIGMORPHON Browser verification change. Leave it untouched until #463 is accepted; if #463 is later merged, close #462 as superseded instead of merging duplicate workflow code.
 
+### Branch inventory
+
+GitHub's paginated branch search returned 31 refs total: `main` plus 30 non-main refs, including the documentation reconciliation branch created for this pass. Historical research/fix/documentation refs and the two benchmark PR refs were preserved. No branch was deleted or force-updated.
+
 ### Reference repositories revalidated
 
 The current default-branch HEADs of all four supplied references still match the commits recorded in [the workflow reference audit](ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-06.md). The review therefore remains revision-current as of this date. Selected practices remain process-only; no third-party code, skills, hooks, plugins, artwork or benchmark data were copied.
