@@ -55,6 +55,35 @@ These are GitHub Actions results on the exact main SHA above. They are not local
 | Tests | `tests/` | Browser, Python, parity, rights, data and generated-artifact checks. |
 | Automation | `.github/workflows/` | CI, benchmark, audit, build and Pages deployment definitions. |
 
+## GitHub Actions workflow map
+
+The workflow directory is organized by responsibility rather than by runtime language. These files are the authoritative automation definitions; this table is navigation, not a second configuration source.
+
+| Workflow | Responsibility | Operational boundary |
+|---|---|---|
+| `.github/workflows/test.yml` | Main test matrix: Python 3.11–3.13, browser tests, wheel installation and teacher-corpus audit | Core regression and packaging checks |
+| `.github/workflows/verify.yml` | System verification: Python regression/data integrity and browser regression/build | Mainline verification; metadata-only NIKL crawl is separately gated |
+| `.github/workflows/master-table.yml` | Generate the master table and strict research corpus artifacts | Generated outputs must come from canonical inputs |
+| `.github/workflows/deploy-pages.yml` | Python/data checks, browser static build and GitHub Pages deployment | Deployment gate; not a linguistic research certification |
+| `.github/workflows/multi-engine-ipa-benchmark.yml` | Pinned multi-engine IPA comparison, Browser mode runs, Native/Browser parity and optional neural comparison jobs | Long-running research benchmark; CharsiuG2P and ByT5 jobs are default-off |
+| `.github/workflows/ugtphon-benchmark.yml` | External engine diagnostic on the pinned UGTPHON Korean split | Comparison-only; report its own source and split |
+| `.github/workflows/mfa-g2p-benchmark.yml` | MFA Korean G2P Hangul/Jamo comparison | External baseline only; model variants are one model family |
+| `.github/workflows/native-vs-g2pk-benchmark.yml` | Paired Native versus g2pK diagnostic | Isolated comparison; not a production fallback |
+| `.github/workflows/g2pk-integration.yml` | Optional g2pK integration verification | Keeps vendor integration separate from Kozak Kim rules |
+| `.github/workflows/browser-g2pk.yml` | Browser g2pK integration checks | Browser adapter boundary |
+| `.github/workflows/morphology-consensus-diagnostic.yml` | Research morphology-consensus IPA diagnostics | Research-only; not a replacement for the three runtime modes |
+| `.github/workflows/charsiu-dev-rule-mining.yml` | Charsiu train/dev broad/narrow IPA rule-review queue | Research-only; no test-set tuning or production promotion |
+| `.github/workflows/train-korean-g2p-teacher.yml` | Train a scratch Korean G2P research teacher | Experimental model workflow; separate from production runtime |
+| `.github/workflows/train-korean-g2p-teacher-portfolio.yml` | Train a seed portfolio for the Korean G2P research teacher | Model comparison and reproducibility only |
+| `.github/workflows/teacher-corpus-audit.yml` | Audit teacher corpus splits and eligibility | Prevents split leakage and unsupported corpus claims |
+| `.github/workflows/holdout-manifest-recovery.yml` | Validate recovered Korean holdout manifest integrity | Recovery/integrity check, not a new gold source |
+| `.github/workflows/seoul-corpus-inventory.yml` | Preflight the Seoul Corpus label archive | Metadata/label inventory; audio is not required for this workflow |
+| `.github/workflows/nikl-local-html-inventory.yml` | Inventory locally supplied NIKL HTML sources | Source metadata capture; not permission to redistribute |
+| `.github/workflows/research-morphology-smoke.yml` | Smoke tests and paired IPA/analyzer-agreement diagnostics for research morphology | Research adapter boundary |
+| `.github/workflows/test-case-register.yml` | Extract and validate the exhaustive test-case register | Generated register integrity and schema checks |
+
+**How to choose a workflow:** use `test.yml` and `verify.yml` for ordinary software changes; use the owning benchmark workflow for measured engine claims; use inventory/audit workflows for source or split integrity; use `deploy-pages.yml` for the public service build/deploy gate. A skipped optional job is not a pass and a successful software workflow does not certify linguistic accuracy or data rights.
+
 ## MFA external baseline — executed 2026-11-08
 
 The isolated MFA v2.0.0 workflow passed: [run 42513951588](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42513951588), artifact [13630946780](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42513951588/artifacts/13630946780).
