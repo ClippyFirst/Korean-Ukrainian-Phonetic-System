@@ -3,7 +3,7 @@
 **Current documentation snapshot:** 2026-11-09.  
 **Audited main baseline:** `45a02a62ce955c3db10eb0faaaa1ce8d9f2c9cdb`  
 **Documentation merge commit:** `d2699911dbc70ef9978e5af06643b1281725a71a` (PR #464).  
-**Post-merge main HEAD:** `d2699911dbc70ef9978e5af06643b1281725a71a` (PR #464). Exact PR-head verification passed; post-merge main workflows are recorded as pending in the audit until their own runs complete.
+**Post-merge main HEAD:** `d2699911dbc70ef9978e5af06643b1281725a71a` (PR #464). Exact PR-head verification passed. **Post-merge main verification passed on `5c12f92c36ecae455dc4281dd7a8c0217f5dc4dc`:** Tests [42679091769](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42679091769), System Verify [42679091895](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42679091895), master/research artifacts [42679091976](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42679091976), and Pages deployment/live smoke [42679091977](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42679091977) all **PASS**. NIKL metadata-only remained **SKIPPED** by policy.
 **Default branch:** `main`.  
 **Documentation reconciliation branch:** `docs/repository-navigation-reconciliation-2026-11-09`, based on the audited main HEAD.  
 **Scope:** navigation, component ownership, data boundaries, verification entry points and repository maintenance. This is not a claim that every file has been independently reviewed line by line.

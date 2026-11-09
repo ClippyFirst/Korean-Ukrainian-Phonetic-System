@@ -195,3 +195,14 @@ test('post-merge documentation closeout records the merged mainline commit and v
   assert.ok(audit.includes('Documentation navigation and status reconciliation | DONE_VERIFIED'));
   assert.ok(handoff.includes('Documentation/navigation update | DONE_VERIFIED'));
 });
+
+
+test('post-merge mainline verification is recorded separately from PR-head verification', () => {
+  const audit = read('docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md');
+  const handoff = read('docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md');
+  for (const [label, content] of [['audit', audit], ['handoff', handoff]]) {
+    assert.ok(content.includes('5c12f92c36ecae455dc4281dd7a8c0217f5dc4dc'), label + ' missing post-merge main SHA');
+    assert.ok(content.includes('42679091977'), label + ' missing Pages live-smoke result');
+    assert.ok(content.includes('42679091769'), label + ' missing main test matrix result');
+  }
+});
