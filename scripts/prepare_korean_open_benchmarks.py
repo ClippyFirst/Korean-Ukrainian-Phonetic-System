@@ -180,8 +180,8 @@ def _load_kspan(path: Path, nikl_zip: Path, expected_rows: int | None = 63836) -
     modern: list[dict[str, Any]] = []
     conservative: list[dict[str, Any]] = []
     unmatched_word_numbers: list[int] = []
-    worldbet_mismatches: list[str] = []
-    worldbet_mismatch_counts_by_track: dict[str, int] = {"modern": 0, "conservative": 0}
+    key_surface_diagnostic_mismatches: list[str] = []
+    key_surface_mismatch_counts_by_track: dict[str, int] = {"modern": 0, "conservative": 0}
     non_hangul = 0
     for source_row in source_rows:
         word_num = int(source_row["WordNum"])
@@ -196,20 +196,25 @@ def _load_kspan(path: Path, nikl_zip: Path, expected_rows: int | None = 63836) -
             ("modern", "ModernKey", "ModernPhon", modern),
             ("conservative", "ConservativeKey", "ConservativePhon", conservative),
         ):
-            worldbet = key_to_worldbet(source_row[key_field])
+            key_worldbet = key_to_worldbet(source_row[key_field])
             declared_worldbet = "".join(source_row[world_field].split())
-            if worldbet != declared_worldbet:
-                worldbet_mismatch_counts_by_track[track] += 1
-                worldbet_mismatches.append(
-                    f"{word_num}:{track}:key={source_row[key_field]!r}:{worldbet}!={declared_worldbet}"
-                )
-                continue
+            if key_worldbet != declared_worldbet:
+                key_surface_mismatch_counts_by_track[track] += 1
+                if len(key_surface_diagnostic_mismatches) < 10:
+                    key_surface_diagnostic_mismatches.append(
+                        f"{word_num}:{track}:key={source_row[key_field]!r}:"
+                        f"{key_worldbet}!={declared_worldbet}"
+                    )
+            # The key-derived representation is not an equality oracle for the
+            # source's surface-phonetic transcription. K-SPAN explicitly
+            # distinguishes orthographic/quasi-phonological and surface forms.
+            # Score the published ModernPhon/ConservativePhon WorldBet fields.
             try:
-                ipa = worldbet_to_ipa(worldbet)
+                ipa = worldbet_to_ipa(declared_worldbet)
             except ValueError as exc:
                 raise ValueError(
-                    f"K-SPAN Worldbet conversion failed for WordNum {word_num} "
-                    f"({track}, field={world_field}, value={worldbet!r}): {exc}"
+                    f"K-SPAN WorldBet-to-IPA conversion failed for WordNum {word_num} "
+                    f"({track}, field={world_field}, value={declared_worldbet!r}): {exc}"
                 ) from exc
             if not ipa:
                 raise ValueError(f"empty K-SPAN IPA for WordNum {word_num} ({track})")
@@ -228,11 +233,6 @@ def _load_kspan(path: Path, nikl_zip: Path, expected_rows: int | None = 63836) -
             f"K-SPAN/NIKL join incomplete: {len(unmatched_word_numbers)} WordNum values missing; "
             f"first={unmatched_word_numbers[:10]}"
         )
-    if worldbet_mismatches:
-        raise ValueError(
-            f"K-SPAN keystroke/Worldbet integrity check failed: {len(worldbet_mismatches)} mismatches; "
-            f"by_track={worldbet_mismatch_counts_by_track}; first={worldbet_mismatches[:10]}"
-        )
     if expected_rows is not None and len(source_rows) != expected_rows:
         raise ValueError(f"K-SPAN row-count drift: expected {expected_rows}, got {len(source_rows)}")
     metadata = {
@@ -243,7 +243,11 @@ def _load_kspan(path: Path, nikl_zip: Path, expected_rows: int | None = 63836) -
         "matched_hangul_rows": len(modern),
         "non_hangul_rows": non_hangul,
         "unmatched_word_numbers": 0,
-        "key_worldbet_integrity_mismatches": 0,
+        "key_surface_diagnostic_mismatches": sum(key_surface_mismatch_counts_by_track.values()),
+        "key_surface_diagnostic_mismatches_by_track": key_surface_mismatch_counts_by_track,
+        "key_surface_diagnostic_examples": key_surface_diagnostic_mismatches,
+        "reference_fields": {"modern": "ModernPhon", "conservative": "ConservativePhon"},
+        "key_surface_comparison": "diagnostic-only; key-derived representation is not required to equal surface phonetic WorldBet",
         "ipa_mapping": "kspan-worldbet-to-ipa-v1; based on official K-SPAN documentation table",
         "kspan_sha256": _sha256(path),
         "nikl_archive_sha256": _sha256(nikl_zip),
