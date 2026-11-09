@@ -25,6 +25,10 @@ KSPAN_BUNDLE_URL = (
     "?persistentId=doi:10.18710/TWM79F&format=original"
 )
 KSPAN_METADATA_URL = "https://dataverse.no/dataset.xhtml?persistentId=doi:10.18710/TWM79F"
+KSPAN_EXPECTED_MD5 = {
+    "kspan_base.csv": "a0753c4f2421eb071d76b730eb87cbeb",
+    "kspan_doc.pdf": "2bf63cc0704a2fe3b4c40445192af77f",
+}
 NIKL_LICENSE_URL = "https://korean.go.kr/front/reportData/reportDataView.do?mn_id=207&report_seq=1&searchOrder=years"
 NIKL_ZIP_URL = (
     "https://korean.go.kr/common/download.do?c_file_name=2c6f86ef-d5fe-489d-a545-9f6115c3d594_0.zip"
@@ -155,13 +159,9 @@ def run(workdir: Path, sample_size: int = 1000, seed: int = 20261108) -> Path:
     # than Dataverse's tab-delimited archival representation.
     _download(KSPAN_BUNDLE_URL, kspan_bundle)
     kspan_csv, kspan_doc = _extract_kspan_dataset_bundle(kspan_bundle, workdir)
-    expected_hashes = {
-        "kspan_base.csv": "a0753c4f2421eb071d76b730eb87cbeb",
-        "kspan_doc.pdf": "2bf63cc0704a2fe3b4c40445192af77a",
-    }
     for source_path in (kspan_csv, kspan_doc):
         actual_hash = _md5(source_path)
-        expected_hash = expected_hashes[source_path.name]
+        expected_hash = KSPAN_EXPECTED_MD5[source_path.name]
         if actual_hash != expected_hash:
             raise ValueError(
                 f"K-SPAN {source_path.name} MD5 mismatch for Dataverse v2.1 bundle: "

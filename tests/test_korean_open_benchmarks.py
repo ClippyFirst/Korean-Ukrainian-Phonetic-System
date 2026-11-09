@@ -5,7 +5,7 @@ import unittest
 import zipfile
 from pathlib import Path
 
-from scripts.run_open_korean_benchmark_ci import _extract_kspan_dataset_bundle
+from scripts.run_open_korean_benchmark_ci import KSPAN_EXPECTED_MD5, _extract_kspan_dataset_bundle
 from scripts.prepare_korean_open_benchmarks import (
     _load_kspan,
     _read_nikl_word_index,
@@ -17,6 +17,15 @@ from scripts.prepare_korean_open_benchmarks import (
 
 
 class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
+    def test_kspan_v2_1_md5_pins_match_published_dataverse_metadata(self):
+        self.assertEqual(
+            KSPAN_EXPECTED_MD5,
+            {
+                "kspan_base.csv": "a0753c4f2421eb071d76b730eb87cbeb",
+                "kspan_doc.pdf": "2bf63cc0704a2fe3b4c40445192af77f",
+            },
+        )
+
     def test_versioned_kspan_bundle_extracts_exact_named_sources(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
