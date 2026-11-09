@@ -1,20 +1,26 @@
 # Repository structure and ownership guide
 
-**Current documentation snapshot:** 2026-11-08.  
-**Current main:** `05137e2ce3c03c72a9e4de6754e9a6f29855cb47`.  
-**Working branch:** `main`; this continuation adds no branch or PR.  
+**Current documentation snapshot:** 2026-11-09.  
+**Current main at audit start:** `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f`.  
+**Active integration branch:** `main`; no task branch is created for this owner-directed continuation.  
 **Scope:** navigation, component ownership, data boundaries, verification entry points and repository maintenance. This is not a claim that every file has been independently reviewed line by line.
 
 ## Current mainline verification
 
-All four push-triggered workflows completed successfully on `05137e2ce3c03c72a9e4de6754e9a6f29855cb47`:
+All four push-triggered workflows completed successfully on `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f`:
 
-- [Tests — 42514516177](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42514516177) — PASS.
-- [System Verify — 42514516144](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42514516144) — PASS.
-- [Master table / research artifacts — 42514516025](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42514516025) — PASS.
-- [GitHub Pages deployment / live smoke — 42514516081](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42514516081) — PASS.
+- [Tests — 42519315077](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42519315077) — PASS.
+- [System Verify — 42519315152](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42519315152) — PASS.
+- [Master table / research artifacts — 42519315001](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42519315001) — PASS.
+- [GitHub Pages deployment / live smoke — 42519315003](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42519315003) — PASS.
 
-These are GitHub Actions results on the exact main SHA above. They are not local command executions.
+These are GitHub Actions results on the exact main SHA above. They are not local command executions. The documentation-only commit at the end of this continuation must receive its own exact-head checks.
+
+## Current PR and benchmark boundary — 2026-11-09
+
+- PR [#463](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/463) is open and not merged. Its multi-engine run [42526972593](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42526972593) completed the ten-engine comparisons and produced SIGMORPHON Strict/Soft/Super-soft reports, then failed in the report-validation snippet because a double-escaped Hangul regex counted zero expected tokens. The downstream Browser regression and Seoul/K-SPAN/IPA-Dict matrix steps were skipped. This is a workflow assertion defect; it does not invalidate the already emitted report files, but those reports are not a successful integrated acceptance run.
+- PR [#462](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/462) is open and narrower; #463 supersedes its intended SIGMORPHON verification scope. Do not merge either until the consolidated run passes or the owner explicitly changes the acceptance decision.
+- The UGTPHON external diagnostic [42526976103](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42526976103) passed. The neural inference jobs in #463 were skipped by default.
 
 ## Navigation by reader task
 
