@@ -473,7 +473,7 @@ No merge, release publication or branch deletion has been performed in this cont
 - Main System Verify [42591577711](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591577711): PASS.
 - Main master/research artifacts [42591577812](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591577812): PASS.
 - Main Pages deployment/live smoke [42591577865](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591577865): PASS.
-- PR #463 head is `167c12a7e9945dc757a57ea734e9745aa69032f3`; the branch comparison is 91 ahead / 21 behind main from merge base `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f`. GitHub branch search returned 31 refs total (main plus 30 non-main); historical refs were not deleted or force-updated.
+- PR #463 head is `167c12a7e9945dc757a57ea734e9745aa69032f3`; the branch comparison is 91 ahead / 24 behind main from merge base `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f`. GitHub branch search returned 31 refs total (main plus 30 non-main); historical refs were not deleted or force-updated.
 - Documentation-branch Verify [42677866941](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42677866941) initially failed one browser contract because the structure guide had not yet been updated; the structure-guide correction is in commit `f9da74a5e29c517324170f4616f1c097873ad701`.
 - Follow-up Verify [42677948776](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42677948776) passed Python but failed the same documentation contract because the handoff did not yet include the exact #463 head. This update adds that missing reference; the next exact-head run is pending.
 - PR #463 Verify [42665749636](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42665749636): Python FAILED; Browser PASS; NIKL metadata-only SKIPPED.
@@ -486,7 +486,7 @@ No merge, release publication or branch deletion has been performed in this cont
 2. Align the `test_nikl_word_index_and_kspan_worldbet_integrity` fixture with the corrected IPA mapping (`kijɐk`); acceptance: fixture agrees with the documented adapter mapping and the full 63,836-row source integrity check remains strict.
 3. Rerun the complete adapter tests and exact-head Verify.
 4. Rerun the full five-dataset benchmark; require all intended UGTPHON, SIGMORPHON, Seoul, K-SPAN Modern/Conservative and IPA-Dict stages, complete joins, source integrity, Browser modes where applicable, aggregate-only artifact and JSON Schema validation.
-5. Reconcile the 21 main-only commits / 10 changed paths with the benchmark branch after its tests pass. The current PR branch is 91 ahead / 21 behind and GitHub reports it dirty; no blind merge is acceptable.
+5. Reconcile the 24 main-only commits / 13 changed paths with the benchmark branch after its tests pass. The current PR branch is 91 ahead / 24 behind and GitHub reports it dirty; no blind merge is acceptable.
 6. Leave PR #462 open until #463 is accepted; then close it as superseded if its only remaining scope is duplicated.
 
 ### Task ledger
