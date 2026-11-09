@@ -98,9 +98,9 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
         self.assertEqual(key_to_ipa("rlur"), "kijʌk")
         self.assertEqual(key_to_worldbet("rk"), "ka")
         self.assertEqual(key_to_ipa("rk"), "ka")
-        # K-SPAN 2.1 kspan_doc.pdf, Table 1: key m -> WorldBet ix -> IPA i;
-        # key 7 -> WorldBet ixi -> IPA ii. Longest-match preserves ixi as one segment.
-        self.assertEqual(worldbet_to_ipa("p*thtc}hNixwE"), "p͈tʰtɕʰŋiwɛ")
+        # K-SPAN 2.1 kspan_doc.pdf, Table 1: key m -> WorldBet ix -> IPA ɯ;
+        # key 7 -> WorldBet ixi -> IPA ɯi. Longest-match preserves ixi as one segment.
+        self.assertEqual(worldbet_to_ipa("p*thtc}hNixwE"), "p͈tʰtɕʰŋɯwɛ")
         self.assertEqual(worldbet_to_ipa("ix"), "ɯ")
         self.assertEqual(worldbet_to_ipa("ixi"), "ɯi")
         self.assertEqual(key_to_ipa("m"), "ɯ")
