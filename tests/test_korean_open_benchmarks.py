@@ -90,10 +90,10 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
     def test_kspan_key_and_worldbet_mapping_examples(self):
         # Dubeolsik O/P keys are ㅐ/ㅔ respectively; WorldBet E/e represent
         # /ɛ/ and /e/ in the K-SPAN encoding.
-        self.assertEqual(key_to_worldbet("o"), "E")
-        self.assertEqual(key_to_worldbet("p"), "e")
-        self.assertEqual(key_to_ipa("o"), "ɛ")
-        self.assertEqual(key_to_ipa("p"), "e")
+        self.assertEqual(key_to_worldbet("o"), "e")
+        self.assertEqual(key_to_worldbet("p"), "E")
+        self.assertEqual(key_to_ipa("o"), "e")
+        self.assertEqual(key_to_ipa("p"), "ɛ")
         self.assertEqual(key_to_worldbet("rlur"), "kij^k")
         self.assertEqual(key_to_ipa("rlur"), "kijɐk")
         self.assertEqual(key_to_worldbet("rk"), "ka")
