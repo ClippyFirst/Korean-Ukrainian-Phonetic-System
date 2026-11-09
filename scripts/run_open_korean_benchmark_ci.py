@@ -20,8 +20,10 @@ if str(ROOT) not in sys.path:
 
 from scripts.prepare_korean_open_benchmarks import prepare
 from scripts.summarize_korean_benchmark_reports import summarize
-KSPAN_URL = "https://dataverse.no/api/access/datafile/1010?format=original"
-KSPAN_DOC_URL = "https://dataverse.no/api/access/datafile/1009"
+KSPAN_BUNDLE_URL = (
+    "https://dataverse.no/api/access/dataset/:persistentId/versions/2.1"
+    "?persistentId=doi:10.18710/TWM79F&format=original"
+)
 KSPAN_METADATA_URL = "https://dataverse.no/dataset.xhtml?persistentId=doi:10.18710/TWM79F"
 NIKL_LICENSE_URL = "https://korean.go.kr/front/reportData/reportDataView.do?mn_id=207&report_seq=1&searchOrder=years"
 NIKL_ZIP_URL = (
@@ -75,6 +77,27 @@ def _md5(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _extract_kspan_dataset_bundle(bundle_path: Path, destination: Path) -> tuple[Path, Path]:
+    """Extract the two pinned K-SPAN v2.1 files from a versioned Dataverse bundle."""
+    destination.mkdir(parents=True, exist_ok=True)
+    extracted: dict[str, Path] = {}
+    with zipfile.ZipFile(bundle_path) as archive:
+        names = archive.namelist()
+        for filename in ("kspan_base.csv", "kspan_doc.pdf"):
+            matches = [
+                name for name in names
+                if Path(name).name == filename and not name.endswith("/")
+            ]
+            if len(matches) != 1:
+                raise ValueError(
+                    f"K-SPAN v2.1 bundle must contain exactly one {filename}; found {matches}"
+                )
+            target = destination / filename
+            target.write_bytes(archive.read(matches[0]))
+            extracted[filename] = target
+    return extracted["kspan_base.csv"], extracted["kspan_doc.pdf"]
+
+
 def _extract_seoul_archive(archive_path: Path, destination: Path) -> Path:
     destination.mkdir(parents=True, exist_ok=True)
     with tarfile.open(archive_path, "r:gz") as archive:
@@ -124,18 +147,27 @@ def run(workdir: Path, sample_size: int = 1000, seed: int = 20261108) -> Path:
     if "Korean data provided by" not in ipa_credits or "CC BY-SA" not in ipa_credits:
         raise ValueError("pinned IPA-Dict README does not document Korean source attribution/license")
 
-    kspan_csv = workdir / "kspan_base.csv"
-    kspan_doc = workdir / "kspan_doc.pdf"
+    kspan_bundle = workdir / "kspan-dataverse-v2.1.zip"
     nikl_zip = workdir / "nikl-frequency.zip"
     ipa_dict = workdir / "ipa-dict-ko.txt"
-    # Dataverse serves ingested tabular data by default; request the saved original CSV
-    # so the pinned v2.1 checksum and the documented CSV column contract apply.
-    _download(KSPAN_URL, kspan_csv)
-    _download(KSPAN_DOC_URL, kspan_doc)
-    if _md5(kspan_csv) != "a0753c4f2421eb071d76b730eb87cbeb":
-        raise ValueError("K-SPAN kspan_base.csv MD5 differs from the pinned Dataverse v2.1 file")
-    if _md5(kspan_doc) != "2bf63cc0704a2fe3b4c40445192af77a":
-        raise ValueError("K-SPAN kspan_doc.pdf MD5 differs from the pinned Dataverse v2.1 file")
+    # Download one immutable dataset version so both K-SPAN source files come from
+    # the same published snapshot. format=original preserves the saved CSV rather
+    # than Dataverse's tab-delimited archival representation.
+    _download(KSPAN_BUNDLE_URL, kspan_bundle)
+    kspan_csv, kspan_doc = _extract_kspan_dataset_bundle(kspan_bundle, workdir)
+    expected_hashes = {
+        "kspan_base.csv": "a0753c4f2421eb071d76b730eb87cbeb",
+        "kspan_doc.pdf": "2bf63cc0704a2fe3b4c40445192af77a",
+    }
+    for source_path in (kspan_csv, kspan_doc):
+        actual_hash = _md5(source_path)
+        expected_hash = expected_hashes[source_path.name]
+        if actual_hash != expected_hash:
+            raise ValueError(
+                f"K-SPAN {source_path.name} MD5 mismatch for Dataverse v2.1 bundle: "
+                f"expected {expected_hash}, got {actual_hash} "
+                f"({source_path.stat().st_size} bytes; prefix={source_path.read_bytes()[:8].hex()})"
+            )
     _download(NIKL_ZIP_URL, nikl_zip)
     _download(IPA_DICT_URL, ipa_dict)
 

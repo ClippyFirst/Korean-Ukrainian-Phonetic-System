@@ -5,6 +5,7 @@ import unittest
 import zipfile
 from pathlib import Path
 
+from scripts.run_open_korean_benchmark_ci import _extract_kspan_dataset_bundle
 from scripts.prepare_korean_open_benchmarks import (
     _load_kspan,
     _read_nikl_word_index,
@@ -16,6 +17,30 @@ from scripts.prepare_korean_open_benchmarks import (
 
 
 class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
+    def test_versioned_kspan_bundle_extracts_exact_named_sources(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            bundle = root / "kspan-v2.1.zip"
+            output = root / "sources"
+            with zipfile.ZipFile(bundle, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+                archive.writestr("K-SPAN/kspan_base.csv", b"WordNum,ModernKey\\n1,rlur\\n")
+                archive.writestr("K-SPAN/kspan_doc.pdf", b"%PDF-1.4\nfixture")
+                archive.writestr("MANIFEST.TXT", "K-SPAN v2.1")
+            csv_path, pdf_path = _extract_kspan_dataset_bundle(bundle, output)
+            self.assertEqual(csv_path.read_bytes(), b"WordNum,ModernKey\\n1,rlur\\n")
+            self.assertEqual(pdf_path.read_bytes(), b"%PDF-1.4\nfixture")
+
+    def test_versioned_kspan_bundle_rejects_ambiguous_source_names(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            bundle = root / "kspan-v2.1.zip"
+            with zipfile.ZipFile(bundle, "w") as archive:
+                archive.writestr("a/kspan_base.csv", b"one")
+                archive.writestr("b/kspan_base.csv", b"two")
+                archive.writestr("kspan_doc.pdf", b"%PDF")
+            with self.assertRaisesRegex(ValueError, "exactly one kspan_base.csv"):
+                _extract_kspan_dataset_bundle(bundle, root / "sources")
+
     def test_kspan_key_and_worldbet_mapping_examples(self):
         self.assertEqual(key_to_worldbet("rlur"), "kij^k")
         self.assertEqual(key_to_ipa("rlur"), "kijʌk")
