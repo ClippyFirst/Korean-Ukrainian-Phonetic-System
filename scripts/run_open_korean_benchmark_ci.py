@@ -20,7 +20,7 @@ if str(ROOT) not in sys.path:
 
 from scripts.prepare_korean_open_benchmarks import prepare
 from scripts.summarize_korean_benchmark_reports import summarize
-KSPAN_URL = "https://dataverse.no/api/access/datafile/1010"
+KSPAN_URL = "https://dataverse.no/api/access/datafile/1010?format=original"
 KSPAN_DOC_URL = "https://dataverse.no/api/access/datafile/1009"
 KSPAN_METADATA_URL = "https://dataverse.no/dataset.xhtml?persistentId=doi:10.18710/TWM79F"
 NIKL_LICENSE_URL = "https://korean.go.kr/front/reportData/reportDataView.do?mn_id=207&report_seq=1&searchOrder=years"
@@ -128,6 +128,8 @@ def run(workdir: Path, sample_size: int = 1000, seed: int = 20261108) -> Path:
     kspan_doc = workdir / "kspan_doc.pdf"
     nikl_zip = workdir / "nikl-frequency.zip"
     ipa_dict = workdir / "ipa-dict-ko.txt"
+    # Dataverse serves ingested tabular data by default; request the saved original CSV
+    # so the pinned v2.1 checksum and the documented CSV column contract apply.
     _download(KSPAN_URL, kspan_csv)
     _download(KSPAN_DOC_URL, kspan_doc)
     if _md5(kspan_csv) != "a0753c4f2421eb071d76b730eb87cbeb":
