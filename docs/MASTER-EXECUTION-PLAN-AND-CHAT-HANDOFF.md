@@ -243,6 +243,198 @@ Remaining MFA acceptance gates:
 - **DEFERRED:** do not add MFA to production, runtime dependencies or Ukrainian target rendering. The current integration is a research comparison only.
 
 
+## 2026-11-09 — documentation, repository structure and mainline reconciliation
+
+### Scope and starting state
+
+- Repository: `ClippyFirst/Korean-Ukrainian-Phonetic-System`.
+- Starting `main`: `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f`.
+- Owner instruction: keep one active integration branch and work on `main`; do not create a task branch.
+- Push/admin access was available.
+- Main already contained a substantial documentation system, seven repository-local skills, canonical research registers, schemas, tests and dedicated CI workflows. This pass preserves those systems rather than creating a replacement architecture.
+
+### Repository map and structural decision
+
+The existing top-level boundaries are coherent and are retained:
+
+- `.agents/skills/` — seven focused engineering, audit, review and phonetic-evidence skills.
+- `.github/workflows/` — CI, release verification, Pages deployment, benchmark and research workflows.
+- `src/` — browser and Python runtime implementation.
+- `data/` — canonical structured phonological and Ukrainian target data.
+- `research/` — source register, rule coverage, acceptance gates, decision log, corpora and review packets.
+- `schemas/` — machine-readable contracts.
+- `scripts/` — generators, imports, audits and benchmark runners.
+- `tests/` — browser, Python, parity, data, rights and benchmark contract tests.
+- `docs/` — human documentation, methodology, historical audits and append-only handoff.
+- `reports/` — generated summaries; `licenses/` — third-party licence texts and notices.
+
+No bulk move or rename is justified. The large, dated `docs/` collection is intentional evidence history; discoverability is handled through the documentation index and ownership guide. Do not delete or rewrite historical reports to make the tree appear smaller.
+
+### Upstream practice reconciliation
+
+The maintained [agent workflow guide](AGENT-WORKFLOWS.md) lists all four requested upstreams in one comparison table and records their reviewed revisions:
+
+- [unlazy](https://github.com/Leonxlnx/unlazy) — explicit acceptance gates, command oracles, evidence freshness and re-verification; adopted through existing registers and exact-head verification, not by importing its second state machine or shell-execution tooling.
+- [superpowers](https://github.com/obra/superpowers) — red/green TDD and root-cause debugging; applied through the existing engineering and phonetic skills.
+- [mattpocock/skills](https://github.com/mattpocock/skills) — composable skills, separate specification/engineering review and source-grounded research; adapted to the repository's current skill router and evidence registers.
+- [ponytail](https://github.com/DietrichGebert/ponytail) — risk-first audits, real data-flow tracing and smallest complete fixes; adopted without importing unrelated benchmark claims or a line-count objective.
+
+No upstream skill text, hooks, scripts, plugins or code was copied. The repository already had the right local skill boundaries; this pass clarifies provenance and adoption.
+
+### GitHub PR and CI reconciliation
+
+- PR [#463](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/463): OPEN, not merged. Head `2adf6fb46b7773278d8abc29b863228b8d655e67`, base `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f`.
+- PR [#462](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/462): OPEN, not merged; narrower SIGMORPHON Browser verification change whose scope is superseded by #463. Leave untouched until #463 is resolved; do not merge both redundantly.
+- Multi-engine run [42526972593](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42526972593): **FAIL** at step 19. The 10-engine UGTPHON/SIGMORPHON comparisons and all three SIGMORPHON Browser report generations completed. The inline Python gate computed `expected_tokens = 0` because the Hangul regex was double-escaped (`r"[\\uac00-\\ud7a3]+"` in the workflow source); the assertion then failed on Strict with `('strict', 999, 0)`. The SIGMORPHON reports showed eligible=999; Strict scored/output=998 with one unresolved; Soft scored=987, output=998, heuristic=11; Super-soft scored=942, output=999, heuristic=57. Candidate availability is monotonic 998 ≤ 998 ≤ 999, with Super-soft at 100%; source-resolved scoring coverage remains a separate metric.
+- Because step 19 failed, step 20 Browser regression and step 21 Seoul/K-SPAN/IPA-Dict open benchmark matrix were **SKIPPED**. CharsiuG2P and ByT5 research inference jobs were also **SKIPPED** under their default-off configuration. The artifact was uploaded, but its existence does not turn the workflow into PASS.
+- External UGTPHON diagnostic [42526976103](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42526976103): **PASS**.
+- Exact-main push workflows on starting commit `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f`: Tests [42519315077](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42519315077), System Verify [42519315152](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42519315152), Master/research artifacts [42519315001](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42519315001), Pages deployment [42519315003](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42519315003): all **PASS**.
+
+### Documentation changes made in this continuation
+
+- Refreshed `docs/README.md` with the actual main SHA, exact-main CI run IDs, the two open PRs and the failed benchmark gate; removed the stale claim that there were zero open PRs.
+- Refreshed the current checkpoint in `docs/REPOSITORY-STRUCTURE.md` and documented the PR/benchmark boundary without claiming the open matrix passed.
+- Added the four requested upstream repositories to one maintained comparison table in `docs/AGENT-WORKFLOWS.md`.
+- Added `CONTRIBUTING.md` and `.github/PULL_REQUEST_TEMPLATE.md` to make setup, evidence, data-rights, benchmark and verification expectations explicit for human contributors.
+- Linked the contribution guide from the root README and documentation index.
+- This handoff records the actual starting state, decisions and blockers; it does not replace the canonical research acceptance gates, source register or benchmark suite register.
+
+### Task ledger
+
+| Task | State | Evidence / acceptance |
+|---|---|---|
+| Mainline and PR reconnaissance | DONE_VERIFIED | Current main, open PR metadata, branch refs, current tree and workflow runs inspected. |
+| Existing structure preservation | DONE_VERIFIED | Existing directories and seven local skills retained; no bulk moves or branch deletion. |
+| Upstream workflow comparison | DONE_VERIFIED | Four requested repositories/revisions documented in `docs/AGENT-WORKFLOWS.md`. |
+| Human contribution and PR guidance | DONE_VERIFIED | `CONTRIBUTING.md` and PR template added; links added to navigation. |
+| Documentation freshness | DONE_VERIFIED | Main SHA, workflow IDs and PR states reconciled in canonical navigation/structure docs. |
+| PR #463 five-dataset matrix | PARTIAL | Gate fails on double-escaped Hangul regex; acceptance requires fix, rerun of steps 19–21, uploaded aggregate-only artifact and all required jobs PASS. |
+| PR #462 | DEFERRED pending #463 | Superseded scope; do not merge redundantly. Reconcile/close after #463 is resolved. |
+| Neural CharsiuG2P / ByT5 inference | DEFERRED | Default-off jobs were skipped; separate model/license/data-provenance approval and actual inference remain required. |
+| Research/release certification | BLOCKED / PARTIAL | Independent phonetics review, phone-inventory validation, holdout/training overlap, Ukrainian target gold and restricted-corpus rights remain open in canonical registers. |
+
+### Commands and verification
+
+No local shell, npm, pytest, build or repository checkout was available through the connected GitHub interface; no local test execution is claimed. Repository reads, PR diffs, exact-head Actions metadata, job-step summaries and failed job logs were inspected through GitHub. The documentation commit created by this continuation must be checked by the four push-triggered main workflows; update this handoff with their exact run IDs and result after they finish.
+
+### Final state and next blocker
+
+The repository remains on the single active integration branch `main`; historical/supporting refs and open PRs are not deleted or blindly merged. No release was published. Readiness remains **software-verified, evidence-scoped research prototype; not independently research-certified or release-ready**.
+
+The next genuine implementation blocker is the PR #463 workflow's Hangul token-count regex. Correct the regex using a literal Hangul range or explicit code-point comparisons, rerun the exact benchmark job, and require the Browser regression plus Seoul/K-SPAN/IPA-Dict matrix to execute before considering any merge. Preserve the distinction between candidate availability and source-resolved accuracy throughout.
+
+
+## 2026-11-09 continuation — GitHub documentation and five-dataset matrix reconciliation
+
+### Updated mainline state
+
+- Main before this handoff update: `00304f9ee8f2cb219d83c04e5179aa16eae71e99`.
+- The sole active integration branch remains `main`; no new task branch was created.
+- The four push-triggered workflows on that main commit all passed:
+  - tests [42577427196](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42577427196) — PASS; 1,428/1,428 browser tests, Python 3.11/3.12/3.13, teacher-corpus audit and wheel install.
+  - system verify [42577426985](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42577426985) — PASS; Python tests, browser tests/build and source redistribution rights gate.
+  - master/research artifacts [42577427050](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42577427050) — PASS.
+  - Pages deployment [42577426908](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42577426908) — PASS.
+
+### Documentation and GitHub structure
+
+This continuation adds or reconciles:
+
+- `CONTRIBUTING.md` — reproducible setup, canonical ownership, phonetic/IPA evidence discipline, source rights, benchmark reporting, tests and generated artifacts.
+- `.github/PULL_REQUEST_TEMPLATE.md` — evidence, licence, denominator, IPA profile, regression and exact-head CI checklist.
+- `docs/REPOSITORY-STRUCTURE.md` — a 20-workflow GitHub Actions responsibility map, alongside the existing component/data ownership map.
+- `docs/AGENT-WORKFLOWS.md` — all four requested upstream systems are compared in one table; no upstream code or skill text is copied.
+- `docs/README.md` and root `README.md` — contributor navigation and a corrected distinction between the long-term corpus acquisition list and the current executable matrix.
+- `docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md` and `docs/BENCHMARK-RESULTS-2026-11-08.md` — the current five-dataset target is explicitly UGTPHON, SIGMORPHON, Seoul, K-SPAN 2.1 and IPA-Dict. The earlier KsponSpeech/NIKL list is retained as a long-term access/terms-gated acquisition portfolio, not the executable matrix.
+- `tests/kozak-kim-methodology-contract.test.mjs` — its assertions now verify the distinction and the new matrix instead of depending on the old heading.
+
+The current matrix has five datasets and seven reference tracks: UGTPHON (1), SIGMORPHON (1), Seoul surface/phonemic-IPA (2), K-SPAN Modern/Conservative (2), and IPA-Dict (1). K-SPAN's two tracks are one dataset. IPA-Dict is Wiktionary-derived and is not an independent gold lineage from SIGMORPHON even after exact-overlap exclusion. The NIKL MKUFS2 word index used for K-SPAN joins is not a scored NIKL speech dataset.
+
+### Benchmark PR reconciliation
+
+- PR [#463](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/463) remains OPEN, head `b348b0f92daab610448312aea26cb99fcc27b036`, base `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f`.
+- Initial run [42526972593](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42526972593) failed at the Hangul expected-token assertion. A first intermediate fix corrected only one of two identical regex sites; the subsequent push cancelled that intermediate run. The current PR head corrects both regex sites and adds a zero-row diagnostic guard.
+- On current head, tests [42576636915](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42576636915), system verify [42576636817](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42576636817), master artifacts [42576636900](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42576636900), exhaustive test-case register [42576636656](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42576636656), and external UGTPHON [42576636664](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42576636664) all passed.
+- Corrected multi-engine workflow [42576636761](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42576636761) remains **IN_PROGRESS** in its ten-engine comparison step. The Browser-mode and open Korean matrix (Seoul/K-SPAN/IPA-Dict) steps have not yet run. CharsiuG2P and ByT5 inference jobs are SKIPPED by default.
+- PR [#462](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/462) remains OPEN but is superseded in scope by #463. Do not merge it redundantly. After #463 is accepted, close #462 as superseded.
+
+### Verification correction on main
+
+Main commit `92ed43866aad08aaa1d5a81134d9935456e98bd5` exposed one stale documentation-contract test: it expected the old phrase `Five-dataset execution policy` after the benchmark register had correctly distinguished the long-term corpus portfolio from the executable matrix. The test was updated to assert the new headings and dataset scope. On `00304f9ee8f2cb219d83c04e5179aa16eae71e99`, the full test matrix passed with 1,428/1,428 browser tests and all four push workflows passed. This is a test-contract update, not a runtime behavior change.
+
+### Remaining acceptance and stop condition
+
+| Task | State | Required acceptance |
+|---|---|---|
+| Documentation navigation, contribution guidance and workflow map | DONE_VERIFIED on pre-handoff main | Exact-main test, system verify, master artifacts and Pages all PASS. |
+| Five-dataset benchmark PR #463 | PARTIAL / IN_PROGRESS | Corrected multi-engine job must finish; steps 19–21 must run; all five dataset reports and mode-availability assertions must pass; aggregate-only artifact and schema checks must be present. |
+| PR #462 | DEFERRED pending #463 | Close as superseded only after #463 is merged. |
+| KsponSpeech and NIKL Daily Conversation speech data | BLOCKED / ACCESS-TERMS GATED | Authorized acquisition and exact redistribution/reuse terms. NIKL MKUFS2 index use for K-SPAN joins does not clear speech-corpus access. |
+| Neural CharsiuG2P / ByT5 inference | DEFERRED | Explicit research run, model/data licence review, overlap audit and actual inference. |
+| Research/release certification | BLOCKED / PARTIAL | Independent Korean phonetics review, phone-inventory adjudication, holdout/training overlap review, Ukrainian target gold and outstanding source-rights decisions. |
+
+No merge, release publication or branch deletion has been performed in this continuation. The next action is to wait for the corrected run [42576636761](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42576636761), inspect its exact artifacts and gate results, then merge #463 only if every required step passes. The repository remains an evidence-scoped research prototype, not independently research-certified or release-ready.
+
+## 2026-11-09 continuation — K-SPAN checksum correction and benchmark rerun
+
+### Exact source correction
+
+- The previous K-SPAN CI attempt successfully downloaded the version 2.1 Dataverse bundle and verified `kspan_base.csv`, but rejected `kspan_doc.pdf`.
+- The rejection was caused by an incorrect expected checksum in the benchmark script, not by a corrupt archive or a reason to weaken integrity validation. The script expected `2bf63cc0704a2fe3b4c40445192af77a`; the official DataverseNO file page for `kspan_doc.pdf` (file ID 1009, dataset version 2.1) publishes `2bf63cc0704a2fe3b4c40445192af77f`. The downloaded PDF's actual MD5 is the latter, with a PDF signature and 738,354 bytes.
+- Corrected `scripts/run_open_korean_benchmark_ci.py` to the repository-published MD5 `2bf63cc0704a2fe3b4c40445192af77f`. CSV and PDF are still extracted from the same pinned Dataverse v2.1 bundle and both checksums remain enforced.
+- Added earlier in the same PR branch: a bundle-extraction helper and tests for exact file selection and ambiguous duplicate filenames.
+
+### Exact-head verification
+
+- Benchmark PR #463 head: `72bcb727d7c8ddf2ddd359f0d3abc4f3056d4ef6`.
+- Tests [42584666555](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42584666555) — PASS.
+- System verification [42584666728](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42584666728) — PASS.
+- Exhaustive test-case register [42584666813](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42584666813) — PASS.
+- External UGTPHON diagnostic [42584666591](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42584666591) — PASS.
+- Master/research artifacts [42584666655](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42584666655) — PASS.
+- Multi-engine diagnostic [42584666543](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42584666543) is still IN_PROGRESS in step 13, “Run multi-engine comparison”; no failure is recorded. The remaining UGTPHON/SIGMORPHON Browser steps and the open Seoul/K-SPAN/IPA-Dict matrix are downstream and have not yet run on this exact head.
+- The prior run [42582634269](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42582634269) completed the ten-engine UGTPHON and SIGMORPHON runs, Browser three-mode audits and parity checks, but its open-matrix step failed solely on the erroneous PDF checksum above. Do not treat its open-matrix dataset reports as completed.
+
+### Current disposition
+
+- Main remains at `4778ac435a4be54c4e7e7b73605369ff5f85677a`; this continuation record does not change runtime code.
+- PR #463 remains OPEN and mergeable, but is not ready to merge until the exact-head multi-engine job, all downstream open-matrix steps, artifact upload and schema validation pass.
+- PR #462 remains OPEN and superseded in scope; leave it untouched until #463 passes and is merged.
+- No benchmark metric, dataset accuracy result or release certification is inferred from the checksum correction.
+
+
+## 2026-11-09 continuation — NIKL word-index encoding failure and correction
+
+### Failure evidence
+
+- Exact-head full-matrix run [42584666543](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42584666543) completed the UGTPHON and SIGMORPHON ten-engine comparisons, UGTPHON Browser modes and Native/Browser parity, and SIGMORPHON Browser modes and regression suite.
+- Its open Korean matrix step failed in `scripts/prepare_korean_open_benchmarks.py::_read_nikl_word_index`: the official `MKUFS2/일반어휘통계.txt` payload could not be decoded as CP949/EUC-KR/UTF-8. K-SPAN's CSV/PDF download and checksums had already passed; the failure occurred before NIKL WordNum joins and the supplemental track benchmarks.
+- This was a decoder coverage defect. The script had no UTF-16/UTF-32 support and did not distinguish a successful byte decode from a valid numbered NIKL word index.
+
+### Implemented correction on PR #463
+
+- Added a dedicated decoder that detects UTF-32, UTF-8 BOM, UTF-16 BOM and BOM-less UTF-16 byte patterns, then tries CP949/EUC-KR/UTF-8 fallback encodings.
+- A candidate encoding is accepted only if it yields numbered word records; lossy replacement decoding is not used. If all candidates fail, the exception reports the attempted encodings and why each candidate was rejected.
+- Added regression coverage for UTF-16LE, UTF-16BE, BOM-marked UTF-16 and invalid binary input. Existing CP949 fixture and full K-SPAN WordNum/Worldbet mapping tests remain.
+- PR #463 head after correction: `cded13adb593b510ffa63c05c0a0822d56c0e7ba`. The PR description records the incident and exact fix.
+
+### Exact-head verification
+
+- Tests [42591114502](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591114502) — PASS, including Python 3.11/3.12/3.13, browser suite, wheel install and teacher-corpus audit.
+- System verification [42591114507](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591114507) — PASS, Python regression/data integrity and browser regression/build.
+- Test-case register [42591114602](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591114602) — PASS.
+- External UGTPHON [42591114484](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591114484) — PASS.
+- Master/research artifacts [42591114301](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591114301) — PASS.
+- Full multi-engine workflow [42591114417](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591114417) is currently IN_PROGRESS at step 13, “Run multi-engine comparison”. The NIKL decoder and supplemental Seoul/K-SPAN/IPA-Dict matrix have not yet been exercised on this corrected head. Do not claim the open matrix passed until steps 21 and 22 complete and the uploaded summary passes schema validation.
+
+### Current disposition
+
+- Main at the time of this update: `fc153c295689f57027320263c1a84b12bcb9e7a4`; this handoff update is documentation-only.
+- PR #463 remains OPEN and mergeable; do not merge before the exact-head full matrix and artifact checks pass.
+- PR #462 remains OPEN and superseded in scope; close it only after #463 is successfully merged.
+- The decoder now covers the observed class of encoding failure, but no implementation can guarantee zero failures for every future upstream change or network/runtime condition. CI remains the acceptance gate; a decode that cannot be validated must fail with a diagnostic rather than silently corrupt source words.
+
+
 ## 2026-11-09 continuation — K-SPAN Worldbet parser correction
 
 - The first x patch was based on an unverified interpretation of x as a postfix centralization mark. That interpretation was not supported by the K-SPAN documentation and has been removed; do not reuse it.
