@@ -176,3 +176,21 @@ test('2026-11-09 documentation checkpoint records current main, PR divergence an
   assert.ok(audit.includes('two-character delimiter'));
   assert.ok(docsIndex.includes('REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md#current-continuation--2026-11-09-documentation-and-pr-reconciliation'));
 });
+
+
+test('post-merge documentation closeout records the merged mainline commit and verified PR evidence', () => {
+  const rootReadme = read('README.md');
+  const docsIndex = read('docs/README.md');
+  const structureGuide = read('docs/REPOSITORY-STRUCTURE.md');
+  const audit = read('docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md');
+  const handoff = read('docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md');
+  for (const [label, content] of [
+    ['README', rootReadme], ['docs index', docsIndex], ['structure guide', structureGuide],
+    ['audit', audit], ['handoff', handoff],
+  ]) {
+    assert.ok(content.includes('d2699911dbc70ef9978e5af06643b1281725a71a'), label + ' missing merged main SHA');
+    assert.ok(content.includes('42678483929'), label + ' missing exact PR-head test evidence');
+  }
+  assert.ok(audit.includes('Documentation navigation and status reconciliation | DONE_VERIFIED'));
+  assert.ok(handoff.includes('Documentation/navigation update | DONE_VERIFIED'));
+});

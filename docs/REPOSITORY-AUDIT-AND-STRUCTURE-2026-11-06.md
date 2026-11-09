@@ -1,3 +1,20 @@
+
+
+### Post-merge closure — PR #464
+
+PR [#464](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/464) was squash-merged into `main` as `d2699911dbc70ef9978e5af06643b1281725a71a`. The documentation branch head was `db61448373dd179ced0c61332a9bdf0ca53f96a3`; the PR was five commits ahead of its base and zero behind.
+
+Exact PR-head checks all passed:
+- Tests [42678483929](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42678483929): Python 3.11/3.12/3.13, web, wheel-install and teacher-corpus audit PASS.
+- System Verify [42678483721](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42678483721): Python and Browser PASS; NIKL metadata-only SKIPPED.
+- Exhaustive test-case register extraction [42678483928](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42678483928): PASS.
+- Master/research artifact generation [42678483855](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42678483855): PASS.
+- Exact-head push Verify [42678302945](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42678302945): PASS.
+
+The post-merge main workflows are separate runs and must be checked independently: Tests [42678644963](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42678644963), Verify [42678644939](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42678644939), master/research artifacts [42678645435](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42678645435), and Pages [42678645363](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42678645363). Their state at this documentation checkpoint is pending/in progress; no post-merge PASS is claimed here.
+
+**Documentation/navigation reconciliation: DONE_VERIFIED on PR #464 head and merged into main.** The benchmark and independent linguistic acceptance blockers remain unchanged.
+
 ## Current continuation — 2026-11-09 documentation and PR reconciliation
 
 **Audited main:** `45a02a62ce955c3db10eb0faaaa1ce8d9f2c9cdb`.  
@@ -43,7 +60,7 @@ The current default-branch HEADs of all four supplied references still match the
 | Task | State | Evidence / acceptance |
 |---|---|---|
 | Mainline software workflows | DONE_VERIFIED | Four exact-main workflows above pass; NIKL metadata-only is explicitly skipped. |
-| Documentation navigation and status reconciliation | PARTIAL_PENDING_EXACT_HEAD_CI | README, documentation map, structure guide, this audit, handoff and reference-audit snapshot updated on the documentation branch; exact-head CI still required. |
+| Documentation navigation and status reconciliation | DONE_VERIFIED | README, documentation map, structure guide, this audit, handoff and reference-audit snapshot updated on the documentation branch; exact-head CI still required. |
 | Four upstream workflow references | DONE_VERIFIED | Current HEADs rechecked; all match pinned audit snapshots; no material imported. |
 | PR #463 five-dataset matrix | PARTIAL | Two adapter tests fail; downstream benchmark stages skipped. |
 | PR #463 mainline reconciliation | TODO | Reconcile 21 main-only commits / 10 affected paths after benchmark tests pass; inspect conflicts and rerun exact-head gates. |
