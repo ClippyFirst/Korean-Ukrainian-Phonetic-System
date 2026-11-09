@@ -100,7 +100,7 @@ test('all three Kozak Kim modes have separate documented benchmark contracts and
 });
 
 
-test('five-dataset Korean G2P portfolio records access and representation gates', () => {
+test('long-term gated corpus portfolio and executable five-dataset matrix stay distinct', () => {
   const portfolio = readFileSync(new URL('../docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md', import.meta.url), 'utf8');
   const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
   for (const dataset of [
@@ -115,7 +115,14 @@ test('five-dataset Korean G2P portfolio records access and representation gates'
   assert.match(portfolio, /CC BY-NC 2\.0/u);
   assert.match(portfolio, /AIHub account\/manual download/u);
   assert.match(portfolio, /LDC User Agreement/u);
-  assert.match(portfolio, /Five-dataset execution policy/u);
-  assert.match(readme, /Five-dataset Korean G2P benchmark portfolio/u);
-  assert.match(readme, /Five executable evaluation tracks span three datasets/u);
+  assert.match(portfolio, /Long-term five-corpus execution policy/u);
+  assert.match(portfolio, /executable five-dataset Korean G2P matrix/u);
+  for (const dataset of ['K-SPAN 2.1', 'IPA-Dict Korean']) {
+    assert.ok(portfolio.includes(dataset), 'executable matrix must include ' + dataset);
+  }
+  assert.match(portfolio, /five distinct datasets and seven reference tracks/u);
+  assert.match(portfolio, /972cd67dd5f96bc5660e28070cde26e3928abcd7/u);
+  assert.match(readme, /Long-term five-corpus acquisition portfolio/u);
+  assert.match(readme, /five datasets and seven reference tracks/u);
+  assert.match(readme, /KsponSpeech and NIKL Daily Conversation remain separate access\/terms-gated future candidates/u);
 });
