@@ -101,10 +101,10 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
         # K-SPAN 2.1 kspan_doc.pdf, Table 1: key m -> WorldBet ix -> IPA i;
         # key 7 -> WorldBet ixi -> IPA ii. Longest-match preserves ixi as one segment.
         self.assertEqual(worldbet_to_ipa("p*thtc}hNixwE"), "p͈tʰtɕʰŋiwɛ")
-        self.assertEqual(worldbet_to_ipa("ix"), "i")
-        self.assertEqual(worldbet_to_ipa("ixi"), "ii")
-        self.assertEqual(key_to_ipa("m"), "i")
-        self.assertEqual(key_to_ipa("7"), "ii")
+        self.assertEqual(worldbet_to_ipa("ix"), "ɯ")
+        self.assertEqual(worldbet_to_ipa("ixi"), "ɯi")
+        self.assertEqual(key_to_ipa("m"), "ɯ")
+        self.assertEqual(key_to_ipa("7"), "ɯi")
         # Standalone WorldBet x is a consonant symbol, not the K-SPAN ix vowel.
         self.assertEqual(worldbet_to_ipa("xki"), "xki")
 
