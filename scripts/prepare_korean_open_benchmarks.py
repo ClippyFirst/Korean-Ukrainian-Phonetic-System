@@ -39,7 +39,7 @@ WORLDBET_TO_IPA = {
     "tc}*": "tɕ͈", "tc}h": "tɕʰ", "tc}": "tɕ",
     "p*": "p͈", "t*": "t͈", "k*": "k͈", "s*": "s͈",
     "ph": "pʰ", "th": "tʰ", "kh": "kʰ",
-    "ixi": "ɯi", "ix": "ɯ",
+    "ixi": "ɯi", "ix": "ɯ", "wi": "wi",
     "j^": "jɐ", "w^": "wɐ", "wE": "wɛ",
     "wa": "wa", "we": "we", "je": "je", "jE": "jɛ",
     "ja": "ja", "jo": "jo", "ju": "ju",
@@ -249,7 +249,7 @@ def _load_kspan(path: Path, nikl_zip: Path, expected_rows: int | None = 63836) -
         "key_worldbet_integrity_examples": key_worldbet_mismatches[:10],
         "reference_fields": {"modern": "ModernPhon", "conservative": "ConservativePhon"},
         "ipa_source_policy": "Convert source WorldBet fields directly; key fields are an independent cross-check and never override source labels.",
-        "ipa_mapping": "kspan-worldbet-to-ipa-v1; based on official K-SPAN documentation table",
+        "ipa_mapping": "kspan-worldbet-to-ipa-v2; official K-SPAN 2.1 Table 1 plus WorldBet wi as attested in Holliday et al. 2017, Table 1",
         "kspan_sha256": _sha256(path),
         "nikl_archive_sha256": _sha256(nikl_zip),
     }

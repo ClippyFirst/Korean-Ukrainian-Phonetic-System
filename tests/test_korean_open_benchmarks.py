@@ -103,6 +103,9 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
         self.assertEqual(worldbet_to_ipa("p*thtc}hNixwE"), "p͈tʰtɕʰŋɯwɛ")
         self.assertEqual(worldbet_to_ipa("ix"), "ɯ")
         self.assertEqual(worldbet_to_ipa("ixi"), "ɯi")
+        # K-SPAN paper Table 1 explicitly attests modern /y/ -> WorldBet wi.
+        self.assertEqual(worldbet_to_ipa("wi"), "wi")
+        self.assertEqual(worldbet_to_ipa("kanixnkwi"), "kanɯnkwi")
         self.assertEqual(worldbet_to_ipa("j^w^"), "jɐwɐ")
         self.assertEqual(key_to_ipa("m"), "ɯ")
         self.assertEqual(key_to_ipa("7"), "ɯi")
