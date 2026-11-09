@@ -38,7 +38,7 @@ WORLDBET_TO_IPA = {
     "tc}*": "tɕ͈", "tc}h": "tɕʰ", "tc}": "tɕ",
     "p*": "p͈", "t*": "t͈", "k*": "k͈", "s*": "s͈",
     "ph": "pʰ", "th": "tʰ", "kh": "kʰ",
-    "ixi": "ii", "ix": "i",
+    "ixi": "ɯi", "ix": "ɯ",
     "j^": "jʌ", "w^": "wʌ", "wE": "wɛ",
     "wa": "wa", "we": "we", "je": "je", "jE": "jɛ",
     "ja": "ja", "jo": "jo", "ju": "ju",
