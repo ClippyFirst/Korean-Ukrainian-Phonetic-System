@@ -20,6 +20,7 @@ A research-oriented Korean-to-Ukrainian pronunciation system. It analyzes Korean
 | Understand the project and current measured results | This README — [current benchmark checkpoint](#exact-main-benchmark-checkpoint--2026-11-08), [status and readiness](#current-status--2026-11-08) |
 | Navigate all documentation | [Documentation map](docs/README.md) |
 | Understand directories, modules and data ownership | [Repository structure guide](docs/REPOSITORY-STRUCTURE.md) |
+| Contribute code, documentation or research evidence | [Contributing guide](CONTRIBUTING.md) |
 | Understand the processing architecture | [Architecture](docs/architecture.md), [methodology](docs/methodology.md) |
 | Review Korean rules and evidence | [Korean phonology](docs/korean-phonology.md), [source register](research/SOURCE-REGISTER.csv), [rule coverage](research/RULE-COVERAGE.csv) |
 | Review Ukrainian adaptation | [Ukrainian target layer](docs/ukrainian-target-layer.md) |
