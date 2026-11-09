@@ -171,7 +171,7 @@ test('2026-11-09 documentation checkpoint records current main, PR divergence an
     assert.ok(content.includes('42665749678'), label + ' missing failed exact-head matrix evidence');
     assert.ok(content.includes('167c12a7e9945dc757a57ea734e9745aa69032f3'), label + ' missing benchmark PR head');
   }
-  assert.ok(audit.includes('91 commits ahead / 21 commits behind'));
+  assert.ok(audit.includes('91 commits ahead and 21 behind'));
   assert.ok(audit.includes('kijɐk'));
   assert.ok(audit.includes('two-character delimiter'));
   assert.ok(docsIndex.includes('REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md#current-continuation--2026-11-09-documentation-and-pr-reconciliation'));
