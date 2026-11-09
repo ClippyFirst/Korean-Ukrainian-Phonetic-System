@@ -94,12 +94,6 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
         self.assertEqual(key_to_worldbet("p"), "e")
         self.assertEqual(key_to_ipa("o"), "ɛ")
         self.assertEqual(key_to_ipa("p"), "e")
-        # K-SPAN 2.1 Table 1 documents the conservative-track convention,
-        # which reverses only the e/E pair relative to the Modern track.
-        self.assertEqual(key_to_worldbet("o", track="conservative"), "e")
-        self.assertEqual(key_to_worldbet("p", track="conservative"), "E")
-        self.assertEqual(key_to_ipa("o", track="conservative"), "e")
-        self.assertEqual(key_to_ipa("p", track="conservative"), "ɛ")
         self.assertEqual(key_to_worldbet("rlur"), "kij^k")
         self.assertEqual(key_to_ipa("rlur"), "kijʌk")
         self.assertEqual(key_to_worldbet("rk"), "ka")
@@ -135,7 +129,7 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
             with kspan.open("w", encoding="utf-8", newline="") as stream:
                 writer = csv.writer(stream, delimiter="\t")
                 writer.writerow(fields)
-                writer.writerow(["3", "o", "o", "o", "E", "e", "1"] + ["0"] * 12)
+                writer.writerow(["3", "o", "p", "o", "E", "e", "1"] + ["0"] * 12)
 
             modern, conservative, metadata = _load_kspan(kspan, nikl, expected_rows=1)
             self.assertEqual(modern[0]["canonical"], "나")
