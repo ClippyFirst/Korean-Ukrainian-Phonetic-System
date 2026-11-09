@@ -23,6 +23,17 @@ The current IPA mapping is versioned as `kspan-worldbet-to-ipa-v2`; the `wi` seq
 
 **Readiness:** software verification is green on the current PR head, but the five-dataset benchmark remains **PARTIAL** until run 42692169459 completes and its artifacts are inspected. Independent Korean IPA review, independent Ukrainian target review, historical cohort membership proof, raw `ㅠ` span validation and access/terms-gated speech corpora remain separate research gates. The repository is not release-ready or independently research-certified.
 
+
+
+### Superseded historical documentation checkpoint
+
+The following records describe the earlier PR #463 state before the controlled #465 port. They are retained because the append-only audit and documentation contract tests use them as historical evidence; they are not the current branch state.
+
+- Audited baseline before PR #464: `45a02a62ce955c3db10eb0faaaa1ce8d9f2c9cdb`.
+- Documentation merge: PR #464, `d2699911dbc70ef9978e5af06643b1281725a71a`.
+- Post-merge main verification: `5c12f92c36ecae455dc4281dd7a8c0217f5dc4dc`; Tests [42679091769](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42679091769) and Pages live smoke [42679091977](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42679091977) passed.
+- Superseded PR #463 head: `167c12a7e9945dc757a57ea734e9745aa69032f3`; its earlier full-matrix run [42665749678](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42665749678) failed in adapter tests before Seoul/K-SPAN/IPA-Dict execution. The current PR #465 uses corrected fixtures and current-main base; do not attribute that earlier failure to #465.
+
 ## Benchmark results — consolidated dashboard
 
 [**Open all engine and mode results**](BENCHMARK-RESULTS-2026-11-08.md) — 10-engine Strict/Broad tables, Browser Strict/Soft/Super-soft, Seoul surface and phonemic IPA modes, MFA Hangul/Jamo, and an explicit executed/pending matrix. Detailed provenance and historical evidence remain in the [benchmark suite register](KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md).
