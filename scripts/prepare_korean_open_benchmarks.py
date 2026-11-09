@@ -20,7 +20,7 @@ from typing import Any
 HANGUL = re.compile(r"^[\uac00-\ud7a3]+$")
 
 # K-SPAN 2.1 documentation: key -> Worldbet -> IPA.
-KEY_TO_WORLDBET = {
+KEY_TO_WORLDBET_MODERN = {
     "q": "p", "Q": "p*", "v": "ph",
     "e": "t", "E": "t*", "x": "th",
     "r": "k", "R": "k*", "z": "kh",
@@ -33,6 +33,16 @@ KEY_TO_WORLDBET = {
     "6": "wE", "7": "ixi", "O": "je", "P": "jE",
     "i": "ja", "u": "j^", "y": "jo", "b": "ju", ":": ":",
 }
+# The K-SPAN 2.1 Table 1 transcription is the conservative-track convention:
+# key o -> Worldbet e and key p -> Worldbet E. The ModernKey/ModernPhon
+# columns use the reversed pair. Keep the adapters track-typed rather than
+# forcing one vowel convention onto both independently annotated tracks.
+KEY_TO_WORLDBET_CONSERVATIVE = {
+    **KEY_TO_WORLDBET_MODERN,
+    "o": "e",
+    "p": "E",
+}
+KEY_TO_WORLDBET = KEY_TO_WORLDBET_MODERN
 
 WORLDBET_TO_IPA = {
     "tc}*": "tɕ͈", "tc}h": "tɕʰ", "tc}": "tɕ",
@@ -51,12 +61,18 @@ WORLDBET_TO_IPA = {
 _WORLDBET_KEYS = sorted(WORLDBET_TO_IPA, key=len, reverse=True)
 
 
-def key_to_worldbet(value: str) -> str:
+def key_to_worldbet(value: str, track: str = "modern") -> str:
     value = str(value or "").strip()
-    unknown = sorted(set(value) - set(KEY_TO_WORLDBET))
+    if track == "modern":
+        mapping = KEY_TO_WORLDBET_MODERN
+    elif track == "conservative":
+        mapping = KEY_TO_WORLDBET_CONSERVATIVE
+    else:
+        raise ValueError(f"unknown K-SPAN transcription track: {track!r}")
+    unknown = sorted(set(value) - set(mapping))
     if unknown:
         raise ValueError(f"unknown K-SPAN keystroke symbols: {unknown}")
-    return "".join(KEY_TO_WORLDBET[ch] for ch in value)
+    return "".join(mapping[ch] for ch in value)
 
 
 def worldbet_to_ipa(value: str) -> str:
@@ -73,8 +89,8 @@ def worldbet_to_ipa(value: str) -> str:
     return "".join(out)
 
 
-def key_to_ipa(value: str) -> str:
-    return worldbet_to_ipa(key_to_worldbet(value))
+def key_to_ipa(value: str, track: str = "modern") -> str:
+    return worldbet_to_ipa(key_to_worldbet(value, track=track))
 
 
 def _sha256(path: Path) -> str:
@@ -195,7 +211,7 @@ def _load_kspan(path: Path, nikl_zip: Path, expected_rows: int | None = 63836) -
             ("modern", "ModernKey", "ModernPhon", modern),
             ("conservative", "ConservativeKey", "ConservativePhon", conservative),
         ):
-            worldbet = key_to_worldbet(source_row[key_field])
+            worldbet = key_to_worldbet(source_row[key_field], track=track)
             declared_worldbet = "".join(source_row[world_field].split())
             if worldbet != declared_worldbet:
                 worldbet_mismatches.append(f"{word_num}:{track}:{worldbet}!={declared_worldbet}")
