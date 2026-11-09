@@ -204,7 +204,7 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
             self.assertEqual([row["canonical"] for row in modern], ["기역", "가"])
             self.assertEqual([row["tokens"][0]["phoneme"] for row in modern], ["kijʌk", "ka"])
             self.assertEqual([row["tokens"][0]["phoneme"] for row in conservative], ["kijʌk", "ka"])
-            self.assertEqual(metadata["key_worldbet_integrity_mismatches"], 0)
+            self.assertEqual(metadata["key_surface_diagnostic_mismatches"], 0)
             self.assertEqual(metadata["source_delimiter"], "\t")
 
     def test_kspan_row_count_gate_detects_dataset_drift(self):
