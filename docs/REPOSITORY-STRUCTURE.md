@@ -1,26 +1,39 @@
 # Repository structure and ownership guide
 
 **Current documentation snapshot:** 2026-11-09.  
-**Current main at audit start:** `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f`.  
-**Active integration branch:** `main`; no task branch is created for this owner-directed continuation.  
+**Audited main HEAD:** `45a02a62ce955c3db10eb0faaaa1ce8d9f2c9cdb`.  
+**Default branch:** `main`.  
+**Documentation reconciliation branch:** `docs/repository-navigation-reconciliation-2026-11-09`, based on the audited main HEAD.  
 **Scope:** navigation, component ownership, data boundaries, verification entry points and repository maintenance. This is not a claim that every file has been independently reviewed line by line.
 
-## Current mainline verification
+## Mainline verification
 
-All four push-triggered workflows completed successfully on `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f`:
+The four mainline workflows completed successfully on the audited main commit:
 
-- [Tests — 42519315077](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42519315077) — PASS.
-- [System Verify — 42519315152](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42519315152) — PASS.
-- [Master table / research artifacts — 42519315001](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42519315001) — PASS.
-- [GitHub Pages deployment / live smoke — 42519315003](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42519315003) — PASS.
+| Workflow | Result | Run |
+|---|---|---|
+| Tests | **PASS** | [42591577770](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591577770) |
+| System Verify | **PASS** | [42591577711](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591577711) |
+| Master table / research artifacts | **PASS** | [42591577812](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591577812) |
+| Pages deployment / live smoke | **PASS** | [42591577865](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591577865) |
 
-These are GitHub Actions results on the exact main SHA above. They are not local command executions. The documentation-only commit at the end of this continuation must receive its own exact-head checks.
+The NIKL metadata-only inventory was skipped by workflow policy. These are GitHub Actions results, not local command executions.
 
-## Current PR and benchmark boundary — 2026-11-09
+## Current PR and benchmark boundary
 
-- PR [#463](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/463) remains open and not merged. The initial multi-engine run [42526972593](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42526972593) completed the ten-engine comparisons and generated SIGMORPHON reports, then failed because a double-escaped Hangul regex counted zero expected tokens. Both Hangul-regex validation blocks have since been corrected on head `b348b0f92daab610448312aea26cb99fcc27b036`; the corrected consolidated run [42576636761](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42576636761) is in progress. Do not count the five-dataset matrix as complete until its mode, open-dataset and aggregate-artifact gates pass.
-- PR [#462](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/462) is still open and narrower; #463 supersedes its intended SIGMORPHON verification scope. If #463 passes and is merged, close #462 as superseded rather than merging duplicate workflow changes.
-- The UGTPHON external diagnostic [42526976103](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42526976103) passed. The neural inference jobs in #463 were skipped by default.
+- PR [#463](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/463) remains open and unmerged. Its head `167c12a7e9945dc757a57ea734e9745aa69032f3` is 91 commits ahead / 21 behind main from merge base `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f`; GitHub reports its mergeability as dirty.
+- Exact-head Verify [42665749636](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42665749636) failed in two Python tests; Browser regression/build passed; NIKL metadata-only was skipped.
+- Full matrix [42665749678](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42665749678) failed at benchmark-adapter tests. The CSV delimiter fixture uses a two-character delimiter, and another fixture expects `kijʌk` while the corrected adapter returns `kijɐk`. All later benchmark stages were skipped. Do not count K-SPAN or IPA-Dict as executed on this head.
+- PR [#462](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/462) remains open and unmerged. It is a narrower verification change superseded in intended scope by #463; do not merge both workflow changes.
+- The main-only side of the branch comparison contains 21 commits affecting 10 paths, including current contributor, PR-template, README, documentation navigation and benchmark-register updates. Reconcile those files explicitly after the benchmark branch passes; do not merge the dirty branch blindly.
+
+
+
+GitHub's paginated branch search returned **31 refs total** (including `main` and this documentation branch). The 30 non-main refs include active benchmark PR branches and historical research/fix/documentation branches. No historical branch was deleted or force-updated; branch removal is not needed to make the default branch authoritative and would destroy potentially useful audit history.
+
+## Current readiness
+
+Mainline software checks are green, but the five-dataset benchmark matrix is still **PARTIAL**. The project remains a software-verified, evidence-scoped research prototype, not independently research-certified or release-ready. See the [current audit](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md#current-continuation--2026-11-09-documentation-and-pr-reconciliation), [benchmark results](BENCHMARK-RESULTS-2026-11-08.md), [acceptance gates](../research/ACCEPTANCE-GATES.md) and [master handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md).
 
 ## Navigation by reader task
 

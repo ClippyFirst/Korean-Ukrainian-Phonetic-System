@@ -1,3 +1,16 @@
+## Reference snapshot refresh — 2026-11-09
+
+The four supplied workflow-reference repositories were rechecked against their current default-branch metadata on 2026-11-09. Their latest commits still match the pinned revisions reviewed below; no newer upstream commit was observed at this checkpoint:
+
+| Repository | Current default branch | Confirmed HEAD | Commit date |
+|---|---|---|---|
+| [Leonxlnx/unlazy](https://github.com/Leonxlnx/unlazy) | `main` | `16671491f6679ad9378f52604d3bc2415b4120c7` | 2026-09-03 |
+| [obra/superpowers](https://github.com/obra/superpowers) | `main` | `22f0b463e7a5e579904dd6211a520321035526f7` | 2026-11-03 |
+| [mattpocock/skills](https://github.com/mattpocock/skills) | `main` | `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d` | 2026-10-31 |
+| [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) | `main` | `96608e078b2d5ea607c5c3b8b5a54d1c1fba6846` | 2026-10-29 |
+
+The earlier comparative findings and adoption boundaries remain current. These repositories remain process references only: no source code, skill text, hooks, plugins, artwork or benchmark data were copied into this project. This refresh confirms revision identity; it is not a new security audit or independent reproduction of upstream claims.
+
 # Engineering workflow reference audit — 2026-11-06
 
 **Supersedes:** the three-project snapshot in `ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-05.md`. The original dated snapshot is retained unchanged.
