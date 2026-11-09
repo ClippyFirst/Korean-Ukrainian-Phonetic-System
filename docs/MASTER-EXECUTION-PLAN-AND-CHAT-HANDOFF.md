@@ -471,3 +471,18 @@ No merge, release publication or branch deletion has been performed in this cont
 - Fix committed as `2c13bea9bc7324eeb768bddd498cc873233ab893` on `benchmark/five-dataset-full-matrix`.
 - This demonstrates why the earlier claim that the end-to-end fixture was ready for acceptance was premature. The test has been corrected in source, but no workflow run has yet been observed for this exact commit. Existing passing run `42605775613` predates this correction and must not be attributed to it.
 - Full matrix remains **PARTIAL / acceptance blocked**. Required next evidence: Python regression workflow on `2c13bea9bc7324eeb768bddd498cc873233ab893`, then full `multi-engine-ipa-benchmark.yml` on the same corrected head. The latter must pass all later tracks and artifact schema checks; no full-corpus pass is claimed.
+
+
+## 2026-11-09 continuation — exact-head CI after K-SPAN fixture correction
+
+- The earlier statement that no workflow had yet tested the corrected delimiter commit is superseded by the CI evidence below.
+- Commit `2c13bea9bc7324eeb768bddd498cc873233ab893` was checked by Verify run [42614044640](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42614044640):
+  - Python regression and data integrity — PASS (job 129149382392; Python test step completed successfully).
+  - Browser regression tests and build — PASS (job 129149382098; browser tests, redistribution-rights gate, public-page build and generated-page verification completed successfully).
+  - Official NIKL source inventory (metadata-only) — SKIPPED by workflow conditions; not a pass.
+- The subsequent documentation-only handoff commit `7c6b47404fcdcf9ac9fc6674125c1a864973436e` was checked by Verify run [42614106301](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42614106301), with the same Python and Browser jobs PASS and NIKL metadata-only job SKIPPED.
+- The K-SPAN fixture source now uses Python's actual tab escape `delimiter="\\t"` (one backslash in source, interpreted as a tab at runtime), not the two-character delimiter previously present. The end-to-end fixture is therefore now covered by the successful Python regression job on `2c13bea9`.
+- Check-runs for the corrected source commit contain only the three Verify workflow jobs; no run of `.github/workflows/multi-engine-ipa-benchmark.yml` is recorded for it or the current PR head. The full 63,836-row K-SPAN and Seoul/K-SPAN/IPA-Dict matrix is still **PARTIAL / not DONE_VERIFIED**.
+- The GitHub connector available in this session exposes read operations and rerun actions, but no workflow-dispatch/create-run action. Rerunning an old-SHA failed job would not validate this corrected head, so it was not used as a substitute.
+- Current PR #463 head: `7c6b47404fcdcf9ac9fc6674125c1a864973436e`; branch `benchmark/five-dataset-full-matrix`; PR remains OPEN and unmerged.
+- Required acceptance remains: dispatch `.github/workflows/multi-engine-ipa-benchmark.yml` against the current PR head (or a commit containing the same tested source), verify all benchmark stages including 63,836 K-SPAN rows, zero key/Worldbet mismatches, Modern and Conservative tracks, downstream Seoul and IPA-Dict tracks, and validate the uploaded aggregate-only report against `schemas/korean-benchmark-summary.schema.json`. Do not merge #463 before this gate is green.
