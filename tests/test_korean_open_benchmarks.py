@@ -51,6 +51,12 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
                 _extract_kspan_dataset_bundle(bundle, root / "sources")
 
     def test_kspan_key_and_worldbet_mapping_examples(self):
+        # Dubeolsik O/P keys are ㅐ/ㅔ respectively; K-SPAN Worldbet
+        # distinguishes their values as E/e. Keep this regression explicit.
+        self.assertEqual(key_to_worldbet("o"), "E")
+        self.assertEqual(key_to_worldbet("p"), "e")
+        self.assertEqual(key_to_ipa("o"), "ɛ")
+        self.assertEqual(key_to_ipa("p"), "e")
         self.assertEqual(key_to_worldbet("rlur"), "kij^k")
         self.assertEqual(key_to_ipa("rlur"), "kijʌk")
         self.assertEqual(key_to_worldbet("rk"), "ka")
