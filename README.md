@@ -687,10 +687,28 @@ The raw-surface UGTPHON benchmark is implemented in [`scripts/benchmark_ugtphon_
 Latest pinned train/test diagnostic (2026-11-01): on 2,624 paired tokens, train-only retrieval improves exact match from 51.3720% to 51.6006% (+0.2287 pp) and CER from 10.0783% to 9.9730% (−0.1054 pp), with 6 exact improvements and 0 regressions. Coverage remains limited (22 hits among 722 noncanonical tokens), so the stage stays research-only. [Workflow and artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41325015010).
 
 
-### Five-dataset Korean G2P benchmark portfolio
+### Long-term five-corpus acquisition portfolio
 
-The benchmark register now tracks five distinct Korean pronunciation-reference datasets: UGTPHON, SIGMORPHON 2021, Seoul Corpus (OpenSLR SLR113), KsponSpeech, and the NIKL Daily Conversation Speech Corpus 2022. UGTPHON and SIGMORPHON have 10-engine IPA comparisons; Seoul now has separate three-mode Hangul-surface and phonemic-IPA tracks. KsponSpeech and NIKL 2022 remain access/terms-gated; LDC remains an alternate licensed sixth candidate. **Five executable evaluation tracks span three datasets; this is not five independent corpora.** See the [five-dataset register, source pins, licence gates and scoring policy](docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md#2026-11-08--five-dataset-korean-g2p-benchmark-portfolio).
+The earlier long-term acquisition portfolio selected UGTPHON, SIGMORPHON 2021, Seoul Corpus, KsponSpeech and NIKL Daily Conversation Speech Corpus 2022. KsponSpeech and NIKL remain access/terms-gated future candidates; they are **not** part of the current executable five-dataset matrix. See the dated [long-term acquisition record](docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md#2026-11-08--long-term-five-corpus-acquisition-portfolio).
 
+
+## 2026-11-09 — executable five-dataset benchmark matrix
+
+The current benchmark target is **UGTPHON, SIGMORPHON 2021 Korean, Seoul Corpus SLR113, K-SPAN 2.1 and IPA-Dict Korean**. This is distinct from the long-term speech-corpus acquisition portfolio above.
+
+- **UGTPHON:** existing ten-engine Strict/Broad comparison and Browser Strict/Soft/Super-soft evidence.
+- **SIGMORPHON 2021:** existing ten-engine Strict/Broad comparison; the three Browser modes are under consolidated verification.
+- **Seoul Corpus:** existing full three-mode Hangul-surface and phonemic-IPA tracks; a 1,000-occurrence ten-engine diagnostic sample is being added.
+- **K-SPAN 2.1:** 1,000-word Modern and 1,000-word Conservative reference tracks from one CC0 dataset, with explicit key→Worldbet→IPA mapping and source-row integrity checks.
+- **IPA-Dict Korean:** 1,000-word residual sample from a pinned CC BY-SA 4.0 source. It shares Wiktionary lineage with SIGMORPHON; exact overlap with UGTPHON, SIGMORPHON and K-SPAN is excluded, but it is not an independent gold lineage.
+
+The matrix contains **five datasets and seven reference tracks**: one UGTPHON, one SIGMORPHON, two Seoul (surface / phonemic IPA), two K-SPAN (Modern / Conservative), and one IPA-Dict. Do not count K-SPAN's two tracks as two datasets.
+
+Ten external engines are compared only under compatible Strict-IPA and Broad diagnostic profiles. Strict / Soft / Super-soft are ClippyFirst runtime policies, not external-engine modes. Candidate availability must be monotonic Strict ≤ Soft ≤ Super-soft, with Super-soft returning a typed candidate for 100% of eligible inputs; source-resolved IPA coverage and accuracy remain separate.
+
+PR [#463](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/463) implements the consolidated matrix. Its corrected exact-head run [42576636761](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42576636761) is still executing at this documentation checkpoint. K-SPAN and IPA-Dict are not claimed as executed until the run validates the reports and uploads the aggregate-only artifact. KsponSpeech and NIKL Daily Conversation remain separate access/terms-gated future candidates; the NIKL MKUFS2 word index used to join K-SPAN identifiers is not a scored NIKL speech dataset.
+
+See the [canonical five-dataset matrix and source/rights pins](docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md#2026-11-09--executable-five-dataset-korean-g2p-matrix).
 
 ## 2026-11-08 benchmark-mode completeness correction
 
