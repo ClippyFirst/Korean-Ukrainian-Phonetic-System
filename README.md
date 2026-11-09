@@ -61,7 +61,7 @@ These are GitHub Actions results, not local test executions. The metadata-only N
 
 ### Branch and PR reconciliation
 
-The comparison between `main` and `benchmark/five-dataset-full-matrix` has merge base `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f` and reports **91 commits ahead / 21 commits behind** for the benchmark branch. The 21 main-only commits affect 10 paths, including the contributor guide, PR template, root README, documentation map, repository structure guide, benchmark dashboard/register, handoff, agent workflow guide and its contract test. The branch is not a safe fast-forward candidate; its diff must be reconciled after its failing tests are repaired. No merge, force-push or branch deletion is performed in this documentation pass.
+The comparison between `main` and `benchmark/five-dataset-full-matrix` has merge base `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f` and reports **91 commits ahead / 24 commits behind** for the benchmark branch. The 24 main-only commits affect 13 paths, including the contributor guide, PR template, root README, documentation map, repository structure guide, benchmark dashboard/register, handoff, agent workflow guide and its contract test. The branch is not a safe fast-forward candidate; its diff must be reconciled after its failing tests are repaired. No merge, force-push or branch deletion is performed in this documentation pass.
 
 [PR #462](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/462) also remains open and unmerged. It is a narrower SIGMORPHON Browser verification change and is superseded in intended scope by #463. Leave it untouched until #463 is accepted; if #463 is eventually merged, close #462 as superseded rather than merging duplicate workflow changes.
 

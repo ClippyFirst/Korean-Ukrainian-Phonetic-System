@@ -23,11 +23,11 @@ The NIKL metadata-only inventory was skipped by workflow policy. These are GitHu
 
 ## Current PR and benchmark boundary
 
-- PR [#463](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/463) remains open and unmerged. Its head `167c12a7e9945dc757a57ea734e9745aa69032f3` is 91 commits ahead / 21 behind main from merge base `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f`; GitHub reports its mergeability as dirty.
+- PR [#463](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/463) remains open and unmerged. Its head `167c12a7e9945dc757a57ea734e9745aa69032f3` is 91 commits ahead / 24 behind main from merge base `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f`; GitHub reports its mergeability as dirty.
 - Exact-head Verify [42665749636](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42665749636) failed in two Python tests; Browser regression/build passed; NIKL metadata-only was skipped.
 - Full matrix [42665749678](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42665749678) failed at benchmark-adapter tests. The CSV delimiter fixture uses a two-character delimiter, and another fixture expects `kijʌk` while the corrected adapter returns `kijɐk`. All later benchmark stages were skipped. Do not count K-SPAN or IPA-Dict as executed on this head.
 - PR [#462](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/462) remains open and unmerged. It is a narrower verification change superseded in intended scope by #463; do not merge both workflow changes.
-- The main-only side of the branch comparison contains 21 commits affecting 10 paths, including current contributor, PR-template, README, documentation navigation and benchmark-register updates. Reconcile those files explicitly after the benchmark branch passes; do not merge the dirty branch blindly.
+- The main-only side of the branch comparison contains 24 commits affecting 13 paths, including current contributor, PR-template, README, documentation navigation and benchmark-register updates. Reconcile those files explicitly after the benchmark branch passes; do not merge the dirty branch blindly.
 
 
 
