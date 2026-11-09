@@ -26,7 +26,7 @@ KSPAN_BUNDLE_URL = (
 )
 KSPAN_METADATA_URL = "https://dataverse.no/dataset.xhtml?persistentId=doi:10.18710/TWM79F"
 KSPAN_FILE_URLS = {
-    "kspan_base.csv": "https://dataverse.no/api/access/datafile/1010",
+    "kspan_base.csv": "https://dataverse.no/api/access/datafile/1010?format=original",
     "kspan_doc.pdf": "https://dataverse.no/api/access/datafile/1009",
 }
 KSPAN_EXPECTED_MD5 = {
