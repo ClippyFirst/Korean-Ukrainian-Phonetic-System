@@ -135,6 +135,7 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
             self.assertEqual(modern[0]["canonical"], "나")
             self.assertEqual(modern[0]["phonemes"], "e")
             self.assertEqual(conservative[0]["phonemes"], "ɛ")
+            self.assertEqual(metadata["key_worldbet_integrity_status"], "PASS")
             self.assertEqual(metadata["key_worldbet_integrity_mismatches"], 0)
             self.assertEqual(
                 metadata["key_worldbet_integrity_mismatches_by_track"],
@@ -142,7 +143,7 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
             )
 
 
-    def test_kspan_key_worldbet_mismatch_is_rejected(self):
+    def test_kspan_key_worldbet_mismatch_is_reported_without_replacing_worldbet(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             nikl = root / "nikl.zip"
@@ -154,8 +155,16 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
             rows[1][4] = "kij^t"
             with kspan.open("w", encoding="utf-8", newline="") as stream:
                 csv.writer(stream, delimiter="\t").writerows(rows)
-            with self.assertRaisesRegex(ValueError, "keystroke/WorldBet integrity check failed"):
-                _load_kspan(kspan, nikl, expected_rows=None)
+            modern, conservative, metadata = _load_kspan(kspan, nikl, expected_rows=None)
+            self.assertEqual(modern[0]["phonemes"], "kijɐt")
+            self.assertEqual(conservative[0]["phonemes"], "kijɐk")
+            self.assertEqual(metadata["key_worldbet_integrity_status"], "WARN")
+            self.assertEqual(metadata["key_worldbet_integrity_mismatches"], 1)
+            self.assertEqual(
+                metadata["key_worldbet_integrity_mismatches_by_track"],
+                {"modern": 1, "conservative": 0},
+            )
+            self.assertIn("1:modern", metadata["key_worldbet_integrity_examples"][0])
 
     def test_unknown_kspan_key_is_not_silently_guessed(self):
         with self.assertRaisesRegex(ValueError, "unknown K-SPAN"):
@@ -223,6 +232,7 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
             self.assertEqual([row["canonical"] for row in modern], ["기역", "가"])
             self.assertEqual([row["tokens"][0]["phoneme"] for row in modern], ["kijɐk", "ka"])
             self.assertEqual([row["tokens"][0]["phoneme"] for row in conservative], ["kijɐk", "ka"])
+            self.assertEqual(metadata["key_worldbet_integrity_status"], "PASS")
             self.assertEqual(metadata["key_worldbet_integrity_mismatches"], 0)
             self.assertEqual(metadata["source_delimiter"], "\t")
 

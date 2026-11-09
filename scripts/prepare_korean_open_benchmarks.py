@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Prepare reproducible, overlap-audited Korean IPA benchmark tracks.
 
-K-SPAN's one-key transcription is checked against its published Worldbet field
-and mapped to IPA using the K-SPAN documentation table. IPA-Dict is retained
+K-SPAN's source WorldBet fields are converted to IPA using the official documentation table.
+The parallel key fields are audited and discrepancies are reported without overriding the
+source phonetic labels. IPA-Dict is retained
 as a Wiktionary-derived supplemental set, not an independent holdout.
 """
 from __future__ import annotations
@@ -198,13 +199,16 @@ def _load_kspan(path: Path, nikl_zip: Path, expected_rows: int | None = 63836) -
         ):
             key_worldbet = key_to_worldbet(source_row[key_field])
             declared_worldbet = "".join(source_row[world_field].split())
-            if key_worldbet != declared_worldbet:
+            key_matches_worldbet = key_worldbet == declared_worldbet
+            if not key_matches_worldbet:
                 key_worldbet_mismatch_counts_by_track[track] += 1
                 key_worldbet_mismatches.append(
                     f"{word_num}:{track}:key={source_row[key_field]!r}:"
                     f"{key_worldbet}!={declared_worldbet}"
                 )
-                continue
+            # ModernPhon/ConservativePhon are the source-provided WorldBet
+            # references. Convert those fields directly; never replace them
+            # with a guessed value derived from the parallel key field.
             try:
                 ipa = worldbet_to_ipa(declared_worldbet)
             except ValueError as exc:
@@ -224,11 +228,6 @@ def _load_kspan(path: Path, nikl_zip: Path, expected_rows: int | None = 63836) -
                 "tokens": [{"canonical": word, "phoneme": ipa}],
             })
 
-    if key_worldbet_mismatches:
-        raise ValueError(
-            f"K-SPAN keystroke/WorldBet integrity check failed: {len(key_worldbet_mismatches)} mismatches; "
-            f"by_track={key_worldbet_mismatch_counts_by_track}; first={key_worldbet_mismatches[:10]}"
-        )
     if unmatched_word_numbers:
         raise ValueError(
             f"K-SPAN/NIKL join incomplete: {len(unmatched_word_numbers)} WordNum values missing; "
@@ -244,9 +243,12 @@ def _load_kspan(path: Path, nikl_zip: Path, expected_rows: int | None = 63836) -
         "matched_hangul_rows": len(modern),
         "non_hangul_rows": non_hangul,
         "unmatched_word_numbers": 0,
-        "key_worldbet_integrity_mismatches": 0,
+        "key_worldbet_integrity_status": "PASS" if not key_worldbet_mismatches else "WARN",
+        "key_worldbet_integrity_mismatches": len(key_worldbet_mismatches),
         "key_worldbet_integrity_mismatches_by_track": key_worldbet_mismatch_counts_by_track,
+        "key_worldbet_integrity_examples": key_worldbet_mismatches[:10],
         "reference_fields": {"modern": "ModernPhon", "conservative": "ConservativePhon"},
+        "ipa_source_policy": "Convert source WorldBet fields directly; key fields are an independent cross-check and never override source labels.",
         "ipa_mapping": "kspan-worldbet-to-ipa-v1; based on official K-SPAN documentation table",
         "kspan_sha256": _sha256(path),
         "nikl_archive_sha256": _sha256(nikl_zip),
