@@ -9,7 +9,8 @@ on:
         type: boolean
         default: false
   push:
-    branches: [main]
+    # Also run on this benchmark branch so corrected data adapters are validated on each head.
+    branches: [main, benchmark/five-dataset-full-matrix]
     paths:
       - "scripts/benchmark_multi_engine_ko.py"
       - "scripts/benchmark_kozak_kim_browser.mjs"
