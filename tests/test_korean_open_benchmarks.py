@@ -1,11 +1,18 @@
 import csv
+import hashlib
 import json
 import tempfile
 import unittest
 import zipfile
 from pathlib import Path
+from unittest.mock import patch
 
-from scripts.run_open_korean_benchmark_ci import KSPAN_EXPECTED_MD5, _extract_kspan_dataset_bundle
+from scripts.run_open_korean_benchmark_ci import (
+    KSPAN_EXPECTED_MD5,
+    KSPAN_FILE_URLS,
+    _download_kspan_sources,
+    _extract_kspan_dataset_bundle,
+)
 from scripts.prepare_korean_open_benchmarks import (
     _load_kspan,
     _read_nikl_word_index,
@@ -38,6 +45,36 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
             csv_path, pdf_path = _extract_kspan_dataset_bundle(bundle, output)
             self.assertEqual(csv_path.read_bytes(), b"WordNum,ModernKey\\n1,rlur\\n")
             self.assertEqual(pdf_path.read_bytes(), b"%PDF-1.4\nfixture")
+
+    def test_kspan_individual_file_fallback_is_used_after_bundle_403_and_hash_pinned(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            csv_bytes = b"WordNum\\tModernKey\\n1\\trk\\n"
+            pdf_bytes = b"%PDF-1.4\\nK-SPAN v2.1 fixture"
+            expected = {
+                "kspan_base.csv": hashlib.md5(csv_bytes).hexdigest(),
+                "kspan_doc.pdf": hashlib.md5(pdf_bytes).hexdigest(),
+            }
+
+            def fake_download(url, destination):
+                if url.endswith("versions/2.1?persistentId=doi:10.18710/TWM79F&format=original"):
+                    raise RuntimeError("HTTP Error 403: Forbidden")
+                filename = Path(destination).name
+                if filename == "kspan_base.csv":
+                    self.assertEqual(url, KSPAN_FILE_URLS[filename])
+                    Path(destination).write_bytes(csv_bytes)
+                elif filename == "kspan_doc.pdf":
+                    self.assertEqual(url, KSPAN_FILE_URLS[filename])
+                    Path(destination).write_bytes(pdf_bytes)
+                else:
+                    raise AssertionError(f"unexpected K-SPAN destination: {destination}")
+
+            with patch("scripts.run_open_korean_benchmark_ci._download", side_effect=fake_download), \\
+                 patch.dict(KSPAN_EXPECTED_MD5, expected, clear=True):
+                csv_path, pdf_path = _download_kspan_sources(root)
+
+            self.assertEqual(csv_path.read_bytes(), csv_bytes)
+            self.assertEqual(pdf_path.read_bytes(), pdf_bytes)
 
     def test_versioned_kspan_bundle_rejects_ambiguous_source_names(self):
         with tempfile.TemporaryDirectory() as directory:
