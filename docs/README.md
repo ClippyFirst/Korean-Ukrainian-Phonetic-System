@@ -36,17 +36,17 @@ This page is the entry point for project documentation. It distinguishes current
 6. [UGTPHON five abstentions — source-only follow-up](UGTPHON-FIVE-ABSTENTIONS-RESOLUTION-2026-11-06.md) — exact NIKL-backed `삶의` variant set and the distinct, source-attested `칡칡이` and `칭칭이` folk-song entries.
 7. [40-case source-only adjudication — 2026-11-07](KOZAK-KIM-40-SOURCE-ONLY-ADJUDICATION-2026-11-07.md) — source-backed structural and broad-profile decisions for all 17 token spellings / 40 residual occurrences, with speaker-specific IPA limits kept separate; [claim-level evidence ledger](../research/kozak-kim-40-adjudication-evidence-claims-2026-11-08.csv) maps each atomic claim to one source; PR #461 adds the shared [runtime adjudication registry](../src/korean_ukrainian/source_adjudications.json) for browser and Python results.
 8. [Repository audit and structure — 2026-11-06](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md) — current continuation for repository, CI, 236-case, no-audio policy, source-rights and readiness status.
-8. [Engineering workflow reference audit — 2026-11-06](ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-06.md) — pinned review of Unlazy, Superpowers, Matt Pocock skills and Ponytail with explicit adoption boundaries.
-9. [Previous repository audit — 2026-11-04](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — historical snapshots; latest addendum 2026-11-05, including engine isolation and historical mismatch blockers.
-10. [Versioning policy](VERSIONING-POLICY.md) — independent browser and Python release streams.
-11. [Architecture](architecture.md) — concise system architecture.
-12. [Methodology](methodology.md) — linguistic and engineering methodology.
-13. [Ukrainian target layer](ukrainian-target-layer.md) — IPA-to-Ukrainian mapping contract.
-14. [Research index](../research/README.md) — active research programme and evidence workflow.
-15. [Research master directive](../research/MASTER-DIRECTIVE.md) — non-negotiable research and implementation constraints.
-16. [Acceptance gates](../research/ACCEPTANCE-GATES.md) — research and release acceptance criteria.
-17. [Decision log](../research/DECISION-LOG.md) — append-only consequential decisions.
-18. [Master execution plan and handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) — append-only historical execution record; use the newest dated section. If the current audit records that the oversized handoff could not be safely appended, the audit's latest superseding continuation is authoritative for that session.
+9. [Engineering workflow reference audit — 2026-11-06](ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-06.md) — pinned review of Unlazy, Superpowers, Matt Pocock skills and Ponytail with explicit adoption boundaries.
+10. [Previous repository audit — 2026-11-04](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-04.md) — historical snapshots; latest addendum 2026-11-05, including engine isolation and historical mismatch blockers.
+11. [Versioning policy](VERSIONING-POLICY.md) — independent browser and Python release streams.
+12. [Architecture](architecture.md) — concise system architecture.
+13. [Methodology](methodology.md) — linguistic and engineering methodology.
+14. [Ukrainian target layer](ukrainian-target-layer.md) — IPA-to-Ukrainian mapping contract.
+15. [Research index](../research/README.md) — active research programme and evidence workflow.
+16. [Research master directive](../research/MASTER-DIRECTIVE.md) — non-negotiable research and implementation constraints.
+17. [Acceptance gates](../research/ACCEPTANCE-GATES.md) — research and release acceptance criteria.
+18. [Decision log](../research/DECISION-LOG.md) — append-only consequential decisions.
+19. [Master execution plan and handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) — append-only historical execution record; use the newest dated section. If the current audit records that the oversized handoff could not be safely appended, the audit's latest superseding continuation is authoritative for that session.
 
 - [Licensing and permissions](LICENSING-AND-PERMISSIONS.md) — author identity, scientific-use permissions, technical permission boundary and third-party licence scope.
 
