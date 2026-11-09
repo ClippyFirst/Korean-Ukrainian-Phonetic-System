@@ -1,16 +1,23 @@
 # Documentation map
 
-## Latest mainline status — 2026-11-08
+## Latest mainline status — 2026-11-09
 
-**Main:** `05137e2ce3c03c72a9e4de6754e9a6f29855cb47` · **working branch:** `main` · **open PRs:** 0 · **branch refs:** 29 total (28 historical/supporting refs retained).
+**Main:** `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f` · **active integration branch:** `main` · **open PRs:** [#463](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/463) and [#462](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/462).
 
-Exact-head GitHub Actions on this main commit: [Tests #42514516177](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42514516177), [System Verify #42514516144](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42514516144), [Master/research artifacts #42514516025](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42514516025), and [Pages deployment/live smoke #42514516081](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42514516081) all **PASS**.
+The four push-triggered workflows completed successfully on this exact main commit:
+- [Tests #42519315077](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42519315077) — PASS.
+- [System Verify #42519315152](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42519315152) — PASS.
+- [Master/research artifacts #42519315001](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42519315001) — PASS.
+- [Pages deployment/live smoke #42519315003](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42519315003) — PASS.
 
-The isolated [MFA Korean G2P v2.0.0 benchmark](KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md#2026-11-08--mfa-korean-g2p-v200-diagnostic-execution) is **DONE_VERIFIED** (run [42513951588](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42513951588), artifact [13630946780](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42513951588/artifacts/13630946780)). Its Hangul/Jamo variants are one model family and remain comparison-only. Independent review of the 56-phone identity-to-IPA assumption and training-data overlap is still open.
+**Open benchmark work is not merged.** PR [#463](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/463) runs the expanded benchmark portfolio. Its run [42526972593](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42526972593) completed the ten-engine comparisons and generated the three SIGMORPHON Browser reports, but failed at the post-report token-count assertion: the workflow's Hangul regex produced an expected count of zero. The Browser regression and open Korean matrix steps were consequently skipped. The run [42526976103](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42526976103) for the pinned UGTPHON external diagnostic passed. PR [#462](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/462) is a narrower earlier verification change superseded in scope by #463; both remain open pending reconciliation. Neither PR is represented as merged or release evidence.
 
-**Readiness:** software-verified, evidence-scoped research prototype; not independently research-certified or release-ready. See the [current audit](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md) and [repository structure guide](REPOSITORY-STRUCTURE.md) for the task ledger and ownership map.
+The isolated [MFA Korean G2P v2.0.0 benchmark](KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md#2026-11-08--mfa-korean-g2p-v200-diagnostic-execution) remains **DONE_VERIFIED** for its comparison-only execution (run [42513951588](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42513951588), artifact [13630946780](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42513951588/artifacts/13630946780)). Independent review of the 56-phone identity-to-IPA assumption and training-data overlap remains open.
+
+**Readiness:** software-verified, evidence-scoped research prototype; not independently research-certified or release-ready. The current operating branch is `main`; historical/supporting refs are retained as evidence and are not active development targets. See the [current audit](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md), [master handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md) and [repository structure guide](REPOSITORY-STRUCTURE.md).
 
 ---
+
 
 
 This page is the entry point for project documentation. It distinguishes current operating contracts from dated research records and append-only execution history.
@@ -22,9 +29,10 @@ This page is the entry point for project documentation. It distinguishes current
 ## Start here
 
 1. [Project README](../README.md) — product overview, installation entry points, public service, runtime modes and limitations.
-2. [Root agent instructions](../AGENTS.md) — repository-wide task routing and non-negotiable contracts.
-3. [Agent workflow guide](AGENT-WORKFLOWS.md) — maintained skills, task lifecycle, evidence rules and review/verification process.
-4. [Repository structure guide](REPOSITORY-STRUCTURE.md) — current component map, data ownership, runtime entry points, development commands and safe navigation.
+2. [Contributing guide](../CONTRIBUTING.md) — setup, change discipline, evidence and rights requirements.
+3. [Root agent instructions](../AGENTS.md) — repository-wide task routing and non-negotiable contracts.
+4. [Agent workflow guide](AGENT-WORKFLOWS.md) — maintained skills, task lifecycle, evidence rules and review/verification process.
+5. [Repository structure guide](REPOSITORY-STRUCTURE.md) — current component map, data ownership, runtime entry points, development commands and safe navigation.
 5. [UGTPHON five abstentions — source-only follow-up](UGTPHON-FIVE-ABSTENTIONS-RESOLUTION-2026-11-06.md) — exact NIKL-backed `삶의` variant set and the distinct, source-attested `칡칡이` and `칭칭이` folk-song entries.
 6. [40-case source-only adjudication — 2026-11-07](KOZAK-KIM-40-SOURCE-ONLY-ADJUDICATION-2026-11-07.md) — source-backed structural and broad-profile decisions for all 17 token spellings / 40 residual occurrences, with speaker-specific IPA limits kept separate; [claim-level evidence ledger](../research/kozak-kim-40-adjudication-evidence-claims-2026-11-08.csv) maps each atomic claim to one source; PR #461 adds the shared [runtime adjudication registry](../src/korean_ukrainian/source_adjudications.json) for browser and Python results.
 7. [Repository audit and structure — 2026-11-06](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md) — current continuation for repository, CI, 236-case, no-audio policy, source-rights and readiness status.
