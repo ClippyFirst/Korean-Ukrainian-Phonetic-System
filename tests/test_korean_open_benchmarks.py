@@ -49,8 +49,8 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
     def test_kspan_individual_file_fallback_is_used_after_bundle_403_and_hash_pinned(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            csv_bytes = b"WordNum\\tModernKey\\n1\\trk\\n"
-            pdf_bytes = b"%PDF-1.4\\nK-SPAN v2.1 fixture"
+            csv_bytes = b"WordNum\tModernKey\n1\trk\n"
+            pdf_bytes = b"%PDF-1.4\nK-SPAN v2.1 fixture"
             expected = {
                 "kspan_base.csv": hashlib.md5(csv_bytes).hexdigest(),
                 "kspan_doc.pdf": hashlib.md5(pdf_bytes).hexdigest(),
@@ -69,9 +69,9 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
                 else:
                     raise AssertionError(f"unexpected K-SPAN destination: {destination}")
 
-            with patch("scripts.run_open_korean_benchmark_ci._download", side_effect=fake_download), \\
-                 patch.dict(KSPAN_EXPECTED_MD5, expected, clear=True):
-                csv_path, pdf_path = _download_kspan_sources(root)
+            with patch("scripts.run_open_korean_benchmark_ci._download", side_effect=fake_download):
+                with patch.dict(KSPAN_EXPECTED_MD5, expected, clear=True):
+                    csv_path, pdf_path = _download_kspan_sources(root)
 
             self.assertEqual(csv_path.read_bytes(), csv_bytes)
             self.assertEqual(pdf_path.read_bytes(), pdf_bytes)
