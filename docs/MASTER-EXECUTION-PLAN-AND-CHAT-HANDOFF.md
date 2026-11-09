@@ -401,3 +401,35 @@ No merge, release publication or branch deletion has been performed in this cont
 - PR #463 remains OPEN and mergeable, but is not ready to merge until the exact-head multi-engine job, all downstream open-matrix steps, artifact upload and schema validation pass.
 - PR #462 remains OPEN and superseded in scope; leave it untouched until #463 passes and is merged.
 - No benchmark metric, dataset accuracy result or release certification is inferred from the checksum correction.
+
+
+## 2026-11-09 continuation — NIKL word-index encoding failure and correction
+
+### Failure evidence
+
+- Exact-head full-matrix run [42584666543](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42584666543) completed the UGTPHON and SIGMORPHON ten-engine comparisons, UGTPHON Browser modes and Native/Browser parity, and SIGMORPHON Browser modes and regression suite.
+- Its open Korean matrix step failed in `scripts/prepare_korean_open_benchmarks.py::_read_nikl_word_index`: the official `MKUFS2/일반어휘통계.txt` payload could not be decoded as CP949/EUC-KR/UTF-8. K-SPAN's CSV/PDF download and checksums had already passed; the failure occurred before NIKL WordNum joins and the supplemental track benchmarks.
+- This was a decoder coverage defect. The script had no UTF-16/UTF-32 support and did not distinguish a successful byte decode from a valid numbered NIKL word index.
+
+### Implemented correction on PR #463
+
+- Added a dedicated decoder that detects UTF-32, UTF-8 BOM, UTF-16 BOM and BOM-less UTF-16 byte patterns, then tries CP949/EUC-KR/UTF-8 fallback encodings.
+- A candidate encoding is accepted only if it yields numbered word records; lossy replacement decoding is not used. If all candidates fail, the exception reports the attempted encodings and why each candidate was rejected.
+- Added regression coverage for UTF-16LE, UTF-16BE, BOM-marked UTF-16 and invalid binary input. Existing CP949 fixture and full K-SPAN WordNum/Worldbet mapping tests remain.
+- PR #463 head after correction: `cded13adb593b510ffa63c05c0a0822d56c0e7ba`. The PR description records the incident and exact fix.
+
+### Exact-head verification
+
+- Tests [42591114502](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591114502) — PASS, including Python 3.11/3.12/3.13, browser suite, wheel install and teacher-corpus audit.
+- System verification [42591114507](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591114507) — PASS, Python regression/data integrity and browser regression/build.
+- Test-case register [42591114602](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591114602) — PASS.
+- External UGTPHON [42591114484](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591114484) — PASS.
+- Master/research artifacts [42591114301](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591114301) — PASS.
+- Full multi-engine workflow [42591114417](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591114417) is currently IN_PROGRESS at step 13, “Run multi-engine comparison”. The NIKL decoder and supplemental Seoul/K-SPAN/IPA-Dict matrix have not yet been exercised on this corrected head. Do not claim the open matrix passed until steps 21 and 22 complete and the uploaded summary passes schema validation.
+
+### Current disposition
+
+- Main at the time of this update: `fc153c295689f57027320263c1a84b12bcb9e7a4`; this handoff update is documentation-only.
+- PR #463 remains OPEN and mergeable; do not merge before the exact-head full matrix and artifact checks pass.
+- PR #462 remains OPEN and superseded in scope; close it only after #463 is successfully merged.
+- The decoder now covers the observed class of encoding failure, but no implementation can guarantee zero failures for every future upstream change or network/runtime condition. CI remains the acceptance gate; a decode that cannot be validated must fail with a diagnostic rather than silently corrupt source words.
