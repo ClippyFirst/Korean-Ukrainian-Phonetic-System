@@ -69,7 +69,7 @@ def worldbet_to_ipa(value: str) -> str:
             raise ValueError(f"unmapped K-SPAN Worldbet sequence at offset {index}: {value[index:index+8]!r}")
         segment = WORLDBET_TO_IPA[match]
         index += len(match)
-        # Worldbet's centralized diacritic is a postfix modifier (x).
+        # Worldbet's mid-centralization diacritic is a postfix modifier (x).
         # Keep it attached to the preceding segment in IPA rather than
         # silently dropping it or treating it as an independent phone.
         if index < len(value) and value[index] == "x":
