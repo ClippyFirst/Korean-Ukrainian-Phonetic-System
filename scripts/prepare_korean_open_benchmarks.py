@@ -20,7 +20,7 @@ from typing import Any
 HANGUL = re.compile(r"^[\uac00-\ud7a3]+$")
 
 # K-SPAN 2.1 documentation: key -> Worldbet -> IPA.
-KEY_TO_WORLDBET_MODERN = {
+KEY_TO_WORLDBET = {
     "q": "p", "Q": "p*", "v": "ph",
     "e": "t", "E": "t*", "x": "th",
     "r": "k", "R": "k*", "z": "kh",
@@ -33,16 +33,6 @@ KEY_TO_WORLDBET_MODERN = {
     "6": "wE", "7": "ixi", "O": "je", "P": "jE",
     "i": "ja", "u": "j^", "y": "jo", "b": "ju", ":": ":",
 }
-# The K-SPAN 2.1 Table 1 transcription is the conservative-track convention:
-# key o -> Worldbet e and key p -> Worldbet E. The ModernKey/ModernPhon
-# columns use the reversed pair. Keep the adapters track-typed rather than
-# forcing one vowel convention onto both independently annotated tracks.
-KEY_TO_WORLDBET_CONSERVATIVE = {
-    **KEY_TO_WORLDBET_MODERN,
-    "o": "e",
-    "p": "E",
-}
-KEY_TO_WORLDBET = KEY_TO_WORLDBET_MODERN
 
 WORLDBET_TO_IPA = {
     "tc}*": "tɕ͈", "tc}h": "tɕʰ", "tc}": "tɕ",
@@ -61,18 +51,12 @@ WORLDBET_TO_IPA = {
 _WORLDBET_KEYS = sorted(WORLDBET_TO_IPA, key=len, reverse=True)
 
 
-def key_to_worldbet(value: str, track: str = "modern") -> str:
+def key_to_worldbet(value: str) -> str:
     value = str(value or "").strip()
-    if track == "modern":
-        mapping = KEY_TO_WORLDBET_MODERN
-    elif track == "conservative":
-        mapping = KEY_TO_WORLDBET_CONSERVATIVE
-    else:
-        raise ValueError(f"unknown K-SPAN transcription track: {track!r}")
-    unknown = sorted(set(value) - set(mapping))
+    unknown = sorted(set(value) - set(KEY_TO_WORLDBET))
     if unknown:
         raise ValueError(f"unknown K-SPAN keystroke symbols: {unknown}")
-    return "".join(mapping[ch] for ch in value)
+    return "".join(KEY_TO_WORLDBET[ch] for ch in value)
 
 
 def worldbet_to_ipa(value: str) -> str:
@@ -89,8 +73,8 @@ def worldbet_to_ipa(value: str) -> str:
     return "".join(out)
 
 
-def key_to_ipa(value: str, track: str = "modern") -> str:
-    return worldbet_to_ipa(key_to_worldbet(value, track=track))
+def key_to_ipa(value: str) -> str:
+    return worldbet_to_ipa(key_to_worldbet(value))
 
 
 def _sha256(path: Path) -> str:
@@ -197,6 +181,7 @@ def _load_kspan(path: Path, nikl_zip: Path, expected_rows: int | None = 63836) -
     conservative: list[dict[str, Any]] = []
     unmatched_word_numbers: list[int] = []
     worldbet_mismatches: list[str] = []
+    worldbet_mismatch_counts_by_track: dict[str, int] = {"modern": 0, "conservative": 0}
     non_hangul = 0
     for source_row in source_rows:
         word_num = int(source_row["WordNum"])
@@ -211,10 +196,13 @@ def _load_kspan(path: Path, nikl_zip: Path, expected_rows: int | None = 63836) -
             ("modern", "ModernKey", "ModernPhon", modern),
             ("conservative", "ConservativeKey", "ConservativePhon", conservative),
         ):
-            worldbet = key_to_worldbet(source_row[key_field], track=track)
+            worldbet = key_to_worldbet(source_row[key_field])
             declared_worldbet = "".join(source_row[world_field].split())
             if worldbet != declared_worldbet:
-                worldbet_mismatches.append(f"{word_num}:{track}:{worldbet}!={declared_worldbet}")
+                worldbet_mismatch_counts_by_track[track] += 1
+                worldbet_mismatches.append(
+                    f"{word_num}:{track}:key={source_row[key_field]!r}:{worldbet}!={declared_worldbet}"
+                )
                 continue
             try:
                 ipa = worldbet_to_ipa(worldbet)
@@ -243,7 +231,7 @@ def _load_kspan(path: Path, nikl_zip: Path, expected_rows: int | None = 63836) -
     if worldbet_mismatches:
         raise ValueError(
             f"K-SPAN keystroke/Worldbet integrity check failed: {len(worldbet_mismatches)} mismatches; "
-            f"first={worldbet_mismatches[:5]}"
+            f"by_track={worldbet_mismatch_counts_by_track}; first={worldbet_mismatches[:10]}"
         )
     if expected_rows is not None and len(source_rows) != expected_rows:
         raise ValueError(f"K-SPAN row-count drift: expected {expected_rows}, got {len(source_rows)}")
