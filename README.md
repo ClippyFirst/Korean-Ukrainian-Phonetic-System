@@ -305,7 +305,7 @@ The successful pinned run 42416681855 also compared ten engines, not only Native
 
 #### Broad-profile sensitivity re-score (research-only)
 
-The same PR #457 artifact also contains a separately versioned `broad-candidate-ipa-v2` sensitivity score using `korean-broad-candidate-sensitivity-v1`. This is **not** a blanket removal of IPA diacritics: it records feature loss and retains stop aspiration, fortisness, vowel length, unreleased codas, and the /s–ɕ–ʃ/ place distinctions. It does collapse selected distinctions (including lateral place, palatal nasality, several h-realizations, fricative aspiration, stress, and selected quality diacritics). These values are historical PR #457 artifact results, not yet the replacement exact-main run 42487350896, which is still executing.
+The same PR #457 artifact also contains a separately versioned `broad-candidate-ipa-v2` sensitivity score using `korean-broad-candidate-sensitivity-v1`. This is **not** a blanket removal of IPA diacritics: it records feature loss and retains stop aspiration, fortisness, vowel length, unreleased codas, and the /s–ɕ–ʃ/ place distinctions. It does collapse selected distinctions (including lateral place, palatal nasality, several h-realizations, fricative aspiration, stress, and selected quality diacritics). These values are historical PR #457 artifact results, not yet the replacement exact-main run 42487350896, which subsequently completed successfully; see the historical exact-main benchmark checkpoint below for its artifact and results.
 
 | Engine | UGTPHON broad exact | UGTPHON CER | SIGMORPHON broad exact | SIGMORPHON CER |
 |---|---:|---:|---:|---:|
