@@ -108,9 +108,9 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
         # Standalone WorldBet x is a consonant symbol, not the K-SPAN ix vowel.
         self.assertEqual(worldbet_to_ipa("xki"), "xki")
 
-    def test_kspan_full_join_accepts_distinct_dubeolsik_ae_eo_worldbet_values(self):
-        # Exercise the complete CSV -> NIKL WordNum join -> key/Worldbet
-        # integrity -> IPA path, not only the two isolated lookup entries.
+    def test_kspan_full_join_uses_surface_worldbet_not_key_equality(self):
+        # Exercise CSV -> NIKL WordNum join -> published surface WorldBet -> IPA.
+        # Key-derived and surface-phonetic representations are distinct fields.
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             nikl = root / "nikl.zip"
