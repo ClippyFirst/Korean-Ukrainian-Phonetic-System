@@ -11,9 +11,29 @@
 - **SIGMORPHON Browser Strict / Soft / Super-soft is not yet executed** in the evidence listed below. The three-mode workflow target exists, but do not report scores until its exact-main artifact passes.
 - **ByT5 and CharsiuG2P inference were skipped** under the default-off research policy; they have no current results in this run.
 
-## Dataset portfolio — five selected Korean reference datasets
+## Executable five-dataset matrix — 2026-11-09 status
 
-The complete research portfolio contains **five distinct datasets**, not merely the two used in the ten-engine comparison. Three have executed ClippyFirst benchmark tracks; two are selected but blocked by access/terms. The portfolio status is distinct from the number of engine/mode evaluation tracks.
+The current target matrix is **UGTPHON, SIGMORPHON 2021 Korean, Seoul Corpus SLR113, K-SPAN 2.1 and IPA-Dict Korean**. It is separate from the long-term KsponSpeech/NIKL speech-corpus acquisition candidates below.
+
+| Dataset | Evaluation tracks | Current evidence state |
+|---|---|---|
+| UGTPHON | 10-engine Strict/Broad; Browser Strict/Soft/Super-soft | Existing benchmark evidence; consolidated rerun in progress |
+| SIGMORPHON 2021 | 10-engine Strict/Broad; Browser Strict/Soft/Super-soft | Existing 10-engine evidence; three-mode reports generated in the earlier failed gate, corrected exact-head rerun pending |
+| Seoul Corpus SLR113 | Full-corpus Browser Hangul surface and phonemic IPA modes; 1,000-occurrence 10-engine sample | Existing Browser evidence; new ten-engine sample pending consolidated CI |
+| K-SPAN 2.1 | 1,000 Modern + 1,000 Conservative sampled word types; 10 engines and compatible Browser modes | Pending consolidated CI; both tracks are one dataset |
+| IPA-Dict Korean | 1,000-word residual sample after exact overlap exclusion; 10 engines and compatible Browser modes | Pending consolidated CI; Wiktionary lineage overlaps SIGMORPHON, so not an independent holdout |
+
+There are **five datasets and seven reference tracks**: UGTPHON (1), SIGMORPHON (1), Seoul (2), K-SPAN Modern/Conservative (2), IPA-Dict (1). The two K-SPAN variants must not be counted as separate datasets.
+
+PR [#463](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/463), head `b348b0f92daab610448312aea26cb99fcc27b036`, adds the consolidated workflow. The exact-head run [42576636761](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42576636761) is running; do not claim K-SPAN or IPA-Dict scores until its open-matrix step, report schema checks and aggregate-only artifact upload pass. The initial failure [42526972593](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42526972593) remains a failed historical run; its Hangul regex defect has been corrected in both workflow validation blocks.
+
+**Scoring contract:** ten external engines use only compatible Strict-IPA and Broad diagnostic profiles. Strict/Soft/Super-soft are ClippyFirst modes, not external-engine modes. Candidate output availability and source-resolved IPA scoring coverage remain separate; Super-soft must provide a typed candidate for 100% of eligible inputs, not achieve 100% accuracy.
+
+See the [canonical matrix, source pins and rights boundaries](KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md#2026-11-09--executable-five-dataset-korean-g2p-matrix).
+
+## Long-term speech-corpus acquisition portfolio — five selected sources
+
+This historical acquisition portfolio contains five sources selected for broad domain coverage. It is not the current executable five-dataset matrix above: KsponSpeech and NIKL Daily Conversation remain access/terms-gated future candidates and are not currently scored.
 
 | Dataset | Reference type / scale | Current status | What is still needed |
 |---|---|---|---|
@@ -23,19 +43,19 @@ The complete research portfolio contains **five distinct datasets**, not merely 
 | **KsponSpeech** | 969 hours / 622,545 utterances reported; spelling and pronunciation transcriptions | <badge color="warning">Access/terms blocked</badge> Selected candidate, not scored | Obtain AIHub corpus and verify exact reuse terms; then score surface Hangul first |
 | **NIKL Daily Conversation Speech Corpus 2022 v1.0** | 630+ hours, 2,000+ speakers; spelling/pronunciation transcription | <badge color="warning">Access/terms blocked</badge> Selected candidate, not scored | Apply through NIKL, obtain exact package and verify corpus-specific terms; then score surface Hangul |
 
-**Counting rule:** the executed set is UGTPHON + SIGMORPHON 2021 + Seoul Corpus = **3 datasets**. Seoul supplies two evaluation tracks (Hangul surface and phonemic IPA); together with the two other corpora, the current evidence register counts **five executed evaluation tracks**, not five datasets. KsponSpeech and NIKL are the fourth and fifth portfolio datasets but have no scores yet.
+**Historical counting rule:** this long-term acquisition portfolio contains five sources, of which three have executed tracks and two remain access/terms-gated. The current executable matrix and its seven reference tracks are described separately above.
 
-### Additional candidates and resources — not part of the five selected datasets
+### Additional candidates and resources — outside the long-term acquisition portfolio
 
 - **Mun, Kim & Ko (2022), 130-row hand-transcribed G2P gold:** high-value rule-phenomenon challenge candidate; blocked because the upstream repository exposes no data reuse licence. Requires written permission or a separately licensed release.
 - **LDC2003L02 Korean Telephone Conversations Lexicon:** 25,251 lexical entries; paid LDC licence required. Potential sixth candidate, not acquired/scored.
-- **Korean Word-IPA Dictionary / IPA-Dict Korean subset:** 62,676 entries reported by an external catalogue; likely shares Wiktionary lineage with SIGMORPHON/WikiPron, so it is supplementary coverage, not an independent gold set until overlap is audited.
+- **Korean Word-IPA Dictionary / IPA-Dict Korean subset:** 62,676 entries reported by an external catalogue; included as a 1,000-word residual sample in the current executable matrix, with exact overlap excluded. It shares Wiktionary lineage with SIGMORPHON/WikiPron and is not an independent gold set.
 - **Zeroth-Korean / OpenSLR SLR40:** CC BY 4.0 speech/lexicon resource; schema and lexicon phone provenance still need audit. ASR transcripts alone are not G2P pronunciation gold.
 - **KoBALT-700:** useful for designing phonology challenge categories, but its multiple-choice tasks are not direct word-to-IPA gold.
 - **CJKI Korean Phonetic Database and Nexdata Korean Pronunciation Dictionary:** commercial resources; excluded absent appropriate licences.
 - **SIGMORPHON 2024:** not counted as a Korean dataset; documented task orthography groups do not establish a Hangul Korean split.
 
-These distinctions and source-level details are recorded in the [canonical benchmark suite register](KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md#2026-11-08--five-dataset-korean-g2p-benchmark-portfolio).
+These distinctions and source-level details are recorded in the [canonical benchmark suite register](KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md#2026-11-08--long-term-five-corpus-acquisition-portfolio).
 
 ## 1. Ten-engine comparison — Strict IPA and Broad sensitivity
 
