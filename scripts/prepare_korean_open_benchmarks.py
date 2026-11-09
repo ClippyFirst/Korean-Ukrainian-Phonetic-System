@@ -180,7 +180,6 @@ def _load_kspan(path: Path, nikl_zip: Path, expected_rows: int | None = 63836) -
     modern: list[dict[str, Any]] = []
     conservative: list[dict[str, Any]] = []
     unmatched_word_numbers: list[int] = []
-    key_surface_diagnostic_mismatches: list[str] = []
     key_surface_mismatch_counts_by_track: dict[str, int] = {"modern": 0, "conservative": 0}
     non_hangul = 0
     for source_row in source_rows:
@@ -200,11 +199,6 @@ def _load_kspan(path: Path, nikl_zip: Path, expected_rows: int | None = 63836) -
             declared_worldbet = "".join(source_row[world_field].split())
             if key_worldbet != declared_worldbet:
                 key_surface_mismatch_counts_by_track[track] += 1
-                if len(key_surface_diagnostic_mismatches) < 10:
-                    key_surface_diagnostic_mismatches.append(
-                        f"{word_num}:{track}:key={source_row[key_field]!r}:"
-                        f"{key_worldbet}!={declared_worldbet}"
-                    )
             # The key-derived representation is not an equality oracle for the
             # source's surface-phonetic transcription. K-SPAN explicitly
             # distinguishes orthographic/quasi-phonological and surface forms.
@@ -245,7 +239,6 @@ def _load_kspan(path: Path, nikl_zip: Path, expected_rows: int | None = 63836) -
         "unmatched_word_numbers": 0,
         "key_surface_diagnostic_mismatches": sum(key_surface_mismatch_counts_by_track.values()),
         "key_surface_diagnostic_mismatches_by_track": key_surface_mismatch_counts_by_track,
-        "key_surface_diagnostic_examples": key_surface_diagnostic_mismatches,
         "reference_fields": {"modern": "ModernPhon", "conservative": "ConservativePhon"},
         "key_surface_comparison": "diagnostic-only; key-derived representation is not required to equal surface phonetic WorldBet",
         "ipa_mapping": "kspan-worldbet-to-ipa-v1; based on official K-SPAN documentation table",
