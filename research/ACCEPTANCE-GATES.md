@@ -1,3 +1,32 @@
+## 2026-11-09 — current PR #465 five-dataset acceptance checkpoint
+
+The current controlled implementation is PR [#465](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/465), head `253b0757f2043d9acf2ccaf191ce676e1161ee2d`, based directly on main `920b6365539058b658348855c5daddc066558b15` (9 commits ahead / 0 behind). Exact-head Tests, System Verify, master/research artifact generation, exhaustive test-case register extraction and external UGTPHON diagnostic all passed. The full matrix [42692169459](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169459) is still running.
+
+| Track / gate | Current state | Acceptance |
+|---|---|---|
+| UGTPHON ten-engine Strict/Broad diagnostic | DONE_VERIFIED for current run | Exact-head matrix stage passed; retain its own occurrence denominator and diagnostic-only interpretation. |
+| UGTPHON Browser Strict/Soft/Super-soft | DONE_VERIFIED for current run | Three mode reports and availability checks passed; accuracy and candidate availability remain separate. |
+| Native/Browser parity | DONE_VERIFIED for current run | Parity stage passed. |
+| SIGMORPHON ten-engine Strict/Broad diagnostic | DONE_VERIFIED for current run | Exact-head matrix stage passed. |
+| SIGMORPHON Browser Strict/Soft/Super-soft | DONE_VERIFIED for current run | Three mode reports and Browser regression suite passed. |
+| Seoul Corpus surface + phonemic IPA tracks | PARTIAL / RUNNING | Full open-matrix step must finish; validate source row counts, joins, typed outputs and separate surface/IPA denominators. |
+| K-SPAN 2.1 Modern + Conservative tracks | PARTIAL / RUNNING | Full source join and both tracks must complete; preserve source warnings described below. |
+| IPA-Dict Korean residual track | PARTIAL / RUNNING | Validate pinned source, licence attribution, residual-sample construction and aggregate metrics. |
+| Aggregate-only summary and JSON Schema | TODO / PENDING | Inspect final artifact, verify aggregate-only redaction and validate schema. |
+
+### K-SPAN source consistency warning
+
+The pinned K-SPAN 2.1 source join contains 63,836 rows and reports 22,843 parallel key/WorldBet discrepancies (Modern 13,078; Conservative 9,765). The current adapter converts source `ModernPhon` / `ConservativePhon` WorldBet fields directly to IPA. `ModernKey` / `ConservativeKey` remain separate audit representations; they do not override source reference fields. Preserve the mismatch counts as `WARN` metadata. This is not a clean key/WorldBet integrity pass and does not prove semantic equivalence of the two representations.
+
+The mapping is versioned `kspan-worldbet-to-ipa-v2`, grounded in the official K-SPAN 2.1 Table 1 and the separately cited WorldBet `wi` sequence. Unknown symbols, invalid WorldBet strings, row-count drift and missing NIKL WordNum joins must continue to fail hard.
+
+### Merge gate
+
+Do not merge PR #465 until the full matrix completes successfully, the aggregate artifact is inspected, schema validation passes, the warning counts survive summarization and all required exact-head checks are green. PR #463 is superseded in intended scope but remains open until #465 acceptance; PR #462 remains untouched until unique scope is reviewed. Independent Korean IPA gold, independent Ukrainian target acceptance, historical 236/239 membership proof, raw `ㅠ` offset validation and restricted-corpus access/terms remain separate blockers.
+
+**Readiness:** PARTIAL research prototype; not release-ready or independently research-certified.
+
+
 ## Exact-main benchmark checkpoint — 2026-11-08
 
 The path-filtered multi-engine workflow completed successfully on main benchmark code commit `b548436d0fce9af4672fc5902d6670cbc134bd70`: [run 42487350896](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42487350896), artifact `13621335293` (SHA-256 `c286d7e4f1ee02d40e1a9977e792eeb73bce12b32b658a8b3c4166c612ccc1a8`). The run contains the 10-engine UGTPHON and SIGMORPHON reports, per-occurrence mismatch ledger, unresolved review queue, three Browser Kozak Kim mode reports, Native/Browser parity report, and readiness audit. This is the current-main benchmark code snapshot; later documentation-only main commit(s) do not change the measured runtime.

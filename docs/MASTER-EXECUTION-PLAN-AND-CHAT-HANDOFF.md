@@ -513,3 +513,43 @@ No merge, release publication or branch deletion has been performed in this cont
 
 This documentation pass is not a benchmark completion and does not authorize merging PR #463. The repository remains a software-verified, evidence-scoped research prototype, not release-ready or independently research-certified. Documentation branch head `db61448373dd179ced0c61332a9bdf0ca53f96a3` passed its PR-head checks and was merged into `main` as `d2699911dbc70ef9978e5af06643b1281725a71a` (PR #464). Post-merge main workflows are tracked separately in the closure record above.
 
+
+
+## 2026-11-09 continuation — PR #465 controlled five-dataset benchmark port
+
+### Execution checkpoint
+
+- Current default branch: `main` at `920b6365539058b658348855c5daddc066558b15`.
+- Working branch: `benchmark/five-dataset-matrix-reconciled-2026-11-09`.
+- Current exact head: `253b0757f2043d9acf2ccaf191ce676e1161ee2d`.
+- PR [#465](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/465): OPEN, mergeable, 9 commits ahead / 0 behind main.
+- The branch ports the selected five-dataset benchmark work onto current main; it does not rewrite main directly. PR #463 remains open as the older divergent implementation; #462 remains open and untouched.
+
+### Completed and verified
+
+- K-SPAN 2.1 mapping aligned against the official PDF Table 1; `o → e`, `p → E`, `x → th`, `m → ix`, `j → ˆ`, `u → jˆ`, and the additional `wi` WorldBet sequence is versioned in `kspan-worldbet-to-ipa-v2`.
+- CSV delimiter and adapter fixture defects repaired; tests now pass on the exact PR head.
+- Exact-head Tests [42692169587](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169587): PASS.
+- Exact-head System Verify [42692169687](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169687): Python and Browser PASS; NIKL metadata-only SKIPPED.
+- Master/research artifacts [42692169326](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169326): PASS.
+- Exhaustive test-case register extraction [42692169308](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169308): PASS.
+- External UGTPHON diagnostic [42692169248](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169248): PASS.
+- Full matrix [42692169459](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169459): UGTPHON multi-engine, Native/Browser parity, SIGMORPHON multi-engine, Browser Strict/Soft/Super-soft and Browser regression stages PASS. Seoul + K-SPAN + IPA-Dict stage remains IN_PROGRESS; final artifact/schema validation is not yet evidenced.
+
+### K-SPAN data quality warning
+
+The 63,836-row K-SPAN source join reports 22,843 key/WorldBet discrepancies (Modern 13,078; Conservative 9,765). The adapter scores the source `ModernPhon` / `ConservativePhon` WorldBet references directly and audits `ModernKey` / `ConservativeKey` separately. These rows are retained and the discrepancy is surfaced as WARN; do not claim key/WorldBet integrity PASS or semantic equivalence. Unknown symbols, invalid WorldBet sequences, missing joins and row-count drift remain hard failures. Aggregate-only artifacts retain warning status and counts while omitting row-level examples.
+
+### Remaining acceptance
+
+1. Complete run 42692169459. Require successful Seoul surface and phonemic tracks, K-SPAN Modern and Conservative, IPA-Dict, full joins and expected row counts.
+2. Inspect aggregate-only JSON artifact; verify no token-level labels/examples leak and the summary JSON Schema validates.
+3. Confirm warning counts/status in manifest and summary (22,843 total; Modern 13,078; Conservative 9,765).
+4. Run/review all exact-head checks after any final fix.
+5. Only then merge PR #465. After successful merge, close #463 as superseded if it contains no unique required scope; decide #462 on its remaining unique scope rather than merging duplicate changes.
+6. Keep independent Korean IPA review, Ukrainian target review, 236/239 historical membership proof, raw `ㅠ` span validation and access/terms-gated speech corpora as separate research blockers.
+
+### Readiness
+
+The repository remains a software-verified, evidence-scoped research prototype, not independently research-certified or release-ready. No local shell/npm/pytest execution is claimed in this connector-only session; the named GitHub Actions runs are the verification evidence.
+

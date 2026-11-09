@@ -1,3 +1,58 @@
+## Current continuation — 2026-11-09 five-dataset benchmark port (PR #465)
+
+This entry supersedes the earlier #463 divergence and failing-test checkpoint below. It records the controlled port based on the current default branch; earlier audit entries remain historical evidence.
+
+### Repository and branch state
+
+- Default branch: `main`, base SHA `920b6365539058b658348855c5daddc066558b15`.
+- Active branch: `benchmark/five-dataset-matrix-reconciled-2026-11-09`.
+- Active PR: [#465](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/465), head `253b0757f2043d9acf2ccaf191ce676e1161ee2d), 9 commits ahead / 0 behind main; GitHub reports mergeable.
+- Older PR #463 remains open and unmerged; PR #462 remains open and untouched. Neither is merged into #465 by assumption; the #465 branch was created from current main and carries the selected benchmark files.
+
+### Exact-head verification
+
+- Tests [42692169587](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169587): PASS — Python 3.11/3.12/3.13, wheel install, web and teacher-corpus audit.
+- System Verify [42692169687](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169687): Python and Browser PASS; official NIKL metadata-only inventory SKIPPED by policy.
+- Master/research artifacts [42692169326](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169326): PASS.
+- Exhaustive test-case register extraction [42692169308](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169308): PASS.
+- External UGTPHON diagnostic [42692169248](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169248): PASS.
+- Multi-engine/full matrix [42692169459](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169459): IN_PROGRESS on the exact head. UGTPHON engine comparisons, Native/Browser parity, SIGMORPHON engine comparisons, SIGMORPHON Browser three-mode reports and Browser regression suite completed successfully. The Seoul + K-SPAN + IPA-Dict open matrix is still running; artifact upload and final summary/schema validation have not completed.
+
+### K-SPAN evidence and data-quality disposition
+
+The official K-SPAN 2.1 PDF Table 1 was extracted from the pinned source bundle in the earlier diagnostic run [42655211788](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42655211788). The adapter now treats `ModernPhon` and `ConservativePhon` as the source WorldBet reference fields and converts them directly to IPA. `ModernKey` and `ConservativeKey` are separately audited; they do not override or silently rewrite the reference fields.
+
+The 63,836-row join reports 22,843 key/WorldBet discrepancies: Modern 13,078 and Conservative 9,765. The workflow retains this as explicit WARN metadata and includes per-track counts. The aggregate-only summary must preserve status and counts but omit row-level examples. Unknown symbols, missing NIKL WordNum joins, row-count drift and invalid WorldBet values remain hard failures. The 22,843 discrepancies are not declared resolved; their source semantics require independent interpretation.
+
+The current mapping identifier is `kspan-worldbet-to-ipa-v2`; it includes the attested WorldBet `wi` sequence with its primary-source basis recorded in the adapter metadata and regression tests. No unsupported IPA form or score is inferred from the discrepancy count.
+
+### Current task ledger
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Port benchmark integration onto current main | DONE_VERIFIED as branch reconciliation | PR #465 is 9 ahead / 0 behind; exact file diff is limited to benchmark workflow, adapter, source register, schema, scripts and tests. |
+| Repair CSV delimiter and K-SPAN fixture expectations | DONE_VERIFIED | Exact-head Tests and System Verify passed. |
+| UGTPHON 10-engine comparison and Browser modes | DONE_VERIFIED for this run | Full matrix run 42692169459 reports these stages passed; preserve dataset-specific denominators and diagnostic-only interpretation. |
+| Native/Browser parity | DONE_VERIFIED for this run | Parity stage passed in run 42692169459. |
+| SIGMORPHON 10-engine comparison and Browser modes | DONE_VERIFIED for this run | Engine and three-mode Browser stages passed in run 42692169459. |
+| Seoul + K-SPAN + IPA-Dict open matrix | PARTIAL | Still running in run 42692169459; acceptance requires every configured track, valid joins and source integrity. |
+| Aggregate-only JSON summary and schema validation | TODO / PENDING | Workflow has not reached final artifact upload/summary/schema stage. Require schema validation on final generated JSON and inspect artifact. |
+| K-SPAN parallel key/WorldBet semantic consistency | WARN / BLOCKED | 22,843 mismatches remain; source-field scoring is explicit, but equivalence of parallel representations is not established. |
+| Independent Korean IPA gold review | BLOCKED | Qualified independent reviewers and blind adjudication required. |
+| Independent Ukrainian target validation | BLOCKED | Frozen IPA inputs and separate Ukrainian-reader acceptance required. |
+| Historical 236/239 selector proof; raw `ㅠ` offset validation | BLOCKED / PARTIAL | Original contemporaneous selector and raw-span evidence are still absent. |
+| KsponSpeech / NIKL speech-corpus acquisition | BLOCKED | Access and corpus-specific licensing terms remain unresolved; NIKL metadata-only inventory is skipped, not passed. |
+| Optional ByT5 / Charsiu inference | DEFERRED | Optional jobs skipped by policy; not required for the current diagnostic matrix. |
+
+### PR and branch decisions
+
+PR #465 is the only active integration candidate. Do not merge until run 42692169459 completes successfully, its aggregate-only artifact and schema are inspected, and all required exact-head checks remain green. PR #463 is older and divergent; leave open until #465 is accepted, then close as superseded if no unique scope remains. PR #462 remains untouched pending that same reconciliation. No historical branch is deleted or force-updated.
+
+### Readiness
+
+**Current status: PARTIAL research prototype.** Software verification is green; the complete five-dataset matrix is not yet verified. Even after matrix completion, independent Korean IPA review, Ukrainian target acceptance and unresolved provenance/access gates prevent a claim of research certification or release readiness.
+
+
 
 
 **PR #463 divergence refresh:** compared against main HEAD `80c0361c0b91b6747fd262c5b729bcb8ed0bbf17`, the benchmark branch is 91 commits ahead / 27 behind from merge base `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f`. The main-only side touches 13 paths. This comparison snapshot predates the final status-only commit that records it.

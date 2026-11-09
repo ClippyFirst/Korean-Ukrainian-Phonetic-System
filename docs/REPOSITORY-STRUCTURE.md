@@ -1,42 +1,24 @@
 # Repository structure and ownership guide
 
 **Current documentation snapshot:** 2026-11-09.  
-**Audited main baseline:** `45a02a62ce955c3db10eb0faaaa1ce8d9f2c9cdb`  
-**Documentation merge commit:** `d2699911dbc70ef9978e5af06643b1281725a71a` (PR #464)
-**PR #463 comparison snapshot:** main HEAD `80c0361c0b91b6747fd262c5b729bcb8ed0bbf17`; benchmark branch 91 commits ahead / 27 behind..  
-**Post-merge main HEAD:** `d2699911dbc70ef9978e5af06643b1281725a71a` (PR #464). Exact PR-head verification passed. **Post-merge main verification passed on `5c12f92c36ecae455dc4281dd7a8c0217f5dc4dc`:** Tests [42679091769](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42679091769), System Verify [42679091895](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42679091895), master/research artifacts [42679091976](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42679091976), and Pages deployment/live smoke [42679091977](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42679091977) all **PASS**. NIKL metadata-only remained **SKIPPED** by policy.
-**Default branch:** `main`.  
-**Documentation reconciliation branch:** `docs/repository-navigation-reconciliation-2026-11-09`, based on the audited main HEAD.  
-**Scope:** navigation, component ownership, data boundaries, verification entry points and repository maintenance. This is not a claim that every file has been independently reviewed line by line.
+**Default branch:** `main` at `920b6365539058b658348855c5daddc066558b15`.  
+**Documentation/navigation foundation:** PR #464 merged; see [documentation map](README.md).  
+**Active implementation branch:** PR [#465](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/465), `benchmark/five-dataset-matrix-reconciled-2026-11-09`, head `253b0757f2043d9acf2ccaf191ce676e1161ee2d`; 9 ahead / 0 behind main.  
+**Scope:** navigation, component ownership, data boundaries, verification entry points and repository maintenance. This guide does not claim every file has been independently reviewed line by line.
 
-## Mainline verification
+## Current verification boundary
 
-The four mainline workflows completed successfully on the audited main commit:
-
-| Workflow | Result | Run |
-|---|---|---|
-| Tests | **PASS** | [42591577770](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591577770) |
-| System Verify | **PASS** | [42591577711](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591577711) |
-| Master table / research artifacts | **PASS** | [42591577812](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591577812) |
-| Pages deployment / live smoke | **PASS** | [42591577865](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591577865) |
-
-The NIKL metadata-only inventory was skipped by workflow policy. These are GitHub Actions results, not local command executions.
+On the exact PR #465 head, Tests [42692169587](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169587), System Verify [42692169687](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169687), master/research artifact generation [42692169326](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169326), exhaustive register extraction [42692169308](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169308) and UGTPHON diagnostic [42692169248](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169248) passed. Full five-dataset run [42692169459](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169459) is still in progress: the Seoul/K-SPAN/IPA-Dict open matrix has not completed. NIKL metadata-only is skipped by policy, not passed.
 
 ## Current PR and benchmark boundary
 
-- PR [#463](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/463) remains open and unmerged. Its head `167c12a7e9945dc757a57ea734e9745aa69032f3` is 91 commits ahead / 27 behind main from merge base `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f`; GitHub reports its mergeability as dirty.
-- Exact-head Verify [42665749636](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42665749636) failed in two Python tests; Browser regression/build passed; NIKL metadata-only was skipped.
-- Full matrix [42665749678](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42665749678) failed at benchmark-adapter tests. The CSV delimiter fixture uses a two-character delimiter, and another fixture expects `kijʌk` while the corrected adapter returns `kijɐk`. All later benchmark stages were skipped. Do not count K-SPAN or IPA-Dict as executed on this head.
-- PR [#462](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/462) remains open and unmerged. It is a narrower verification change superseded in intended scope by #463; do not merge both workflow changes.
-- The main-only side of the branch comparison contains 27 commits affecting 13 paths, including current contributor, PR-template, README, documentation navigation and benchmark-register updates. Reconcile those files explicitly after the benchmark branch passes; do not merge the dirty branch blindly.
+The active five-dataset implementation is PR #465, a controlled port based on current main. It changes the benchmark workflow, source register, benchmark adapters, preparation/orchestration/summarization scripts, schema and tests. The branch is 9 commits ahead and zero behind main. PR #463 is the older divergent implementation; PR #462 is a narrower overlapping Browser verification change. Neither is merged or deleted.
 
-
-
-GitHub's paginated branch search returned **31 refs total** (including `main` and this documentation branch). The 30 non-main refs include active benchmark PR branches and historical research/fix/documentation branches. No historical branch was deleted or force-updated; branch removal is not needed to make the default branch authoritative and would destroy potentially useful audit history.
+K-SPAN 2.1 is one dataset with Modern and Conservative reference tracks. The pinned 63,836-row source join currently reports 22,843 parallel key/WorldBet discrepancies (Modern 13,078; Conservative 9,765). Scoring uses source WorldBet fields; key fields are independently audited and surfaced as WARN. This is not a zero-mismatch integrity pass. The aggregate summary must retain warning status and counts while excluding row-level examples.
 
 ## Current readiness
 
-Mainline software checks are green, but the five-dataset benchmark matrix is still **PARTIAL**. The project remains a software-verified, evidence-scoped research prototype, not independently research-certified or release-ready. See the [current audit](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md#current-continuation--2026-11-09-documentation-and-pr-reconciliation), [benchmark results](BENCHMARK-RESULTS-2026-11-08.md), [acceptance gates](../research/ACCEPTANCE-GATES.md) and [master handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md).
+The ordinary software and browser checks pass on the current PR head. The open-dataset matrix and aggregate schema acceptance remain pending. The project remains a software-verified, evidence-scoped research prototype, not independently research-certified or release-ready. Independent Korean IPA review, Ukrainian target review and the separately documented source/access gates remain unresolved.
 
 ## Navigation by reader task
 
