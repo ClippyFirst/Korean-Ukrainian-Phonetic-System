@@ -61,11 +61,15 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
         self.assertEqual(key_to_ipa("rlur"), "kijʌk")
         self.assertEqual(key_to_worldbet("rk"), "ka")
         self.assertEqual(key_to_ipa("rk"), "ka")
-        self.assertEqual(worldbet_to_ipa("p*thtc}hNixwE"), "p͈tʰtɕʰŋɨwɛ")
-        # In Worldbet x is a consonant symbol (voiceless velar
-        # fricative), not a postfix diacritic. Keep it as its own segment.
+        # K-SPAN 2.1 kspan_doc.pdf, Table 1: key m -> WorldBet ix -> IPA i;
+        # key 7 -> WorldBet ixi -> IPA ii. Longest-match preserves ixi as one segment.
+        self.assertEqual(worldbet_to_ipa("p*thtc}hNixwE"), "p͈tʰtɕʰŋiwɛ")
+        self.assertEqual(worldbet_to_ipa("ix"), "i")
+        self.assertEqual(worldbet_to_ipa("ixi"), "ii")
+        self.assertEqual(key_to_ipa("m"), "i")
+        self.assertEqual(key_to_ipa("7"), "ii")
+        # Standalone WorldBet x is a consonant symbol, not the K-SPAN ix vowel.
         self.assertEqual(worldbet_to_ipa("xki"), "xki")
-        self.assertEqual(worldbet_to_ipa("ix"), "ɨ")
 
     def test_kspan_full_join_accepts_distinct_dubeolsik_ae_eo_worldbet_values(self):
         # Exercise the complete CSV -> NIKL WordNum join -> key/Worldbet
