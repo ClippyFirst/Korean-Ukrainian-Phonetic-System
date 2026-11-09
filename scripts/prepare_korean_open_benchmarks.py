@@ -103,12 +103,12 @@ def _decode_nikl_word_index(raw: bytes) -> dict[int, str]:
     CP949/EUC-KR, and accept a decode only when it yields numbered records.
     """
     candidates: list[str] = []
-    if raw.startswith(b"\\xef\\xbb\\xbf"):
-        candidates.append("utf-8-sig")
-    elif raw.startswith((b"\\xff\\xfe", b"\\xfe\\xff")):
-        candidates.append("utf-16")
-    elif raw.startswith((b"\\xff\\xfe\\x00\\x00", b"\\x00\\x00\\xfe\\xff")):
+    if raw.startswith((b"\xff\xfe\x00\x00", b"\x00\x00\xfe\xff")):
         candidates.append("utf-32")
+    elif raw.startswith(b"\xef\xbb\xbf"):
+        candidates.append("utf-8-sig")
+    elif raw.startswith((b"\xff\xfe", b"\xfe\xff")):
+        candidates.append("utf-16")
     else:
         # BOM-less UTF-16 exports commonly contain NULs in ASCII columns.
         even_nuls = sum(raw[index] == 0 for index in range(0, len(raw), 2))
@@ -127,18 +127,14 @@ def _decode_nikl_word_index(raw: bytes) -> dict[int, str]:
             continue
 
         by_record: dict[int, str] = {}
-        record_number = 0
         for line in decoded.splitlines():
             fields = line.strip().split()
             if len(fields) < 3 or not fields[0].rstrip(".").isdigit():
                 continue
             word = fields[2]
-            # Reject decodes that produce replacement/control characters or
-            # no Korean text in the expected orthographic word column.
-            if "\\ufffd" in word or any(ord(char) < 0x20 for char in word):
+            if "\ufffd" in word or any(ord(char) < 0x20 for char in word):
                 continue
-            record_number += 1
-            by_record[record_number] = word
+            by_record[len(by_record) + 1] = word
         if by_record:
             return by_record
         failures.append(f"{encoding}: decoded text contained no numbered word records")
