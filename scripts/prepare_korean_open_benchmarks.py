@@ -95,11 +95,66 @@ def _hangul_words_from_json(path: Path) -> set[str]:
     return words
 
 
+def _decode_nikl_word_index(raw: bytes) -> dict[int, str]:
+    """Decode NIKL's legacy text export without accepting mojibake.
+
+    NIKL archives have circulated with Korean legacy encodings and UTF-16
+    exports. Try BOM/byte-pattern-indicated Unicode encodings as well as
+    CP949/EUC-KR, and accept a decode only when it yields numbered records.
+    """
+    candidates: list[str] = []
+    if raw.startswith(b"\\xef\\xbb\\xbf"):
+        candidates.append("utf-8-sig")
+    elif raw.startswith((b"\\xff\\xfe", b"\\xfe\\xff")):
+        candidates.append("utf-16")
+    elif raw.startswith((b"\\xff\\xfe\\x00\\x00", b"\\x00\\x00\\xfe\\xff")):
+        candidates.append("utf-32")
+    else:
+        # BOM-less UTF-16 exports commonly contain NULs in ASCII columns.
+        even_nuls = sum(raw[index] == 0 for index in range(0, len(raw), 2))
+        odd_nuls = sum(raw[index] == 0 for index in range(1, len(raw), 2))
+        pairs = max(1, len(raw) // 2)
+        if max(even_nuls, odd_nuls) / pairs > 0.10:
+            candidates.extend(("utf-16-le", "utf-16-be"))
+        candidates.extend(("cp949", "euc-kr", "utf-8-sig"))
+
+    failures: list[str] = []
+    for encoding in dict.fromkeys(candidates):
+        try:
+            decoded = raw.decode(encoding)
+        except (UnicodeDecodeError, UnicodeError) as exc:
+            failures.append(f"{encoding}: {exc}")
+            continue
+
+        by_record: dict[int, str] = {}
+        record_number = 0
+        for line in decoded.splitlines():
+            fields = line.strip().split()
+            if len(fields) < 3 or not fields[0].rstrip(".").isdigit():
+                continue
+            word = fields[2]
+            # Reject decodes that produce replacement/control characters or
+            # no Korean text in the expected orthographic word column.
+            if "\\ufffd" in word or any(ord(char) < 0x20 for char in word):
+                continue
+            record_number += 1
+            by_record[record_number] = word
+        if by_record:
+            return by_record
+        failures.append(f"{encoding}: decoded text contained no numbered word records")
+
+    detail = "; ".join(failures[-5:])
+    raise ValueError(
+        "cannot decode NIKL 일반어휘통계.txt into numbered word records "
+        f"(tried {', '.join(dict.fromkeys(candidates))}); {detail}"
+    )
+
+
 def _read_nikl_word_index(archive_path: Path) -> dict[int, str]:
     with zipfile.ZipFile(archive_path) as archive:
         all_txt = [
             info for info in archive.infolist()
-            if PurePosixPath(info.filename).name.endswith(".txt")
+            if PurePosixPath(info.filename).name.lower().endswith(".txt")
         ]
         named = [
             info for info in all_txt
@@ -110,29 +165,7 @@ def _read_nikl_word_index(archive_path: Path) -> dict[int, str]:
             raise ValueError("NIKL archive does not contain the expected 일반어휘통계 TXT file")
         info = max(candidates, key=lambda item: item.file_size)
         raw = archive.read(info.filename)
-
-    decoded = None
-    for encoding in ("cp949", "euc-kr", "utf-8-sig"):
-        try:
-            decoded = raw.decode(encoding)
-            break
-        except UnicodeDecodeError:
-            continue
-    if decoded is None:
-        raise ValueError("cannot decode NIKL 일반어휘통계.txt as CP949/EUC-KR/UTF-8")
-
-    # WordNum in K-SPAN is the 1-based record number in the original NIKL list.
-    by_record: dict[int, str] = {}
-    record_number = 0
-    for line in decoded.splitlines():
-        fields = line.strip().split()
-        if len(fields) < 3 or not fields[0].rstrip(".").isdigit():
-            continue
-        record_number += 1
-        by_record[record_number] = fields[2]
-    if not by_record:
-        raise ValueError("no numbered word records found in NIKL frequency list")
-    return by_record
+    return _decode_nikl_word_index(raw)
 
 
 def _load_kspan(path: Path, nikl_zip: Path, expected_rows: int | None = 63836) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
