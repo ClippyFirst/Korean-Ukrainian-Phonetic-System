@@ -463,3 +463,11 @@ No merge, release publication or branch deletion has been performed in this cont
 - Verify run [42605775613](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42605775613) passed Python regression/data-integrity and Browser regression/build on the preceding test commit. This run does not exercise the full external K-SPAN corpus.
 - PR #463 description now records the old-run SHA, the correction, the end-to-end fixture and the still-open acceptance gate.
 - **Status: PARTIAL, not DONE_VERIFIED.** The corrected end-to-end fixture has been committed, but the available GitHub connector exposes no workflow-dispatch action. The only full benchmark run observed is the old-SHA failure above. No 63,836-row acceptance claim is made. Required acceptance: execute `.github/workflows/multi-engine-ipa-benchmark.yml` on head `aee316c2b89f47d9927f1b06ccc41e504adb6e94`; confirm 63,836 raw K-SPAN rows, zero key/Worldbet mismatches, nonempty Modern and Conservative tracks, all later Seoul/K-SPAN/IPA-Dict steps, and successful uploaded artifact/schema validation.
+
+
+## 2026-11-09 follow-up — test-fixture defect found during independent review
+
+- A line-by-line review of the newly added end-to-end fixture found its CSV writer used the literal two-character delimiter `\\t` rather than a tab. This was a defect in the test itself: it would not generate the tab-separated K-SPAN input expected by the loader. The fixture now uses the actual tab delimiter (`\t`).
+- Fix committed as `2c13bea9bc7324eeb768bddd498cc873233ab893` on `benchmark/five-dataset-full-matrix`.
+- This demonstrates why the earlier claim that the end-to-end fixture was ready for acceptance was premature. The test has been corrected in source, but no workflow run has yet been observed for this exact commit. Existing passing run `42605775613` predates this correction and must not be attributed to it.
+- Full matrix remains **PARTIAL / acceptance blocked**. Required next evidence: Python regression workflow on `2c13bea9bc7324eeb768bddd498cc873233ab893`, then full `multi-engine-ipa-benchmark.yml` on the same corrected head. The latter must pass all later tracks and artifact schema checks; no full-corpus pass is claimed.
