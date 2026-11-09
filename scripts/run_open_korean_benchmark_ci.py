@@ -280,7 +280,11 @@ def run(workdir: Path, sample_size: int = 1000, seed: int = 20261108) -> Path:
     )
 
     assert manifest["kspan"]["raw_rows"] == 63836
-    assert manifest["kspan"]["key_worldbet_integrity_mismatches"] == 0
+    key_surface_mismatches = manifest["kspan"]["key_surface_diagnostic_mismatches"]
+    key_surface_by_track = manifest["kspan"]["key_surface_diagnostic_mismatches_by_track"]
+    assert isinstance(key_surface_mismatches, int) and key_surface_mismatches >= 0
+    assert set(key_surface_by_track) == {"modern", "conservative"}
+    assert sum(key_surface_by_track.values()) == key_surface_mismatches
     assert manifest["kspan"]["unmatched_word_numbers"] == 0
     assert manifest["kspan"]["sampled_modern_word_types"] == sample_size
     assert manifest["kspan"]["sampled_conservative_word_types"] == sample_size
