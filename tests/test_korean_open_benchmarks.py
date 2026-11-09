@@ -129,12 +129,12 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
             with kspan.open("w", encoding="utf-8", newline="") as stream:
                 writer = csv.writer(stream, delimiter="\t")
                 writer.writerow(fields)
-                writer.writerow(["3", "o", "p", "o", "E", "e", "1"] + ["0"] * 12)
+                writer.writerow(["3", "o", "p", "o", "e", "E", "1"] + ["0"] * 12)
 
             modern, conservative, metadata = _load_kspan(kspan, nikl, expected_rows=1)
             self.assertEqual(modern[0]["canonical"], "나")
-            self.assertEqual(modern[0]["phonemes"], "ɛ")
-            self.assertEqual(conservative[0]["phonemes"], "e")
+            self.assertEqual(modern[0]["phonemes"], "e")
+            self.assertEqual(conservative[0]["phonemes"], "ɛ")
             self.assertEqual(metadata["key_worldbet_integrity_mismatches"], 0)
             self.assertEqual(
                 metadata["key_worldbet_integrity_mismatches_by_track"],
