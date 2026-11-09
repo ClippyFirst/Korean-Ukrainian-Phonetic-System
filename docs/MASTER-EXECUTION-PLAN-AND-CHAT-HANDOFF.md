@@ -486,3 +486,17 @@ No merge, release publication or branch deletion has been performed in this cont
 - The GitHub connector available in this session exposes read operations and rerun actions, but no workflow-dispatch/create-run action. Rerunning an old-SHA failed job would not validate this corrected head, so it was not used as a substitute.
 - Current PR #463 head: `7c6b47404fcdcf9ac9fc6674125c1a864973436e`; branch `benchmark/five-dataset-full-matrix`; PR remains OPEN and unmerged.
 - Required acceptance remains: dispatch `.github/workflows/multi-engine-ipa-benchmark.yml` against the current PR head (or a commit containing the same tested source), verify all benchmark stages including 63,836 K-SPAN rows, zero key/Worldbet mismatches, Modern and Conservative tracks, downstream Seoul and IPA-Dict tracks, and validate the uploaded aggregate-only report against `schemas/korean-benchmark-summary.schema.json`. Do not merge #463 before this gate is green.
+
+
+## 2026-11-09 final continuation — handoff revision and latest Verify run
+
+- Source/test state remains as previously verified at `2c13bea9bc7324eeb768bddd498cc873233ab893`; subsequent commits on the branch only update the handoff and PR description.
+- Latest code-bearing branch head before this documentation-only update: `9c93c5b0ec63c45e2ef3cb8734d3cbf32bdad246`.
+- Verify run [42616853599](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42616853599) on that head completed:
+  - Python regression and data integrity — PASS (job 129158736269).
+  - Browser regression tests and build — PASS (job 129158735878; browser tests, source redistribution rights gate, public-page build and generated-page verification all succeeded).
+  - Official NIKL source inventory (metadata-only) — SKIPPED.
+- This latest Verify run confirms the current source/test state and the documentation-only changes up to `9c93c5b0`; it still does not run the multi-engine workflow.
+- The multi-engine benchmark acceptance gate remains **PARTIAL / BLOCKED by missing workflow-dispatch capability in the connected GitHub toolset**. The last full-matrix run remains the earlier pre-key-map-correction failure; no corrected-head full-matrix result or artifact/schema validation exists.
+- PR #463 remains OPEN and must not be merged while the full matrix is unverified. The branch is still 60 commits ahead and 21 behind `main` at this checkpoint; compare reports divergence from the common base `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f`. Mergeability is false. Reconcile the 21 incoming main commits and resolve conflicts before considering merge, then rerun required checks on the reconciled head.
+- Current acceptance decision: the fixture and general Verify workflow are verified; the five-dataset / ten-engine full matrix is not. Repository status remains a research prototype, not release-ready or independently research-certified.
