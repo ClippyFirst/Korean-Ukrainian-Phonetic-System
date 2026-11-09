@@ -33,7 +33,7 @@ A research-oriented Korean-to-Ukrainian pronunciation system. It analyzes Korean
 ## Latest repository checkpoint — 2026-11-09
 
 **Audited main baseline:** `45a02a62ce955c3db10eb0faaaa1ce8d9f2c9cdb`  
-**Post-merge main HEAD:** `d2699911dbc70ef9978e5af06643b1281725a71a` (PR #464)  
+**Documentation merge commit:** `d2699911dbc70ef9978e5af06643b1281725a71a` (PR #464)  
 **Post-merge main HEAD:** `d2699911dbc70ef9978e5af06643b1281725a71a` (PR #464). Exact PR-head verification passed; post-merge main workflows are recorded as pending in the audit until their own runs complete.
 **Default branch:** `main`  
 **Documentation reconciliation branch:** `docs/repository-navigation-reconciliation-2026-11-09` (based on the audited main HEAD; no runtime changes are made in this documentation pass).

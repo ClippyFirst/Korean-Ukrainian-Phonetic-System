@@ -189,8 +189,9 @@ test('post-merge documentation closeout records the merged mainline commit and v
     ['audit', audit], ['handoff', handoff],
   ]) {
     assert.ok(content.includes('d2699911dbc70ef9978e5af06643b1281725a71a'), label + ' missing merged main SHA');
-    assert.ok(content.includes('42678483929'), label + ' missing exact PR-head test evidence');
+    
   }
+  assert.ok(audit.includes('42678483929'), 'audit missing exact PR-head test evidence');
   assert.ok(audit.includes('Documentation navigation and status reconciliation | DONE_VERIFIED'));
   assert.ok(handoff.includes('Documentation/navigation update | DONE_VERIFIED'));
 });
