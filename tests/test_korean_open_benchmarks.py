@@ -86,7 +86,7 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
                 "ConservativeNumNeighborsSyll", "ConservativeMeanNeighborFreqSyll",
             ]
             with kspan.open("w", encoding="utf-8", newline="") as stream:
-                writer = csv.writer(stream, delimiter="\\t")
+                writer = csv.writer(stream, delimiter="\t")
                 writer.writerow(fields)
                 writer.writerow(["3", "o", "p", "o", "E", "e", "1"] + ["0"] * 12)
 
