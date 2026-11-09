@@ -62,7 +62,7 @@ The workflow directory is organized by responsibility rather than by runtime lan
 | Workflow | Responsibility | Operational boundary |
 |---|---|---|
 | `.github/workflows/test.yml` | Main test matrix: Python 3.11–3.13, browser tests, wheel installation and teacher-corpus audit | Core regression and packaging checks |
-| `.github/workflows/verify.yml` | System verification: Python regression/data integrity and browser regression/build | Mainline verification; metadata-only NIKL crawl is separately gated |
+| `.github/workflows/verify.yml` | System verification: Python regression/data integrity, browser regression/build and source redistribution rights gate | Mainline verification; metadata-only NIKL crawl is separately gated |
 | `.github/workflows/master-table.yml` | Generate the master table and strict research corpus artifacts | Generated outputs must come from canonical inputs |
 | `.github/workflows/deploy-pages.yml` | Python/data checks, browser static build and GitHub Pages deployment | Deployment gate; not a linguistic research certification |
 | `.github/workflows/multi-engine-ipa-benchmark.yml` | Pinned multi-engine IPA comparison, Browser mode runs, Native/Browser parity and optional neural comparison jobs | Long-running research benchmark; CharsiuG2P and ByT5 jobs are default-off |
