@@ -1,5 +1,9 @@
 
 
+**PR #463 divergence refresh:** compared against main HEAD `80c0361c0b91b6747fd262c5b729bcb8ed0bbf17`, the benchmark branch is 91 commits ahead / 27 behind from merge base `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f`. The main-only side touches 13 paths. This comparison snapshot predates the final status-only commit that records it.
+
+
+
 ### Post-merge closure — PR #464
 
 PR [#464](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/464) was squash-merged into `main` as `d2699911dbc70ef9978e5af06643b1281725a71a`. The documentation branch head was `db61448373dd179ced0c61332a9bdf0ca53f96a3`; the PR was five commits ahead of its base and zero behind.
@@ -36,7 +40,7 @@ NIKL metadata-only inventory: SKIPPED by policy. No local shell, npm or pytest c
 ### Current PR state and benchmark failures
 
 - PR [#463](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/463) is OPEN / UNMERGED; head `167c12a7e9945dc757a57ea734e9745aa69032f3`; GitHub mergeability state `dirty`.
-- PR #463 branch is 91 commits ahead and 24 behind main, with merge base `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f`. The 24 main-only commits touch 13 files: `.github/PULL_REQUEST_TEMPLATE.md`, `CONTRIBUTING.md`, `README.md`, `docs/AGENT-WORKFLOWS.md`, `docs/BENCHMARK-RESULTS-2026-11-08.md`, `docs/ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-06.md`, `docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md`, `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md`, `docs/README.md`, `docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md`, `docs/REPOSITORY-STRUCTURE.md`, `tests/agent-workflow-structure-contract.test.mjs`, and `tests/kozak-kim-methodology-contract.test.mjs`. Do not infer that all 91 ahead commits are unique code changes; the merge-base comparison is the relevant branch relation.
+- PR #463 branch is 91 commits ahead and 27 behind main, with merge base `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f`. The 27 main-only commits touch 13 files: `.github/PULL_REQUEST_TEMPLATE.md`, `CONTRIBUTING.md`, `README.md`, `docs/AGENT-WORKFLOWS.md`, `docs/BENCHMARK-RESULTS-2026-11-08.md`, `docs/ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-06.md`, `docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md`, `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md`, `docs/README.md`, `docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md`, `docs/REPOSITORY-STRUCTURE.md`, `tests/agent-workflow-structure-contract.test.mjs`, and `tests/kozak-kim-methodology-contract.test.mjs`. Do not infer that all 91 ahead commits are unique code changes; the merge-base comparison is the relevant branch relation.
 - [Verify 42665749636](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42665749636): Python regression/data integrity FAILED; Browser regression/build PASSED; NIKL metadata-only SKIPPED.
 - [Full matrix 42665749678](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42665749678): benchmark-adapter tests FAILED, so later comparison, Browser, Seoul, K-SPAN, IPA-Dict and aggregate-summary steps were SKIPPED. Its artifact upload does not make those skipped stages complete.
 - Exact test failures:
@@ -63,7 +67,7 @@ The current default-branch HEADs of all four supplied references still match the
 | Documentation navigation and status reconciliation | DONE_VERIFIED | README, documentation map, structure guide, this audit, handoff and reference-audit snapshot updated on the documentation branch; exact-head CI still required. |
 | Four upstream workflow references | DONE_VERIFIED | Current HEADs rechecked; all match pinned audit snapshots; no material imported. |
 | PR #463 five-dataset matrix | PARTIAL | Two adapter tests fail; downstream benchmark stages skipped. |
-| PR #463 mainline reconciliation | TODO | Reconcile 24 main-only commits / 13 affected paths after benchmark tests pass; inspect conflicts and rerun exact-head gates. |
+| PR #463 mainline reconciliation | TODO | Reconcile 27 main-only commits / 13 affected paths after benchmark tests pass; inspect conflicts and rerun exact-head gates. |
 | PR #462 disposition | DEFERRED_PENDING_463 | Leave open for now; close as superseded only after #463 is accepted. |
 | Independent Korean IPA review | BLOCKED | Requires qualified independent reviewer and source-resolved review packet. |
 | Independent Ukrainian target validation | BLOCKED | Requires frozen IPA inputs and separate qualified Ukrainian receiving-language review. |

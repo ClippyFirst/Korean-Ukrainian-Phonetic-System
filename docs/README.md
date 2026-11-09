@@ -3,7 +3,8 @@
 ## Latest repository checkpoint — 2026-11-09
 
 **Audited main baseline:** `45a02a62ce955c3db10eb0faaaa1ce8d9f2c9cdb`  
-**Documentation merge commit:** `d2699911dbc70ef9978e5af06643b1281725a71a` (PR #464)  
+**Documentation merge commit:** `d2699911dbc70ef9978e5af06643b1281725a71a` (PR #464)
+**PR #463 comparison snapshot:** main HEAD `80c0361c0b91b6747fd262c5b729bcb8ed0bbf17`; benchmark branch 91 commits ahead / 27 behind.  
 **Post-merge main HEAD:** `d2699911dbc70ef9978e5af06643b1281725a71a` (PR #464). Exact PR-head verification passed. **Post-merge main verification passed on `5c12f92c36ecae455dc4281dd7a8c0217f5dc4dc`:** Tests [42679091769](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42679091769), System Verify [42679091895](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42679091895), master/research artifacts [42679091976](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42679091976), and Pages deployment/live smoke [42679091977](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42679091977) all **PASS**. NIKL metadata-only remained **SKIPPED** by policy.
 **Default branch:** `main`  
 **Documentation reconciliation branch:** `docs/repository-navigation-reconciliation-2026-11-09` (based on the audited main HEAD; no runtime changes are made in this documentation pass).
@@ -31,7 +32,7 @@ These are GitHub Actions results, not local test executions. The metadata-only N
 
 ### Branch and PR reconciliation
 
-The comparison between `main` and `benchmark/five-dataset-full-matrix` has merge base `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f` and reports **91 commits ahead / 24 commits behind** for the benchmark branch. The 24 main-only commits affect 13 paths, including the contributor guide, PR template, root README, documentation map, repository structure guide, benchmark dashboard/register, handoff, agent workflow guide and its contract test. The branch is not a safe fast-forward candidate; its diff must be reconciled after its failing tests are repaired. No merge, force-push or branch deletion is performed in this documentation pass.
+The comparison between `main` and `benchmark/five-dataset-full-matrix` has merge base `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f` and reports **91 commits ahead / 27 commits behind** for the benchmark branch. The 27 main-only commits affect 13 paths, including the contributor guide, PR template, root README, documentation map, repository structure guide, benchmark dashboard/register, handoff, agent workflow guide and its contract test. The branch is not a safe fast-forward candidate; its diff must be reconciled after its failing tests are repaired. No merge, force-push or branch deletion is performed in this documentation pass.
 
 [PR #462](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/462) also remains open and unmerged. It is a narrower SIGMORPHON Browser verification change and is superseded in intended scope by #463. Leave it untouched until #463 is accepted; if #463 is eventually merged, close #462 as superseded rather than merging duplicate workflow changes.
 
