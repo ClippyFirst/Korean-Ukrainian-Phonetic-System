@@ -213,7 +213,7 @@ def run(workdir: Path, sample_size: int = 1000, seed: int = 20261108) -> Path:
     # and is never inferred from benchmark labels.
     from pypdf import PdfReader
 
-    kspan_doc_text = "\\n".join(page.extract_text() or "" for page in PdfReader(str(kspan_doc)).pages)
+    kspan_doc_text = "\n".join(page.extract_text() or "" for page in PdfReader(str(kspan_doc)).pages)
     if not kspan_doc_text.strip():
         raise ValueError("K-SPAN 2.1 documentation PDF contains no extractable text")
     print("BEGIN OFFICIAL K-SPAN 2.1 DOCUMENT TEXT", file=sys.stderr, flush=True)
