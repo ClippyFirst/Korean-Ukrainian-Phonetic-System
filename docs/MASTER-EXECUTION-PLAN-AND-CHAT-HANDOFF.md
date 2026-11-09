@@ -433,3 +433,59 @@ No merge, release publication or branch deletion has been performed in this cont
 - PR #463 remains OPEN and mergeable; do not merge before the exact-head full matrix and artifact checks pass.
 - PR #462 remains OPEN and superseded in scope; close it only after #463 is successfully merged.
 - The decoder now covers the observed class of encoding failure, but no implementation can guarantee zero failures for every future upstream change or network/runtime condition. CI remains the acceptance gate; a decode that cannot be validated must fail with a diagnostic rather than silently corrupt source words.
+
+
+---
+
+## 2026-11-09 — documentation/navigation reconciliation and benchmark handoff
+
+**Audited base:** `45a02a62ce955c3db10eb0faaaa1ce8d9f2c9cdb` on `main`.  
+**Working branch:** `docs/repository-navigation-reconciliation-2026-11-09`, created from that exact base for this documentation continuation.  
+**Scope:** update existing documentation and navigation in place; do not change runtime rules, benchmark data, source labels or dataset contents.
+
+### Work completed in this continuation
+
+- Reconciled the root README, documentation map, repository structure guide, repository audit and this handoff with the live GitHub state.
+- Rechecked all four supplied workflow-reference repositories. Their current default-branch HEADs still match the pinned revisions in the existing comparison audit; no upstream material was copied.
+- Retrieved exact PR #463 and #462 metadata, compared the benchmark branch against main, and inspected failing workflow logs rather than relying on stale status prose.
+- Recorded the actual current-main workflow results and distinguished them from PR benchmark checks and skipped jobs.
+
+### Current verified evidence
+
+- Main Tests [42591577770](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591577770): PASS.
+- Main System Verify [42591577711](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591577711): PASS.
+- Main master/research artifacts [42591577812](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591577812): PASS.
+- Main Pages deployment/live smoke [42591577865](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591577865): PASS.
+- PR #463 Verify [42665749636](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42665749636): Python FAILED; Browser PASS; NIKL metadata-only SKIPPED.
+- PR #463 full matrix [42665749678](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42665749678): adapter tests FAILED; later engine/browser/open-matrix stages SKIPPED.
+- Local npm/pytest/build commands were not run because this continuation used GitHub connector operations and did not have a local checkout. Do not report local verification.
+
+### Exact blockers
+
+1. Correct the literal two-character CSV delimiter in `tests/test_korean_open_benchmarks.py::test_kspan_key_worldbet_mismatch_is_rejected` to a one-character tab delimiter; acceptance: focused test passes and the intended key/WorldBet mismatch is rejected.
+2. Align the `test_nikl_word_index_and_kspan_worldbet_integrity` fixture with the corrected IPA mapping (`kijɐk`); acceptance: fixture agrees with the documented adapter mapping and the full 63,836-row source integrity check remains strict.
+3. Rerun the complete adapter tests and exact-head Verify.
+4. Rerun the full five-dataset benchmark; require all intended UGTPHON, SIGMORPHON, Seoul, K-SPAN Modern/Conservative and IPA-Dict stages, complete joins, source integrity, Browser modes where applicable, aggregate-only artifact and JSON Schema validation.
+5. Reconcile the 21 main-only commits / 10 changed paths with the benchmark branch after its tests pass. The current PR branch is 91 ahead / 21 behind and GitHub reports it dirty; no blind merge is acceptable.
+6. Leave PR #462 open until #463 is accepted; then close it as superseded if its only remaining scope is duplicated.
+
+### Task ledger
+
+| Area | State | Next acceptance |
+|---|---|---|
+| Mainline software CI | DONE_VERIFIED | Already green on audited main SHA. |
+| Documentation/navigation update | PARTIAL_PENDING_EXACT_HEAD_CI | Exact-head CI on this documentation branch must pass. |
+| Four workflow-reference snapshots | DONE_VERIFIED | Current upstream HEADs match pinned commits; process-only adoption. |
+| Five-dataset benchmark | PARTIAL | Repair two tests and pass the complete exact-head matrix. |
+| Main/PR branch reconciliation | TODO | Resolve all 10 main-only paths after benchmark code is green; rerun checks. |
+| Independent Korean IPA review | BLOCKED | Qualified independent review required. |
+| Independent Ukrainian target review | BLOCKED | Frozen IPA and separate receiving-language review required. |
+| Historical 236/239 membership proof | PARTIAL | Original contemporaneous selector evidence is still absent. |
+| Raw `ㅠ` span validation | BLOCKED | Raw offsets must be verified. |
+| KsponSpeech / NIKL 2022 | BLOCKED | Access and licensing terms unresolved. |
+| Optional neural inference | DEFERRED | Default-off policy remains in force. |
+
+### Stop condition and readiness
+
+This documentation pass is not a benchmark completion and does not authorize merging PR #463. The repository remains a software-verified, evidence-scoped research prototype, not release-ready or independently research-certified. Final documentation-branch commit and exact-head CI results must be added to the execution report after the branch checks complete.
+

@@ -152,3 +152,27 @@ test('owner-selected mainline policy and third-party rights documents remain dis
   assert.ok(existsSync(new URL('../licenses/UGTPHON-KO-SOURCE-NOTICE.md', import.meta.url)));
   assert.ok(existsSync(new URL('../docs/KOZAK-236-INDEPENDENT-REVIEW.md', import.meta.url)));
 });
+
+
+test('2026-11-09 documentation checkpoint records current main, PR divergence and exact benchmark blockers', () => {
+  const rootReadme = read('README.md');
+  const docsIndex = read('docs/README.md');
+  const structureGuide = read('docs/REPOSITORY-STRUCTURE.md');
+  const audit = read('docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md');
+  const handoff = read('docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md');
+  for (const [label, content] of [
+    ['README', rootReadme],
+    ['docs index', docsIndex],
+    ['structure guide', structureGuide],
+    ['audit', audit],
+    ['handoff', handoff],
+  ]) {
+    assert.ok(content.includes('45a02a62ce955c3db10eb0faaaa1ce8d9f2c9cdb'), label + ' missing audited main SHA');
+    assert.ok(content.includes('42665749678'), label + ' missing failed exact-head matrix evidence');
+    assert.ok(content.includes('167c12a7e9945dc757a57ea734e9745aa69032f3'), label + ' missing benchmark PR head');
+  }
+  assert.ok(audit.includes('91 commits ahead / 21 commits behind'));
+  assert.ok(audit.includes('kijɐk'));
+  assert.ok(audit.includes('two-character delimiter'));
+  assert.ok(docsIndex.includes('REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md#current-continuation--2026-11-09-documentation-and-pr-reconciliation'));
+});

@@ -1,3 +1,60 @@
+## Current continuation — 2026-11-09 documentation and PR reconciliation
+
+**Audited main:** `45a02a62ce955c3db10eb0faaaa1ce8d9f2c9cdb`.  
+**Default branch:** `main`.  
+**Documentation work branch:** `docs/repository-navigation-reconciliation-2026-11-09`, created from the audited main HEAD.  
+**Scope:** reconcile current documentation, navigation and evidence status; no benchmark/runtime code or dataset was changed in this documentation pass.
+
+### Verified mainline workflows
+
+| Workflow | Result | Run |
+|---|---|---|
+| Tests | PASS | [42591577770](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591577770) |
+| System Verify | PASS | [42591577711](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591577711) |
+| Master table / research artifacts | PASS | [42591577812](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591577812) |
+| Pages deployment / live smoke | PASS | [42591577865](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42591577865) |
+
+NIKL metadata-only inventory: SKIPPED by policy. No local shell, npm or pytest command was run in this connector-only continuation.
+
+### Current PR state and benchmark failures
+
+- PR [#463](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/463) is OPEN / UNMERGED; head `167c12a7e9945dc757a57ea734e9745aa69032f3`; GitHub mergeability state `dirty`.
+- PR #463 branch is 91 commits ahead and 21 behind main, with merge base `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f`. The 21 main-only commits touch 10 files: `.github/PULL_REQUEST_TEMPLATE.md`, `CONTRIBUTING.md`, `README.md`, `docs/AGENT-WORKFLOWS.md`, `docs/BENCHMARK-RESULTS-2026-11-08.md`, `docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md`, `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md`, `docs/README.md`, `docs/REPOSITORY-STRUCTURE.md`, and `tests/kozak-kim-methodology-contract.test.mjs`. Do not infer that all 91 ahead commits are unique code changes; the merge-base comparison is the relevant branch relation.
+- [Verify 42665749636](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42665749636): Python regression/data integrity FAILED; Browser regression/build PASSED; NIKL metadata-only SKIPPED.
+- [Full matrix 42665749678](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42665749678): benchmark-adapter tests FAILED, so later comparison, Browser, Seoul, K-SPAN, IPA-Dict and aggregate-summary steps were SKIPPED. Its artifact upload does not make those skipped stages complete.
+- Exact test failures:
+  - `test_kspan_key_worldbet_mismatch_is_rejected`: CSV reader receives a two-character delimiter string (`"\\t"`) and raises `TypeError: "delimiter" must be a 1-character string`.
+  - `test_nikl_word_index_and_kspan_worldbet_integrity`: expected `kijʌk`, actual adapter output `kijɐk`; fixture expectation is inconsistent with the corrected /ɐ/ mapping.
+  - Summary: 2 failed, 88 passed, 3 subtests passed.
+- PR #463's acceptance gate remains open: repair both tests, rerun the adapter suite, then run the full five-dataset matrix on the exact final head and validate all expected reports, source integrity, joins and aggregate schema.
+
+PR [#462](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/462) remains OPEN / UNMERGED. It is the narrower earlier SIGMORPHON Browser verification change. Leave it untouched until #463 is accepted; if #463 is later merged, close #462 as superseded instead of merging duplicate workflow code.
+
+### Reference repositories revalidated
+
+The current default-branch HEADs of all four supplied references still match the commits recorded in [the workflow reference audit](ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-06.md). The review therefore remains revision-current as of this date. Selected practices remain process-only; no third-party code, skills, hooks, plugins, artwork or benchmark data were copied.
+
+### Task ledger
+
+| Task | State | Evidence / acceptance |
+|---|---|---|
+| Mainline software workflows | DONE_VERIFIED | Four exact-main workflows above pass; NIKL metadata-only is explicitly skipped. |
+| Documentation navigation and status reconciliation | PARTIAL_PENDING_EXACT_HEAD_CI | README, documentation map, structure guide, this audit, handoff and reference-audit snapshot updated on the documentation branch; exact-head CI still required. |
+| Four upstream workflow references | DONE_VERIFIED | Current HEADs rechecked; all match pinned audit snapshots; no material imported. |
+| PR #463 five-dataset matrix | PARTIAL | Two adapter tests fail; downstream benchmark stages skipped. |
+| PR #463 mainline reconciliation | TODO | Reconcile 21 main-only commits / 10 affected paths after benchmark tests pass; inspect conflicts and rerun exact-head gates. |
+| PR #462 disposition | DEFERRED_PENDING_463 | Leave open for now; close as superseded only after #463 is accepted. |
+| Independent Korean IPA review | BLOCKED | Requires qualified independent reviewer and source-resolved review packet. |
+| Independent Ukrainian target validation | BLOCKED | Requires frozen IPA inputs and separate qualified Ukrainian receiving-language review. |
+| Historical 236/239 cohort identity | PARTIAL | Reconstructed inventory does not prove original contemporaneous selector membership. |
+| Raw `ㅠ` source-span matching | BLOCKED | Validate raw offsets before matching normalized runtime strings. |
+| KsponSpeech / NIKL 2022 | BLOCKED | Access and exact dataset terms are not cleared. |
+| ByT5 / CharsiuG2P inference | DEFERRED | Existing default-off research policy; not counted as passed. |
+
+### Readiness
+
+**Software-verified, evidence-scoped research prototype; not release-ready and not independently research-certified.** The ordinary mainline software workflows pass, but the five-dataset matrix, independent linguistic review and separate Ukrainian target validation remain incomplete.
+
 ## Current mainline continuation — documentation and external MFA benchmark (2026-11-08)
 
 **Starting commit:** `05137e2ce3c03c72a9e4de6754e9a6f29855cb47`  
