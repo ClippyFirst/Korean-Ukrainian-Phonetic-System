@@ -91,10 +91,16 @@ def summarize(
 ) -> dict[str, Any]:
     multi = [_named_path(item) for item in multi_engine]
     modes = [_named_path(item) for item in browser]
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    kspan_metadata = manifest.get("kspan")
+    if isinstance(kspan_metadata, dict):
+        # Keep aggregate warning status/counts, but omit row-level examples
+        # from the aggregate-only summary artifact.
+        kspan_metadata.pop("key_worldbet_integrity_examples", None)
     result = {
         "schema_version": 1,
         "report_scope": "aggregate-only; token-level source text, IPA labels, mismatch examples and occurrence ledgers are omitted",
-        "manifest": json.loads(manifest_path.read_text(encoding="utf-8")),
+        "manifest": manifest,
         "multi_engine_tracks": [_multi_engine(path, name) for name, path in multi],
         "browser_mode_tracks": [_browser(path, name) for name, path in modes],
     }

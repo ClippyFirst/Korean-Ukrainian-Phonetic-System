@@ -280,11 +280,18 @@ def run(workdir: Path, sample_size: int = 1000, seed: int = 20261108) -> Path:
     )
 
     assert manifest["kspan"]["raw_rows"] == 63836
-    assert manifest["kspan"]["key_worldbet_integrity_mismatches"] == 0
+    assert manifest["kspan"]["key_worldbet_integrity_status"] == "WARN"
+    assert manifest["kspan"]["key_worldbet_integrity_mismatches"] == 22843
     assert manifest["kspan"]["key_worldbet_integrity_mismatches_by_track"] == {
-        "modern": 0,
-        "conservative": 0,
+        "modern": 13078,
+        "conservative": 9765,
     }
+    assert manifest["kspan"]["key_worldbet_integrity_examples"]
+    print(
+        "K-SPAN source-field warning: scoring uses ModernPhon/ConservativePhon "
+        "WorldBet references; parallel key fields differ in 22,843 rows "
+        "(Modern 13,078; Conservative 9,765)."
+    )
     assert manifest["kspan"]["unmatched_word_numbers"] == 0
     assert manifest["kspan"]["sampled_modern_word_types"] == sample_size
     assert manifest["kspan"]["sampled_conservative_word_types"] == sample_size

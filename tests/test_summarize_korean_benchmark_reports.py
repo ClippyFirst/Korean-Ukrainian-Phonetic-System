@@ -13,7 +13,7 @@ class AggregateBenchmarkSummaryTests(unittest.TestCase):
             manifest = root / "manifest.json"
             multi = root / "multi.json"
             browser = root / "browser.json"
-            manifest.write_text(json.dumps({"schema_version": 1, "tracks": {"kspan": 10}}), encoding="utf-8")
+            manifest.write_text(json.dumps({"schema_version": 1, "kspan": {"key_worldbet_integrity_status": "WARN", "key_worldbet_integrity_mismatches": 2, "key_worldbet_integrity_mismatches_by_track": {"modern": 1, "conservative": 1}, "key_worldbet_integrity_examples": ["1:modern:key=o:e!=E"]}}), encoding="utf-8")
             multi.write_text(json.dumps({
                 "benchmark": "K-SPAN Modern",
                 "dataset_source": "CC0",
@@ -80,6 +80,10 @@ class AggregateBenchmarkSummaryTests(unittest.TestCase):
             self.assertNotIn('"gold": "ka"', rendered)
             self.assertEqual(result["multi_engine_tracks"][0]["engines"]["clippyfirst_native"]["scored_tokens"], 9)
             self.assertEqual(result["browser_mode_tracks"][0]["morphology_mode"], "strict")
+            self.assertEqual(result["manifest"]["kspan"]["key_worldbet_integrity_status"], "WARN")
+            self.assertEqual(result["manifest"]["kspan"]["key_worldbet_integrity_mismatches"], 2)
+            self.assertNotIn("key_worldbet_integrity_examples", result["manifest"]["kspan"])
+            self.assertNotIn("1:modern:key=o:e!=E", rendered)
 
 
 if __name__ == "__main__":
