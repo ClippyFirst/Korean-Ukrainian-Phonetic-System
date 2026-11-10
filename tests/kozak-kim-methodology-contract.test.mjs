@@ -91,7 +91,7 @@ test('all three Kozak Kim modes have separate documented benchmark contracts and
   ]) {
     assert.ok(methodology.includes(term), 'methodology must include ' + term);
   }
-  for (const term of ['Strict', 'Soft', 'Super-soft', 'Measured diagnostic on UGTPHON', 'Measured diagnostic, not accuracy acceptance']) {
+  for (const term of ['Strict', 'Soft', 'Super-soft', 'RERUN_REQUIRED', 'ACCURACY_UNMEASURED', 'historical']) {
     assert.ok(readme.includes(term), 'README must distinguish ' + term);
   }
   for (const term of ['Strict | DONE_VERIFIED', 'Soft | PARTIAL', 'Super-soft | PARTIAL', 'unified three-mode 236-case evaluation = TODO']) {
