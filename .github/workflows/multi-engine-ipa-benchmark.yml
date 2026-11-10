@@ -638,7 +638,7 @@ jobs:
             ${{ runner.temp }}/v3-training-readiness.json
             ${{ runner.temp }}/ipa-holdout-review-packets/
             ${{ runner.temp }}/open-korean-benchmark-summary.json
-            ${{ runner.temp }}/open-korean-benchmarks-work/prepared/manifest.json
+            # The aggregate summary contains the redacted manifest; never upload the raw per-row preparation manifest.
             ${{ runner.temp }}/open-korean-benchmarks-work/prepared/source-sha256.txt
           if-no-files-found: warn
           retention-days: 30
