@@ -226,7 +226,7 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
 }
 .specimen-tile-note { background: var(--warm-white); color: var(--ink-navy); }
 .specimen-tile-note strong {
-  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  font-size: 1.2rem;
   font-weight: 700;
   line-height: 1.35;
   letter-spacing: -.025em;
@@ -459,7 +459,7 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
   font-size: 2.7rem;
   font-weight: 720;
   line-height: 1.22;
-  letter-spacing: -.045em;
+  letter-spacing: -.04em;
 }
 .result-body.ipa { font-family: "Noto Sans", "Segoe UI", sans-serif; font-size: 1.12rem; }
 .result-body.romanization { font-size: 1.15rem; }
@@ -525,7 +525,7 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
   color: var(--vermilion);
   font-size: 1.6rem;
   font-weight: 760;
-  letter-spacing: -.05em;
+  letter-spacing: -.04em;
 }
 .system-intro h2 { margin: 0 0 5px; color: var(--ink-navy); font-size: 1.25rem; }
 .system-intro p:not(.section-kicker) { margin: 0; color: var(--muted); font-size: .88rem; }
@@ -583,13 +583,13 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
   font-size: .96rem;
   line-height: 1.78;
 }
-.doc-content > .section-kicker { margin: 0 0 8px; color: var(--celadon); font-size: .72rem; }
+
 .doc-content h2 {
   margin: 0 0 20px;
   color: var(--ink-navy);
   font-size: 2rem;
   line-height: 1.16;
-  letter-spacing: -.045em;
+  letter-spacing: -.04em;
   text-wrap: balance;
 }
 .doc-content h3 {
@@ -724,7 +724,7 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
 /* Contrast-safe text accents and a visible focus treatment. */
 :root { --celadon-ink: #526e5d; }
 .specimen-tile-ipa { color: #10251e; }
-.doc-content > .section-kicker { color: var(--celadon-ink); }
+
 .editorial-site :focus-visible,.system-page :focus-visible {
   outline: 2px solid var(--vermilion);
   outline-offset: 3px;
@@ -779,7 +779,7 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
 .skip-link { background: var(--ink-navy); color: var(--hanji); }
 
 /* Keep labels editorial and readable rather than default all-caps chrome. */
-.specimen-label,.doc-content > .section-kicker,.methodology-toc .section-kicker,.mode-legend {
+.specimen-label,.mode-legend {
   text-transform: none;
   letter-spacing: .025em;
 }
