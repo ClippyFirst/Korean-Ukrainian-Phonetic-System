@@ -1,3 +1,23 @@
+# Current continuation — benchmark integration and research gates (2026-11-10 10:20 UTC+2)
+
+**Main:** `920b6365539058b658348855c5daddc066558b15`. **Active PR #465:** `1cf42b8d75ce3de2df6ad36dcca7208a255af342`, based on main; not merged.
+
+- **DONE_VERIFIED:** exact-head Python 3.11/3.12/3.13, Browser, wheel install and teacher-corpus audit — [run 42778967231](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967231).
+- **DONE_VERIFIED:** system Python/data integrity and Browser build/regression — [run 42778967019](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967019).
+- **DONE_VERIFIED:** master/research artifact generation — [run 42778967136](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967136).
+- **DONE_VERIFIED:** external UGTPHON diagnostic — [run 42778967047](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967047).
+- **DONE_VERIFIED:** exhaustive test-case register extraction — [run 42778967366](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967366).
+- **PARTIAL:** five-dataset multi-engine comparison — [run 42778967197](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967197) remains IN_PROGRESS at multi-engine comparison. Optional ByT5/CharsiuG2P jobs were SKIPPED, not passed.
+- **WARN / BLOCKED:** K-SPAN 63,836-row join retains all rows; 22,843 key/WorldBet discrepancies (Modern 13,078; Conservative 9,765) remain visible. WorldBet source labels drive scoring; key fields are audited separately.
+- **BLOCKED:** independent Korean IPA gold review; independent Ukrainian target review; source-specific restricted-data membership, raw-offset and rights evidence.
+- **DEFERRED:** optional neural comparison engines for this run.
+
+**Acceptance rule:** do not mark the five-dataset matrix complete until the full workflow succeeds on the final runtime/test head, all intended tracks and joins are present, the aggregate-only artifact is inspected, schema validation passes, and K-SPAN warning metadata is retained. A workflow status alone is insufficient.
+
+**Readiness:** software-verified research prototype; not release-ready or independently research-certified.
+
+---
+
 # Current continuation — mainline benchmark, renderer and 236-case status (2026-11-08)
 
 **Starting main:** e24cf7caff745fb612080aef6a33c8058f4144cc. **Latest runtime merge:** PR #461, merge commit b014d0107a47c3117c7dcbdd8d403f7fca3c7d41. This continuation supersedes the 2026-11-07 status below.
