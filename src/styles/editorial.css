@@ -101,10 +101,10 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
   max-width: 790px;
   margin: 0 0 22px;
   color: var(--ink-navy);
-  font-size: clamp(2.65rem, 5.6vw, 5.2rem);
+  font-size: 4rem;
   font-weight: 760;
   line-height: 1.04;
-  letter-spacing: -.055em;
+  letter-spacing: -.04em;
   text-wrap: balance;
 }
 .hero h1 em {
@@ -117,7 +117,7 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
   max-width: 650px;
   margin: 0;
   color: var(--muted);
-  font-size: clamp(1rem, 1.35vw, 1.12rem);
+  font-size: 1.05rem;
   line-height: 1.75;
 }
 .method-line {
@@ -200,17 +200,17 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
   display: block;
   color: inherit;
   font-family: "Noto Sans KR", "Noto Sans", sans-serif;
-  font-size: clamp(4rem, 7.2vw, 6.4rem);
+  font-size: 5.5rem;
   font-weight: 720;
   line-height: .98;
-  letter-spacing: -.08em;
+  letter-spacing: -.04em;
 }
 .specimen-tile-ipa { background: var(--celadon); color: #172b26; }
 .specimen-ipa {
   margin: 0;
   color: inherit;
   font-family: "Noto Sans", "Segoe UI", sans-serif;
-  font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+  font-size: 1.55rem;
   font-weight: 650;
   line-height: 1.3;
   letter-spacing: -.025em;
@@ -219,7 +219,7 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
 .specimen-ua {
   margin: 0;
   color: inherit;
-  font-size: clamp(1.8rem, 3.1vw, 2.55rem);
+  font-size: 2.2rem;
   font-weight: 740;
   line-height: 1.15;
   letter-spacing: -.04em;
@@ -264,7 +264,7 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
 .section-title h2,.section-title h3 {
   margin: 0;
   color: var(--ink-navy);
-  font-size: clamp(1.35rem, 2vw, 1.65rem);
+  font-size: 1.5rem;
   font-weight: 730;
   line-height: 1.25;
   letter-spacing: -.04em;
@@ -344,7 +344,7 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
 .mode-disclosure summary { padding: 10px 0; color: var(--ink-navy); }
 .mode-disclosure .practical-mode-hint { padding: 0 0 12px; }
 .research-options {
-  border-left: 2px solid var(--celadon);
+  border-left: 1px solid var(--celadon);
   background: #edf1ec;
 }
 .soft-morphology-toggle { color: var(--ink-navy); }
@@ -367,7 +367,7 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
   background: var(--ink-navy);
   color: var(--hanji);
   font-family: "Noto Sans KR", "Noto Sans", sans-serif;
-  font-size: clamp(3rem, 5vw, 4.5rem);
+  font-size: 5rem;
   font-weight: 700;
   line-height: 1;
 }
@@ -451,12 +451,12 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
 .result-body {
   margin: 0;
   color: var(--ink-navy);
-  font-size: clamp(1.15rem, 1.9vw, 1.55rem);
+  font-size: 1.25rem;
   line-height: 1.55;
   overflow-wrap: anywhere;
 }
 .result-card:first-child .result-body {
-  font-size: clamp(2rem, 3.8vw, 3.35rem);
+  font-size: 2.7rem;
   font-weight: 720;
   line-height: 1.22;
   letter-spacing: -.045em;
@@ -552,7 +552,7 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
 .methodology-toc-heading h2 {
   margin: 0 0 12px;
   color: var(--ink-navy);
-  font-size: clamp(1.35rem, 2.2vw, 1.8rem);
+  font-size: 1.6rem;
   line-height: 1.2;
   letter-spacing: -.04em;
 }
@@ -578,7 +578,7 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
 }
 .system-page .doc-content {
   width: 100%;
-  max-width: 78ch;
+  max-width: 75ch;
   color: var(--graphite);
   font-size: .96rem;
   line-height: 1.78;
@@ -587,7 +587,7 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
 .doc-content h2 {
   margin: 0 0 20px;
   color: var(--ink-navy);
-  font-size: clamp(1.55rem, 2.8vw, 2.25rem);
+  font-size: 2rem;
   line-height: 1.16;
   letter-spacing: -.045em;
   text-wrap: balance;
@@ -670,7 +670,7 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
 @media (max-width: 760px) {
   .page-shell.editorial-site { padding-right: 18px; padding-left: 18px; }
   .hero { grid-template-columns: minmax(0,1fr); gap: 24px; padding: 38px 0 32px; }
-  .hero h1 { max-width: 15ch; font-size: clamp(2.45rem, 9vw, 3.7rem); }
+  .hero h1 { max-width: 15ch; font-size: 3.25rem; }
   .hero-specimen { max-width: 600px; }
   .specimen-grid { min-height: 210px; }
   .workspace-layout { grid-template-columns: minmax(0,1fr); }
@@ -694,7 +694,7 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
   .brand-mark { width: 36px; height: 36px; flex-basis: 36px; }
   .specimen-grid { min-height: 0; }
   .specimen-tile { min-height: 108px; padding: 14px; }
-  .specimen-glyph { font-size: clamp(3.6rem, 15vw, 5rem); }
+  .specimen-glyph { font-size: 4.5rem; }
   .specimen-bottom { flex-direction: column; gap: 3px; }
   .workbench { padding: 18px; }
   .input-shell textarea { min-height: 190px; padding: 15px; }
@@ -703,7 +703,7 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
   .results-bar { align-items: flex-start; flex-direction: column; }
   .results-note { text-align: left; }
   .empty-state { grid-template-columns: 64px minmax(0,1fr); gap: 14px; padding: 18px; }
-  .empty-glyph { width: 64px; height: 64px; font-size: 2.7rem; }
+  .empty-glyph { width: 64px; height: 64px; font-size: 3rem; }
   .doc-section { grid-template-columns: 28px minmax(0,1fr); gap: 10px; }
   .doc-content { font-size: .92rem; }
   .doc-content table,.decision-table { display: block; overflow-x: auto; }
@@ -735,7 +735,7 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
 /* Long-form teaching tables and diagnostic notices share the same material language. */
 .callout.red,.doc-content .callout.red {
   border: 0;
-  border-left: 3px solid var(--vermilion);
+  border-left: 1px solid var(--vermilion);
   border-radius: 0;
   background: #f3e8e3;
   color: var(--ink-navy);
@@ -770,7 +770,7 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
 .vowel-grid small { color: var(--muted); }
 .spelling-suggestions {
   border: 1px solid var(--seam);
-  border-left: 3px solid var(--warning);
+  border-left: 1px solid var(--warning);
   border-radius: 0;
   background: #f8f3e8;
 }
@@ -790,4 +790,22 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
   border-radius: 0;
   overflow: hidden;
   background: var(--warm-white);
+}
+
+/* Browser-native surfaces are part of the visual system. */
+html { scrollbar-color: var(--line-strong) var(--hanji); scrollbar-width: thin; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--hanji); }
+::-webkit-scrollbar-thumb { border: 2px solid var(--hanji); background: var(--line-strong); }
+input,textarea { caret-color: var(--vermilion); }
+.result-meta,.doc-label,.system-index { font-variant-numeric: tabular-nums; }
+@media (max-width: 760px) {
+  .hero h1 { font-size: 3.25rem; }
+  .result-card:first-child .result-body { font-size: 2.1rem; }
+  .doc-content h2 { font-size: 1.65rem; }
+}
+@media (max-width: 480px) {
+  .hero h1 { font-size: 2.5rem; }
+  .empty-glyph { font-size: 3rem; }
+  .doc-content h2 { font-size: 1.55rem; }
 }
