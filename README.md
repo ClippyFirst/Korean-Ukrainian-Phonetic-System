@@ -38,7 +38,7 @@ A research-oriented Korean-to-Ukrainian pronunciation system. It analyzes Korean
 
 | Goal | Entry point |
 |---|---|
-| Understand the project and current measured results | This README — [latest repository checkpoint](#2026-11-10-continuation--five-dataset-benchmark-and-explicit-fallback-policy), [status and readiness](#latest-repository-checkpoint--2026-11-09) |
+| Understand the project and current measured results | This README — [current integration checkpoint](#current-integration-checkpoint--2026-11-10), [status and readiness](#current-integration-checkpoint--2026-11-10) |
 | Navigate all documentation | [Documentation map](docs/README.md) |
 | Understand directories, modules and data ownership | [Repository structure guide](docs/REPOSITORY-STRUCTURE.md) |
 | Contribute code, documentation or research evidence | [Contributing guide](CONTRIBUTING.md) |
@@ -51,7 +51,7 @@ A research-oriented Korean-to-Ukrainian pronunciation system. It analyzes Korean
 | Compare the four supplied engineering workflow references | [Pinned reference audit](docs/ENGINEERING-WORKFLOW-REFERENCE-AUDIT-2026-11-06.md) |
 | Understand reuse permissions | [LICENSE](LICENSE), [licensing guide](docs/LICENSING-AND-PERMISSIONS.md) |
 
-## Latest repository checkpoint — 2026-11-09
+## Historical repository checkpoint — 2026-11-09 (superseded)
 
 **Current default branch:** `main` at `920b6365539058b658348855c5daddc066558b15`.  
 **Documentation/navigation foundation:** PR [#464](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/464) is merged; the documentation map, repository structure guide, contributor instructions and agent workflow guide remain the canonical navigation layer.  
