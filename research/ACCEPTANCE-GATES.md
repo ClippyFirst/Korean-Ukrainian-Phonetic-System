@@ -1805,3 +1805,14 @@ PR #465 is merged into `main` (merge `e8ebed5b9ccb67255209ccb20efa45ae0236bcbe`)
 | Legacy artifact cleanup | BLOCKED | Older artifacts remain until expiry/manual owner action; connector cannot delete them. |
 
 The benchmark integration is software-verified, not independent linguistic certification and not release approval. Overall readiness remains a research prototype.
+
+## Final mainline verification update — 2026-11-10
+
+The final documentation/contract-test main commit at this checkpoint is `b75d36387b089e3e72a54bdc92f28b12f0fbac4c`. Post-merge GitHub Actions on this exact main SHA:
+
+- Tests [42829722954](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42829722954): **PASS** — Python 3.11/3.12/3.13, Browser/web, wheel installation and teacher-corpus audit.
+- System Verify [42829722907](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42829722907): **PASS** — Python regression/data integrity and Browser regression/build. Official NIKL metadata-only inventory: **SKIPPED**.
+- Master/research artifacts [42829723048](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42829723048): **PASS**.
+- GitHub Pages deployment [42829722877](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42829722877): **PENDING**, not PASS. An earlier Pages run [42829130839](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42829130839) remains in progress on an older documentation commit and the latest deployment has not started. No deployment failure is recorded; do not claim live deployment on the final docs SHA until this run completes.
+
+These are GitHub Actions results; no local npm/pytest execution is claimed. The next documentation commit will itself receive a new exact-head CI run. The final repository state is software-verified for tests, system verification and research artifact generation; Pages deployment remains the only observed post-merge workflow still pending.

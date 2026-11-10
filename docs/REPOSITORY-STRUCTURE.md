@@ -4,7 +4,7 @@
 
 - `main` is the sole active integration branch. Five-dataset benchmark integration PR #465 merged as `e8ebed5b9ccb67255209ccb20efa45ae0236bcbe`.
 - Human navigation lives in root `README.md` and this `docs/README.md`; agent routing remains in root `AGENTS.md`; workflow procedures remain in `.agents/skills/` and `docs/AGENT-WORKFLOWS.md`.
-- The five-dataset matrix and aggregate-only artifact policy are now implemented and verified on PR head; post-merge exact-main verification remains separate.
+- The five-dataset matrix and aggregate-only artifact policy are now implemented and verified on PR head; Post-merge exact-main Tests, System Verify and master/research artifacts pass on the final documentation checkpoint; Pages deployment remains pending.
 - Historical branches are preserved as audit history. Do not treat their existence as a request to merge or delete them.
 - Research/release blockers remain independent Korean IPA gold, Ukrainian target review, historical cohort provenance, raw `ㅠ` offsets and restricted speech-corpus terms.
 
