@@ -16,7 +16,7 @@
   --surface-soft: #e7eae5;
   --line: #d5d9d5;
   --line-strong: #a5ada8;
-  --red: #a33a3f;
+  --red: #2448d8; /* legacy component token; cobalt is the action colour */
   --blue: #2448d8;
   --blue-soft: #e9ecf9;
   --green: #416b55;
