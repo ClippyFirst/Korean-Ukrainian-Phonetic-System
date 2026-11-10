@@ -73,7 +73,7 @@ These references support design inspiration only. They do not establish a single
 - [Studio Hooyounghoo](https://hooyounghoo.com/studio-hooyounghoo-1): a Seoul practice founded in 2024, spanning album packaging, identity and exhibition graphics. Used to think of identity as a system across formats rather than a decorative logo.
 - [fabric](https://studiofabric.kr/): a Seoul studio whose work connects colour, typography and materiality across print, web, exhibitions, signage and objects. Supports the two-page design system.
 - [YMG Type Foundry](https://yoonmingoo.tf/about): contemporary multiscript type design across Hangul and Latin, informing script-aware typography.
-- [studio fnt](https://www.commarts.com/features/studio-fnt): a Seoul graphic-design practice associated with geometric forms, restrained palettes and confident Hangul typography; a reference for clarity, not a visual template.
+- [studio fnt](https://studiofnt.com/About): a Seoul graphic-design studio working across branding, exhibitions and cultural graphics; a reference for system-building across media, not a visual template.
 
 These examples are evidence of several distinct practices, not a single Korean style.
 
