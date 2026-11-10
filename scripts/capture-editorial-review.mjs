@@ -66,7 +66,7 @@ try {
       }
       await page.emulateMedia({reducedMotion:'reduce'});
       const reducedMotion = await page.evaluate(() => {
-        const value=getComputedStyle(document.querySelector('.button')).transitionDuration;
+        const value=getComputedStyle(document.querySelector('.site-nav a')).transitionDuration;
         return value.split(',').every(part => parseFloat(part) <= 0.00002);
       });
       if (!reducedMotion) failures.push(`${pageName} at ${viewport.name}: reduced-motion preference does not suppress control transitions`);
