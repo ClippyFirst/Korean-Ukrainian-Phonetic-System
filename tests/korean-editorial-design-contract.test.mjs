@@ -52,6 +52,7 @@ test('Korean editorial tokens and restrained interaction are present',()=>{
   assert.match(css,/\.system-intro\s*\{[^}]*border-left:\s*1px solid var\(--seam\)/u,'methodology notice uses a seam, not a heavy coloured side rail');
   assert.match(css,/\.system-intro\s*\{[^}]*border-top:\s*2px solid var\(--cobalt\)/u,'methodology notice keeps its accent on the top edge');
   assert.match(css,/@media\s*\(prefers-reduced-motion:\s*reduce\)/u);
+  assert.match(css,/@media\s*\(hover:\s*hover\)\s*and\s*\(pointer:\s*fine\)/u,'movement on hover is restricted to pointer devices');
   assert.match(css,/:focus-visible/u);
   assert.match(css,/html\s*\{\s*scroll-behavior:\s*auto;/u);
   assert.doesNotMatch(css+baseCss,/background(?:-image)?:[^;]*gradient\s*\(/iu);
