@@ -576,7 +576,7 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
 }
 .system-page .doc-content {
   width: 100%;
-  max-width: 86ch;
+  max-width: 78ch;
   color: var(--graphite);
   font-size: .96rem;
   line-height: 1.78;
