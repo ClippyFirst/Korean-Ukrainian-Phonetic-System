@@ -6,6 +6,7 @@
  * provisional; they are not pronunciation alternatives or IPA notation.
  */
 const LOW_CONFIDENCE_STATUSES = new Set([
+  'super-soft-grapheme-fallback',
   'super-soft-orthographic-fallback',
   'super-soft-practical-heuristic',
   'super-soft-morphology-heuristic',
@@ -20,6 +21,7 @@ export function renderSuperSoftCandidate(trace, fallback = '') {
     const uncertain = item?.confidence === 'low' ||
       item?.uncertainty?.confidence === 'low' ||
       LOW_CONFIDENCE_STATUSES.has(item?.status) ||
+      item?.status === 'super-soft-grapheme-fallback' ||
       item?.candidateStatus === 'provisional' ||
       item?.targetStatus === 'provisional' ||
       item?.targetReason === 'provisional_mapping_requires_review';

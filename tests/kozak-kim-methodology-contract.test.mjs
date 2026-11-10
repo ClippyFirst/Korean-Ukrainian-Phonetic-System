@@ -24,12 +24,12 @@ test('ordinary and detailed modes disclose the two actual browser engines', () =
 });
 
 test('methodology documents all three native modes and their real constraints', () => {
-  for (const term of ['Строгий режим','М’який режим','Суперм’який режим','R002','R003','R007','orthographic-phonemic','11 172','квадратних дужках','Apache-2.0','G2pBrowser','descriptive: false','engine_rules_ctx.js','engine_rules_phrase.js']) {
+  for (const term of ['Строгий режим','М’який режим','Суперм’який режим','R002','R003','R007','orthographic-phonemic','11&nbsp;172','квадратних дужках','Apache-2.0','G2pBrowser','descriptive: false','engine_rules_ctx.js','engine_rules_phrase.js']) {
     assert.ok(system.includes(term), 'methodology must document ' + term);
   }
   assert.match(engine, /morphologyMode==='super-soft'/u);
   assert.match(soft, /soft never resolves substantive/u);
-  assert.match(soft, /Quality is intentionally lower than strict\/soft/u);
+  assert.match(soft, /belongs to public Soft and remains lower-confidence than Strict/u);
 });
 
 test('methodology reports corrected benchmark metrics, coverage, and evidence limits', () => {
@@ -83,15 +83,15 @@ test('all three Kozak Kim modes have separate documented benchmark contracts and
     '**Strict**',
     '**Soft**',
     '**Super-soft**',
-    'MEASURED_DIAGNOSTIC on UGTPHON',
-    'MEASURED_DIAGNOSTIC; not accuracy acceptance',
-    'typed orthographic-phonemic fallback',
+    'RERUN_REQUIRED',
+    'SOFTWARE_COVERAGE_VERIFIED; ACCURACY_UNMEASURED',
+    'grapheme-only underlying IPA fallback',
     'same input occurrences',
     '236-candidate'
   ]) {
     assert.ok(methodology.includes(term), 'methodology must include ' + term);
   }
-  for (const term of ['Strict', 'Soft', 'Super-soft', 'Measured diagnostic on UGTPHON', 'Measured diagnostic, not accuracy acceptance']) {
+  for (const term of ['Strict', 'Soft', 'Super-soft', 'RERUN_REQUIRED', 'ACCURACY_UNMEASURED', 'historical']) {
     assert.ok(readme.includes(term), 'README must distinguish ' + term);
   }
   for (const term of ['Strict | DONE_VERIFIED', 'Soft | PARTIAL', 'Super-soft | PARTIAL', 'unified three-mode 236-case evaluation = TODO']) {

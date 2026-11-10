@@ -1648,3 +1648,16 @@ The final documentation/contract-test main commit at this checkpoint is `b75d363
 - GitHub Pages deployment [42829722877](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42829722877): **PENDING**, not PASS. An earlier Pages run [42829130839](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42829130839) remains in progress on an older documentation commit and the latest deployment has not started. No deployment failure is recorded; do not claim live deployment on the final docs SHA until this run completes.
 
 These are GitHub Actions results; no local npm/pytest execution is claimed. The next documentation commit will itself receive a new exact-head CI run. The final repository state is software-verified for tests, system verification and research artifact generation; Pages deployment remains the only observed post-merge workflow still pending.
+
+
+## Three-tier research-mode refactor — 2026-11-10 (PR #466)
+
+The browser research engine now distinguishes three levels by confidence/coverage:
+
+- **Strict:** unchanged evidence-gated path; unresolved morphology still fails closed.
+- **Soft:** inherits the former Super-soft maximum-coverage heuristic path (formal morphology, broader practical heuristics and typed IPA fallback). Candidate spans remain explicitly low-confidence.
+- **Super-soft:** new grapheme-only IPA fallback. It decomposes modern Hangul syllable blocks into onset/vowel/coda Jamo, constructs an underlying IPA candidate without inferring contextual assimilation, liaison, fortition, palatalization or morphology, then uses the existing IPA → Ukrainian adapter. Exact source-backed lexical readings remain available.
+
+**Exact-head verification:** PR #466 head 7ee23c8ab1984e7ae156c4a25360a0d167ea6ef7; Verify workflow [42843823095](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42843823095) **PASS** — Python regression/data integrity, full browser regression suite, source redistribution rights gate, Vite build and generated-page checks. The new Super-soft regression exercises all 11,172 modern Hangul syllable blocks through IPA → Ukrainian mapping; existing Soft coverage/adversarial tests preserve the former broad heuristic behavior. NIKL metadata-only inventory remains **SKIPPED**.
+
+**Evidence boundary:** 100% Super-soft coverage is availability of a typed grapheme-derived candidate, not 100% correct Korean pronunciation. Earlier benchmark reports predate this mode reassignment and must not be relabelled as measurements of the new Soft/Super-soft definitions. Rerun the full benchmark matrix against the merged exact main commit before publishing updated comparative scores. GitHub Pages deployment is also pending until the PR is merged and the main-branch Pages workflow completes.

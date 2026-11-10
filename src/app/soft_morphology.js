@@ -189,7 +189,7 @@ export function softStatusForUnit(unit, fallback = 'contextual') {
  * Applies best-effort phonology for any coda + vowel-onset pair in the
  * same eojeol, without requiring a closed formal-ending inventory.
  *
- * Quality is intentionally lower than strict/soft research paths.
+ * This heuristic sublayer belongs to public Soft and remains lower-confidence than Strict.
  * Status: practical-transliteration.
  *
  * Still never invents 사이시옷 ㄴ-insertion or other lexical-only processes

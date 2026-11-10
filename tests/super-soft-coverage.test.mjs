@@ -10,12 +10,13 @@ import { traceIpaMappingDetailed } from '../src/app/engine_ipa.js';
 const canonical=readFileSync(new URL('../data/korean/canonical_correspondence.csv',import.meta.url),'utf8');
 const lexical=readFileSync(new URL('../data/korean/lexical_pronunciations.csv',import.meta.url),'utf8');
 const engine=createEngine(canonical,lexical);
+const graphemeEngine=createEngine(canonical,'');
 const canonicalMap=createMap(canonical);
 const STRICT={morphologyMode:'strict'};
-const SUPER={morphologyMode:'super-soft'};
+const SOFT={morphologyMode:'soft'};
 
 
-test('Super-soft marks only low-confidence IPA-derived Ukrainian spans with square brackets',()=>{
+test('Soft marks only low-confidence IPA-derived Ukrainian spans with square brackets',()=>{
   const trace=[
     {source:'가',status:'canonical',output:'ка',confidence:'ungraded'},
     {source:'값',status:'super-soft-orthographic-fallback',output:'кап',confidence:'low'},
@@ -26,9 +27,9 @@ test('Super-soft marks only low-confidence IPA-derived Ukrainian spans with squa
   assert.equal(renderSuperSoftCandidate(trace,'unused-fallback'),'ка[кап]і[іт] ');
 });
 
-test('Super-soft uncertainty markup follows actual trace confidence without mutating engine output',()=>{
+test('Soft uncertainty markup follows actual trace confidence without mutating engine output',()=>{
   const source='짧은소리의';
-  const result=engine.convert(source,SUPER);
+  const result=engine.convert(source,SOFT);
   const original=result.candidate_ukrainian;
   const display=renderSuperSoftCandidate(result.trace,original);
   assert.equal(result.candidate_ukrainian,original,'the underlying IPA-derived candidate remains unchanged');
@@ -44,12 +45,12 @@ test('Super-soft uncertainty markup follows actual trace confidence without muta
   }).join(''));
 });
 
-test('Super-soft returns IPA and an IPA-adapted Ukrainian candidate for all 11,172 modern Hangul syllables',()=>{
+test('Soft returns IPA and an IPA-adapted Ukrainian candidate for all 11,172 modern Hangul syllables',()=>{
   const syllables=Array.from({length:11172},(_,i)=>String.fromCodePoint(0xAC00+i));
   // Spaces deliberately isolate each syllable: this is an exhaustive grapheme
   // inventory/adapter test, not a claim about connected-speech morphology.
   const source=syllables.join(' ');
-  const result=engine.convert(source,SUPER);
+  const result=engine.convert(source,SOFT);
   const candidate=result.ukrainian||result.candidate_ukrainian||'';
   assert.equal(result.coverage?.scope,'modern-hangul-syllable-blocks');
   assert.equal(result.coverage?.input_total,11172);
@@ -65,8 +66,8 @@ test('Super-soft returns IPA and an IPA-adapted Ukrainian candidate for all 11,1
   assert.equal(result.trace.filter(item=>item.source&&/^[가-힣]$/u.test(item.source)&&item.ipa).length,11172);
 });
 
-test('Super-soft keeps provisional lexical target adaptation in the candidate channel',()=>{
-  const result=engine.convert('베갯잇',SUPER);
+test('Soft keeps provisional lexical target adaptation in the candidate channel',()=>{
+  const result=engine.convert('베갯잇',SOFT);
   assert.equal(result.target_status,'provisional');
   assert.equal(result.ukrainian,'');
   assert.ok(result.candidate_ukrainian);
@@ -74,12 +75,12 @@ test('Super-soft keeps provisional lexical target adaptation in the candidate ch
   assert.ok(result.trace.every(item=>item.output===''||item.candidateStatus==='provisional'));
 });
 
-test('Super-soft applies the orthographic-phonemic fallback to unresolved §30 saisiot insertion',()=>{
+test('Soft applies the orthographic-phonemic fallback to unresolved §30 saisiot insertion',()=>{
   const source='베갯잇';
   // Bypass the exact lexical hit deliberately to exercise the lower-priority
   // fallback tier. The public engine still prefers its source-backed lexicon.
   const strict=convertText(source,canonicalMap,new Map(),true,{...STRICT,preserveUnresolvedSource:true});
-  const result=convertText(source,canonicalMap,new Map(),true,{...SUPER,preserveUnresolvedSource:true});
+  const result=convertText(source,canonicalMap,new Map(),true,{...SOFT,preserveUnresolvedSource:true});
   assert.equal(strict.status,'unresolved','strict mode remains fail-closed');
   assert.equal(strict.ukrainian,'','strict mode must not change');
   assert.equal(result.status,'super-soft-orthographic-fallback');
@@ -100,8 +101,8 @@ test('Super-soft applies the orthographic-phonemic fallback to unresolved §30 s
   assert.ok(!fallbacks.some(item=>(item.rules||[]).some(rule=>/NIKL|exact-lexical/u.test(rule))));
 });
 
-test('Super-soft exposes practical morphology guesses only as low-confidence candidates',()=>{
-  const result=engine.convert('짧은소리의',SUPER);
+test('Soft exposes practical morphology guesses only as low-confidence candidates',()=>{
+  const result=engine.convert('짧은소리의',SOFT);
   assert.equal(result.status,'super-soft-heuristic-coverage');
   assert.equal(result.ukrainian,'');
   assert.ok(result.candidate_ukrainian);
@@ -112,13 +113,13 @@ test('Super-soft exposes practical morphology guesses only as low-confidence can
 });
 
 
-test('Super-soft covers every registered strict-mode morphology gap with a candidate',()=>{
+test('Soft covers every registered strict-mode morphology gap with a candidate',()=>{
   const gaps=['짧은소리의','수많이는','없으니를','없애다에서는','값에서는','밟으니와','싫어도에서는','외곬에를','값있는에서는','히읗을의','벼훑이를','밭이와','붙임'];
   for(const source of gaps){
     const strict=engine.convert(source,STRICT);
     assert.equal(strict.status,'unresolved',source+': strict control must remain fail-closed');
-    const result=engine.convert(source,SUPER);
-    assert.notEqual(result.status,'unresolved',source+': Super-soft must not drop the Korean span');
+    const result=engine.convert(source,SOFT);
+    assert.notEqual(result.status,'unresolved',source+': Soft must not drop the Korean span');
     assert.equal(result.coverage.input_coverage,1,source+': all Hangul syllables must be represented');
     assert.equal(result.coverage.trace_coverage,1,source+': all source spans must be traceable');
     assert.ok(result.coverage.complete,source+': coverage accounting must be complete');
@@ -127,9 +128,9 @@ test('Super-soft covers every registered strict-mode morphology gap with a candi
   }
 });
 
-test('Super-soft covers the full adversarial NIKL master passage without dropping Hangul',()=>{
+test('Soft covers the full adversarial NIKL master passage without dropping Hangul',()=>{
   const source=readFileSync(new URL('./fixtures/nikl-all-articles-master-passage-2026-10-22.txt',import.meta.url),'utf8');
-  const result=engine.convert(source,SUPER);
+  const result=engine.convert(source,SOFT);
   const visible=result.ukrainian||result.candidate_ukrainian||'';
   assert.ok(result.coverage.complete,JSON.stringify(result.coverage));
   assert.equal(result.coverage.input_coverage,1);
@@ -138,9 +139,9 @@ test('Super-soft covers the full adversarial NIKL master passage without droppin
   assert.doesNotMatch(visible,/[⟦⟧]/u,'no Hangul span may be replaced by unresolved placeholders');
 });
 
-test('Super-soft preserves non-syllabic Jamo and non-Korean literals without inventing IPA',()=>{
+test('Soft preserves non-syllabic Jamo and non-Korean literals without inventing IPA',()=>{
   const source='안녕 ㄱ 가 123, 🙂!';
-  const result=engine.convert(source,SUPER);
+  const result=engine.convert(source,SOFT);
   const target=result.ukrainian||result.candidate_ukrainian||'';
   assert.ok(target.includes('ㄱ'),'standalone compatibility Jamo remains visible');
   assert.ok(target.includes('가'),'decomposed Jamo sequence remains visible');
@@ -151,11 +152,14 @@ test('Super-soft preserves non-syllabic Jamo and non-Korean literals without inv
   assert.equal(jamo?.output,'ㄱ');
   assert.ok(result.coverage.complete,'all source spans, including literal spans, must be traceable');
   assert.equal(result.coverage.input_coverage,1);
+  const graphemeOnly=graphemeEngine.convert(source,{morphologyMode:'super-soft'});
+  assert.ok((graphemeOnly.candidate_ukrainian||'').includes('ㄱ'),'Super-soft preserves standalone Jamo literally');
+  assert.ok(graphemeOnly.trace.some(item=>item.source==='ㄱ'&&item.status==='literal-preserved'&&item.ipa===''));
 });
 
-test('Super-soft records exact monotonic UTF-16 source offsets for repeated and mixed Unicode spans',()=>{
+test('Soft records exact monotonic UTF-16 source offsets for repeated and mixed Unicode spans',()=>{
   const source='가가🙂, 나 ㄱ 가 123! 가가';
-  const result=engine.convert(source,SUPER);
+  const result=engine.convert(source,SOFT);
   assert.equal(result.coverage.complete,true,JSON.stringify(result.coverage));
   assert.equal(result.coverage.source_span_uncovered,0);
   assert.deepEqual(result.coverage.untraced_source_offsets,[]);
@@ -175,9 +179,9 @@ test('Super-soft records exact monotonic UTF-16 source offsets for repeated and 
   }
 });
 
-test('Super-soft preserves archaic Jamo and malformed Unicode as explicit literal spans',()=>{
+test('Soft preserves archaic Jamo and malformed Unicode as explicit literal spans',()=>{
   const source='힣 ᄓᅟᇹ\uD800';
-  const result=engine.convert(source,SUPER);
+  const result=engine.convert(source,SOFT);
   assert.equal(result.coverage.input_total,1);
   assert.equal(result.coverage.input_covered,1);
   assert.equal(result.coverage.input_coverage,1);
@@ -193,33 +197,33 @@ test('Super-soft preserves archaic Jamo and malformed Unicode as explicit litera
   }
 });
 
-test('Super-soft is opt-in and does not alter strict or existing soft behavior',()=>{
+test('Soft is opt-in and leaves the strict default unchanged',()=>{
   const input='삶이';
   assert.deepEqual(engine.convert(input),engine.convert(input,STRICT));
-  assert.deepEqual(engine.convert(input,{morphologyMode:'soft'}),engine.convert(input,{morphologyMode:'soft'}));
-  assert.notEqual(engine.convert('짧은소리의',SUPER).status,engine.convert('짧은소리의',STRICT).status);
+  assert.notEqual(engine.convert('짧은소리의',SOFT).status,engine.convert('짧은소리의',STRICT).status);
 });
 
 test('service exposes the opt-in control only inside research mode and labels its limitation',()=>{
   const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
   const main=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
   assert.match(html,/id="super-soft-morphology"/u);
-  assert.match(html,/Повне покриття тексту не означає, що кожен фрагмент вимовлено правильно/u);
+  assert.match(html,/Контекстні фонологічні та морфологічні правила навмисно не вгадуються/u);
   assert.match(main,/superSoftToggle&&superSoftToggle\.checked\?'super-soft'/u);
   assert.match(main,/super-soft-low-confidence/u);
+  assert.match(html,/М’який режим · ширші евристики, низька впевненість/u);
   assert.match(main,/покриття складів Hangul/u);
   assert.match(main,/r\.coverage\.input_covered/u);
   assert.match(main,/superSoftToggle\.checked&&softToggle/u);
   const methodology=readFileSync(new URL('../system.html',import.meta.url),'utf8');
   assert.match(methodology,/methodology-02a-super-soft/u);
   assert.match(methodology,/11&nbsp;172 сучасні склади Hangul/u);
-  assert.match(methodology,/не означає 100% правильної вимови/u);
+  assert.match(methodology,/не 100% фонетичної правильності/u);
 });
 
-test('Super-soft reports candidate coverage, low-confidence share, and target certainty as separate metrics',()=>{
+test('Soft reports candidate coverage, low-confidence share, and target certainty as separate metrics',()=>{
   const fixture=readFileSync(new URL('./fixtures/nikl-all-articles-master-passage-2026-10-22.txt',import.meta.url),'utf8');
   for(const source of ['짧은소리의',fixture]){
-    const result=engine.convert(source,SUPER);
+    const result=engine.convert(source,SOFT);
     const hangul=[];
     const items=[];
     let sourceOffset=0;
@@ -248,8 +252,8 @@ test('Super-soft reports candidate coverage, low-confidence share, and target ce
   }
 });
 
-test('Super-soft confidence share is zero when the input contains no modern Hangul',()=>{
-  const result=engine.convert('',SUPER);
+test('Soft confidence share is zero when the input contains no modern Hangul',()=>{
+  const result=engine.convert('',SOFT);
   assert.equal(result.coverage.input_total,0);
   assert.equal(result.coverage.low_confidence_units,0);
   assert.equal(result.coverage.low_confidence_share,0);
@@ -257,14 +261,45 @@ test('Super-soft confidence share is zero when the input contains no modern Hang
   assert.equal(result.coverage.verified_pronunciation_rate,null);
 });
 
-test('Super-soft preserves the strict engine output for exact source-backed passage controls',()=>{
+test('Soft preserves the strict engine output for exact source-backed passage controls',()=>{
   const controls=['국립국어원','굳이','같이','읽다','읽고','맑다','맑고','밟다','넓죽하다','값어치','꽃잎','솜이불','색연필','신라','국물','먹는','놓고','좋던','많고','싫어','밭이','맛있다','멋있다','서울역','검열','금융','수많은'];
   for(const source of controls){
     const strict=engine.convert(source,STRICT);
-    const superSoft=engine.convert(source,SUPER);
-    assert.equal(superSoft.ipa,strict.ipa,source+': Super-soft must not replace exact/source-backed IPA');
-    assert.equal(superSoft.surfaceHangul,strict.surfaceHangul,source+': Super-soft must preserve the sourced surface form');
-    assert.equal(superSoft.ukrainian||superSoft.candidate_ukrainian||'',strict.ukrainian||strict.candidate_ukrainian||'',source+': Super-soft must not change the IPA-derived target for a sourced control');
+    const superSoft=engine.convert(source,SOFT);
+    assert.equal(superSoft.ipa,strict.ipa,source+': Soft must not replace exact/source-backed IPA');
+    assert.equal(superSoft.surfaceHangul,strict.surfaceHangul,source+': Soft must preserve the sourced surface form');
+    assert.equal(superSoft.ukrainian||superSoft.candidate_ukrainian||'',strict.ukrainian||strict.candidate_ukrainian||'',source+': Soft must not change the IPA-derived target for a sourced control');
     assert.ok(superSoft.coverage.complete,source+': trace and candidate coverage remain complete');
   }
+});
+
+
+test('new Super-soft profile maps underlying Hangul graphemes to IPA without contextual rule inference',()=>{
+  const source='값이 신라 국립국어원';
+  const result=graphemeEngine.convert(source,{morphologyMode:'super-soft'});
+  assert.equal(result.status,'super-soft-grapheme-fallback');
+  assert.equal(result.coverage.complete,true,JSON.stringify(result.coverage));
+  assert.equal(result.coverage.input_coverage,1);
+  assert.ok(result.candidate_ukrainian);
+  assert.equal(result.ukrainian,'');
+  const syllables=result.trace.filter(item=>/^[가-힣]$/u.test(item.source));
+  assert.ok(syllables.length>0);
+  assert.ok(syllables.every(item=>item.phoneticResultType==='orthographic-phonemic-fallback'));
+  assert.ok(syllables.every(item=>item.confidence==='low'));
+  assert.ok(syllables.every(item=>(item.rules||[]).includes('super-soft-grapheme-ipa-fallback')));
+  assert.ok(syllables.every(item=>item.uncertainty?.strategy==='underlying-jamo-to-ipa'));
+  assert.ok(syllables.every(item=>item.ipa&&item.targetMappings?.length));
+  assert.ok(!syllables.some(item=>(item.rules||[]).some(rule=>/assimilation|palatalization|tensification|liaison/u.test(rule))));
+  assert.ok(!syllables.some(item=>(item.rules||[]).some(rule=>/vowel-ui-to-i|vowel-ui-default-ɰi|vowel-yeo-monophthongization|lexical-vowel-length|contextual-voicing|tensification|liquid-assimilation/u.test(rule))));
+});
+
+test('new Super-soft covers all modern Hangul blocks through the IPA adapter',()=>{
+  const syllables=Array.from({length:11172},(_,i)=>String.fromCodePoint(0xAC00+i));
+  const result=graphemeEngine.convert(syllables.join(' '),{morphologyMode:'super-soft'});
+  assert.equal(result.coverage.input_total,11172);
+  assert.equal(result.coverage.input_covered,11172);
+  assert.equal(result.coverage.input_coverage,1);
+  assert.equal(result.coverage.complete,true);
+  assert.ok(result.candidate_ukrainian);
+  assert.equal(result.trace.filter(item=>/^[가-힣]$/u.test(item.source)&&item.ipa).length,11172);
 });
