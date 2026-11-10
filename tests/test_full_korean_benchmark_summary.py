@@ -35,7 +35,7 @@ class FullAggregateArtifactTests(unittest.TestCase):
                 path.write_text(json.dumps(multi_report()),encoding="utf-8")
             for track,relative in BROWSER_REPORTS:
                 path=root/relative; path.parent.mkdir(parents=True,exist_ok=True)
-                path.write_text(json.dumps(browser_report(track.rsplit("-",1)[-1])),encoding="utf-8")
+                path.write_text(json.dumps(browser_report("super-soft" if track.endswith("-super-soft") else track.rsplit("-",1)[-1])),encoding="utf-8")
             result=build_summary(root); rendered=json.dumps(result,ensure_ascii=False)
             self.assertEqual(len(result["multi_engine_tracks"]),6)
             self.assertEqual(len(result["browser_mode_tracks"]),15)
