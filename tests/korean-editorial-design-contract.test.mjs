@@ -47,7 +47,7 @@ test('Korean editorial tokens and restrained interaction are present',()=>{
   assert.match(css,/--vermilion:\s*#b64036/i);
   assert.match(css,/--celadon:\s*#789184/i);
   assert.match(css,/--celadon-ink:\s*#526e5d/i);
-  assert.match(css,/\.editorial-site \.workspace-layout/u);
+  assert.match(css,/\.workspace-layout\s*\{/u);
   assert.match(css,/\.system-page \.doc-content/u);
   assert.match(css,/@media\s*\(prefers-reduced-motion:\s*reduce\)/u);
   assert.match(css,/:focus-visible/u);
