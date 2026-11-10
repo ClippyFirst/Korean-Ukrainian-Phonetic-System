@@ -10,6 +10,7 @@ import { traceIpaMappingDetailed } from '../src/app/engine_ipa.js';
 const canonical=readFileSync(new URL('../data/korean/canonical_correspondence.csv',import.meta.url),'utf8');
 const lexical=readFileSync(new URL('../data/korean/lexical_pronunciations.csv',import.meta.url),'utf8');
 const engine=createEngine(canonical,lexical);
+const graphemeEngine=createEngine(canonical,'');
 const canonicalMap=createMap(canonical);
 const STRICT={morphologyMode:'strict'};
 const SOFT={morphologyMode:'soft'};
@@ -213,7 +214,7 @@ test('service exposes the opt-in control only inside research mode and labels it
   const methodology=readFileSync(new URL('../system.html',import.meta.url),'utf8');
   assert.match(methodology,/methodology-02a-super-soft/u);
   assert.match(methodology,/11&nbsp;172 сучасні склади Hangul/u);
-  assert.match(methodology,/не означає 100% правильної вимови/u);
+  assert.match(methodology,/не 100% фонетичної правильності/u);
 });
 
 test('Soft reports candidate coverage, low-confidence share, and target certainty as separate metrics',()=>{
@@ -272,7 +273,7 @@ test('Soft preserves the strict engine output for exact source-backed passage co
 
 test('new Super-soft profile maps underlying Hangul graphemes to IPA without contextual rule inference',()=>{
   const source='값이 신라 국립국어원';
-  const result=engine.convert(source,{morphologyMode:'super-soft'});
+  const result=graphemeEngine.convert(source,{morphologyMode:'super-soft'});
   assert.equal(result.status,'super-soft-grapheme-fallback');
   assert.equal(result.coverage.complete,true,JSON.stringify(result.coverage));
   assert.equal(result.coverage.input_coverage,1);
@@ -290,7 +291,7 @@ test('new Super-soft profile maps underlying Hangul graphemes to IPA without con
 
 test('new Super-soft covers all modern Hangul blocks through the IPA adapter',()=>{
   const syllables=Array.from({length:11172},(_,i)=>String.fromCodePoint(0xAC00+i));
-  const result=engine.convert(syllables.join(' '),{morphologyMode:'super-soft'});
+  const result=graphemeEngine.convert(syllables.join(' '),{morphologyMode:'super-soft'});
   assert.equal(result.coverage.input_total,11172);
   assert.equal(result.coverage.input_covered,11172);
   assert.equal(result.coverage.input_coverage,1);
