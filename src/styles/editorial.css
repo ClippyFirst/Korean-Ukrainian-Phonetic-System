@@ -24,8 +24,9 @@
   --shadow: none;
   --radius: 0;
   --focus: #b64036;
+  --celadon-ink: #526e5d;
 }
-html { scroll-behavior: auto; background: var(--hanji); }
+html { scroll-behavior: auto; background: var(--hanji); scrollbar-color: var(--line-strong) var(--hanji); scrollbar-width: thin; }
 body {
   background: var(--hanji);
   color: var(--ink);
@@ -192,7 +193,8 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
   letter-spacing: .08em;
   line-height: 1.35;
   opacity: .78;
-  text-transform: uppercase;
+  text-transform: none;
+  letter-spacing: .025em;
 }
 .specimen-tile-hangul { grid-row: 1 / span 2; min-height: 244px; background: var(--ink-navy); color: var(--hanji); }
 .specimen-tile-ipa,.specimen-tile-ua { min-height: 0; }
@@ -205,7 +207,7 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
   line-height: .98;
   letter-spacing: -.04em;
 }
-.specimen-tile-ipa { background: var(--celadon); color: #172b26; }
+.specimen-tile-ipa { background: var(--celadon); color: #10251e; }
 .specimen-ipa {
   margin: 0;
   color: inherit;
@@ -333,7 +335,7 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
   color: var(--muted);
   font-size: .68rem;
   font-weight: 760;
-  letter-spacing: .06em;
+  letter-spacing: .025em;
   text-transform: none;
 }
 .mode-option { gap: 11px; margin: 13px 0 0; }
@@ -671,6 +673,8 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
   .page-shell.editorial-site { padding-right: 18px; padding-left: 18px; }
   .hero { grid-template-columns: minmax(0,1fr); gap: 24px; padding: 38px 0 32px; }
   .hero h1 { max-width: 15ch; font-size: 3.25rem; }
+  .result-card:first-child .result-body { font-size: 2.1rem; }
+  .doc-content h2 { font-size: 1.65rem; }
   .hero-specimen { max-width: 600px; }
   .specimen-grid { min-height: 210px; }
   .workspace-layout { grid-template-columns: minmax(0,1fr); }
@@ -693,6 +697,9 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
   .brand { font-size: .84rem; }
   .brand-mark { width: 36px; height: 36px; flex-basis: 36px; }
   .specimen-grid { min-height: 0; }
+  .specimen-tile-hangul { min-height: 218px; }
+  .hero h1 { font-size: 2.5rem; }
+  .doc-content h2 { font-size: 1.55rem; }
   .specimen-tile { min-height: 108px; padding: 14px; }
   .specimen-glyph { font-size: 4.5rem; }
   .specimen-bottom { flex-direction: column; gap: 3px; }
@@ -717,20 +724,6 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
     animation-iteration-count: 1 !important;
   }
 }
-
-/* Scope the main work surface to the editorial identity, not a generic card preset. */
-.editorial-site .workspace-layout { border-color: var(--seam); }
-
-/* Contrast-safe text accents and a visible focus treatment. */
-:root { --celadon-ink: #526e5d; }
-.specimen-tile-ipa { color: #10251e; }
-
-.editorial-site :focus-visible,.system-page :focus-visible {
-  outline: 2px solid var(--vermilion);
-  outline-offset: 3px;
-}
-
-@media (max-width: 480px) { .specimen-tile-hangul { min-height: 218px; } }
 
 /* Long-form teaching tables and diagnostic notices share the same material language. */
 .callout.red,.doc-content .callout.red {
@@ -778,12 +771,6 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
 .spelling-suggestion-sources a { color: var(--ink-navy); }
 .skip-link { background: var(--ink-navy); color: var(--hanji); }
 
-/* Keep labels editorial and readable rather than default all-caps chrome. */
-.specimen-label,.mode-legend {
-  text-transform: none;
-  letter-spacing: .025em;
-}
-.callout strong { text-transform: none; letter-spacing: 0; }
 .decision-table {
   display: grid;
   border: 1px solid var(--seam);
@@ -793,22 +780,14 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
 }
 
 /* Browser-native surfaces are part of the visual system. */
-html { scrollbar-color: var(--line-strong) var(--hanji); scrollbar-width: thin; }
+:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 3px; }
+.callout strong { text-transform: none; letter-spacing: 0; }
+.doc-content > .section-kicker { color: var(--celadon-ink); }
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: var(--hanji); }
 ::-webkit-scrollbar-thumb { border: 2px solid var(--hanji); background: var(--line-strong); }
 input,textarea { caret-color: var(--vermilion); }
 .result-meta,.doc-label,.system-index { font-variant-numeric: tabular-nums; }
-@media (max-width: 760px) {
-  .hero h1 { font-size: 3.25rem; }
-  .result-card:first-child .result-body { font-size: 2.1rem; }
-  .doc-content h2 { font-size: 1.65rem; }
-}
-@media (max-width: 480px) {
-  .hero h1 { font-size: 2.5rem; }
-  .empty-glyph { font-size: 3rem; }
-  .doc-content h2 { font-size: 1.55rem; }
-}
 
 /* Touch-first controls: keep the workbench comfortable on phones and tablets. */
 @media (pointer: coarse) {
