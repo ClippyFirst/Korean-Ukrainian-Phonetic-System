@@ -12,8 +12,9 @@ The system borrows compositional principles, not decorative motifs:
 
 - **Jogakbo / bojagi:** asymmetric modular panels, visible seams and measured negative space. The three-panel Hangul → IPA → Ukrainian specimen is the clearest expression of this grammar.
 - **Hangul as structure:** real syllable blocks are used as typography. No random Jamo, fake pseudo-writing or decorative script textures.
-- **Hanji as material cue:** warm, quiet paper-like surfaces and restrained contrast. No simulated paper noise or faux grain.
-- **Contemporary Korean typography:** script-aware scale and spacing, with Korean, IPA and Ukrainian content treated as equal typographic citizens.
+- **Paper as material cue:** a cool neutral ground with no simulated grain or fake paper noise; the surface stays subordinate to the live text.
+- **Contemporary Seoul graphic language:** confident Hangul forms, simple geometry, compact type systems and selective high-chroma color planes. The palette belongs to this project, not to a claim about one Korean tradition.
+- **Script as structure:** Korean, IPA and Ukrainian have distinct typographic roles but equal legibility.
 
 This is a project-specific interpretation, not a claim that one palette or motif represents all Korean design.
 
@@ -21,16 +22,16 @@ This is a project-specific interpretation, not a claim that one palette or motif
 
 | Token | Value | Role |
 |---|---|---|
-| Hanji | `#F3F0E8` | Main page surface |
-| Warm white | `#FCFBF7` | Work surface and reading panels |
-| Ink navy | `#172A3A` | Primary text and strong anchors |
-| Vermilion | `#B64036` | Action, focus and selected emphasis |
-| Celadon | `#789184` | Secondary specimen panel |
-| Celadon ink | `#526E5D` | Accessible small text on light surfaces |
-| Graphite | `#343B3F` | Long-form body copy |
-| Seam | `#D8D4C9` | Divisions between modular areas |
+| Paper | `#F2F3EF` | Cool neutral page ground |
+| Warm white | `#FCFCFA` | Work surface and reading panels |
+| Ink | `#16191F` | Primary text and Hangul panel |
+| Cobalt | `#2448D8` | Action, focus, links and selected state |
+| Signal pink | `#FF5AA5` | Ukrainian specimen panel |
+| Signal yellow | `#D9E64B` | IPA specimen panel |
+| Graphite | `#30363D` | Long-form body copy |
+| Seam | `#D5D9D5` | Divisions between modular areas |
 
-Key text combinations are checked against WCAG AA contrast for normal text: navy on hanji, vermilion on hanji, celadon-ink on warm white, and deep green on celadon.
+The interface stays mostly neutral. Pink and yellow are confined to the three-panel typographic specimen; cobalt carries interactive state. The key text combinations are checked against WCAG AA: ink on paper, ink on pink, ink on yellow, cobalt on paper, and white on cobalt.
 
 ## Typography
 
@@ -52,7 +53,7 @@ Key text combinations are checked against WCAG AA contrast for normal text: navy
 
 - Motion is limited to short hover/press feedback on controls and direct state feedback. No scroll choreography, parallax, autoplay or decorative reveal.
 - `prefers-reduced-motion` suppresses transitions and animations.
-- Keyboard focus is visible with a 2px vermilion outline and offset.
+- Keyboard focus is visible with a 2px cobalt outline and offset.
 - Keep labels, status announcements, copy feedback, candidate selection, trace disclosure and all existing accessible names intact.
 - Tables may scroll horizontally on narrow screens; controls and output must never be hidden.
 
@@ -73,3 +74,15 @@ The project-specific visual grammar also responds to current Seoul-based design 
 - [studio fnt](https://www.commarts.com/features/studio-fnt) is a longer-running Seoul graphic-design reference noted for geometric form, restrained colour and confident Hangul typography. It is a precedent for clarity and typographic presence, not a template to imitate.
 
 These are references to working practices and visual systems, not claims about a universal contemporary Korean aesthetic.
+
+## Contemporary colour and typographic direction
+
+The current palette deliberately moves away from the familiar cream-and-terracotta editorial template. It uses a cool paper ground, ink, cobalt, signal pink and signal yellow. The bright colours appear only in the Hangul → IPA → Ukrainian specimen; the tool's controls remain mostly neutral with cobalt for action and focus.
+
+This decision is informed by:
+- [Hanyul Hangul Collection (2024)](https://design.amorepacific.com/en/work/2024/hanyul/hangul-collection/), which treats Hangul's horizontal/vertical balance and the combination of consonants and vowels as a graphic construction system.
+- [The Preview Seoul 2025](https://www.behance.net/gallery/231827241/The-Preview-Seoul-2025), whose identity uses bold typography and directional composition.
+- [The View From Seoul](https://www.itsnicethat.com/articles/the-view-from-seoul-korean-poster-archive-graphic-design-170924), discussing Korean poster design's move toward screen-native form and motion.
+- [studio fnt](https://www.commarts.com/features/studio-fnt), a Seoul practice known for geometric form, restrained colour and confident Hangul typography.
+
+The result borrows the design methods, not any studio's artwork or identity.
