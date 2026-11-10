@@ -152,6 +152,9 @@ test('Soft preserves non-syllabic Jamo and non-Korean literals without inventing
   assert.equal(jamo?.output,'ㄱ');
   assert.ok(result.coverage.complete,'all source spans, including literal spans, must be traceable');
   assert.equal(result.coverage.input_coverage,1);
+  const graphemeOnly=graphemeEngine.convert(source,{morphologyMode:'super-soft'});
+  assert.ok((graphemeOnly.candidate_ukrainian||'').includes('ㄱ'),'Super-soft preserves standalone Jamo literally');
+  assert.ok(graphemeOnly.trace.some(item=>item.source==='ㄱ'&&item.status==='literal-preserved'&&item.ipa===''));
 });
 
 test('Soft records exact monotonic UTF-16 source offsets for repeated and mixed Unicode spans',()=>{
