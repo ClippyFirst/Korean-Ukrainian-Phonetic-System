@@ -71,7 +71,7 @@ The project-specific visual grammar also responds to current Seoul-based design 
 - [Studio Hooyounghoo](https://hooyounghoo.com/studio-hooyounghoo-1) works across album packaging, identity and exhibition graphics, treating a visual identity as a system that can extend beyond a single logo.
 - [fabric](https://studiofabric.kr/) describes its work through colour, typography and materiality across print, web, exhibitions, signage and objects. This supports designing the service and methodology as one coherent system rather than two separately themed pages.
 - [YMG Type Foundry](https://yoonmingoo.tf/about) develops multiscript type design across Hangul and Latin. This informs the decision to let Hangul, IPA and Ukrainian text keep distinct but balanced typographic roles.
-- [studio fnt](https://www.commarts.com/features/studio-fnt) is a longer-running Seoul graphic-design reference noted for geometric form, restrained colour and confident Hangul typography. It is a precedent for clarity and typographic presence, not a template to imitate.
+- [studio fnt](https://studiofnt.com/About) is a Seoul graphic-design studio working across branding, exhibitions and cultural graphics. Its practice is a reference for turning a coherent idea into a visual system across media, not a template to imitate.
 
 These are references to working practices and visual systems, not claims about a universal contemporary Korean aesthetic.
 
