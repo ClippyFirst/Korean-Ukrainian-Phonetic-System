@@ -55,6 +55,7 @@ test('Korean editorial tokens and restrained interaction are present',()=>{
   assert.doesNotMatch(css+baseCss,/background(?:-image)?:[^;]*gradient\s*\(/iu);
   assert.ok(contrast('#526e5d','#fcfbf7')>=4.5,'small celadon text meets WCAG AA');
   assert.ok(contrast('#172a3a','#f3f0e8')>=4.5,'navy text on hanji meets WCAG AA');
+  assert.ok(contrast('#b64036','#f3f0e8')>=4.5,'vermilion labels on hanji meet WCAG AA');
   assert.ok(contrast('#fcfbf7','#b64036')>=4.5,'light text on vermilion actions meets WCAG AA');
   assert.ok(contrast('#10251e','#789184')>=4.5,'text on the celadon specimen meets WCAG AA');
   assert.match(css,/grid-template-columns:\s*minmax\(0,\s*1\.12fr\)\s+minmax\(0,\s*\.88fr\)/u);
