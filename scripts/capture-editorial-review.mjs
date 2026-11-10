@@ -45,6 +45,12 @@ try {
         return {
           requestedWidth:expectedWidth,
           viewportWidth:innerWidth,
+          screenWidth:screen.width,
+          documentClientWidth:document.documentElement.clientWidth,
+          visualViewportWidth:visualViewport?.width ?? null,
+          devicePixelRatio,
+          viewportMeta:document.querySelector('meta[name="viewport"]')?.content ?? null,
+          bodyStyle:{width:getComputedStyle(document.body).width,minWidth:getComputedStyle(document.body).minWidth},
           wideElements:[...document.querySelectorAll('body *')].map(el=>{
             const rect=el.getBoundingClientRect();
             const style=getComputedStyle(el);
