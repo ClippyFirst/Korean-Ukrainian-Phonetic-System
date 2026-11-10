@@ -34,7 +34,7 @@ try {
         await page.locator('#result-ukrainian').waitFor({state:'visible'});
       }
 
-      const metrics = await page.evaluate(() => {
+      const metrics = await page.evaluate(expectedWidth => {
         const visible = selector => [...document.querySelectorAll(selector)]
           .filter(el => {
             const rect=el.getBoundingClientRect();
@@ -43,7 +43,13 @@ try {
           });
         const touchControls = visible('button, summary, .site-nav a');
         return {
+          requestedWidth:expectedWidth,
           viewportWidth:innerWidth,
+          wideElements:[...document.querySelectorAll('body *')].map(el=>{
+            const rect=el.getBoundingClientRect();
+            const style=getComputedStyle(el);
+            return {tag:el.tagName,id:el.id,className:typeof el.className==='string'?el.className:'',width:Math.round(rect.width),right:Math.round(rect.right),scrollWidth:el.scrollWidth,minWidth:style.minWidth,overflowX:style.overflowX,text:(el.innerText||'').trim().slice(0,70)};
+          }).filter(el=>el.width>expectedWidth+1||el.right>expectedWidth+1).sort((a,b)=>b.width-a.width).slice(0,16),
           documentWidth:document.documentElement.scrollWidth,
           bodyWidth:document.body.scrollWidth,
           heading:document.querySelector('h1')?.innerText ?? '',
@@ -52,7 +58,7 @@ try {
             return {label:(el.innerText||el.getAttribute('aria-label')||el.tagName).trim().slice(0,60),width:Math.round(rect.width),height:Math.round(rect.height)};
           })
         };
-      });
+      }, viewport.width);
 
       const file = `${outputDir}/${pageName.replace('.html','')}-${viewport.name}.png`;
       await page.screenshot({path:file,fullPage:true,animations:'disabled'});
@@ -71,6 +77,9 @@ try {
       });
       if (!reducedMotion) failures.push(`${pageName} at ${viewport.name}: reduced-motion preference does not suppress control transitions`);
       const prefix = `${pageName} at ${viewport.name} (${viewport.width}×${viewport.height})`;
+      if (metrics.viewportWidth > viewport.width + 1) {
+        failures.push(`${pageName} at ${viewport.name}: layout viewport expanded beyond requested width ${viewport.width}: ${JSON.stringify(metrics.wideElements)}`);
+      }
       if (metrics.documentWidth > metrics.viewportWidth + 1 || metrics.bodyWidth > metrics.viewportWidth + 1) {
         failures.push(`${prefix}: horizontal overflow document=${metrics.documentWidth}, body=${metrics.bodyWidth}`);
       }
