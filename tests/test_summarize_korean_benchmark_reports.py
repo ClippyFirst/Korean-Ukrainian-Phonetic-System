@@ -90,3 +90,19 @@ class AggregateBenchmarkSummaryTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+    def test_workflow_artifact_excludes_row_level_kspan_manifest_examples(self):
+        workflow = (
+            Path(__file__).resolve().parents[1]
+            / ".github/workflows/multi-engine-ipa-benchmark.yml"
+        ).read_text(encoding="utf-8")
+        # The raw preparation manifest carries per-WordNum key/WorldBet
+        # examples. Only the redacted aggregate summary and source hashes
+        # may be uploaded from the open supplemental benchmark workdir.
+        self.assertNotIn(
+            "open-korean-benchmarks-work/prepared/manifest.json",
+            workflow,
+        )
+        self.assertIn("open-korean-benchmark-summary.json", workflow)
+        self.assertIn("open-korean-benchmarks-work/prepared/source-sha256.txt", workflow)
