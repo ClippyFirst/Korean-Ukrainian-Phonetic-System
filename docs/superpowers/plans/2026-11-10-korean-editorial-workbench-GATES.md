@@ -5,16 +5,16 @@ OWNS: index.html, system.html, DESIGN.md, src/styles/editorial.css, tests/korean
 Scope: replace the site's generic visual system with a Korean editorial workbench while preserving the current transcription product interfaces and evidence semantics.
 
 - [x] G1: exact final branch tests and verification pass
-  EVIDENCE: head `e689ec257cec0102110e22e62f7b61093b627bfd`; Tests [42891793959](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42891793959) (1,439/1,439); Verify [42891794037](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42891794037); Browser G2P [42891794046](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42891794046); master artifacts [42891793998](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42891793998); exhaustive register [42891793867](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42891793867).
+  EVIDENCE: head `95879b0de79092c25c43d8382fed8bdb072121de`; Tests [42892418808](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42892418808) (1,439/1,439); Verify [42892418528](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42892418528); Browser G2P [42892418716](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42892418716); master artifacts [42892418801](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42892418801); exhaustive register [42892418475](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42892418475).
 
 - [ ] G2: public Pages deployment and live smoke pass on the merged main commit
   EVIDENCE: pending
 
 - [x] G3: desktop and mobile rendered pages are reviewed for clipping, hierarchy, focus and reading measure
-  EVIDENCE: [Editorial visual review 42891794210](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42891794210), artifact `13797514448`: 10 screenshots across both pages at 1440, 1024, 768, 390 and 320 px; no horizontal overflow; keyboard focus, reduced motion and touch-target checks passed.
+  EVIDENCE: [Editorial visual review 42892418633](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42892418633), artifact `13798249164`: 10 screenshots across both pages at 1440, 1024, 768, 390 and 320 px; no horizontal overflow; keyboard focus, reduced motion and touch-target checks passed.
 
 - [x] G4: all existing conversion modes, controls, outputs, copy, trace and methodology navigation remain intact
-  EVIDENCE: 1,439-test suite and browser regression pass on exact head `e689ec257cec0102110e22e62f7b61093b627bfd`; no JS/engine files changed.
+  EVIDENCE: 1,439-test suite and browser regression pass on exact head `95879b0de79092c25c43d8382fed8bdb072121de`; no JS/engine files changed.
 
 - [x] G5: visual research sources, design tokens and implementation constraints are documented
   EVIDENCE: DESIGN.md, design brief and six linked research references committed on the branch.
