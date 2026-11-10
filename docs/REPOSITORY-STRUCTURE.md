@@ -1,82 +1,25 @@
 # Repository structure and ownership guide
 
-## 2026-11-10 continuation — five-dataset benchmark and explicit fallback policy
+## Current integration and verification boundary — 2026-11-10
 
-**Default branch:** `main` at `920b6365539058b658348855c5daddc066558b15`.  
-**Active integration:** PR [#465](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/465), branch `benchmark/five-dataset-matrix-reconciled-2026-11-09`, current documentation head `f8aacff3087eb5a06d6195bd99171545f647cfe9`; runtime/test head `c42b7f9fee820d83fcbf8fdd75481cab6bc1dfcb`. The branch is based directly on current main; no merge to main has been made.
+**Default branch:** `main` — `920b6365539058b658348855c5daddc066558b15`.  
+**Active integration:** [PR #465](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/465), branch `benchmark/five-dataset-matrix-reconciled-2026-11-09`, current head `d71ef50fdef34c86ad864adc10a50ba45d722ecf`. No changes have been merged to `main`.
 
-### Verification on the previous exact head
+**Exact-head verification on PR head `d71ef50f`:**
+- [Tests #42775887452](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775887452) — **PASS** (Python 3.11/3.12/3.13, Browser, wheel install, teacher-corpus audit).
+- [System Verify #42775887811](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775887811) — Python and Browser **PASS**; NIKL metadata-only inventory **SKIPPED** by policy.
+- [Master/research artifacts #42775887930](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775887930) — **PASS**.
+- [Exhaustive test-case register #42775887402](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775887402) — **PASS**.
+- [External UGTPHON diagnostic #42775887380](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775887380) — **PASS**.
+- [Multi-engine/open-dataset matrix #42775887397](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775887397) — **CANCELLED**, not a pass. The preceding runtime/test head `c42b7f9` has a separate [matrix run #42775642949](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775642949), which was **IN_PROGRESS** at the last inspection. Its final artifact and schema must be inspected; green supporting workflows do not imply matrix completion.
 
-- Tests [42775398078](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775398078): PASS — Python 3.11/3.12/3.13, Browser, wheel install and teacher-corpus audit.
-- System Verify [42775398457](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775398457): Python and Browser PASS; NIKL metadata-only SKIPPED.
-- Master/research artifacts [42775398092](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775398092): PASS.
-- The b96 multi-engine run [42775398355](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775398355) was cancelled after a newer c42 exact-head run was started; it is not counted as a pass.
+**K-SPAN:** the official K-SPAN 2.1 mapping is versioned `kspan-worldbet-to-ipa-v2`. The previous full-matrix failure exposed WorldBet `wi`; the adapter now maps `wi → wi`, with regression coverage for `wi` and `kanixnkwi`. The 63,836-row source join still contains 22,843 parallel key/WorldBet discrepancies (Modern 13,078; Conservative 9,765). These remain `WARN`, not a clean integrity pass. Scoring uses source `ModernPhon` / `ConservativePhon`; key fields are audited independently.
 
-### Exact-head CI on c42b7f9 (runtime/test commit)
+**Fallback policy:** Browser Super-soft may emit a low-confidence, typed `orthographic-phonemic-fallback` candidate from the project correspondence table. It is not source-resolved IPA gold and is excluded from accuracy scoring. Python parity remains TODO.
 
-- Tests [42775643077](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775643077): **PASS** — Python 3.11/3.12/3.13, Browser tests/build, wheel installation and teacher-corpus audit.
-- System Verify [42775643096](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775643096): Python and Browser **PASS**; NIKL metadata-only inventory **SKIPPED** by policy.
-- Master/research artifacts [42775643066](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775643066): **PASS**.
-- Documentation-anchor follow-up Verify [42775637799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775637799): **PASS**.
-- External UGTPHON diagnostic [42775643307](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775643307) and exhaustive test-case extraction [42775643206](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775643206): **IN_PROGRESS** at last inspection.
-- Full multi-engine/open-dataset matrix [42775642949](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775642949): **IN_PROGRESS** in the pinned multi-engine comparison. No final matrix score or summary-schema PASS is claimed.
-- The prior run [42697496037](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42697496037) reached aggregate JSON Schema validation after producing K-SPAN Modern/Conservative and IPA-Dict Browser reports, then failed because numeric `ipa_profile_version: 1` did not satisfy the schema's string/null type. The summarizer now normalizes non-null versions to strings and a regression test exercises the numeric case.
-- Current documentation-only head: `f8aacff3087eb5a06d6195bd99171545f647cfe9`. Its Verify run [42775760233](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775760233) is queued; the c42 runtime/test head has passed the exact checks above.
+**Task ledger:** mainline software/docs baseline — `DONE_VERIFIED`; benchmark adapters/preparation and source diagnostics — `PARTIAL`; full five-dataset matrix and aggregate schema acceptance — `PARTIAL`; Python fallback parity — `TODO`; independent Korean IPA and Ukrainian target review — `BLOCKED` pending qualified reviewers and frozen review sets. PRs [#463](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/463) and [#462](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/462) remain open and untouched pending #465 acceptance and unique-scope reconciliation.
 
-
-### K-SPAN data-quality status
-
-The official K-SPAN 2.1 Table 1 remains the source for keystroke/WorldBet/IPA/jamo mapping. Scoring uses source `ModernPhon` / `ConservativePhon` WorldBet references. Parallel key fields are audited independently: 22,843 discrepancies (Modern 13,078; Conservative 9,765) remain a visible `WARN`, not a pass. Rows are not silently discarded or rewritten.
-
-### User-approved fallback policy
-
-For genuinely unresolved morphology, the Browser Super-soft research mode may use the repository's per-grapheme `data/korean/canonical_correspondence.csv` table to construct approximate IPA and then pass that IPA through the ordinary IPA→Ukrainian renderer. The result is typed `orthographic-phonemic-fallback`, marked low confidence, and exposed only as a candidate. It is excluded from source-resolved IPA accuracy scoring. Strict/Soft remain unchanged. The table is project-defined (`model-selected`), not represented as an official Ukrainian national standard. The Python API does not yet expose this fallback; cross-runtime parity is a separate TODO.
-
-### Current ledger and readiness
-
-| Workstream | State | Acceptance / blocker |
-|---|---|---|
-| Mainline software and documentation baseline | DONE_VERIFIED | Mainline checks passed on the recorded main snapshot. |
-| Benchmark preparation, K-SPAN source adapter and integrity diagnostics | PARTIAL | Source mapping grounded; exact full-matrix/schema result still required; 22,843 cross-field discrepancies remain WARN. |
-| Summary schema normalization and regression | DONE_VERIFIED on b96 | Exact-head tests passed; rerun on c42 pending. |
-| Grapheme-table Browser Super-soft fallback | DONE_VERIFIED in Browser test suite | 11,172 modern Hangul syllable candidate-availability test exists; new trace-to-table assertion is awaiting c42 CI. |
-| Python fallback parity | TODO | Implement only with matching provenance/status and Python/browser trace parity tests. |
-| Independent Korean IPA and Ukrainian target review | BLOCKED | Qualified independent review and frozen evidence sets are still required. |
-| PR #463 / #462 reconciliation | TODO | Leave #463/#462 untouched until #465 passes; then inspect unique scope before closing superseded PRs. |
-
-**Readiness:** software-verified, evidence-scoped research prototype; not release-ready or independently research-certified. No local shell/npm/pytest run is claimed in this connector-only session.
-
-
-**Current documentation snapshot:** 2026-11-09.  
-**Default branch:** `main` at `920b6365539058b658348855c5daddc066558b15`.  
-**Documentation/navigation foundation:** PR #464 merged; see [documentation map](README.md).  
-**Active implementation branch:** PR [#465](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/465), `benchmark/five-dataset-matrix-reconciled-2026-11-09`, head `253b0757f2043d9acf2ccaf191ce676e1161ee2d`; 9 ahead / 0 behind main.  
-**Scope:** navigation, component ownership, data boundaries, verification entry points and repository maintenance. This guide does not claim every file has been independently reviewed line by line.
-
-## Current verification boundary
-
-On the exact PR #465 head, Tests [42692169587](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169587), System Verify [42692169687](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169687), master/research artifact generation [42692169326](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169326), exhaustive register extraction [42692169308](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169308) and UGTPHON diagnostic [42692169248](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169248) passed. Full five-dataset run [42692169459](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169459) is still in progress: the Seoul/K-SPAN/IPA-Dict open matrix has not completed. NIKL metadata-only is skipped by policy, not passed.
-
-## Current PR and benchmark boundary
-
-The active five-dataset implementation is PR #465, a controlled port based on current main. It changes the benchmark workflow, source register, benchmark adapters, preparation/orchestration/summarization scripts, schema and tests. The branch is 9 commits ahead and zero behind main. PR #463 is the older divergent implementation; PR #462 is a narrower overlapping Browser verification change. Neither is merged or deleted.
-
-K-SPAN 2.1 is one dataset with Modern and Conservative reference tracks. The pinned 63,836-row source join currently reports 22,843 parallel key/WorldBet discrepancies (Modern 13,078; Conservative 9,765). Scoring uses source WorldBet fields; key fields are independently audited and surfaced as WARN. This is not a zero-mismatch integrity pass. The aggregate summary must retain warning status and counts while excluding row-level examples.
-
-## Current readiness
-
-The ordinary software and browser checks pass on the current PR head. The open-dataset matrix and aggregate schema acceptance remain pending. The project remains a software-verified, evidence-scoped research prototype, not independently research-certified or release-ready. Independent Korean IPA review, Ukrainian target review and the separately documented source/access gates remain unresolved.
-
-
-
-### Superseded historical documentation checkpoint
-
-The following records describe the earlier PR #463 state before the controlled #465 port. They are retained because the append-only audit and documentation contract tests use them as historical evidence; they are not the current branch state.
-
-- Audited baseline before PR #464: `45a02a62ce955c3db10eb0faaaa1ce8d9f2c9cdb`.
-- Documentation merge: PR #464, `d2699911dbc70ef9978e5af06643b1281725a71a`.
-- Post-merge main verification: `5c12f92c36ecae455dc4281dd7a8c0217f5dc4dc`; Tests [42679091769](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42679091769) and Pages live smoke [42679091977](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42679091977) passed.
-- Superseded PR #463 head: `167c12a7e9945dc757a57ea734e9745aa69032f3`; its earlier full-matrix run [42665749678](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42665749678) failed in adapter tests before Seoul/K-SPAN/IPA-Dict execution. The current PR #465 uses corrected fixtures and current-main base; do not attribute that earlier failure to #465.
+**Readiness:** software-verified, evidence-scoped research prototype; not release-ready or independently research-certified.
 
 ## Navigation by reader task
 
