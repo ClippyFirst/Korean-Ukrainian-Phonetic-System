@@ -586,6 +586,7 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
   color: var(--graphite);
   font-size: .96rem;
   line-height: 1.78;
+  overflow-wrap: anywhere;
 }
 
 .doc-content h2 {
