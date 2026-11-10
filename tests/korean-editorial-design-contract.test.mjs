@@ -55,5 +55,5 @@ test('Korean editorial tokens and restrained interaction are present',()=>{
   assert.ok(contrast('#526e5d','#fcfbf7')>=4.5,'small celadon text meets WCAG AA');
   assert.ok(contrast('#10251e','#789184')>=4.5,'text on the celadon specimen meets WCAG AA');
   assert.match(css,/grid-template-columns:\s*minmax\(0,\s*1\.12fr\)\s+minmax\(0,\s*\.88fr\)/u);
-  assert.match(css,/\\.specimen-tile-hangul\\s*\\{[^}]*grid-row:\\s*1\\s*\\/\\s*span\\s*2/u);
+  assert.match(css,/\.specimen-tile-hangul\s*\{[^}]*grid-row:\s*1\s*\/\s*span\s*2/u);
 });
