@@ -10,7 +10,7 @@
 
 See [latest audit](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md), [benchmark dashboard](BENCHMARK-RESULTS-2026-11-08.md), [agent workflow guide](AGENT-WORKFLOWS.md) and [acceptance gates](../research/ACCEPTANCE-GATES.md).
 
-## Latest integration checkpoint — 2026-11-10
+## Historical integration checkpoint — superseded by the verified 2026-11-10 integration above
 
 **Default branch:** `main` at `920b6365539058b658348855c5daddc066558b15`.  
 **Integration under review:** [PR #465](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/465), branch `benchmark/five-dataset-matrix-reconciled-2026-11-09`, exact head `840cb3f177e147dfe1ae53e7bdd26d524b699b64`.  
