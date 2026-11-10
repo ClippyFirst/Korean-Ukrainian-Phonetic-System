@@ -154,12 +154,13 @@ test('owner-selected mainline policy and third-party rights documents remain dis
 });
 
 
-test('2026-11-09 documentation checkpoint records current main, PR divergence and exact benchmark blockers', () => {
+test('2026-11-10 current integration checkpoint is reflected across canonical documentation', () => {
   const rootReadme = read('README.md');
   const docsIndex = read('docs/README.md');
   const structureGuide = read('docs/REPOSITORY-STRUCTURE.md');
   const audit = read('docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md');
   const handoff = read('docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md');
+
   for (const [label, content] of [
     ['README', rootReadme],
     ['docs index', docsIndex],
@@ -167,35 +168,24 @@ test('2026-11-09 documentation checkpoint records current main, PR divergence an
     ['audit', audit],
     ['handoff', handoff],
   ]) {
-    assert.ok(content.includes('45a02a62ce955c3db10eb0faaaa1ce8d9f2c9cdb'), label + ' missing audited main SHA');
-    assert.ok(content.includes('42665749678'), label + ' missing failed exact-head matrix evidence');
-    assert.ok(content.includes('167c12a7e9945dc757a57ea734e9745aa69032f3'), label + ' missing benchmark PR head');
+    assert.ok(content.includes('PR #465'), label + ' missing active integration PR');
+    assert.ok(content.includes('22,843'), label + ' missing explicit K-SPAN warning count');
   }
-  assert.ok(audit.includes('91 commits ahead and 27 behind'));
-  assert.ok(audit.includes('kijɐk'));
-  assert.ok(audit.includes('two-character delimiter'));
-  assert.ok(docsIndex.includes('REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md#current-continuation--2026-11-09-documentation-and-pr-reconciliation'));
+  assert.ok(structureGuide.includes('Current integration and verification boundary'));
+  assert.ok(audit.includes('five-dataset benchmark'));
+  assert.ok(handoff.includes('Execution continuation — 2026-11-10'));
 });
 
-
-test('post-merge documentation closeout records the merged mainline commit and verified PR evidence', () => {
-  const rootReadme = read('README.md');
-  const docsIndex = read('docs/README.md');
-  const structureGuide = read('docs/REPOSITORY-STRUCTURE.md');
+test('historical documentation merge evidence remains in the canonical audit and handoff', () => {
   const audit = read('docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md');
   const handoff = read('docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md');
-  for (const [label, content] of [
-    ['README', rootReadme], ['docs index', docsIndex], ['structure guide', structureGuide],
-    ['audit', audit], ['handoff', handoff],
-  ]) {
-    assert.ok(content.includes('d2699911dbc70ef9978e5af06643b1281725a71a'), label + ' missing merged main SHA');
-    
+  for (const [label, content] of [['audit', audit], ['handoff', handoff]]) {
+    assert.ok(content.includes('d2699911dbc70ef9978e5af06643b1281725a71a'), label + ' missing PR #464 merge SHA');
+    assert.ok(content.includes('42678483929'), label + ' missing PR #464 exact-head test evidence');
   }
-  assert.ok(audit.includes('42678483929'), 'audit missing exact PR-head test evidence');
   assert.ok(audit.includes('Documentation navigation and status reconciliation | DONE_VERIFIED'));
   assert.ok(handoff.includes('Documentation/navigation update | DONE_VERIFIED'));
 });
-
 
 test('post-merge mainline verification is recorded separately from PR-head verification', () => {
   const audit = read('docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md');
