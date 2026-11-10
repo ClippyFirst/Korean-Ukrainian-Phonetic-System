@@ -4,7 +4,7 @@
 
 **Default branch:** `main` at `920b6365539058b658348855c5daddc066558b15`.  
 **Active integration PR:** [#465](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/465), branch `benchmark/five-dataset-matrix-reconciled-2026-11-09`.  
-**Exact current PR head:** `1cf42b8d75ce3de2df6ad36dcca7208a255af342` (37 commits; 20 changed files; GitHub reports mergeable=true, merge state unstable while checks run).
+**Latest verified runtime/test snapshot:** `1cf42b8d75ce3de2df6ad36dcca7208a255af342` (37 commits; 20 changed files). Documentation-only commits subsequently advanced PR #465 to `cb5d8628662fec61115a585fc2000b0274accb84`; full matrix run [42778967197](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967197) remains in progress on the runtime snapshot, while exact-head matrix [42782610144](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42782610144) and Verify [42782609918](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42782609918) are queued.
 
 ### Exact-head verification
 
