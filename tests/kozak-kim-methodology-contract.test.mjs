@@ -83,9 +83,9 @@ test('all three Kozak Kim modes have separate documented benchmark contracts and
     '**Strict**',
     '**Soft**',
     '**Super-soft**',
-    'MEASURED_DIAGNOSTIC on UGTPHON',
-    'MEASURED_DIAGNOSTIC; not accuracy acceptance',
-    'typed orthographic-phonemic fallback',
+    'RERUN_REQUIRED',
+    'SOFTWARE_COVERAGE_VERIFIED; ACCURACY_UNMEASURED',
+    'grapheme-only underlying IPA fallback',
     'same input occurrences',
     '236-candidate'
   ]) {
