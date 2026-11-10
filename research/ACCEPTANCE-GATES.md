@@ -1,13 +1,13 @@
 # Current continuation — benchmark integration and research gates (2026-11-10 10:20 UTC+2)
 
-**Main:** `920b6365539058b658348855c5daddc066558b15`. **Active PR #465:** `1cf42b8d75ce3de2df6ad36dcca7208a255af342`, based on main; not merged.
+**Main:** `920b6365539058b658348855c5daddc066558b15`. **Active PR #465:** latest verified runtime/test snapshot `1cf42b8d75ce3de2df6ad36dcca7208a255af342`, based on main; documentation-only commits advanced the branch to `e9ca9dcb2a410292cc47c7846bf88bda77ef9a8d`; not merged.
 
 - **DONE_VERIFIED:** exact-head Python 3.11/3.12/3.13, Browser, wheel install and teacher-corpus audit — [run 42778967231](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967231).
 - **DONE_VERIFIED:** system Python/data integrity and Browser build/regression — [run 42778967019](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967019).
 - **DONE_VERIFIED:** master/research artifact generation — [run 42778967136](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967136).
 - **DONE_VERIFIED:** external UGTPHON diagnostic — [run 42778967047](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967047).
 - **DONE_VERIFIED:** exhaustive test-case register extraction — [run 42778967366](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967366).
-- **PARTIAL:** five-dataset multi-engine comparison — [run 42778967197](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967197) remains IN_PROGRESS at multi-engine comparison. Optional ByT5/CharsiuG2P jobs were SKIPPED, not passed.
+- **PARTIAL:** five-dataset multi-engine comparison — [run 42778967197](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967197) remains IN_PROGRESS on SIGMORPHON after UGTPHON multi-engine, Browser three-mode availability and Native/Browser parity all passed. Optional ByT5/CharsiuG2P jobs were SKIPPED, not passed.
 - **WARN / BLOCKED:** K-SPAN 63,836-row join retains all rows; 22,843 key/WorldBet discrepancies (Modern 13,078; Conservative 9,765) remain visible. WorldBet source labels drive scoring; key fields are audited separately.
 - **BLOCKED:** independent Korean IPA gold review; independent Ukrainian target review; source-specific restricted-data membership, raw-offset and rights evidence.
 - **DEFERRED:** optional neural comparison engines for this run.
