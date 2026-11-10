@@ -193,10 +193,9 @@ test('Soft preserves archaic Jamo and malformed Unicode as explicit literal span
   }
 });
 
-test('Soft is opt-in and does not alter strict or existing soft behavior',()=>{
+test('Soft is opt-in and leaves the strict default unchanged',()=>{
   const input='삶이';
   assert.deepEqual(engine.convert(input),engine.convert(input,STRICT));
-  assert.deepEqual(engine.convert(input,{morphologyMode:'soft'}),engine.convert(input,{morphologyMode:'soft'}));
   assert.notEqual(engine.convert('짧은소리의',SOFT).status,engine.convert('짧은소리의',STRICT).status);
 });
 
@@ -204,7 +203,7 @@ test('service exposes the opt-in control only inside research mode and labels it
   const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
   const main=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
   assert.match(html,/id="super-soft-morphology"/u);
-  assert.match(html,/Повне покриття тексту не означає, що кожен фрагмент вимовлено правильно/u);
+  assert.match(html,/Контекстні фонологічні та морфологічні правила навмисно не вгадуються/u);
   assert.match(main,/superSoftToggle&&superSoftToggle\.checked\?'super-soft'/u);
   assert.match(main,/super-soft-low-confidence/u);
   assert.match(main,/покриття складів Hangul/u);
