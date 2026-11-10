@@ -112,7 +112,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
         }
         return convertText(part,map,lexicon,true,options);
       });
-      applyPhraseBoundaryAssimilation(results,parts,map);
+      if(!graphemeFallbackOn)applyPhraseBoundaryAssimilation(results,parts,map);
       const issues=results.flatMap(r=>r.issues||[]);
       if(/[가-힣][A-Za-z]/u.test(text))issues.push('Mixed Hangul and Latin residue without a boundary; non-Korean characters are withheld from IPA.');
       // Aggregate Korean pronunciation independently from target availability.
@@ -121,7 +121,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
         if(r.pronunciation_status)return r.pronunciation_status;
         if(!/[가-힣]/u.test(parts[index]))return 'not_applicable';
         if(r.status==='unresolved'||!r.ipa||(r.trace||[]).some(item=>item.status==='unresolved'||item.status==='unsupported-jamo'))return 'unresolved';
-        if(['heuristic-low-confidence','practical-transliteration','super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(r.status))return 'heuristic';
+        if(['heuristic-low-confidence','practical-transliteration','super-soft-grapheme-fallback','super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(r.status))return 'heuristic';
         return 'resolved';
       });
       const pronunciation_status=pronunciationStatuses.includes('unresolved')?'unresolved'
@@ -227,9 +227,9 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
   for(let i=0;i<units.length;i++){
     const u=units[i];
     if(u.type==='jamo'){
-      output[i]=superSoftOn?u.char:(preserveUnresolvedSource?'⟦'+u.char+'⟧':'');ipa[i]='';analysis[i]='';
+      output[i]=(superSoftOn||graphemeFallbackOn)?u.char:(preserveUnresolvedSource?'⟦'+u.char+'⟧':'');ipa[i]='';analysis[i]='';
       issues.push(superSoftOn?u.char+': standalone compatibility Jamo is preserved literally; it is not a pronounceable syllable.':u.char+': standalone compatibility jamo is not a syllable; IPA is withheld.');
-      trace[i]={source:u.char,surface:u.char,status:superSoftOn?'literal-preserved':'unsupported-jamo',rules:['unsupported-standalone-jamo',...(superSoftOn?['super-soft-literal-preservation']:[])],output:output[i],ipa:'',phoneticResultType:'not-applicable'};
+      trace[i]={source:u.char,surface:u.char,status:(superSoftOn||graphemeFallbackOn)?'literal-preserved':'unsupported-jamo',rules:['unsupported-standalone-jamo',...((superSoftOn||graphemeFallbackOn)?['super-soft-literal-preservation']:[])],output:output[i],ipa:'',phoneticResultType:'not-applicable'};
       continue;
     }
     if(u.type==='literal'){
@@ -416,7 +416,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
   const surfaceParts=[];
   for(let i=0;i<units.length;i++){
     const u=units[i];
-    if(u.type==='literal'||(superSoftOn&&u.type==='jamo')){surfaceParts.push(u.char);continue;}
+    if(u.type==='literal'||((superSoftOn||graphemeFallbackOn)&&u.type==='jamo')){surfaceParts.push(u.char);continue;}
     // Korean surface realization and Ukrainian target mapping are separate
     // pipeline stages. A missing/provisional Ukrainian mapping must not erase a
     // source-backed Korean surface change (e.g. §30 뒷마루 → 뒨마루).
