@@ -29,7 +29,8 @@ test('service specimen explains a real Hangul → IPA → Ukrainian example',()=
 });
 
 test('Korean editorial tokens and restrained interaction are present',()=>{
-  const css=read('src/styles/main.css');
+  const css=read('src/styles/editorial.css');
+  const baseCss=read('src/styles/main.css');
   assert.match(css,/--hanji:\s*#f3f0e8/i);
   assert.match(css,/--ink-navy:\s*#172a3a/i);
   assert.match(css,/--vermilion:\s*#b64036/i);
@@ -38,6 +39,6 @@ test('Korean editorial tokens and restrained interaction are present',()=>{
   assert.match(css,/\.system-page \.doc-content/u);
   assert.match(css,/@media\s*\(prefers-reduced-motion:\s*reduce\)/u);
   assert.match(css,/:focus-visible/u);
-  assert.doesNotMatch(css,/scroll-behavior:\s*smooth/u);
-  assert.doesNotMatch(css,/background(?:-image)?:[^;]*gradient\s*\(/iu);
+  assert.doesNotMatch(css+baseCss,/scroll-behavior:\s*smooth/u);
+  assert.doesNotMatch(css+baseCss,/background(?:-image)?:[^;]*gradient\s*\(/iu);
 });
