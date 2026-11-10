@@ -18,7 +18,7 @@
   --focus: #1559a6;
 }
 * { box-sizing: border-box; }
-html { scroll-behavior: auto; background: var(--paper); }
+html { scroll-behavior: smooth; background: var(--paper); }
 body {
   margin: 0; background: var(--paper); color: var(--ink);
   font-family: Inter, "Segoe UI", "Noto Sans", "Noto Sans KR", "Arial Unicode MS", sans-serif;
