@@ -21,19 +21,21 @@ Ukrainian-speaking users studying, reading or researching Korean. The service is
 A contemporary editorial workbench informed by Korean graphic culture rather than literal national-symbol decoration:
 - Jogakbo / bojagi: modular composition, visible seams, asymmetrical patchwork rhythm, deliberate negative space. Use this as layout logic, not a background pattern.
 - Hangul as graphic architecture: use actual script blocks and Jamo as large typographic specimens, never random decorative glyphs.
-- Hanji and contemporary craft: tactile, quiet surfaces suggested through warm mineral paper tones and restrained material contrast, not fake noise textures.
-- Contemporary Seoul graphic identities: confident Hangul/Latin/Ukrainian typography, precise grid, a single vivid color interruption and strong editorial hierarchy.
+- Paper as a material cue: a cool neutral ground with no simulated grain or faux texture.
+- Contemporary Seoul graphic identities: confident Hangul typography, simple geometry, compact type systems and selective high-chroma colour planes.
+- A three-panel specimen uses ink for Hangul, signal yellow for IPA and signal pink for Ukrainian. Cobalt is reserved for interactive action and focus.
 
-## Proposed palette
-- Ink navy: #172A3A
-- Hanji: #F3F0E8
-- Warm white: #FCFBF7
-- Deep vermilion: #B64036
-- Muted celadon: #789184
-- Graphite: #343B3F
-- Pale seam: #D8D4C9
+## Current palette
+- Cool paper: #F2F3EF
+- Warm white: #FCFCFA
+- Ink: #16191F
+- Cobalt: #2448D8
+- Signal pink: #FF5AA5
+- Signal yellow: #D9E64B
+- Graphite: #30363D
+- Seam: #D5D9D5
 
-These are design tokens, not cultural claims. Preserve contrast and use color semantically.
+The first cream / vermilion / celadon pass was replaced after screenshot review because it read too close to a common generated editorial template. The current interface keeps the surface neutral, uses cobalt for action and focus, and reserves pink and yellow for the three-panel typographic specimen.
 
 ## Typography
 Use a robust system stack already available locally, preferring Noto Sans KR / Noto Sans for Korean and Ukrainian coverage. Build character through scale, weight, line-height and script pairing; do not add remote font dependencies or make the page network-dependent.
@@ -60,8 +62,8 @@ No AI-template gradients, generic SaaS card grid, decorative pseudo-data, random
 
 - [Dong Dong — ISEA 2025 Seoul identity](https://100.typographicarts.org/winners/2026/dong-dong-isea-2025-seoul): documents a flexible identity using Hangul and elements of the Korean national flag. The implementation takes the idea of script-as-structure, not the emblem as a logo.
 - [Shin & Westland — Digitizing Traditional Cultural Designs](https://eprints.whiterose.ac.uk/id/eprint/117161/): analyses Korean bojagi patchwork rules and translates them into computational design. This informs the interface's modular seams, asymmetry and reusable layout grammar rather than a literal textile texture.
-- [Hong Yoon-jung — Korean Bojagi color classification (2026)](https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE12732435): reports warm, generally low-chroma color tendencies across sampled bojagi types. The proposed palette uses this as a restrained supporting cue, not as a claim that one palette represents all Korean design.
-- [Koreana — Artists Add New Pages to Hanji's Rich History (2026)](https://www.koreana.or.kr/koreana/na/ntt/selectNttInfo.do?bbsId=1114&nttSn=136840): shows contemporary reinterpretations of hanji in craft and graphic design. This informs the paper-like surface and material restraint; no simulated grain is added.
+- [Hong Yoon-jung — Korean Bojagi color classification (2026)](https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE12732435): reports warm, generally low-chroma color tendencies across sampled bojagi types. The study remains cultural context, not the source of the current high-chroma accent palette.
+- [Koreana — Artists Add New Pages to Hanji's Rich History (2026)](https://www.koreana.or.kr/koreana/na/ntt/selectNttInfo.do?bbsId=1114&nttSn=136840): shows contemporary reinterpretations of hanji in craft and graphic design. This supports a material cue only; the interface uses a cool neutral ground and no simulated grain.
 - [Letterform Archive — Localization: 15 Years of LetterSeed (2025)](https://letterformarchive.org/news/now-on-view-localization-15-years-of-letterseed/): situates contemporary Hangul typography as an active editorial/design practice.
 
 These references support design inspiration only. They do not establish a single canonical Korean visual style; the final system is a project-specific interpretation.
