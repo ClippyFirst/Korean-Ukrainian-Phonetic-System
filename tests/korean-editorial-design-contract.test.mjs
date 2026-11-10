@@ -51,7 +51,7 @@ test('Korean editorial tokens and restrained interaction are present',()=>{
   assert.match(css,/\.system-page \.doc-content/u);
   assert.match(css,/@media\s*\(prefers-reduced-motion:\s*reduce\)/u);
   assert.match(css,/:focus-visible/u);
-  assert.doesNotMatch(css+baseCss,/scroll-behavior:\s*smooth/u);
+  assert.match(css,/html\s*\{\s*scroll-behavior:\s*auto;/u);
   assert.doesNotMatch(css+baseCss,/background(?:-image)?:[^;]*gradient\s*\(/iu);
   assert.ok(contrast('#526e5d','#fcfbf7')>=4.5,'small celadon text meets WCAG AA');
   assert.ok(contrast('#172a3a','#f3f0e8')>=4.5,'navy text on hanji meets WCAG AA');
