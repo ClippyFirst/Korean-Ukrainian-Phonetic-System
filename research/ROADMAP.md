@@ -623,3 +623,18 @@ The 12 abstentions and 28 unadjudicated occurrences were re-reviewed. A 28-row r
 
 
 Runtime guard follow-through: native and browser shared-Broad regressions now cover all six unresolved sibilant token strings and ensure no unsupported [ɕ] is emitted; the `대한민국` optional vowel candidate preserves length and carries the Lee (2023) source citation. These tests prevent evidence-limited cases from silently becoming production rules.
+
+
+## 2026-11-10 — execution update after five-dataset benchmark merge
+
+**DONE_VERIFIED:** PR #465 merged into main as `e8ebed5b9ccb67255209ccb20efa45ae0236bcbe`. Its exact-head CI passed across Python 3.11/3.12/3.13, Browser, wheel installation, teacher-corpus audit, system verification, research artifact generation, exhaustive register extraction, UGTPHON diagnostic and the complete five-dataset matrix.
+
+**DONE_VERIFIED:** six ten-engine reference tracks and fifteen Browser Strict/Soft/Super-soft reports are generated. K-SPAN's 63,836-row join retains all records with zero unmatched WordNums; its 22,843 key/WorldBet differences remain WARN. The current aggregate-only artifact was inspected and contains only the summary JSON and source checksums.
+
+**TODO:** verify post-merge and final-documentation exact-main CI. Do not infer mainline verification from PR-head results.
+
+**BLOCKED:** independent Korean IPA gold review; independent Ukrainian target review; original 236/239 selector provenance and raw ㅠ offsets; authorized KsponSpeech/NIKL speech-corpus acquisition and exact terms.
+
+**DEFERRED:** optional ByT5/CharsiuG2P inference. These jobs were skipped under the default-off policy and are not required for deterministic matrix completion.
+
+**Readiness:** research prototype with software-verified benchmark infrastructure; not release-ready or independently research-certified.
