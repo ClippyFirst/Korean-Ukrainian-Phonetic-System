@@ -196,3 +196,22 @@ test('post-merge mainline verification is recorded separately from PR-head verif
     assert.ok(content.includes('42679091769'), label + ' missing main test matrix result');
   }
 });
+
+
+test('latest 2026-11-10 integration checkpoint records exact PR head and non-final matrix status', () => {
+  const rootReadme = read('README.md');
+  const docsIndex = read('docs/README.md');
+  const structureGuide = read('docs/REPOSITORY-STRUCTURE.md');
+  const audit = read('docs/REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md');
+  const handoff = read('docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md');
+  for (const [label, content] of [
+    ['README', rootReadme], ['docs index', docsIndex], ['structure guide', structureGuide],
+    ['audit', audit], ['handoff', handoff],
+  ]) {
+    assert.ok(content.includes('de841219a3ecc50db874ebde90d250edce7cdf9f'), label + ' missing latest PR head');
+    assert.ok(content.includes('42776987807'), label + ' missing active matrix evidence');
+    assert.ok(content.includes('42777829497'), label + ' missing latest queued matrix evidence');
+  }
+  assert.ok(audit.includes('22,843 discrepancies (Modern 13,078; Conservative 9,765)'));
+  assert.ok(handoff.includes('cancel-in-progress: false'));
+});
