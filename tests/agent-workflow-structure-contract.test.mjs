@@ -171,7 +171,8 @@ test('2026-11-10 current integration checkpoint is reflected across canonical do
     assert.ok(content.includes('PR #465'), label + ' missing active integration PR');
     assert.ok(content.includes('22,843'), label + ' missing explicit K-SPAN warning count');
   }
-  assert.ok(structureGuide.includes('Latest integration checkpoint'));
+  assert.ok(structureGuide.includes('Current repository state — 2026-11-10'));
+  assert.ok(structureGuide.includes('Historical integration checkpoint — superseded by the verified 2026-11-10 integration above'));
   assert.ok(audit.includes('five-dataset benchmark'));
   assert.ok(handoff.includes('Execution continuation — 2026-11-10'));
 });
