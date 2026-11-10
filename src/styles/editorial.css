@@ -808,3 +808,11 @@ input,textarea { caret-color: var(--cobalt); }
     min-height: 44px;
   }
 }
+
+/* Keep the methodology notice crisp without a heavy callout rail. */
+.system-intro {
+  border: 1px solid var(--seam);
+  border-top: 2px solid var(--cobalt);
+  border-left: 1px solid var(--seam);
+  box-shadow: none;
+}
