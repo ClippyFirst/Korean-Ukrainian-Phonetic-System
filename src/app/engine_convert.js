@@ -26,9 +26,13 @@ function exactWordFormAt(units,index){
 function ipaSafeLiteral(value){return [...value].filter(isPreservableIpaLiteral).join('');}
 
 export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options={}){
-  const morphologyMode=options.morphologyMode==='super-soft'?'super-soft':options.morphologyMode==='practical'?'practical':options.morphologyMode==='soft'?'soft':'strict';
+  const requestedMorphologyMode=options.morphologyMode==='super-soft'?'super-soft':options.morphologyMode==='soft'?'soft':options.morphologyMode==='practical'?'practical':'strict';
+  // Soft retains the former broad heuristic path. Super-soft is a distinct
+  // grapheme-only IPA fallback with no contextual phonology inference.
+  const morphologyMode=requestedMorphologyMode==='soft'?'super-soft':requestedMorphologyMode==='super-soft'?'grapheme-fallback':requestedMorphologyMode;
   const practicalOn=morphologyMode==='practical';
   const superSoftOn=morphologyMode==='super-soft';
+  const graphemeFallbackOn=morphologyMode==='grapheme-fallback';
   const preserveUnresolvedSource=options.preserveUnresolvedSource===true;
   // Explicitly select the same broad IPA serialization contract as Python.
   // This is a profile choice, not a phonological-rule change; the legacy
@@ -216,7 +220,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
   // g2pK has already realized the normative surface spelling. In surfaceMode,
   // do not apply orthographic phonology rules a second time; only derive IPA
   // and allophonic voicing from the realized surface sequence.
-  const ruleSets=options.surfaceMode?units.map(()=>[]):applyContextualRules(units,text,{morphologyMode});
+  const ruleSets=options.surfaceMode||graphemeFallbackOn?units.map(()=>[]):applyContextualRules(units,text,{morphologyMode});
   const output=[],ipa=[],analysis=[],trace=[],issues=[];
 
   for(let i=0;i<units.length;i++){
@@ -251,11 +255,12 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     }
     const applied=ruleSets[i]||[];
     const unresolvedMorphologyFlags=['__palatalizationUnlicensed','__hDeletionUnlicensed','__saisiotInsertionUnlicensed','__crossWordLiaisonUnlicensed','__complexLiaisonUnlicensed','__complexHAspirationUnlicensed','__substantiveLiaisonUnlicensed','__rieulGiyeokUnlicensed'];
-    if(superSoftOn&&unresolvedMorphologyFlags.some(flag=>u[flag])){
+    if((superSoftOn||graphemeFallbackOn)&&unresolvedMorphologyFlags.some(flag=>u[flag])){
       u.__superSoftUnresolvedFlags=unresolvedMorphologyFlags.filter(flag=>u[flag]);
       u.__superSoftFallback=true;
       for(const flag of unresolvedMorphologyFlags)delete u[flag];
     }
+    if(graphemeFallbackOn&&u.type==='hangul')u.__graphemeFallback=true;
     if(u.__palatalizationUnlicensed){
       if(u.__palatalizationUnlicensed==='left')issues.push(u.char+': §17 palatalization requires a verified formal-morpheme boundary; add a sourced lexical pronunciation entry.');
       output[i]=preserveUnresolvedSource?'⟦'+u.char+'⟧':'';ipa[i]='';
@@ -318,16 +323,17 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     // The Python IPA adapter already applies this broad-profile rule; keep the
     // browser runtime in parity. Phonemic /jʌ/ remains a distinct representation.
     const palatalYeo=u.vowel==='ㅕ'&&['ㅈ','ㅉ','ㅊ'].includes(onset);
-    let status=u.__superSoftFallback?'super-soft-orthographic-fallback':superSoftOn&&u.__practicalHeuristic?'super-soft-practical-heuristic':superSoftOn&&u.__softHeuristic?'super-soft-morphology-heuristic':u.__practicalHeuristic?'practical-transliteration':u.__softHeuristic?'heuristic-low-confidence':(applied.length||contextualUi||defaultUi||genitiveParticleUi||palatalYeo?'contextual':'canonical');
+    let status=graphemeFallbackOn?'super-soft-grapheme-fallback':u.__superSoftFallback?'super-soft-orthographic-fallback':superSoftOn&&u.__practicalHeuristic?'super-soft-practical-heuristic':superSoftOn&&u.__softHeuristic?'super-soft-morphology-heuristic':u.__practicalHeuristic?'practical-transliteration':u.__softHeuristic?'heuristic-low-confidence':(applied.length||contextualUi||defaultUi||genitiveParticleUi||palatalYeo?'contextual':'canonical');
     const previousCoda=prev?.__effectiveCoda??prev?.coda??'';
     const liaisonOnset=Boolean(u.__liaison);
     const previousSonorant=['ㄴ','ㄹ','ㅁ','ㅇ'].includes(previousCoda);
     const previousObstruent=Boolean(previousCoda)&&!previousSonorant;
     const previousOpenSyllable=Boolean(prev)&&prev.coda==='';
-    const voiced=(liaisonOnset||previousSonorant||previousOpenSyllable)&&['ㄱ','ㄷ','ㅂ','ㅈ'].includes(onset);
-    const fortis=!options.surfaceMode&&!liaisonOnset&&previousObstruent&&['ㄱ','ㄷ','ㅂ','ㅅ','ㅈ'].includes(onset);
-    const liquid=onset==='ㄹ'&&['ㄴ','ㄹ','ㅁ','ㅇ'].includes(previousCoda);
+    const voiced=!graphemeFallbackOn&&(liaisonOnset||previousSonorant||previousOpenSyllable)&&['ㄱ','ㄷ','ㅂ','ㅈ'].includes(onset);
+    const fortis=!graphemeFallbackOn&&!options.surfaceMode&&!liaisonOnset&&previousObstruent&&['ㄱ','ㄷ','ㅂ','ㅅ','ㅈ'].includes(onset);
+    const liquid=!graphemeFallbackOn&&onset==='ㄹ'&&['ㄴ','ㄹ','ㅁ','ㅇ'].includes(previousCoda);
     const traceRules=[...applied];
+    if(graphemeFallbackOn)traceRules.push('super-soft-grapheme-ipa-fallback');
     if(u.__superSoftFallback)traceRules.push('super-soft-orthographic-fallback');
     if(superSoftOn&&u.__practicalHeuristic)traceRules.push('super-soft-practical-heuristic');
     if(superSoftOn&&u.__softHeuristic)traceRules.push('super-soft-morphology-heuristic');
@@ -344,8 +350,8 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     const baseVowelIpa=(genitiveParticleUi||defaultUi||resyllabifiedUi)?'ɰi':palatalYeo?'ʌ':(v?.ipa||'');
     const vowelIpa=lexicalLongVowel?`${baseVowelIpa}ː`:baseVowelIpa;
     const ipaOnset=useSharedBroadIpaProfile?(o?.ipa||''):
-      (J_VOWELS.has(u.vowel)&&onset==='ㅅ')?'ɕ':
-      (J_VOWELS.has(u.vowel)&&onset==='ㅆ')?'ɕ͈':(o?.ipa||'');
+      (!graphemeFallbackOn&&J_VOWELS.has(u.vowel)&&onset==='ㅅ')?'ɕ':
+      (!graphemeFallbackOn&&J_VOWELS.has(u.vowel)&&onset==='ㅆ')?'ɕ͈':(o?.ipa||'');
     let unitIpa=ipaOnset+vowelIpa+(c?.ipa||'');
     if(liquid&&onset==='ㄹ')unitIpa='l'+(v?.ipa||'')+(c?.ipa||'');
     if(voiced){
@@ -384,10 +390,10 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     trace[i]={
       source:u.char,surface:compose(u.onset,u.vowel,u.coda||''),status,
       rules:[...new Set(traceRules)],output:output[i],ipa:unitIpa,
-      phoneticResultType:u.__superSoftFallback?'orthographic-phonemic-fallback':'surface-ipa',
-      confidence:u.__superSoftFallback||superSoftOn&&(u.__practicalHeuristic||u.__softHeuristic)?'low':'ungraded',
+      phoneticResultType:graphemeFallbackOn||u.__superSoftFallback?'orthographic-phonemic-fallback':'surface-ipa',
+      confidence:graphemeFallbackOn||u.__superSoftFallback||superSoftOn&&(u.__practicalHeuristic||u.__softHeuristic)?'low':'ungraded',
       unresolvedMorphologyFlags:u.__superSoftUnresolvedFlags||[],
-      uncertainty:u.__superSoftFallback?{kind:'unresolved-morphology',strategy:'orthographic-phonemic-fallback',confidence:'low'}:superSoftOn&&(u.__practicalHeuristic||u.__softHeuristic)?{kind:'heuristic-morphology',confidence:'low'}:null,
+      uncertainty:graphemeFallbackOn?{kind:'grapheme-derived-pronunciation',strategy:'underlying-jamo-to-ipa',confidence:'low',note:'Contextual phonological and lexical morphology are intentionally not inferred.'}:u.__superSoftFallback?{kind:'unresolved-morphology',strategy:'orthographic-phonemic-fallback',confidence:'low'}:superSoftOn&&(u.__practicalHeuristic||u.__softHeuristic)?{kind:'heuristic-morphology',confidence:'low'}:null,
       targetStatus:targetFromIpa.status,
       targetReason:targetFromIpa.reason||null,
       candidateOutput:targetFromIpa.candidateText||null,
@@ -401,7 +407,9 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
   if(/[가-힣][A-Za-z]/u.test(text))issues.push('Mixed Hangul and Latin/digit residue without a boundary; non-Korean characters are withheld from IPA.');
   const hasJamo=units.some(u=>u.type==='jamo');
   const hasHangulSyllables=units.some(u=>u.type==='hangul');
-  const status=superSoftOn
+  const status=graphemeFallbackOn
+    ? (hasHangulSyllables?'super-soft-grapheme-fallback':'non-korean-input')
+    : superSoftOn
     ? (trace.some(x=>x?.status==='super-soft-orthographic-fallback')?'super-soft-orthographic-fallback':trace.some(x=>['super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(x?.status))?'super-soft-heuristic-coverage':hasHangulSyllables?'super-soft-maximum-coverage':'non-korean-input')
     : hasJamo?'unresolved':!hasHangulSyllables?'non-korean-input':issues.length?'unresolved':trace.some(x=>x?.status==='practical-transliteration')?'practical-transliteration':trace.some(x=>x?.status==='heuristic-low-confidence')?'heuristic-low-confidence':trace.some(x=>x?.status==='contextual')?'contextual':'canonical';
   const surfaceParts=[];
@@ -448,7 +456,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     u.__substantiveLiaisonUnlicensed||u.__rieulGiyeokUnlicensed
   ));
   const hasHeuristicPronunciation=trace.some(item=>[
-    'super-soft-orthographic-fallback','super-soft-practical-heuristic',
+    'super-soft-grapheme-fallback','super-soft-orthographic-fallback','super-soft-practical-heuristic',
     'super-soft-morphology-heuristic','practical-transliteration',
     'heuristic-low-confidence'
   ].includes(item?.status));
@@ -468,7 +476,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     item?.targetStatus==='provisional'
   );
   const provisionalCandidateAvailable=/[가-힣]/u.test(text)&&pronunciation_status!=='unresolved'&&provisionalTargetAvailable;
-  const superSoftCandidateAvailable=superSoftOn&&trace.some(item=>['super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(item?.status));
+  const superSoftCandidateAvailable=(superSoftOn||graphemeFallbackOn)&&trace.some(item=>['super-soft-grapheme-fallback','super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(item?.status));
   const target_status=unresolvedWholeHangulToken||pronunciation_status==='partial'||
     !hasHangulSyllables||targetMappingUnavailable||hasUnresolvedKoreanMorphology
     ? 'unavailable'
@@ -477,16 +485,16 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       : 'model-selected';
   return{
     source:text,
-    ipa_profile:useSharedBroadIpaProfile?'clippyfirst-korean-broad-v1':superSoftOn?'browser-super-soft-maximum-coverage-v1':options.surfaceMode?'browser-surface-mode-legacy-v1':'browser-legacy-contextual-v1',
+    ipa_profile:useSharedBroadIpaProfile?'clippyfirst-korean-broad-v1':graphemeFallbackOn?'browser-super-soft-grapheme-ipa-v1':superSoftOn?'browser-soft-maximum-coverage-v1':options.surfaceMode?'browser-surface-mode-legacy-v1':'browser-legacy-contextual-v1',
     ipa_profile_version:1,
-    ipa_profile_level:useSharedBroadIpaProfile?'broad':superSoftOn?'orthographic-fallback-enabled':options.surfaceMode?'surface-mode':'surface-contextual',
+    ipa_profile_level:useSharedBroadIpaProfile?'broad':graphemeFallbackOn?'underlying-grapheme-ipa':superSoftOn?'heuristic-maximum-coverage':options.surfaceMode?'surface-mode':'surface-contextual',
     ipa_profile_status:'unadjudicated-cross-runtime',
     surfaceHangul:recomposed===originalHangul?'':recomposed,
     ukrainian:unresolvedWholeHangulToken||targetMappingUnavailable||(pronunciation_status==='partial'&&!superSoftOn)||provisionalCandidateAvailable||superSoftCandidateAvailable?'':output.join(''),
     candidate_ukrainian:superSoftCandidateAvailable?trace.map(item=>item?.candidateOutput??item?.output??'').join(''):provisionalCandidateAvailable?trace.map(item=>item?.candidateOutput??item?.output??'').join(''):null,
     candidate_status:superSoftCandidateAvailable?'super-soft-low-confidence':provisionalCandidateAvailable?'provisional':null,
     ipa:unresolvedWholeHangulToken||pronunciation_status==='not_applicable'?'':renderStructured(units,ipa,'.'),
-    phonetic_result_type:superSoftCandidateAvailable?(trace.some(item=>item?.status==='super-soft-orthographic-fallback')?'mixed-surface-ipa-and-orthographic-fallback':'mixed-surface-ipa-and-heuristic'):'surface-ipa',
+    phonetic_result_type:graphemeFallbackOn?'orthographic-phonemic-ipa-fallback':superSoftCandidateAvailable?(trace.some(item=>item?.status==='super-soft-orthographic-fallback')?'mixed-surface-ipa-and-orthographic-fallback':'mixed-surface-ipa-and-heuristic'):'surface-ipa',
     analysis:renderStructured(units,analysis,' · '),
     trace,
     variants:unresolvedWholeHangulToken||targetMappingUnavailable?[]:genericVowelVariants(text,units,originalUnits,ipa,output,status,useSharedBroadIpaProfile),
