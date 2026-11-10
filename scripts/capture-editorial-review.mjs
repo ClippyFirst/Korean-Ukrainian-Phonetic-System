@@ -54,8 +54,8 @@ try {
           wideElements:[...document.querySelectorAll('body *')].map(el=>{
             const rect=el.getBoundingClientRect();
             const style=getComputedStyle(el);
-            return {tag:el.tagName,id:el.id,className:typeof el.className==='string'?el.className:'',width:Math.round(rect.width),right:Math.round(rect.right),scrollWidth:el.scrollWidth,minWidth:style.minWidth,overflowX:style.overflowX,text:(el.innerText||'').trim().slice(0,70)};
-          }).filter(el=>el.width>expectedWidth+1||el.right>expectedWidth+1).sort((a,b)=>b.width-a.width).slice(0,16),
+            return {tag:el.tagName,id:el.id,className:typeof el.className==='string'?el.className:'',width:Math.round(rect.width),right:Math.round(rect.right),clientWidth:el.clientWidth,scrollWidth:el.scrollWidth,minWidth:style.minWidth,position:style.position,overflowX:style.overflowX,text:(el.innerText||'').trim().slice(0,70)};
+          }).filter(el=>el.width>expectedWidth+1||el.right>expectedWidth+1||el.scrollWidth>el.clientWidth+1).sort((a,b)=>b.width-a.width).slice(0,16),
           documentWidth:document.documentElement.scrollWidth,
           bodyWidth:document.body.scrollWidth,
           heading:document.querySelector('h1')?.innerText ?? '',
