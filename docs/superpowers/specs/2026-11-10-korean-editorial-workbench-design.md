@@ -74,3 +74,17 @@ These references support design inspiration only. They do not establish a single
 - [studio fnt](https://www.commarts.com/features/studio-fnt): a Seoul graphic-design practice associated with geometric forms, restrained palettes and confident Hangul typography; a reference for clarity, not a visual template.
 
 These examples are evidence of several distinct practices, not a single Korean style.
+
+## Contemporary visual direction update
+
+The first rendered pass used warm paper, vermilion and celadon. Screenshot review showed that this combination, paired with zero-radius hairlines, landed too close to a common generated editorial template. The palette was therefore revised before publication.
+
+The current system uses a cool paper ground (`#F2F3EF)), ink (`#16191F`), cobalt (`#2448D8`), signal pink (`#FF5AA5`) and signal yellow (`#D9E64B`). Cobalt is the only interface action/focus accent. Pink and yellow appear only in the asymmetric Hangul / IPA / Ukrainian specimen. Interactive controls receive small, consistent corner radii; the modular specimen and workbench retain square seams.
+
+Additional references:
+- [Hanyul Hangul Collection (2024)](https://design.amorepacific.com/en/work/2024/hanyul/hangul-collection/) — Hangul's geometric balance as a graphic construction system.
+- [The Preview Seoul 2025](https://www.behance.net/gallery/231827241/The-Preview-Seoul-2025) — bold type and directional composition in a contemporary Korean visual identity.
+- [The View From Seoul](https://www.itsnicethat.com/articles/the-view-from-seoul-korean-poster-archive-graphic-design-170924) — screen-native form and motion in current Korean poster practice.
+- [studio fnt](https://www.commarts.com/features/studio-fnt) — geometric forms, simple palettes and confident Hangul typography.
+
+These references inform a project-specific combination. They are not presented as a universal Korean style.
