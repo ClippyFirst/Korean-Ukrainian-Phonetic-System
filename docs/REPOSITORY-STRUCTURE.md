@@ -1,5 +1,15 @@
 # Repository structure and ownership guide
 
+## Current repository state — 2026-11-10
+
+- `main` is the sole active integration branch. Five-dataset benchmark integration PR #465 merged as `e8ebed5b9ccb67255209ccb20efa45ae0236bcbe`.
+- Human navigation lives in root `README.md` and this `docs/README.md`; agent routing remains in root `AGENTS.md`; workflow procedures remain in `.agents/skills/` and `docs/AGENT-WORKFLOWS.md`.
+- The five-dataset matrix and aggregate-only artifact policy are now implemented and verified on PR head; post-merge exact-main verification remains separate.
+- Historical branches are preserved as audit history. Do not treat their existence as a request to merge or delete them.
+- Research/release blockers remain independent Korean IPA gold, Ukrainian target review, historical cohort provenance, raw `ㅠ` offsets and restricted speech-corpus terms.
+
+See [latest audit](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md), [benchmark dashboard](BENCHMARK-RESULTS-2026-11-08.md), [agent workflow guide](AGENT-WORKFLOWS.md) and [acceptance gates](../research/ACCEPTANCE-GATES.md).
+
 ## Latest integration checkpoint — 2026-11-10
 
 **Default branch:** `main` at `920b6365539058b658348855c5daddc066558b15`.  
