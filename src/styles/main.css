@@ -1196,3 +1196,6 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
     animation-iteration-count: 1 !important;
   }
 }
+
+/* Scope the main work surface to the editorial identity, not a generic card preset. */
+.editorial-site .workspace-layout { border-color: var(--seam); }
