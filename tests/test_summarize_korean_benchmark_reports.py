@@ -110,6 +110,12 @@ class AggregateBenchmarkSummaryTests(unittest.TestCase):
             "            # The aggregate summary contains the redacted manifest",
             workflow,
         )
+        self.assertIn(
+            "name: Pinned multi-engine IPA comparison (Python 3.12)\\n"
+            "    runs-on: ubuntu-24.04\\n"
+            "    timeout-minutes: 90",
+            workflow,
+        )
 
 
 if __name__ == "__main__":
