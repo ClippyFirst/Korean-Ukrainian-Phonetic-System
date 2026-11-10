@@ -1661,3 +1661,14 @@ The browser research engine now distinguishes three levels by confidence/coverag
 **Exact-head verification:** PR #466 head 7ee23c8ab1984e7ae156c4a25360a0d167ea6ef7; Verify workflow [42843823095](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42843823095) **PASS** — Python regression/data integrity, full browser regression suite, source redistribution rights gate, Vite build and generated-page checks. The new Super-soft regression exercises all 11,172 modern Hangul syllable blocks through IPA → Ukrainian mapping; existing Soft coverage/adversarial tests preserve the former broad heuristic behavior. NIKL metadata-only inventory remains **SKIPPED**.
 
 **Evidence boundary:** 100% Super-soft coverage is availability of a typed grapheme-derived candidate, not 100% correct Korean pronunciation. Earlier benchmark reports predate this mode reassignment and must not be relabelled as measurements of the new Soft/Super-soft definitions. Rerun the full benchmark matrix against the merged exact main commit before publishing updated comparative scores. GitHub Pages deployment is also pending until the PR is merged and the main-branch Pages workflow completes.
+
+
+## PR #466 merged and Pages publication — 2026-11-10
+
+- **Default branch:** `main`; merge commit `fa2998acaa0fdd154c9b4d3c1927778f77bac199`.
+- **Modes deployed:** Strict unchanged; Soft inherits the former broad heuristic/maximum-coverage path; Super-soft is the new grapheme-only Jamo → underlying IPA → Ukrainian fallback.
+- **Coverage contract:** exhaustive technical test across all 11,172 modern precomposed Hangul syllable blocks. This is candidate availability, not pronunciation accuracy.
+- **PR #466 exact-head checks:** Verify, tests, Browser G2P, UGTPHON diagnostic, exhaustive test register and master/research artifacts all **PASS**. Optional neural inference and NIKL metadata-only inventory were **SKIPPED** by policy.
+- **Mainline Pages run [42858765455](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42858765455):** Python 3.11/3.12/3.13, browser regression/build, deployment and public-page smoke test **PASS**. The final live adversarial practical-mode browser smoke is still running; do not claim the whole Pages workflow complete until it finishes.
+- **Fresh three-mode benchmark [42858765799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42858765799):** still running at this checkpoint. Historical Soft/Super-soft figures must not be presented as results for the new definitions. Reconcile benchmark outputs and generated artifacts after completion.
+- **Source/documentation note:** benchmark scores are not updated by this documentation checkpoint. No local npm/pytest execution is claimed; results above are GitHub Actions evidence.
