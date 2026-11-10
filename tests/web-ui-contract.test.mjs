@@ -193,6 +193,7 @@ test('three research profiles distinguish heuristic Soft from grapheme-only Supe
   const main=read('src/main.js');
   assert.match(html,/М’який режим · ширші евристики, низька впевненість/u);
   assert.match(html,/Суперм’який режим · графемний IPA-резерв/u);
+  assert.ok(html.indexOf('id="soft-morphology"')<html.indexOf('id="super-soft-morphology"'),'mode controls follow Strict → Soft → Super-soft progression');
   assert.match(engine,/requestedMorphologyMode==='soft'\?'super-soft'/u);
   assert.match(engine,/requestedMorphologyMode==='super-soft'\?'grapheme-fallback'/u);
   assert.match(engine,/super-soft-grapheme-ipa-fallback/u);
