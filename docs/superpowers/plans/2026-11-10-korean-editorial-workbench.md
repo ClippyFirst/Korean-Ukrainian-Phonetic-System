@@ -35,14 +35,16 @@ Branch: `design/korean-editorial-workbench-2026-11-10`
 - **Task 1 — DONE_VERIFIED.** Visual contract was added first. The initial exact-head run failed on the three expected absent-identity assertions: [RED run 42870990512](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42870990512). The final branch run is green: [Tests 42874997955](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42874997955), 1,438 passed / 0 failed.
 - **Task 2 — DONE_VERIFIED.** Service page hero/specimen and continuous input/output workbench implemented; no JavaScript, conversion-engine or mode semantics changed.
 - **Task 3 — DONE_VERIFIED.** Methodology page shares the new identity and has a dedicated long-form reading treatment.
-- **Task 4 — PARTIAL.** Exact-head browser regression, source-rights gate, generated-page validation and production build pass in [Verify 42874998127](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42874998127). Browser G2P [42874997922](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42874997922), master/research artifacts [42874998880](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42874998880), and exhaustive test-case register [42874997991](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42874997991) also pass. Public Pages deployment and rendered desktop/mobile review remain pending until merge.
+- **Task 4 — DONE_VERIFIED for branch gates; PARTIAL for publication.** Exact-head tests [42889644345](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42889644345) pass 1,438/1,438; Verify [42889644180](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42889644180), Browser G2P [42889644391](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42889644391), master/research artifacts [42889644182](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42889644182), exhaustive register [42889644340](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42889644340), and rendered visual review [42889644373](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42889644373) all pass. Public Pages deployment and live smoke on the merged redesign commit remain pending.
 
 ### Exact-head status
 
 - Branch: `design/korean-editorial-workbench-2026-11-10`
-- Tested head: `2eb127dc5d88345e9f338f1924cd1c796fa3321e`
+- Tested head: `3fc2ee41b7f982797d26c762920f52e08206f5a2`
 - Base: `37c922935b30ca5f46a4f5d37bd5e435f3c28cb6`
 - PR: [#467](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/467)
 - Python 3.11 / 3.12 / 3.13, wheel install and teacher corpus audit: PASS.
+- Browser regression and production build: PASS.
+- Desktop/tablet/mobile visual review: 10/10 viewport captures; no horizontal overflow; focus, reduced motion and touch targets PASS.
 - NIKL metadata-only inventory: SKIPPED by configured policy; not represented as a pass.
 - Local clone and local npm execution were unavailable because this runtime could not resolve github.com. No local test run is claimed; CI is the test oracle.
