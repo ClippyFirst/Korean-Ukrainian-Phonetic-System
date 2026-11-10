@@ -1,3 +1,63 @@
+# Master execution plan and handoff — 2026-11-08
+
+## Execution continuation — 2026-11-10
+
+The current PR #465 head (`840cb3f177e147dfe1ae53e7bdd26d524b699b64`) is 66 commits ahead of `main` and 0 behind. It is based on the latest main baseline; no merge-base conflict is indicated. The full six-track ten-engine / fifteen-report Browser matrix was previously completed in run 42785083152, with Seoul full-corpus Browser runs in 42496539257. The K-SPAN 63,836-row NIKL WordNum join is complete, but key/WorldBet consistency remains WARN at 22,843 discrepancies (Modern 13,078; Conservative 9,765).
+
+Latest exact-head CI on 840cb3f is not green:
+- Verify 42799422710: FAIL — source-register CSV shape plus Browser link/checkpoint assertions.
+- Tests 42799422543: FAIL — same malformed CSV; Python 3.11/3.13 cancelled by fail-fast.
+- Multi-engine 42799422846: FAIL — aggregate builder cannot import the sibling summarizer when run as a script.
+- Master/research artifacts 42799423026: PASS.
+- Exhaustive register extraction 42799422733: PASS.
+- UGTPHON diagnostic 42799422696: PASS.
+
+The repair batch quotes comma-bearing fields in three source-register rows, corrects the docs-index relative link and structure-guide checkpoint heading, and makes the summary builder import its sibling module in package and direct-script execution contexts. After those repairs, rerun Python 3.11/3.12/3.13, Browser, Verify and the full matrix on the final exact head. Inspect the aggregate-only ZIP and verify it contains only the schema-validated aggregate JSON and source checksums before marking artifact policy DONE_VERIFIED.
+
+K-SPAN's 22,843 key/WorldBet differences are not waived: score from the source WorldBet fields, report the parallel key-field differences independently, and preserve all rows. Optional neural inference and metadata-only NIKL inventory remain skipped. Independent Korean IPA gold, independent Ukrainian target review, historical audio/speaker provenance and restricted corpus terms remain separate research blockers.
+
+The repository remains a software-verified, evidence-scoped research prototype, not independently research-certified or release-ready. PR #465 must not be merged until required exact-head CI is green and the artifact is inspected. PR #463 and #462 are superseded in intended scope but should be closed only after #465 is accepted; preserve their historical branches.
+
+
+
+## Previous execution handoff — 2026-11-10 (superseded) (exact PR #465 checkpoint)
+
+**Main base:** `920b6365539058b658348855c5daddc066558b15`.  
+**Active PR:** [#465](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/465), `benchmark/five-dataset-matrix-reconciled-2026-11-09`.  
+**Verification snapshot PR head:** `de841219a3ecc50db874ebde90d250edce7cdf9f` (33 commits ahead, 0 behind; 20 changed files; GitHub mergeability: clean).  
+**Matrix runtime snapshot:** `dfbaf4d122dd48377c56f79227c65617aa9eed6d`; the newer PR-head commits after this snapshot are documentation/test-workflow coordination only, not benchmark-runtime changes.
+
+### Exact latest-head checks
+
+- Tests [42777829552](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42777829552): **PASS**.
+- System Verify [42777829403](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42777829403): **PASS**.
+- Master/research artifacts [42777829668](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42777829668): **PASS**.
+- External UGTPHON diagnostic [42777829606](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42777829606): **PASS**.
+- Exhaustive test-case register extraction [42777829427](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42777829427): **PASS**.
+- NIKL metadata-only inventory remains **SKIPPED** by policy.
+
+### Full matrix status — not yet complete
+
+- The pinned multi-engine/open-dataset run [42776987807](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42776987807) is running on runtime snapshot `dfbaf4d1`.
+- Completed successfully in that run: source/input validation; benchmark adapter tests; training-readiness/holdout-overlap audit; independent IPA review-packet generation; 10-engine UGTPHON comparison; mismatch-ledger export; UGTPHON Browser modes; mode-availability check; Native/Browser parity.
+- The SIGMORPHON 10-engine comparison is currently running. Seoul, K-SPAN Modern/Conservative, IPA-Dict, Browser follow-ups and final aggregate/schema gates must still complete.
+- A fresh full-matrix run [42777829497](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42777829497) is queued for exact latest PR head `de841219`. Do not claim full-matrix PASS or schema PASS until this exact-head run completes and its aggregate artifact is inspected.
+
+### K-SPAN evidence boundary
+
+The official K-SPAN 2.1 Table 1 mapping is used (`o → e → e`, `p → E → ɛ`, `x → th → tʰ`, `m → ix → ɯ`, `j → ˆ → ʌ`, `u → jˆ → jʌ`, `7 → ixi → ɯi`). The 63,836-row join retains all rows. Scoring converts source `ModernPhon` / `ConservativePhon` WorldBet fields directly to IPA; parallel key fields are independently audited. Their 22,843 discrepancies (Modern 13,078; Conservative 9,765) remain explicit **WARN**, not PASS. Aggregate-only summaries retain warning status/counts and omit row-level examples.
+
+### CI cancellation policy
+
+The benchmark workflow now uses `cancel-in-progress: false`: an already-running pinned matrix is allowed to finish; newer PR revisions queue behind it, with only the latest pending revision retained. This addresses repeated cancellation by documentation-only PR commits.
+
+### Readiness and disposition
+
+PR #465 remains OPEN and unmerged pending the exact-head matrix and schema. PRs [#463](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/463) and [#462](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/462) remain open and untouched; their changed-file scopes overlap with #465, but close them only after #465 passes and unique scope is reconciled. No historical branch was deleted or force-updated.
+
+The repository remains a software-verified, evidence-scoped research prototype, not release-ready or independently research-certified. Independent Korean IPA review, separate Ukrainian target review, historical membership/raw-offset evidence and restricted-dataset access remain separate acceptance gates.
+
+
 
 
 **PR #463 divergence refresh:** compared against main HEAD `80c0361c0b91b6747fd262c5b729bcb8ed0bbf17`, the benchmark branch is 91 commits ahead / 27 behind from merge base `6ef4960fca292b8e5bfa296bebb75f32fe6b1a7f`. The main-only side touches 13 paths. This comparison snapshot predates the final status-only commit that records it.
@@ -19,7 +79,6 @@ The post-merge main workflows are separate runs and must be checked independentl
 
 **Documentation/navigation reconciliation: DONE_VERIFIED on PR #464 head and merged into main.** The benchmark and independent linguistic acceptance blockers remain unchanged.
 
-# Master execution plan and handoff — 2026-11-08
 
 ## Execution checkpoint
 
@@ -513,3 +572,190 @@ No merge, release publication or branch deletion has been performed in this cont
 
 This documentation pass is not a benchmark completion and does not authorize merging PR #463. The repository remains a software-verified, evidence-scoped research prototype, not release-ready or independently research-certified. Documentation branch head `db61448373dd179ced0c61332a9bdf0ca53f96a3` passed its PR-head checks and was merged into `main` as `d2699911dbc70ef9978e5af06643b1281725a71a` (PR #464). Post-merge main workflows are tracked separately in the closure record above.
 
+
+
+## 2026-11-09 continuation — PR #465 controlled five-dataset benchmark port
+
+### Execution checkpoint
+
+- Current default branch: `main` at `920b6365539058b658348855c5daddc066558b15`.
+- Working branch: `benchmark/five-dataset-matrix-reconciled-2026-11-09`.
+- Current exact head: `253b0757f2043d9acf2ccaf191ce676e1161ee2d`.
+- PR [#465](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/465): OPEN, mergeable, 9 commits ahead / 0 behind main.
+- The branch ports the selected five-dataset benchmark work onto current main; it does not rewrite main directly. PR #463 remains open as the older divergent implementation; #462 remains open and untouched.
+
+### Completed and verified
+
+- K-SPAN 2.1 mapping aligned against the official PDF Table 1; `o → e`, `p → E`, `x → th`, `m → ix`, `j → ˆ`, `u → jˆ`, and the additional `wi` WorldBet sequence is versioned in `kspan-worldbet-to-ipa-v2`.
+- CSV delimiter and adapter fixture defects repaired; tests now pass on the exact PR head.
+- Exact-head Tests [42692169587](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169587): PASS.
+- Exact-head System Verify [42692169687](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169687): Python and Browser PASS; NIKL metadata-only SKIPPED.
+- Master/research artifacts [42692169326](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169326): PASS.
+- Exhaustive test-case register extraction [42692169308](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169308): PASS.
+- External UGTPHON diagnostic [42692169248](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169248): PASS.
+- Full matrix [42692169459](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42692169459): UGTPHON multi-engine, Native/Browser parity, SIGMORPHON multi-engine, Browser Strict/Soft/Super-soft and Browser regression stages PASS. Seoul + K-SPAN + IPA-Dict stage remains IN_PROGRESS; final artifact/schema validation is not yet evidenced.
+
+### K-SPAN data quality warning
+
+The 63,836-row K-SPAN source join reports 22,843 key/WorldBet discrepancies (Modern 13,078; Conservative 9,765). The adapter scores the source `ModernPhon` / `ConservativePhon` WorldBet references directly and audits `ModernKey` / `ConservativeKey` separately. These rows are retained and the discrepancy is surfaced as WARN; do not claim key/WorldBet integrity PASS or semantic equivalence. Unknown symbols, invalid WorldBet sequences, missing joins and row-count drift remain hard failures. Aggregate-only artifacts retain warning status and counts while omitting row-level examples.
+
+### Remaining acceptance
+
+1. Complete run 42692169459. Require successful Seoul surface and phonemic tracks, K-SPAN Modern and Conservative, IPA-Dict, full joins and expected row counts.
+2. Inspect aggregate-only JSON artifact; verify no token-level labels/examples leak and the summary JSON Schema validates.
+3. Confirm warning counts/status in manifest and summary (22,843 total; Modern 13,078; Conservative 9,765).
+4. Run/review all exact-head checks after any final fix.
+5. Only then merge PR #465. After successful merge, close #463 as superseded if it contains no unique required scope; decide #462 on its remaining unique scope rather than merging duplicate changes.
+6. Keep independent Korean IPA review, Ukrainian target review, 236/239 historical membership proof, raw `ㅠ` span validation and access/terms-gated speech corpora as separate research blockers.
+
+### Readiness
+
+The repository remains a software-verified, evidence-scoped research prototype, not independently research-certified or release-ready. No local shell/npm/pytest execution is claimed in this connector-only session; the named GitHub Actions runs are the verification evidence.
+
+
+
+---
+
+## Historical continuation — 2026-11-10 (c42/d71 snapshots, superseded)
+
+**Default branch:** `main` at `920b6365539058b658348855c5daddc066558b15`.  
+**Active integration:** PR [#465](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/465), branch `benchmark/five-dataset-matrix-reconciled-2026-11-09`, current documentation head `f8aacff3087eb5a06d6195bd99171545f647cfe9`; runtime/test head `c42b7f9fee820d83fcbf8fdd75481cab6bc1dfcb`. The branch is based directly on current main; no merge to main has been made.
+
+### Verification on the previous exact head
+
+- Tests [42775398078](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775398078): PASS — Python 3.11/3.12/3.13, Browser, wheel install and teacher-corpus audit.
+- System Verify [42775398457](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775398457): Python and Browser PASS; NIKL metadata-only SKIPPED.
+- Master/research artifacts [42775398092](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775398092): PASS.
+- The b96 multi-engine run [42775398355](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775398355) was cancelled after a newer c42 exact-head run was started; it is not counted as a pass.
+
+### Exact-head CI on c42b7f9 (runtime/test commit)
+
+- Tests [42775643077](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775643077): **PASS** — Python 3.11/3.12/3.13, Browser tests/build, wheel installation and teacher-corpus audit.
+- System Verify [42775643096](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775643096): Python and Browser **PASS**; NIKL metadata-only inventory **SKIPPED** by policy.
+- Master/research artifacts [42775643066](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775643066): **PASS**.
+- Documentation-anchor follow-up Verify [42775637799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775637799): **PASS**.
+- External UGTPHON diagnostic [42775643307](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775643307) and exhaustive test-case extraction [42775643206](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775643206): **IN_PROGRESS** at last inspection.
+- Full multi-engine/open-dataset matrix [42775642949](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775642949): **IN_PROGRESS** in the pinned multi-engine comparison. No final matrix score or summary-schema PASS is claimed.
+- The prior run [42697496037](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42697496037) reached aggregate JSON Schema validation after producing K-SPAN Modern/Conservative and IPA-Dict Browser reports, then failed because numeric `ipa_profile_version: 1` did not satisfy the schema's string/null type. The summarizer now normalizes non-null versions to strings and a regression test exercises the numeric case.
+- Current documentation-only head: `f8aacff3087eb5a06d6195bd99171545f647cfe9`. Its Verify run [42775760233](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775760233) is queued; the c42 runtime/test head has passed the exact checks above.
+
+
+### K-SPAN data-quality status
+
+The official K-SPAN 2.1 Table 1 remains the source for keystroke/WorldBet/IPA/jamo mapping. Scoring uses source `ModernPhon` / `ConservativePhon` WorldBet references. Parallel key fields are audited independently: 22,843 discrepancies (Modern 13,078; Conservative 9,765) remain a visible `WARN`, not a pass. Rows are not silently discarded or rewritten.
+
+### User-approved fallback policy
+
+For genuinely unresolved morphology, the Browser Super-soft research mode may use the repository's per-grapheme `data/korean/canonical_correspondence.csv` table to construct approximate IPA and then pass that IPA through the ordinary IPA→Ukrainian renderer. The result is typed `orthographic-phonemic-fallback`, marked low confidence, and exposed only as a candidate. It is excluded from source-resolved IPA accuracy scoring. Strict/Soft remain unchanged. The table is project-defined (`model-selected`), not represented as an official Ukrainian national standard. The Python API does not yet expose this fallback; cross-runtime parity is a separate TODO.
+
+### Current ledger and readiness
+
+| Workstream | State | Acceptance / blocker |
+|---|---|---|
+| Mainline software and documentation baseline | DONE_VERIFIED | Mainline checks passed on the recorded main snapshot. |
+| Benchmark preparation, K-SPAN source adapter and integrity diagnostics | PARTIAL | Source mapping grounded; exact full-matrix/schema result still required; 22,843 cross-field discrepancies remain WARN. |
+| Summary schema normalization and regression | DONE_VERIFIED on b96 | Exact-head tests passed; rerun on c42 pending. |
+| Grapheme-table Browser Super-soft fallback | DONE_VERIFIED in Browser test suite | 11,172 modern Hangul syllable candidate-availability test exists; new trace-to-table assertion is awaiting c42 CI. |
+| Python fallback parity | TODO | Implement only with matching provenance/status and Python/browser trace parity tests. |
+| Independent Korean IPA and Ukrainian target review | BLOCKED | Qualified independent review and frozen evidence sets are still required. |
+| PR #463 / #462 reconciliation | TODO | Leave #463/#462 untouched until #465 passes; then inspect unique scope before closing superseded PRs. |
+
+**Readiness:** software-verified, evidence-scoped research prototype; not release-ready or independently research-certified. No local shell/npm/pytest run is claimed in this connector-only session.
+
+
+---
+
+# Execution continuation — 2026-11-10 (PR #465 current state)
+
+## Starting point and branch
+
+- Main base: `920b6365539058b658348855c5daddc066558b15`.
+- Working branch: `benchmark/five-dataset-matrix-reconciled-2026-11-09`.
+- Starting branch HEAD for this continuation: `d71ef50fdef34c86ad864adc10a50ba45d722ecf`.
+- PR #465 remains OPEN and mergeable; no changes have been merged into `main`.
+- PR #463 and #462 remain open and untouched pending acceptance and unique-scope review.
+
+## Verified implementation and evidence
+
+- K-SPAN 2.1 mapping is implemented as `kspan-worldbet-to-ipa-v2`. The formerly failing WorldBet sequence `wi` is mapped to `wi`; tests cover `wi` and `kanixnkwi`.
+- The pinned K-SPAN join has 63,836 rows and 22,843 parallel key/WorldBet discrepancies (Modern 13,078; Conservative 9,765). Source WorldBet fields drive scoring; key fields remain a separate audit. Status is WARN, not PASS.
+- The prior matrix failure on `baa77f9` was WordNum 98 / ModernPhon `kanixnkwi`, failing at offset 7 on `wi`. The correction is present on runtime/test head `c42b7f9`.
+- On PR head `d71ef50f`: Tests [42775887452](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775887452) PASS; System Verify [42775887811](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775887811) PASS (NIKL metadata-only SKIPPED); master/research artifacts [42775887930](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775887930) PASS; exhaustive register extraction [42775887402](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775887402) PASS; external UGTPHON [42775887380](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775887380) PASS.
+- The d71 multi-engine run [42775887397](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775887397) was CANCELLED, not passed. The c42 multi-engine run [42775642949](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775642949) was IN_PROGRESS at the last inspection. Its final result, artifact and schema must be checked before merge.
+
+## Task ledger
+
+| Workstream | State | Next acceptance |
+|---|---|---|
+| Documentation/navigation foundation from PR #464 | DONE_VERIFIED | Preserved; no duplicate navigation framework added |
+| Five-dataset benchmark adapters and preparation | PARTIAL | Complete full open-dataset matrix |
+| K-SPAN source consistency | PARTIAL / WARN | Preserve all source rows; independently interpret key/WorldBet discrepancies |
+| Aggregate summary/schema | TODO / PENDING | Inspect final artifact and validate schema |
+| Python Super-soft fallback parity | TODO | Implement and test provenance-preserving parity |
+| Independent Korean IPA and Ukrainian target review | BLOCKED | Qualified independent reviewers and frozen review packets |
+| Historical membership and raw offset questions | PARTIAL / BLOCKED | Recover contemporaneous source evidence and verify offsets |
+| Restricted speech datasets | BLOCKED | Obtain explicit access/licence terms |
+| Neural inference | DEFERRED | Remains opt-in and outside default gate |
+
+## Branch/PR disposition
+
+PR #465 is the controlled port based on current main and remains the only active integration path for this benchmark. PR #463 is an older divergent implementation; do not merge it blindly. PR #462 is a narrower overlapping Browser change; preserve it until its unique scope is reviewed. Do not close or delete branches as cleanup without confirming all unique changes are represented.
+
+## Commands and verification actually executed
+
+No local shell, npm or pytest command was run in this connector-only session. Verification evidence consists of the named GitHub Actions workflows. Cancelled/skipped jobs are not counted as passes; NIKL metadata-only is intentionally skipped by workflow policy.
+
+## Readiness and next blocker
+
+The repository remains a software-verified, evidence-scoped research prototype, not release-ready or independently research-certified. The immediate engineering blocker is a successful completed full matrix and aggregate JSON Schema validation on the final runtime/test head. Independent linguistic review and separate source/access blockers remain after that gate.
+
+
+
+## Execution continuation — 2026-11-10 (five-dataset matrix and artifact policy)
+
+### Verified baseline and exact checks
+
+- Starting default branch: `main` at `920b6365539058b658348855c5daddc066558b15`.
+- Working branch: `benchmark/five-dataset-matrix-reconciled-2026-11-09`; active PR [#465](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/465).
+- Full scoring matrix completed in [run 42785083152](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42785083152): UGTPHON, SIGMORPHON, Seoul phonemic IPA, K-SPAN Modern, K-SPAN Conservative and IPA-Dict were compared by ten engines; fifteen Browser reports cover five datasets. Seoul's six full-corpus Browser reports are separately evidenced by run 42496539257.
+- Exact-head standard checks: Python 3.11/3.12/3.13 + Browser + wheel + teacher audit PASS (42796414347); System Verify PASS (42796413910); master/research artifacts PASS (42796414305); exhaustive register extraction PASS (42796414508); UGTPHON diagnostic PASS (42796413990).
+- Exact-head aggregate-only workflow integration is still running in 42796414336 at the time of this handoff. It must complete, and its artifact must be inspected, before marking the artifact policy DONE_VERIFIED.
+
+### Source and score interpretation
+
+- K-SPAN source join: 63,836/63,836 WordNum rows; 41,174 Hangul, 22,662 non-Hangul, zero unmatched.
+- K-SPAN cross-representation integrity remains WARN: 22,843 mismatches (Modern 13,078; Conservative 9,765). Score from source WorldBet fields; audit parallel key fields; never rewrite or drop rows.
+- Highest open-track Exact: Seoul IPA 21.2% KoG2P; K-SPAN Modern 25.0% KoG2P; K-SPAN Conservative 18.8% KoG2P; IPA-Dict 41.265% Native (411/996). These are separate diagnostic references, not a shared leaderboard.
+- Super-soft candidate availability is 100% across the five Browser-tested datasets; heuristic/fallback outputs do not count as source-resolved IPA accuracy.
+- SIGMORPHON and IPA-Dict share Wiktionary lineage; IPA-Dict is not an independent holdout.
+- Optional ByT5/CharsiuG2P inference and NIKL metadata-only inventory were skipped, not passed.
+
+### Artifact policy correction
+
+Inspection found three legacy consolidated-workflow artifacts with row-level reports and/or source TSV/reviewer material: 13621335293 (expires 2026-12-08), 13749341395 (expires 2026-12-10; also contains the raw K-SPAN preparation manifest with ten examples), and 13750158865 (expires 2026-12-10). The current GitHub integration can list/download but cannot delete artifacts. The workflow now builds a combined aggregate-only summary and restricts the new artifact to that JSON plus source checksums. Manual deletion or automatic expiry is required for legacy artifacts; see `docs/BENCHMARK-ARTIFACT-POLICY.md`.
+
+### Task ledger
+
+| Task | Status | Evidence / blocker |
+|---|---|---|
+| Six-track ten-engine scoring | DONE_VERIFIED | Run 42785083152 |
+| Fifteen Browser reports across five datasets | DONE_VERIFIED | Run 42785083152 |
+| Seoul full-corpus Browser surface/phonemic modes | DONE_VERIFIED | Run 42496539257 |
+| K-SPAN complete source join | DONE_VERIFIED | Run 42785083152; zero unmatched WordNums |
+| K-SPAN key/WorldBet consistency | WARN | 22,843 source cross-representation differences remain |
+| Aggregate-only workflow integration | PARTIAL | Run 42796414336 must finish and artifact ZIP must contain exactly two allowed files |
+| SIGMORPHON source registry + license parser extension | PARTIAL | New 239-row register and rights tests await exact-head CI |
+| Independent Korean IPA gold | BLOCKED | No independent adjudicated source gold |
+| Independent Ukrainian target gold | BLOCKED | No separately reviewed target layer |
+| Historical 236/239 selector and raw ㅠ offsets | BLOCKED | Original audio/speaker crosswalk and raw offset evidence absent |
+| KsponSpeech / NIKL Daily Conversation | BLOCKED | Access/terms evidence unavailable |
+| Optional neural inference | DEFERRED | Explicitly skipped; not needed for deterministic matrix |
+
+### Branch reconciliation
+
+- PR #465 is the controlled port onto current main; it includes the implementation and tests from the older matrix work.
+- PR #463's twelve changed paths are represented in PR #465; its older branch is not merged blindly.
+- PR #462's SIGMORPHON three-mode workflow behavior is represented in PR #465 with the corrected 999 eligible-occurrence denominator; its stale denominator/trigger differences are not reused.
+- Preserve both old branches until PR #465 is merged; then close the superseded PRs without deleting their branches.
+
+**Readiness:** the deterministic benchmark suite is software-verified research infrastructure, not a release-ready phonetic product. Independent linguistic validation and the artifact-policy integration gate remain separate acceptance conditions.

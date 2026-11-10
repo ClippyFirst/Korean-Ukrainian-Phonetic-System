@@ -460,7 +460,7 @@ function main() {
   const benchmarkName = value('--benchmark-name') ?? 'Korean canonical-token IPA diagnostic';
   const datasetSource = value('--dataset-source');
   if (!corpusPath) {
-    process.stderr.write('Usage: node scripts/benchmark_kozak_kim_browser.mjs --corpus ko-test.json [--split test] [--mode strict|soft|super-soft] [--output report.json]\n');
+    process.stderr.write('Usage: node scripts/benchmark_kozak_kim_browser.mjs --corpus ko-test.json [--split test] [--mode strict|soft|super-soft] [--benchmark-name name] [--dataset-source source] [--output report.json]\n');
     process.exitCode = 2;
     return;
   }

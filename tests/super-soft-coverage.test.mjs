@@ -5,6 +5,7 @@ import { createEngine } from '../src/app/engine.js';
 import { convertText } from '../src/app/engine_convert.js';
 import { createMap } from '../src/app/engine_shared.js';
 import { renderSuperSoftCandidate } from '../src/app/super_soft_annotation.js';
+import { traceIpaMappingDetailed } from '../src/app/engine_ipa.js';
 
 const canonical=readFileSync(new URL('../data/korean/canonical_correspondence.csv',import.meta.url),'utf8');
 const lexical=readFileSync(new URL('../data/korean/lexical_pronunciations.csv',import.meta.url),'utf8');
@@ -90,6 +91,12 @@ test('Super-soft applies the orthographic-phonemic fallback to unresolved §30 s
   assert.ok(fallbacks.every(item=>item.phoneticResultType==='orthographic-phonemic-fallback'&&item.confidence==='low'));
   assert.ok(fallbacks.every(item=>item.unresolvedMorphologyFlags.length>0&&item.uncertainty?.kind==='unresolved-morphology'));
   assert.ok(fallbacks.every(item=>(item.rules||[]).includes('super-soft-orthographic-fallback')));
+  assert.ok(fallbacks.every(item=>{
+    const mapped=traceIpaMappingDetailed(item.ipa);
+    return mapped.unknown===''&&mapped.tokens.length>0&&
+      mapped.tokens.every(token=>token.mapping_source==='canonical_correspondence'||token.mapping_source==='ipa_target_overrides')&&
+      item.targetMappings.map(token=>token.mapping_id).join('|')===mapped.tokens.map(token=>token.mapping_id).join('|');
+  }), 'fallback IPA must pass through the canonical IPA target correspondence table');
   assert.ok(!fallbacks.some(item=>(item.rules||[]).some(rule=>/NIKL|exact-lexical/u.test(rule))));
 });
 

@@ -1,0 +1,337 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/schemas/korean-benchmark-summary.schema.json",
+  "title": "Aggregate-only Korean benchmark summary",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "report_scope",
+    "manifest",
+    "multi_engine_tracks",
+    "browser_mode_tracks"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "report_scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "manifest": {
+      "type": "object"
+    },
+    "multi_engine_tracks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "track",
+          "type",
+          "benchmark",
+          "dataset_source",
+          "engine_order",
+          "engines"
+        ],
+        "properties": {
+          "track": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "const": "10-engine-strict-and-broad-ipa"
+          },
+          "benchmark": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "dataset_source": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "dataset_rows": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "eligible_token_occurrences": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "unique_hangul_words": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "engine_order": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "native_ipa_profile": {
+            "type": [
+              "object",
+              "string",
+              "null"
+            ]
+          },
+          "broad_candidate_profile": {
+            "type": [
+              "object",
+              "string",
+              "null"
+            ]
+          },
+          "normalization": {
+            "type": [
+              "object",
+              "string",
+              "null"
+            ]
+          },
+          "supplemental_metrics_status": {
+            "type": [
+              "object",
+              "string",
+              "null"
+            ]
+          },
+          "engines": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          },
+          "limitations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "browser_mode_tracks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "track",
+          "type",
+          "morphology_mode",
+          "eligible_tokens",
+          "scored_tokens"
+        ],
+        "properties": {
+          "track": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "const": "clippyfirst-browser-runtime-mode"
+          },
+          "benchmark": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "dataset_source": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "split": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "morphology_mode": {
+            "enum": [
+              "strict",
+              "soft",
+              "super-soft"
+            ]
+          },
+          "ipa_profile": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "ipa_profile_version": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "ipa_profile_status": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "eligible_tokens": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "scored_tokens": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "coverage_rate": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 1
+          },
+          "source_resolved_coverage_rate": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 1
+          },
+          "output_available_tokens": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "output_availability_rate": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 1
+          },
+          "candidate_output_availability_rate": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 1
+          },
+          "exact_matches": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "exact_match_rate": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 1
+          },
+          "coverage_adjusted_exact_match_rate": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 1
+          },
+          "character_error_rate": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "unresolved_tokens": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "partial_tokens": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "heuristic_tokens": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "typed_fallback_tokens": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "source_resolved_scored_tokens": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "target_unavailable_tokens": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "target_provisional_tokens": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "engine_errors": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "notes": {
+            "type": [
+              "array",
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}

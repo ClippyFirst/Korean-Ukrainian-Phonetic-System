@@ -14,7 +14,7 @@ The production target renderer is `src/korean_ukrainian/ipa_target_renderer.py`.
 
 The ClippyFirst engine owns the Korean-specific IPA→Ukrainian practical mapping. The separate `ClippyFirst/Ukrainian-Phonetic-Inventory` package (UPI 0.8.0) is optional and is used only for target phoneme/feature metadata and candidate-analysis diagnostics. UPI's feature similarity and heuristic ranking never select the production practical output. Missing UPI therefore makes its diagnostics unavailable, not the IPA-derived target output.
 
-The Python native and G2P adapters share the same target renderer. The unresolved-Korean-phonology gate remains upstream: IPA marked `diagnostic_only_unresolved_pronunciation` is inspectable for research but must not produce Ukrainian orthography. Unknown IPA, conflicting mappings, empty IPA and unmapped sequences fail closed; no nearest-feature fallback or Hangul-keyed Ukrainian fallback is allowed.
+The Python native and G2P adapters share the same target renderer. The unresolved-Korean-phonology gate remains upstream: IPA marked `diagnostic_only_unresolved_pronunciation` is inspectable for research but must not be promoted to accepted Ukrainian orthography. Unknown IPA, conflicting mappings, empty IPA and unmapped sequences fail closed. One explicit exception is the opt-in Browser Super-soft research mode described below: it may construct a typed, low-confidence IPA candidate from the repository's grapheme correspondence table, then pass that IPA through the same IPA→Ukrainian renderer. It is never a silent or accepted pronunciation.
 
 The browser's `src/app/ipa_target_data.js` is a generated projection of these same CSVs, produced by `scripts/generate_ipa_target_data.py`; the Python suite runs the generator with `--check` to detect drift. Browser and Python target traces should agree on target text, mapping IDs and status for the same IPA.
 
@@ -80,3 +80,24 @@ The browser labels `model-selected` output as a project-defined correspondence t
 - Fortis onsets preserve doubling: /k͈/ → кк, /t͈/ → тт, /p͈/ → пп, /s͈/ → сс, /tɕ͈/ → чч.
 - IPA remains the only input to the target adapter; these are IPA-to-Ukrainian correspondence decisions, not direct Hangul substitutions.
 - These are project-specific practical orthography choices, not a claim about a national Ukrainian standard.
+
+
+## Explicit grapheme-table fallback for unresolved cases
+
+The user-approved fallback policy is implemented in the Browser **Super-soft** research mode. When a morphophonological context cannot be resolved under the strict rules, this mode may use the per-grapheme entries in `data/korean/canonical_correspondence.csv` to construct an approximate, explicitly typed IPA candidate. That candidate is then sent through the same IPA target renderer and correspondence trace as ordinary IPA; the implementation does not directly substitute Hangul/Jamo with Ukrainian letters.
+
+The fallback contract is deliberately narrow:
+
+- `phoneticResultType: orthographic-phonemic-fallback`;
+- `status: super-soft-orthographic-fallback`;
+- `confidence: low`, with the unresolved morphology flags retained;
+- output remains in the candidate channel, never the accepted `ukrainian` field;
+- the fallback is excluded from source-resolved IPA Exact/CER scoring and must be counted separately;
+- unknown IPA or a missing target correspondence still fails closed rather than inventing a Ukrainian letter;
+- Strict and Soft behavior are unchanged.
+
+The table is the repository's **project practical correspondence table**, not a government-issued or independently certified Ukrainian standard. Its current rows are marked `model-selected`; this means the project has made an explicit mapping decision, not that an external authority has approved it. The 11,172-syllable Super-soft test proves structural candidate availability from this table, not pronunciation accuracy or target-language correctness.
+
+A relevant scholarly background source is O. M. Shchehel, “Практична транскрипція корейських імен українською мовою: порівняння, проблеми і пропозиції”, *Мовознавство* 1 (2009), pp. 76–87: https://movoznavstvo.org.ua/vsi-nomera-zhurnalu/statti/2009-1-sichen-lyutij/shchegel-o-m-praktichna-transkriptsiya-korejskikh-imen-ukrajinskoyu-movoyu-porivnyannya-problemi-i-propozitsiji. The article proposes practical transcription decisions for Korean names; it does not establish a current state-approved Ukrainian standard or supply a complete authoritative IPA-to-Ukrainian grapheme table. Accordingly, the repository labels its own table as a project convention rather than misattributing official normativity to that article.
+
+The Python native/G2P API currently keeps its strict/soft unresolved gate and does not yet expose this Browser Super-soft fallback as a cross-runtime mode. This is intentional until a Python implementation can preserve identical provenance, trace statuses and candidate-only semantics with parity tests.

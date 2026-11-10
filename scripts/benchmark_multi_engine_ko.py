@@ -1713,11 +1713,11 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         "supplemental_metrics_status": {
             "phoneme_error_rate": "MEASURED; broad-IPA segment tokenizer and current inventory; inspect unsupported_feature_segments",
             "phonological_feature_error_rate_proxy": "MEASURED; project-defined feature-weighted edit distance, not a universally standardized PFER implementation",
-            "execution_time": "MEASURED; diagnostic wall-clock timing. Per-word timings and batched backend timings have different scopes and must not be ranked naively against one another",
+            "execution_time": (f"MEASURED; one initial pass plus {args.timing_repetitions} same-process timing repetitions. Per-word timings and batched backend timings have different scopes and must not be ranked naively against one another."),
             "rule_accuracy": "NOT_MEASURED: the corpus does not provide independently adjudicated per-token rule-application labels",
             "ukrainian_target_CER_and_exact_match": "NOT_MEASURED: this IPA benchmark has no independently adjudicated Korean-to-Ukrainian target gold set",
             "ipa_to_ukrainian_pipeline_consistency": "NOT_MEASURED: this benchmark compares Korean IPA outputs and does not run every competitor through a common Ukrainian target adapter",
-            "determinism_and_repeatability": "PARTIALLY_MEASURED: one excluded warm-up plus five same-process timing repetitions; repeated output equivalence is not separately asserted",
+            "determinism_and_repeatability": (f"PARTIALLY_MEASURED: one excluded warm-up plus {args.timing_repetitions} same-process timing repetitions; repeated output equivalence is not separately asserted." if args.timing_repetitions > 0 else "NOT_MEASURED: timing repetitions disabled; output equivalence is not separately asserted."),
             "memory_usage": "NOT_MEASURED: workflow does not collect comparable per-engine peak RSS; candidates share a process",
             "coverage_adjusted_exact_match_rate": "MEASURED; exact matches divided by all eligible occurrences, so abstentions/errors count as non-matches",
         },
@@ -1742,7 +1742,19 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "eSpeak": "eSpeak NG system package via phonemizer==3.3.0; exact runtime version recorded in CI logs",
         },
         "limitations": [
-            ("UGTPHON contains noisy user-generated text, not a balanced official standard-pronunciation test set." if "UGTPHON" in args.benchmark_name else "SIGMORPHON is a lexical word-level test set, not a sentence-context or normative NIKL test set."),
+            (
+                "UGTPHON contains noisy user-generated text, not a balanced official standard-pronunciation test set."
+                if "UGTPHON" in args.benchmark_name else
+                "SIGMORPHON is a WikiPron-derived lexical word-level test set, not a sentence-context or normative NIKL test set."
+                if "SIGMORPHON" in args.benchmark_name else
+                "Seoul Corpus references are phonemic word-level IPA aligned to orthographic intervals, not narrow phonetic gold."
+                if "Seoul" in args.benchmark_name else
+                "K-SPAN is a lexical surface-phonetic database with distinct modern and conservative reference tracks; it is not a sentence-context test."
+                if "K-SPAN" in args.benchmark_name else
+                "IPA-Dict Korean is a Wiktionary-derived broad-phonemic lexicon; its lineage overlaps SIGMORPHON and it is not an independent holdout."
+                if "IPA-Dict" in args.benchmark_name else
+                "This is a lexical diagnostic set; inspect its source provenance, transcription level, and overlap before treating it as an independent holdout."
+            ),
             "IPA conventions differ between systems and reference annotations; exact match and CER are diagnostic, not absolute truth.",
             "g2pk output is converted through the project's segment renderer, which shares a representation layer with the native system and may bias comparison.",
             "KoG2P uses a documented custom phone alphabet; the explicit adapter is lossy, and its score must be read with adapter limitations.",

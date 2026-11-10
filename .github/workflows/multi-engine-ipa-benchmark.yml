@@ -9,7 +9,8 @@ on:
         type: boolean
         default: false
   push:
-    branches: [main]
+    # Also run on this benchmark branch so corrected data adapters are validated on each head.
+    branches: [main, benchmark/five-dataset-full-matrix]
     paths:
       - "scripts/benchmark_multi_engine_ko.py"
       - "scripts/benchmark_kozak_kim_browser.mjs"
@@ -17,11 +18,23 @@ on:
       - "scripts/benchmark_phonemize_adapter.cjs"
       - "scripts/benchmark_ugtphon_ko.py"
       - "scripts/convert_sigmorphon_ko.py"
+      - "scripts/prepare_korean_open_benchmarks.py"
+      - "scripts/summarize_korean_benchmark_reports.py"
+      - "scripts/run_open_korean_benchmark_ci.py"
+      - "scripts/build_full_korean_benchmark_summary.py"
+      - "schemas/korean-benchmark-summary.schema.json"
+      - "tests/test_korean_open_benchmarks.py"
+      - "tests/test_summarize_korean_benchmark_reports.py"
+      - "tests/test_full_korean_benchmark_summary.py"
       - "src/korean_ukrainian/**"
       - "src/app/engine*.js"
       - "data/korean/**"
+      - "research/SOURCE-REGISTER.csv"
       - ".github/workflows/multi-engine-ipa-benchmark.yml"
   # Documentation-only edits are checked by the repository verification workflows; do not rerun CPU G2P inference for prose changes.
+  # For pull_request events, GitHub evaluates path filters from the base branch.
+  # Keep this workflow path in the base filter so edits here can refresh the benchmark run
+  # when the PR adds new dataset adapters, schemas, or test files.
   pull_request:
     paths:
       - "scripts/benchmark_multi_engine_ko.py"
@@ -50,12 +63,23 @@ on:
       - "tests/test_contextual_g2p_benchmark.py"
       - "tests/test_compare_neural_with_multiengine.py"
       - "scripts/convert_sigmorphon_ko.py"
+      - "scripts/prepare_korean_open_benchmarks.py"
+      - "scripts/summarize_korean_benchmark_reports.py"
+      - "scripts/run_open_korean_benchmark_ci.py"
+      - "tests/test_korean_open_benchmarks.py"
+      - "tests/test_summarize_korean_benchmark_reports.py"
+      - "scripts/build_full_korean_benchmark_summary.py"
+      - "tests/test_full_korean_benchmark_summary.py"
       - "src/korean_ukrainian/**"
       - "data/korean/**"
+      - "research/SOURCE-REGISTER.csv"
 
 concurrency:
+  # Do not kill a long-running, pinned benchmark when a later PR commit
+  # (often documentation-only) arrives. Keep one active run and let the
+  # latest queued revision run afterward.
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 permissions:
   contents: read
@@ -65,7 +89,7 @@ jobs:
   multi-engine-ipa:
     name: Pinned multi-engine IPA comparison (Python 3.12)
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -83,7 +107,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes espeak-ng default-jre-headless
           python -m pip install --upgrade pip
-          python -m pip install -e . "regex==2024.5.10" "phonemizer==3.3.0" "g2pk==0.9.4" "kokorog2p[ko]==0.9.15" "kiwipiepy==0.23.2" "g2p-ko @ git+https://github.com/smbslt3/g2p-korean.git@fc382a3f17e70b605b271cad8c87dd571284e5b3" "konlpy==0.6.0" "jamo==0.4.1" "pytest>=8"
+          python -m pip install -e . "regex==2024.5.10" "phonemizer==3.3.0" "g2pk==0.9.4" "kokorog2p[ko]==0.9.15" "kiwipiepy==0.23.2" "g2p-ko @ git+https://github.com/smbslt3/g2p-korean.git@fc382a3f17e70b605b271cad8c87dd571284e5b3" "konlpy==0.6.0" "jamo==0.4.1" "pytest>=8" "jsonschema>=4" "pypdf==5.9.0"
 
       - name: Fetch pinned external implementations and verify declared licenses
         env:
@@ -182,7 +206,7 @@ jobs:
           set -euo pipefail
           node --check scripts/benchmark_phonemize_adapter.cjs
           node --test tests/kozak-kim-ipa-first-benchmark.test.mjs
-          python -m pytest tests/test_multi_engine_benchmark.py tests/test_kozak_kim_runtime_parity.py tests/test_ipa_holdout_review_packets.py tests/test_sigmorphon_benchmark.py tests/test_contextual_g2p_benchmark.py tests/test_charsiu_g2p_benchmark.py tests/test_compare_neural_with_multiengine.py tests/test_v3_training_readiness.py tests/test_export_kozak_kim_mismatch_fragments.py
+          python -m pytest tests/test_multi_engine_benchmark.py tests/test_kozak_kim_runtime_parity.py tests/test_ipa_holdout_review_packets.py tests/test_sigmorphon_benchmark.py tests/test_contextual_g2p_benchmark.py tests/test_charsiu_g2p_benchmark.py tests/test_compare_neural_with_multiengine.py tests/test_v3_training_readiness.py tests/test_export_kozak_kim_mismatch_fragments.py tests/test_korean_open_benchmarks.py tests/test_summarize_korean_benchmark_reports.py tests/test_full_korean_benchmark_summary.py
 
       - name: Audit training readiness and frozen-holdout overlap
         run: python scripts/audit_v3_training_readiness.py --output "$RUNNER_TEMP/v3-training-readiness.json"
@@ -348,9 +372,21 @@ jobs:
         run: |
           set -euo pipefail
           python - "$RUNNER_TEMP" <<'PY'
-          import json, sys
+          import json, re, sys
           from pathlib import Path
           root = Path(sys.argv[1])
+          corpus_rows = json.loads((root / "sigmorphon-kor-test.json").read_text(encoding="utf-8"))
+          expected_tokens = sum(
+              1
+              for row in corpus_rows
+              for token in row.get("tokens", [])
+              if isinstance(token.get("canonical"), str)
+              and re.fullmatch(r"[\uac00-\ud7a3]+", token["canonical"])
+              and isinstance(token.get("phoneme"), str)
+              and token["phoneme"].strip()
+          )
+          if expected_tokens == 0:
+              raise SystemExit("SIGMORPHON Hangul eligibility filter matched zero rows; inspect the pinned corpus and regex")
           reports = {}
           for mode in ("strict", "soft", "super-soft"):
               path = root / f"kozak-kim-browser-ugtphon{('-' + mode) if mode != 'strict' else ''}-report.json"
@@ -507,25 +543,37 @@ jobs:
           set -euo pipefail
           for mode in strict soft super-soft; do
             suffix="$mode"
-            node scripts/benchmark_kozak_kim_browser.mjs \\
-              --corpus "$RUNNER_TEMP/sigmorphon-kor-test.json" \\
-              --split test \\
-              --mode "$mode" \\
-              --benchmark-name "SIGMORPHON 2021 Korean lexical IPA diagnostic" \\
-              --dataset-source "sigmorphon/2021-task1@821bcdece5a47820872215969f275004b0abe80c:data/medium/kor_test.tsv; CC BY-SA 3.0; 1,000 paired word/IPA rows" \\
+            node scripts/benchmark_kozak_kim_browser.mjs \
+              --corpus "$RUNNER_TEMP/sigmorphon-kor-test.json" \
+              --split test \
+              --mode "$mode" \
+              --benchmark-name "SIGMORPHON 2021 Korean lexical IPA diagnostic" \
+              --dataset-source "sigmorphon/2021-task1@821bcdece5a47820872215969f275004b0abe80c:data/medium/kor_test.tsv; CC BY-SA 3.0; 1,000 paired word/IPA rows" \
               --output "$RUNNER_TEMP/kozak-kim-browser-sigmorphon-$suffix-report.json"
           done
           python - "$RUNNER_TEMP" <<'PY'
-          import json, sys
+          import json, re, sys
           from pathlib import Path
           root = Path(sys.argv[1])
+          corpus_rows = json.loads((root / "sigmorphon-kor-test.json").read_text(encoding="utf-8"))
+          expected_tokens = sum(
+              1
+              for row in corpus_rows
+              for token in row.get("tokens", [])
+              if isinstance(token.get("canonical"), str)
+              and re.fullmatch(r"[\uac00-\ud7a3]+", token["canonical"])
+              and isinstance(token.get("phoneme"), str)
+              and token["phoneme"].strip()
+          )
+          if expected_tokens == 0:
+              raise SystemExit("SIGMORPHON Hangul eligibility filter matched zero rows; inspect the pinned corpus and regex")
           reports = {}
           for mode in ("strict", "soft", "super-soft"):
               path = root / f"kozak-kim-browser-sigmorphon-{mode}-report.json"
               report = json.loads(path.read_text(encoding="utf-8"))
               assert report["benchmark"] == "SIGMORPHON 2021 Korean lexical IPA diagnostic"
               assert report["morphology_mode"] == mode
-              assert report["eligible_tokens"] == 1000, (mode, report["eligible_tokens"])
+              assert report["eligible_tokens"] == expected_tokens, (mode, report["eligible_tokens"], expected_tokens)
               assert report["output_available_tokens"] <= report["eligible_tokens"]
               assert report["scored_tokens"] <= report["output_available_tokens"]
               assert report["engine_errors"] == 0, (mode, report["engine_errors"])
@@ -552,31 +600,36 @@ jobs:
               })
           PY
 
+      - name: Run Browser three-mode regression suite
+        run: node --test tests/kozak-kim-ipa-first-benchmark.test.mjs
+
+      - name: Run open Korean benchmark matrix (Seoul, K-SPAN, IPA-Dict)
+        env:
+          KOG2P_ROOT: ${{ runner.temp }}/KoG2P
+          KOG2PADVANCED_ROOT: ${{ runner.temp }}/KoG2Padvanced
+          HANGUL_TO_IPA_ROOT: ${{ runner.temp }}/hangul_to_ipa
+          PHONEMIZE_BASELINE_DIR: ${{ runner.temp }}/phonemize-baseline
+        run: |
+          set -euo pipefail
+          python scripts/run_open_korean_benchmark_ci.py \
+            --workdir "$RUNNER_TEMP/open-korean-benchmarks-work" \
+            --sample-size 1000 \
+            --seed 20261108
+
+      - name: Build one aggregate-only summary for all benchmark tracks
+        run: |
+          set -euo pipefail
+          python scripts/build_full_korean_benchmark_summary.py --runner-temp "$RUNNER_TEMP"
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: multi-engine-korean-ipa-diagnostic
+          # Only the schema-validated aggregate summary and source checksums are public artifacts.
+          # Token-level labels, predictions, mismatch queues and reviewer packets remain in CI temp storage.
           path: |
-            ${{ runner.temp }}/multi-engine-ipa-report.json
-            ${{ runner.temp }}/kozak-kim-mismatch-fragments.csv
-            ${{ runner.temp }}/kozak-kim-unmapped-mismatch-review-queue.csv
-            ${{ runner.temp }}/kozak-kim-browser-ugtphon-report.json
-            ${{ runner.temp }}/kozak-kim-runtime-parity-report.json
-            ${{ runner.temp }}/kozak-kim-browser-ugtphon-soft-report.json
-            ${{ runner.temp }}/kozak-kim-browser-ugtphon-super-soft-report.json
-            ${{ runner.temp }}/multi-engine-ipa-stdout.json
-            ${{ runner.temp }}/phonemize-predictions.json
-            ${{ runner.temp }}/ko-LICENSE
-            ${{ runner.temp }}/sigmorphon-kor-test.tsv
-            ${{ runner.temp }}/sigmorphon-README.md
-            ${{ runner.temp }}/sigmorphon-multi-engine-ipa-report.json
-            ${{ runner.temp }}/kozak-kim-browser-sigmorphon-strict-report.json
-            ${{ runner.temp }}/kozak-kim-browser-sigmorphon-soft-report.json
-            ${{ runner.temp }}/kozak-kim-browser-sigmorphon-super-soft-report.json
-            ${{ runner.temp }}/sigmorphon-multi-engine-ipa-stdout.json
-            ${{ runner.temp }}/sigmorphon-phonemize-predictions.json
-            ${{ runner.temp }}/v3-training-readiness.json
-            ${{ runner.temp }}/ipa-holdout-review-packets/
+            ${{ runner.temp }}/korean-benchmark-aggregate-summary.json
+            ${{ runner.temp }}/open-korean-benchmarks-work/prepared/source-sha256.txt
           if-no-files-found: warn
           retention-days: 30
 
