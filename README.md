@@ -1,16 +1,18 @@
 # Korean–Ukrainian Phonetic System
 
-## Latest verified integration — 2026-11-10
+> **Current browser mode semantics (PR #466):** Strict is unchanged; Soft now means the former broad heuristic/maximum-coverage path; Super-soft is the new grapheme-only Jamo → IPA → Ukrainian fallback. The benchmark figures below were generated before this reassignment and are **historical**, not scores for the current Soft/Super-soft definitions. The new Super-soft 100% coverage test measures candidate availability, not pronunciation accuracy. This PR is not yet deployed to Pages.
+
+## Latest merged-main integration — 2026-11-10 (before PR #466)
 
 **Default branch:** `main`. **Merged PR:** [#465](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/465). **Merge commit:** `e8ebed5b9ccb67255209ccb20efa45ae0236bcbe`. **PR head tested:** `18bafbe9d998f7fe818c9b65ec84d3b5098d6dfa`.
 
-The five-dataset benchmark implementation is integrated. Exact-head CI passed on PR #465: [tests](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042726), [System Verify](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042823), [master/research artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042775), [exhaustive register](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810043038), [UGTPHON diagnostic](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042906), and [full matrix](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042908). Post-merge/final-documentation exact-main checks are recorded in the latest audit/handoff; Tests, System Verify and master/research artifacts now pass on the final docs checkpoint. GitHub Pages deployment is still pending and is not claimed as passed.
+The five-dataset benchmark implementation is integrated. Exact-head CI passed on PR #465: [tests](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042726), [System Verify](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042823), [master/research artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042775), [exhaustive register](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810043038), [UGTPHON diagnostic](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042906), and [full matrix](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042908). Post-merge/final-documentation exact-main checks are recorded in the latest audit/handoff; Tests, System Verify and master/research artifacts now pass on the final docs checkpoint. GitHub Pages is live on main commit `4daca3257d3721b75d983c0c48739d3620b5d67a`; this PR's mode changes are not live until PR #466 is merged and its Pages workflow passes.
 
 - Six ten-engine tracks: UGTPHON, SIGMORPHON, Seoul phonemic IPA, K-SPAN Modern, K-SPAN Conservative and IPA-Dict.
-- Fifteen Browser Strict/Soft/Super-soft reports across five datasets.
+- Fifteen **historical pre-refactor** Browser Strict/Soft/Super-soft reports across five datasets.
 - K-SPAN retains all 63,836 rows and has zero unmatched WordNums; its 22,843 key/WorldBet differences remain **WARN** (Modern 13,078; Conservative 9,765).
 - Browser engine errors: zero. One external `g2p-ko` error on IPA-Dict is recorded (999/1,000 scored).
-- Super-soft candidate availability is 100% on the five Browser-tested dataset tracks; this is not source-resolved IPA accuracy.
+- The historical Super-soft profile had 100% candidate availability on five Browser-tested tracks; this does not measure the new grapheme-only Super-soft profile.
 - Aggregate artifact [13766007256](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042908) was inspected: exactly the aggregate JSON and source SHA-256 file; no token-level examples or IPA labels. Schema validation passed in the summary-builder step.
 - Optional ByT5/CharsiuG2P inference was **SKIPPED**, not passed. Legacy artifacts remain until expiry/manual cleanup; see [artifact policy](docs/BENCHMARK-ARTIFACT-POLICY.md).
 
