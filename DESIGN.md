@@ -37,7 +37,7 @@ Key text combinations are checked against WCAG AA contrast for normal text: navy
 - Use the local system stack: Noto Sans / Noto Sans KR, then platform sans-serif fallbacks.
 - Do not load fonts from third-party CDNs; the site must work offline and retain its local-only CSP.
 - Use size, weight, line-height and script pairing for hierarchy rather than decorative italics or tracked-out labels.
-- Keep long-form methodology text to a readable measure (78ch maximum).
+- Keep long-form methodology text to a readable measure (75ch maximum).
 
 ## Layout
 
