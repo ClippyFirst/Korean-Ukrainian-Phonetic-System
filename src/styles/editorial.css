@@ -731,3 +731,49 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
 }
 
 @media (max-width: 480px) { .specimen-tile-hangul { min-height: 218px; } }
+
+/* Long-form teaching tables and diagnostic notices share the same material language. */
+.callout.red,.doc-content .callout.red {
+  border: 0;
+  border-left: 3px solid var(--vermilion);
+  border-radius: 0;
+  background: #f3e8e3;
+  color: var(--ink-navy);
+}
+.table-head {
+  background: var(--ink-navy);
+  color: var(--hanji);
+  font-size: .68rem;
+  font-weight: 760;
+  letter-spacing: .025em;
+  text-transform: none;
+}
+.table-head span { color: inherit; }
+.table-row {
+  border-top: 1px solid var(--seam);
+  background: var(--warm-white);
+  color: var(--graphite);
+}
+.table-row span { color: var(--muted); }
+.table-row b { color: var(--ink-navy); }
+.vowel-grid {
+  border-top: 1px solid var(--seam);
+  border-left: 1px solid var(--seam);
+}
+.vowel-grid > span {
+  border-right: 1px solid var(--seam);
+  border-bottom: 1px solid var(--seam);
+  background: var(--warm-white);
+  color: var(--ink-navy);
+}
+.vowel-grid b { color: var(--vermilion); }
+.vowel-grid small { color: var(--muted); }
+.spelling-suggestions {
+  border: 1px solid var(--seam);
+  border-left: 3px solid var(--warning);
+  border-radius: 0;
+  background: #f8f3e8;
+}
+.spelling-suggestion { border-top-color: var(--seam); }
+.spelling-suggestion-sources a { color: var(--ink-navy); }
+.skip-link { background: var(--ink-navy); color: var(--hanji); }
