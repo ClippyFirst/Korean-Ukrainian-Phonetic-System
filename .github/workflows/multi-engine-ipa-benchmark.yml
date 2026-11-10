@@ -71,8 +71,11 @@ on:
       - "research/SOURCE-REGISTER.csv"
 
 concurrency:
+  # Do not kill a long-running, pinned benchmark when a later PR commit
+  # (often documentation-only) arrives. Keep one active run and let the
+  # latest queued revision run afterward.
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 permissions:
   contents: read
