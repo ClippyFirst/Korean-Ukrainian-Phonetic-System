@@ -4,7 +4,12 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
-from scripts.summarize_korean_benchmark_reports import summarize
+try:
+    # Package import is used by pytest and module-based callers.
+    from .summarize_korean_benchmark_reports import summarize
+except ImportError:
+    # Direct script execution places scripts/ (not the repository root) on sys.path.
+    from summarize_korean_benchmark_reports import summarize
 
 MULTI_ENGINE_REPORTS = (
     ("ugtphon", "multi-engine-ipa-report.json"),
