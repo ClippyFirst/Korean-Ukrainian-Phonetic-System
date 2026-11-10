@@ -1606,3 +1606,34 @@ The artifact audit found that legacy consolidated-workflow artifacts 13621335293
 The source registry was extended with the pinned SIGMORPHON 2021 Korean source, explicit licence parsing for CC BY-SA/CC BY-NC, CC0 1.0 and KOGL Type 1, and updated source-join evidence. The rights test now expects 239 source rows and eleven item-level licence records; the exact-head CI run is the acceptance evidence.
 
 Open research gates remain independent Korean IPA gold, independent Ukrainian target review, original audio/speaker crosswalk, raw ㅠ offset validation, restricted corpus access/terms and historical 236/239 selector provenance. Optional ByT5/CharsiuG2P inference and NIKL metadata-only inventory were skipped, not passed. Repository remains a research prototype, not release-ready.
+
+
+## 2026-11-10 closure — five-dataset benchmark merged and evidence reconciled
+
+PR #465 was merged into `main` as `e8ebed5b9ccb67255209ccb20efa45ae0236bcbe` from tested head `18bafbe9d998f7fe818c9b65ec84d3b5098d6dfa`. It is a controlled port from the current main baseline `920b6365539058b658348855c5daddc066558b15`, with no main-only divergence at merge time. PR #463's older divergent branch was not merged; PR #462's narrower SIGMORPHON three-mode work is included in #465. Both are superseded and should be closed without deleting their historical branches.
+
+Exact PR-head CI passed: Tests 42810042726; Verify 42810042823; master/research artifacts 42810042775; exhaustive test-case register 42810043038; UGTPHON diagnostic 42810042906; full matrix 42810042908. The full-matrix job completed every required stage, including six ten-engine tracks, fifteen Browser reports, Native/Browser parity, aggregate generation and upload. Optional ByT5, CharsiuG2P and neural pairing were skipped by policy.
+
+Artifact 13766007256 was downloaded and inspected. It contains only the aggregate summary JSON and source SHA-256 manifest. The summary reports six reference tracks across five datasets, fifteen Browser reports, all source checksums and the K-SPAN warning, but no token-level text, IPA labels, mismatch examples or occurrence ledgers. Schema validation passed in the builder. Older artifacts 13621335293, 13749341395 and 13750158865 remain until expiry/manual cleanup; the current connector cannot delete them.
+
+K-SPAN retains 63,836 joined rows, with zero unmatched NIKL WordNums (41,174 Hangul; 22,662 non-Hangul). Its 22,843 parallel key/WorldBet differences remain WARN (Modern 13,078; Conservative 9,765). WorldBet drives IPA scoring; the alternate keys are audited separately. One external g2p-ko error remains visible on IPA-Dict (999/1,000 scored); no Browser engine errors were recorded. Super-soft candidate availability is 100% on the five Browser-tested dataset tracks, not 100% source-resolved coverage or accuracy.
+
+The four upstream workflow-reference repositories were rechecked on 2026-11-10; all current default-branch HEADs still match the reviewed pins in the engineering workflow reference audit. Existing skills and navigation remain canonical; no upstream code or skill text was copied.
+
+### Current ledger
+
+| Area | State | Evidence / acceptance |
+|---|---|---|
+| Four-upstream engineering workflow review and repository documentation | DONE_VERIFIED | Existing comparison, root routing, skills, navigation and structural tests; upstream HEADs rechecked 2026-11-10. |
+| Five-dataset benchmark implementation | DONE_VERIFIED | PR #465 merged; full exact-head run 42810042908. |
+| Aggregate-only current artifact | DONE_VERIFIED | Artifact 13766007256 inspected; exact two-file contents verified. |
+| Post-merge/final-documentation main CI | TODO / PENDING | Must pass on final main commit; PR-head results do not substitute. |
+| K-SPAN source representation consistency | WARN | 22,843 mismatches preserved and explained; no forced correction. |
+| Independent Korean IPA gold | BLOCKED | Qualified independent annotation/adjudication required. |
+| Independent Ukrainian target review | BLOCKED | Separate target-language gold and review required. |
+| Historical 236/239 cohort membership and raw ㅠ offsets | BLOCKED / PARTIAL | Original selector/run and raw offset evidence absent. |
+| KsponSpeech / NIKL Daily Conversation | BLOCKED | Authorized acquisition and corpus-specific terms required. |
+| Optional neural inference | DEFERRED | ByT5/CharsiuG2P default-off; separate opt-in and licence/overlap review required. |
+| Legacy artifact removal | BLOCKED | Manual owner cleanup or expiry; no connector deletion action. |
+
+**Readiness:** software-verified, evidence-scoped research prototype and benchmark infrastructure; not release-ready or independently research-certified. No claim is made that a test passing establishes independent linguistic gold or Ukrainian target quality.
