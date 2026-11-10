@@ -168,7 +168,7 @@ class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
                 {"modern": 1, "conservative": 0},
             )
             self.assertIn("1:modern", metadata["key_worldbet_integrity_examples"][0])
-            self.assertEqual(metadata["key_worldbet_mismatch_symbols_by_track"]["modern"], {"t>k": 1})
+            self.assertEqual(metadata["key_worldbet_mismatch_symbols_by_track"]["modern"], {"k>t": 1})
             self.assertEqual(metadata["key_worldbet_mismatch_symbols_by_track"]["conservative"], {})
 
     def test_unknown_kspan_key_is_not_silently_guessed(self):
