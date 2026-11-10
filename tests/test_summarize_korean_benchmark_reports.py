@@ -100,11 +100,11 @@ class AggregateBenchmarkSummaryTests(unittest.TestCase):
             "open-korean-benchmarks-work/prepared/manifest.json",
             workflow,
         )
-        self.assertIn("open-korean-benchmark-summary.json", workflow)
+        self.assertIn("korean-benchmark-aggregate-summary.json", workflow)
         self.assertIn("open-korean-benchmarks-work/prepared/source-sha256.txt", workflow)
         self.assertLess(
-            workflow.index("          # The aggregate summary contains the redacted manifest"),
-            workflow.index("          path: |"),
+            workflow.index("          # Only the schema-validated aggregate summary"),
+            workflow.index("          path: |", workflow.index("name: multi-engine-korean-ipa-diagnostic")),
         )
         self.assertNotIn(
             "            # The aggregate summary contains the redacted manifest",

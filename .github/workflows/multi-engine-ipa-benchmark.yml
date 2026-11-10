@@ -206,7 +206,7 @@ jobs:
           set -euo pipefail
           node --check scripts/benchmark_phonemize_adapter.cjs
           node --test tests/kozak-kim-ipa-first-benchmark.test.mjs
-          python -m pytest tests/test_multi_engine_benchmark.py tests/test_kozak_kim_runtime_parity.py tests/test_ipa_holdout_review_packets.py tests/test_sigmorphon_benchmark.py tests/test_contextual_g2p_benchmark.py tests/test_charsiu_g2p_benchmark.py tests/test_compare_neural_with_multiengine.py tests/test_v3_training_readiness.py tests/test_export_kozak_kim_mismatch_fragments.py tests/test_korean_open_benchmarks.py tests/test_summarize_korean_benchmark_reports.py
+          python -m pytest tests/test_multi_engine_benchmark.py tests/test_kozak_kim_runtime_parity.py tests/test_ipa_holdout_review_packets.py tests/test_sigmorphon_benchmark.py tests/test_contextual_g2p_benchmark.py tests/test_charsiu_g2p_benchmark.py tests/test_compare_neural_with_multiengine.py tests/test_v3_training_readiness.py tests/test_export_kozak_kim_mismatch_fragments.py tests/test_korean_open_benchmarks.py tests/test_summarize_korean_benchmark_reports.py tests/test_full_korean_benchmark_summary.py
 
       - name: Audit training readiness and frozen-holdout overlap
         run: python scripts/audit_v3_training_readiness.py --output "$RUNNER_TEMP/v3-training-readiness.json"
