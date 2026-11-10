@@ -1,0 +1,51 @@
+name: Editorial visual review
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: ['design/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rendered-review:
+    name: Rendered desktop, tablet and mobile review
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install project dependencies
+        run: npm install --no-audit --no-fund
+      - name: Build public pages
+        run: npm run build
+      - name: Install Playwright and Chromium
+        run: |
+          npm install --no-save --no-package-lock playwright
+          npx playwright install --with-deps chromium
+      - name: Start production preview
+        run: |
+          npx vite preview --host 127.0.0.1 --port 4173 > "$RUNNER_TEMP/editorial-preview.log" 2>&1 &
+          echo $! > "$RUNNER_TEMP/editorial-preview.pid"
+          for attempt in $(seq 1 30); do
+            if curl --silent --fail http://127.0.0.1:4173/ >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat "$RUNNER_TEMP/editorial-preview.log"
+          exit 1
+      - name: Capture rendered pages and verify responsive behavior
+        run: node scripts/capture-editorial-review.mjs
+      - name: Upload desktop and mobile screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: editorial-visual-review-${{ github.run_id }}
+          path: artifacts/editorial-review/
+          if-no-files-found: warn
+          retention-days: 14
