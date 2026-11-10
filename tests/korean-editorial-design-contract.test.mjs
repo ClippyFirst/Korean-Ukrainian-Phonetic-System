@@ -24,6 +24,7 @@ test('service and methodology share the Korean editorial visual identity',()=>{
     const specimen=html.slice(html.indexOf('<div class="specimen-grid"'),html.indexOf('</aside>'));
     assert.equal((specimen.match(/class="specimen-tile/g)??[]).length,3,"the specimen uses three deliberately unequal panels");
     assert.doesNotMatch(html,/class="taegeuk"/u);
+    if(page==="system.html") assert.doesNotMatch(html,/class="section-kicker"/u,"methodology headings stand on their own without eyebrow labels");
   }
 });
 
