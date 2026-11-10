@@ -1,5 +1,51 @@
 # Korean–Ukrainian Phonetic System
 
+## Current verified checkpoint — 2026-11-10 10:20 UTC+2
+
+**Default branch:** `main` at `920b6365539058b658348855c5daddc066558b15`.  
+**Active integration PR:** [#465](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/465), branch `benchmark/five-dataset-matrix-reconciled-2026-11-09`.  
+**Exact current PR head:** `1cf42b8d75ce3de2df6ad36dcca7208a255af342` (37 commits; 20 changed files; GitHub reports mergeable=true, merge state unstable while checks run).
+
+### Exact-head verification
+
+- Tests [42778967231](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967231): **PASS** — Python 3.11, 3.12, 3.13; Browser; wheel install; teacher-corpus audit.
+- System Verify [42778967019](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967019): **PASS** — Python regression/data integrity and Browser regression/build.
+- Master table and research corpus artifacts [42778967136](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967136): **PASS**.
+- External UGTPHON diagnostic [42778967047](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967047): **PASS**.
+- Exhaustive test-case register extraction [42778967366](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967366): **PASS**.
+- Official NIKL inventory: **SKIPPED** (metadata-only/policy gate; not a pass).
+- Full multi-engine matrix [42778967197](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967197): **IN PROGRESS** at `Run multi-engine comparison`. ByT5 and CharsiuG2P jobs were skipped by workflow conditions; they are not benchmark passes.
+
+### K-SPAN data-quality status
+
+The pinned K-SPAN 2.1 source join contains 63,836 rows. The official Table 1 mapping is used. Source WorldBet fields `ModernPhon` and `ConservativePhon` feed IPA scoring; parallel key fields are independently audited. The 22,843 key/WorldBet discrepancies (Modern 13,078; Conservative 9,765) remain an explicit **WARN**. No rows are silently dropped or rewritten. This is not a K-SPAN integrity PASS.
+
+### Task ledger
+
+| Workstream | Status | Evidence / acceptance |
+|---|---|---|
+| Repository navigation and ownership documentation | DONE_VERIFIED | PR #464 merged; root README, docs map, structure guide and agent/contributor contracts exist |
+| Mainline reconciliation for benchmark implementation | DONE_VERIFIED | PR #465 is based on current main; exact head is mergeable; no blind merge |
+| Python/browser regression and package checks | DONE_VERIFIED | Run 42778967231 |
+| System verification and research artifact generation | DONE_VERIFIED | Runs 42778967019 and 42778967136 |
+| UGTPHON external diagnostic | DONE_VERIFIED | Run 42778967047 |
+| Exhaustive test-case register extraction | DONE_VERIFIED | Run 42778967366 |
+| Five-dataset multi-engine matrix and aggregate schema | PARTIAL | Run 42778967197 still in progress; require completion plus aggregate artifact/schema inspection |
+| K-SPAN key/WorldBet semantic consistency | BLOCKED / WARN | 22,843 source-field discrepancies need independent source interpretation; scoring remains on source WorldBet labels |
+| Independent Korean IPA gold review | BLOCKED | Reviewer adjudication evidence not complete |
+| Independent Ukrainian target-layer review | BLOCKED | Separate target-language acceptance remains outstanding |
+| Restricted-source historical membership/raw-offset and rights gates | BLOCKED | Must be satisfied per source before any expanded claim or redistribution |
+| Neural comparison engines (ByT5, CharsiuG2P) | DEFERRED for this run | Workflow conditions skipped them; no performance claim is made |
+
+### PR and branch disposition
+
+PR #465 is the current integration candidate. PR #463 (older divergent five-dataset implementation) and PR #462 (SIGMORPHON Browser verification) remain open and untouched pending final changed-file reconciliation; do not merge them independently into the same paths. PR #464 is already merged and supplies the documentation/navigation baseline. Historical branches are preserved.
+
+### Readiness
+
+**Current classification: software-verified research prototype; not release-ready and not independently research-certified.** The exact-head software checks above pass, but the full multi-engine matrix/schema, independent Korean IPA review, Ukrainian target review, and source-specific research/rights gates remain outstanding. A successful workflow run alone is not sufficient: inspect the aggregate artifact and confirm its schema and warning metadata before changing this status.
+
+
 ## Latest integration checkpoint — 2026-11-10
 
 **Main base:** `920b6365539058b658348855c5daddc066558b15`.  
