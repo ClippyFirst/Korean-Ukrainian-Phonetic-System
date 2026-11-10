@@ -6,6 +6,14 @@ import {fileURLToPath} from 'node:url';
 
 const root=path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const read=(p)=>fs.readFileSync(path.join(root,p),'utf8');
+const luminance=(hex)=>{
+  const rgb=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)/255).map(x=>x<=.04045?x/12.92:((x+.055)/1.055)**2.4);
+  return .2126*rgb[0]+.7152*rgb[1]+.0722*rgb[2];
+};
+const contrast=(a,b)=>{
+  const [hi,lo]=[luminance(a),luminance(b)].sort((x,y)=>y-x);
+  return (hi+.05)/(lo+.05);
+};
 
 test('service and methodology share the Korean editorial visual identity',()=>{
   for(const page of ['index.html','system.html']){
@@ -35,10 +43,13 @@ test('Korean editorial tokens and restrained interaction are present',()=>{
   assert.match(css,/--ink-navy:\s*#172a3a/i);
   assert.match(css,/--vermilion:\s*#b64036/i);
   assert.match(css,/--celadon:\s*#789184/i);
+  assert.match(css,/--celadon-ink:\s*#526e5d/i);
   assert.match(css,/\.editorial-site \.workspace-layout/u);
   assert.match(css,/\.system-page \.doc-content/u);
   assert.match(css,/@media\s*\(prefers-reduced-motion:\s*reduce\)/u);
   assert.match(css,/:focus-visible/u);
   assert.doesNotMatch(css+baseCss,/scroll-behavior:\s*smooth/u);
   assert.doesNotMatch(css+baseCss,/background(?:-image)?:[^;]*gradient\s*\(/iu);
+  assert.ok(contrast('#526e5d','#fcfbf7')>=4.5,'small celadon text meets WCAG AA');
+  assert.ok(contrast('#10251e','#789184')>=4.5,'text on the celadon specimen meets WCAG AA');
 });
