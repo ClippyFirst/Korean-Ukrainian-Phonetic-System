@@ -32,15 +32,15 @@ Branch: `design/korean-editorial-workbench-2026-11-10`
 
 ## Execution record — 2026-11-10
 
-- **Task 1 — DONE_VERIFIED.** Visual contract was added first. The initial exact-head run failed on the three expected absent-identity assertions: [RED run 42870990512](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42870990512). The final branch run is green: [Tests 42873328171](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42873328171), 1,438 passed / 0 failed.
+- **Task 1 — DONE_VERIFIED.** Visual contract was added first. The initial exact-head run failed on the three expected absent-identity assertions: [RED run 42870990512](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42870990512). The final branch run is green: [Tests 42874997955](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42874997955), 1,438 passed / 0 failed.
 - **Task 2 — DONE_VERIFIED.** Service page hero/specimen and continuous input/output workbench implemented; no JavaScript, conversion-engine or mode semantics changed.
 - **Task 3 — DONE_VERIFIED.** Methodology page shares the new identity and has a dedicated long-form reading treatment.
-- **Task 4 — PARTIAL.** Exact-head browser regression, source-rights gate, generated-page validation and production build pass in [Verify 42873315438](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42873315438). Browser G2P [42873327814](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42873327814), master/research artifacts [42873327922](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42873327922), and exhaustive test-case register [42873327845](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42873327845) also pass. Public Pages deployment and rendered desktop/mobile review remain pending until merge.
+- **Task 4 — PARTIAL.** Exact-head browser regression, source-rights gate, generated-page validation and production build pass in [Verify 42874998127](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42874998127). Browser G2P [42874997922](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42874997922), master/research artifacts [42874998880](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42874998880), and exhaustive test-case register [42874997991](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42874997991) also pass. Public Pages deployment and rendered desktop/mobile review remain pending until merge.
 
 ### Exact-head status
 
 - Branch: `design/korean-editorial-workbench-2026-11-10`
-- Tested head: `906b813090387698308a6c4f1b124134481cff92`
+- Tested head: `2eb127dc5d88345e9f338f1924cd1c796fa3321e`
 - Base: `37c922935b30ca5f46a4f5d37bd5e435f3c28cb6`
 - PR: [#467](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/467)
 - Python 3.11 / 3.12 / 3.13, wheel install and teacher corpus audit: PASS.
