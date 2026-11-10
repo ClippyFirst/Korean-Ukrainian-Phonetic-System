@@ -2,7 +2,7 @@
 
  > **Current browser mode semantics (merged PR #466):** Strict is unchanged; Soft is the former broad heuristic/maximum-coverage path; Super-soft is the grapheme-only Jamo → IPA → Ukrainian fallback. Earlier benchmark figures are historical and do not score the new definitions. The Super-soft 11,172-syllable test measures candidate availability, not pronunciation accuracy. These changes are deployed to GitHub Pages from main commit `fa2998acaa0fdd154c9b4d3c1927778f77bac199`.
 
-## Latest main integration — 2026-11-10 (three-tier modes)
+## Historical benchmark baseline — PR #465 (2026-11-10)
 
 **Default branch:** `main`. **Merged PR:** [#465](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/465). **Merge commit:** `e8ebed5b9ccb67255209ccb20efa45ae0236bcbe`. **PR head tested:** `18bafbe9d998f7fe818c9b65ec84d3b5098d6dfa`.
 
@@ -100,7 +100,7 @@ The benchmark workflow now uses `cancel-in-progress: false`: an already-running 
 
 ### Readiness and disposition
 
-PR #465 remains OPEN and unmerged pending the exact-head matrix and schema. PRs [#463](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/463) and [#462](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/462) remain open and untouched; their changed-file scopes overlap with #465, but close them only after #465 passes and unique scope is reconciled. No historical branch was deleted or force-updated.
+Historical checkpoint note: PR #465 was subsequently merged; PRs #463 and #462 were closed as superseded after their unique scope was reconciled. No historical branch was deleted or force-updated.
 
 The repository remains a software-verified, evidence-scoped research prototype, not release-ready or independently research-certified. Independent Korean IPA review, separate Ukrainian target review, historical membership/raw-offset evidence and restricted-dataset access remain separate acceptance gates.
 
@@ -468,7 +468,7 @@ The ClippyFirst IPA renderer is the downstream target adapter, not a Korean G2P 
 
 ### Readiness and remaining work
 
-The repository is a **software-verified, bounded research prototype**; it remains a **research prototype, not independently research-certified or release-ready** as an authoritative transcription standard. Remaining substantive work is evidence-limited: original 236/239 cohort provenance, speaker-specific IPA evidence for the 40 no-audio cases, independent Ukrainian target validation if certification is pursued, broader source-backed rule coverage, and deployment/live-smoke confirmation on the latest main commit. No external reviewer outreach or correspondence is part of this execution pass.
+The repository is a **software-verified, bounded research prototype**; it remains a **research prototype, not independently research-certified or release-ready** as an authoritative transcription standard. Remaining substantive work is evidence-limited: original 236/239 cohort provenance, speaker-specific IPA evidence for the 40 no-audio cases, independent Ukrainian target validation if certification is pursued, broader source-backed rule coverage, and final live adversarial practical-mode browser smoke on the latest main commit (in progress). No external reviewer outreach or correspondence is part of this execution pass.
 
 ## Documentation and repository map
 
@@ -885,7 +885,7 @@ The 10-engine comparisons on UGTPHON and SIGMORPHON remain **Strict IPA baseline
 
 **Do not conflate two denominators:** source-resolved scoring coverage (**source_resolved_coverage_rate**) excludes heuristic, partial, unresolved, typed-fallback and engine-error outputs; candidate output availability (**candidate_output_availability_rate**) includes an explicitly typed heuristic/fallback candidate only when an actual candidate exists, and excludes unresolved passthrough. Exact and CER remain source-resolved accuracy measures. The acceptance contract requires candidate availability to be monotonic Strict ≤ Soft ≤ Super-soft and Super-soft to reach 100% on every compatible benchmark. This is not a 100% accuracy requirement.
 
-The implementation and acceptance matrix are maintained in [the mode-specific methodology contract](docs/methodology.md#mode-coverage-and-output-availability-contract-2026-11-08). The SIGMORPHON three-mode run and exact-main CI evidence are pending; no scores are claimed before those artifacts exist.
+The implementation and acceptance matrix are maintained in [the mode-specific methodology contract](docs/methodology.md#mode-coverage-and-output-availability-contract-2026-11-08). The three-mode rerun on merged main is tracked by [run 42858765799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42858765799); earlier figures are historical under the old mode definitions.
 
 
 ## Three-tier research-mode refactor — 2026-11-10 (PR #466)
@@ -896,9 +896,9 @@ The browser research engine now distinguishes three levels by confidence/coverag
 - **Soft:** inherits the former Super-soft maximum-coverage heuristic path (formal morphology, broader practical heuristics and typed IPA fallback). Candidate spans remain explicitly low-confidence.
 - **Super-soft:** new grapheme-only IPA fallback. It decomposes modern Hangul syllable blocks into onset/vowel/coda Jamo, constructs an underlying IPA candidate without inferring contextual assimilation, liaison, fortition, palatalization or morphology, then uses the existing IPA → Ukrainian adapter. Exact source-backed lexical readings remain available.
 
-**Exact-head verification:** PR #466 head 7ee23c8ab1984e7ae156c4a25360a0d167ea6ef7; Verify workflow [42843823095](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42843823095) **PASS** — Python regression/data integrity, full browser regression suite, source redistribution rights gate, Vite build and generated-page checks. The new Super-soft regression exercises all 11,172 modern Hangul syllable blocks through IPA → Ukrainian mapping; existing Soft coverage/adversarial tests preserve the former broad heuristic behavior. NIKL metadata-only inventory remains **SKIPPED**.
+**Exact-head verification:** PR #466 exact head `191aa01c7eb2d937aae83c82e1a6e620f0a8d149`; Verify workflow [42846413288](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42846413288) **PASS** — Python regression/data integrity, full browser regression suite, source redistribution rights gate, Vite build and generated-page checks. The new Super-soft regression exercises all 11,172 modern Hangul syllable blocks through IPA → Ukrainian mapping; existing Soft coverage/adversarial tests preserve the former broad heuristic behavior. NIKL metadata-only inventory remains **SKIPPED**.
 
-**Evidence boundary:** 100% Super-soft coverage is availability of a typed grapheme-derived candidate, not 100% correct Korean pronunciation. Earlier benchmark reports predate this mode reassignment and must not be relabelled as measurements of the new Soft/Super-soft definitions. Rerun the full benchmark matrix against the merged exact main commit before publishing updated comparative scores. GitHub Pages deployment is also pending until the PR is merged and the main-branch Pages workflow completes.
+**Evidence boundary:** 100% Super-soft coverage is availability of a typed grapheme-derived candidate, not 100% correct Korean pronunciation. Earlier benchmark reports predate this mode reassignment and must not be relabelled as measurements of the new Soft/Super-soft definitions. A fresh three-mode benchmark is running on merged main (run [42858765799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42858765799)); do not publish comparative scores until its artifact is inspected. Pages deployment and public-page smoke have passed on merged main (run [42858765455](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42858765455)); the final live adversarial practical-mode smoke is still in progress.
 
 
 ## Three-tier browser modes — deployed 2026-11-10
