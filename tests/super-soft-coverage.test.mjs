@@ -216,7 +216,7 @@ test('service exposes the opt-in control only inside research mode and labels it
   assert.match(main,/superSoftToggle\.checked&&softToggle/u);
   const methodology=readFileSync(new URL('../system.html',import.meta.url),'utf8');
   assert.match(methodology,/methodology-02a-super-soft/u);
-  assert.match(methodology,/11&nbsp;172 сучасні склади Hangul/u);
+  assert.match(methodology,/11&nbsp;172 сучасні склади хангиля/u);
   assert.match(methodology,/не 100% фонетичної правильності/u);
 });
 
