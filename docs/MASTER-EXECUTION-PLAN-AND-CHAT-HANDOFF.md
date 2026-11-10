@@ -759,3 +759,63 @@ Inspection found three legacy consolidated-workflow artifacts with row-level rep
 - Preserve both old branches until PR #465 is merged; then close the superseded PRs without deleting their branches.
 
 **Readiness:** the deterministic benchmark suite is software-verified research infrastructure, not a release-ready phonetic product. Independent linguistic validation and the artifact-policy integration gate remain separate acceptance conditions.
+
+
+## Execution handoff — 2026-11-10 final integration on main
+
+### Starting state and integration
+
+- Starting default branch: `main` at `920b6365539058b658348855c5daddc066558b15`.
+- User-selected integration policy: one active branch, `main`; no new task branch was created by this continuation.
+- PR #465 was reviewed and merged into main from exact tested head `18bafbe9d998f7fe818c9b65ec84d3b5098d6dfa`.
+- Merge commit: `e8ebed5b9ccb67255209ccb20efa45ae0236bcbe`.
+- The older PR #463 branch was divergent and stale; its intended implementation was ported onto current main in #465. PR #462's narrower Browser three-mode verification is included in #465. Close #463 and #462 as superseded; preserve their branches.
+
+### Exact commands and results
+
+The full matrix workflow [42810042908](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042908) completed successfully. Its job steps report PASS for source/engine pin and licence checks, adapter tests, training-readiness audit, reviewer packet generation, ten-engine comparisons, UGTPHON and SIGMORPHON Browser modes, Native/Browser parity, Seoul/K-SPAN/IPA-Dict matrix, aggregate summary and upload.
+
+Other exact PR-head runs:
+- Tests / Python 3.11, 3.12, 3.13 / Browser / wheel install / teacher corpus: [42810042726](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042726) — PASS.
+- System Verify: [42810042823](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042823) — PASS.
+- Master/research artifacts: [42810042775](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042775) — PASS.
+- Exhaustive test-case register: [42810043038](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810043038) — PASS.
+- External UGTPHON diagnostic: [42810042906](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042906) — PASS.
+
+These are GitHub Actions checks on PR head, not local shell/npm/pytest runs and not post-merge-main evidence. The connector-only environment did not provide a local repository checkout; no local test command is claimed. Post-merge/final-documentation exact-main CI remains the next software verification gate.
+
+### Benchmark evidence
+
+- Six ten-engine tracks: UGTPHON, SIGMORPHON 2021, Seoul phonemic IPA, K-SPAN Modern, K-SPAN Conservative, IPA-Dict Korean.
+- Fifteen Browser reports: Strict/Soft/Super-soft on UGTPHON, SIGMORPHON, K-SPAN Modern, K-SPAN Conservative and IPA-Dict.
+- Seoul full-corpus Browser Hangul surface and phonemic-IPA reports remain separately evidenced by run 42496539257.
+- K-SPAN 63,836 rows; 41,174 Hangul and 22,662 non-Hangul; zero unmatched WordNums.
+- K-SPAN key/WorldBet differences remain WARN: 22,843 total (Modern 13,078; Conservative 9,765).
+- One external g2p-ko error on IPA-Dict (999/1,000 scored); Browser errors zero.
+- Super-soft candidate availability 100% on five Browser-tested dataset tracks; not an accuracy or source-resolved coverage claim.
+- IPA-Dict shares Wiktionary lineage with SIGMORPHON; Seoul labels are phonemic, not narrow phonetic IPA.
+
+### Artifact verification
+
+Artifact 13766007256 was downloaded and inspected. It contains exactly two files: aggregate JSON (293,134 bytes) and source checksum list (410 bytes). It contains no token-level source text, IPA labels, mismatch examples or occurrence ledgers. Schema validation passed during summary generation. ZIP SHA-256: `fa3281b337b60fccbf3ebc03796498325619138e2393ba54ddc9513c8d9598a3`.
+
+Legacy artifacts 13621335293, 13749341395 and 13750158865 still contain older row-level materials and remain until expiry/manual cleanup. The connector has no delete-artifact action; do not claim they were deleted. See `docs/BENCHMARK-ARTIFACT-POLICY.md`.
+
+### Final task ledger
+
+| Task | Status | Acceptance / blocker |
+|---|---|---|
+| Four upstream methodology review | DONE_VERIFIED | Current upstream HEADs rechecked; unchanged from reviewed pins. |
+| Existing documentation/skills/navigation reconciliation | DONE_VERIFIED | Root README, docs index, structure guide, audit, handoff, benchmark dashboard and acceptance/roadmap updated in place. |
+| Five-dataset scoring matrix | DONE_VERIFIED | PR #465 merged; full exact-head run 42810042908. |
+| Aggregate-only artifact policy | DONE_VERIFIED | Artifact 13766007256 inspected; exactly two allowed files. |
+| Final post-merge main CI | TODO / PENDING | Exact-main checks must pass after final documentation commit. |
+| K-SPAN representation mismatch | WARN | 22,843 differences remain; independent linguistic interpretation needed. |
+| Independent Korean IPA review | BLOCKED | Independent qualified annotations/adjudication absent. |
+| Ukrainian target gold/review | BLOCKED | Separate target-language review absent. |
+| 236/239 historical membership and raw ㅠ offsets | BLOCKED / PARTIAL | Original historical selector/run and raw offsets absent. |
+| KsponSpeech/NIKL speech corpus | BLOCKED | Authorized access and corpus-specific reuse terms absent. |
+| Neural inference | DEFERRED | Optional, skipped by policy; not needed for deterministic benchmark completion. |
+| Legacy artifact cleanup | BLOCKED | Manual GitHub owner action or expiry; integration cannot delete. |
+
+**Next action:** close PR #463 and #462 as superseded while retaining branches, then verify post-merge and final documentation commits on main. If those checks pass, the software benchmark integration is complete; the product remains a research prototype pending independent linguistic and rights acceptance.
