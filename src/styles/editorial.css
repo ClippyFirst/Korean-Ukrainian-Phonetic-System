@@ -718,3 +718,12 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
 
 /* Scope the main work surface to the editorial identity, not a generic card preset. */
 .editorial-site .workspace-layout { border-color: var(--seam); }
+
+/* Contrast-safe text accents and a visible focus treatment. */
+:root { --celadon-ink: #526e5d; }
+.specimen-tile-ipa { color: #10251e; }
+.doc-content > .section-kicker { color: var(--celadon-ink); }
+.editorial-site :focus-visible,.system-page :focus-visible {
+  outline: 2px solid var(--vermilion);
+  outline-offset: 3px;
+}
