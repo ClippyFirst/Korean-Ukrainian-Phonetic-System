@@ -64,3 +64,12 @@ test('Korean editorial tokens and restrained interaction are present',()=>{
   assert.match(css,/grid-template-columns:\s*minmax\(0,\s*1\.12fr\)\s+minmax\(0,\s*\.88fr\)/u);
   assert.match(css,/\.specimen-tile-hangul\s*\{[^}]*grid-row:\s*1\s*\/\s*span\s*2/u);
 });
+
+test('keeps the user-facing romanization label in Ukrainian',()=>{
+  const service=read('index.html');
+  const methodology=read('system.html');
+  assert.match(service,/Романізація \\(RR\\)/u);
+  assert.doesNotMatch(service,/Revised Romanization/u);
+  assert.match(methodology,/Переглянута романізація \\(RR\\)/u);
+  assert.doesNotMatch(methodology,/Revised Romanization/u);
+});
