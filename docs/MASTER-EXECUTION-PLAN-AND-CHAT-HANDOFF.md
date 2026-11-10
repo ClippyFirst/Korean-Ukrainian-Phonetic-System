@@ -602,3 +602,50 @@ For genuinely unresolved morphology, the Browser Super-soft research mode may us
 | PR #463 / #462 reconciliation | TODO | Leave #463/#462 untouched until #465 passes; then inspect unique scope before closing superseded PRs. |
 
 **Readiness:** software-verified, evidence-scoped research prototype; not release-ready or independently research-certified. No local shell/npm/pytest run is claimed in this connector-only session.
+
+
+---
+
+# Execution continuation — 2026-11-10 (PR #465 current state)
+
+## Starting point and branch
+
+- Main base: `920b6365539058b658348855c5daddc066558b15`.
+- Working branch: `benchmark/five-dataset-matrix-reconciled-2026-11-09`.
+- Starting branch HEAD for this continuation: `d71ef50fdef34c86ad864adc10a50ba45d722ecf`.
+- PR #465 remains OPEN and mergeable; no changes have been merged into `main`.
+- PR #463 and #462 remain open and untouched pending acceptance and unique-scope review.
+
+## Verified implementation and evidence
+
+- K-SPAN 2.1 mapping is implemented as `kspan-worldbet-to-ipa-v2`. The formerly failing WorldBet sequence `wi` is mapped to `wi`; tests cover `wi` and `kanixnkwi`.
+- The pinned K-SPAN join has 63,836 rows and 22,843 parallel key/WorldBet discrepancies (Modern 13,078; Conservative 9,765). Source WorldBet fields drive scoring; key fields remain a separate audit. Status is WARN, not PASS.
+- The prior matrix failure on `baa77f9` was WordNum 98 / ModernPhon `kanixnkwi`, failing at offset 7 on `wi`. The correction is present on runtime/test head `c42b7f9`.
+- On PR head `d71ef50f`: Tests [42775887452](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775887452) PASS; System Verify [42775887811](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775887811) PASS (NIKL metadata-only SKIPPED); master/research artifacts [42775887930](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775887930) PASS; exhaustive register extraction [42775887402](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775887402) PASS; external UGTPHON [42775887380](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775887380) PASS.
+- The d71 multi-engine run [42775887397](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775887397) was CANCELLED, not passed. The c42 multi-engine run [42775642949](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775642949) was IN_PROGRESS at the last inspection. Its final result, artifact and schema must be checked before merge.
+
+## Task ledger
+
+| Workstream | State | Next acceptance |
+|---|---|---|
+| Documentation/navigation foundation from PR #464 | DONE_VERIFIED | Preserved; no duplicate navigation framework added |
+| Five-dataset benchmark adapters and preparation | PARTIAL | Complete full open-dataset matrix |
+| K-SPAN source consistency | PARTIAL / WARN | Preserve all source rows; independently interpret key/WorldBet discrepancies |
+| Aggregate summary/schema | TODO / PENDING | Inspect final artifact and validate schema |
+| Python Super-soft fallback parity | TODO | Implement and test provenance-preserving parity |
+| Independent Korean IPA and Ukrainian target review | BLOCKED | Qualified independent reviewers and frozen review packets |
+| Historical membership and raw offset questions | PARTIAL / BLOCKED | Recover contemporaneous source evidence and verify offsets |
+| Restricted speech datasets | BLOCKED | Obtain explicit access/licence terms |
+| Neural inference | DEFERRED | Remains opt-in and outside default gate |
+
+## Branch/PR disposition
+
+PR #465 is the controlled port based on current main and remains the only active integration path for this benchmark. PR #463 is an older divergent implementation; do not merge it blindly. PR #462 is a narrower overlapping Browser change; preserve it until its unique scope is reviewed. Do not close or delete branches as cleanup without confirming all unique changes are represented.
+
+## Commands and verification actually executed
+
+No local shell, npm or pytest command was run in this connector-only session. Verification evidence consists of the named GitHub Actions workflows. Cancelled/skipped jobs are not counted as passes; NIKL metadata-only is intentionally skipped by workflow policy.
+
+## Readiness and next blocker
+
+The repository remains a software-verified, evidence-scoped research prototype, not release-ready or independently research-certified. The immediate engineering blocker is a successful completed full matrix and aggregate JSON Schema validation on the final runtime/test head. Independent linguistic review and separate source/access blockers remain after that gate.
