@@ -1,22 +1,21 @@
-# Current continuation — benchmark integration and research gates (2026-11-10 10:20 UTC+2)
+# Current continuation — benchmark integration and research gates (2026-11-10)
 
-**Main:** `920b6365539058b658348855c5daddc066558b15`. **Active PR #465:** `1cf42b8d75ce3de2df6ad36dcca7208a255af342`, based on main; not merged.
+**Main:** `920b6365539058b658348855c5daddc066558b15`. **Active PR #465:** `benchmark/five-dataset-matrix-reconciled-2026-11-09`.
 
-- **DONE_VERIFIED:** exact-head Python 3.11/3.12/3.13, Browser, wheel install and teacher-corpus audit — [run 42778967231](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967231).
-- **DONE_VERIFIED:** system Python/data integrity and Browser build/regression — [run 42778967019](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967019).
-- **DONE_VERIFIED:** master/research artifact generation — [run 42778967136](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967136).
-- **DONE_VERIFIED:** external UGTPHON diagnostic — [run 42778967047](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967047).
-- **DONE_VERIFIED:** exhaustive test-case register extraction — [run 42778967366](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967366).
-- **PARTIAL:** five-dataset multi-engine comparison — [run 42778967197](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967197) remains IN_PROGRESS at multi-engine comparison. Optional ByT5/CharsiuG2P jobs were SKIPPED, not passed.
-- **WARN / BLOCKED:** K-SPAN 63,836-row join retains all rows; 22,843 key/WorldBet discrepancies (Modern 13,078; Conservative 9,765) remain visible. WorldBet source labels drive scoring; key fields are audited separately.
-- **BLOCKED:** independent Korean IPA gold review; independent Ukrainian target review; source-specific restricted-data membership, raw-offset and rights evidence.
-- **DEFERRED:** optional neural comparison engines for this run.
+- **DONE_VERIFIED:** full six-track, ten-engine scoring and fifteen Browser reports — [run 42785083152](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42785083152).
+- **DONE_VERIFIED:** exact-head Python 3.11/3.12/3.13, Browser, wheel install and teacher-corpus audit — [run 42796414347](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42796414347).
+- **DONE_VERIFIED:** System Verify — [run 42796413910](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42796413910).
+- **DONE_VERIFIED:** master/research artifact generation — [run 42796414305](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42796414305).
+- **DONE_VERIFIED:** exhaustive test-case register extraction — [run 42796414508](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42796414508).
+- **DONE_VERIFIED:** external UGTPHON diagnostic — [run 42796413990](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42796413990).
+- **PARTIAL:** exact-head aggregate-only artifact integration — [run 42796414336](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42796414336) is validating six combined engine tracks, fifteen Browser reports and the two-file artifact allow-list.
+- **WARN:** K-SPAN has 22,843 parallel key/WorldBet discrepancies (Modern 13,078; Conservative 9,765); source WorldBet values drive scoring and the key fields remain independent audit metadata.
+- **PARTIAL:** source register now includes the pinned SIGMORPHON 2021 Korean test split and explicit item-level Creative Commons/KOGL recognition; exact CI validation is pending.
+- **SKIPPED:** ByT5/CharsiuG2P inference and NIKL metadata-only inventory; neither is a pass.
 
-**Acceptance rule:** do not mark the five-dataset matrix complete until the full workflow succeeds on the final runtime/test head, all intended tracks and joins are present, the aggregate-only artifact is inspected, schema validation passes, and K-SPAN warning metadata is retained. A workflow status alone is insufficient.
+The 63,836-row K-SPAN join is complete (41,174 Hangul, 22,662 non-Hangul, zero unmatched WordNums). Earlier consolidated artifacts with row-level reports/source TSVs remain until 2026-12-08/10 unless manually deleted; see `docs/BENCHMARK-ARTIFACT-POLICY.md`.
 
-**Readiness:** software-verified research prototype; not release-ready or independently research-certified.
-
----
+**Readiness:** software-verified research prototype; not release-ready. Independent Korean IPA gold, independent Ukrainian target review, historical selector provenance, raw ㅠ offset validation and restricted-source permissions remain open.
 
 # Current continuation — mainline status (2026-11-08)
 

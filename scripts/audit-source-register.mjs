@@ -121,7 +121,7 @@ function classifyRights(value, integrationStatus = '') {
     return { status: 'REVIEW_REQUIRED', reason: 'register text explicitly records unassessed, unverified, item-level, or dataset-specific rights' };
   }
   // Keep this intentionally narrow: a general license name or a citation alone is not proof.
-  if (/^(?:Apache-2\.0|MIT|BSD-\d-Clause|CC-BY(?:-\d\.\d)?|CC0)\s+verified\b/iu.test(text)) {
+  if (/^(?:Apache-2\.0|MIT|BSD-\d-Clause|CC[- ]BY(?:[- ](?:SA|NC|ND))?(?:[- ]\d\.\d)?|CC0(?:\s+1\.0)?|KOGL\s+Type\s+1)\s+verified\b/iu.test(text)) {
     return { status: 'ITEM_LEVEL_LICENSE_RECORDED', reason: 'register explicitly records a verified license; human review must still confirm the actual retained artifact and obligations' };
   }
   return { status: 'MANUAL_CLASSIFICATION_REQUIRED', reason: 'free-text value does not unambiguously establish an item-level rights decision' };

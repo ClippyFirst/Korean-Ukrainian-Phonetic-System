@@ -4,32 +4,30 @@
 
 ## At a glance
 
-- **10 engines** were compared under Strict IPA and Broad-candidate sensitivity profiles on both UGTPHON and SIGMORPHON 2021 Korean.
-- **3 Kozak Kim Browser modes** (Strict / Soft / Super-soft) were run on UGTPHON.
+- **10 engines** were compared on UGTPHON, SIGMORPHON 2021 Korean, Seoul phonemic IPA, K-SPAN Modern, K-SPAN Conservative and IPA-Dict Korean (six reference tracks across five datasets).
+- **15 Browser reports** cover Strict / Soft / Super-soft on UGTPHON, SIGMORPHON, K-SPAN Modern, K-SPAN Conservative and IPA-Dict; Seoul's six full-corpus Browser reports are separately evidenced.
 - **3 Kozak Kim modes** were run on Seoul Corpus SLR113 for both Hangul surface pronunciation and phonemic IPA.
 - **2 MFA v2.0.0 model variants** (Hangul / Jamo) were run on UGTPHON and SIGMORPHON. These are one MFA model family, not two independent engines.
-- **SIGMORPHON Browser Strict / Soft / Super-soft is not yet executed** in the evidence listed below. The three-mode workflow target exists, but do not report scores until its exact-main artifact passes.
+- **SIGMORPHON Browser Strict / Soft / Super-soft is executed** on 999 eligible occurrences; candidate availability is 99.8999%, 99.8999% and 100%, respectively.
 - **ByT5 and CharsiuG2P inference were skipped** under the default-off research policy; they have no current results in this run.
 
-## Executable five-dataset matrix — 2026-11-09 status
+## Executable five-dataset matrix — results completed 2026-11-10
 
-The current target matrix is **UGTPHON, SIGMORPHON 2021 Korean, Seoul Corpus SLR113, K-SPAN 2.1 and IPA-Dict Korean**. It is separate from the long-term KsponSpeech/NIKL speech-corpus acquisition candidates below.
+The five-dataset matrix is **scored and completed** in [run 42785083152](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42785083152): six 10-engine tracks (UGTPHON, SIGMORPHON, Seoul phonemic IPA, K-SPAN Modern, K-SPAN Conservative, IPA-Dict) and fifteen Browser reports across five datasets. The exact-head rerun [42796414336](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42796414336) validates the revised aggregate-only artifact builder and final workflow integration; its completion and artifact inspection remain required before merge.
 
 | Dataset | Evaluation tracks | Current evidence state |
 |---|---|---|
-| UGTPHON | 10-engine Strict/Broad; Browser Strict/Soft/Super-soft | Existing benchmark evidence; consolidated rerun in progress |
-| SIGMORPHON 2021 | 10-engine Strict/Broad; Browser Strict/Soft/Super-soft | Existing 10-engine evidence; three-mode reports generated in the earlier failed gate, corrected exact-head rerun pending |
-| Seoul Corpus SLR113 | Full-corpus Browser Hangul surface and phonemic IPA modes; 1,000-occurrence 10-engine sample | Existing Browser evidence; new ten-engine sample pending consolidated CI |
-| K-SPAN 2.1 | 1,000 Modern + 1,000 Conservative sampled word types; 10 engines and compatible Browser modes | Pending consolidated CI; both tracks are one dataset |
-| IPA-Dict Korean | 1,000-word residual sample after exact overlap exclusion; 10 engines and compatible Browser modes | Pending consolidated CI; Wiktionary lineage overlaps SIGMORPHON, so not an independent holdout |
+| UGTPHON | 10-engine Strict/Broad; Browser Strict/Soft/Super-soft | Executed; 2,703 eligible occurrences |
+| SIGMORPHON 2021 | 10-engine Strict/Broad; Browser Strict/Soft/Super-soft | Executed; 999 eligible pairs from 1,000 raw rows |
+| Seoul Corpus SLR113 | Full-corpus Browser Hangul surface and phonemic IPA modes; 1,000-occurrence 10-engine phonemic-IPA sample | Executed; 231,626 surface and 231,625 phonemic-IPA pairs |
+| K-SPAN 2.1 | 1,000 Modern + 1,000 Conservative sampled word types; 10 engines and compatible Browser modes | Executed; 63,836-row source join; key/WorldBet cross-representation warning retained |
+| IPA-Dict Korean | 1,000-word residual sample after exact overlap exclusion; 10 engines and compatible Browser modes | Executed; shares Wiktionary lineage with SIGMORPHON, not an independent holdout |
 
 There are **five datasets and seven reference tracks**: UGTPHON (1), SIGMORPHON (1), Seoul (2), K-SPAN Modern/Conservative (2), IPA-Dict (1). The two K-SPAN variants must not be counted as separate datasets.
 
-PR [#463](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/463), head `b348b0f92daab610448312aea26cb99fcc27b036`, adds the consolidated workflow. The exact-head run [42576636761](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42576636761) is running; do not claim K-SPAN or IPA-Dict scores until its open-matrix step, report schema checks and aggregate-only artifact upload pass. The initial failure [42526972593](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42526972593) remains a failed historical run; its Hangul regex defect has been corrected in both workflow validation blocks.
+**Scoring contract:** ten engines use Strict-IPA and Broad-candidate diagnostic profiles. Strict/Soft/Super-soft are ClippyFirst Browser modes, not external-engine modes. Candidate output availability and source-resolved IPA scoring coverage are separate; Super-soft provides a candidate for 100% of eligible inputs across all five Browser-tested datasets, but heuristic/fallback candidates do not count as source-resolved accuracy.
 
-**Scoring contract:** ten external engines use only compatible Strict-IPA and Broad diagnostic profiles. Strict/Soft/Super-soft are ClippyFirst modes, not external-engine modes. Candidate output availability and source-resolved IPA scoring coverage remain separate; Super-soft must provide a typed candidate for 100% of eligible inputs, not achieve 100% accuracy.
-
-See the [canonical matrix, source pins and rights boundaries](KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md#2026-11-09--executable-five-dataset-korean-g2p-matrix).
+See the [canonical matrix, source pins and rights boundaries](KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md) and [benchmark artifact policy](BENCHMARK-ARTIFACT-POLICY.md).
 
 ## Long-term speech-corpus acquisition portfolio — five selected sources
 
@@ -144,17 +142,22 @@ Source: [MFA workflow run 42513951588](https://github.com/ClippyFirst/Korean-Ukr
 
 The SIGMORPHON TSV has 1,000 raw rows; the shared scorer admits 999 eligible occurrences. The one excluded row remains outside the scoring denominator. MFA is comparison-only, not part of the production pipeline. Its phone-to-IPA identity assumption and training-data overlap still need independent review.
 
-## 6. Mode/dataset completeness matrix
+## 6. Mode/dataset completeness matrix — refreshed 2026-11-10
 
-| Dataset / reference | 10-engine Strict | 10-engine Broad | Kozak Kim Strict | Kozak Kim Soft | Kozak Kim Super-soft | MFA Hangul/Jamo |
+| Dataset / reference | 10-engine Strict | 10-engine Broad | Browser Strict | Browser Soft | Browser Super-soft | MFA Hangul/Jamo |
 |---|---|---|---|---|---|---|
 | UGTPHON | **EXECUTED** | **EXECUTED** | **EXECUTED** | **EXECUTED** | **EXECUTED** | **EXECUTED** |
-| SIGMORPHON 2021 Korean | **EXECUTED** | **EXECUTED** | **NOT YET EXECUTED** | **NOT YET EXECUTED** | **NOT YET EXECUTED** | **EXECUTED** |
+| SIGMORPHON 2021 Korean | **EXECUTED** | **EXECUTED** | **EXECUTED** | **EXECUTED** | **EXECUTED** | **EXECUTED** |
 | Seoul SLR113 Hangul surface | n/a | n/a | **EXECUTED** | **EXECUTED** | **EXECUTED** | n/a |
-| Seoul SLR113 phonemic IPA | n/a | n/a | **EXECUTED** | **EXECUTED** | **EXECUTED** | n/a |
+| Seoul SLR113 phonemic IPA | **EXECUTED** (1,000-occurrence sample) | **EXECUTED** | **EXECUTED** | **EXECUTED** | **EXECUTED** | n/a |
+| K-SPAN Modern | **EXECUTED** | **EXECUTED** | **EXECUTED** | **EXECUTED** | **EXECUTED** | n/a |
+| K-SPAN Conservative | **EXECUTED** | **EXECUTED** | **EXECUTED** | **EXECUTED** | **EXECUTED** | n/a |
+| IPA-Dict Korean | **EXECUTED** | **EXECUTED** | **EXECUTED** | **EXECUTED** | **EXECUTED** | n/a |
 | Independent Ukrainian target gold | n/a | n/a | **NOT AVAILABLE** | **NOT AVAILABLE** | **NOT AVAILABLE** | n/a |
 
-**Not executed / not scored:** SIGMORPHON three-mode Browser reports; ByT5 inference; CharsiuG2P inference; KsponSpeech; NIKL 2022; Mun/Kim/Ko 130-row gold corpus (reuse permission unresolved). These are not zero scores and must not be shown as benchmark failures or passes.
+The executable portfolio contains **five datasets and seven reference tracks**: UGTPHON (1), SIGMORPHON (1), Seoul (2), K-SPAN Modern/Conservative (2), and IPA-Dict (1). K-SPAN Modern and Conservative are two tracks within one dataset. The consolidated workflow's aggregate summary combines six multi-engine tracks and fifteen Browser reports; Seoul's six full-corpus Browser reports remain separately evidenced by run [42496539257](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42496539257).
+
+**Not executed / not scored:** ByT5 inference, CharsiuG2P inference, KsponSpeech, NIKL Daily Conversation Speech Corpus 2022, and the Mun/Kim/Ko 130-row hand-transcribed gold (reuse permission unresolved). These are not zero scores and must not be shown as benchmark failures or passes. The official NIKL metadata-only inventory was skipped by policy; the NIKL MKUFS2 index was used only for K-SPAN WordNum joining, not as a scored IPA dataset.
 
 ## 7. How to read the metrics
 
@@ -176,6 +179,64 @@ Do not pool datasets or report one blended headline score: UGTPHON is noisy user
 - [Seoul surface + phonemic IPA mode run 42496539257](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42496539257) · artifact 13623457737.
 - [MFA Hangul/Jamo run 42513951588](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42513951588) · [artifact 13630946780](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42513951588/artifacts/13630946780).
 - Full historical notes, source lineage, acceptance gates and previous runs: [Korean benchmark suite register](KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md).
+
+
+## 9. Consolidated five-dataset results — 2026-11-10
+
+Source: [full matrix run 42785083152](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42785083152). Each open-dataset track uses a 1,000-occurrence sample. The table below records only the highest scored-only Exact on each track; it is not a cross-dataset leaderboard.
+
+| Reference track | Highest Exact | Engine | CER | Notes |
+|---|---:|---|---:|---|
+| Seoul phonemic IPA | 21.200% (212/1,000) | KoG2P 2019 | 32.024% | Phonemic reference; not narrow phonetic gold |
+| K-SPAN Modern | 25.000% (250/1,000) | KoG2P 2019 | 15.645% | Source WorldBet Modern reference |
+| K-SPAN Conservative | 18.800% (188/1,000) | KoG2P 2019 | 16.150% | Source WorldBet Conservative reference |
+| IPA-Dict Korean | 41.265% (411/996) | ClippyFirst Native | 9.934% | Native abstained on four of 1,000 eligible occurrences |
+
+No Native runtime errors occurred. One external `g2p_ko_1_0_0` engine error occurred on IPA-Dict (999/1,000 scored); it is retained in the report rather than hidden. Other external engines completed the four open tracks without engine-loop errors.
+
+### Browser mode availability and source-resolved scoring
+
+Candidate availability counts any non-empty candidate, including explicitly labelled heuristic/fallback candidates. Source-resolved coverage is the fraction eligible for accuracy scoring. These are different measures.
+
+| Dataset | Mode | Source-resolved scored / eligible | Candidate availability | Exact scored-only | Coverage-adjusted Exact | CER | Heuristic / fallback |
+|---|---|---:|---:|---:|---:|---:|---:|
+| UGTPHON | Strict | 2,702/2,703 | 99.9630% | 52.7387% | 52.7192% | 9.0130% | 0 / 0 |
+| UGTPHON | Soft | 2,423/2,703 | 100% | 54.7668% | 49.0936% | 7.8785% | 280 / 0 |
+| UGTPHON | Super-soft | 2,239/2,703 | 100% | 56.1858% | 46.5409% | 7.8191% | 464 / 0 |
+| SIGMORPHON | Strict | 998/999 | 99.8999% | 35.8717% | 35.8358% | 14.5598% | 0 / 0 |
+| SIGMORPHON | Soft | 987/999 | 99.8999% | 35.6636% | 35.2352% | 13.9517% | 11 / 0 |
+| SIGMORPHON | Super-soft | 942/999 | 100% | 35.7749% | 33.7337% | 13.9085% | 57 / 0 |
+| K-SPAN Modern | Strict | 994/1,000 | 99.400% | 10.8652% | 10.800% | 27.7898% | 0 / 0 |
+| K-SPAN Modern | Soft | 974/1,000 | 99.900% | 10.0616% | 9.800% | 28.3998% | 25 / 0 |
+| K-SPAN Modern | Super-soft | 915/1,000 | 100% | 10.4918% | 9.600% | 28.1206% | 85 / 0 |
+| K-SPAN Conservative | Strict | 993/1,000 | 99.300% | 7.5529% | 7.500% | 27.4537% | 0 / 0 |
+| K-SPAN Conservative | Soft | 976/1,000 | 99.700% | 6.2500% | 6.100% | 28.2946% | 21 / 0 |
+| K-SPAN Conservative | Super-soft | 919/1,000 | 100% | 6.3112% | 5.800% | 28.2485% | 81 / 0 |
+| IPA-Dict Korean | Strict | 996/1,000 | 99.600% | 41.2651% | 41.100% | 9.9335% | 0 / 0 |
+| IPA-Dict Korean | Soft | 975/1,000 | 99.800% | 41.6410% | 40.600% | 9.1205% | 23 / 0 |
+| IPA-Dict Korean | Super-soft | 923/1,000 | 100% | 40.7367% | 37.600% | 9.2522% | 77 / 1 |
+
+Browser engine errors were zero in these fifteen reports. The single typed fallback is on IPA-Dict Super-soft. Soft/Super-soft may show a higher scored-only Exact because heuristic cases are excluded from the scored denominator; coverage-adjusted Exact is the appropriate all-eligible comparison.
+
+### K-SPAN join and cross-representation warning
+
+The pinned K-SPAN 2.1 join contains 63,836 observations: 41,174 Hangul rows, 22,662 non-Hangul rows and zero unmatched NIKL WordNum joins. Official Table 1 maps source WorldBet fields directly to IPA; parallel key fields are audited independently.
+
+- Total key/WorldBet discrepancies: **22,843**.
+- Modern: **13,078**.
+- Conservative: **9,765**.
+- Status: **WARN**, not PASS.
+
+This is a source cross-representation discrepancy, not permission to rewrite source labels. The benchmark retains all source rows and does not silently drop or normalize disagreements.
+
+### IPA-Dict lineage and interpretation
+
+IPA-Dict Korean contributes a 1,000-word residual sample after exact orthographic overlap exclusion against UGTPHON, SIGMORPHON and K-SPAN. Its Korean source is credited to the Korean Word-IPA Dictionary/Wiktionary lineage, shared with SIGMORPHON/WikiPron. It is supplementary lexical coverage, not an independent holdout.
+
+### Artifact verification status
+
+Run 42785083152 completed scoring and the open-dataset aggregate summary's JSON Schema validation, but inspection showed that its uploaded workflow bundle still contained row-level UGTPHON/SIGMORPHON reports, mismatch CSVs, predictions, reviewer packets and the SIGMORPHON source TSV. The workflow has since been changed to publish only the combined aggregate summary and source checksums. Exact-head integration [42796414336](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42796414336) must finish and its artifact be inspected before the aggregate-only policy is marked DONE_VERIFIED. See [benchmark artifact policy](BENCHMARK-ARTIFACT-POLICY.md).
+
 
 ---
 

@@ -1,10 +1,41 @@
 # Repository audit and structure — 2026-11-06
 
-## Current verified checkpoint — 2026-11-10 10:20 UTC+2
+## Current verified checkpoint — 2026-11-10
 
 **Default branch:** `main` at `920b6365539058b658348855c5daddc066558b15`.  
-**Active integration PR:** [#465](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/465), branch `benchmark/five-dataset-matrix-reconciled-2026-11-09`.  
-**Exact current PR head:** `1cf42b8d75ce3de2df6ad36dcca7208a255af342` (37 commits; 20 changed files; GitHub reports mergeable=true, merge state unstable while checks run).
+**Active integration:** [PR #465](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/465), branch `benchmark/five-dataset-matrix-reconciled-2026-11-09`.
+
+### Verified execution evidence
+
+- **DONE_VERIFIED:** full scoring matrix on run [42785083152](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42785083152): six 10-engine tracks and fifteen Browser reports across five datasets. Seoul's six full-corpus Browser reports remain separately evidenced by [42496539257](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42496539257).
+- **DONE_VERIFIED:** Python 3.11/3.12/3.13, Browser regression/build, wheel install and teacher-corpus audit — [42796414347](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42796414347).
+- **DONE_VERIFIED:** system Verify — [42796413910](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42796413910).
+- **DONE_VERIFIED:** master/research artifact generation — [42796414305](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42796414305).
+- **DONE_VERIFIED:** exhaustive test-case register extraction — [42796414508](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42796414508).
+- **DONE_VERIFIED:** external UGTPHON diagnostic — [42796413990](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42796413990).
+- **PARTIAL:** aggregate-only artifact integration — exact-head full matrix run [42796414336](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42796414336) is validating the combined six-track/fifteen-mode summary and two-file upload allow-list. Do not mark artifact policy complete until the run succeeds and the uploaded ZIP is inspected.
+
+### Research/data-quality state
+
+- K-SPAN 2.1 source join: 63,836 rows; 41,174 Hangul, 22,662 non-Hangul, zero unmatched NIKL WordNums.
+- K-SPAN parallel key/WorldBet disagreement remains **WARN: 22,843** (Modern 13,078; Conservative 9,765). WorldBet fields drive IPA scoring; key fields are audited separately and never rewritten.
+- Browser candidate availability reaches 100% in Super-soft on all five Browser-tested datasets. This is not source-resolved IPA accuracy; heuristic/fallback candidates remain outside scored coverage.
+- SIGMORPHON and IPA-Dict share Wiktionary lineage; IPA-Dict is supplementary lexical coverage, not an independent holdout.
+- Optional ByT5/CharsiuG2P inference and NIKL metadata-only inventory were skipped, not passed.
+
+### Artifact-retention correction
+
+The consolidated workflow previously published row-level reports and source TSVs in artifacts 13621335293, 13749341395 and 13750158865; the first K-SPAN preparation manifest also contained ten row-level key/WorldBet examples. They expire 2026-12-08/10. The corrected workflow now builds and uploads only an aggregate summary plus source checksums. The available GitHub integration cannot delete old artifacts; see [benchmark artifact policy](docs/BENCHMARK-ARTIFACT-POLICY.md) for the exact inventory and manual cleanup boundary.
+
+### Task ledger and readiness
+
+- **DONE_VERIFIED:** source adapters, six-track ten-engine scoring, fifteen Browser reports, Browser/Native parity and standard CI checks on the evidence above.
+- **PARTIAL:** final aggregate-only artifact integration; source-register extension and rights-parser tests are being verified on the current PR head.
+- **WARN:** K-SPAN cross-representation mismatch; preserve source values and counts.
+- **BLOCKED:** independent Korean IPA gold, independent Ukrainian target review, original audio/speaker crosswalk, raw ㅠ offset validation, restricted corpus access/terms, and unresolved historical 236/239 selector provenance.
+- **DEFERRED:** optional neural inference and unsupported external corpora.
+
+The repository is a software-verified research prototype, **not release-ready** and not independently linguistically certified. Do not equate candidate availability with accuracy or benchmark execution with target-language validation.
 
 ### Exact-head verification
 
@@ -1589,3 +1620,17 @@ The 40 source-based decisions are already integrated into main as a provenance/p
 - Corrective commit `b7b4afca93a8d218c0f99eb5a11a52e6a5a05712` adds the explicit benchmark name and pinned dataset-source label to all three Browser UGTPHON invocations. This is a harness identity fix; it does not change engine behavior or scoring rules.
 - Acceptance remains pending until the new main-branch Actions run completes the parity audit, SIGMORPHON Strict/Soft/Super-soft comparisons, and artifact review. Do not mark the multi-engine benchmark DONE_VERIFIED based on run 42506225213. Its failure is recorded as a harness failure with the specific cause above; the corrected rerun is pending.
 - GitHub Pages run 42506852765 completed successfully, including browser build and deployment. Latest ordinary Tests, System Verify, and research artifact generation runs at commit 2d55eeec5fb2e6f72ada8b316bd5c4df1caab2b8 passed; these do not substitute for the pending multi-engine gate.
+
+
+
+## 2026-11-10 — final matrix evidence and artifact-policy audit
+
+The current PR #465 branch was rechecked against main. The full scoring matrix is complete on run 42785083152: six 10-engine reference tracks across five datasets and fifteen Browser mode reports across five datasets. Seoul's full-corpus surface/phonemic Browser modes are separate evidence (run 42496539257). Standard exact-head checks on the later branch snapshot passed: Python 3.11/3.12/3.13, Browser regression/build, wheel installation, teacher-corpus audit, System Verify, master/research artifact generation, exhaustive register extraction and UGTPHON diagnostic.
+
+K-SPAN's full 63,836-row source join has zero unmatched NIKL WordNums (41,174 Hangul and 22,662 non-Hangul). The 22,843 Modern/Conservative key-to-WorldBet differences remain explicit WARN (13,078 Modern; 9,765 Conservative). The WorldBet source fields drive IPA scoring; the parallel keys remain independently audited. This is not a clean integrity PASS.
+
+The artifact audit found that legacy consolidated-workflow artifacts 13621335293, 13749341395 and 13750158865 contained row-level UGTPHON/SIGMORPHON outputs, predictions, mismatch exports, reviewer packets and the SIGMORPHON test TSV. Artifact 13749341395 additionally contained the raw K-SPAN preparation manifest with ten examples. These bundles remain until their 2026-12-08/10 expiries unless deleted manually; the current GitHub integration exposes no artifact deletion action. The workflow has been changed to produce a combined schema-validated aggregate summary and upload only that summary plus source checksums. Exact-head integration run 42796414336 and artifact inspection are still required before marking the corrected policy DONE_VERIFIED.
+
+The source registry was extended with the pinned SIGMORPHON 2021 Korean source, explicit licence parsing for CC BY-SA/CC BY-NC, CC0 1.0 and KOGL Type 1, and updated source-join evidence. The rights test now expects 239 source rows and eleven item-level licence records; the exact-head CI run is the acceptance evidence.
+
+Open research gates remain independent Korean IPA gold, independent Ukrainian target review, original audio/speaker crosswalk, raw ㅠ offset validation, restricted corpus access/terms and historical 236/239 selector provenance. Optional ByT5/CharsiuG2P inference and NIKL metadata-only inventory were skipped, not passed. Repository remains a research prototype, not release-ready.

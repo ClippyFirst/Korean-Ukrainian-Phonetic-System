@@ -1,6 +1,6 @@
-## Reference snapshot refresh — 2026-11-09
+## Reference snapshot refresh — 2026-11-10
 
-The four supplied workflow-reference repositories were rechecked against their current default-branch metadata on 2026-11-09. Their latest commits still match the pinned revisions reviewed below; no newer upstream commit was observed at this checkpoint:
+The four supplied workflow-reference repositories were rechecked against their current default-branch metadata on 2026-11-10. Their latest commits still match the pinned revisions reviewed below; no newer upstream commit was observed at this checkpoint:
 
 | Repository | Current default branch | Confirmed HEAD | Commit date |
 |---|---|---|---|
