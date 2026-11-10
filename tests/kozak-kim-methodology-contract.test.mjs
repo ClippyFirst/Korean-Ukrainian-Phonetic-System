@@ -29,7 +29,7 @@ test('methodology documents all three native modes and their real constraints', 
   }
   assert.match(engine, /morphologyMode==='super-soft'/u);
   assert.match(soft, /soft never resolves substantive/u);
-  assert.match(soft, /Quality is intentionally lower than strict\/soft/u);
+  assert.match(soft, /belongs to public Soft and remains lower-confidence than Strict/u);
 });
 
 test('methodology reports corrected benchmark metrics, coverage, and evidence limits', () => {
