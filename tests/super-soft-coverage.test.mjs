@@ -290,7 +290,7 @@ test('new Super-soft profile maps underlying Hangul graphemes to IPA without con
   assert.ok(syllables.every(item=>item.uncertainty?.strategy==='underlying-jamo-to-ipa'));
   assert.ok(syllables.every(item=>item.ipa&&item.targetMappings?.length));
   assert.ok(!syllables.some(item=>(item.rules||[]).some(rule=>/assimilation|palatalization|tensification|liaison/u.test(rule))));
-  assert.ok(!syllables.some(item=>(item.rules||[]).some(rule=>/vowel-ui-to-i|vowel-yeo-monophthongization|lexical-vowel-length|contextual-voicing|tensification|liquid-assimilation/u.test(rule))));
+  assert.ok(!syllables.some(item=>(item.rules||[]).some(rule=>/vowel-ui-to-i|vowel-ui-default-ɰi|vowel-yeo-monophthongization|lexical-vowel-length|contextual-voicing|tensification|liquid-assimilation/u.test(rule))));
 });
 
 test('new Super-soft covers all modern Hangul blocks through the IPA adapter',()=>{
