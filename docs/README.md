@@ -1,5 +1,13 @@
 # Documentation map
 
+## Current repository checkpoint — 2026-11-10
+
+The benchmark integration is merged into `main` as `e8ebed5b9ccb67255209ccb20efa45ae0236bcbe` (PR #465). Exact PR-head tests, system verification, generated artifacts, exhaustive register, UGTPHON diagnostic and the full five-dataset matrix all passed. See [benchmark results](BENCHMARK-RESULTS-2026-11-08.md), [current audit](REPOSITORY-AUDIT-AND-STRUCTURE-2026-11-06.md) and [latest handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md).
+
+The four workflow-reference repositories were rechecked on 2026-11-10; their default-branch HEADs still match the reviewed pins. No upstream code or skill text was copied. `main` is the sole active integration branch; historical branches are retained, not bulk-merged or deleted.
+
+**Readiness:** software-verified research prototype; independent Korean IPA and Ukrainian target acceptance remain open. See [acceptance gates](../research/ACCEPTANCE-GATES.md).
+
 ## Latest integration checkpoint — 2026-11-10
 
 **Default branch:** `main` at `920b6365539058b658348855c5daddc066558b15`.  
