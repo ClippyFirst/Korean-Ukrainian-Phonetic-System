@@ -315,7 +315,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     const genitiveParticleUi=!graphemeFallbackOn&&u.vowel==='ㅢ'&&NIKL_GENITIVE_UI_PARTICLE_FORMS.has(exactWordFormAt(originalUnits,i));
     const lexicalLongVowel=!graphemeFallbackOn&&NIKL_LEXICAL_LONG_VOWEL_FORMS.get(exactWordFormAt(originalUnits,i))===originalUnits[i]?.char;
     const contextualUi=!graphemeFallbackOn&&u.vowel==='ㅢ'&&u.onset!=='ㅇ'&&!u.__liaison;
-    const defaultUi=u.vowel==='ㅢ'&&u.onset==='ㅇ';
+    const defaultUi=!graphemeFallbackOn&&u.vowel==='ㅢ'&&u.onset==='ㅇ';
     const resyllabifiedUi=u.vowel==='ㅢ'&&Boolean(u.__liaison);
     const vowelJamo=contextualUi?'ㅣ':u.vowel;
     const onset=u.onset;
