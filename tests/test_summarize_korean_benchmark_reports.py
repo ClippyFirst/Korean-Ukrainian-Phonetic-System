@@ -102,6 +102,15 @@ class AggregateBenchmarkSummaryTests(unittest.TestCase):
         )
         self.assertIn("open-korean-benchmark-summary.json", workflow)
         self.assertIn("open-korean-benchmarks-work/prepared/source-sha256.txt", workflow)
+        self.assertIn(
+            "          # The aggregate summary contains the redacted manifest; never upload the raw per-row preparation manifest.\\n"
+            "          path: |",
+            workflow,
+        )
+        self.assertNotIn(
+            "            # The aggregate summary contains the redacted manifest",
+            workflow,
+        )
 
 
 if __name__ == "__main__":
