@@ -43,8 +43,8 @@ test('methodology reports the current three-mode benchmark, CI evidence, and evi
     'Strict 41,10%','Soft 37,60%',
     'Super-soft: 100%',
     '2,03%','1,50%','0,40%','0,30%',
-    'не встановлюють універсального переможця',
-    'не доводить лінгвістичну правильність',
+    'не дають одного універсального переможця',
+    'не доказ точності вимови',
     'METHODOLOGY-CLAIMS-AND-EVIDENCE-REGISTER-2026-10-30.md',
     'METHODOLOGY-DEBATE-REVIEW-2026-10-30.md'
   ]) {
