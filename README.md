@@ -7,7 +7,7 @@ A research-oriented Korean-to-Ukrainian pronunciation system. It analyzes Korean
 ## Current integration checkpoint — 2026-11-10
 
 **Default branch:** `main` — `920b6365539058b658348855c5daddc066558b15`.  
-**Active integration:** [PR #465](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/465), branch `benchmark/five-dataset-matrix-reconciled-2026-11-09`, current head `d71ef50fdef34c86ad864adc10a50ba45d722ecf`. No changes have been merged to `main`.
+**Active integration:** [PR #465](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/465), branch `benchmark/five-dataset-matrix-reconciled-2026-11-09`, based on `main`; no changes have been merged to `main`. The exact-head results below refer to verification snapshot `d71ef50f`; subsequent commits in this branch are documentation-only.
 
 **Exact-head verification on PR head `d71ef50f`:**
 - [Tests #42775887452](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42775887452) — **PASS** (Python 3.11/3.12/3.13, Browser, wheel install, teacher-corpus audit).
