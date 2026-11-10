@@ -21,9 +21,11 @@ on:
       - "scripts/prepare_korean_open_benchmarks.py"
       - "scripts/summarize_korean_benchmark_reports.py"
       - "scripts/run_open_korean_benchmark_ci.py"
+      - "scripts/build_full_korean_benchmark_summary.py"
       - "schemas/korean-benchmark-summary.schema.json"
       - "tests/test_korean_open_benchmarks.py"
       - "tests/test_summarize_korean_benchmark_reports.py"
+      - "tests/test_full_korean_benchmark_summary.py"
       - "src/korean_ukrainian/**"
       - "src/app/engine*.js"
       - "data/korean/**"
@@ -66,6 +68,8 @@ on:
       - "scripts/run_open_korean_benchmark_ci.py"
       - "tests/test_korean_open_benchmarks.py"
       - "tests/test_summarize_korean_benchmark_reports.py"
+      - "scripts/build_full_korean_benchmark_summary.py"
+      - "tests/test_full_korean_benchmark_summary.py"
       - "src/korean_ukrainian/**"
       - "data/korean/**"
       - "research/SOURCE-REGISTER.csv"
@@ -612,33 +616,19 @@ jobs:
             --sample-size 1000 \
             --seed 20261108
 
+      - name: Build one aggregate-only summary for all benchmark tracks
+        run: |
+          set -euo pipefail
+          python scripts/build_full_korean_benchmark_summary.py --runner-temp "$RUNNER_TEMP"
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: multi-engine-korean-ipa-diagnostic
-          # The aggregate summary contains the redacted manifest; never upload the raw per-row preparation manifest.
+          # Only the schema-validated aggregate summary and source checksums are public artifacts.
+          # Token-level labels, predictions, mismatch queues and reviewer packets remain in CI temp storage.
           path: |
-            ${{ runner.temp }}/multi-engine-ipa-report.json
-            ${{ runner.temp }}/kozak-kim-mismatch-fragments.csv
-            ${{ runner.temp }}/kozak-kim-unmapped-mismatch-review-queue.csv
-            ${{ runner.temp }}/kozak-kim-browser-ugtphon-report.json
-            ${{ runner.temp }}/kozak-kim-runtime-parity-report.json
-            ${{ runner.temp }}/kozak-kim-browser-ugtphon-soft-report.json
-            ${{ runner.temp }}/kozak-kim-browser-ugtphon-super-soft-report.json
-            ${{ runner.temp }}/multi-engine-ipa-stdout.json
-            ${{ runner.temp }}/phonemize-predictions.json
-            ${{ runner.temp }}/ko-LICENSE
-            ${{ runner.temp }}/sigmorphon-kor-test.tsv
-            ${{ runner.temp }}/sigmorphon-README.md
-            ${{ runner.temp }}/sigmorphon-multi-engine-ipa-report.json
-            ${{ runner.temp }}/kozak-kim-browser-sigmorphon-strict-report.json
-            ${{ runner.temp }}/kozak-kim-browser-sigmorphon-soft-report.json
-            ${{ runner.temp }}/kozak-kim-browser-sigmorphon-super-soft-report.json
-            ${{ runner.temp }}/sigmorphon-multi-engine-ipa-stdout.json
-            ${{ runner.temp }}/sigmorphon-phonemize-predictions.json
-            ${{ runner.temp }}/v3-training-readiness.json
-            ${{ runner.temp }}/ipa-holdout-review-packets/
-            ${{ runner.temp }}/open-korean-benchmark-summary.json
+            ${{ runner.temp }}/korean-benchmark-aggregate-summary.json
             ${{ runner.temp }}/open-korean-benchmarks-work/prepared/source-sha256.txt
           if-no-files-found: warn
           retention-days: 30
