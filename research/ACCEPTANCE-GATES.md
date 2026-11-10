@@ -1780,3 +1780,28 @@ Additional regression scope: the native Python and browser shared-Broad profiles
 Do not count portfolio membership as completed evaluation. The current target is two executable IPA corpora plus three independently useful, source-verified candidate datasets with explicit access gates. No raw restricted dataset is to be committed to the repository.
 
 **Mode requirement:** on every compatible dataset, Kozak Kim Strict, Soft, and Super-soft remain separate configurations. For surface-pronunciation corpora, score each mode's typed output only against a compatible representation; never relabel Hangul surface CER as IPA accuracy. Super-soft typed fallback coverage is not source-resolved IPA accuracy.
+
+
+## 2026-11-10 — five-dataset benchmark integration acceptance update
+
+PR #465 is merged into `main` (merge `e8ebed5b9ccb67255209ccb20efa45ae0236bcbe`). Exact PR-head verification passed: tests 42810042726, Verify 42810042823, master artifacts 42810042775, exhaustive register 42810043038, UGTPHON diagnostic 42810042906, and full matrix 42810042908.
+
+| Gate | State | Evidence / remaining criterion |
+|---|---|---|
+| UGTPHON + SIGMORPHON ten-engine Strict/Broad | DONE_VERIFIED | Included in six-track full matrix. |
+| Seoul phonemic IPA ten-engine sample | DONE_VERIFIED | Included in full matrix; phonemic reference is not narrow IPA. |
+| K-SPAN Modern + Conservative ten-engine tracks | DONE_VERIFIED | 1,000 occurrences each; 63,836-row source join and zero unmatched WordNums. |
+| IPA-Dict residual sample | DONE_VERIFIED | 1,000 occurrences; Wiktionary lineage shared with SIGMORPHON, not an independent holdout. |
+| Browser Strict/Soft/Super-soft | DONE_VERIFIED | Fifteen reports across five dataset tracks; Super-soft candidate availability 100%, not accuracy. |
+| Native/Browser parity | DONE_VERIFIED | Exact workflow step passed; scope remains the measured tested fixtures/dataset. |
+| Aggregate schema + redacted artifact | DONE_VERIFIED | Schema validation passed; artifact 13766007256 inspected, exactly two files and no row-level records. |
+| K-SPAN key/WorldBet equality | WARN | 22,843 differences remain (Modern 13,078; Conservative 9,765); no silent rewriting or dropping. |
+| Independent Korean IPA gold | BLOCKED | Requires qualified independent phonetic annotation/adjudication. |
+| Independent Ukrainian target gold | BLOCKED | Requires separate target-language review and accepted gold. |
+| Historical 236/239 membership / raw ㅠ offsets | BLOCKED / PARTIAL | Original selector/run metadata and raw offset evidence absent. |
+| KsponSpeech / NIKL Daily Conversation | BLOCKED | Authorized acquisition and exact corpus terms required. |
+| ByT5 / CharsiuG2P inference | DEFERRED | Explicit opt-in and model/data rights/overlap review; optional to deterministic matrix. |
+| Final post-merge main CI | TODO / PENDING | Must pass after final docs update; PR-head PASS is not a substitute. |
+| Legacy artifact cleanup | BLOCKED | Older artifacts remain until expiry/manual owner action; connector cannot delete them. |
+
+The benchmark integration is software-verified, not independent linguistic certification and not release approval. Overall readiness remains a research prototype.
