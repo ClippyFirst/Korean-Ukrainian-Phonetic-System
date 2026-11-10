@@ -62,3 +62,14 @@ Key text combinations are checked against WCAG AA contrast for normal text: navy
 - Existing markup IDs and JavaScript hooks are product interfaces: do not rename or remove them during visual work.
 - No conversion-engine, linguistic, benchmark, data, or runtime-dependency changes are part of this visual system.
 - Avoid generic SaaS card grids, gradient washes, glass effects, excessive rounding, arbitrary illustration, random Korean glyphs and culturally loaded emblems.
+
+## Contemporary practice references
+
+The project-specific visual grammar also responds to current Seoul-based design practice:
+
+- [Studio Hooyounghoo](https://hooyounghoo.com/studio-hooyounghoo-1) works across album packaging, identity and exhibition graphics, treating a visual identity as a system that can extend beyond a single logo.
+- [fabric](https://studiofabric.kr/) describes its work through colour, typography and materiality across print, web, exhibitions, signage and objects. This supports designing the service and methodology as one coherent system rather than two separately themed pages.
+- [YMG Type Foundry](https://yoonmingoo.tf/about) develops multiscript type design across Hangul and Latin. This informs the decision to let Hangul, IPA and Ukrainian text keep distinct but balanced typographic roles.
+- [studio fnt](https://www.commarts.com/features/studio-fnt) is a longer-running Seoul graphic-design reference noted for geometric form, restrained colour and confident Hangul typography. It is a precedent for clarity and typographic presence, not a template to imitate.
+
+These are references to working practices and visual systems, not claims about a universal contemporary Korean aesthetic.
