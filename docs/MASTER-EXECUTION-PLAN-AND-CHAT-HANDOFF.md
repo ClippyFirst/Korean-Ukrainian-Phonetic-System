@@ -14,7 +14,7 @@
 - External UGTPHON diagnostic [42778967047](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967047): **PASS**.
 - Exhaustive test-case register extraction [42778967366](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967366): **PASS**.
 - Official NIKL inventory: **SKIPPED** (metadata-only/policy gate; not a pass).
-- Full multi-engine matrix [42778967197](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967197): **IN PROGRESS** at `Run multi-engine comparison`. ByT5 and CharsiuG2P jobs were skipped by workflow conditions; they are not benchmark passes.
+- Full multi-engine matrix [42778967197](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42778967197): **IN PROGRESS**; UGTPHON 10-engine comparison, mismatch-ledger export, Browser same-occurrence run, Strict/Soft/Super-soft availability check and Native/Browser parity all **PASS**. The SIGMORPHON 10-engine comparison is now running. ByT5 and CharsiuG2P jobs were skipped by workflow conditions; they are not benchmark passes.
 
 ### K-SPAN data-quality status
 
