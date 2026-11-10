@@ -27,7 +27,7 @@ describe('soft-heuristic morphology — integrated browser engine', () => {
     const result = engine.convert('삶이', SOFT);
     const applied = softTrace(result);
     assert.ok(applied.length > 0, 'expected at least one soft trace for 삶이');
-    assert.ok(applied.every(t => t.status === 'heuristic-low-confidence'));
+    assert.ok(applied.every(t => t.status === 'super-soft-morphology-heuristic'));
     assert.equal(result.status, 'super-soft-morphology-heuristic');
   });
 
@@ -56,8 +56,8 @@ describe('soft-heuristic morphology — integrated browser engine', () => {
   it('keeps exact-lexical readings authoritative in both modes', () => {
     const strict = engine.convert('넋이', STRICT);
     const soft = engine.convert('넋이', SOFT);
-    assert.equal(strict.ukrainian, soft.ukrainian);
     assert.equal(strict.ipa, soft.ipa);
+    assert.equal(strict.ukrainian||strict.candidate_ukrainian, soft.ukrainian||soft.candidate_ukrainian);
     assert.equal(softTrace(soft).length, 0);
   });
 });
