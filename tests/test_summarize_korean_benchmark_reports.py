@@ -53,6 +53,7 @@ class AggregateBenchmarkSummaryTests(unittest.TestCase):
                 "split": "test",
                 "morphology_mode": "strict",
                 "ipa_profile": "test-profile",
+                "ipa_profile_version": 1,
                 "eligible_tokens": 10,
                 "scored_tokens": 9,
                 "coverage_rate": 0.9,
@@ -80,6 +81,7 @@ class AggregateBenchmarkSummaryTests(unittest.TestCase):
             self.assertNotIn('"gold": "ka"', rendered)
             self.assertEqual(result["multi_engine_tracks"][0]["engines"]["clippyfirst_native"]["scored_tokens"], 9)
             self.assertEqual(result["browser_mode_tracks"][0]["morphology_mode"], "strict")
+            self.assertEqual(result["browser_mode_tracks"][0]["ipa_profile_version"], "1")
             self.assertEqual(result["manifest"]["kspan"]["key_worldbet_integrity_status"], "WARN")
             self.assertEqual(result["manifest"]["kspan"]["key_worldbet_integrity_mismatches"], 2)
             self.assertNotIn("key_worldbet_integrity_examples", result["manifest"]["kspan"])

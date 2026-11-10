@@ -77,11 +77,16 @@ def _browser(path: Path, track: str) -> dict[str, Any]:
         "target_unavailable_tokens", "target_provisional_tokens", "engine_errors",
         "notes",
     )
-    return {
+    result = {
         "track": track,
         "type": "clippyfirst-browser-runtime-mode",
         **{key: report.get(key) for key in keys},
     }
+    # Browser reports may encode a numeric profile version (e.g. 1), while
+    # the aggregate contract exposes versions as strings for stable display.
+    if result["ipa_profile_version"] is not None:
+        result["ipa_profile_version"] = str(result["ipa_profile_version"])
+    return result
 
 
 def summarize(
