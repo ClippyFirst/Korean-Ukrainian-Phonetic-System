@@ -16,7 +16,7 @@ The five-dataset benchmark implementation is integrated. Exact-head CI passed on
 
 **Readiness:** software-verified research prototype and benchmark infrastructure, not release-ready or independently research-certified. Independent Korean IPA gold, Ukrainian target review, historical 236/239 provenance, raw `ㅠ` offsets and restricted corpus terms remain separate gates.
 
-## Latest integration checkpoint — 2026-11-10
+## Historical integration checkpoint — superseded by the verified 2026-11-10 integration above
 
 **Default branch:** `main` at `920b6365539058b658348855c5daddc066558b15`.  
 **Integration under review:** [PR #465](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/465), branch `benchmark/five-dataset-matrix-reconciled-2026-11-09`, exact head `840cb3f177e147dfe1ae53e7bdd26d524b699b64`.  
