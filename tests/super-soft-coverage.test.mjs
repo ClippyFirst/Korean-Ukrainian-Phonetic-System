@@ -206,6 +206,7 @@ test('service exposes the opt-in control only inside research mode and labels it
   assert.match(html,/Контекстні фонологічні та морфологічні правила навмисно не вгадуються/u);
   assert.match(main,/superSoftToggle&&superSoftToggle\.checked\?'super-soft'/u);
   assert.match(main,/super-soft-low-confidence/u);
+  assert.match(html,/М’який режим · ширші евристики, низька впевненість/u);
   assert.match(main,/покриття складів Hangul/u);
   assert.match(main,/r\.coverage\.input_covered/u);
   assert.match(main,/superSoftToggle\.checked&&softToggle/u);
