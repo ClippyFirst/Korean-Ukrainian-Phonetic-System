@@ -130,18 +130,19 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
         :pronunciationStatuses.includes('resolved')?'resolved':'not_applicable';
       const hasCandidate=results.some(r=>r.candidate_ukrainian);
       const hasProvisionalTarget=results.some(r=>r.target_status==='provisional'||r.status==='lexical-review');
-      const hasSuperSoftFallback=results.some(r=>['super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(r.status)||(r.trace||[]).some(item=>['super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(item.status)));
-      const superSoftCandidateOnly=superSoftOn&&(hasProvisionalTarget||hasSuperSoftFallback);
+      const hasSuperSoftFallback=results.some(r=>['super-soft-grapheme-fallback','super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(r.status)||(r.trace||[]).some(item=>['super-soft-grapheme-fallback','super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(item.status)));
+      const coverageModeOn=superSoftOn||graphemeFallbackOn;
+      const superSoftCandidateOnly=coverageModeOn&&(hasProvisionalTarget||hasSuperSoftFallback);
       const candidateParts=results.map((r,index)=>{
         const value=r.candidate_ukrainian??r.ukrainian??'';
         // In Super-soft mode, retain standalone jamo and non-Korean literals
         // even when another component forces the whole phrase into candidate mode.
-        return superSoftOn&&!/[가-힣]/u.test(parts[index])&&!value?parts[index]:value;
+        return coverageModeOn&&!/[가-힣]/u.test(parts[index])&&!value?parts[index]:value;
       });
       const candidateText=hasCandidate||superSoftCandidateOnly?candidateParts.join(''):null;
       const renderedParts=results.map((r,index)=>{
         const value=r.ukrainian??'';
-        return superSoftOn&&!/[가-힣]/u.test(parts[index])&&!value?parts[index]:value;
+        return coverageModeOn&&!/[가-힣]/u.test(parts[index])&&!value?parts[index]:value;
       });
       if(superSoftOn&&hasProvisionalTarget){
         for(const result of results){
@@ -156,9 +157,9 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       }
       return{
         source:text,
-        ipa_profile:useSharedBroadIpaProfile?'clippyfirst-korean-broad-v1':superSoftOn?'browser-super-soft-maximum-coverage-v1':options.surfaceMode?'browser-surface-mode-legacy-v1':'browser-legacy-contextual-v1',
+        ipa_profile:useSharedBroadIpaProfile?'clippyfirst-korean-broad-v1':graphemeFallbackOn?'browser-super-soft-grapheme-ipa-v1':superSoftOn?'browser-soft-maximum-coverage-v1':options.surfaceMode?'browser-surface-mode-legacy-v1':'browser-legacy-contextual-v1',
         ipa_profile_version:1,
-        ipa_profile_level:useSharedBroadIpaProfile?'broad':superSoftOn?'orthographic-fallback-enabled':options.surfaceMode?'surface-mode':'surface-contextual',
+        ipa_profile_level:useSharedBroadIpaProfile?'broad':graphemeFallbackOn?'underlying-grapheme-ipa':superSoftOn?'heuristic-maximum-coverage':options.surfaceMode?'surface-mode':'surface-contextual',
         ipa_profile_status:'unadjudicated-cross-runtime',
         surfaceHangul:results.map(r=>r.surfaceHangul||'').join(''),
         // A phrase with any provisional target has no complete accepted
@@ -179,9 +180,9 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
         target_status:pronunciation_status==='unresolved'||pronunciation_status==='partial'||results.some(r=>r.target_status==='unavailable')?'unavailable':results.some(r=>r.target_status==='provisional'||r.status==='lexical-review')?'provisional':results.some(r=>r.target_status==='model-selected')?'model-selected':null,
         pronunciation_status,
         candidate_ukrainian:hasCandidate||superSoftCandidateOnly?candidateText:null,
-        status:superSoftOn?(results.some(r=>r.status==='super-soft-orthographic-fallback'||(r.trace||[]).some(item=>item.status==='super-soft-orthographic-fallback'))?'super-soft-orthographic-fallback':hasSuperSoftFallback?'super-soft-heuristic-coverage':results.some(r=>r.status==='unresolved')?'unresolved':'super-soft-maximum-coverage'):issues.length?'unresolved':results.some(r=>r.status==='lexical-review')?'lexical-review':results.some(r=>r.status==='lexical')?'lexical':results.some(r=>r.status==='practical-transliteration')?'practical-transliteration':results.some(r=>r.status==='heuristic-low-confidence')?'heuristic-low-confidence':results.some(r=>r.status==='contextual')?'contextual':'canonical',
-        phonetic_result_type:hasSuperSoftFallback?(results.some(r=>r.status==='super-soft-orthographic-fallback'||(r.trace||[]).some(item=>item.status==='super-soft-orthographic-fallback'))?'mixed-surface-ipa-and-orthographic-fallback':'mixed-surface-ipa-and-heuristic'):'surface-ipa',
-        candidate_status:hasSuperSoftFallback?'super-soft-low-confidence':superSoftOn&&hasProvisionalTarget?'provisional':hasCandidate?'provisional':null
+        status:graphemeFallbackOn?'super-soft-grapheme-fallback':superSoftOn?(results.some(r=>r.status==='super-soft-orthographic-fallback'||(r.trace||[]).some(item=>item.status==='super-soft-orthographic-fallback'))?'super-soft-orthographic-fallback':hasSuperSoftFallback?'super-soft-heuristic-coverage':results.some(r=>r.status==='unresolved')?'unresolved':'super-soft-maximum-coverage'):issues.length?'unresolved':results.some(r=>r.status==='lexical-review')?'lexical-review':results.some(r=>r.status==='lexical')?'lexical':results.some(r=>r.status==='practical-transliteration')?'practical-transliteration':results.some(r=>r.status==='heuristic-low-confidence')?'heuristic-low-confidence':results.some(r=>r.status==='contextual')?'contextual':'canonical',
+        phonetic_result_type:graphemeFallbackOn?'orthographic-phonemic-ipa-fallback':hasSuperSoftFallback?(results.some(r=>r.status==='super-soft-orthographic-fallback'||(r.trace||[]).some(item=>item.status==='super-soft-orthographic-fallback'))?'mixed-surface-ipa-and-orthographic-fallback':'mixed-surface-ipa-and-heuristic'):'surface-ipa',
+        candidate_status:hasSuperSoftFallback?'super-soft-low-confidence':coverageModeOn&&hasProvisionalTarget?'provisional':hasCandidate?'provisional':null
       };
     }
   }
@@ -311,9 +312,9 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     }
 
     const prev=prevHangul(units,i);
-    const genitiveParticleUi=u.vowel==='ㅢ'&&NIKL_GENITIVE_UI_PARTICLE_FORMS.has(exactWordFormAt(originalUnits,i));
+    const genitiveParticleUi=!graphemeFallbackOn&&u.vowel==='ㅢ'&&NIKL_GENITIVE_UI_PARTICLE_FORMS.has(exactWordFormAt(originalUnits,i));
     const lexicalLongVowel=NIKL_LEXICAL_LONG_VOWEL_FORMS.get(exactWordFormAt(originalUnits,i))===originalUnits[i]?.char;
-    const contextualUi=u.vowel==='ㅢ'&&u.onset!=='ㅇ'&&!u.__liaison;
+    const contextualUi=!graphemeFallbackOn&&u.vowel==='ㅢ'&&u.onset!=='ㅇ'&&!u.__liaison;
     const defaultUi=u.vowel==='ㅢ'&&u.onset==='ㅇ';
     const resyllabifiedUi=u.vowel==='ㅢ'&&Boolean(u.__liaison);
     const vowelJamo=contextualUi?'ㅣ':u.vowel;
@@ -322,7 +323,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     // absorbed after palatal affricates ㅈ/ㅉ/ㅊ in surface pronunciation.
     // The Python IPA adapter already applies this broad-profile rule; keep the
     // browser runtime in parity. Phonemic /jʌ/ remains a distinct representation.
-    const palatalYeo=u.vowel==='ㅕ'&&['ㅈ','ㅉ','ㅊ'].includes(onset);
+    const palatalYeo=!graphemeFallbackOn&&u.vowel==='ㅕ'&&['ㅈ','ㅉ','ㅊ'].includes(onset);
     let status=graphemeFallbackOn?'super-soft-grapheme-fallback':u.__superSoftFallback?'super-soft-orthographic-fallback':superSoftOn&&u.__practicalHeuristic?'super-soft-practical-heuristic':superSoftOn&&u.__softHeuristic?'super-soft-morphology-heuristic':u.__practicalHeuristic?'practical-transliteration':u.__softHeuristic?'heuristic-low-confidence':(applied.length||contextualUi||defaultUi||genitiveParticleUi||palatalYeo?'contextual':'canonical');
     const previousCoda=prev?.__effectiveCoda??prev?.coda??'';
     const liaisonOnset=Boolean(u.__liaison);
