@@ -68,8 +68,8 @@ test('Korean editorial tokens and restrained interaction are present',()=>{
 test('keeps the user-facing romanization label in Ukrainian',()=>{
   const service=read('index.html');
   const methodology=read('system.html');
-  assert.match(service,/Романізація \\(RR\\)/u);
+  assert.match(service,/Романізація \(RR\)/u);
   assert.doesNotMatch(service,/Revised Romanization/u);
-  assert.match(methodology,/Переглянута романізація \\(RR\\)/u);
+  assert.match(methodology,/Переглянута романізація \(RR\)/u);
   assert.doesNotMatch(methodology,/Revised Romanization/u);
 });
