@@ -56,6 +56,20 @@ try {
 
       const file = `${outputDir}/${pageName.replace('.html','')}-${viewport.name}.png`;
       await page.screenshot({path:file,fullPage:true,animations:'disabled'});
+      await page.keyboard.press('Tab');
+      const focusStyle = await page.evaluate(() => {
+        const style=getComputedStyle(document.activeElement);
+        return {outlineStyle:style.outlineStyle,outlineWidth:parseFloat(style.outlineWidth),outlineColor:style.outlineColor};
+      });
+      if (focusStyle.outlineStyle === 'none' || focusStyle.outlineWidth < 2 || focusStyle.outlineColor !== 'rgb(36, 72, 216)') {
+        failures.push(`${pageName} at ${viewport.name}: keyboard focus is not visibly marked in cobalt: ${JSON.stringify(focusStyle)}`);
+      }
+      await page.emulateMedia({reducedMotion:'reduce'});
+      const reducedMotion = await page.evaluate(() => {
+        const value=getComputedStyle(document.querySelector('.button')).transitionDuration;
+        return value.split(',').every(part => parseFloat(part) <= 0.00002);
+      });
+      if (!reducedMotion) failures.push(`${pageName} at ${viewport.name}: reduced-motion preference does not suppress control transitions`);
       const prefix = `${pageName} at ${viewport.name} (${viewport.width}×${viewport.height})`;
       if (metrics.documentWidth > metrics.viewportWidth + 1 || metrics.bodyWidth > metrics.viewportWidth + 1) {
         failures.push(`${prefix}: horizontal overflow document=${metrics.documentWidth}, body=${metrics.bodyWidth}`);
