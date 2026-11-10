@@ -1,5 +1,21 @@
 # Korean–Ukrainian Phonetic System
 
+## Latest verified integration — 2026-11-10
+
+**Default branch:** `main`. **Merged PR:** [#465](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/465). **Merge commit:** `e8ebed5b9ccb67255209ccb20efa45ae0236bcbe`. **PR head tested:** `18bafbe9d998f7fe818c9b65ec84d3b5098d6dfa`.
+
+The five-dataset benchmark implementation is integrated. Exact-head CI passed on PR #465: [tests](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042726), [System Verify](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042823), [master/research artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042775), [exhaustive register](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810043038), [UGTPHON diagnostic](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042906), and [full matrix](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042908). Post-merge/final-documentation exact-main CI is still a separate verification step.
+
+- Six ten-engine tracks: UGTPHON, SIGMORPHON, Seoul phonemic IPA, K-SPAN Modern, K-SPAN Conservative and IPA-Dict.
+- Fifteen Browser Strict/Soft/Super-soft reports across five datasets.
+- K-SPAN retains all 63,836 rows and has zero unmatched WordNums; its 22,843 key/WorldBet differences remain **WARN** (Modern 13,078; Conservative 9,765).
+- Browser engine errors: zero. One external `g2p-ko` error on IPA-Dict is recorded (999/1,000 scored).
+- Super-soft candidate availability is 100% on the five Browser-tested dataset tracks; this is not source-resolved IPA accuracy.
+- Aggregate artifact [13766007256](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042908) was inspected: exactly the aggregate JSON and source SHA-256 file; no token-level examples or IPA labels. Schema validation passed in the summary-builder step.
+- Optional ByT5/CharsiuG2P inference was **SKIPPED**, not passed. Legacy artifacts remain until expiry/manual cleanup; see [artifact policy](docs/BENCHMARK-ARTIFACT-POLICY.md).
+
+**Readiness:** software-verified research prototype and benchmark infrastructure, not release-ready or independently research-certified. Independent Korean IPA gold, Ukrainian target review, historical 236/239 provenance, raw `ㅠ` offsets and restricted corpus terms remain separate gates.
+
 ## Latest integration checkpoint — 2026-11-10
 
 **Default branch:** `main` at `920b6365539058b658348855c5daddc066558b15`.  
