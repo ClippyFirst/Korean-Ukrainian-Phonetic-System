@@ -317,7 +317,7 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
 .mini-button { min-height: 35px; padding: 6px 10px; background: #f0eee7; font-size: .76rem; }
 .mini-button:hover,.button-secondary:hover { border-color: var(--ink-navy); background: #e8e6dd; }
 .button:hover { transform: translateY(-1px); }
-.button:active { transform: scale(.98); }
+.button:active:not(:focus-visible) { transform: scale(.98); }
 .button-primary {
   border-color: var(--cobalt);
   background: var(--cobalt);
@@ -348,7 +348,7 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
 .mode-disclosure summary { padding: 10px 0; color: var(--ink-navy); }
 .mode-disclosure .practical-mode-hint { padding: 0 0 12px; }
 .research-options {
-  border-left: 2px solid var(--cobalt);
+  border-left: 1px solid var(--cobalt);
   background: #eef0fa;
 }
 .soft-morphology-toggle { color: var(--ink-navy); }
@@ -730,7 +730,7 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
 /* Long-form teaching tables and diagnostic notices share the same material language. */
 .callout.red,.doc-content .callout.red {
   border: 0;
-  border-left: 2px solid var(--danger);
+  border-left: 1px solid var(--danger);
   border-radius: 0;
   background: #f7e9ed;
   color: var(--ink-navy);
@@ -765,7 +765,7 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
 .vowel-grid small { color: var(--muted); }
  .spelling-suggestions {
   border: 1px solid var(--seam);
-  border-left: 2px solid var(--warning);
+  border-left: 1px solid var(--warning);
   border-radius: 3px;
   background: #f8f3e8;
 }
