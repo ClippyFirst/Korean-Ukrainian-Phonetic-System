@@ -777,3 +777,17 @@ a:hover { color: var(--vermilion); text-decoration-thickness: 2px; }
 .spelling-suggestion { border-top-color: var(--seam); }
 .spelling-suggestion-sources a { color: var(--ink-navy); }
 .skip-link { background: var(--ink-navy); color: var(--hanji); }
+
+/* Keep labels editorial and readable rather than default all-caps chrome. */
+.specimen-label,.doc-content > .section-kicker,.methodology-toc .section-kicker,.mode-legend {
+  text-transform: none;
+  letter-spacing: .025em;
+}
+.callout strong { text-transform: none; letter-spacing: 0; }
+.decision-table {
+  display: grid;
+  border: 1px solid var(--seam);
+  border-radius: 0;
+  overflow: hidden;
+  background: var(--warm-white);
+}
