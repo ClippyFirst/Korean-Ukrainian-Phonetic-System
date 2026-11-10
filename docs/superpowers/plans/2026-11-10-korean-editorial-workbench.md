@@ -10,7 +10,7 @@ Branch: `design/korean-editorial-workbench-2026-11-10`
 
 ## Task 2 — redesign the service surface
 - Update `index.html` masthead, hero copy/specimen and structural landmarks without changing IDs consumed by `src/main.js` or any controls.
-- Replace the current generic hero/card palette with a compact, asymmetric jogakbo-inspired workbench system in `src/styles/main.css`.
+- Replace the current generic hero/card palette with a compact, asymmetric jogakbo-inspired workbench system in the dedicated `src/styles/editorial.css` theme.
 - Preserve the source input, all buttons, mode radios/toggles, output panel IDs, copy buttons, candidate switch, trace details and footer links.
 
 ## Task 3 — redesign the methodology surface
@@ -21,7 +21,7 @@ Branch: `design/korean-editorial-workbench-2026-11-10`
 - Run `npm test`, `npm run audit:source-rights`, and `npm run build` through exact-head GitHub Actions because the current environment cannot resolve github.com for a local clone.
 - Inspect the rendered Pages deployment and browser smoke evidence; do not claim visual QA without screenshots or equivalent browser evidence.
 - Update the existing master handoff / audit in place with branch, base/head, scope, exact CI evidence and any remaining visual QA limitation.
-- Open a PR; do not merge or publish independently.
+- Merge only after exact-head CI and rendered desktop/mobile review; verify the public Pages deployment and smoke test. Do not publish a release.
 
 ## Review focus
 - Does the design look Korean-modern without relying on clichés or random Hangul decoration?
