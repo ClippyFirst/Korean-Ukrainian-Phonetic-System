@@ -21,8 +21,8 @@ test('service and methodology share the Korean editorial visual identity',()=>{
     assert.match(html,/data-visual-system="jogakbo"/u);
     assert.match(html,/class="brand-mark"[^>]*>한</u);
     assert.match(html,/class="specimen-grid"/u);
-    const grid=html.match(/<div class="specimen-grid"[^>]*>([\s\S]*?)<\/div>/u)?.[1]??"";
-    assert.equal((grid.match(/class="specimen-tile/g)??[]).length,3,"the specimen uses three deliberately unequal panels");
+    const specimen=html.slice(html.indexOf('<div class="specimen-grid"'),html.indexOf('</aside>'));
+    assert.equal((specimen.match(/class="specimen-tile/g)??[]).length,3,"the specimen uses three deliberately unequal panels");
     assert.doesNotMatch(html,/class="taegeuk"/u);
   }
 });
