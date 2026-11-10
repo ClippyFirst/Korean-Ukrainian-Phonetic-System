@@ -28,7 +28,7 @@ describe('soft-heuristic morphology — integrated browser engine', () => {
     const applied = softTrace(result);
     assert.ok(applied.length > 0, 'expected at least one soft trace for 삶이');
     assert.ok(applied.every(t => t.status === 'super-soft-morphology-heuristic'));
-    assert.equal(result.status, 'super-soft-morphology-heuristic');
+    assert.equal(result.status, 'super-soft-heuristic-coverage');
   });
 
   it('does not create a soft license across whitespace', () => {
