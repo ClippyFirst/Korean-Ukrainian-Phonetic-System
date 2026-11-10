@@ -21,4 +21,4 @@ Scope: replace the site's generic visual system with a Korean editorial workbenc
 
 ## Environment note
 
-The current execution environment cannot resolve github.com for a local clone, so local npm/Playwright and the unlazy gate-check binary cannot be run here. Use exact-head GitHub Actions as the executable test oracle and the live rendered Pages screenshots as the visual-review oracle. Do not record local test execution.
+The current execution environment cannot resolve github.com for a local clone, so local npm/Playwright and the unlazy gate-check binary cannot be run here. Use exact-head GitHub Actions as the executable test oracle and the rendered production-preview screenshots captured in CI as the visual-review oracle. Do not record local test execution.
