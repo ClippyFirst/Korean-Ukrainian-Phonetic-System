@@ -106,3 +106,17 @@ The target repository already has an IPA-first contract, evidence/source registe
 - [Superpowers README](https://github.com/obra/superpowers/blob/22f0b463e7a5e579904dd6211a520321035526f7/README.md) · [skills](https://github.com/obra/superpowers/tree/22f0b463e7a5e579904dd6211a520321035526f7/skills)
 - [Matt Pocock skills README](https://github.com/mattpocock/skills/blob/4ae2317ddb22b046e26455e4f9c9b3aaaf62212d/README.md) · [engineering skills](https://github.com/mattpocock/skills/tree/4ae2317ddb22b046e26455e4f9c9b3aaaf62212d/skills/engineering)
 - [Ponytail README](https://github.com/DietrichGebert/ponytail/blob/96608e078b2d5ea607c5c3b8b5a54d1c1fba6846/README.md) · [tests](https://github.com/DietrichGebert/ponytail/tree/96608e078b2d5ea607c5c3b8b5a54d1c1fba6846/tests)
+
+
+## Upstream revision recheck — 2026-11-10
+
+The four supplied repositories were rechecked through their latest commit metadata on 2026-11-10. Their current default-branch HEADs still equal the reviewed revisions:
+
+| Repository | Branch | Verified HEAD |
+|---|---|---|
+| [Leonxlnx/unlazy](https://github.com/Leonxlnx/unlazy) | main | `16671491f6679ad9378f52604d3bc2415b4120c7` |
+| [obra/superpowers](https://github.com/obra/superpowers) | main | `22f0b463e7a5e579904dd6211a520321035526f7` |
+| [mattpocock/skills](https://github.com/mattpocock/skills) | main | `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d` |
+| [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) | main | `96608e078b2d5ea607c5c3b8b5a54d1c1fba6846` |
+
+No upstream code, skill text, hooks, plugins, artwork or benchmark data was copied. The existing adoption boundaries remain appropriate. This confirms revision identity only; it is not a new security audit or independent reproduction of upstream claims.
