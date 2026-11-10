@@ -809,3 +809,21 @@ input,textarea { caret-color: var(--vermilion); }
   .empty-glyph { font-size: 3rem; }
   .doc-content h2 { font-size: 1.55rem; }
 }
+
+/* Touch-first controls: keep the workbench comfortable on phones and tablets. */
+@media (pointer: coarse) {
+  .site-nav a,
+  .mini-button,
+  .button,
+  .copy-button,
+  .ua-output-option,
+  .mode-disclosure summary,
+  .trace-summary {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .mode-option,
+  .soft-morphology-toggle {
+    min-height: 44px;
+  }
+}
