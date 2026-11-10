@@ -316,7 +316,9 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
 }
 .mini-button { min-height: 35px; padding: 6px 10px; background: #f0eee7; font-size: .76rem; }
 .mini-button:hover,.button-secondary:hover { border-color: var(--ink-navy); background: #e8e6dd; }
-.button:hover { transform: translateY(-1px); }
+@media (hover: hover) and (pointer: fine) {
+  .button:hover { transform: translateY(-1px); }
+}
 .button:active:not(:focus-visible) { transform: scale(.98); }
 .button-primary {
   border-color: var(--cobalt);
