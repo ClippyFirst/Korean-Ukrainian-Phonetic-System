@@ -88,10 +88,6 @@ class AggregateBenchmarkSummaryTests(unittest.TestCase):
             self.assertNotIn("1:modern:key=o:e!=E", rendered)
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
     def test_workflow_artifact_excludes_row_level_kspan_manifest_examples(self):
         workflow = (
             Path(__file__).resolve().parents[1]
@@ -106,3 +102,7 @@ if __name__ == "__main__":
         )
         self.assertIn("open-korean-benchmark-summary.json", workflow)
         self.assertIn("open-korean-benchmarks-work/prepared/source-sha256.txt", workflow)
+
+
+if __name__ == "__main__":
+    unittest.main()
