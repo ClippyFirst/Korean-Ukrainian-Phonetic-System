@@ -21,6 +21,12 @@
 
 **Readiness:** software-verified, evidence-scoped research prototype; not release-ready or independently research-certified.
 
+### Historical integration evidence (retained)
+
+- Audited main baseline before PR #464: `45a02a62ce955c3db10eb0faaaa1ce8d9f2c9cdb`.
+- Superseded PR #463 benchmark head: `167c12a7e9945dc757a57ea734e9745aa69032f3`; its failed exact-head matrix evidence is [run 42665749678](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42665749678).
+- Documentation PR #464 merged into main as `d2699911dbc70ef9978e5af06643b1281725a71a`; separate post-merge main verification passed on `5c12f92c36ecae455dc4281dd7a8c0217f5dc4dc`, including Tests [42679091769](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42679091769) and Pages live smoke [42679091977](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42679091977).
+
 ## Navigation by reader task
 
 | If you need to… | Start here |
