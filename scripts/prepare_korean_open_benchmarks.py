@@ -12,6 +12,8 @@ import argparse
 import csv
 import hashlib
 import json
+from collections import Counter
+from difflib import SequenceMatcher
 import random
 import re
 import zipfile
@@ -60,7 +62,7 @@ def key_to_worldbet(value: str) -> str:
     return "".join(KEY_TO_WORLDBET[ch] for ch in value)
 
 
-def worldbet_to_ipa(value: str) -> str:
+def worldbet_tokens(value: str) -> list[str]:
     value = "".join(str(value or "").split())
     out: list[str] = []
     index = 0
@@ -68,10 +70,27 @@ def worldbet_to_ipa(value: str) -> str:
         match = next((key for key in _WORLDBET_KEYS if value.startswith(key, index)), None)
         if match is None:
             raise ValueError(f"unmapped K-SPAN Worldbet sequence at offset {index}: {value[index:index+8]!r}")
-        segment = WORLDBET_TO_IPA[match]
+        out.append(match)
         index += len(match)
-        out.append(segment)
-    return "".join(out)
+    return out
+
+
+def worldbet_to_ipa(value: str) -> str:
+    return "".join(WORLDBET_TO_IPA[token] for token in worldbet_tokens(value))
+
+
+def _worldbet_mismatch_signatures(key_worldbet: str, declared_worldbet: str) -> list[str]:
+    key_tokens = worldbet_tokens(key_worldbet)
+    declared_tokens = worldbet_tokens(declared_worldbet)
+    signatures: list[str] = []
+    matcher = SequenceMatcher(a=key_tokens, b=declared_tokens, autojunk=False)
+    for operation, a_start, a_end, b_start, b_end in matcher.get_opcodes():
+        if operation == "equal":
+            continue
+        left = "+".join(key_tokens[a_start:a_end]) or "∅"
+        right = "+".join(declared_tokens[b_start:b_end]) or "∅"
+        signatures.append(f"{left}>{right}")
+    return signatures
 
 
 def key_to_ipa(value: str) -> str:
@@ -182,6 +201,9 @@ def _load_kspan(path: Path, nikl_zip: Path, expected_rows: int | None = 63836) -
     conservative: list[dict[str, Any]] = []
     unmatched_word_numbers: list[int] = []
     key_worldbet_mismatch_counts_by_track: dict[str, int] = {"modern": 0, "conservative": 0}
+    key_worldbet_mismatch_symbols_by_track: dict[str, Counter[str]] = {
+        "modern": Counter(), "conservative": Counter()
+    }
     key_worldbet_mismatches: list[str] = []
     non_hangul = 0
     for source_row in source_rows:
@@ -202,6 +224,8 @@ def _load_kspan(path: Path, nikl_zip: Path, expected_rows: int | None = 63836) -
             key_matches_worldbet = key_worldbet == declared_worldbet
             if not key_matches_worldbet:
                 key_worldbet_mismatch_counts_by_track[track] += 1
+                for signature in _worldbet_mismatch_signatures(key_worldbet, declared_worldbet):
+                    key_worldbet_mismatch_symbols_by_track[track][signature] += 1
                 key_worldbet_mismatches.append(
                     f"{word_num}:{track}:key={source_row[key_field]!r}:"
                     f"{key_worldbet}!={declared_worldbet}"
@@ -246,6 +270,10 @@ def _load_kspan(path: Path, nikl_zip: Path, expected_rows: int | None = 63836) -
         "key_worldbet_integrity_status": "PASS" if not key_worldbet_mismatches else "WARN",
         "key_worldbet_integrity_mismatches": len(key_worldbet_mismatches),
         "key_worldbet_integrity_mismatches_by_track": key_worldbet_mismatch_counts_by_track,
+        "key_worldbet_mismatch_symbols_by_track": {
+            track: dict(sorted(counts.items(), key=lambda item: (-item[1], item[0]))[:20])
+            for track, counts in key_worldbet_mismatch_symbols_by_track.items()
+        },
         "key_worldbet_integrity_examples": key_worldbet_mismatches[:10],
         "reference_fields": {"modern": "ModernPhon", "conservative": "ConservativePhon"},
         "ipa_source_policy": "Convert source WorldBet fields directly; key fields are an independent cross-check and never override source labels.",
