@@ -3,19 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Введіть корейський текст і перегляньте його вимову та український запис.">
+  <meta name="description" content="Корейська вимова українськими літерами: фонетичний запис, IPA та поскладовий аналіз.">
+  <meta name="theme-color" content="#f3f0e8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'none'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; frame-ancestors 'none';">
   <title>한국어 / УКРАЇНСЬКА</title>
-  <link rel="stylesheet" href="./src/styles/main.css?v=20261030-design-polish">
+  <link rel="stylesheet" href="./src/styles/main.css?v=20261110-jogakbo-editorial">
   <link rel="stylesheet" href="./src/styles/spelling-suggestions.css">
 </head>
 <body>
 <a class="skip-link" href="#input-heading">Перейти до інструмента</a>
-<main class="page-shell">
+<main class="page-shell editorial-site" data-visual-system="jogakbo">
   <header class="site-header">
     <div class="topline">
       <a class="brand" href="./index.html" aria-label="Корейсько-українська система">
-        <span class="taegeuk" aria-hidden="true"><i></i><b></b></span>
+        <span class="brand-mark" aria-hidden="true">한</span>
         <span>한국어 / УКРАЇНСЬКА</span>
       </a>
       <nav class="site-nav" aria-label="Основна навігація">
@@ -25,20 +26,19 @@
     </div>
     <div class="hero hero-home">
       <div class="hero-copy">
-        <p class="eyebrow">Корейсько-український сервіс передачі вимови</p>
-        <h1>Від корейського тексту — <em>до українського читання.</em></h1>
-        <p class="subtitle">Введіть корейське слово, речення або уривок — сервіс покаже приблизну вимову українськими літерами. За потреби можна переглянути IPA та докладний розбір. Сервіс передає звучання, а не перекладає зміст.</p>
-        <div class="method-line" aria-label="Послідовність перетворення"><span><b>01 · Корейський текст</b></span><span><b>02 · Вимова</b></span><span><b>03 · Фонетичний запис</b></span><span><b>04 · Українське читання</b></span></div>
+        <h1>Від хангиля — до українського читання.</h1>
+        <p class="subtitle">Вставте корейський текст і отримайте фонетичний запис українськими літерами. За потреби відкрийте IPA та поскладовий шлях. Це передача вимови, а не переклад змісту.</p>
+        <div class="method-line" aria-label="Послідовність перетворення"><span><b>Корейське написання</b></span><span><b>Вимова</b></span><span><b>IPA</b></span><span><b>Український запис</b></span></div>
       </div>
       <aside class="hero-specimen" aria-label="Приклад шляху транскрипції">
-        <div class="specimen-top"><span>Приклад</span><span>№ 001</span></div>
-        <div>
-          <span class="specimen-glyph" lang="ko">시</span>
-          <div class="specimen-rule"></div>
-          <div class="specimen-ipa">/ɕi/</div>
-          <div class="specimen-ua">ші</div>
+        <div class="specimen-top"><span>Один склад · три рівні</span><span>IPA-first</span></div>
+        <div class="specimen-grid" aria-label="Приклад перетворення корейського складу 시 на український запис">
+          <div class="specimen-tile specimen-tile-hangul"><span class="specimen-label">Hangul</span><span class="specimen-glyph" lang="ko">시</span></div>
+          <div class="specimen-tile specimen-tile-ipa"><span class="specimen-label">IPA</span><strong class="specimen-ipa">/ɕi/</strong></div>
+          <div class="specimen-tile specimen-tile-ua"><span class="specimen-label">Українська</span><strong class="specimen-ua">ші</strong></div>
+          <div class="specimen-tile specimen-tile-note"><span class="specimen-label">Принцип</span><strong>Спершу вимова.<br>Потім графіка.</strong></div>
         </div>
-        <div class="specimen-bottom"><span>текст → вимова → читання</span><span>Через IPA</span></div>
+        <div class="specimen-bottom"><span>Корейська фонологія → IPA → українська адаптація</span><span>Приклад, не повний стандарт</span></div>
       </aside>
     </div>
   </header>
