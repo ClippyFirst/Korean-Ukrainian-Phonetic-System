@@ -53,7 +53,7 @@ No AI-template gradients, generic SaaS card grid, decorative pseudo-data, random
 ## Acceptance
 - Existing web UI contract and behavior tests continue to pass.
 - New source-level assertions protect the editorial identity and ensure the old generic hero treatment is absent.
-- Build succeeds; GitHub Pages deployment and public smoke test pass on the exact final PR head.
+- Build succeeds; the merged main commit is deployed to GitHub Pages and passes the public smoke test.
 - Responsive, keyboard-focus and reduced-motion behavior remain explicit.
 
 ## Design research sources
