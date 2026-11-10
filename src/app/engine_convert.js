@@ -348,7 +348,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     u.__effectiveCoda=u.coda;
 
     const o=get(map,'onset',onset),v=get(map,'vowel',vowelJamo),c=u.coda?get(map,'coda',u.coda):null;
-    const baseVowelIpa=(genitiveParticleUi||defaultUi||resyllabifiedUi)?'ɰi':palatalYeo?'ʌ':(v?.ipa||'');
+    const baseVowelIpa=(genitiveParticleUi||defaultUi||resyllabifiedUi||(graphemeFallbackOn&&u.vowel==='ㅢ'))?'ɰi':palatalYeo?'ʌ':(v?.ipa||'');
     const vowelIpa=lexicalLongVowel?`${baseVowelIpa}ː`:baseVowelIpa;
     const ipaOnset=useSharedBroadIpaProfile?(o?.ipa||''):
       (!graphemeFallbackOn&&J_VOWELS.has(u.vowel)&&onset==='ㅅ')?'ɕ':
