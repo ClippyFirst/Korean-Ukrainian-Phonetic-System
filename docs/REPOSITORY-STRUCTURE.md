@@ -1,3 +1,5 @@
+# Repository structure and ownership guide
+
 ## Latest integration checkpoint — 2026-11-10
 
 **Main base:** `920b6365539058b658348855c5daddc066558b15`.  
@@ -35,7 +37,6 @@ PR #465 remains OPEN and unmerged pending the exact-head matrix and schema. PRs 
 
 The repository remains a software-verified, evidence-scoped research prototype, not release-ready or independently research-certified. Independent Korean IPA review, separate Ukrainian target review, historical membership/raw-offset evidence and restricted-dataset access remain separate acceptance gates.
 
-# Repository structure and ownership guide
 
 ## Historical integration snapshot — 2026-11-10 (PR head d71, superseded)
 

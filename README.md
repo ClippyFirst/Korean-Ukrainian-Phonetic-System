@@ -1,3 +1,5 @@
+# Korean–Ukrainian Phonetic System
+
 ## Latest integration checkpoint — 2026-11-10
 
 **Main base:** `920b6365539058b658348855c5daddc066558b15`.  
@@ -35,7 +37,6 @@ PR #465 remains OPEN and unmerged pending the exact-head matrix and schema. PRs 
 
 The repository remains a software-verified, evidence-scoped research prototype, not release-ready or independently research-certified. Independent Korean IPA review, separate Ukrainian target review, historical membership/raw-offset evidence and restricted-dataset access remain separate acceptance gates.
 
-# Korean–Ukrainian Phonetic System
 
 A research-oriented Korean-to-Ukrainian pronunciation system. It analyzes Korean structure and pronunciation, represents the result as IPA (or an explicitly typed unresolved result), and only then adapts that result to Ukrainian practical orthography.
 

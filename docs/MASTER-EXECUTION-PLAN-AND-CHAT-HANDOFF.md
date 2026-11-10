@@ -1,3 +1,5 @@
+# Master execution plan and handoff — 2026-11-08
+
 ## Latest execution handoff — 2026-11-10 (exact PR #465 checkpoint)
 
 **Main base:** `920b6365539058b658348855c5daddc066558b15`.  
@@ -57,7 +59,6 @@ The post-merge main workflows are separate runs and must be checked independentl
 
 **Documentation/navigation reconciliation: DONE_VERIFIED on PR #464 head and merged into main.** The benchmark and independent linguistic acceptance blockers remain unchanged.
 
-# Master execution plan and handoff — 2026-11-08
 
 ## Execution checkpoint
 

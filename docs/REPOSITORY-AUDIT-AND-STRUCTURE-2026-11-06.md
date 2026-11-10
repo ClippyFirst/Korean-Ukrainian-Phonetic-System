@@ -1,3 +1,5 @@
+# Repository audit and structure — 2026-11-06
+
 ## Latest continuation — 2026-11-10 (exact PR #465 checkpoint)
 
 **Main base:** `920b6365539058b658348855c5daddc066558b15`.  
@@ -460,7 +462,6 @@ Reproduce from [run 42487350896](https://github.com/ClippyFirst/Korean-Ukrainian
 
 ---
 
-# Repository audit and structure — 2026-11-06
 
 ## Superseding current-main status — 2026-11-07
 
