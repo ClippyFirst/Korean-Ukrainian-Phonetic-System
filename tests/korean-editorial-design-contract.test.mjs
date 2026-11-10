@@ -21,6 +21,8 @@ test('service and methodology share the Korean editorial visual identity',()=>{
     assert.match(html,/data-visual-system="jogakbo"/u);
     assert.match(html,/class="brand-mark"[^>]*>한</u);
     assert.match(html,/class="specimen-grid"/u);
+    const grid=html.match(/<div class="specimen-grid"[^>]*>([\\s\\S]*?)<\\/div>/u)?.[1]??"";
+    assert.equal((grid.match(/class="specimen-tile/g)??[]).length,3,"the specimen uses three deliberately unequal panels");
     assert.doesNotMatch(html,/class="taegeuk"/u);
   }
 });
@@ -52,4 +54,6 @@ test('Korean editorial tokens and restrained interaction are present',()=>{
   assert.doesNotMatch(css+baseCss,/background(?:-image)?:[^;]*gradient\s*\(/iu);
   assert.ok(contrast('#526e5d','#fcfbf7')>=4.5,'small celadon text meets WCAG AA');
   assert.ok(contrast('#10251e','#789184')>=4.5,'text on the celadon specimen meets WCAG AA');
+  assert.match(css,/grid-template-columns:\\s*minmax\\(0,\\s*1\\.12fr\\)\\s+minmax\\(0,\\s*\\.88fr\\)/u);
+  assert.match(css,/\\.specimen-tile-hangul\\s*\\{[^}]*grid-row:\\s*1\\s*\\/\\s*span\\s*2/u);
 });
