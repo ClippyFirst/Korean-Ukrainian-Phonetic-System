@@ -185,3 +185,16 @@ test('Super-soft status reports the low-confidence share alongside input coverag
   assert.match(main,/low_confidence_share/u);
   assert.match(main,/низька впевненість:/u);
 });
+
+
+test('three research profiles distinguish heuristic Soft from grapheme-only Super-soft',()=>{
+  const html=read('index.html');
+  const engine=read('src/app/engine_convert.js');
+  const main=read('src/main.js');
+  assert.match(html,/М’який режим · ширші евристики, низька впевненість/u);
+  assert.match(html,/Суперм’який режим · графемний IPA-резерв/u);
+  assert.match(engine,/requestedMorphologyMode==='soft'\?'super-soft'/u);
+  assert.match(engine,/requestedMorphologyMode==='super-soft'\?'grapheme-fallback'/u);
+  assert.match(engine,/super-soft-grapheme-ipa-fallback/u);
+  assert.match(main,/Суперм’який режим · графемний IPA-кандидат/u);
+});
