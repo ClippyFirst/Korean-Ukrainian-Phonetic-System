@@ -1,5 +1,43 @@
 # Korean G2P benchmark results — consolidated view (2026-11-08)
 
+## Latest exact-head benchmark checkpoint — 2026-11-10
+
+**Merged into main:** PR [#465](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/465), merge `e8ebed5b9ccb67255209ccb20efa45ae0236bcbe`; measured PR head `18bafbe9d998f7fe818c9b65ec84d3b5098d6dfa`. Full matrix [run 42810042908](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042908) completed successfully.
+
+### Completed matrix
+
+| Dataset | Ten-engine track | Browser modes |
+|---|---|---|
+| UGTPHON | Strict IPA + Broad sensitivity | Strict / Soft / Super-soft |
+| SIGMORPHON 2021 | Strict IPA + Broad sensitivity | Strict / Soft / Super-soft |
+| Seoul Corpus SLR113 | Phonemic IPA sample | Full-corpus Hangul surface + phonemic IPA reports are separately available |
+| K-SPAN 2.1 Modern | Strict IPA + Broad sensitivity | Strict / Soft / Super-soft |
+| K-SPAN 2.1 Conservative | Strict IPA + Broad sensitivity | Strict / Soft / Super-soft |
+| IPA-Dict Korean | Strict IPA + Broad sensitivity | Strict / Soft / Super-soft |
+
+This is six ten-engine reference tracks across five datasets, plus fifteen Browser mode reports across five dataset families. Seoul's full-corpus Browser reports are separately evidenced by [run 42496539257](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42496539257). The ten external engines are not labelled as Kozak Kim morphology modes.
+
+### Source integrity and interpretation
+
+- K-SPAN 2.1 source: 63,836 rows; 41,174 Hangul and 22,662 non-Hangul; zero unmatched NIKL WordNums.
+- Key/WorldBet cross-representation differences: **WARN 22,843** (Modern 13,078; Conservative 9,765). IPA scoring uses the source WorldBet fields; key fields are separately audited. The warning is not converted to PASS.
+- IPA-Dict is Wiktionary-derived and shares lineage with SIGMORPHON; it is not an independent holdout.
+- Seoul reference is phonemic word-level IPA, not narrow phonetic gold.
+- Browser engine errors: zero. One external `g2p-ko` error occurred on IPA-Dict; 999/1,000 occurrences were scored.
+- Super-soft candidate-output availability is 100% on the five Browser-tested datasets. Availability is distinct from source-resolved scoring coverage and accuracy; heuristic/fallback rows are not counted as IPA gold matches.
+
+### Aggregate artifact audit
+
+Artifact [13766007256](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042908) was downloaded and inspected. It contains exactly two files: `korean-benchmark-aggregate-summary.json` (293,134 bytes) and `open-korean-benchmarks-work/prepared/source-sha256.txt` (410 bytes). The aggregate scope excludes token-level source text, IPA labels, mismatch examples and occurrence ledgers. JSON Schema validation passed during summary generation. ZIP SHA-256: `fa3281b337b60fccbf3ebc03796498325619138e2393ba54ddc9513c8d9598a3`.
+
+Older artifacts `13621335293`, `13749341395` and `13750158865` remain stored until expiry/manual cleanup; the current GitHub integration cannot delete them. The corrected workflow does not retroactively sanitize them. See [benchmark artifact policy](BENCHMARK-ARTIFACT-POLICY.md).
+
+### Verification boundary
+
+PR-head workflows passed: Tests [42810042726](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042726), Verify [42810042823](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042823), master artifacts [42810042775](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042775), exhaustive register [42810043038](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810043038), UGTPHON [42810042906](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042906), and full matrix [42810042908](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42810042908). These are PR-head checks, not post-merge-main checks. ByT5, CharsiuG2P and neural pairing were skipped by policy.
+
+**Status:** benchmark software/matrix = DONE_VERIFIED on the tested PR head; independent Korean IPA and Ukrainian target certification = BLOCKED; overall product = research prototype, not release-ready.
+
 **Purpose:** one discoverable index of the measured Korean engines, scoring profiles, runtime modes, datasets, and external baselines. This page is a presentation layer over the canonical [benchmark suite register](KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md); the register remains the full historical and methodological source of truth.
 
 ## At a glance
