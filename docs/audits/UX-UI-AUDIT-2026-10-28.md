@@ -185,3 +185,22 @@ A rendered desktop capture from the existing visual-review artifact [13841806466
 **Post-merge main verification:** Tests [42997176514](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42997176514) and Verify [42997176635](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42997176635) passed; master/research artifacts [42997176540](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42997176540) passed. The visual fix is now deployed on the public Pages site.
 
 **Evidence limit:** the earlier malformed test-regex attempt [42995077792](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42995077792) failed at test-module parsing and is not counted as a RED test. The corrected test-only run above is the valid RED evidence.
+
+
+## 2026-11-11 — replacement visual system: Seoul Type
+
+**Scope:** complete visual redesign of the two-page public site. Product behavior, conversion logic, linguistic data, IPA adapter and browser-only security boundary remain unchanged.
+
+**Research basis:** contemporary Hangul type design and Korean editorial practice, not national-symbol decoration. References reviewed include Letterform Archive's overview of contemporary South Korean typography; the LetterSeed exhibition; Korea.net's *art+language* exhibition; MMCA Korea's *Ways of Reading* on the shift from Hangul print to mobile reading; Seoul Museum of Art's Ahn Sang-soo typography exhibition; and the Seoul studio Ore-Oh profile. These references support typographic structure, reading rhythm, print/screen continuity and flexible identity systems; they do not imply a single canonical Korean aesthetic.
+
+**Design decisions:** replace the previous jogakbo/cool-paper identity with warm neutral paper, deep ink, signal orange, acid yellow and cobalt focus. Hangul is used as real type, not pseudo-ornament. The service becomes a dark input workbench followed by a light answer surface; the Ukrainian output is the dominant result, with supporting cards grouped below. The methodology is a long-form reading surface with a strong contents panel, readable measure and grouped evidence layouts. No gradients, faux paper texture, glass effects, stock imagery, random Jamo, decorative badges or object-level title/footer strips.
+
+**Task ledger**
+- Research and design brief: **DONE_VERIFIED** — `DESIGN.md` and `docs/superpowers/specs/2026-11-11-seoul-type-system-redesign.md`.
+- Service and methodology CSS: **DONE_VERIFIED** — replacement tokens and layouts in `src/styles/editorial.css`; semantic content and behavior preserved.
+- Input/result order: **DONE_VERIFIED** — `.workspace-layout` is a single-column grid; DOM order remains input then output.
+- Accessibility and responsive behavior: **PARTIAL** until rendered review and exact-head browser checks complete.
+- Conversion/IPA/data behavior: **DONE_VERIFIED unchanged by scope** — no runtime or linguistic files changed.
+- Superdesign canvas output: **BLOCKED** — CLI preflight timed out in the connector-only runtime; no mockup is claimed.
+
+**Required exact-head evidence:** Node web tests, production build, Verify, Tests, rendered visual review at 1440/1024/768/390/320 px, public Pages deployment and live browser smoke. No local test run is claimed in this connector-only session.

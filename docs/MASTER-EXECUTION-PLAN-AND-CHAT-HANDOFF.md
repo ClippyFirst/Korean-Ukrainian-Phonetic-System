@@ -969,3 +969,32 @@ The first vertical-flow correction met the reading-order and object-chrome requi
 **Additional PR-head gates:** Verify [42996069023](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42996069023) passed; Tests [42996069075](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42996069075) passed 1,444/1,444 Node tests, Python 3.11/3.12/3.13, wheel installation and teacher-corpus audit; Browser G2P [42996069046](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42996069046), test-register extraction [42996069171](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42996069171) and master/research artifacts [42996069076](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42996069076) passed. PR [#479](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/479) is clean and mergeable; public deployment is pending merge.
 
 **Execution environment:** the connector can read and write GitHub branches, but a local `git clone` could not resolve `github.com` (DNS/network unavailable). Tests and builds are therefore verified through GitHub Actions, not claimed as locally executed. The dedicated branch is `design/fix-result-provenance-layout-2026-11-11`, based on main `d0cd901a482e9fbcaa299de2274b9ba58f72ae35`. PR #479 merged as `da33e2279bfe7218c1ad4c4632dfb44d18f3f3bf`. Mainline Tests [42997176514](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42997176514), Verify [42997176635](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42997176635) and master/research artifacts [42997176540](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42997176540) passed. Pages deployment [42997176343](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42997176343) and public HTTP/live browser smoke passed; the correction is published.
+
+
+## 2026-11-11 — full site redesign: Seoul Type
+
+**Starting main:** `04214ecdce34b6efb76823060012d8481e3bbeb2`  
+**Integration branch:** `main` (repository operating guide designates main for ordinary continuation work).  
+**Design:** replace the previous jogakbo-inspired look with contemporary Korean typographic publishing, independent poster composition and practical wayfinding. Service remains Operate; methodology remains Read.
+
+**Files changed**
+- `src/styles/editorial.css` — complete visual-system replacement; no runtime behavior or linguistic logic changes.
+- `index.html`, `system.html` — refreshed cache keys/theme color and updated design concept copy.
+- `DESIGN.md` — canonical design system replaced.
+- `docs/superpowers/specs/2026-11-11-seoul-type-system-redesign.md` — design brief, cultural anchors, sources and acceptance.
+- `tests/web-ui-contract.test.mjs` — source-level design contract assertions.
+- `.github/workflows/editorial-visual-review.yml` — rendered review now runs on pushes to main as well as PRs/manual dispatch.
+- This handoff and `docs/audits/UX-UI-AUDIT-2026-10-28.md` — dated outcome and verification register.
+
+**Non-negotiable layout:** only the Korean input and answer windows are stacked, input first. Hero, specimen, supporting result grid, methodology contents, evidence grids and tables retain their own editorial compositions. No decorative object-level title/footer strips or visible captions were added.
+
+**Skills and tooling:** taste-skill, Anthropic frontend-design, Impeccable, Emil Kowalski, Superpowers, mattpocock, unlazy and ponytail guidance was reviewed. Superdesign CLI preflight timed out; no canvas/mockup is claimed. The project-local impeccable launcher and Superdesign canvas were unavailable through this connector-only runtime. The repository's rendered visual-review workflow is enabled for push verification.
+
+**Verification ledger**
+- Source-contract assertions, Node tests, production build: pending exact-head CI.
+- Python/data/research gates: pending existing Verify/Tests workflows; no claim until observed.
+- Rendered review at 1440, 1024, 768, 390 and 320 px: pending.
+- Pages deployment and live smoke: pending.
+- Local shell test/build: not run; no verified local repository checkout in this session.
+
+**Scope exclusions:** no phonology, IPA, Ukrainian mapping, data, corpus, benchmark, security policy or runtime dependency changes.

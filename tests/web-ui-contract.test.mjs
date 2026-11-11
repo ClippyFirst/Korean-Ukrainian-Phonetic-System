@@ -202,3 +202,25 @@ test('three research profiles distinguish heuristic Soft from grapheme-only Supe
   assert.match(engine,/super-soft-grapheme-ipa-fallback/u);
   assert.match(main,/Суперм’який режим · графемний IPA-кандидат/u);
 });
+
+
+test('Seoul Type visual system is product-specific, responsive and keeps the two workbench windows vertical',()=>{
+  const html=read('index.html');
+  const system=read('system.html');
+  const css=read('src/styles/editorial.css');
+  const input=html.indexOf('class="workbench"');
+  const output=html.indexOf('class="output-workspace"');
+  assert.ok(input>=0&&output>input,'Korean input precedes the answer window in the document');
+  assert.match(html,/data-visual-system="seoul-type"/);
+  assert.match(system,/data-visual-system="seoul-type"/);
+  assert.match(css,/--signal:#ed593d/i);
+  assert.match(css,/--acid:#e6e84d/i);
+  assert.match(css,/--cobalt:#254bd8/i);
+  assert.match(css,/\.editorial-site \.workspace-layout\s*\{[^}]*grid-template-columns:\s*minmax\(0,1fr\)/s);
+  assert.match(css,/\.editorial-site \.result-card:first-child\s*\{[^}]*grid-column:1\s*\/\s*-1/s);
+  assert.match(css,/\.editorial-site \.methodology-toc ol/);
+  assert.match(css,/\.editorial-site \.doc-content table/);
+  assert.match(css,/@media\(max-width:480px\)/);
+  assert.match(css,/@media\(prefers-reduced-motion:reduce\)/);
+  assert.doesNotMatch(css,/@import|url\(\s*https?:|gradient\s*\(/i);
+});
