@@ -123,3 +123,42 @@ test('keeps the visual rationale as plain editorial copy, not a callout card',()
   assert.equal(rule.includes('border-left'),false,'no coloured callout rail');
   assert.equal(rule.includes('background'),false,'no inset callout background');
 });
+
+
+test('service is one vertical task path: input, mode, action, then output',()=>{
+  const html=read('index.html');
+  const input=html.indexOf('id="source-input"');
+  const mode=html.indexOf('id="transliteration-mode"');
+  const action=html.indexOf('id="example-button"');
+  const result=html.indexOf('id="results"');
+  assert.ok(input>=0&&mode>input&&action>mode&&result>action,'input → mode → convert action → result order is preserved');
+  assert.match(html,/Перетворити/u);
+  assert.doesNotMatch(html,/Вставити приклад/u);
+  assert.ok(html.indexOf('id="panel-ukrainian"')<html.indexOf('id="panel-ipa"'));
+  assert.ok(html.indexOf('id="panel-ipa"')<html.indexOf('id="panel-romanization"'));
+  assert.ok(html.indexOf('id="variant-panel"')<html.indexOf('class="trace-panel trace-disclosure"'));
+});
+
+test('no object-level header/footer strips or split workspaces remain on either page',()=>{
+  for(const page of ['index.html','system.html']){
+    const html=read(page);
+    for(const chrome of ['specimen-top','specimen-bottom','method-line','result-meta','table-head','doc-label','status-chip']){
+      assert.doesNotMatch(html,new RegExp('class="[^"]*'+chrome,'u'),page+' has no '+chrome+' object chrome');
+    }
+  }
+  const css=read('src/styles/editorial.css');
+  for(const selector of ['.hero','.workspace-layout','.result-grid','.methodology-toc','.doc-section','.system-intro','.specimen-flow']){
+    assert.match(css,new RegExp(selector.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'[\\s\\S]{0,500}flex-direction:\\s*column','u'),selector+' is a vertical flow');
+  }
+  assert.doesNotMatch(css,/\.workspace-layout\s*\{[^}]*grid-template-columns:\s*minmax\(300px/isu);
+  assert.doesNotMatch(css,/\.hero\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1\.12fr/isu);
+});
+
+test('methodology sections read as a single column with headings in the text flow',()=>{
+  const html=read('system.html');
+  assert.doesNotMatch(html,/class="doc-label"/u);
+  assert.match(html,/<h2 id="methodology-00a">/u);
+  assert.match(html,/<h2 id="methodology-01">/u);
+  assert.match(html,/class="specimen-flow"/u);
+  assert.doesNotMatch(html,/class="specimen-grid"/u);
+});
