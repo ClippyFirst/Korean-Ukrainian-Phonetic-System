@@ -71,3 +71,11 @@ Impeccable: Operate/Read modes, vertical reading/task path, contrast, typography
 Emil Kowalski: motion only for feedback/state, short durations, explicit properties, no `transition: all`.
 Superpowers: approved brief, implementation plan, test-first changes and verification before claims.
 mattpocock: shared project vocabulary and small, inspectable engineering steps. Other named optional tools were not available in this environment and are not represented as executed.
+
+
+## Cultural reference basis
+
+- Victoria and Albert Museum, [Jogakbo — traditional Korean patchwork](https://www.vam.ac.uk/articles/jogakbo-traditional-korean-patchwork): rectangular fabric remnants, visible flat seams and irregular compositions.
+- Asian Art Museum, [Wrapping cloth (bojagi), object 2005.71](https://searchcollection.asianart.org/objects/16968/wrapping-cloth-bojagi): function and collection context for bojagi/jogakbo.
+
+The implementation abstracts the geometric composition for the header only; it does not reproduce a textile, museum object or historical colour code.

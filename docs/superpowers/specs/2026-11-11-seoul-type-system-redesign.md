@@ -1,4 +1,6 @@
-# Seoul Type — replacement visual system
+# Seoul Type — historical visual system brief
+
+> **Superseded on 2026-11-11:** the current visual identity is defined by docs/superpowers/specs/2026-11-11-jogakbo-header-vertical-modules-design.md and DESIGN.md. This brief remains as a record of the previous direction; its instruction to retire jogakbo no longer governs the current site.
 
 Date: 2026-11-11  
 Surface: GitHub Pages service and methodology page  
