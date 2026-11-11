@@ -103,15 +103,15 @@ test('jogakbo palette is restrained and action contrasts remain accessible',()=>
   for(const token of ['--jogakbo-ink:var(--palette-ink)','--jogakbo-jade:var(--palette-jade)','--jogakbo-blue:var(--palette-blue)','--jogakbo-ochre:var(--palette-ochre)','--jogakbo-clay:var(--palette-clay)','--jogakbo-ground:var(--palette-paper)']){
     assert.ok(css.toLowerCase().includes(token),`missing ${token}`);
   }
-  for(const token of ['--palette-paper:#efede6','--palette-ink:#17202c','--palette-jade:#9db7a7','--palette-blue:#a9bac6','--palette-ochre:#c9a66b','--palette-clay:#b9857a','--palette-signal:#ed593d','--palette-indigo:#254bd8']){
+  for(const token of ['--palette-paper:#efede6','--palette-ink:#17202c','--palette-jade:#9db7a7','--palette-blue:#a9bac6','--palette-ochre:#c9a66b','--palette-clay:#b9857a','--palette-signal:#88574d','--palette-indigo:#496477']){
     assert.ok(css.toLowerCase().includes(token),`missing shared palette token ${token}`);
   }
   assert.ok(contrast('#17202c','#efede6')>=4.5);
   assert.ok(contrast('#5b6570','#efede6')>=4.5);
-  assert.ok(contrast('#254bd8','#efede6')>=4.5);
-  assert.ok(contrast('#ad3426','#efede6')>=4.5);
-  assert.ok(contrast('#17202c','#ed593d')>=4.5);
-  assert.ok(contrast('#17202c','#e6e84d')>=4.5);
+  assert.ok(contrast('#496477','#efede6')>=4.5);
+  assert.ok(contrast('#88574d','#efede6')>=4.5);
+  assert.ok(contrast('#17202c','#c9a66b')>=4.5);
+  assert.ok(contrast('#17202c','#d7c18a')>=4.5);
   assert.match(css,/:focus-visible/u);
   assert.match(css,/@media\(prefers-reduced-motion:reduce\)/u);
 });
@@ -152,7 +152,7 @@ test('the result provenance note belongs to the Ukrainian output, not the result
   assert.match(review,/methodologyGuideVisible/);
   assert.match(review,/modeOptionContrast/);
   assert.match(css,/\.editorial-site \.mode-option\{[^}]*background:transparent/su);
-  assert.match(css,/\.editorial-site \.mode-option:has\(input:checked\)\{[^}]*background:#29384b/su);
+  assert.match(css,/\.editorial-site \.mode-option:has\(input:checked\)\{[^}]*background:var\(--palette-panel-muted\)/su);
   const ukrainian=html.match(/<article id="panel-ukrainian"[\s\S]*?<\/article>/u)?.[0]||'';
   assert.match(ukrainian,/<p id="status-note" class="results-note result-provenance">/u);
   assert.doesNotMatch(html,/<\/article>\s*<p id="status-note"/u);
@@ -213,6 +213,8 @@ test('hero specimens and Ukrainian results use regular rather than bold glyph we
   }
   assert.match(css,/\.editorial-site \.specimen-flow \.specimen-value\{[^}]*font-weight:400!important/su);
   assert.match(css,/\.editorial-site \.result-card:first-child \.result-body,[\s\S]*?#result-ukrainian\{font-weight:400!important/su);
+  assert.match(css,/\.editorial-site #result-ukrainian,[\s\S]*?font-family:"Noto Sans","Segoe UI",Arial,sans-serif/u);
+  assert.match(css,/font-synthesis:none/u);
 });
 
 test('paragraph emphasis does not create isolated bold words or glyphs',()=>{
@@ -234,4 +236,19 @@ test('hero specimen is an asymmetrical overlapping jogakbo collage, not three eq
     'grid-template-columns:repeat(24,minmax(0,1fr))',
     'grid-column:3/7;grid-row:3/7'
   ]) assert.ok(css.includes(fragment),'missing collage treatment: '+fragment);
+});
+
+
+test('the entire interface resolves through one restrained jogakbo palette',()=>{
+  const css=read('src/styles/editorial.css');
+  for(const token of ['--palette-panel:#263548','--palette-panel-raised:#314257','--palette-panel-muted:#3b4b60','--palette-panel-line:#536276','--palette-tint-jade:#e7eee8','--palette-tint-blue:#e8edf0','--palette-tint-ochre:#f1eadc','--palette-tint-clay:#f2e6e1','--palette-line-ochre:#d9cbb7','--palette-status-success:#285443','--palette-status-warning:#75463d']){
+    assert.ok(css.toLowerCase().includes(token),'missing palette role '+token);
+  }
+  for(const selector of ['.workbench','.input-shell','.mode-fieldset','.button-primary','.output-workspace','.result-card','.empty-state','.trace-row','.doc-content .callout','.doc-content th','.site-footer']){
+    assert.ok(css.includes(selector),'palette mapping missing for '+selector);
+  }
+  assert.match(css,/--palette-indigo:#496477/u);
+  assert.match(css,/--palette-signal:#88574d/u);
+  assert.match(css,/--palette-acid:#d7c18a/u);
+  assert.doesNotMatch(css.split('html{')[1]||css.split('html {')[1]||'',/#[0-9a-f]{3,8}\b/iu,'component colors must resolve through palette tokens, not one-off hex values');
 });
