@@ -34,7 +34,7 @@ try {
         await page.locator('#result-ukrainian').waitFor({state:'visible'});
       }
 
-      const metrics = await page.evaluate(expectedWidth => {
+      const metrics = await page.evaluate(({expectedWidth,pageName}) => {
         const visible = selector => [...document.querySelectorAll(selector)]
           .filter(el => {
             const rect=el.getBoundingClientRect();
@@ -62,9 +62,25 @@ try {
           controls:touchControls.map(el => {
             const rect=el.getBoundingClientRect();
             return {label:(el.innerText||el.getAttribute('aria-label')||el.tagName).trim().slice(0,60),width:Math.round(rect.width),height:Math.round(rect.height)};
+          }),
+          flowChecks:['.hero','.workspace-layout','.result-grid','.methodology-toc','.doc-section','.system-intro','.specimen-flow','.layers','.rule-grid','.limits','.compare-strip','.decision-table','.table-row','.trace-list','.trace-row','.evidence-list','.vowel-grid','.action-cell'].map(selector=>{
+            const el=document.querySelector(selector);
+            if(!el)return {selector,exists:false};
+            const style=getComputedStyle(el);
+            const children=[...el.children].map(child=>child.getBoundingClientRect());
+            const verticallyStacked=children.every((rect,index)=>index===0||rect.top>=children[index-1].bottom-2);
+            return {selector,exists:true,display:style.display,flexDirection:style.flexDirection,verticallyStacked,childCount:children.length};
+          }),
+          objectChromeCount:document.querySelectorAll('.specimen-top,.specimen-bottom,.method-line,.result-meta,.table-head,.doc-label,.status-chip,.trace-summary-index,.trace-summary-mark').length,
+          taskOrder:pageName==='index.html'?['#source-input','#transliteration-mode','#example-button','#panel-ukrainian','#panel-ipa','#panel-romanization'].map(selector=>{
+            const el=document.querySelector(selector);
+            return el?{selector,top:Math.round(el.getBoundingClientRect().top)}:{selector,top:null};
+          }):['.hero-copy','.specimen-flow','.methodology-toc','.doc-section'].map(selector=>{
+            const el=document.querySelector(selector);
+            return el?{selector,top:Math.round(el.getBoundingClientRect().top)}:{selector,top:null};
           })
         };
-      }, viewport.width);
+      }, {expectedWidth:viewport.width,pageName});
 
       const file = `${outputDir}/${pageName.replace('.html','')}-${viewport.name}.png`;
       await page.screenshot({path:file,fullPage:true,animations:'disabled'});
@@ -95,6 +111,16 @@ try {
             failures.push(`${prefix}: touch target below 44px height / 24px width: ${JSON.stringify(control)}`);
           }
         }
+      }
+      for (const check of metrics.flowChecks) {
+        if (check.exists && (check.display === 'grid' || (check.display === 'flex' && check.flexDirection !== 'column') || !check.verticallyStacked)) {
+          failures.push(`${prefix}: ${check.selector} is not a single vertical flow: ${JSON.stringify(check)}`);
+        }
+      }
+      if (metrics.objectChromeCount !== 0) failures.push(`${prefix}: object-level header/footer chrome remains (${metrics.objectChromeCount} elements)`);
+      const orderTops=metrics.taskOrder.map(item=>item.top);
+      if (orderTops.some(value=>value===null) || orderTops.some((value,index)=>index>0&&value<orderTops[index-1]-2)) {
+        failures.push(`${prefix}: content order is not top-to-bottom: ${JSON.stringify(metrics.taskOrder)}`);
       }
       if (pageErrors.length) failures.push(`${prefix}: page errors: ${pageErrors.join('; ')}`);
       console.log(JSON.stringify({page:pageName,viewport:viewport.name,...metrics,screenshot:file}));

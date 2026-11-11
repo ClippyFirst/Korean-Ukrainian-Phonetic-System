@@ -130,3 +130,17 @@ The audit remains **PARTIAL** until a real browser verifies: desktop/mobile visu
 **Not established by this smoke:** actual screen-reader speech/verbosity, manual keyboard-only evaluation, visual screenshots and design review, 320 px reflow, human comprehension testing of mode labels, and measured conversion latency for short / ~1,000 / 5,198-character input. The audit therefore remains **PARTIAL**, despite the live smoke passing.
 
 The updated smoke is in [PR #363](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/363); the application remediation is in [PR #362](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/362).
+
+
+## 2026-11-11 — visual correction: single-column flow and no object chrome
+
+**Scoped outcome: DONE_VERIFIED for the approved layout correction.** The prior editorial redesign still placed the hero specimen and workbench beside their text/input at desktop widths. PR #470 replaces those compositions with one continuous vertical flow on both the service and methodology pages.
+
+- The service now reads input → mode → «Перетворити» → Ukrainian result → IPA → romanization → Hanja → analysis → alternatives → syllable trace. Example chips and their explanatory hint sit before the mode control; the primary action follows the mode and its optional advanced settings directly, and the result follows the action.
+- The methodology page is one column from its introductory specimen through the contents and every section. Section numbers remain plain text in the actual headings, not a separate number rail.
+- Removed object-level specimen top/bottom strips, result metadata bars, trace-column header band, dark table header bands, section-label rail, status badges and disclosure number/plus badges. Table/evidence rows and diagnostic fields are individually labelled in ordinary vertical flow; the trace list keeps an accessible label without a visible header band.
+- The primary action calls the existing renderer; automatic conversion remains enabled. No phonological, IPA or Ukrainian adaptation behavior changed.
+- Browser visual review [42984590933](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42984590933) passed on the preceding code snapshot across both pages at 1440, 1024, 768, 390 and 320 px. Exact-head System Verify [42984716350](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42984716350) passed with 1,442/1,442 tests, Python regression/data integrity, source-rights audit, production build and generated-page checks. Full Python-version/wheel/teacher-corpus matrix [42984590961](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42984590961) and Browser G2P [42984590975](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42984590975) passed.
+- The earlier test run with six stale UI assertions was not accepted as evidence; the assertions were reconciled to the new accessible labels and IPA-first output order. The corrected complete suite passed 1,442/1,442.
+
+**Remaining scope:** this closes the layout and rendered-responsive findings addressed here, not the entire historical UX audit. Real screen-reader speech/verbosity, participant comprehension of mode labels and measured conversion latency remain unverified. Overall historical UX/UI audit therefore remains PARTIAL.

@@ -50,14 +50,13 @@ test('Korean onset ㅎ uses the documented practical Ukrainian target г', () =>
   assert.equal(engine.convert('하').ukrainian, 'га');
 });
 
-test('trace panel has explicit column labels for source, target, rules and status', () => {
+test('trace panel exposes field labels accessibly without a visible header band', () => {
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
-  const css = readFileSync(new URL('../src/styles/main.css', import.meta.url), 'utf8');
-  for (const label of ['Корейський сегмент', 'Український запис', 'Правила / IPA', 'Статус']) {
-    assert.ok(html.includes(label), 'missing trace label: ' + label);
-  }
-  assert.match(css, /\.trace-columns\s*\{/u);
-  assert.match(css, /@media\s*\(max-width:\s*(?:680|720)px\)/u);
+  const css = readFileSync(new URL('../src/styles/editorial.css', import.meta.url), 'utf8');
+  assert.match(html, /id="trace-list"[^>]*aria-label="Корейський сегмент · вхід; Корейська вимова; IPA; IPA-токен → графема; Український запис; Нюанс \/ правило; Статус"/u);
+  assert.match(css, /\.editorial-site \.trace-list/);
+  assert.match(css, /\.editorial-site \.trace-row\s*\{[^}]*flex-direction:\s*column/su);
+  assert.doesNotMatch(html, /class="trace-columns"/u);
 });
 
 

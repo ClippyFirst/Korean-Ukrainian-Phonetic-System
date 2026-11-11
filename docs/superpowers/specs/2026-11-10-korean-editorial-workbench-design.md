@@ -19,11 +19,11 @@ Ukrainian-speaking users studying, reading or researching Korean. The service is
 
 ## Visual direction
 A contemporary editorial workbench informed by Korean graphic culture rather than literal national-symbol decoration:
-- Jogakbo / bojagi: modular composition, visible seams, asymmetrical patchwork rhythm, deliberate negative space. Use this as layout logic, not a background pattern.
+- Jogakbo / bojagi: visible seams, deliberate negative space and rhythm between distinct parts. Translate this into sequential editorial spacing, not a literal patchwork or multi-column composition.
 - Hangul as graphic architecture: use actual script blocks and Jamo as large typographic specimens, never random decorative glyphs.
 - Paper as a material cue: a cool neutral ground with no simulated grain or faux texture.
 - Contemporary Seoul graphic identities: confident Hangul typography, simple geometry, compact type systems and selective high-chroma colour planes.
-- A three-panel specimen uses ink for Hangul, signal yellow for IPA and signal pink for Ukrainian. Cobalt is reserved for interactive action and focus.
+- A three-stage specimen uses ordinary text and spacing for Hangul, IPA and Ukrainian; there are no framed tiles or object-level title/footer bands. Cobalt is reserved for interactive action and focus.
 
 ## Current palette
 - Cool paper: #F2F3EF
@@ -35,7 +35,7 @@ A contemporary editorial workbench informed by Korean graphic culture rather tha
 - Graphite: #30363D
 - Seam: #D5D9D5
 
-The first cream / vermilion / celadon pass was replaced after screenshot review because it read too close to a common generated editorial template. The current interface keeps the surface neutral, uses cobalt for action and focus, and reserves pink and yellow for the three-panel typographic specimen.
+The first cream / vermilion / celadon pass was replaced after screenshot review because it read too close to a common generated editorial template. The current interface keeps the surface neutral, uses cobalt for action and focus, and reserves pink and yellow for the sequential typographic specimen.
 
 ## Typography
 Use a robust system stack already available locally, preferring Noto Sans KR / Noto Sans for Korean and Ukrainian coverage. Build character through scale, weight, line-height and script pairing; do not add remote font dependencies or make the page network-dependent.

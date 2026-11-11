@@ -29,24 +29,20 @@
       <div class="hero-copy">
         <h1>Корейська вимова українськими літерами</h1>
         <p class="subtitle">Введіть корейський текст, щоб отримати його вимову українськими літерами. Відкрийте IPA та поскладовий розбір, якщо потрібні деталі. Сервіс не перекладає зміст.</p>
-        <div class="method-line" aria-label="Послідовність перетворення"><span><b>Корейське написання</b></span><span><b>Вимова</b></span><span><b>IPA</b></span><span><b>Український запис</b></span></div>
       </div>
       <aside class="hero-specimen" aria-label="Приклад шляху транскрипції">
-        <div class="specimen-top"><span>Один склад · три рівні</span><span>IPA — проміжний етап</span></div>
-        <div class="specimen-grid" aria-label="Приклад перетворення корейського складу 시 на український запис">
-          <div class="specimen-tile specimen-tile-hangul"><span class="specimen-label">Хангиль</span><span class="specimen-glyph" lang="ko">시</span></div>
-          <div class="specimen-tile specimen-tile-ipa"><span class="specimen-label">IPA</span><strong class="specimen-ipa">/ɕi/</strong></div>
-          <div class="specimen-tile specimen-tile-ua"><span class="specimen-label">Українська</span><strong class="specimen-ua">ші</strong></div>
-          
+        <div class="specimen-flow" aria-label="Послідовність: корейське написання, IPA, українська адаптація">
+          <p><span>Корейське написання</span><strong class="specimen-glyph" lang="ko">시</strong></p>
+          <p><span>IPA</span><strong class="specimen-ipa">/ɕi/</strong></p>
+          <p><span>Українська адаптація</span><strong class="specimen-ua">ші</strong></p>
         </div>
-        <div class="specimen-bottom"><span>Корейська фонологія → IPA → українська адаптація</span><span>Приклад, не повний стандарт</span></div>
       </aside>
     </div>
   </header>
 
   <div class="workspace-layout">
   <section class="workbench" aria-labelledby="input-heading">
-    <div class="section-title"><span class="section-number">A</span><div><p class="section-kicker">Крок 1</p><h2 id="input-heading">Корейський текст</h2></div></div>
+    <h2 id="input-heading">Корейський текст</h2>
     <label class="sr-only" for="source-input">Корейський текст</label>
     <div class="input-shell">
       <textarea id="source-input" rows="5" spellcheck="false" lang="ko" aria-describedby="input-guidance"></textarea>
@@ -60,7 +56,6 @@
       </section>
     </div>
     <p class="input-guidance" id="input-guidance">Введіть корейський текст або виберіть приклад. Результат оновлюється автоматично. Щоб побачити, як сервіс визначив вимову, відкрийте поскладовий розбір.</p>
-    <div class="action-row">
       <div class="chip-row" role="group" aria-label="Швидкі приклади">
         <button class="mini-button" data-example="현대 한국어의 표준 발음" type="button">현대 한국어의 표준 발음</button>
         <button class="mini-button" data-example="값이" type="button">값이</button>
@@ -69,10 +64,6 @@
         <button class="mini-button" id="nikl-stress-example" type="button">Довгий тестовий текст · 5 198 символів</button>
       </div>
       <p class="input-hint">Довгий тестовий текст потрібен для перевірки роботи сервісу на великих уривках; обробка може тривати довше.</p>
-      <div class="action-cell">
-        <button id="example-button" class="button button-primary" type="button">Вставити приклад <b aria-hidden="true">↗</b></button>
-        <button id="clear-button" class="button button-secondary" type="button">Очистити</button>
-      </div>
       <fieldset class="mode-fieldset" id="transliteration-mode">
         <legend class="mode-legend">Спосіб обробки</legend>
         <label class="mode-option" for="mode-practical">
@@ -103,72 +94,69 @@
         </label>
         <p class="soft-morphology-hint">Розкладає кожен склад хангиля на початкову, голосну та кінцеву графеми, формує з них IPA й передає її до українського адаптера. Контекстні фонологічні та морфологічні правила навмисно не вгадуються. Це найнижчий рівень точності, але найширше графемне покриття; результат позначається як непідтверджений кандидат.</p>
       </div>
+    <div class="action-row">
+<div class="action-cell">
+        <button id="example-button" class="button button-primary" type="button">Перетворити</button>
+        <button id="clear-button" class="button button-secondary" type="button">Очистити</button>
+      </div>
     </div>
   </section>
 
   <section class="output-workspace" aria-label="Результат перетворення">
-  <section id="empty-state" class="empty-state" aria-live="polite">
-    <div class="empty-glyph" aria-hidden="true">한</div>
-    <div><strong>Тут буде українське читання</strong><span>Введіть корейський текст або виберіть один із прикладів.</span></div>
-    <span class="empty-rule" aria-hidden="true"></span>
-  </section>
+  <section id="empty-state" class="empty-state" aria-live="polite"><p>Введіть корейський текст або виберіть один із прикладів — українське читання з’явиться нижче.</p></section>
 
   <section id="results" class="results" aria-labelledby="results-heading" hidden>
-    <div class="results-bar">
-      <div class="section-title"><span class="section-number">B</span><div><p class="section-kicker">Крок 2</p><h2 id="results-heading">Результати</h2></div></div>
-      <span id="status-note" class="results-note">Звичайний режим</span>
-    </div>
+    <h2 id="results-heading" class="sr-only">Результат перетворення</h2>
     <div class="result-grid">
-
-      <article id="panel-ukrainian" class="result-card" data-result-panel="ukrainian">
-        <div class="result-meta"><span>UA</span><strong id="ukrainian-output-label">Український запис</strong><button id="ukrainian-copy-button" class="copy-button" data-copy="ukrainian" type="button">Копіювати</button></div>
+<article id="panel-ukrainian" class="result-card" data-result-panel="ukrainian">
+        <h3 class="result-heading"><strong id="ukrainian-output-label">Український запис</strong></h3>
         <div class="ua-output-switch" role="group" aria-label="Стан українського запису"><button id="ua-unconfirmed-button" class="ua-output-option is-active" type="button" aria-pressed="true">Основний результат</button><button id="ua-candidate-button" class="ua-output-option" type="button" aria-pressed="false" disabled>Дослідницький результат</button></div>
         <p id="result-ukrainian" class="result-body"></p>
+<button id="ukrainian-copy-button" class="copy-button" data-copy="ukrainian" type="button">Копіювати</button>
         <div id="surface-reading" class="surface-reading" hidden><span>Поверхнева форма</span><strong id="result-surface"></strong></div>
         <span id="candidate-value" hidden aria-hidden="true"></span>
         <p id="candidate-note" class="candidate-footnote" hidden>Це попередній варіант, а не підтверджена нормативна передача. Його варто перевірити за IPA та правилами української адаптації.</p>
       </article>
-      <article id="panel-romanization" class="result-card romanization-card" data-result-panel="romanization">
-        <div class="result-meta"><span>RR</span><strong>Романізація (RR)</strong><button class="copy-button" data-copy="romanization" type="button">Копіювати</button></div>
+      <p id="status-note" class="results-note">Звичайний режим</p>
+<article id="panel-ipa" class="result-card" data-result-panel="ipa">
+        <h3 class="result-heading"><strong>Широкий IPA</strong></h3>
+        <p id="result-ipa" class="result-body ipa"></p>
+<button class="copy-button" data-copy="ipa" type="button">Копіювати</button>
+      </article>
+<article id="panel-romanization" class="result-card romanization-card" data-result-panel="romanization">
+        <h3 class="result-heading"><strong>Романізація (RR)</strong></h3>
         <p id="result-romanization" class="result-body romanization" lang="ko-Latn"></p>
+<button class="copy-button" data-copy="romanization" type="button">Копіювати</button>
         <p class="romanization-note">Додатковий запис корейської вимови латинськими літерами. Він не призначений для читання за правилами англійської мови й не використовується для побудови українського результату.</p>
       </article>
-      <article id="panel-hanja" class="result-card hanja-card" data-result-panel="hanja">
-        <div class="result-meta"><span>漢字</span><strong>Ханча · словникова анотація</strong><button class="copy-button" data-copy="hanja" type="button">Копіювати</button></div>
+<article id="panel-hanja" class="result-card hanja-card" data-result-panel="hanja">
+        <h3 class="result-heading"><strong>Ханча · словникова анотація</strong></h3>
         <p id="result-hanja" class="result-body hanja" lang="ko"></p>
+<button class="copy-button" data-copy="hanja" type="button">Копіювати</button>
         <p id="hanja-engine-status" class="hanja-engine-status" role="status">Базовий словник</p>
         <p class="hanja-note">Ханча — це словникова підказка: вона показує ієрогліфи для тих слів, для яких їх знайдено у словнику. Не всі корейські слова мають ханча; невідомі слова та граматичні частки залишаються хангилем.</p>
       </article>
-      <article id="panel-ipa" class="result-card" data-result-panel="ipa">
-        <div class="result-meta"><span>IPA</span><strong>Широкий IPA</strong><button class="copy-button" data-copy="ipa" type="button">Копіювати</button></div>
-        <p id="result-ipa" class="result-body ipa"></p>
-      </article>
-
-            
-      
-      
-      
-      <article id="panel-analysis" class="result-card" data-result-panel="analysis">
-        <div class="result-meta"><span>AN</span><strong>Аналіз</strong><button class="copy-button" data-copy="analysis" type="button">Копіювати</button></div>
+<article id="panel-analysis" class="result-card" data-result-panel="analysis">
+        <h3 class="result-heading"><strong>Аналіз</strong></h3>
         <p id="result-analysis" class="result-body analysis"></p>
+<button class="copy-button" data-copy="analysis" type="button">Копіювати</button>
       </article>
     </div>
 
     <p id="copy-feedback" class="copy-feedback" role="status" hidden></p>
     <div id="issue-state" class="issue-state" hidden><p id="issue-text"></p></div>
     <details id="variant-panel" class="trace-panel trace-disclosure variant-panel" hidden>
-      <summary class="trace-summary"><span class="trace-summary-index">B+</span><span class="trace-summary-copy"><strong>Альтернативні читання</strong><small>Показати інші варіанти вимови та пояснення, наскільки вони підтверджені.</small></span><span class="trace-summary-mark" aria-hidden="true">＋</span></summary>
+      <summary class="trace-summary"><span class="trace-summary-copy"><strong>Альтернативні читання</strong><small>Показати інші варіанти вимови та пояснення, наскільки вони підтверджені.</small></span></summary>
       <div class="trace-details">
         <p class="trace-explainer">Альтернативи відокремлено від основного результату. Пояснення до кожної з них указує, чому її запропоновано та наскільки вона надійна.</p>
         <div id="variant-list" class="trace-list"></div>
       </div>
     </details>
     <details class="trace-panel trace-disclosure">
-      <summary class="trace-summary"><span class="trace-summary-index">C</span><span class="trace-summary-copy"><strong>Поскладовий розбір</strong><small>Показати, як кожен склад перетворюється з корейського написання на український запис.</small></span><span class="trace-summary-mark" aria-hidden="true">＋</span></summary>
+      <summary class="trace-summary"><span class="trace-summary-copy"><strong>Поскладовий розбір</strong><small>Показати, як кожен склад перетворюється з корейського написання на український запис.</small></span></summary>
       <div class="trace-details">
       <p class="trace-explainer">У таблиці показано шлях кожного сегмента: корейське написання → визначена вимова → IPA → відповідність звуків українським літерам. Так можна побачити, на якому етапі виникла невизначеність або спрацювало окреме правило.</p>
-      <div class="trace-columns" aria-hidden="true"><span>Корейський сегмент · вхід</span><span>Корейська вимова</span><span>IPA</span><span>IPA-токен → графема</span><span>Український запис</span><span title="Правила / IPA">Нюанс / правило</span><span>Статус</span></div>
-      <div id="trace-list" class="trace-list"></div>
+      <div id="trace-list" class="trace-list" aria-label="Корейський сегмент · вхід; Корейська вимова; IPA; IPA-токен → графема; Український запис; Нюанс / правило; Статус"></div>
       </div>
     </details>
   </section>

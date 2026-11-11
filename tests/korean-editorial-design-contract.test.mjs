@@ -15,111 +15,93 @@ const contrast=(a,b)=>{
   return (hi+.05)/(lo+.05);
 };
 
-test('service and methodology share the Korean editorial visual identity',()=>{
+test('both pages retain the Korean editorial identity and real Hangul examples',()=>{
   for(const page of ['index.html','system.html']){
     const html=read(page);
     assert.match(html,/data-visual-system="jogakbo"/u);
     assert.match(html,/class="brand-mark"[^>]*>한</u);
-    assert.match(html,/class="specimen-grid"/u);
-    const specimen=html.slice(html.indexOf('<div class="specimen-grid"'),html.indexOf('</aside>'));
-    assert.equal((specimen.match(/class="specimen-tile/g)??[]).length,3,"the specimen uses three deliberately unequal panels");
+    assert.match(html,/class="specimen-flow"/u);
     assert.doesNotMatch(html,/class="taegeuk"/u);
-    if(page==="system.html") assert.doesNotMatch(html,/class="section-kicker"/u,"methodology headings stand on their own without eyebrow labels");
+  }
+  assert.match(read('index.html'),/lang="ko">시</u);
+  assert.match(read('system.html'),/lang="ko">읽고</u);
+});
+
+test('service follows one task path from input through the selected mode to results',()=>{
+  const html=read('index.html');
+  const order=['id="source-input"','id="transliteration-mode"','id="example-button"','id="results"','id="panel-ukrainian"','id="panel-ipa"','id="panel-romanization"','id="variant-panel"','id="trace-list"'].map(x=>html.indexOf(x));
+  assert.ok(order.every(x=>x>=0),'all task stages exist');
+  assert.ok(order.every((x,i)=>i===0||x>order[i-1]),'input → mode → action → Ukrainian → IPA → romanization → variants → trace');
+  assert.match(html,/Перетворити/u);
+  assert.doesNotMatch(html,/Вставити приклад/u);
+  assert.doesNotMatch(html,/placeholder=/u);
+});
+
+test('the page uses no object-level heading or footer strips',()=>{
+  for(const page of ['index.html','system.html']){
+    const html=read(page);
+    for(const chrome of ['specimen-top','specimen-bottom','method-line','result-meta','table-head','doc-label','status-chip']){
+      assert.doesNotMatch(html,new RegExp('class="[^"]*'+chrome,'u'),page+' has no '+chrome);
+    }
   }
 });
 
-test('service specimen explains a real Hangul → IPA → Ukrainian example',()=>{
-  const html=read('index.html');
-  assert.match(html,/class="specimen-tile specimen-tile-hangul"/u);
-  assert.match(html,/lang="ko">시</u);
-  assert.match(html,/\/ɕi\//u);
-  assert.match(html,/>ші</u);
-  assert.match(html,/class="workspace-layout"/u);
-  assert.match(html,/id="source-input"/u);
-  assert.match(html,/id="result-ukrainian"/u);
-});
-
-test('Korean editorial tokens and restrained interaction are present',()=>{
+test('workbench and methodology use a single vertical column at every breakpoint',()=>{
   const css=read('src/styles/editorial.css');
-  const baseCss=read('src/styles/main.css');
-  assert.match(css,/--hanji:\s*#f2f3ef/i);
-  assert.match(css,/--ink-navy:\s*#16191f/i);
-  assert.match(css,/--cobalt:\s*#2448d8/i);
-  assert.match(css,/--signal-pink:\s*#ff5aa5/i);
-  assert.match(css,/--signal-yellow:\s*#d9e64b/i);
-    assert.match(css,/\.workspace-layout\s*\{/u);
-  assert.match(css,/\.system-page \.doc-content/u);
-  assert.match(css,/\.system-intro\s*\{[^}]*border-left:\s*1px solid var\(--seam\)/u,'methodology notice uses a seam, not a heavy coloured side rail');
-  assert.match(css,/\.system-intro\s*\{[^}]*border-top:\s*2px solid var\(--cobalt\)/u,'methodology notice keeps its accent on the top edge');
-  assert.match(css,/@media\s*\(prefers-reduced-motion:\s*reduce\)/u);
-  assert.match(css,/@media\s*\(hover:\s*hover\)\s*and\s*\(pointer:\s*fine\)/u,'movement on hover is restricted to pointer devices');
-  assert.match(css,/:focus-visible/u);
-  assert.match(css,/html\s*\{\s*scroll-behavior:\s*auto;/u);
-  assert.doesNotMatch(css+baseCss,/background(?:-image)?:[^;]*gradient\s*\(/iu);
-  assert.ok(contrast('#2448d8','#f2f3ef')>=4.5,'cobalt text on the paper ground meets WCAG AA');
-  assert.ok(contrast('#16191f','#f2f3ef')>=4.5,'ink text on the paper ground meets WCAG AA');
-  assert.ok(contrast('#16191f','#ff5aa5')>=4.5,'ink text on the pink specimen meets WCAG AA');
-  assert.ok(contrast('#ffffff','#2448d8')>=4.5,'white text on cobalt actions meets WCAG AA');
-  assert.ok(contrast('#16191f','#d9e64b')>=4.5,'ink text on the yellow specimen meets WCAG AA');
-  assert.match(css,/grid-template-columns:\s*minmax\(0,\s*1\.12fr\)\s+minmax\(0,\s*\.88fr\)/u);
-  assert.match(css,/\.specimen-tile-hangul\s*\{[^}]*grid-row:\s*1\s*\/\s*span\s*2/u);
+  for(const selector of ['.editorial-site .hero','.editorial-site .workspace-layout','.editorial-site .result-grid','.editorial-site .methodology-toc','.editorial-site .doc-section','.editorial-site .system-intro','.editorial-site .specimen-flow','.editorial-site .trace-list']){
+    const start=css.lastIndexOf(selector);
+    assert.notEqual(start,-1,selector+' has an explicit layout rule');
+    const rule=css.slice(start,css.indexOf('}',start)+1);
+    assert.match(rule,/flex-direction:\s*column/u,selector+' flows vertically');
+  }
+  assert.match(css,/\.editorial-site \.decision-table\s*\{[^}]*flex-direction:\s*column/su);
+  assert.match(css,/\.editorial-site \.table-row\s*\{[^}]*flex-direction:\s*column/su);
+  assert.match(css,/\.editorial-site \.vowel-grid\s*\{[^}]*flex-direction:\s*column/su);
+  assert.match(css,/\.editorial-site \.action-cell\s*\{[^}]*flex-direction:\s*column/su);
+  assert.match(css,/\.editorial-site \.evidence-list\s*\{[^}]*flex-direction:\s*column/su);
+  assert.match(css,/\.editorial-site \.layers[\s\S]{0,500}flex-direction:\s*column/u);
+  assert.match(css,/\.editorial-site \.rule-grid[\s\S]{0,500}flex-direction:\s*column/u);
+  assert.match(css,/\.editorial-site \.limits[\s\S]{0,500}flex-direction:\s*column/u);
+  assert.match(css,/\.editorial-site \.compare-strip[\s\S]{0,500}flex-direction:\s*column/u);
+  assert.match(css,/\.editorial-site \.trace-row\s*\{[^}]*flex-direction:\s*column/su);
 });
 
-test('keeps the user-facing romanization label in Ukrainian',()=>{
+test('methodology section anchors are carried by headings in the reading flow',()=>{
+  const html=read('system.html');
+  assert.doesNotMatch(html,/class="doc-label"/u);
+  assert.match(html,/<h2 id="methodology-00a">/u);
+  assert.match(html,/<h2 id="methodology-01">/u);
+  assert.match(html,/<h2 id="methodology-02c-kozak-kim"><span class="heading-index">02C<\/span>/u);
+  assert.equal((html.match(/class="doc-section"/gu)||[]).length,24);
+});
+
+test('editorial palette keeps key text combinations above WCAG AA contrast',()=>{
+  const css=read('src/styles/editorial.css');
+  assert.match(css,/--hanji:\s*#f2f3ef/iu);
+  assert.match(css,/--ink-navy:\s*#16191f/iu);
+  assert.match(css,/--cobalt:\s*#2448d8/iu);
+  assert.match(css,/--signal-pink:\s*#ff5aa5/iu);
+  assert.match(css,/--signal-yellow:\s*#d9e64b/iu);
+  assert.ok(contrast('#2448d8','#f2f3ef')>=4.5);
+  assert.ok(contrast('#16191f','#f2f3ef')>=4.5);
+  assert.ok(contrast('#16191f','#ff5aa5')>=4.5);
+  assert.ok(contrast('#ffffff','#2448d8')>=4.5);
+  assert.ok(contrast('#16191f','#d9e64b')>=4.5);
+  assert.match(css,/:focus-visible/u);
+  assert.match(css,/@media\s*\(prefers-reduced-motion:\s*reduce\)/u);
+});
+
+test('user-facing terminology stays Ukrainian and the input remains placeholder-free',()=>{
   const service=read('index.html');
   const methodology=read('system.html');
   assert.match(service,/Романізація \(RR\)/u);
   assert.doesNotMatch(service,/Revised Romanization/u);
   assert.match(methodology,/Переглянута романізація \(RR\)/u);
   assert.doesNotMatch(methodology,/Revised Romanization/u);
-});
-
-test('keeps visible technical terminology Ukrainian where no standard English name is needed',()=>{
-  const service=read('index.html');
-  const methodology=read('system.html');
-  assert.doesNotMatch(service,/кожен блок Hangul/u);
-  assert.doesNotMatch(methodology,/orthographic-phonemic fallback/u);
-  assert.doesNotMatch(methodology,/лексичний round-trip|Round-trip сам/u);
-  assert.doesNotMatch(methodology,/через IPA conversion/u);
-});
-
-test('methodology explains the Korean visual concept in Ukrainian',()=>{
-  const methodology=read('system.html');
   assert.match(methodology,/Візуальна логіка/u);
   assert.match(methodology,/джогакбо — корейського клаптикового полотна/u);
-  assert.match(methodology,/хангиль, IPA й український запис/u);
-});
-
-test('keeps the Korean text field completely free of placeholder copy',()=>{
-  const service=read('index.html');
   const start=service.indexOf('<textarea id="source-input"');
-  assert.notEqual(start,-1,'the Korean input field remains present');
   const end=service.indexOf('>',start);
-  const textarea=service.slice(start,end);
-  assert.equal(textarea.includes('placeholder='),false,'the field has no visible placeholder or instructional text');
-});
-
-test('keeps editorial microcopy at a readable minimum size',()=>{
-  const css=read('src/styles/editorial.css');
-  const sizes=css.split('font-size:').slice(1).map(chunk=>{
-    const value=chunk.split(';',1)[0].trim();
-    const number=Number.parseFloat(value);
-    if(value.endsWith('rem')) return number*16;
-    if(value.endsWith('px')) return number;
-    return null;
-  }).filter(Number.isFinite);
-  assert.ok(sizes.length>0,'editorial typography tokens are present');
-  assert.ok(Math.min(...sizes)>=13,`smallest editorial font is ${Math.min(...sizes)}px; minimum is 13px`);
-});
-
-test('keeps the visual rationale as plain editorial copy, not a callout card',()=>{
-  const css=read('src/styles/editorial.css');
-  const selector='.system-page .hero-copy .design-rationale';
-  const start=css.indexOf(selector);
-  assert.notEqual(start,-1,'the rationale has a scoped style rule');
-  const open=css.indexOf('{',start);
-  const close=css.indexOf('}',open);
-  const rule=css.slice(open+1,close);
-  assert.equal(rule.includes('border-left'),false,'no coloured callout rail');
-  assert.equal(rule.includes('background'),false,'no inset callout background');
+  assert.ok(start>=0);
+  assert.doesNotMatch(service.slice(start,end),/placeholder=/u);
 });

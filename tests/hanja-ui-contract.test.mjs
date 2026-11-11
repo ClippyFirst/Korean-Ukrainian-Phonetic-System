@@ -14,10 +14,10 @@ test('Hanja is an additional output in the requested order with an accessible co
   assert.match(html, /id="hanja-engine-status"[^>]*role="status"/u);
   assert.match(html, /data-copy="hanja"/u);
   assert.match(html, /Не всі корейські слова мають ханча; невідомі слова та граматичні частки залишаються хангилем/u);
-  const outputOrder = ['panel-ukrainian', 'panel-romanization', 'panel-hanja', 'panel-ipa'];
+  const outputOrder = ['panel-ukrainian', 'panel-ipa', 'panel-romanization', 'panel-hanja'];
   const outputPositions = outputOrder.map((id) => html.indexOf(`id="${id}"`));
   assert.ok(outputPositions.every((position) => position >= 0), 'all primary outputs exist');
-  assert.deepEqual(outputPositions, [...outputPositions].sort((a, b) => a - b), 'outputs remain Ukrainian → Romanization → Hanja → IPA');
+  assert.deepEqual(outputPositions, [...outputPositions].sort((a, b) => a - b), 'outputs remain Ukrainian → IPA → Romanization → Hanja');
   assert.match(main, /import \{convertHangulToHanja, createHanjaConverter\} from '\.\/app\/hanja\.js'/u);
   assert.match(main, /renderHanja\(value\)/u);
   assert.match(main, /import\.meta\.glob\('\.\/app\/hanja-dictionary\/hanja-dictionary-\*\.js'\)/u);
