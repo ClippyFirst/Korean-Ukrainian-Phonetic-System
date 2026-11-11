@@ -1221,3 +1221,19 @@ Artifact `editorial-visual-review-43090011855` contains rendered captures for bo
 - Local shell execution was not available in this connector-only session; no local test pass is claimed.
 
 **Scope:** presentation-only. The earlier regular-weight specimen/output typography and the existing semantic specimen values are preserved. No phonology, IPA, Ukrainian target mapping, datasets or engine behavior changed.
+
+
+## 2026-11-11 visual consistency follow-up
+
+Owner feedback: the jogakbo header is approved, but site windows and controls still feel like unrelated palettes; Ukrainian І/Ї also appear heavier than surrounding glyphs.
+
+Implementation branch: `design/unified-jogakbo-palette-ukrainian-glyph-weight-2026-11-11`.
+
+Scope:
+- Centralize content-object colors under the jogakbo palette roles: warm paper/surfaces, ink/panel, jade, blue, ochre, clay, muted signal and accessible semantic statuses.
+- Apply those roles consistently to workbench, input, controls, output cards, empty states, traces, methodology callouts, tables and footer.
+- Use a Cyrillic-capable sans family for Ukrainian result glyphs, with explicit regular weight and synthetic font styling disabled, so І/Ї cannot be visually emboldened by a Korean display-font fallback.
+- Preserve the approved irregular jogakbo collage in the header; do not turn content modules into textile patchwork.
+- No phonological or IPA runtime changes.
+
+Status at handoff: implementation and contract-test changes prepared on the branch; exact-head CI, rendered visual review and merge are pending.
