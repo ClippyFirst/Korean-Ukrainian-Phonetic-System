@@ -301,3 +301,25 @@ The first post-#481 deployment passed HTTP checks but the live Playwright script
 ### Scope boundary
 
 No linguistic engine, phonology, IPA adapter, Ukrainian mapping, research corpus, benchmark, licensing data or runtime dependency was changed. The interface is publicly deployed and visually/browser verified. The overall repository remains a research prototype; this UX acceptance does not close independent linguistic or research acceptance criteria.
+
+
+## 2026-11-11 — follow-up acceptance: normal reading weight and editorial hero rebuild (PR #483)
+
+**Status: DONE_VERIFIED — merged and deployed.** PR [#483](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/483) merged as `970fc828be500c2811108bde478241de0e791c16`.
+
+### Findings closed
+
+- **DONE_VERIFIED — Ukrainian output weight:** removed the explicit heavy font weight from the primary result field. Practical and research output now render at regular weight, including unconfirmed output.
+- **DONE_VERIFIED — specimen glyph weight:** Hangul, IPA and Ukrainian header samples all render at regular weight; no semantic `strong` wrapper remains around the sample values.
+- **DONE_VERIFIED — hero hierarchy:** both pages use full-width headline/copy above one continuous, visibly labelled specimen sequence; the desktop/tablet sequence is horizontal and the mobile sequence is vertical.
+- **DONE_VERIFIED — textile restraint:** the oversized dark patchwork block is replaced by a compact, balanced shared-palette strip.
+- **DONE_VERIFIED — copy:** service and methodology headings/intros now state the task and the transcription-not-translation distinction more directly.
+- **DONE_VERIFIED — responsive review:** rendered review [43086326494](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43086326494) passed.
+- **DONE_VERIFIED — regression/build:** Tests [43086326226](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43086326226), Verify [43086326448](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43086326448), and Browser G2P [43086326247](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43086326247) passed.
+- **DONE_VERIFIED — publication/live smoke:** mainline deployment [43086918490](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43086918490) passed both public-page HTTP smoke and the live browser passage exercise.
+
+### Regression note
+
+An initial test run exposed one stale copy assertion that expected the old methodology introduction. The test was updated alongside the new copy. The final exact-head PR and mainline workflows passed. An intermediate failed run is not represented as a passing result.
+
+No linguistic behavior changed. This closes the reported typography and header defects, not the repository's separate linguistic research acceptance gates.
