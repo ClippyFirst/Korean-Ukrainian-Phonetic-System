@@ -107,6 +107,7 @@ a:hover{color:var(--signal-deep)}
 .editorial-site .ua-output-option{min-height:40px;padding:8px 13px;border:1px solid #647083;border-radius:999px;background:transparent;color:var(--surface);font-size:.78rem;font-weight:700}
 .editorial-site .ua-output-option.is-active{border-color:var(--acid);background:var(--acid);color:var(--ink)}
 .editorial-site .ua-output-option:disabled{opacity:.45}
+.editorial-site .result-provenance{background:transparent}
 .editorial-site .result-provenance,.editorial-site .candidate-footnote,.editorial-site .romanization-note,.editorial-site .hanja-note,.editorial-site .hanja-engine-status{margin:14px 0 0;color:var(--muted);font-size:.78rem;line-height:1.6}
 .editorial-site .result-card:first-child .result-provenance,.editorial-site .result-card:first-child .candidate-footnote{color:var(--muted-inverse)}
 .editorial-site .result-card:first-child .result-body.result-unconfirmed{min-height:64px;padding:10px 0;border:0;border-bottom:1px dashed #758092;background:transparent;color:#d1d7de;font-size:1.1rem!important}

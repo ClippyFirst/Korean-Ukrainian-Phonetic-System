@@ -15,10 +15,10 @@ const contrast=(a,b)=>{
   return (hi+.05)/(lo+.05);
 };
 
-test('both pages retain the Korean editorial identity and real Hangul examples',()=>{
+test('both pages use the Seoul Type identity and real Hangul examples',()=>{
   for(const page of ['index.html','system.html']){
     const html=read(page);
-    assert.match(html,/data-visual-system="jogakbo"/u);
+    assert.match(html,/data-visual-system="seoul-type"/u);
     assert.match(html,/class="brand-mark"[^>]*>한</u);
     assert.match(html,/class="specimen-flow"/u);
     assert.doesNotMatch(html,/class="taegeuk"/u);
@@ -48,11 +48,11 @@ test('the page uses no object-level heading or footer strips',()=>{
 
 test('only the input and answer workbench windows are stacked',()=>{
   const css=read('src/styles/editorial.css');
-  assert.match(css,/\.editorial-site \.workspace-layout\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)/su);
-  assert.match(css,/\.editorial-site \.hero\s*\{[^}]*display:\s*grid/su);
-  assert.match(css,/\.editorial-site \.specimen-flow\s*\{[^}]*grid-template-columns:\s*1\.12fr \.88fr \.88fr/su);
-  assert.match(css,/\.editorial-site.system-page .doc-section\s*\{[^}]*display:\s*block/su);
-  assert.match(css,/\.editorial-site \.button-primary\s*\{[^}]*color:\s*#fff/su);
+  assert.match(css,/\.editorial-site \.workspace-layout\s*\{[^}]*grid-template-columns:\s*minmax\(0,1fr\)/su);
+  assert.match(css,/\.hero\s*\{[^}]*display:grid/su);
+  assert.match(css,/\.editorial-site \.specimen-flow\s*\{[^}]*grid-template-columns:1\.14fr \.88fr \.88fr/su);
+  assert.match(css,/\.editorial-site\.system-page \.doc-section\s*\{[^}]*display:block/su);
+  assert.match(css,/\.editorial-site \.button-primary\s*\{[^}]*color:var\(--ink\)/su);
   assert.doesNotMatch(css,/\.editorial-site \.hero,\s*\.editorial-site \.workspace-layout/su);
 });
 
@@ -65,20 +65,22 @@ test('methodology section anchors are carried by headings in the reading flow',(
   assert.equal((html.match(/class="doc-section"/gu)||[]).length,24);
 });
 
-test('editorial palette keeps key text combinations above WCAG AA contrast',()=>{
+test('Seoul Type palette keeps key text combinations above WCAG AA contrast',()=>{
   const css=read('src/styles/editorial.css');
-  assert.match(css,/--hanji:\s*#f2f3ef/iu);
-  assert.match(css,/--ink-navy:\s*#16191f/iu);
-  assert.match(css,/--cobalt:\s*#2448d8/iu);
-  assert.match(css,/--signal-pink:\s*#ff5aa5/iu);
-  assert.match(css,/--signal-yellow:\s*#d9e64b/iu);
-  assert.ok(contrast('#2448d8','#f2f3ef')>=4.5);
-  assert.ok(contrast('#16191f','#f2f3ef')>=4.5);
-  assert.ok(contrast('#16191f','#ff5aa5')>=4.5);
-  assert.ok(contrast('#ffffff','#2448d8')>=4.5);
-  assert.ok(contrast('#16191f','#d9e64b')>=4.5);
+  assert.match(css,/--paper:#efede6/iu);
+  assert.match(css,/--ink:#17202c/iu);
+  assert.match(css,/--cobalt:#254bd8/iu);
+  assert.match(css,/--signal:#ed593d/iu);
+  assert.match(css,/--signal-deep:#ad3426/iu);
+  assert.match(css,/--acid:#e6e84d/iu);
+  assert.ok(contrast('#17202c','#efede6')>=4.5);
+  assert.ok(contrast('#5b6570','#efede6')>=4.5);
+  assert.ok(contrast('#254bd8','#efede6')>=4.5);
+  assert.ok(contrast('#ad3426','#efede6')>=4.5);
+  assert.ok(contrast('#17202c','#ed593d')>=4.5);
+  assert.ok(contrast('#17202c','#e6e84d')>=4.5);
   assert.match(css,/:focus-visible/u);
-  assert.match(css,/@media\s*\(prefers-reduced-motion:\s*reduce\)/u);
+  assert.match(css,/@media\(prefers-reduced-motion:reduce\)/u);
 });
 
 test('user-facing terminology stays Ukrainian and the input remains placeholder-free',()=>{
@@ -88,21 +90,20 @@ test('user-facing terminology stays Ukrainian and the input remains placeholder-
   assert.doesNotMatch(service,/Revised Romanization/u);
   assert.match(methodology,/Переглянута романізація \(RR\)/u);
   assert.doesNotMatch(methodology,/Revised Romanization/u);
-  assert.match(methodology,/Візуальна логіка/u);
-  assert.match(methodology,/джогакбо — корейського клаптикового полотна/u);
+  assert.match(methodology,/сучасну корейську типографіку/u);
+  assert.doesNotMatch(methodology,/джогакбо/u);
   const start=service.indexOf('<textarea id="source-input"');
   const end=service.indexOf('>',start);
   assert.ok(start>=0);
   assert.doesNotMatch(service.slice(start,end),/placeholder=/u);
 });
 
-
 test('the specimen keeps its three-colour editorial hierarchy without object labels',()=>{
   const css=read('src/styles/editorial.css');
-  assert.match(css,/\.editorial-site \.specimen-flow p span \{ display:\s*none/u);
-  assert.match(css,/\.editorial-site \.specimen-flow p:first-child\s*\{[^}]*var\(--ink-navy\)/su);
-  assert.match(css,/\.editorial-site \.specimen-flow p:nth-child\(2\)\s*\{[^}]*var\(--signal-yellow\)/su);
-  assert.match(css,/\.editorial-site \.specimen-flow p:nth-child\(3\)\s*\{[^}]*var\(--signal-pink\)/su);
+  assert.match(css,/\.editorial-site \.specimen-flow p span\{display:none\}/u);
+  assert.match(css,/\.editorial-site \.specimen-flow p:first-child\{background:var\(--ink\);color:var\(--surface\)\}/u);
+  assert.match(css,/\.editorial-site \.specimen-flow p:nth-child\(2\)\{background:var\(--acid\);color:var\(--ink\)\}/u);
+  assert.match(css,/\.editorial-site \.specimen-flow p:nth-child\(3\)\{background:var\(--signal\);color:var\(--ink\)\}/u);
 });
 
 test('the result provenance note belongs to the Ukrainian output, not the result grid',()=>{
@@ -111,5 +112,5 @@ test('the result provenance note belongs to the Ukrainian output, not the result
   const ukrainian=html.match(/<article id="panel-ukrainian"[\s\S]*?<\/article>/u)?.[0]||'';
   assert.match(ukrainian,/<p id="status-note" class="results-note result-provenance">/u);
   assert.doesNotMatch(html,/<\/article>\s*<p id="status-note"/u);
-  assert.match(css,/\.editorial-site \.result-provenance\s*\{[^}]*background:\s*transparent/su);
+  assert.match(css,/\.editorial-site \.result-provenance\{background:transparent\}/u);
 });

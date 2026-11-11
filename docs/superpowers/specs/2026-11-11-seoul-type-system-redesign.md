@@ -67,3 +67,8 @@ Taste-skill, Anthropic frontend-design, Impeccable, Emil Kowalski, Superpowers, 
 ## Contrast review follow-up
 
 The accent text used for small editorial indices is darkened to `#AD3426` for AA contrast on the page ground. The rendered review's focus assertion is updated to the chosen cobalt token `#254BD8` (RGB 37, 75, 216); it still requires a visible outline of at least 2px.
+
+
+## Rendered-review findings and correction
+
+The first exact-head review rendered all 10 page/viewport combinations without horizontal overflow and with the intended hero, specimen, workbench order, result grid, methodology layout and zero object-level chrome. It failed only because the existing review script required cobalt focus on every surface, while the dark workbench deliberately uses acid-yellow focus. The script now validates the context-specific focus token (acid inside the dark workbench, cobalt elsewhere). Legacy design-contract tests that still asserted the retired jogakbo palette and copy have been rewritten to assert the Seoul Type system and measured AA text combinations.

@@ -1001,3 +1001,6 @@ The first vertical-flow correction met the reading-order and object-chrome requi
 
 
 **Rendered-review contract follow-up:** the focus-colour assertion now matches the replacement cobalt token (`#254BD8`); the small signal-red text token is darkened to `#AD3426` for contrast on the paper ground. Re-run the full exact-head visual review after this correction.
+
+
+**CI reconciliation:** first visual-review run `42999975019` rendered all 10 combinations with no overflow, correct input/result order, preserved editorial compositions and zero object chrome; its only failure was a stale assertion requiring cobalt focus inside the dark workbench. First Verify run `42999975013` exposed six stale assertions in `tests/korean-editorial-design-contract.test.mjs` that still required the superseded jogakbo palette, markup and copy. Those tests and the focus contract were updated to the new system; exact-head reruns remain pending.

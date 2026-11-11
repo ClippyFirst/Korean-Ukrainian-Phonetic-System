@@ -207,3 +207,6 @@ A rendered desktop capture from the existing visual-review artifact [13841806466
 
 
 **Contrast and focus contract follow-up — 2026-11-11:** darkened the small signal-red index colour to `#AD3426` (5.44:1 against `#EF EDE6`); updated the rendered-review focus assertion to match the new cobalt token `#254BD8`. Exact-head visual review must pass before this redesign is marked DONE_VERIFIED.
+
+
+**Exact-head correction note — 2026-11-11:** the initial visual review exposed a stale global focus-colour expectation; the dark workbench correctly uses high-contrast acid-yellow focus while light reading surfaces use cobalt. The review now checks the active element's context. The initial Verify run exposed six stale assertions for the retired jogakbo design; `tests/korean-editorial-design-contract.test.mjs` now tests the replacement identity and contrast ratios. Rerun both gates before acceptance.
