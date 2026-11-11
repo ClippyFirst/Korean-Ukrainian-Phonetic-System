@@ -16,7 +16,7 @@ test('public web contract stays exactly two pages',()=>{
 });
 
 test('Korean visual identity and no-gradient rule are encoded in source',()=>{
-  const css=read('src/styles/main.css');\n  const editorial=read('src/styles/editorial.css');
+  const css=read('src/styles/main.css');
   assert.match(css,/--red:#cd2e3a/i);
   assert.match(css,/--blue:#0047a0/i);
   assert.doesNotMatch(css,/gradient\s*\(/i);
