@@ -24,7 +24,7 @@ test('ordinary and detailed modes disclose the two actual browser engines', () =
 });
 
 test('methodology documents all three native modes and their real constraints', () => {
-  for (const term of ['Строгий режим','М’який режим','Суперм’який режим','R002','R003','R007','orthographic-phonemic','11&nbsp;172','квадратних дужках','Apache-2.0','G2pBrowser','descriptive: false','engine_rules_ctx.js','engine_rules_phrase.js']) {
+  for (const term of ['Строгий режим','М’який режим','Суперм’який режим','R002','R003','R007','графемно-фонемний резерв','11&nbsp;172','квадратних дужках','Apache-2.0','G2pBrowser','descriptive: false','engine_rules_ctx.js','engine_rules_phrase.js']) {
     assert.ok(system.includes(term), 'methodology must document ' + term);
   }
   assert.match(engine, /morphologyMode==='super-soft'/u);
