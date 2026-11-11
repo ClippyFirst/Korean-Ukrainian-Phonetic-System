@@ -44,11 +44,11 @@ The interface stays mostly neutral. Pink and yellow are confined to the three-pa
 ## Layout
 
 - Quiet masthead with typographic Hangul mark; no flag or Taegeuk badge.
-- Editorial hero: copy on the left, asymmetric three-panel specimen on the right.
-- Service workbench: input and output form one continuous surface, split approximately 44/56 on wide screens and stacked on narrow screens.
+- Editorial hero: introduction followed by a vertical Hangul → IPA → Ukrainian specimen.
+- Service flow: input → mode → primary action → Ukrainian result → supporting IPA/romanization/Hanja → alternatives → detailed trace, always one column.
 - The Ukrainian result is the primary output; IPA, romanization, Hanja and trace data remain secondary but discoverable.
 - The Korean text area has no placeholder or text inside it; its visible label and instructions sit outside the editing surface.
-- Methodology uses a contents index, numbered section rail, readable text column and seam-based tables. The short design rationale is plain secondary copy, not a bordered callout card.
+- Methodology uses a contents list and one readable text column; section numbers are part of headings, not a side rail. Tables and evidence lists have no decorative header/footer bands. The short design rationale is plain secondary copy, not a bordered callout card.
 - Breakpoints: 980px (tablet adjustments), 760px (single-column workbench), 480px (compact navigation and input).
 
 ## Interaction and accessibility
@@ -79,7 +79,7 @@ These are references to working practices and visual systems, not claims about a
 
 ## Contemporary colour and typographic direction
 
-The current palette deliberately moves away from the familiar cream-and-terracotta editorial template. It uses a cool paper ground, ink, cobalt, signal pink and signal yellow. The bright colours appear only in the Hangul → IPA → Ukrainian specimen; the tool's controls remain mostly neutral with cobalt for action and focus.
+The current palette deliberately moves away from the familiar cream-and-terracotta editorial template. It uses a cool paper ground, ink, cobalt, signal pink and signal yellow. The bright colours appear only in the sequential Hangul → IPA → Ukrainian specimen; the tool's controls remain mostly neutral with cobalt for action and focus.
 
 This decision is informed by:
 - [Hanyul Hangul Collection (2024)](https://design.amorepacific.com/en/work/2024/hanyul/hangul-collection/), which treats Hangul's horizontal/vertical balance and the combination of consonants and vowels as a graphic construction system.
