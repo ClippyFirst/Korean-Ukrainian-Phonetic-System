@@ -73,3 +73,12 @@ test('keeps the user-facing romanization label in Ukrainian',()=>{
   assert.match(methodology,/Переглянута романізація \(RR\)/u);
   assert.doesNotMatch(methodology,/Revised Romanization/u);
 });
+
+test('keeps visible technical terminology Ukrainian where no standard English name is needed',()=>{
+  const service=read('index.html');
+  const methodology=read('system.html');
+  assert.doesNotMatch(service,/кожен блок Hangul/u);
+  assert.doesNotMatch(methodology,/orthographic-phonemic fallback/u);
+  assert.doesNotMatch(methodology,/лексичний round-trip|Round-trip сам/u);
+  assert.doesNotMatch(methodology,/через IPA conversion/u);
+});
