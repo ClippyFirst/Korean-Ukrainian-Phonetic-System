@@ -1068,3 +1068,56 @@ input,textarea { caret-color: var(--cobalt); }
   color: var(--ink-navy);
   font-weight: 700;
 }
+
+
+/* Diagnostic traces and evidence are also linear reading material, not grids. */
+.editorial-site .trace-columns { display: none !important; }
+.editorial-site .trace-list,
+.editorial-site .evidence-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.editorial-site .trace-row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 7px;
+  padding: 14px 0;
+  border: 0;
+  border-bottom: 1px solid var(--seam);
+  background: transparent;
+  font-size: .9rem;
+}
+.editorial-site .trace-row > [data-label] {
+  display: block;
+  padding: 0;
+  border: 0;
+}
+.editorial-site .trace-row > [data-label]::before {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--muted);
+  font-size: .78rem;
+  font-weight: 650;
+}
+.editorial-site .evidence-list p {
+  display: block;
+  margin: 0;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--seam);
+}
+.editorial-site .evidence-list b,
+.editorial-site .evidence-list span { display: block; }
+.editorial-site .research-options {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.editorial-site .action-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+.editorial-site .action-cell .button { width: 100%; }
