@@ -34,7 +34,7 @@ try {
         await page.locator('#result-ukrainian').waitFor({state:'visible'});
       }
 
-      const metrics = await page.evaluate(expectedWidth => {
+      const metrics = await page.evaluate(({expectedWidth,pageName}) => {
         const visible = selector => [...document.querySelectorAll(selector)]
           .filter(el => {
             const rect=el.getBoundingClientRect();
@@ -80,7 +80,7 @@ try {
             return el?{selector,top:Math.round(el.getBoundingClientRect().top)}:{selector,top:null};
           })
         };
-      }, viewport.width);
+      }, {expectedWidth:viewport.width,pageName});
 
       const file = `${outputDir}/${pageName.replace('.html','')}-${viewport.name}.png`;
       await page.screenshot({path:file,fullPage:true,animations:'disabled'});
