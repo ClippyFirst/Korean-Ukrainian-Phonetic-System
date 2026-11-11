@@ -1729,3 +1729,8 @@ The browser research engine now distinguishes three levels by confidence/coverag
 **Repository state:** implementation branch `design/vertical-flow-no-object-chrome-2026-11-11`, based on `main` at `b5f9de943e1d578da33d6fcb7ba7ef7301472d6a`; implementation snapshot `1689da6b0e03130e0f8a38a36498d5755ed8f981`; final PR head `5e6d6dfe77ecde48309b27f3fa50f730815d3b6d`. PR [#470](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/470) was merged as `5cf22096dee9caae74cb9be7643184ec8c8b32d8`. The post-merge Pages deployment and live UX smoke passed. No pronunciation rules, IPA adapter, lexical data or runtime dependencies were changed. No local npm/pytest run is claimed; verification evidence is from GitHub Actions.
 
 **Readiness:** the vertical-flow UI correction is DONE_VERIFIED and published on GitHub Pages. This does not change the repository's broader status as a partial research prototype; independent phonetic/target review and source-rights gates remain separate.
+
+
+## 2026-11-11 — correction to the vertical-layout interpretation
+
+The earlier #470/#473 implementation incorrectly made the entire service and methodology pages single-column. The user clarified that only the two service workbench windows — Korean text input and answer — should stack vertically. PR #475 restored the editorial hero, horizontal three-stage specimen, result detail grid and grouped methodology layouts; PR #477 corrected the IPA-yellow / Ukrainian-pink specimen palette. Both are merged. Exact rendered review, browser regression/build, Python matrix and data-integrity evidence are recorded in the master handoff. No linguistic runtime or corpus changes were made.

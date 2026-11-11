@@ -155,3 +155,14 @@ PR [#473](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/4
 **Verification:** rendered review [42988127319](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42988127319) passed desktop, tablet, mobile and narrow-mobile viewports, including overflow, focus, reduced-motion and touch-target checks. Test matrix [42988127248](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42988127248) passed 1,443/1,443 web tests and Python 3.11/3.12/3.13, wheel-install and teacher-corpus checks. System Verify [42988127245](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42988127245) passed browser build/regression and Python/data-integrity checks.
 
 **Outcome:** the visual regression is corrected and merged. The broader historical UX/UI audit remains PARTIAL because real screen-reader speech/verbosity, mode comprehension and measured conversion latency still need human evaluation.
+
+
+## 2026-11-11 — corrected scope of vertical layout
+
+The previous remediation over-applied the vertical-flow request to the entire site. The user's intended scope is only the two service workbench windows: Korean text entry first, answer window second. The hero, specimen, methodology contents, rule/evidence grids and tables must retain their editorial compositions.
+
+PR #475 restores those compositions and stacks only `.workspace-layout`. The hero and three-stage specimen return to a side-by-side desktop arrangement; result details retain their two-column grid; methodology contents and evidence layouts retain grouped grids. Object-level decorative label/header/footer strips remain absent. PR #477 restores the documented semantic accent mapping (IPA yellow, Ukrainian pink).
+
+**Verification:** rendered review [42990218241](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42990218241) passed all 10 page/viewport combinations. Exact-head tests [42991034581](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42991034581), System Verify [42990597830](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42990597830), and post-colour rendered review [42991034345](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42991034345) passed.
+
+**Outcome:** the layout-scope regression is corrected and merged. Human screen-reader, mode-comprehension and conversion-latency studies remain separate uncompleted UX evidence tasks.

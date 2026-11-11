@@ -19,11 +19,11 @@ Ukrainian-speaking users studying, reading or researching Korean. The service is
 
 ## Visual direction
 A contemporary editorial workbench informed by Korean graphic culture rather than literal national-symbol decoration:
-- Jogakbo / bojagi: visible seams, deliberate negative space and rhythm between distinct parts. Translate this into sequential editorial spacing, not a literal patchwork or multi-column composition.
+- Jogakbo / bojagi: visible seams, asymmetry, negative space and a measured rhythm between modular parts. Use a compact three-part specimen with distinct colour planes; do not flatten the whole page into one column.
 - Hangul as graphic architecture: use actual script blocks and Jamo as large typographic specimens, never random decorative glyphs.
 - Paper as a material cue: a cool neutral ground with no simulated grain or faux texture.
 - Contemporary Seoul graphic identities: confident Hangul typography, simple geometry, compact type systems and selective high-chroma colour planes.
-- A three-stage specimen uses ordinary text and spacing for Hangul, IPA and Ukrainian; there are no framed tiles or object-level title/footer bands. Cobalt is reserved for interactive action and focus.
+- A three-stage Hangul / IPA / Ukrainian specimen uses typographic scale and the project palette (ink / yellow / pink), without visible object-level labels or top/bottom strips. Cobalt is reserved for interactive action and focus.
 
 ## Current palette
 - Cool paper: #F2F3EF
@@ -42,10 +42,10 @@ Use a robust system stack already available locally, preferring Noto Sans KR / N
 
 ## Layout and interaction
 - Header becomes a quiet masthead with compact navigation.
-- Hero becomes a restrained editorial introduction with one typographic Hangul specimen; remove the generic oversized dark panel.
-- The workbench becomes the main visual anchor: input and output are one continuous modular composition, with Ukrainian output visually dominant and diagnostics secondary.
+- Hero pairs the editorial introduction with an asymmetric Hangul → IPA → Ukrainian specimen on desktop; it adapts to a single column only at narrow responsive breakpoints.
+- Only the two workbench windows are stacked: Korean text input first, answer window second. Within the answer window, the Ukrainian result remains dominant while IPA, romanization, Hanja and diagnostics keep their grouped desktop composition.
 - Research controls stay progressive-disclosure, not a wall of technical options.
-- Methodology becomes a readable long-form editorial document with a clear contents index, strong heading rhythm and responsive tables.
+- Methodology remains a long-form editorial page with a clear contents index, strong heading rhythm, grouped rule/evidence layouts and responsive tables.
 - Motion is limited to direct interaction feedback (field focus, disclosure, copy confirmation); no scroll choreography, parallax, autoplay or gratuitous reveal.
 - Desktop, tablet and narrow mobile layouts must remain usable without hiding controls or output.
 
