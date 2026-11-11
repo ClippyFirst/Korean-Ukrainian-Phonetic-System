@@ -123,7 +123,7 @@ test('user-facing terminology stays Ukrainian and the input remains placeholder-
   assert.doesNotMatch(service,/Revised Romanization/u);
   assert.match(methodology,/Переглянута романізація \(RR\)/u);
   assert.doesNotMatch(methodology,/Revised Romanization/u);
-  assert.match(methodology,/У розділах нижче зібрано джерела, правила й приклади/u);
+  assert.match(methodology,/Далі — джерела, правила, приклади та межі впевненості/u);
   assert.match(methodology,/<h2>Про систему<\/h2>/u);
   assert.doesNotMatch(methodology,/джогакбо/u);
   const start=service.indexOf('<textarea id="source-input"');
@@ -197,6 +197,22 @@ test('syllable trace uses a compact responsive information grid',()=>{
   assert.match(css,/grid-template-columns:repeat\(4,minmax\(0,1fr\)\)/u);
   assert.match(css,/@media\s*\(max-width:\s*900px\)/u);
   assert.match(css,/@media\s*\(max-width:\s*560px\)/u);
+});
+
+test('hero specimens and Ukrainian results use regular rather than bold glyph weight',()=>{
+  const service=read('index.html');
+  const methodology=read('system.html');
+  const css=read('src/styles/editorial.css');
+  for(const html of [service,methodology]){
+    const header=html.slice(html.indexOf('<header class="site-header">'),html.indexOf('</header>')+9);
+    assert.match(header,/class="specimen-label"/u);
+    assert.match(header,/class="specimen-value specimen-glyph"/u);
+    assert.match(header,/class="specimen-value specimen-ipa"/u);
+    assert.match(header,/class="specimen-value specimen-ua"/u);
+    assert.doesNotMatch(header,/<strong class="specimen-/u);
+  }
+  assert.match(css,/\.editorial-site \.specimen-flow \.specimen-value\{[^}]*font-weight:400!important/su);
+  assert.match(css,/\.editorial-site \.result-card:first-child \.result-body,[\s\S]*?#result-ukrainian\{font-weight:400!important/su);
 });
 
 test('paragraph emphasis does not create isolated bold words or glyphs',()=>{
