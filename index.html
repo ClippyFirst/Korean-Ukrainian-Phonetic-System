@@ -146,17 +146,17 @@
     <p id="copy-feedback" class="copy-feedback" role="status" hidden></p>
     <div id="issue-state" class="issue-state" hidden><p id="issue-text"></p></div>
     <details id="variant-panel" class="trace-panel trace-disclosure variant-panel" hidden>
-      <summary class="trace-summary"><strong>Альтернативні читання</strong><span>Показати інші варіанти вимови та пояснення, наскільки вони підтверджені.</span></summary>
+      <summary class="trace-summary"><span class="trace-summary-copy"><strong>Альтернативні читання</strong><small>Показати інші варіанти вимови та пояснення, наскільки вони підтверджені.</small></span></summary>
       <div class="trace-details">
         <p class="trace-explainer">Альтернативи відокремлено від основного результату. Пояснення до кожної з них указує, чому її запропоновано та наскільки вона надійна.</p>
         <div id="variant-list" class="trace-list"></div>
       </div>
     </details>
     <details class="trace-panel trace-disclosure">
-      <summary class="trace-summary"><strong>Поскладовий розбір</strong><span>Показати, як кожен склад перетворюється з корейського написання на український запис.</span></summary>
+      <summary class="trace-summary"><span class="trace-summary-copy"><strong>Поскладовий розбір</strong><small>Показати, як кожен склад перетворюється з корейського написання на український запис.</small></span></summary>
       <div class="trace-details">
       <p class="trace-explainer">У таблиці показано шлях кожного сегмента: корейське написання → визначена вимова → IPA → відповідність звуків українським літерам. Так можна побачити, на якому етапі виникла невизначеність або спрацювало окреме правило.</p>
-      <div id="trace-list" class="trace-list"></div>
+      <div id="trace-list" class="trace-list" aria-label="Корейський сегмент · вхід; Корейська вимова; IPA; IPA-токен → графема; Український запис; Нюанс / правило; Статус"></div>
       </div>
     </details>
   </section>
