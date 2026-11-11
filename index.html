@@ -41,10 +41,10 @@
         <p class="subtitle">Введіть корейський текст, щоб отримати його вимову українськими літерами. Відкрийте IPA та поскладовий розбір, якщо потрібні деталі. Сервіс не перекладає зміст.</p>
       </div>
       <aside class="hero-specimen" aria-label="Приклад шляху транскрипції">
-        <div class="specimen-flow" aria-label="Послідовність: корейське написання, IPA, українська адаптація">
-          <p><span>Корейське написання</span><strong class="specimen-glyph" lang="ko">시</strong></p>
-          <p><span>IPA</span><strong class="specimen-ipa">/ɕi/</strong></p>
-          <p><span>Українська адаптація</span><strong class="specimen-ua">ші</strong></p>
+        <div class="specimen-flow specimen-jogakbo" aria-label="Послідовність: корейське написання, IPA, українська адаптація">
+          <p class="specimen-patch specimen-patch-hangul"><span>Корейське написання</span><strong class="specimen-glyph" lang="ko">시</strong></p>
+          <p class="specimen-patch specimen-patch-ipa"><span>IPA</span><strong class="specimen-ipa">/ɕi/</strong></p>
+          <p class="specimen-patch specimen-patch-ukrainian"><span>Українська адаптація</span><strong class="specimen-ua">ші</strong></p>
         </div>
       </aside>
     </div>
@@ -90,19 +90,21 @@
         <details class="mode-disclosure"><summary>Чим відрізняється докладний аналіз</summary><p>Звичайний режим використовує готовий корейський рушій g2pK. <strong>Режим докладного аналізу</strong> перемикається на власний детермінований рушій Козака Кіма, розроблений у цьому проєкті. Він має строгий, м’який і суперм’який режими: від джерельно підтверджених правил до явно позначених евристичних кандидатів. Для окремих морфологічно складних форм це дає змогу отримати обґрунтованіший результат і побачити, як його сформовано; це не обіцянка вищої точності для кожного слова. <a href="./system.html#methodology-02c-kozak-kim">Порівняння рушіїв і методологія Козака Кіма</a>.</p></details>
       </fieldset>
       <div id="research-options" class="research-options" hidden>
-        <p class="soft-morphology-hint">Рушій Козака Кіма за замовчуванням працює у строгому режимі. Перемикачі нижче вмикають м’якші режими з ширшим покриттям і нижчою впевненістю; докладні відмінності описано в <a href="./system.html#methodology-02c-kozak-kim">методології</a>.</p>
-        <label class="soft-morphology-toggle" for="soft-morphology">
-          <input type="checkbox" id="soft-morphology" />
-          М’який режим · ширші евристики, низька впевненість
-        </label>
-        <p class="soft-morphology-hint">
-Зберігає колишню логіку суперм’якого режиму: застосовує формальні морфологічні та практичні евристики, а для невирішених переходів використовує типізований IPA-резерв. Це точніше за суто графемне складання, але менш надійно за суворий режим. Усі припущення мають низьку впевненість.
-        </p>
-        <label class="soft-morphology-toggle" for="super-soft-morphology">
-          <input type="checkbox" id="super-soft-morphology" />
-          Суперм’який режим · графемний IPA-резерв
-        </label>
-        <p class="soft-morphology-hint">Розкладає кожен склад хангиля на початкову, голосну та кінцеву графеми, формує з них IPA й передає її до українського адаптера. Контекстні фонологічні та морфологічні правила навмисно не вгадуються. Це найнижчий рівень точності, але найширше графемне покриття; результат позначається як непідтверджений кандидат.</p>
+        <div class="morphology-control">
+          <div class="morphology-control-heading">
+            <label for="morphology-level">Рівень припущень</label>
+            <output id="morphology-level-value" for="morphology-level">Строгий</output>
+          </div>
+          <input id="morphology-level" type="range" min="0" max="2" step="1" value="0" list="morphology-levels" aria-valuetext="Строгий" aria-describedby="morphology-level-guidance">
+          <datalist id="morphology-levels"><option value="0" label="Строгий"></option><option value="1" label="М’який"></option><option value="2" label="Суперм’який"></option></datalist>
+          <div class="morphology-level-labels" aria-hidden="true"><span>Строгий</span><span>М’який</span><span>Суперм’який</span></div>
+          <p id="morphology-level-guidance" class="soft-morphology-hint" aria-live="polite">Лише правила з належним джерельним обґрунтуванням. Найвища обережність; невирішені випадки залишаються невизначеними.</p>
+        </div>
+        <div hidden aria-hidden="true">
+          <input type="checkbox" id="soft-morphology" hidden>
+          <input type="checkbox" id="super-soft-morphology" hidden>
+        </div>
+        <p class="soft-morphology-hint">Зміна рівня впливає на дослідницький рушій Козака Кіма. Що м’якший режим, то ширше покриття — і більше припущень із нижчою впевненістю. <a href="./system.html#methodology-02c-kozak-kim">Як працюють ці режими</a>.</p>
       </div>
     <div class="action-row">
 <div class="action-cell">
