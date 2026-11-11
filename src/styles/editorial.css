@@ -356,7 +356,7 @@ a:hover{color:var(--signal-deep)}
 .editorial-site .morphology-control-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;color:var(--surface);font-size:.86rem}
 .editorial-site .morphology-control-heading label{font-weight:700}
 .editorial-site .morphology-control-heading output{color:var(--palette-ochre);font-weight:750}
-.editorial-site #morphology-level{width:100%;height:28px;margin:2px 0;accent-color:var(--palette-ochre);cursor:pointer}
+.editorial-site #morphology-level{width:100%;height:44px;margin:2px 0;accent-color:var(--palette-ochre);cursor:pointer}
 .editorial-site #morphology-level:focus-visible{outline:2px solid var(--palette-ochre);outline-offset:4px}
 .editorial-site .morphology-level-labels{display:flex;justify-content:space-between;gap:12px;color:var(--muted-inverse);font-size:.74rem;line-height:1.4}
 .editorial-site .morphology-level-labels span:nth-child(2){text-align:center}
@@ -375,7 +375,7 @@ a:hover{color:var(--signal-deep)}
 @media(max-width:900px){.editorial-site .trace-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.editorial-site .trace-list{grid-template-columns:minmax(0,1fr)}.editorial-site .trace-row{grid-template-columns:repeat(2,minmax(0,1fr));padding:10px}}
 
-.editorial-site #morphology-level{appearance:none;-webkit-appearance:none;height:28px;background:transparent}
+.editorial-site #morphology-level{appearance:none;-webkit-appearance:none;height:44px;background:transparent}
 .editorial-site #morphology-level::-webkit-slider-runnable-track{height:6px;border:1px solid #718096;border-radius:999px;background:linear-gradient(90deg,var(--palette-jade),var(--palette-ochre),var(--palette-clay))}
 .editorial-site #morphology-level::-moz-range-track{height:6px;border:1px solid #718096;border-radius:999px;background:linear-gradient(90deg,var(--palette-jade),var(--palette-ochre),var(--palette-clay))}
 .editorial-site #morphology-level::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;margin-top:-8px;border:3px solid var(--palette-ink);border-radius:50%;background:var(--palette-paper);box-shadow:0 0 0 2px var(--palette-ochre)}
