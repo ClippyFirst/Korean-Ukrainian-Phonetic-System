@@ -85,10 +85,18 @@ test('methodology reading guide and sections remain a vertical sequence with rea
   assert.equal((html.match(/class="doc-section"/gu)||[]).length,24);
   const firstSection=html.match(/<section class="doc-section">([\s\S]*?)<\/section>/u)?.[1]||'';
   assert.match(firstSection,/class="callout/u,'the normative-base module includes a visible interpretive object');
+  const moduleStarts=[...html.matchAll(/<section[^>]*class="[^"]*doc-section[^"]*"[^>]*>/gu)].map(match=>match.index);
+  assert.equal(moduleStarts.length,25,'all 25 methodology modules remain in source order');
+  moduleStarts.forEach((moduleStart,index)=>{
+    const moduleEnd=moduleStarts[index+1]??html.indexOf('</main>',moduleStart);
+    const module=html.slice(moduleStart,moduleEnd);
+    assert.match(module,/<table\b|<ul\b|<ol\b|<pre\b|class="[^"]*(?:layers|rule-grid|limits|compare-strip|callout|decision-table|vowel-grid|evidence-list|repo-links)[^"]*"/u,`methodology module ${index+1} contains a real content object`);
+  });
   assert.match(css,/\.editorial-site\.system-page \.doc-section\s*\{[^}]*display:block/su);
+  assert.match(css,/\.editorial-site \.system-intro\{[^}]*border:0/su);
 });
 
-test('jogakbo palette is restrained and Seoul Type action contrasts remain accessible',()=>{
+test('jogakbo palette is restrained and action contrasts remain accessible',()=>{
   const css=read('src/styles/editorial.css');
   for(const token of ['--jogakbo-ink:#24354b','--jogakbo-jade:#9db7a7','--jogakbo-blue:#a9bac6','--jogakbo-ochre:#c9a66b','--jogakbo-clay:#b9857a','--jogakbo-ground:#f1eee5']){
     assert.ok(css.toLowerCase().includes(token),`missing ${token}`);
