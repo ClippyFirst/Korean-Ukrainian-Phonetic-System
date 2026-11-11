@@ -41,6 +41,6 @@
 
 ### Task 3: Verify rendered layout and reconcile documentation
 
-- [ ] Extend the Playwright visual review to assert provenance ownership and exactly five supporting result cards.
-- [ ] Run the exact-branch Verify workflow and rendered review at 1440, 1024, 768, 390 and 320 px.
-- [ ] Update the UX audit and master handoff with exact run IDs, commit and remaining evidence limits.
+- [x] Extend the Playwright visual review to assert provenance ownership and exactly five supporting result cards.
+- [x] Run exact-branch Verify, Tests, Browser G2P, test-register extraction, master/research artifacts and rendered review at 1440, 1024, 768, 390 and 320 px.
+- [x] Update the UX audit and master handoff with exact run IDs and remaining evidence limits; PR #479 is ready to merge.
