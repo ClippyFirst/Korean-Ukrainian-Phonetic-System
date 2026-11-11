@@ -10,7 +10,7 @@ Current visual identity for the GitHub Pages service and its methodology page.
 
 The system borrows compositional principles, not decorative motifs:
 
-- **Jogakbo / bojagi:** asymmetric modular panels, visible seams and measured negative space. The three-stage Hangul → IPA → Ukrainian sequence expresses this grammar through order and spacing, not separate panels.
+- **Jogakbo / bojagi:** visible seams, measured negative space and a deliberate rhythm between distinct parts. The three-stage Hangul → IPA → Ukrainian sequence translates that logic into order and spacing, not separate panels.
 - **Hangul as structure:** real syllable blocks are used as typography. No random Jamo, fake pseudo-writing or decorative script textures.
 - **Paper as material cue:** a cool neutral ground with no simulated grain or fake paper noise; the surface stays subordinate to the live text.
 - **Contemporary Seoul graphic language:** confident Hangul forms, simple geometry, compact type systems and selective high-chroma color planes. The palette belongs to this project, not to a claim about one Korean tradition.
