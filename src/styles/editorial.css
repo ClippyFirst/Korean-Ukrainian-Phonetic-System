@@ -349,7 +349,7 @@ a:hover{color:var(--signal-deep)}
 
 
 /* One typographic voice per prose line: emphasis stays in headings and labels. */
-.editorial-site p strong,.editorial-site p b{font-weight:inherit}
+.editorial-site p strong,.editorial-site p b,.editorial-site li strong,.editorial-site li b,.editorial-site td strong,.editorial-site td b{font-weight:inherit}
 
 /* Research level: a single, explicit three-stop control with live explanation. */
 .editorial-site .morphology-control{display:grid;gap:9px}
