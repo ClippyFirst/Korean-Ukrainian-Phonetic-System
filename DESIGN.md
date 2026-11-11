@@ -38,6 +38,7 @@ The interface stays mostly neutral. Pink and yellow are confined to the three-pa
 - Use the local system stack: Noto Sans / Noto Sans KR, then platform sans-serif fallbacks.
 - Do not load fonts from third-party CDNs; the site must work offline and retain its local-only CSP.
 - Use size, weight, line-height and script pairing for hierarchy rather than decorative italics or tracked-out labels.
+- Interface labels, metadata and helper copy never fall below 13px; dense UI may be compact, but not tiny.
 - Keep long-form methodology text to a readable measure (75ch maximum).
 
 ## Layout
@@ -46,7 +47,8 @@ The interface stays mostly neutral. Pink and yellow are confined to the three-pa
 - Editorial hero: copy on the left, asymmetric three-panel specimen on the right.
 - Service workbench: input and output form one continuous surface, split approximately 44/56 on wide screens and stacked on narrow screens.
 - The Ukrainian result is the primary output; IPA, romanization, Hanja and trace data remain secondary but discoverable.
-- Methodology uses a contents index, numbered section rail, readable text column and seam-based tables.
+- The Korean text area has no placeholder or text inside it; its visible label and instructions sit outside the editing surface.
+- Methodology uses a contents index, numbered section rail, readable text column and seam-based tables. The short design rationale is plain secondary copy, not a bordered callout card.
 - Breakpoints: 980px (tablet adjustments), 760px (single-column workbench), 480px (compact navigation and input).
 
 ## Interaction and accessibility
