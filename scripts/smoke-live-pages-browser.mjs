@@ -50,7 +50,16 @@ try {
   // source-level unit test: every Hangul syllable in this mixed input must
   // have IPA and a Ukrainian candidate, with explicit coverage/confidence UI.
   await page.locator('#mode-research').check();
-  await page.locator('#super-soft-morphology').check();
+  const morphologyLevel = page.locator('#morphology-level');
+  await morphologyLevel.evaluate((input) => {
+    input.value = '2';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  await page.waitForFunction(() =>
+    document.querySelector('#morphology-level')?.getAttribute('aria-valuetext') === 'Суперм’який'
+  );
+  assert.equal(await morphologyLevel.inputValue(), '2',
+    'live Super-soft mode must be selected through the public three-position slider');
   const superSoftInput = '짧은소리의 베갯잇 ㄱ 123 🙂';
   await page.locator('#source-input').fill(superSoftInput);
   await page.waitForFunction(() => {
