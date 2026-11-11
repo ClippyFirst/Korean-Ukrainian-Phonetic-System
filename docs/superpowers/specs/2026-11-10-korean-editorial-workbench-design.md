@@ -23,7 +23,7 @@ A contemporary editorial workbench informed by Korean graphic culture rather tha
 - Hangul as graphic architecture: use actual script blocks and Jamo as large typographic specimens, never random decorative glyphs.
 - Paper as a material cue: a cool neutral ground with no simulated grain or faux texture.
 - Contemporary Seoul graphic identities: confident Hangul typography, simple geometry, compact type systems and selective high-chroma colour planes.
-- A three-panel specimen uses ink for Hangul, signal yellow for IPA and signal pink for Ukrainian. Cobalt is reserved for interactive action and focus.
+- A three-stage specimen uses ordinary text and spacing for Hangul, IPA and Ukrainian; there are no framed tiles or object-level title/footer bands. Cobalt is reserved for interactive action and focus.
 
 ## Current palette
 - Cool paper: #F2F3EF
