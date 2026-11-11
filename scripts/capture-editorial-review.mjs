@@ -158,7 +158,7 @@ try {
           inWorkbench:Boolean(active.closest('.workbench'))
         };
       });
-      const expectedFocusColor=focusStyle.inWorkbench?'rgb(230, 232, 77)':'rgb(37, 75, 216)';
+      const expectedFocusColor=focusStyle.inWorkbench?'rgb(215, 193, 138)':'rgb(73, 100, 119)';
       if (focusStyle.outlineStyle === 'none' || focusStyle.outlineWidth < 2 || focusStyle.outlineColor !== expectedFocusColor) {
         failures.push(`${pageName} at ${viewport.name}: keyboard focus does not match the high-contrast context token: ${JSON.stringify(focusStyle)}`);
       }
