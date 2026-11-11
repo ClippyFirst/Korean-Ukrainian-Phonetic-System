@@ -44,3 +44,11 @@
 - [x] Extend the Playwright visual review to assert provenance ownership and exactly five supporting result cards.
 - [x] Run exact-branch Verify, Tests, Browser G2P, test-register extraction, master/research artifacts and rendered review at 1440, 1024, 768, 390 and 320 px.
 - [x] Update the UX audit and master handoff with exact run IDs and remaining evidence limits; PR #479 is ready to merge.
+
+
+## Final outcome
+
+- [x] PR [#479](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/479) merged to main as `da33e2279bfe7218c1ad4c4632dfb44d18f3f3bf`.
+- [x] Post-merge main Tests [42997176514](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42997176514), Verify [42997176635](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42997176635), master/research artifacts [42997176540](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42997176540) passed.
+- [x] GitHub Pages deployment and public HTTP/live browser smoke [42997176343](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42997176343) passed.
+- [x] The public service is updated; no pronunciation or target-adaptation code was changed.
