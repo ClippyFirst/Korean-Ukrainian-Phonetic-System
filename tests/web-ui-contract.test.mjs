@@ -221,7 +221,7 @@ test('Jogakbo masthead and vertical editorial modules preserve the two workbench
   assert.match(system,/id="methodology-reading-guide"/);
   assert.match(css,/--jogakbo-ink:var\(--palette-ink\)/i);
   assert.match(css,/--jogakbo-jade:var\(--palette-jade\)/i);
-  assert.match(css,/--signal:var\(--palette-clay\)/i);
+  assert.match(css,/--signal:var\(--palette-signal\)/i);
   assert.match(css,/--acid:var\(--palette-acid\)/i);
   assert.match(css,/--cobalt:var\(--palette-indigo\)/i);
   assert.match(css,/--signal-deep:var\(--palette-clay-deep\)/i);
