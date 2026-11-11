@@ -40,6 +40,7 @@ test('service modules pair the input and output objects with concise guidance',(
   assert.ok(input>=0&&inputGuide>input,'input object is followed by its usage guidance');
   assert.ok(outputGuide>=0&&output>outputGuide,'output guidance introduces the result object');
   assert.match(html,/class="output-module-title"/u);
+  assert.match(html,/Український запис — головний результат/u);
   assert.match(html,/class="module-guidance module-guidance-dark"/u);
   assert.match(html,/натисніть «Перетворити»/u);
   assert.match(html,/class="module-guidance module-guidance-light"/u);
@@ -126,6 +127,7 @@ test('user-facing terminology stays Ukrainian and the input remains placeholder-
   assert.match(methodology,/Переглянута романізація \(RR\)/u);
   assert.doesNotMatch(methodology,/Revised Romanization/u);
   assert.match(methodology,/У розділах нижче зібрано джерела, правила й приклади/u);
+  assert.match(methodology,/<h2>Про систему<\/h2>/u);
   assert.doesNotMatch(methodology,/джогакбо/u);
   const start=service.indexOf('<textarea id="source-input"');
   const end=service.indexOf('>',start);
