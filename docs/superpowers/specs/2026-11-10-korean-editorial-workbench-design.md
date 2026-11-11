@@ -19,7 +19,7 @@ Ukrainian-speaking users studying, reading or researching Korean. The service is
 
 ## Visual direction
 A contemporary editorial workbench informed by Korean graphic culture rather than literal national-symbol decoration:
-- Jogakbo / bojagi: modular composition, visible seams, asymmetrical patchwork rhythm, deliberate negative space. Use this as layout logic, not a background pattern.
+- Jogakbo / bojagi: visible seams, deliberate negative space and rhythm between distinct parts. Translate this into sequential editorial spacing, not a literal patchwork or multi-column composition.
 - Hangul as graphic architecture: use actual script blocks and Jamo as large typographic specimens, never random decorative glyphs.
 - Paper as a material cue: a cool neutral ground with no simulated grain or faux texture.
 - Contemporary Seoul graphic identities: confident Hangul typography, simple geometry, compact type systems and selective high-chroma colour planes.
