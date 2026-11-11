@@ -111,3 +111,15 @@ test('keeps editorial microcopy at a readable minimum size',()=>{
   assert.ok(sizes.length>0,'editorial typography tokens are present');
   assert.ok(Math.min(...sizes)>=13,`smallest editorial font is ${Math.min(...sizes)}px; minimum is 13px`);
 });
+
+test('keeps the visual rationale as plain editorial copy, not a callout card',()=>{
+  const css=read('src/styles/editorial.css');
+  const selector='.system-page .hero-copy .design-rationale';
+  const start=css.indexOf(selector);
+  assert.notEqual(start,-1,'the rationale has a scoped style rule');
+  const open=css.indexOf('{',start);
+  const close=css.indexOf('}',open);
+  const rule=css.slice(open+1,close);
+  assert.equal(rule.includes('border-left'),false,'no coloured callout rail');
+  assert.equal(rule.includes('background'),false,'no inset callout background');
+});
