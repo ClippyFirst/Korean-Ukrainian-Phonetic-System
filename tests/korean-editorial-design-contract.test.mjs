@@ -100,7 +100,7 @@ test('methodology reading guide and sections remain a vertical sequence with rea
 
 test('jogakbo palette is restrained and action contrasts remain accessible',()=>{
   const css=read('src/styles/editorial.css');
-  for(const token of ['--jogakbo-ink:#24354b','--jogakbo-jade:#9db7a7','--jogakbo-blue:#a9bac6','--jogakbo-ochre:#c9a66b','--jogakbo-clay:#b9857a','--jogakbo-ground:#f1eee5']){
+  for(const token of ['--jogakbo-ink:var(--palette-ink)','--jogakbo-jade:var(--palette-jade)','--jogakbo-blue:var(--palette-blue)','--jogakbo-ochre:var(--palette-ochre)','--jogakbo-clay:var(--palette-clay)','--jogakbo-ground:var(--palette-paper)']){
     assert.ok(css.toLowerCase().includes(token),`missing ${token}`);
   }
   for(const token of ['--palette-paper:#efede6','--palette-ink:#17202c','--palette-jade:#9db7a7','--palette-blue:#a9bac6','--palette-ochre:#c9a66b','--palette-clay:#ed593d','--palette-indigo:#254bd8']){
