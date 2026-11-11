@@ -121,3 +121,10 @@ These references ground the motif's material and compositional qualities. They a
 - Matt Pocock: test-first implementation, public-contract assertions and small inspectable changes.
 - Taste-skill principles were used for coherence and restraint. Its local checker was not run because this session had no local repository checkout. Unlazy/Ponytail-specific runtimes were not available and are not claimed as executed.
 - Superdesign CLI preflight timed out twice before the user authorized proceeding without it. No Superdesign mockup is claimed.
+
+
+## Follow-up refinement — 2026-11-11
+
+The visual system now uses one palette-token source for page surfaces, ink and accents; legacy CSS variables are aliases rather than independent colour choices. The Hangul/IPA/Ukrainian specimen uses a stitched, irregular patch composition. Research analysis is selected with a three-stop strict/soft/super-soft slider and a live confidence explanation. Syllable traces are grouped into responsive data cards rather than a long left-aligned column. Prose paragraphs use a single text weight; hierarchy is carried by headings and controls.
+
+The slider changes only the existing research-engine mode selection. No phonological rules, IPA values, Ukrainian correspondences, corpus data or linguistic claims changed.
