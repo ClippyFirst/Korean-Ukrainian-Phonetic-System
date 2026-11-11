@@ -16,7 +16,7 @@
   --palette-blue:#a9bac6;
   --palette-ochre:#c9a66b;
   --palette-clay:#b9857a;
-  --palette-signal:#b96f5f;
+  --palette-signal:#88574d;
   --palette-clay-deep:#88574d;
   --palette-blue-soft:#e5edf7;
   --palette-success:#28644e;
@@ -658,7 +658,7 @@ a:hover{color:var(--signal-deep)}
 .editorial-site .mini-button:hover,
 .editorial-site .button-secondary:hover{border-color:var(--palette-acid);background:var(--panel-muted);color:var(--surface)}
 .editorial-site .button-primary{border-color:var(--palette-ochre);background:var(--palette-ochre);color:var(--palette-ink)}
-.editorial-site .button-primary:hover{border-color:var(--palette-signal);background:var(--palette-signal);color:var(--palette-ink)}
+.editorial-site .button-primary:hover{border-color:var(--palette-signal);background:var(--palette-ochre);color:var(--palette-ink)}
 .editorial-site .mode-option:has(input:checked){border-top-color:var(--palette-acid);background:var(--panel-muted);box-shadow:inset 3px 0 0 var(--palette-acid)}
 .editorial-site .mode-option input,
 .editorial-site .soft-morphology-toggle input{accent-color:var(--palette-ochre)}
