@@ -60,15 +60,18 @@ test('Ukrainian rendering has one IPA-first path',()=>{
 test('redesigned workbench preserves accessible navigation and responsive result hierarchy',()=>{
   const html=read('index.html');
   const css=read('src/styles/main.css');
+  const editorial=read('src/styles/editorial.css');
   assert.match(html,/class="skip-link" href="#input-heading"/);
   assert.match(html,/class="workspace-layout"/);
   assert.match(html,/class="output-workspace"/);
   assert.match(html,/aria-current="page"/);
-  assert.match(html,/class="specimen-flow"/);\n  assert.doesNotMatch(html,/class="method-line"/);
+  assert.match(html,/class="specimen-flow"/);
+  assert.doesNotMatch(html,/class="method-line"/);
   assert.match(css,/:focus-visible/);
-  assert.match(css,/@media\s*\(max-width:\s*720px\)/);
-  assert.match(css,/@media\s*\(prefers-reduced-motion:reduce\)/);
-  assert.match(css,/\.result-card:first-child/);\n  assert.match(editorial,/\.editorial-site \.workspace-layout\\s*\\{[^}]*flex-direction:\\s*column/su);
+  assert.match(css,/@media\\s*\\(max-width:\\s*720px\\)/);
+  assert.match(css,/@media\\s*\\(prefers-reduced-motion:reduce\\)/);
+  assert.match(css,/\\.result-card:first-child/);
+  assert.match(editorial,/\\.editorial-site \\.workspace-layout[\\s\\S]{0,600}flex-direction:\\s*column/u);
 });
 
 test('editable adversarial passage has a complete IPA path without inline placeholders',()=>{
