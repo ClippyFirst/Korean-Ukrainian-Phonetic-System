@@ -199,6 +199,22 @@ test('syllable trace uses a compact responsive information grid',()=>{
   assert.match(css,/@media\s*\(max-width:\s*560px\)/u);
 });
 
+test('hero specimens and Ukrainian results use regular rather than bold glyph weight',()=>{
+  const service=read('index.html');
+  const methodology=read('system.html');
+  const css=read('src/styles/editorial.css');
+  for(const html of [service,methodology]){
+    const header=html.match(/<header class="site-header">[\\s\\S]*?<\\/header>/u)?.[0]||'';
+    assert.match(header,/class="specimen-label"/u);
+    assert.match(header,/class="specimen-value specimen-glyph"/u);
+    assert.match(header,/class="specimen-value specimen-ipa"/u);
+    assert.match(header,/class="specimen-value specimen-ua"/u);
+    assert.doesNotMatch(header,/<strong class="specimen-/u);
+  }
+  assert.match(css,/\.editorial-site \.specimen-flow \.specimen-value\\{[^}]*font-weight:400!important/su);
+  assert.match(css,/\.editorial-site \.result-card:first-child \.result-body,[\\s\\S]*?#result-ukrainian\\{font-weight:400!important/su);
+});
+
 test('paragraph emphasis does not create isolated bold words or glyphs',()=>{
   const css=read('src/styles/editorial.css');
   assert.match(css,/\.editorial-site p strong,\.editorial-site p b,\.editorial-site li strong,\.editorial-site li b,\.editorial-site td strong,\.editorial-site td b\s*\{[^}]*font-weight:inherit/u);
