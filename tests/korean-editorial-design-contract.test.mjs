@@ -82,3 +82,10 @@ test('keeps visible technical terminology Ukrainian where no standard English na
   assert.doesNotMatch(methodology,/лексичний round-trip|Round-trip сам/u);
   assert.doesNotMatch(methodology,/через IPA conversion/u);
 });
+
+test('methodology explains the Korean visual concept in Ukrainian',()=>{
+  const methodology=read('system.html');
+  assert.match(methodology,/Візуальна логіка/u);
+  assert.match(methodology,/джогакбо — корейського клаптикового полотна/u);
+  assert.match(methodology,/хангиль, IPA й український запис/u);
+});
