@@ -23,25 +23,20 @@
         <h1>Як працює корейсько-українська транскрипція</h1>
         <p class="subtitle">Методологія пояснює шлях від корейського написання й фонологічного аналізу до IPA та українського запису. Для кожного етапу вказано джерела, правила й межі застосування.</p>
         <p class="design-rationale"><strong>Візуальна логіка.</strong> Композиція відсилає до джогакбо — корейського клаптикового полотна: окремі площини з’єднані видимими швами. Так само розділено хангиль, IPA й український запис; стриманий паперовий фон залишає текст головним, а яскраві кольори позначають етапи переходу.</p>
-        <div class="method-line" aria-label="Послідовність обробки"><span><b>Орфографія</b></span><span><b>Фонологія</b></span><span><b>IPA</b></span><span><b>Українська адаптація</b></span></div>
       </div>
       <aside class="hero-specimen" aria-label="Схема фонетичного аналізу">
-        <div class="specimen-top"><span>Робочий приклад</span><span>IPA — проміжний етап</span></div>
-        <div class="specimen-grid" aria-label="Приклад аналізу 읽고">
-          <div class="specimen-tile specimen-tile-hangul"><span class="specimen-label">Написання</span><span class="specimen-glyph" lang="ko">읽고</span></div>
-          <div class="specimen-tile specimen-tile-ipa"><span class="specimen-label">Поверхнева форма · IPA</span><strong class="specimen-ipa">[일꼬]<br>/il.k͈o/</strong></div>
-          <div class="specimen-tile specimen-tile-ua"><span class="specimen-label">Український запис</span><strong class="specimen-ua">ілко</strong></div>
-          
+        <div class="specimen-flow" aria-label="Послідовність аналізу: написання, поверхнева вимова, IPA, український запис">
+          <p><span>Корейське написання</span><strong class="specimen-glyph" lang="ko">읽고</strong></p>
+          <p><span>Поверхнева вимова та IPA</span><strong class="specimen-ipa">[일꼬] · /il.k͈o/</strong></p>
+          <p><span>Українська адаптація</span><strong class="specimen-ua">ілко</strong></p>
         </div>
-        <div class="specimen-bottom"><span>Написання → поверхнева вимова → IPA → українська</span><span>Ілюстративний приклад</span></div>
       </aside>
     </div>
   </header>
 
   <section class="system-intro">
-    <div class="system-index">00</div>
-    <div><h2>Авторська система української передачі корейської вимови</h2><p>Це дослідницький проєкт практичної передачі корейської вимови українською. Він не має статусу офіційного українського стандарту.</p></div>
-    <div class="status-chip"><span></span> контроль за джерелами</div>
+    <h2>Авторська система української передачі корейської вимови</h2>
+    <p>Це дослідницький проєкт практичної передачі корейської вимови українською. Він не має статусу офіційного українського стандарту; рішення та їхні межі описано нижче.</p>
   </section>
 
   <nav class="methodology-toc" aria-labelledby="methodology-toc-title">
@@ -58,15 +53,15 @@
   </nav>
 
   <section class="doc-section">
-    <div class="doc-label" id="methodology-00a">00A</div><div class="doc-content"><h2>Корейська вимова й українська адаптація — два окремі об’єкти перевірки</h2><p>Основним джерелом для правил корейської вимови є <a href="https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002" rel="noreferrer">Національний інститут корейської мови — 표준 발음법</a>. Для форм із перевіреною словниковою вимовою сервіс показує окремий рядок «Нормативна корейська вимова». Це не надає офіційного статусу українському запису: попередні українські відповідники потребують окремої фонетичної та редакторської оцінки. Якщо морфологічні умови правила не можна підтвердити, система має показати невизначеність, а не вгадувати.</p></div>
+    <div class="doc-content"><h2 id="methodology-00a">Корейська вимова й українська адаптація — два окремі об’єкти перевірки</h2><p>Основним джерелом для правил корейської вимови є <a href="https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002" rel="noreferrer">Національний інститут корейської мови — 표준 발음법</a>. Для форм із перевіреною словниковою вимовою сервіс показує окремий рядок «Нормативна корейська вимова». Це не надає офіційного статусу українському запису: попередні українські відповідники потребують окремої фонетичної та редакторської оцінки. Якщо морфологічні умови правила не можна підтвердити, система має показати невизначеність, а не вгадувати.</p></div>
   </section>
 
   <section class="doc-section">
-    <div class="doc-label" id="methodology-01">01</div><div class="doc-content"><h2>Транскрипція, а не переклад</h2><p>Система відповідає на запитання «як передати корейське звучання українськими засобами?», а не «що означає корейський текст?». У практичному режимі ціль — природний для українського читача запис із збереженням суттєвої фонетичної інформації.</p><div class="callout red"><strong>Основний принцип</strong><span>Корейська фонетична доказовість → українська фонетика → українська фонологія/орфографія → документований український прецедент → порівняльні слов’янські системи.</span></div></div>
+    <div class="doc-content"><h2 id="methodology-01">Транскрипція, а не переклад</h2><p>Система відповідає на запитання «як передати корейське звучання українськими засобами?», а не «що означає корейський текст?». У практичному режимі ціль — природний для українського читача запис із збереженням суттєвої фонетичної інформації.</p><div class="callout red"><strong>Основний принцип</strong><span>Корейська фонетична доказовість → українська фонетика → українська фонологія/орфографія → документований український прецедент → порівняльні слов’янські системи.</span></div></div>
   </section>
 
   <section class="doc-section">
-    <div class="doc-label" id="methodology-02">02</div><div class="doc-content"><h2>Шість рівнів</h2><div class="layers">
+    <div class="doc-content"><h2 id="methodology-02">Шість рівнів</h2><div class="layers">
       <article><b>01</b><strong>Корейська орфографія</strong><span>хангиль, складові блоки та окремі літери</span></article>
       <article><b>02</b><strong>Корейська фонологія</strong><span>фонеми та протиставлення</span></article>
       <article><b>03</b><strong>Контекстуальні правила</strong><span>перенесення приголосного, асиміляція, посилення та вставлення</span></article>
@@ -77,7 +72,7 @@
   </section>
 
   <section class="doc-section">
-    <div class="doc-label" id="methodology-02a">02A</div><div class="doc-content"><h2>Звичайний режим використовує готовий рушій g2pK до етапу IPA</h2><p>Браузерний сервіс використовує локально адаптоване ядро з <a href="https://github.com/ntdgo/korean-pronunciation" rel="noreferrer">korean-pronunciation 1.0.1</a> — JavaScript-порту g2pK під Apache-2.0. З ядра вилучено невикористаний CMU-словник англійської вимови, англійську транслітерацію та перетворення чисел: сервіс зберігає ці фрагменти буквально. Це суттєво зменшує завантаження. Код працює локально в браузері без Python, MeCab, API-сервера чи мережевого запиту; повідомлення про авторство та повний текст ліцензії копіюються до збірки.</p><div class="layers">
+    <div class="doc-content"><h2 id="methodology-02a">Звичайний режим використовує готовий рушій g2pK до етапу IPA</h2><p>Браузерний сервіс використовує локально адаптоване ядро з <a href="https://github.com/ntdgo/korean-pronunciation" rel="noreferrer">korean-pronunciation 1.0.1</a> — JavaScript-порту g2pK під Apache-2.0. З ядра вилучено невикористаний CMU-словник англійської вимови, англійську транслітерацію та перетворення чисел: сервіс зберігає ці фрагменти буквально. Це суттєво зменшує завантаження. Код працює локально в браузері без Python, MeCab, API-сервера чи мережевого запиту; повідомлення про авторство та повний текст ліцензії копіюються до збірки.</p><div class="layers">
       <article><b>01</b><strong>Хангиль</strong><span>вхідний текст із захистом пунктуації та іншописемних фрагментів</span></article>
       <article><b>02</b><strong>JS G2P</strong><span>правила стандартної вимови та словникові винятки → поверхнева форма хангиля</span></article>
       <article><b>03</b><strong>IPA</strong><span>поверхнева форма конвертується у фонетичні сегменти; правила вимови вдруге не застосовуються</span></article>
@@ -94,7 +89,7 @@
   </section>
 
   <section class="doc-section">
-    <div class="doc-label" id="methodology-02a-super-soft">02A-S</div><div class="doc-content"><h2>М’який режим розширює покриття евристиками з явною невизначеністю</h2><p>М’який режим зберігає колишню логіку суперм’якого: обмежені формальні морфологічні гіпотези, ширші практичні евристики та типізований IPA-резерв для невирішених переходів. Кандидати низької впевненості позначаються квадратними дужками; це не сертифікована нормативна вимова.</p><div class="layers">
+    <div class="doc-content"><h2 id="methodology-02a-super-soft">М’який режим розширює покриття евристиками з явною невизначеністю</h2><p>М’який режим зберігає колишню логіку суперм’якого: обмежені формальні морфологічні гіпотези, ширші практичні евристики та типізований IPA-резерв для невирішених переходів. Кандидати низької впевненості позначаються квадратними дужками; це не сертифікована нормативна вимова.</p><div class="layers">
       <article><b>01</b><strong>Джерельний рівень</strong><span>точний словниковий запис і підтверджені правила мають найвищий пріоритет</span></article>
       <article><b>02</b><strong>Евристичні рівні</strong><span>наявні м’які морфологічні та практичні правила; кожне таке застосування позначається низькою впевненістю</span></article>
       <article><b>03</b><strong>IPA-резерв</strong><span>якщо морфологічний контекст лишається невизначеним, склад розкладається на початковий приголосний, голосний і кінцевий приголосний; результат типізується як графемно-фонемний резерв</span></article>
@@ -140,7 +135,7 @@
   </section>
 
   <section class="doc-section">
-    <div class="doc-label" id="methodology-02b">02B</div><div class="doc-content"><h2>Переглянута романізація (RR) — не англійська вимова й не заміна IPA</h2><p>Сервіс показує базову романізацію RR для вже визначеної корейської поверхневої форми поряд з IPA та українським записом. RR — система передавання корейської латинськими літерами, заснована на стандартній вимові; написання на кшталт <code>eo</code> або <code>eu</code> не слід читати як англійські буквосполучення. Див. <a href="https://www.korean.go.kr/front_eng/roman/roman_01.do" rel="noreferrer">офіційні правила Національного інституту корейської мови</a>.</p><div class="layers">
+    <div class="doc-content"><h2 id="methodology-02b">Переглянута романізація (RR) — не англійська вимова й не заміна IPA</h2><p>Сервіс показує базову романізацію RR для вже визначеної корейської поверхневої форми поряд з IPA та українським записом. RR — система передавання корейської латинськими літерами, заснована на стандартній вимові; написання на кшталт <code>eo</code> або <code>eu</code> не слід читати як англійські буквосполучення. Див. <a href="https://www.korean.go.kr/front_eng/roman/roman_01.do" rel="noreferrer">офіційні правила Національного інституту корейської мови</a>.</p><div class="layers">
       <article><b>01</b><strong>Хангиль → поверхнева форма</strong><span>корейський рушій визначає реалізовану форму; невизначеність вимови не зникає від романізації</span></article>
       <article><b>02</b><strong>RR · паралельний шар</strong><span>латинське представлення поверхневої форми для додаткової перевірки</span></article>
       <article><b>03</b><strong>IPA</strong><span>фонетичне представлення з потрібними сегментами й ознаками</span></article>
@@ -149,8 +144,8 @@
   </section>
 
   <section class="doc-section">
-    <div class="doc-label" id="methodology-03">03</div><div class="doc-content"><h2>Ключові рішення</h2><div class="decision-table">
-      <div class="table-row table-head"><span>Корейська</span><span>Поверхнева основа</span><span>Українська фонетична ціль</span><span>Коментар</span></div>
+    <div class="doc-content"><h2 id="methodology-03">Ключові рішення</h2><div class="decision-table">
+      <div class="table-row"><span>Корейська</span><span>Поверхнева основа</span><span>Українська фонетична ціль</span><span>Коментар</span></div>
       <div class="table-row"><b>ㄱ</b><span>[k] ~ [ɡ]</span><strong>к / ґ</strong><span>вибір залежить від реалізації у мовленні.</span></div>
       <div class="table-row"><b>ㄷ</b><span>[t] ~ [d]</span><strong>т / д</strong><span>не одна безумовна заміна.</span></div>
       <div class="table-row"><b>ㅂ</b><span>[p] ~ [b]</span><strong>п / б</strong><span>визначається контекстом.</span></div>
@@ -163,7 +158,7 @@
   </section>
 
   <section class="doc-section">
-    <div class="doc-label" id="methodology-04">04</div><div class="doc-content"><h2>Українська апроксимація без псевдоідентичності</h2><div class="vowel-grid">
+    <div class="doc-content"><h2 id="methodology-04">Українська апроксимація без псевдоідентичності</h2><div class="vowel-grid">
       <span>ㅏ → <b>а</b></span><span>ㅐ → <b>е</b></span><span>ㅑ → <b>я</b></span><span>ㅒ → <b>є</b></span>
       <span>ㅓ → <b>о</b></span><span>ㅔ → <b>е</b></span><span>ㅕ → <b>йо</b></span><span>ㅖ → <b>є</b></span>
       <span>ㅗ → <b>о</b></span><span>ㅘ → <b>ва</b></span><span>ㅙ → <b>ве</b></span><span>ㅚ → <b>ве</b></span>
@@ -174,17 +169,17 @@
   </section>
 
   <section class="doc-section">
-    <div class="doc-label" id="methodology-05">05</div><div class="doc-content"><h2>Правила важливіші за таблицю</h2><p>Сервіс не повинен перетворювати корейську на послідовність незалежних символів. На рівні послідовностей модель враховує документовані процеси, коли для них є потрібне середовище.</p><div class="rule-grid">
+    <div class="doc-content"><h2 id="methodology-05">Правила важливіші за таблицю</h2><p>Сервіс не повинен перетворювати корейську на послідовність незалежних символів. На рівні послідовностей модель враховує документовані процеси, коли для них є потрібне середовище.</p><div class="rule-grid">
       <span><b>R001</b> кінцева нейтралізація</span><span><b>R002</b> перенесення кінцевого приголосного до наступного складу</span><span><b>R004</b> ㅎ-aspiration</span><span><b>R005</b> носове уподібнення</span><span><b>R006</b> уподібнення плавних</span><span><b>R008</b> напруження приголосного</span><span><b>R009</b> licensed ㄴ-вставлення</span><span><b>R010–R015</b> умовні морфологічні та лексичні правила</span>
     </div><div class="callout blue"><strong>Приклад</strong><span>현대 може мати broad /hjʌn.tɛ/ і контекстуальну реалізацію з [d]. Тому ㄷ не можна моделювати лише як «т» або лише як «д».</span></div></div>
   </section>
 
   <section class="doc-section">
-    <div class="doc-label" id="methodology-06">06</div><div class="doc-content"><h2>Російська система — матеріал для порівняння, не нормативне джерело</h2><p>Історична система Холодовича—Концевича важлива як сильний порівняльний матеріал, але її український результат не копіюється механічно. Причина кожної відмінності перевіряється через корейську фонетику, українську фонетику й українську графіку.</p><div class="compare-strip"><span><b>Російська</b><small>історична й практична система для порівняння</small></span><span><b>Українська</b><small>окрема цільова система, побудована з огляду на українську фонетику</small></span><span><b>Інші слов’янські</b><small>перевірка стійкості рішень, а не нормативне джерело</small></span></div></div>
+    <div class="doc-content"><h2 id="methodology-06">Російська система — матеріал для порівняння, не нормативне джерело</h2><p>Історична система Холодовича—Концевича важлива як сильний порівняльний матеріал, але її український результат не копіюється механічно. Причина кожної відмінності перевіряється через корейську фонетику, українську фонетику й українську графіку.</p><div class="compare-strip"><span><b>Російська</b><small>історична й практична система для порівняння</small></span><span><b>Українська</b><small>окрема цільова система, побудована з огляду на українську фонетику</small></span><span><b>Інші слов’янські</b><small>перевірка стійкості рішень, а не нормативне джерело</small></span></div></div>
   </section>
 
   <section class="doc-section">
-    <div class="doc-label" id="methodology-07">07</div><div class="doc-content"><h2>Що є фактом, а що — рішенням проєкту</h2><div class="evidence-list">
+    <div class="doc-content"><h2 id="methodology-07">Що є фактом, а що — рішенням проєкту</h2><div class="evidence-list">
       <p><b>ФАКТ</b><span>підтверджено нормативним, академічним або технічним джерелом.</span></p>
       <p><b>МОДЕЛЬ</b><span>детермінований вибір, необхідний для роботи системи.</span></p>
       <p><b>УМОВА</b><span>правило працює лише за явно визначеного середовища.</span></p>
@@ -194,14 +189,14 @@
   </section>
 
   <section class="doc-section">
-    <div class="doc-label" id="methodology-08">08</div><div class="doc-content"><h2>Чого цей сервіс не стверджує</h2><ul class="limits"><li>Не є офіційним українським державним стандартом.</li><li>Не є повним словником корейської вимови.</li><li>Не вигадує вузьку фонетичну транскрипцію (narrow IPA) або словникові підтвердження.</li><li>11 172 блоки хангиля — це повний комбінаторний набір сучасних складових знаків Unicode, а не словник слів.</li><li>Морфологічно ліцензовані правила не активуються без потрібного контексту.</li></ul></div>
+    <div class="doc-content"><h2 id="methodology-08">Чого цей сервіс не стверджує</h2><ul class="limits"><li>Не є офіційним українським державним стандартом.</li><li>Не є повним словником корейської вимови.</li><li>Не вигадує вузьку фонетичну транскрипцію (narrow IPA) або словникові підтвердження.</li><li>11 172 блоки хангиля — це повний комбінаторний набір сучасних складових знаків Unicode, а не словник слів.</li><li>Морфологічно ліцензовані правила не активуються без потрібного контексту.</li></ul></div>
   </section>
 
   <section class="doc-section" id="lexical-edge-cases">
-    <div class="doc-label" id="methodology-09">09</div><div class="doc-content"><h2>Словникова вимова — не механічна таблиця</h2>
+    <div class="doc-content"><h2 id="methodology-09">Словникова вимова — не механічна таблиця</h2>
       <p>Деякі вимови залежать від морфемної будови, лексикалізованих винятків або взаємодії кількох процесів. Для них сервіс використовує окремі словникові записи, а не намагається вивести все з останньої літери складу. Корейська форма й IPA спираються на джерела Національного інституту корейської мови; українські форми нижче — авторські модельні рішення, а не затверджений стандарт.</p>
       <div class="decision-table">
-        <div class="table-row table-head"><span>Вхід</span><span>Нормативна вимова</span><span>Практично українською</span><span>Що перевіряємо</span></div>
+        <div class="table-row"><span>Вхід</span><span>Нормативна вимова</span><span>Практично українською</span><span>Що перевіряємо</span></div>
         <div class="table-row"><b>값없다</b><span>[가법따]</span><strong>кабопта</strong><span>ㅄ перед 실질 형태소, нейтралізація й 된소리되기</span></div>
         <div class="table-row"><b>의견란</b><span>[의ː견난]</span><strong>ийґйоннан*</strong><span>лексичний виняток ㄹ → ㄴ</span></div>
         <div class="table-row"><b>읽고 / 읽다</b><span>[일꼬] / [익따]</span><strong>ілко / ікта</strong><span>ㄺ у дієслівній основі перед різними закінченнями</span></div>
@@ -241,7 +236,7 @@
       </span></div>
       <h3>Вузлові форми</h3>
       <div class="decision-table">
-        <div class="table-row table-head"><span>Вхід</span><span>Поверхнева форма</span><span>Українська фонетична ціль</span><span>Що перевіряється</span></div>
+        <div class="table-row"><span>Вхід</span><span>Поверхнева форма</span><span>Українська фонетична ціль</span><span>Що перевіряється</span></div>
         <div class="table-row"><b>짧아도</b><span>[짤바도]</span><strong>чалбадо</strong><span>ㄼ: ㄹ залишається в кода-позиції, ㅂ переходить до наступного складу.</span></div>
         <div class="table-row"><b>빗고</b><span>[빋꼬]</span><strong>пітко</strong><span>нейтралізація ㅅ до [ㄷ] і 된소리되기 перед ㄱ.</span></div>
         <div class="table-row"><b>넓지만</b><span>[널찌만]</span><strong>нолчіман</strong><span>морфологічне читання ㄼ і напруження ㅈ.</span></div>
@@ -280,7 +275,7 @@
       </span></div>
       <h3>Контрольні поверхневі форми</h3>
       <div class="decision-table">
-        <div class="table-row table-head"><span>Написання</span><span>Поверхнева форма</span><span>Ключовий процес</span><span>Аудиторська примітка</span></div>
+        <div class="table-row"><span>Написання</span><span>Поверхнева форма</span><span>Ключовий процес</span><span>Аудиторська примітка</span></div>
         <div class="table-row"><b>흙을</b><span>[흘글]</span><strong>연음</strong><span>У 겹받침 ㄺ перед голосним ㄹ залишається в коді, а ㄱ переходить до наступного складу.</span></div>
         <div class="table-row"><b>밟으며</b><span>[발브며]</span><strong>ㄼ 특례</strong><span>Дієслово 밟- має спеціальну поведінку 겹받침; не переносити правило на всі слова з ㄼ.</span></div>
         <div class="table-row"><b>낡은</b><span>[날근]</span><strong>연음</strong><span>Не читати за буквами й не губити другий компонент ㄺ.</span></div>
@@ -308,7 +303,7 @@
       <p>Перевірка після трьох каверзних корпусів виявила не лише відсутні вимови, а й помилки у вже наявних лексичних цільових рядках. Цей аудит не змінює корейське написання чи нормативні поверхневі форми без доказів: він узгоджує українське відтворення з явно задекларованими рішеннями моделі та виправляє помилкову сегментацію цільового рядка.</p>
       <h3>Класи виправлень</h3>
       <div class="decision-table">
-        <div class="table-row table-head"><span>Проблема</span><span>Було</span><span>Стало</span><span>Принцип</span></div>
+        <div class="table-row"><span>Проблема</span><span>Було</span><span>Стало</span><span>Принцип</span></div>
         <div class="table-row"><b>Напруження приголосного</b><span>낫지 → нат|ччі</span><span>нат|чі</span><span>Напруженість не передається автоматичним подвоєнням української літери.</span></div>
         <div class="table-row"><b>Зайве подвоєння</b><span>넓고 → ноль|кко</span><span>нол|ко</span><span>ㄲ має один український графемний відповідник у поточній моделі.</span></div>
         <div class="table-row"><b>Межі складових сегментів</b><span>덥고 → то|пко</span><span>топ|ко</span><span>받침 належить попередньому сегменту; його не можна вдруге переносити в наступний.</span></div>
@@ -330,7 +325,7 @@
       <h2>Фонологічні правила не повинні зникати через лексичний виняток</h2>
       <p>Сервіс використовує точні словникові записи для форм, де потрібні перевірені поверхневі вимови. Аудит виявив інженерний дефект: якщо в реченні є хоча б один такий запис, конвертер розбиває текст на слова, і правила, що діють через звичайний пробіл, могли не застосуватися до сусіднього слова. Виправлено підтримку міжслівної носової та плавної асиміляції; розділові знаки залишаються межею, через яку правило не переноситься.</p>
       <div class="decision-table">
-        <div class="table-row table-head"><span>Випадок</span><span>Корейська поверхнева зміна</span><span>Український результат</span><span>Що перевіряємо</span></div>
+        <div class="table-row"><span>Випадок</span><span>Корейська поверхнева зміна</span><span>Український результат</span><span>Що перевіряємо</span></div>
         <div class="table-row"><b>밥 문법</b><span>ㅂ + ㅁ → ㅁ + ㅁ</span><span>пам мунпоп</span><span>§18: носова асиміляція не зникає біля словникового запису.</span></div>
         <div class="table-row"><b>밥, 문법</b><span>кома блокує перенесення правила</span><span>пап, мунпоп</span><span>Пунктуація не прирівнюється до звичайного пробілу.</span></div>
         <div class="table-row"><b>몇 리</b><span>받침 ㅊ → 대표음 ㄷ; ㄹ → ㄴ; ㄷ → ㄴ</span><span>мйон ні</span><span>Коду ㄷ не можна пропускати в умовах асиміляції перед ㄹ.</span></div>
@@ -357,7 +352,7 @@
       <h2>Стан моделі на 10 жовтня: нормативні корейські форми відокремлено від українських рішень</h2>
       <p>Цей розділ фіксує актуальний стан реалізації та її межі. Сервіс використовує лексичні записи з джерелами, контекстуальні правила й регресійні тести; він не вважає український результат автоматично правильним лише тому, що корейська вимова має високу доказовість.</p>
       <div class="decision-table">
-        <div class="table-row table-head"><span>Частина</span><span>Поточне покриття</span><span>Як це перевіряється</span><span>Обмеження</span></div>
+        <div class="table-row"><span>Частина</span><span>Поточне покриття</span><span>Як це перевіряється</span><span>Обмеження</span></div>
         <div class="table-row"><b>Лексичні вимови</b><span>понад 500 записів у контрольному наборі</span><span>Джерело, корейська поверхнева форма, IPA та український цільовий запис зберігаються окремо.</span><span>Кількість записів не означає повного словникового покриття корейської мови.</span></div>
         <div class="table-row"><b>NIKL §27–28</b><span>Приклади адномінальних закінчень і офіційні приклади 된소리되기</span><span>Окремі лексичні фікстури та регресійні тести.</span><span>Це покриття перевірених прикладів, а не повний автоматичний морфологічний аналіз.</span></div>
         <div class="table-row"><b>NIKL §29</b><span>Усі 19 прикладів ㄴ-вставки, включно з варіантами</span><span>Позитивні та негативні контрольні випадки; окремі записи для дозволених читань.</span><span>Невідомі морфологічні умови не слід виводити лише з написання.</span></div>
@@ -391,7 +386,7 @@
       <h2>Розширені стрес-тести: довгі тексти, незалежні еталони та межі морфології</h2>
       <p>Корпус розширено п’ятьма складними фрагментами й 46 унікальними лексичними опорами. Окремий набір містить десять фіксованих еталонів, записаних без генерації очікувань із CSV під час тесту. Це зменшує ризик, що помилка в словникових даних автоматично підтверджується тим самим словником у тесті.</p>
       <div class="decision-table">
-        <div class="table-row table-head"><span>Перевірка</span><span>Обсяг</span><span>Що виявляє</span><span>Обмеження</span></div>
+        <div class="table-row"><span>Перевірка</span><span>Обсяг</span><span>Що виявляє</span><span>Обмеження</span></div>
         <div class="table-row"><b>Каверзні тексти</b><span>5 фрагментів; 46 унікальних опор</span><span>Взаємодію 받침, назалізації, ㄴ/ㄹ, ㅎ, палаталізації, пунктуації та пробілів.</span><span>Точні лексичні записи не є продуктивним морфологічним аналізатором.</span></div>
         <div class="table-row"><b>Незалежні еталони</b><span>10 форм із фіксованими очікуваннями</span><span>Розбіжності між корейською поверхневою формою, IPA та українським результатом.</span><span>Українська фонетична ціль — рішення проєкту, не офіційний стандарт.</span></div>
         <div class="table-row"><b>Контекстні інваріанти</b><span>7 класів кінцевих приголосних перед ㄹ</span><span>Неприпустиме поширення правил через пунктуацію та порушення порядку асиміляцій.</span><span>Вичерпний CI й повний аудит §§1–30 перевіряються окремо.</span></div>
@@ -526,7 +521,7 @@
   </section>
 
   <section class="doc-section references">
-    <div class="doc-label" id="methodology-16">16</div><div class="doc-content"><h2>Основні дослідницькі опори</h2>
+    <div class="doc-content"><h2 id="methodology-16">Основні дослідницькі опори</h2>
       <ul><li><a href="https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002">National Institute of Korean Language — Standard Korean Pronunciation</a></li><li><a href="https://movoznavstvo.org.ua/vsi-nomera-zhurnalu/statti/2009-1-sichen-lyutij/shchegel-o-m-praktichna-transkriptsiya-korejskikh-imen-ukrajinskoyu-movoyu-porivnyannya-problemi-i-propozitsiji">О. М. Щегель (2009) — Практична транскрипція корейських імен українською мовою</a></li><li><a href="https://bp-razvitie.ru/prilozhenie-9-sistemy-transkripcii-">Холодович—Концевич — практична транскрипція корейської мови</a></li><li><a href="https://www.journals.polon.uw.edu.pl/index.php/pj/article/view/1631">Kim Gwangseok & Jarosław A. Pietrow (2023) — Korean toponyms in Polish</a></li><li><a href="https://authors.uni-sofia.bg/AuthorPublications.aspx?id=2584c0a6-0810-4d34-8733-deee92e8bac7">Beneva et al. (2018) — Korean transcription in Bulgarian texts</a></li><li><a href="https://serbia-korea.rs/wp-content/uploads/2026/01/A-need-for-transcription-between-Korean-Hangul-and-Serbian-Cyrillic.pdf">Angelina Galjević (2023) — Korean Hangul and Serbian Cyrillic</a></li></ul>
       <div class="repo-links"><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System">Відкрити GitHub репозиторій ↗</a><a href="./index.html">Повернутися до сервісу ↗</a></div>
     </div>
