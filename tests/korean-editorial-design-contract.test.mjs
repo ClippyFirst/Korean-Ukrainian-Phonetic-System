@@ -252,3 +252,37 @@ test('the entire interface resolves through one restrained jogakbo palette',()=>
   assert.match(css,/--palette-acid:#d7c18a/u);
   assert.doesNotMatch(css.split('html{')[1]||css.split('html {')[1]||'',/#[0-9a-f]{3,8}\b/iu,'component colors must resolve through palette tokens, not one-off hex values');
 });
+
+test('large working and reading surfaces share the warm paper system',()=>{
+  const css=read('src/styles/editorial.css');
+  const lastRule=selector=>{
+    const start=css.lastIndexOf(selector);
+    assert.ok(start>=0,'missing final surface rule '+selector);
+    return css.slice(start,css.indexOf('}',start)+1);
+  };
+  assert.match(css,/--palette-panel:var\(--palette-surface\)/u);
+  assert.match(css,/--palette-panel-raised:var\(--palette-surface-bright\)/u);
+  assert.match(css,/--palette-panel-muted:var\(--palette-surface-soft\)/u);
+  assert.match(css,/--palette-panel-line:var\(--palette-line\)/u);
+  for(const [selector,background] of [
+    ['.editorial-site .workbench','var(--palette-surface)'],
+    ['.editorial-site .input-shell','var(--palette-surface-bright)'],
+    ['.editorial-site .mode-fieldset','var(--palette-surface-soft)'],
+    ['.editorial-site .result-card:first-child','var(--palette-surface)'],
+    ['.editorial-site .methodology-toc','var(--palette-surface)']
+  ]) assert.ok(lastRule(selector).includes('background:'+background),'wrong material for '+selector);
+  for(const selector of ['.editorial-site .workbench','.editorial-site .input-shell textarea','.editorial-site .result-card:first-child','.editorial-site .methodology-toc']){
+    assert.ok(lastRule(selector).includes('color:var(--palette-ink)'),'light surface must use ink text: '+selector);
+  }
+});
+
+test('Ukrainian output uses a bundled regular Cyrillic font, not platform fallback',()=>{
+  const css=read('src/styles/editorial.css');
+  const fontPath=path.join(root,'src/fonts/NotoSans-Regular.woff2');
+  assert.ok(fs.existsSync(fontPath),'bundled Noto Sans font asset is present');
+  assert.ok(fs.statSync(fontPath).size>50000,'font asset is complete, not an empty placeholder');
+  assert.match(css,/@font-face\s*\{[^}]*font-family:\s*"Noto Sans Ukrainian"[^}]*src:\s*url\("\.\.\/fonts\/NotoSans-Regular\.woff2"\)/su);
+  assert.match(css,/\.editorial-site #result-ukrainian,[\s\S]*?font-family:"Noto Sans Ukrainian"/u);
+  assert.match(css,/\.editorial-site \.specimen-flow \.specimen-ua\{[^}]*font-family:"Noto Sans Ukrainian"/u);
+  assert.match(css,/font-weight:400!important;[^}]*font-synthesis:none/su);
+});
