@@ -103,12 +103,9 @@ test('jogakbo palette is restrained and action contrasts remain accessible',()=>
   for(const token of ['--jogakbo-ink:#24354b','--jogakbo-jade:#9db7a7','--jogakbo-blue:#a9bac6','--jogakbo-ochre:#c9a66b','--jogakbo-clay:#b9857a','--jogakbo-ground:#f1eee5']){
     assert.ok(css.toLowerCase().includes(token),`missing ${token}`);
   }
-  assert.match(css,/--paper:#efede6/iu);
-  assert.match(css,/--ink:#17202c/iu);
-  assert.match(css,/--cobalt:#254bd8/iu);
-  assert.match(css,/--signal:#ed593d/iu);
-  assert.match(css,/--signal-deep:#ad3426/iu);
-  assert.match(css,/--acid:#e6e84d/iu);
+  for(const token of ['--palette-paper:#efede6','--palette-ink:#17202c','--palette-jade:#9db7a7','--palette-blue:#a9bac6','--palette-ochre:#c9a66b','--palette-clay:#ed593d','--palette-indigo:#254bd8']){
+    assert.ok(css.toLowerCase().includes(token),`missing shared palette token ${token}`);
+  }
   assert.ok(contrast('#17202c','#efede6')>=4.5);
   assert.ok(contrast('#5b6570','#efede6')>=4.5);
   assert.ok(contrast('#254bd8','#efede6')>=4.5);
@@ -138,9 +135,10 @@ test('user-facing terminology stays Ukrainian and the input remains placeholder-
 test('the specimen keeps its three-colour editorial hierarchy without object labels',()=>{
   const css=read('src/styles/editorial.css');
   assert.match(css,/\.editorial-site \.specimen-flow p span\{display:none\}/u);
-  assert.match(css,/\.editorial-site \.specimen-flow p:first-child\{background:var\(--ink\);color:var\(--surface\)\}/u);
-  assert.match(css,/\.editorial-site \.specimen-flow p:nth-child\(2\)\{background:var\(--acid\);color:var\(--ink\)\}/u);
-  assert.match(css,/\.editorial-site \.specimen-flow p:nth-child\(3\)\{background:var\(--signal\);color:var\(--ink\)\}/u);
+  assert.match(css,/\.editorial-site \.specimen-flow p:first-child\{background:linear-gradient/su);
+  assert.match(css,/\.editorial-site \.specimen-flow p:nth-child\(2\)\{background:linear-gradient/su);
+  assert.match(css,/\.editorial-site \.specimen-flow p:nth-child\(3\)\{background:linear-gradient/su);
+  assert.match(css,/\.editorial-site \.specimen-flow p::after/u);
 });
 
 test('the result provenance note belongs to the Ukrainian output, not the result grid',()=>{
@@ -165,7 +163,7 @@ test('the result provenance note belongs to the Ukrainian output, not the result
 test('research analysis uses one accessible three-level slider, not visible checkboxes',()=>{
   const html=read('index.html');
   const js=read('src/main.js');
-  assert.match(html,/<input[^>]+type="range"[^>]+id="morphology-level"/u);
+  assert.match(html,/<input[^>]*id="morphology-level"[^>]*type="range"/u);
   assert.match(html,/Строгий/u);
   assert.match(html,/М’який/u);
   assert.match(html,/Суперм’який/u);
