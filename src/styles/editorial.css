@@ -23,7 +23,18 @@
   --palette-warning:#76551e;
   --palette-danger:#a63842;
   --palette-indigo:#254bd8;
-  --palette-acid:#e6e84d;
+  --palette-acid:#d7c18a;
+  --palette-panel:#263548;
+  --palette-panel-raised:#314257;
+  --palette-panel-muted:#3b4b60;
+  --palette-panel-line:#536276;
+  --palette-tint-jade:#e7eee8;
+  --palette-tint-blue:#e8edf0;
+  --palette-tint-ochre:#f1eadc;
+  --palette-tint-clay:#f2e6e1;
+  --palette-indigo:#496477;
+  --palette-signal:#b96f5f;
+  --palette-clay-deep:#88574d;
   --paper:var(--palette-paper); --surface:var(--palette-surface); --surface-soft:var(--palette-surface-soft); --surface-bright:var(--palette-surface-bright);
   --ink:var(--palette-ink); --ink-raised:var(--palette-ink-raised); --ink-soft:var(--palette-ink-soft);
   --muted:var(--palette-muted); --muted-inverse:var(--palette-muted-inverse);
@@ -620,4 +631,101 @@ a:hover{color:var(--signal-deep)}
 .editorial-site .specimen-flow .specimen-ua{font-size:1.55rem}
 .editorial-site .specimen-flow .specimen-label{font-size:.58rem}
 .editorial-site .jogakbo-band{height:22px;grid-template-rows:repeat(2,10px)}
+}
+
+
+/* Unified jogakbo design system: every interface object uses the same material palette. */
+.editorial-site{
+  --panel:var(--palette-panel);
+  --panel-raised:var(--palette-panel-raised);
+  --panel-muted:var(--palette-panel-muted);
+  --panel-line:var(--palette-panel-line);
+  --tint-jade:var(--palette-tint-jade);
+  --tint-blue:var(--palette-tint-blue);
+  --tint-ochre:var(--palette-tint-ochre);
+  --tint-clay:var(--palette-tint-clay);
+}
+.editorial-site .workbench,
+.editorial-site .methodology-toc{background:var(--panel);color:var(--surface)}
+.editorial-site .input-shell,
+.editorial-site .mode-fieldset,
+.editorial-site .research-options{border-color:var(--panel-line);background:var(--panel-raised)}
+.editorial-site .input-hint{border-color:var(--panel-line);background:var(--panel);color:var(--muted-inverse)}
+.editorial-site .input-shell textarea,
+.editorial-site #stress-input{color:var(--surface);caret-color:var(--palette-acid);font-family:"Noto Sans KR","Noto Sans",sans-serif}
+.editorial-site .mini-button,
+.editorial-site .button-secondary{border-color:var(--panel-line);background:transparent;color:var(--surface)}
+.editorial-site .mini-button:hover,
+.editorial-site .button-secondary:hover{border-color:var(--palette-acid);background:var(--panel-muted);color:var(--surface)}
+.editorial-site .button-primary{border-color:var(--palette-ochre);background:var(--palette-ochre);color:var(--palette-ink)}
+.editorial-site .button-primary:hover{border-color:var(--palette-signal);background:var(--palette-signal);color:var(--palette-ink)}
+.editorial-site .mode-option:has(input:checked){border-top-color:var(--palette-acid);background:var(--panel-muted);box-shadow:inset 3px 0 0 var(--palette-acid)}
+.editorial-site .mode-option input,
+.editorial-site .soft-morphology-toggle input{accent-color:var(--palette-ochre)}
+.editorial-site .mode-disclosure{border-color:var(--panel-line)}
+.editorial-site .mode-disclosure summary{color:var(--surface)}
+.editorial-site .mode-disclosure a,
+.editorial-site .methodology-toc-heading>a,
+.editorial-site .methodology-toc li a:hover{color:var(--palette-acid)}
+.editorial-site .methodology-toc li{border-color:var(--panel-line);color:var(--muted-inverse)}
+.editorial-site .methodology-toc li::marker{color:var(--palette-signal)}
+.editorial-site .output-workspace,
+.editorial-site .trace-panel,
+.editorial-site .trace-row>[data-label]{background:var(--surface)}
+.editorial-site .empty-state{border-color:var(--palette-blue);background:var(--tint-blue);color:var(--palette-ink-soft)}
+.editorial-site .empty-glyph{border-color:var(--palette-blue);background:var(--tint-jade);color:var(--palette-ink)}
+.editorial-site .result-card{border-color:var(--line);background:var(--surface-bright)}
+.editorial-site .result-card:first-child{border-color:var(--panel);background:var(--panel);color:var(--surface)}
+.editorial-site .result-card:first-child .result-body{color:var(--surface)}
+.editorial-site .result-card:first-child .copy-button{border-color:var(--panel-line);color:var(--surface)}
+.editorial-site .result-card:first-child .copy-button:hover{border-color:var(--palette-acid);background:var(--panel-muted);color:var(--palette-acid)}
+.editorial-site .copy-button{border-color:var(--line);color:var(--cobalt)}
+.editorial-site .copy-button:hover{border-color:var(--palette-indigo);background:var(--tint-blue)}
+.editorial-site .ua-output-option{border-color:var(--panel-line);color:var(--surface)}
+.editorial-site .ua-output-option.is-active{border-color:var(--palette-ochre);background:var(--palette-ochre);color:var(--palette-ink)}
+.editorial-site .trace-row{border-color:var(--line);background:var(--palette-surface-soft)}
+.editorial-site .trace-row>[data-label]{border-color:var(--line);background:var(--surface-bright)}
+.editorial-site .trace-status{background:var(--tint-blue);color:var(--palette-ink-soft)}
+.editorial-site .copy-feedback{border-color:var(--palette-jade);background:var(--tint-jade);color:#285443}
+.editorial-site .issue-state{border-color:var(--palette-clay);background:var(--tint-clay);color:#75463d}
+.editorial-site .spelling-suggestions{border-color:var(--palette-ochre);background:var(--tint-ochre);color:var(--palette-ink)}
+.editorial-site .spelling-suggestion{border-color:#d9cbb7}
+.editorial-site .doc-content blockquote,
+.editorial-site .callout{border:1px solid var(--palette-jade);background:var(--tint-jade);color:var(--palette-ink)}
+.editorial-site .doc-content .callout.red,
+.editorial-site .callout.red{border-color:var(--palette-clay);background:var(--tint-clay);color:var(--palette-ink)}
+.editorial-site .doc-content .callout.blue,
+.editorial-site .callout.blue{border-color:var(--palette-blue);background:var(--tint-blue);color:var(--palette-ink)}
+.editorial-site .doc-content code,
+.editorial-site .doc-content pre{border-color:var(--line);background:var(--palette-surface-soft);color:var(--palette-ink)}
+.editorial-site .doc-content th,
+.editorial-site .decision-table th,
+.editorial-site .table-head{background:var(--palette-surface-soft);color:var(--palette-ink)}
+.editorial-site .doc-content tr:nth-child(even) td{background:var(--palette-tint-blue)}
+.editorial-site .layers,
+.editorial-site .rule-grid,
+.editorial-site .limits,
+.editorial-site .compare-strip,
+.editorial-site .decision-table{border-color:var(--line);background:var(--line)}
+.editorial-site .layers>*,
+.editorial-site .rule-grid>*,
+.editorial-site .limits>*,
+.editorial-site .compare-strip>*,
+.editorial-site .vowel-grid>span{border-color:var(--line);background:var(--surface)}
+.editorial-site .trace-row>[data-label],
+.editorial-site .trace-row .trace-source,
+.editorial-site .trace-row .trace-surface{color:var(--palette-ink)}
+.editorial-site .trace-row .trace-mapping,
+.editorial-site .trace-row .trace-rules{color:var(--muted)}
+.editorial-site #morphology-level-guidance{border-color:var(--palette-ochre);background:var(--panel-raised);color:var(--surface)}
+.editorial-site .site-footer{border-color:var(--line);color:var(--muted)}
+.editorial-site .site-footer a{color:var(--cobalt)}
+.editorial-site :focus-visible{outline-color:var(--palette-indigo)}
+/* Ukrainian glyphs use a Cyrillic-capable text face, never the Korean display fallback. */
+.editorial-site #result-ukrainian,
+.editorial-site .specimen-flow .specimen-ua{
+  font-family:"Noto Sans","Segoe UI",Arial,sans-serif;
+  font-weight:400!important;
+  font-synthesis:none;
+  letter-spacing:0;
 }
