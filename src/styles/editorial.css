@@ -654,22 +654,14 @@ a:hover{color:var(--signal-deep)}
 }
 /* The main input and answer are two instances of the same paper material. */
 .editorial-site .workbench,
-.editorial-site .methodology-toc{
-  border:1px solid var(--palette-line);
-  background:var(--palette-surface);
-  color:var(--palette-ink);
-  box-shadow:none;
-}
+.editorial-site .methodology-toc{border:1px solid var(--palette-line);box-shadow:none}
+.editorial-site .workbench{background:var(--palette-surface);color:var(--palette-ink)}
+.editorial-site .methodology-toc{background:var(--palette-surface);color:var(--palette-ink)}
 .editorial-site .workbench>h2,
 .editorial-site .methodology-toc-heading h2{color:var(--palette-ink)}
-.editorial-site .input-shell,
-.editorial-site .mode-fieldset,
-.editorial-site .research-options{
-  border-color:var(--palette-line);
-  background:var(--palette-surface-soft);
-  color:var(--palette-ink);
-}
+.editorial-site .input-shell,.editorial-site .mode-fieldset,.editorial-site .research-options{border:1px solid var(--palette-line);color:var(--palette-ink)}
 .editorial-site .input-shell{background:var(--palette-surface-bright)}
+.editorial-site .mode-fieldset,.editorial-site .research-options{background:var(--palette-surface-soft)}
 .editorial-site .input-shell:focus-within{border-color:var(--palette-indigo);outline:2px solid var(--palette-indigo);outline-offset:2px;box-shadow:none}
 .editorial-site .input-shell textarea,
 .editorial-site #stress-input{
