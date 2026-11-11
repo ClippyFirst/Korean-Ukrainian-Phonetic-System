@@ -160,3 +160,48 @@ test('the result provenance note belongs to the Ukrainian output, not the result
   assert.doesNotMatch(html,/<\/article>\s*<p id="status-note"/u);
   assert.match(css,/\.editorial-site \.result-provenance\{background:transparent\}/u);
 });
+
+
+test('research analysis uses one accessible three-level slider, not visible checkboxes',()=>{
+  const html=read('index.html');
+  const js=read('src/main.js');
+  assert.match(html,/<input[^>]+type="range"[^>]+id="morphology-level"/u);
+  assert.match(html,/Строгий/u);
+  assert.match(html,/М’який/u);
+  assert.match(html,/Суперм’який/u);
+  assert.match(html,/aria-describedby="morphology-level-guidance"/u);
+  assert.match(html,/id="morphology-level-guidance"/u);
+  assert.match(js,/morphologyLevel\.value/u);
+  assert.match(js,/addEventListener\('input'/u);
+  assert.match(html,/id="soft-morphology"[^>]*hidden/u);
+  assert.match(html,/id="super-soft-morphology"[^>]*hidden/u);
+});
+
+test('the hero specimen is a stitched patchwork composition and the palette is shared',()=>{
+  const css=read('src/styles/editorial.css');
+  assert.match(css,/--palette-ink:/u);
+  assert.match(css,/--palette-jade:/u);
+  assert.match(css,/--palette-blue:/u);
+  assert.match(css,/--palette-ochre:/u);
+  assert.match(css,/--palette-clay:/u);
+  assert.match(css,/--palette-paper:/u);
+  assert.match(css,/specimen-flow p:nth-child\(1\)[^{]*\{[^}]*linear-gradient/su);
+  assert.match(css,/specimen-flow p:nth-child\(2\)[^{]*\{[^}]*linear-gradient/su);
+  assert.match(css,/specimen-flow p:nth-child\(3\)[^{]*\{[^}]*linear-gradient/su);
+  assert.match(css,/specimen-flow p::after/u);
+});
+
+test('syllable trace uses a compact responsive information grid',()=>{
+  const html=read('index.html');
+  const css=read('src/styles/editorial.css');
+  assert.match(html,/class="trace-list" aria-label="Корейський сегмент/u);
+  assert.match(css,/\.editorial-site \.trace-row\{[^}]*display:grid/su);
+  assert.match(css,/grid-template-columns:repeat\(4,minmax\(0,1fr\)\)/u);
+  assert.match(css,/@media\s*\(max-width:\s*900px\)/u);
+  assert.match(css,/@media\s*\(max-width:\s*560px\)/u);
+});
+
+test('paragraph emphasis does not create isolated bold words or glyphs',()=>{
+  const css=read('src/styles/editorial.css');
+  assert.match(css,/\.editorial-site p strong,\.editorial-site p b\s*\{[^}]*font-weight:inherit/u);
+});
