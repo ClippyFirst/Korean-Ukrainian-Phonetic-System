@@ -108,8 +108,8 @@ test('jogakbo palette is restrained and action contrasts remain accessible',()=>
   }
   assert.ok(contrast('#17202c','#efede6')>=4.5);
   assert.ok(contrast('#5b6570','#efede6')>=4.5);
-  assert.ok(contrast('#254bd8','#efede6')>=4.5);
-  assert.ok(contrast('#ad3426','#efede6')>=4.5);
+  assert.ok(contrast('#496477','#efede6')>=4.5);
+  assert.ok(contrast('#88574d','#efede6')>=4.5);
   assert.ok(contrast('#17202c','#c9a66b')>=4.5);
   assert.ok(contrast('#17202c','#d7c18a')>=4.5);
   assert.match(css,/:focus-visible/u);
