@@ -112,10 +112,20 @@ try {
           }
         }
       }
-      for (const check of metrics.flowChecks) {
-        if (check.exists && (check.display === 'grid' || (check.display === 'flex' && check.flexDirection !== 'column') || !check.verticallyStacked)) {
-          failures.push(`${prefix}: ${check.selector} is not a single vertical flow: ${JSON.stringify(check)}`);
+      const flow = Object.fromEntries(metrics.flowChecks.map(check=>[check.selector,check]));
+      if (pageName === 'index.html') {
+        const workspace = flow['.workspace-layout'];
+        if (!workspace?.exists || !workspace.verticallyStacked || workspace.childCount !== 2) {
+          failures.push(`${prefix}: input and answer windows are not stacked in source order: ${JSON.stringify(workspace)}`);
         }
+      }
+      if (viewport.width >= 980) {
+        const hero = flow['.hero'];
+        const specimen = flow['.specimen-flow'];
+        if (hero?.display !== 'grid' || hero.childCount !== 2) failures.push(`${prefix}: editorial hero composition was lost: ${JSON.stringify(hero)}`);
+        if (specimen?.display !== 'grid' || specimen.childCount !== 3) failures.push(`${prefix}: three-part specimen composition was lost: ${JSON.stringify(specimen)}`);
+        if (pageName === 'index.html' && flow['.result-grid']?.display !== 'grid') failures.push(`${prefix}: result detail grid was flattened: ${JSON.stringify(flow['.result-grid'])}`);
+        if (pageName === 'system.html' && flow['.methodology-toc']?.display !== 'grid') failures.push(`${prefix}: methodology index composition was flattened: ${JSON.stringify(flow['.methodology-toc'])}`);
       }
       if (metrics.objectChromeCount !== 0) failures.push(`${prefix}: object-level header/footer chrome remains (${metrics.objectChromeCount} elements)`);
       const orderTops=metrics.taskOrder.map(item=>item.top);
