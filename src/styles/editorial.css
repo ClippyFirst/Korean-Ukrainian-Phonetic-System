@@ -387,3 +387,127 @@ a:hover{color:var(--signal-deep)}
 .editorial-site #morphology-level::-moz-range-track{height:6px;border:1px solid #718096;border-radius:999px;background:linear-gradient(90deg,var(--palette-jade),var(--palette-ochre),var(--palette-clay))}
 .editorial-site #morphology-level::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;margin-top:-8px;border:3px solid var(--palette-ink);border-radius:50%;background:var(--palette-paper);box-shadow:0 0 0 2px var(--palette-ochre)}
 .editorial-site #morphology-level::-moz-range-thumb{width:14px;height:14px;border:3px solid var(--palette-ink);border-radius:50%;background:var(--palette-paper);box-shadow:0 0 0 2px var(--palette-ochre)}
+
+
+/* 2026-11-11: a single editorial specimen strip and genuinely regular reading weight. */
+.editorial-site .hero{gap:clamp(28px,4vw,60px);align-items:center}
+.editorial-site .hero-copy{max-width:700px}
+.editorial-site .hero h1{max-width:13ch;font-weight:760;letter-spacing:-.045em;line-height:1.02}
+.editorial-site .subtitle{max-width:48ch;font-size:clamp(1rem,1.15vw,1.12rem);line-height:1.75}
+.editorial-site .design-rationale{max-width:50ch;margin-top:16px;font-size:.94rem}
+.editorial-site .design-rationale strong{font-weight:inherit}
+.editorial-site .hero-specimen{align-self:center}
+.editorial-site .specimen-flow{
+  display:grid;
+  grid-template-columns:1fr 1.12fr 1fr;
+  grid-template-rows:minmax(190px,auto);
+  gap:0;
+  padding:0;
+  overflow:hidden;
+  border-top:1px solid var(--line-strong);
+  border-bottom:1px solid var(--line-strong);
+  background:var(--surface);
+}
+.editorial-site .specimen-flow p,
+.editorial-site .specimen-flow p:first-child,
+.editorial-site .specimen-flow p:nth-child(2),
+.editorial-site .specimen-flow p:nth-child(3){
+  position:relative;
+  display:flex;
+  min-width:0;
+  min-height:190px;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  gap:18px;
+  margin:0;
+  padding:clamp(18px,2vw,28px);
+  border:0;
+  border-radius:0;
+  background:transparent;
+  color:var(--ink);
+}
+.editorial-site .specimen-flow p+p{border-left:1px solid var(--line)}
+.editorial-site .specimen-flow p::after{display:none;content:none}
+.editorial-site .specimen-flow p+p::before{
+  position:absolute;
+  top:50%;
+  left:-.48em;
+  z-index:2;
+  display:grid;
+  width:1em;
+  height:1em;
+  place-items:center;
+  transform:translateY(-50%);
+  background:var(--surface);
+  color:var(--palette-clay-deep);
+  content:"→";
+  font-size:1rem;
+  font-weight:400;
+}
+.editorial-site .specimen-flow .specimen-label{
+  display:block;
+  color:var(--muted);
+  font-size:.66rem;
+  font-weight:600;
+  letter-spacing:.055em;
+  line-height:1.4;
+  text-transform:uppercase;
+}
+.editorial-site .specimen-flow .specimen-value{
+  display:block;
+  max-width:100%;
+  color:var(--ink);
+  font-weight:400!important;
+  letter-spacing:-.025em;
+  line-height:1.2;
+  overflow-wrap:anywhere;
+}
+.editorial-site .specimen-flow .specimen-glyph{
+  font-family:"Noto Sans KR","Noto Sans",sans-serif;
+  font-size:clamp(3.5rem,5vw,5.5rem);
+  font-weight:400!important;
+  letter-spacing:-.055em;
+}
+.editorial-site .specimen-flow .specimen-ipa{
+  font-family:"Noto Sans","DejaVu Sans","Arial Unicode MS",sans-serif;
+  font-size:clamp(1.05rem,1.5vw,1.45rem);
+}
+.editorial-site .specimen-flow .specimen-ua{font-size:clamp(1.65rem,2.5vw,2.3rem)}
+/* The output is a reading sample, not a typographic emphasis. Applies in both modes. */
+.editorial-site .result-card:first-child .result-body,
+.editorial-site .result-card:first-child .result-body.result-unconfirmed,
+.editorial-site #result-ukrainian{font-weight:400!important;letter-spacing:0}
+@media(max-width:900px){
+  .editorial-site .hero{grid-template-columns:minmax(0,1fr);gap:28px}
+  .editorial-site .hero-copy{max-width:760px}
+  .editorial-site .hero-specimen{width:100%;max-width:760px}
+  .editorial-site .specimen-flow{grid-template-columns:1fr 1.12fr 1fr;grid-template-rows:minmax(150px,auto)}
+  .editorial-site .specimen-flow p,
+  .editorial-site .specimen-flow p:first-child,
+  .editorial-site .specimen-flow p:nth-child(2),
+  .editorial-site .specimen-flow p:nth-child(3){min-height:150px}
+}
+@media(max-width:560px){
+  .editorial-site .hero{padding-top:34px}
+  .editorial-site .hero h1{max-width:12ch;font-size:clamp(2.45rem,11vw,3.3rem);font-weight:740}
+  .editorial-site .specimen-flow{grid-template-columns:minmax(0,1fr);grid-template-rows:auto}
+  .editorial-site .specimen-flow p,
+  .editorial-site .specimen-flow p:first-child,
+  .editorial-site .specimen-flow p:nth-child(2),
+  .editorial-site .specimen-flow p:nth-child(3){
+    min-height:96px;
+    gap:8px;
+    padding:14px 18px;
+  }
+  .editorial-site .specimen-flow p+p{border-top:1px solid var(--line);border-left:0}
+  .editorial-site .specimen-flow p+p::before{
+    top:-.5em;
+    left:50%;
+    transform:translate(-50%,0);
+    content:"↓";
+  }
+  .editorial-site .specimen-flow .specimen-glyph{font-size:3.2rem}
+  .editorial-site .specimen-flow .specimen-ipa{font-size:1.12rem}
+  .editorial-site .specimen-flow .specimen-ua{font-size:1.65rem}
+}
