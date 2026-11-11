@@ -82,3 +82,44 @@ test('keeps visible technical terminology Ukrainian where no standard English na
   assert.doesNotMatch(methodology,/лексичний round-trip|Round-trip сам/u);
   assert.doesNotMatch(methodology,/через IPA conversion/u);
 });
+
+test('methodology explains the Korean visual concept in Ukrainian',()=>{
+  const methodology=read('system.html');
+  assert.match(methodology,/Візуальна логіка/u);
+  assert.match(methodology,/джогакбо — корейського клаптикового полотна/u);
+  assert.match(methodology,/хангиль, IPA й український запис/u);
+});
+
+test('keeps the Korean text field completely free of placeholder copy',()=>{
+  const service=read('index.html');
+  const start=service.indexOf('<textarea id="source-input"');
+  assert.notEqual(start,-1,'the Korean input field remains present');
+  const end=service.indexOf('>',start);
+  const textarea=service.slice(start,end);
+  assert.equal(textarea.includes('placeholder='),false,'the field has no visible placeholder or instructional text');
+});
+
+test('keeps editorial microcopy at a readable minimum size',()=>{
+  const css=read('src/styles/editorial.css');
+  const sizes=css.split('font-size:').slice(1).map(chunk=>{
+    const value=chunk.split(';',1)[0].trim();
+    const number=Number.parseFloat(value);
+    if(value.endsWith('rem')) return number*16;
+    if(value.endsWith('px')) return number;
+    return null;
+  }).filter(Number.isFinite);
+  assert.ok(sizes.length>0,'editorial typography tokens are present');
+  assert.ok(Math.min(...sizes)>=13,`smallest editorial font is ${Math.min(...sizes)}px; minimum is 13px`);
+});
+
+test('keeps the visual rationale as plain editorial copy, not a callout card',()=>{
+  const css=read('src/styles/editorial.css');
+  const selector='.system-page .hero-copy .design-rationale';
+  const start=css.indexOf(selector);
+  assert.notEqual(start,-1,'the rationale has a scoped style rule');
+  const open=css.indexOf('{',start);
+  const close=css.indexOf('}',open);
+  const rule=css.slice(open+1,close);
+  assert.equal(rule.includes('border-left'),false,'no coloured callout rail');
+  assert.equal(rule.includes('background'),false,'no inset callout background');
+});
