@@ -51,7 +51,7 @@ test('only the input and answer workbench windows are stacked',()=>{
   assert.match(css,/\.editorial-site \.workspace-layout\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)/su);
   assert.match(css,/\.editorial-site \.hero\s*\{[^}]*display:\s*grid/su);
   assert.match(css,/\.editorial-site \.specimen-flow\s*\{[^}]*grid-template-columns:\s*1\.12fr \.88fr \.88fr/su);
-  assert.match(css,/\.editorial-site \.system-page \.doc-section\s*\{[^}]*display:\s*block/su);
+  assert.match(css,/\.editorial-site.system-page .doc-section\s*\{[^}]*display:\s*block/su);
   assert.match(css,/\.editorial-site \.button-primary\s*\{[^}]*color:\s*#fff/su);
   assert.doesNotMatch(css,/\.editorial-site \.hero,\s*\.editorial-site \.workspace-layout/su);
 });
