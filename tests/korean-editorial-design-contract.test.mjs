@@ -101,6 +101,6 @@ test('the specimen keeps its three-colour editorial hierarchy without object lab
   const css=read('src/styles/editorial.css');
   assert.match(css,/\.editorial-site \.specimen-flow p span \{ display:\s*none/u);
   assert.match(css,/\.editorial-site \.specimen-flow p:first-child\s*\{[^}]*var\(--ink-navy\)/su);
-  assert.match(css,/\.editorial-site \.specimen-flow p:nth-child\(2\)\s*\{[^}]*var\(--signal-pink\)/su);
-  assert.match(css,/\.editorial-site \.specimen-flow p:nth-child\(3\)\s*\{[^}]*var\(--signal-yellow\)/su);
+  assert.match(css,/\.editorial-site \.specimen-flow p:nth-child\(2\)\s*\{[^}]*var\(--signal-yellow\)/su);
+  assert.match(css,/\.editorial-site \.specimen-flow p:nth-child\(3\)\s*\{[^}]*var\(--signal-pink\)/su);
 });
