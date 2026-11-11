@@ -930,3 +930,26 @@ The first vertical-flow correction met the reading-order and object-chrome requi
 **Repository state:** PR [#473](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/473) merged into `main` as `4dd7b600583fbb6f271664087e513d9fb1ce2fd6`. Final tested branch head: `f20f4d25a9a550dc278284f603a8df42fc571835`. No local test execution is claimed; verification is from the exact-head GitHub Actions runs above.
 
 **Readiness:** this specific visual correction is DONE_VERIFIED. The repository remains a partial research prototype overall; this UI fix does not close independent linguistic evidence, source-rights or human-evaluation gates.
+
+
+## 2026-11-11 — scope correction: only the input and answer windows stack
+
+**User clarification:** the vertical instruction applied only to the Korean text-entry window and the answer window. It did not apply to the hero, the Hangul/IPA/Ukrainian specimen, the methodology contents, tables, evidence grids or other editorial compositions. The previous PRs #470/#473 overgeneralised the request and flattened those unrelated parts of the design. That interpretation was incorrect.
+
+**Corrected implementation**
+- PR [#475](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/475) restores the pre-#470 editorial layout baseline and sets only `.workspace-layout` to one column: input/workbench first, answer/results second.
+- The hero returns to its side-by-side desktop composition; the three-stage specimen is again a horizontal, asymmetric colour composition without visible object-level labels or top/bottom strips.
+- The result detail cards retain their two-column desktop grid. Methodology contents, rule grids, comparison tables, evidence and vowel inventories retain their grouped layouts; methodology section anchors remain inline with headings.
+- Responsive breakpoints adapt the hero/specimen and internal grids. The input and answer windows remain sequential at every width.
+- PR [#477](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/477) aligns specimen colours with their semantic roles: IPA = signal yellow; Ukrainian = signal pink.
+- No conversion, pronunciation, IPA adapter or data logic changed.
+
+**Verification**
+- Rendered browser review [42990218241](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42990218241) passed all 10 page/viewport combinations (1440, 1024, 768, 390, 320 px), including overflow, focus, reduced motion, touch targets, no object chrome and the restored desktop compositions.
+- Exact-head System Verify [42990597830](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42990597830) passed browser regression/build and Python regression/data integrity.
+- Exact-head Tests [42991034581](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42991034581) passed web tests, Python 3.11/3.12/3.13, wheel installation and teacher-corpus audit.
+- Exact-head rendered review after the semantic colour correction [42991034345](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42991034345) passed.
+
+**Repository state:** PR #475 merged as `12984dcf30ea414b45e6d5ff5e5e07623a047312`; PR #477 merged as `f786f6cee3882e2c495680b856041be678526b4a`. Final implementation branch head before squash merge: `103add651399205e6ff3a032db9e1412f03b1400`. Main now contains the scoped layout and corrected semantic palette.
+
+**Readiness:** the scoped visual correction is DONE_VERIFIED. The broader repository remains a partial research prototype; this UI correction does not close independent linguistic evidence or human-evaluation gates.
