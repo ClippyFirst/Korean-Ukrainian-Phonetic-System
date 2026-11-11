@@ -183,7 +183,7 @@ test('the hero specimen is a stitched patchwork composition and the palette is s
   assert.match(css,/--palette-ochre:/u);
   assert.match(css,/--palette-clay:/u);
   assert.match(css,/--palette-paper:/u);
-  assert.match(css,/specimen-flow p:nth-child\(1\)[^{]*\{[^}]*linear-gradient/su);
+  assert.match(css,/specimen-flow p:first-child[^{]*\{[^}]*linear-gradient/su);
   assert.match(css,/specimen-flow p:nth-child\(2\)[^{]*\{[^}]*linear-gradient/su);
   assert.match(css,/specimen-flow p:nth-child\(3\)[^{]*\{[^}]*linear-gradient/su);
   assert.match(css,/specimen-flow p::after/u);
