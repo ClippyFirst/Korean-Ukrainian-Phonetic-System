@@ -1037,3 +1037,34 @@ input,textarea { caret-color: var(--cobalt); }
   .editorial-site .workbench { border: 0; }
   .editorial-site .site-footer { display: flex; flex-direction: column; }
 }
+
+
+/* Plain disclosure headings replace numbered object badges. */
+.editorial-site .trace-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  padding: 14px 0;
+}
+.editorial-site .trace-summary-index,
+.editorial-site .trace-summary-mark { display: none !important; }
+.editorial-site .trace-summary-copy { display: contents; }
+.editorial-site .trace-summary > span { color: var(--muted); font-size: .9rem; }
+.editorial-site .heading-index {
+  color: var(--cobalt);
+  font-size: .82em;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.editorial-site .methodology-toc-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+.editorial-site .doc-content th {
+  background: transparent;
+  color: var(--ink-navy);
+  font-weight: 700;
+}
