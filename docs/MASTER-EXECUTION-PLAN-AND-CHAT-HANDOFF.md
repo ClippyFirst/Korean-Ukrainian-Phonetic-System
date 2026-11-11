@@ -891,36 +891,23 @@ The browser research engine now distinguishes three levels by confidence/coverag
 **Design task status: DONE_VERIFIED and published.** No design-specific blocker remains. Independent Korean pronunciation and Ukrainian target gold-data review remain separate research acceptance requirements.
 
 
-## 2026-11-11 — vertical-flow correction and removal of object chrome
-
-The earlier published redesign did not meet the requested reading order: desktop still placed the hero copy beside the specimen and the input beside the result, while the methodology retained a numbered side rail and boxed contents. This correction replaces those compositions rather than merely stacking them at a mobile breakpoint.
-
-- **Service order:** input → mode choice → explicit «Перетворити» action → Ukrainian result → IPA → romanization → Hanja → analysis → alternatives → syllable trace. The existing live input listener remains active; the action button calls the same renderer and does not introduce a second conversion path.
-- **Methodology:** one column from the introductory specimen through the contents and every section. Section anchors now sit on their actual headings; the separate number rail and status chip are removed.
-- **Object chrome:** specimen top/bottom strips, result metadata bars, table dark header bands, section-number rails and card-like panel frames are removed. Table rows and explanatory material remain legible in ordinary vertical flow.
-- **Responsive contract:** the same DOM order and one-column layout apply at desktop, tablet and mobile widths; no CSS order property or breakpoint reordering is used.
-- **Scope:** no pronunciation rules, IPA adapter, linguistic data, mode semantics or runtime dependencies changed.
-- **Verification:** tests/korean-editorial-design-contract.test.mjs now asserts the exact order, single-column selectors, heading anchors and absence of object chrome. GitHub Actions evidence is pending the pull request exact-head run; no local npm/Playwright execution is claimed in the connector-only runtime.
-
-**Status: PARTIAL pending exact-head CI and rendered visual review.** The prior PR #467 visual-review evidence does not verify this correction.
-
-
 ## 2026-11-11 — approved vertical-flow correction (PR #470)
 
 **Task ledger**
 
 | Requirement | State | Evidence |
 |---|---|---|
-| One-column hero and Hangul → IPA → Ukrainian specimen | DONE_VERIFIED | Rendered review on desktop, laptop, tablet, mobile and 320 px narrow mobile. |
+| One-column hero and Hangul → IPA → Ukrainian specimen | DONE_VERIFIED | Rendered review [42985071214](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42985071214) on desktop, laptop, tablet, mobile and 320 px narrow mobile; post-merge Pages live smoke [42985384175](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42985384175) also passed. |
 | Service order: input → mode → action → Ukrainian → IPA → RR → Hanja → analysis → alternatives → trace | DONE_VERIFIED | DOM-order regression and exact-head browser test; the primary action calls the existing renderer while live conversion remains active. |
 | Remove object-level header/footer strips throughout both pages | DONE_VERIFIED | Specimen strips, result metadata bars, trace-column band, table header bands, numbered side rails, status chips and disclosure badges removed; zero matching chrome elements in rendered review. |
 | Methodology contents and all sections in one vertical reading flow | DONE_VERIFIED | Heading anchors retained inline with headings; contents, sections, evidence lists, vowel inventory and decision rows render top-to-bottom. |
-| Responsive layout and focus/reduced-motion behavior | DONE_VERIFIED | Editorial visual review run 42984590933; 10 page/viewport combinations at 1440, 1024, 768, 390 and 320 px. No horizontal overflow; focus and reduced-motion checks passed. |
-| Full web test suite and production build | DONE_VERIFIED | Exact-head System Verify run 42984716350: 1,442/1,442 Node tests, source-rights audit, Vite build and generated-page checks passed. |
-| Python, corpus, benchmark-register and browser G2P regressions | DONE_VERIFIED | Tests run 42984590961: Python 3.11/3.12/3.13, wheel install and teacher-corpus audit passed; Browser G2P 42984590975 passed; test-register extraction 42984590967 passed; master/research artifacts 42984590927 passed. |
+| Responsive layout and focus/reduced-motion behavior | DONE_VERIFIED | Editorial visual review run 42985071214; 10 page/viewport combinations at 1440, 1024, 768, 390 and 320 px. Post-merge live Pages UX smoke also passed at 390 px. No horizontal overflow; focus and reduced-motion checks passed. |
+| Full web test suite and production build | DONE_VERIFIED | Post-merge exact-main System Verify run 42985384183: 1,442/1,442 Node tests, Python regression/data integrity, source-rights audit, Vite build and generated-page checks passed. |
+| Python, corpus, benchmark-register and browser G2P regressions | DONE_VERIFIED | Post-merge Tests run 42985384248: Python 3.11/3.12/3.13, 1,442/1,442 web tests, wheel install and teacher-corpus audit passed; Browser G2P 42985384335 passed; test-register extraction 42985071471 passed; master/research artifacts 42985384171 passed. |
+| Public GitHub Pages deployment and live UX smoke | DONE_VERIFIED | Post-merge deployment run 42985384175 passed HTTP checks for both pages and JS asset, plus live browser smoke for result announcement, mode disclosure, clipboard fallback, mobile trace labels and methodology navigation. |
 | Official NIKL live source inventory | DEFERRED / SKIPPED BY POLICY | The workflow's metadata-only inventory job was skipped by its configured branch policy; it is not counted as a pass and is unrelated to this UI correction. |
 | Manual screen-reader speech, mode-comprehension study and conversion-latency study | PARTIAL / OUT OF THIS UI CHANGE | Automated semantic labels, focus and responsive checks pass; real assistive-technology speech, participant comprehension and latency measurements remain separate evidence tasks. |
 
-**Repository state:** implementation branch `design/vertical-flow-no-object-chrome-2026-11-11`, based on `main` at `b5f9de943e1d578da33d6fcb7ba7ef7301472d6a`. Exact implementation snapshot `1689da6b0e03130e0f8a38a36498d5755ed8f981`. PR [#470](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/470) is open and mergeable; it has not been merged. No pronunciation rules, IPA adapter, lexical data or runtime dependencies were changed. No local npm/pytest run is claimed; verification evidence is from GitHub Actions.
+**Repository state:** implementation branch `design/vertical-flow-no-object-chrome-2026-11-11`, based on `main` at `b5f9de943e1d578da33d6fcb7ba7ef7301472d6a`; implementation snapshot `1689da6b0e03130e0f8a38a36498d5755ed8f981`; final PR head `5e6d6dfe77ecde48309b27f3fa50f730815d3b6d`. PR [#470](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/470) was merged as `5cf22096dee9caae74cb9be7643184ec8c8b32d8`. The post-merge Pages deployment and live UX smoke passed. No pronunciation rules, IPA adapter, lexical data or runtime dependencies were changed. No local npm/pytest run is claimed; verification evidence is from GitHub Actions.
 
-**Readiness:** the vertical-flow UI correction is DONE_VERIFIED. This does not change the repository's broader status as a partial research prototype; independent phonetic/target review and source-rights gates remain separate.
+**Readiness:** the vertical-flow UI correction is DONE_VERIFIED and published on GitHub Pages. This does not change the repository's broader status as a partial research prototype; independent phonetic/target review and source-rights gates remain separate.
