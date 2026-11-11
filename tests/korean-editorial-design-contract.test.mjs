@@ -89,3 +89,10 @@ test('methodology explains the Korean visual concept in Ukrainian',()=>{
   assert.match(methodology,/джогакбо — корейського клаптикового полотна/u);
   assert.match(methodology,/хангиль, IPA й український запис/u);
 });
+
+test('keeps the Korean text field completely free of placeholder copy',()=>{
+  const service=read('index.html');
+  const textarea=service.match(/<textarea\\b[^>]*id="source-input"[^>]*>/u)?.[0] ?? '';
+  assert.ok(textarea,'the Korean input field remains present');
+  assert.doesNotMatch(textarea,/\\bplaceholder\\s*=/u,'the field has no visible placeholder or instructional text');
+});
