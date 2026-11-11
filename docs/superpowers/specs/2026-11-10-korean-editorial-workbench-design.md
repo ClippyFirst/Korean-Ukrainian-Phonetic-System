@@ -35,7 +35,7 @@ A contemporary editorial workbench informed by Korean graphic culture rather tha
 - Graphite: #30363D
 - Seam: #D5D9D5
 
-The first cream / vermilion / celadon pass was replaced after screenshot review because it read too close to a common generated editorial template. The current interface keeps the surface neutral, uses cobalt for action and focus, and reserves pink and yellow for the three-panel typographic specimen.
+The first cream / vermilion / celadon pass was replaced after screenshot review because it read too close to a common generated editorial template. The current interface keeps the surface neutral, uses cobalt for action and focus, and reserves pink and yellow for the sequential typographic specimen.
 
 ## Typography
 Use a robust system stack already available locally, preferring Noto Sans KR / Noto Sans for Korean and Ukrainian coverage. Build character through scale, weight, line-height and script pairing; do not add remote font dependencies or make the page network-dependent.
