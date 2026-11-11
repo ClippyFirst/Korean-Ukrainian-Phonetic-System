@@ -1,5 +1,50 @@
 # Master execution plan and handoff — 2026-11-08
 
+## Execution continuation — 2026-11-11 — Jogakbo header / vertical modules
+
+**Current workstream:** presentation-only redesign requested and approved by the user. This section supersedes the earlier Seoul Type-only visual direction for the active site; historical research and benchmark handoffs below remain intact.
+
+- **Base:** main at 004173e11dc92b292ea2d67000844119096e1679.
+- **Branch:** design/jogakbo-header-vertical-modules-2026-11-11.
+- **PR:** #480 — https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/480 (open, not merged).
+- **Current checkpoint:** 3d23080228779f9510ef35e3c4ed019dd20be79f.
+- **Design:** header-only jogakbo patchwork; service and methodology content remain vertical editorial modules. Service input is always above output. Each service module has an explanatory object; methodology begins with a reading guide and preserves the existing 24 sections/anchors.
+- **Changed scope:** DESIGN.md, both HTML pages, src/styles/editorial.css, design contract tests, web UI contract test, rendered-review script, dated spec/plan, and historical Seoul Type spec marker.
+- **Preserved:** all existing DOM/JS IDs and hooks, conversion/runtime behavior, phonology, IPA-first adapter, Ukrainian target renderer, candidate/provenance semantics, CSP, two-page GitHub Pages architecture and all research data.
+- **PR history:** #479 is already merged into the base. No open PR was reused or modified. No user branch was deleted or rewritten.
+
+### Task ledger
+
+| Work item | Status | Evidence / next acceptance |
+|---|---|---|
+| User-approved jogakbo header direction | DONE_VERIFIED | Dated design brief and DESIGN.md; V&A and Asian Art Museum references |
+| Test-first design contract | DONE_VERIFIED | RED run 43016435804; stale legacy assertion isolated in 43016792226 and then updated |
+| Service header and vertical input/output modules | DONE_VERIFIED | index.html; static design contracts; Verify run 43017063026 |
+| Methodology guide and vertical reading flow | DONE_VERIFIED | system.html; 24 existing section anchors retained; vertical layers |
+| Existing behavior and linguistic pipeline | DONE_VERIFIED unchanged | No runtime, linguistic, corpus or benchmark files modified |
+| Exact final-head CI | PARTIAL | Verify run 43017604897 and PR checks for 3d230802 are in progress |
+| Rendered desktop/tablet/mobile review | PARTIAL | PR Editorial visual review run 43017646988 is in progress; inspect screenshot artifact before acceptance |
+| Pages deployment and live smoke | BLOCKED until merge | deploy-pages.yml triggers only on main; PR #480 is intentionally not merged in this run |
+| Local checkout / local shell tests | BLOCKED | git clone timed out in this connector-only runtime; tests are executed on GitHub Actions runners |
+
+### Verification record
+
+- Baseline main commit 004173e: existing Verify, Tests, Editorial visual review and Pages deployment runs passed.
+- RED: 43016435804 — 1,442 pass / 4 expected new design-contract failures; Python tests passed. This is intentional TDD evidence, not a final failure.
+- Intermediate: 43016792226 — 1,445 pass / 1 fail, caused by the existing web-ui contract still asserting data-visual-system="seoul-type"; updated to the approved jogakbo identity.
+- GREEN: 43017063026 on 0c70e6e — Verify passed: Node tests, source redistribution rights gate, Vite build/generated-page checks and Python regression/data integrity.
+- Exact branch and PR checks for checkpoint 3d230802: pending at this checkpoint; append final run IDs and conclusions after completion.
+- Rendered browser review must check all 10 page/viewport combinations at 1440, 1024, 768, 390 and 320 CSS px, including the new header patchwork and module guidance checks.
+- Do not claim live deployment or published-site smoke until PR #480 is merged and the main-only Pages workflow passes.
+
+### Skills and environment limits
+
+Superpowers planning/TDD/verification, Anthropic frontend-design, Impeccable Operate/Read/layout/typesetting, Emil Kowalski motion principles and Matt Pocock TDD/code-review guidance were applied. Taste-skill principles informed visual restraint; its local checker could not run without a local checkout. Unlazy/Ponytail runtimes are not claimed as executed. Superdesign CLI had timed out twice; the user explicitly authorized proceeding without it. No canvas mockup is claimed.
+
+### Release assessment
+
+The redesign implementation is ready for review, not yet deployed. The overall repository remains a research prototype; visual/UI completion does not resolve the separate independent Korean IPA, Ukrainian target review, corpus provenance/licensing and other research gates recorded in the handoffs below.
+
 ## Execution continuation — 2026-11-10
 
 The current PR #465 head (`840cb3f177e147dfe1ae53e7bdd26d524b699b64`) is 66 commits ahead of `main` and 0 behind. It is based on the latest main baseline; no merge-base conflict is indicated. The full six-track ten-engine / fifteen-report Browser matrix was previously completed in run 42785083152, with Seoul full-corpus Browser runs in 42496539257. The K-SPAN 63,836-row NIKL WordNum join is complete, but key/WorldBet consistency remains WARN at 22,843 discrepancies (Modern 13,078; Conservative 9,765).
