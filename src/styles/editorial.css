@@ -659,9 +659,9 @@ a:hover{color:var(--signal-deep)}
 .editorial-site .methodology-toc{background:var(--palette-surface);color:var(--palette-ink)}
 .editorial-site .workbench>h2,
 .editorial-site .methodology-toc-heading h2{color:var(--palette-ink)}
-.editorial-site .input-shell,.editorial-site .mode-fieldset,.editorial-site .research-options{border:1px solid var(--palette-line);color:var(--palette-ink)}
-.editorial-site .input-shell{background:var(--palette-surface-bright)}
-.editorial-site .mode-fieldset,.editorial-site .research-options{background:var(--palette-surface-soft)}
+.editorial-site .input-shell{border:1px solid var(--palette-line);background:var(--palette-surface-bright);color:var(--palette-ink)}
+.editorial-site .mode-fieldset,.editorial-site .research-options{border:1px solid var(--palette-line);background:var(--palette-surface-soft);color:var(--palette-ink)}
+.editorial-site .mode-fieldset{background:var(--palette-surface-soft)}
 .editorial-site .input-shell:focus-within{border-color:var(--palette-indigo);outline:2px solid var(--palette-indigo);outline-offset:2px;box-shadow:none}
 .editorial-site .input-shell textarea,
 .editorial-site #stress-input{
@@ -670,6 +670,7 @@ a:hover{color:var(--signal-deep)}
   font-family:"Noto Sans KR","Noto Sans","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
   font-weight:400;
 }
+.editorial-site .input-shell textarea{color:var(--palette-ink)}
 .editorial-site .input-shell textarea::placeholder{color:var(--palette-muted);opacity:1}
 .editorial-site .input-hint{border-color:var(--palette-line);background:var(--palette-surface-soft);color:var(--palette-muted)}
 .editorial-site .workbench>.input-hint{border:0;background:transparent;color:var(--palette-muted)}
