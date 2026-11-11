@@ -334,3 +334,13 @@ The correction replaces that layout with three overlapping, differently sized pi
 **Evidence:** implementation snapshot `ffc77abe33ab65eebbf1c08b7fb20147225381a0`; test contract covers asymmetric spans, overlap, rotation, polygon cuts, stitches, and mobile reflow. Editorial visual review [43090011855](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43090011855) passed desktop, laptop, tablet, mobile and narrow-mobile on both pages. Rendered artifacts were manually inspected at desktop and mobile. Tests [43090011990](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43090011990) and Verify [43090011905](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43090011905) passed. The NIKL metadata-only inventory was skipped and is not counted as a pass.
 
 **Scope:** CSS, stylesheet cache versions and the visual contract test only. No linguistic runtime, phonology, IPA or target mapping changed. Pages deployment [43090011820](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43090011820) was still running when this note was authored; publication must not be claimed until it completes.
+
+
+## 2026-11-11 follow-up — palette unification and Ukrainian glyph rendering
+
+- **PARTIAL → implementation prepared:** the original palette tokens were shared, but many interface surfaces still used unrelated hard-coded navy, electric indigo, acid yellow, pure white, and independent status fills. This made cards, controls, tables, callouts and trace objects feel like separate systems.
+- The follow-up maps workbench, input, controls, results, empty states, trace rows, methodology callouts, tables and footer to shared surface, panel, jade, blue, ochre and clay roles. Semantic success/warning/error states remain distinct only where their meaning requires it.
+- The signal, indigo and acid accents are muted to fit the jogakbo palette; the header collage remains the distinctive cultural signature rather than spreading patchwork across content.
+- **Ukrainian glyph weight:** the output now explicitly uses a Cyrillic-capable text font stack, regular weight and disabled synthetic font styling. This avoids relying on Korean display-font fallback for Ukrainian-specific І/Ї.
+- No engine, IPA, mapping, corpus or linguistic result logic changed.
+- Acceptance: design-contract tests assert palette roles across all object families and explicit regular Cyrillic output styling. Exact-head CI and rendered visual review remain required before merge.
