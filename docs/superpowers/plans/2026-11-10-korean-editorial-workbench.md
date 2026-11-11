@@ -51,3 +51,20 @@ Branch: `design/korean-editorial-workbench-2026-11-10`
 - NIKL metadata-only inventory: SKIPPED by configured policy; not represented as a pass.
 - Local clone and local npm execution were unavailable. No local test run is claimed; CI is the test oracle.
 - **Next genuine blocker for the broader product, not this design:** independently adjudicated Korean IPA and Ukrainian target gold data; the redesign itself is complete and published.
+
+## Follow-up execution record — PR #468 — 2026-11-11
+
+- **Task 6 — DONE_VERIFIED.** Added the Ukrainian-language jogakbo design explanation to the methodology hero. Rendered style is plain editorial copy, not a generic callout.
+- **Task 7 — DONE_VERIFIED.** Removed the Korean input placeholder and added regression coverage. Raised all fixed-size editorial labels and microcopy to at least 13px; corrected the test selector after CI exposed an over-escaped regex in the first draft.
+- **Task 8 — DONE_VERIFIED.** Added contract tests for empty input, minimum type size and rationale styling. Exact head ef7333ecd6ae7bd1e6289b018f75647f9c74f04b passed 1,444/1,444 tests and all relevant workflows. PR #468 merged as 2d56d5a5d4ccdabc53b503bea5891c4f14c3ac47; mainline Pages deployment, public smoke and live adversarial practical-mode smoke [42976783914](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42976783914) **PASS**.
+
+### Final status update
+
+- PR: [#468](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/468), merged.
+- Branch: design/korean-visual-rationale-2026-11-11; verified head: ef7333ecd6ae7bd1e6289b018f75647f9c74f04b.
+- Merge commit: 2d56d5a5d4ccdabc53b503bea5891c4f14c3ac47.
+- Mainline test suite: 1,444/1,444 PASS; Python 3.11 / 3.12 / 3.13, wheel, teacher audit, Verify, Browser G2P, master/research artifacts and exhaustive register PASS.
+- Pages deployment, public-page smoke and live practical-mode adversarial browser smoke: PASS.
+- NIKL metadata-only inventory: SKIPPED by configured policy.
+- No local test execution is claimed; GitHub Actions are the verification oracle.
+- The design work is complete. The remaining independent linguistic gold-data and reviewer requirements are outside this visual task.
