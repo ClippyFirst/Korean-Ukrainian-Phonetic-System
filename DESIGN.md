@@ -10,7 +10,7 @@ Current visual identity for the GitHub Pages service and its methodology page.
 
 The system borrows compositional principles, not decorative motifs:
 
-- **Jogakbo / bojagi:** visible seams, measured negative space and a deliberate rhythm between distinct parts. The three-stage Hangul → IPA → Ukrainian sequence translates that logic into order and spacing, not separate panels.
+- **Jogakbo / bojagi:** asymmetric modular panels, visible seams and measured negative space. The compact Hangul → IPA → Ukrainian specimen expresses this grammar through three distinct colour planes.
 - **Hangul as structure:** real syllable blocks are used as typography. No random Jamo, fake pseudo-writing or decorative script textures.
 - **Paper as material cue:** a cool neutral ground with no simulated grain or fake paper noise; the surface stays subordinate to the live text.
 - **Contemporary Seoul graphic language:** confident Hangul forms, simple geometry, compact type systems and selective high-chroma color planes. The palette belongs to this project, not to a claim about one Korean tradition.
@@ -31,7 +31,7 @@ This is a project-specific interpretation, not a claim that one palette or motif
 | Graphite | `#30363D` | Long-form body copy |
 | Seam | `#D5D9D5` | Divisions between modular areas |
 
-The interface stays mostly neutral. Pink and yellow remain secondary palette tokens rather than framed panel backgrounds; cobalt carries interactive state and focus. The key text combinations are checked against WCAG AA: ink on paper, ink on pink, ink on yellow, cobalt on paper, and white on cobalt.
+The interface stays mostly neutral. Pink marks the Ukrainian specimen, yellow marks IPA, and cobalt carries interactive state and focus. The key text combinations are checked against WCAG AA: ink on paper, ink on pink, ink on yellow, cobalt on paper, and white on cobalt.
 
 ## Typography
 
@@ -44,12 +44,12 @@ The interface stays mostly neutral. Pink and yellow remain secondary palette tok
 ## Layout
 
 - Quiet masthead with typographic Hangul mark; no flag or Taegeuk badge.
-- Editorial hero: introduction followed by a vertical Hangul → IPA → Ukrainian specimen.
-- Service flow: input → mode → primary action → Ukrainian result → supporting IPA/romanization/Hanja → alternatives → detailed trace, always one column.
+- Editorial hero: introduction and the asymmetric three-stage Hangul → IPA → Ukrainian specimen sit side by side on desktop and adapt at narrow widths.
+- Workbench windows: the Korean text-entry window sits above the answer window. This vertical arrangement applies only to those two windows; the answer's supporting result panels retain their desktop grid and responsive collapse.
 - The Ukrainian result is the primary output; IPA, romanization, Hanja and trace data remain secondary but discoverable.
 - The Korean text area has no placeholder or text inside it; its visible label and instructions sit outside the editing surface.
-- Methodology uses a contents list and one readable text column; section numbers are part of headings, not a side rail. Tables and evidence lists have no decorative header/footer bands. The short design rationale is plain secondary copy, not a bordered callout card.
-- Breakpoints adjust spacing, type scale and compact navigation only; they never change the one-column content order.
+- Methodology keeps its editorial contents index, grouped rule/evidence grids and compact comparison tables. Section anchors remain inline with headings; no detached object-level title/footer strips are used.
+- Breakpoints adjust the hero, specimen and methodology grids for tablet/mobile widths. The two workbench windows remain in input-then-answer order at every width.
 
 ## Interaction and accessibility
 
