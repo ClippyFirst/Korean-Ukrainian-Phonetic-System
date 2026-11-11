@@ -32,6 +32,29 @@ try {
         await page.locator('#source-input').fill('시');
         await page.locator('#results:not([hidden])').waitFor({state:'visible'});
         await page.locator('#result-ukrainian').waitFor({state:'visible'});
+        await page.locator('#mode-research').check();
+        const slider=page.locator('#morphology-level');
+        await slider.waitFor({state:'visible'});
+        const expectedLevels=['Строгий','М’який','Суперм’який'];
+        const levelGuidance=[];
+        for(let level=0;level<expectedLevels.length;level++){
+          await slider.evaluate((element,value)=>{
+            element.value=String(value);
+            element.dispatchEvent(new Event('input',{bubbles:true}));
+          },level);
+          const label=(await page.locator('#morphology-level-value').innerText()).trim();
+          const guidance=(await page.locator('#morphology-level-guidance').innerText()).trim();
+          const ariaValue=await slider.getAttribute('aria-valuetext');
+          if(label!==expectedLevels[level]||ariaValue!==expectedLevels[level]||!guidance){
+            failures.push(`index.html at ${viewport.name}: research slider level ${level} is not synchronized with its visible and accessible description: ${JSON.stringify({label,ariaValue,guidance})}`);
+          }
+          levelGuidance.push({label,ariaValue,guidance});
+        }
+        await slider.evaluate(element=>{
+          element.value='1';
+          element.dispatchEvent(new Event('input',{bubbles:true}));
+        });
+        await page.locator('.trace-disclosure').last().locator('summary').click();
       }
 
       const metrics = await page.evaluate(({expectedWidth,pageName}) => {
@@ -113,6 +136,15 @@ try {
         };
       }, {expectedWidth:viewport.width,pageName});
 
+      const researchUi = pageName==='index.html'?await page.evaluate(()=>{
+        const list=document.querySelector('#trace-list');
+        const style=list?getComputedStyle(list):null;
+        const row=list?.querySelector('.trace-row');
+        return {researchVisible:!document.querySelector('#research-options')?.hidden,sliderVisible:Boolean(document.querySelector('#morphology-level')?.getBoundingClientRect().height),sliderValue:document.querySelector('#morphology-level')?.getAttribute('aria-valuetext')??null,gridDisplay:style?.display??null,gridColumns:style?.gridTemplateColumns?.split(' ').length??0,rowDisplay:row?getComputedStyle(row).display:null,rowCount:list?.querySelectorAll('.trace-row').length??0};
+      }):null;
+      if(pageName==='index.html'&&(!researchUi.researchVisible||!researchUi.sliderVisible||researchUi.sliderValue!=='М’який'||researchUi.gridDisplay!=='grid'||researchUi.gridColumns<1||researchUi.rowDisplay!=='grid')){
+        failures.push(`${pageName} at ${viewport.name}: research slider or compact syllable trace is not rendered as an interactive responsive grid: ${JSON.stringify(researchUi)}`);
+      }
       const file = `${outputDir}/${pageName.replace('.html','')}-${viewport.name}.png`;
       await page.screenshot({path:file,fullPage:true,animations:'disabled'});
       await page.keyboard.press('Tab');
@@ -187,7 +219,7 @@ try {
         failures.push(`${prefix}: content order is not top-to-bottom: ${JSON.stringify(metrics.taskOrder)}`);
       }
       if (pageErrors.length) failures.push(`${prefix}: page errors: ${pageErrors.join('; ')}`);
-      console.log(JSON.stringify({page:pageName,viewport:viewport.name,...metrics,screenshot:file}));
+      console.log(JSON.stringify({page:pageName,viewport:viewport.name,...metrics,researchUi,screenshot:file}));
       await page.close();
     }
   }
