@@ -194,13 +194,14 @@ test('three research profiles distinguish heuristic Soft from grapheme-only Supe
   const html=read('index.html');
   const engine=read('src/app/engine_convert.js');
   const main=read('src/main.js');
-  assert.match(html,/М’який режим · ширші евристики, низька впевненість/u);
-  assert.match(html,/Суперм’який режим · графемний IPA-резерв/u);
-  assert.ok(html.indexOf('id="soft-morphology"')<html.indexOf('id="super-soft-morphology"'),'mode controls follow Strict → Soft → Super-soft progression');
+  assert.match(html,/id="morphology-level" type="range"/u);
+  assert.match(html,/Строгий[\\s\\S]*М’який[\\s\\S]*Суперм’який/u);
+  assert.ok(html.indexOf('id="morphology-level"')<html.indexOf('id="soft-morphology"'),'the visible slider precedes hidden compatibility inputs');
   assert.match(engine,/requestedMorphologyMode==='soft'\?'super-soft'/u);
   assert.match(engine,/requestedMorphologyMode==='super-soft'\?'grapheme-fallback'/u);
   assert.match(engine,/super-soft-grapheme-ipa-fallback/u);
-  assert.match(main,/Суперм’який режим · графемний IPA-кандидат/u);
+  assert.match(main,/morphologyDescriptions[\\s\\S]*mode:'strict'[\\s\\S]*mode:'soft'[\\s\\S]*mode:'super-soft'/u);
+  assert.match(main,/morphologyLevel\\?\\.value/u);
 });
 
 
@@ -218,12 +219,12 @@ test('Jogakbo masthead and vertical editorial modules preserve the two workbench
   assert.match(html,/id="input-module-guidance"/);
   assert.match(html,/id="output-module-guidance"/);
   assert.match(system,/id="methodology-reading-guide"/);
-  assert.match(css,/--jogakbo-ink:#24354b/i);
-  assert.match(css,/--jogakbo-jade:#9db7a7/i);
-  assert.match(css,/--signal:#ed593d/i);
-  assert.match(css,/--acid:#e6e84d/i);
-  assert.match(css,/--cobalt:#254bd8/i);
-  assert.match(css,/--signal-deep:#ad3426/i);
+  assert.match(css,/--jogakbo-ink:var\\(--palette-ink\\)/i);
+  assert.match(css,/--jogakbo-jade:var\\(--palette-jade\\)/i);
+  assert.match(css,/--signal:var\\(--palette-clay\\)/i);
+  assert.match(css,/--acid:var\\(--palette-acid\\)/i);
+  assert.match(css,/--cobalt:var\\(--palette-indigo\\)/i);
+  assert.match(css,/--signal-deep:var\\(--palette-clay-deep\\)/i);
   assert.match(css,/\.editorial-site \.workspace-layout\s*\{[^}]*grid-template-columns:\s*minmax\(0,1fr\)/s);
   assert.match(css,/\.editorial-site \.result-card:first-child\s*\{[^}]*grid-column:1\s*\/\s*-1/s);
   assert.match(css,/\.editorial-site \.methodology-toc ol/);
