@@ -1,13 +1,26 @@
-/* Jogakbo masthead, vertical service modules and a Korean editorial reading system. */
+/* One shared palette: every surface and accent is an alias of these tokens. */
 :root {
   color-scheme: light;
-  --paper:#efede6; --surface:#faf9f4; --surface-bright:#fffefa;
-  --ink:#17202c; --ink-raised:#222e40; --ink-soft:#354255;
-  --muted:#5b6570; --muted-inverse:#c4cbd2;
+  --palette-paper:#efede6;
+  --palette-surface:#faf9f4;
+  --palette-ink:#17202c;
+  --palette-ink-raised:#222e40;
+  --palette-muted:#5b6570;
+  --palette-muted-inverse:#c4cbd2;
+  --palette-jade:#9db7a7;
+  --palette-blue:#a9bac6;
+  --palette-ochre:#c9a66b;
+  --palette-clay:#ed593d;
+  --palette-clay-deep:#ad3426;
+  --palette-indigo:#254bd8;
+  --palette-acid:#e6e84d;
+  --paper:var(--palette-paper); --surface:var(--palette-surface); --surface-bright:#fffefa;
+  --ink:var(--palette-ink); --ink-raised:var(--palette-ink-raised); --ink-soft:#354255;
+  --muted:var(--palette-muted); --muted-inverse:var(--palette-muted-inverse);
   --line:#d1d0c8; --line-strong:#969c9b;
-  --signal:#ed593d; --signal-deep:#ad3426; --cobalt:#254bd8;
-  --acid:#e6e84d; --mint:#b9d8ca; --success:#28644e;
-  --warning:#76551e; --danger:#a63842; --focus:#254bd8;
+  --signal:var(--palette-clay); --signal-deep:var(--palette-clay-deep); --cobalt:var(--palette-indigo);
+  --acid:var(--palette-acid); --mint:var(--palette-jade); --success:#28644e;
+  --warning:#76551e; --danger:#a63842; --focus:var(--palette-indigo);
   --radius:10px; --radius-small:6px; --ease-out:cubic-bezier(.23,1,.32,1);
 }
 html{color-scheme:light;background:var(--paper);scroll-behavior:auto;scrollbar-color:var(--line-strong) var(--paper);scrollbar-width:thin}
@@ -38,9 +51,13 @@ a:hover{color:var(--signal-deep)}
 .editorial-site .specimen-flow{display:grid;grid-template-columns:1.14fr .88fr .88fr;grid-template-rows:minmax(220px,auto);gap:3px;padding:3px;background:var(--ink)}
 .editorial-site .specimen-flow p{display:flex;min-width:0;min-height:220px;flex-direction:column;justify-content:center;align-items:flex-start;gap:12px;margin:0;padding:clamp(17px,2vw,27px);border:0;border-radius:2px}
 .editorial-site .specimen-flow p span{display:none}
-.editorial-site .specimen-flow p:first-child{background:var(--ink);color:var(--surface)}
-.editorial-site .specimen-flow p:nth-child(2){background:var(--acid);color:var(--ink)}
-.editorial-site .specimen-flow p:nth-child(3){background:var(--signal);color:var(--ink)}
+.editorial-site .specimen-flow p:first-child{background:linear-gradient(132deg,var(--palette-jade) 0 43%,var(--palette-paper) 43.7% 71%,var(--palette-blue) 71.7% 100%);color:var(--palette-ink)}
+.editorial-site .specimen-flow p:nth-child(2){background:linear-gradient(42deg,var(--palette-ochre) 0 38%,var(--palette-paper) 38.7% 67%,var(--palette-jade) 67.7% 100%);color:var(--palette-ink)}
+.editorial-site .specimen-flow p:nth-child(3){background:linear-gradient(138deg,var(--palette-clay) 0 39%,var(--palette-paper) 39.7% 66%,var(--palette-blue) 66.7% 100%);color:var(--palette-ink)}
+.editorial-site .specimen-flow p{position:relative;isolation:isolate;overflow:hidden}
+.editorial-site .specimen-flow p::after{content:"";position:absolute;inset:9px;border:1px solid rgb(23 32 44 / 24%);pointer-events:none}
+.editorial-site .specimen-flow p:nth-child(2)::after{inset:9px 13px 13px 9px}
+.editorial-site .specimen-flow p:nth-child(3)::after{inset:13px 9px 9px 13px}
 .editorial-site .specimen-flow .specimen-glyph{color:inherit;font-family:"Noto Sans KR","Noto Sans",sans-serif;font-size:clamp(4rem,6.2vw,6.4rem);font-weight:850;line-height:.95;letter-spacing:-.06em}
 .editorial-site .specimen-flow .specimen-ipa{color:inherit;font-size:clamp(1.15rem,1.7vw,1.65rem);font-weight:720;line-height:1.25;letter-spacing:-.035em;overflow-wrap:anywhere}
 .editorial-site .specimen-flow .specimen-ua{color:inherit;font-size:clamp(1.65rem,2.7vw,2.6rem);font-weight:850;line-height:1.08;letter-spacing:-.045em;overflow-wrap:anywhere}
@@ -325,3 +342,31 @@ a:hover{color:var(--signal-deep)}
 .editorial-site .research-reference-list li{padding:12px 0;border-bottom:1px solid var(--line);font-size:.9rem;line-height:1.65}
 .editorial-site .research-reference-list a{color:var(--cobalt);text-decoration-thickness:1px;text-underline-offset:3px}
 .editorial-site .research-reference-list a:hover{color:var(--signal-deep)}
+
+
+/* One typographic voice per prose line: emphasis stays in headings and labels. */
+.editorial-site p strong,.editorial-site p b{font-weight:inherit}
+
+/* Research level: a single, explicit three-stop control with live explanation. */
+.editorial-site .morphology-control{display:grid;gap:9px}
+.editorial-site .morphology-control-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;color:var(--surface);font-size:.86rem}
+.editorial-site .morphology-control-heading label{font-weight:700}
+.editorial-site .morphology-control-heading output{color:var(--palette-ochre);font-weight:750}
+.editorial-site #morphology-level{width:100%;height:28px;margin:2px 0;accent-color:var(--palette-ochre);cursor:pointer}
+.editorial-site #morphology-level:focus-visible{outline:2px solid var(--palette-ochre);outline-offset:4px}
+.editorial-site .morphology-level-labels{display:flex;justify-content:space-between;gap:12px;color:var(--muted-inverse);font-size:.74rem;line-height:1.4}
+.editorial-site .morphology-level-labels span:nth-child(2){text-align:center}
+.editorial-site .morphology-level-labels span:last-child{text-align:right}
+.editorial-site #morphology-level-guidance{min-height:3.3em;margin:0;padding:10px 12px;border-left:2px solid var(--palette-ochre);background:#26364a;color:var(--surface);font-size:.8rem;line-height:1.6}
+
+/* The syllable trace is a compact set of aligned data cards, not a tall text column. */
+.editorial-site .trace-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;align-items:stretch}
+.editorial-site .trace-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-content:start;gap:8px;min-width:0;margin:0;padding:11px;border:1px solid var(--line);border-radius:var(--radius-small);background:var(--palette-surface)}
+.editorial-site .trace-row>[data-label]{min-width:0;padding:8px;border:1px solid #e2dfd6;border-radius:4px;background:#fffefa;overflow-wrap:anywhere;font-size:.8rem;line-height:1.45}
+.editorial-site .trace-row>[data-label]::before{font-size:.66rem;line-height:1.35;letter-spacing:.015em}
+.editorial-site .trace-row .trace-source,.editorial-site .trace-row .trace-surface{font-size:1rem;font-weight:650}
+.editorial-site .trace-row .trace-ipa,.editorial-site .trace-row .trace-output{font-size:.92rem}
+.editorial-site .trace-row .trace-mapping,.editorial-site .trace-row .trace-rules{grid-column:1/-1;color:var(--muted)}
+.editorial-site .trace-row .trace-status{grid-column:1/-1;justify-self:start;padding:5px 9px;border-radius:999px;background:#e6e9e4;font-size:.72rem}
+@media(max-width:900px){.editorial-site .trace-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.editorial-site .trace-list{grid-template-columns:minmax(0,1fr)}.editorial-site .trace-row{grid-template-columns:repeat(2,minmax(0,1fr));padding:10px}}
