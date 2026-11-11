@@ -1251,3 +1251,33 @@ Status at handoff: implementation and contract-test changes prepared on the bran
 - **DONE_VERIFIED:** rendered desktop/laptop/tablet/mobile/narrow-mobile review passed at the last UI-code revision; the only subsequent commit adjusted a test assertion to use the new palette token.
 - **BLOCKED / skipped:** official NIKL metadata-only inventory skipped because credentials were unavailable; it is unrelated to this task.
 - No linguistic runtime behavior, IPA, data or source evidence changed.
+
+
+## 2026-11-11 — corrective follow-up: actual palette unification and bundled Ukrainian font (PR #485)
+
+**Starting main:** `d49a93544c4b49d4f3046fee5e9280c65356a0b5`  
+**Implementation head:** `e5633cb04bc7e3d757527806acc0721a8a4a0fd9`  
+**Branch:** `fix/unified-paper-surfaces-cyrillic-font-2026-11-11`  
+**PR:** [#485 — Fix unified paper surfaces and Ukrainian glyph rendering](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/485)
+
+This entry supersedes the premature 2026-11-11 PR #484 completion claims below. The follow-up audit found that the earlier CSS still used dark panel roles for major windows and did not bundle a Cyrillic font; explicit regular-weight CSS alone could not guarantee consistent І/Ї rendering.
+
+### Delivered
+
+- Workbench, input, mode controls, primary Ukrainian answer and methodology index now use a shared warm paper/surface/ink system. Jade, blue, ochre and clay remain accents rather than competing panel themes.
+- Added same-origin `src/fonts/NotoSans-Regular.woff2` (7,292 bytes), with SIL Open Font License 1.1 and public third-party attribution.
+- Added a real font cmap audit for uppercase and lowercase І/Ї/Є/Ґ; all eight required codepoints passed.
+- Ukrainian result and Ukrainian hero specimen use the bundled family at computed weight 400 with `font-synthesis:none`.
+- The approved asymmetrical jogakbo masthead is preserved. No linguistic/runtime files changed.
+
+### Verification on implementation head
+
+- Tests [43105710769](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43105710769): PASS — 1,458/1,458 Node tests; Python 3.11/3.12/3.13, wheel-install and teacher-corpus audit passed.
+- Verify [43105710859](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43105710859): PASS — browser regression tests, source redistribution-rights gate, build and generated-page verification; Python regression/data integrity passed.
+- Editorial review [43105710901](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43105710901): PASS — cmap audit plus both pages at desktop 1440, laptop 1024, tablet 768, mobile 390 and narrow mobile 320px. Computed Ukrainian font was loaded, weight 400 and synthesis none; the workbench/input/mode/answer/methodology surfaces resolved to the expected paper colors. Mode text contrast exceeded WCAG AA. Focus, reduced motion, touch target and horizontal overflow checks passed. All 10 screenshots were captured and desktop/mobile views manually inspected.
+- Browser G2P [43105710936](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43105710936), master/research artifacts [43105710890](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43105710890), exhaustive register [43105710680](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43105710680): PASS.
+- Official NIKL metadata-only source inventory: SKIPPED by credential gate; unrelated to UI work and not counted as a pass.
+
+### Scope / next step
+
+No Korean pronunciation, IPA, Ukrainian target mapping, source corpus or engine code changed. Local shell tests/build were not claimed because this session used the GitHub connector without a verified local checkout. PR #485 is ready for merge; after merge, verify the Pages deployment and public live smoke before claiming the fix is published.

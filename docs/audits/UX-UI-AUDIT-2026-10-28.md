@@ -353,3 +353,20 @@ The correction replaces that layout with three overlapping, differently sized pi
 - Rendered desktop, laptop, tablet, mobile and narrow-mobile review passed at UI-code revision `701b5891feebfcbcf77e75f4d962ee5edb29b15f`. The only later change before merge was a test assertion update; no UI/CSS/HTML changed after the visual pass.
 - **BLOCKED / skipped:** official NIKL metadata-only source inventory was skipped because credentials were not configured; unrelated to the visual change.
 - No phonology, IPA, target mapping, corpus or engine behavior changed.
+
+
+## 2026-11-11 corrective follow-up — unified paper surfaces and Ukrainian glyph rendering
+
+**Status: DONE_VERIFIED on PR #485 implementation head `e5633cb04bc7e3d757527806acc0721a8a4a0fd9`; merge and live deployment follow separately.**
+
+A fresh review of the actual main-branch CSS and browser output showed that the previous PR #484 completion statement was too broad: dark panel roles still governed major workbench/control/answer surfaces, and Ukrainian glyphs still depended on platform font fallback because no font asset was bundled. The earlier statement is superseded by the evidence below.
+
+- Unified the workbench, input, controls, primary Ukrainian answer and methodology index on the existing warm paper palette; primary text uses ink/muted roles and semantic accent colours remain restrained.
+- Bundled same-origin Noto Sans Regular WOFF2 with SIL OFL 1.1 and third-party notice.
+- Added a fontTools cmap audit. All eight Ukrainian uppercase/lowercase letters І/Ї/Є/Ґ passed.
+- Browser-computed Ukrainian font family is `Noto Sans Ukrainian`, weight `400`, `font-synthesis:none`; font face reports loaded.
+- Playwright reviewed service and methodology pages at 1440/1024/768/390/320px. Surface colors, AA mode contrast, focus visibility, reduced motion, touch targets, and absence of page-level horizontal overflow passed; screenshots were manually inspected.
+- Exact-head CI: Tests [43105710769](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43105710769), Verify [43105710859](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43105710859), visual review [43105710901](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43105710901), Browser G2P [43105710936](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43105710936), master artifacts [43105710890](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43105710890), exhaustive register [43105710680](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43105710680) — all PASS. The official NIKL metadata-only inventory was skipped by its credential gate and is not counted as a pass.
+- No phonology, IPA, Ukrainian mapping, data or engine behavior changed.
+
+**Next:** merge PR #485, then verify the public GitHub Pages deployment and live browser smoke.
