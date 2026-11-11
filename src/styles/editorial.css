@@ -935,3 +935,16 @@ input,textarea { caret-color: var(--cobalt); }
   flex-direction: column;
   gap: 4px;
 }
+
+/* Keep pronunciation provenance attached to the primary Ukrainian result. */
+.editorial-site .result-provenance {
+  max-width: 90ch;
+  margin: 14px 0 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: .78rem;
+  line-height: 1.55;
+  text-align: left;
+}

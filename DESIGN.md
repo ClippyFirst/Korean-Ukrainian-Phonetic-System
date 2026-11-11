@@ -47,6 +47,7 @@ The interface stays mostly neutral. Pink marks the Ukrainian specimen, yellow ma
 - Editorial hero: introduction and the asymmetric three-stage Hangul → IPA → Ukrainian specimen sit side by side on desktop and adapt at narrow widths.
 - Workbench windows: the Korean text-entry window sits above the answer window. This vertical arrangement applies only to those two windows; the answer's supporting result panels retain their desktop grid and responsive collapse.
 - The Ukrainian result is the primary output; IPA, romanization, Hanja and trace data remain secondary but discoverable.
+- Pronunciation provenance and confidence status stay inside the primary Ukrainian result; they never become a separate tile in the supporting-result grid.
 - The Korean text area has no placeholder or text inside it; its visible label and instructions sit outside the editing surface.
 - Methodology keeps its editorial contents index, grouped rule/evidence grids and compact comparison tables. Section anchors remain inline with headings; no detached object-level title/footer strips are used.
 - Breakpoints adjust the hero, specimen and methodology grids for tablet/mobile widths. The two workbench windows remain in input-then-answer order at every width.
