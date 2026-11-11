@@ -73,7 +73,7 @@ try {
           methodologyGuideVisible:pageName==='system.html'?visible('#methodology-reading-guide').length===1:null,
           modeOptionContrast:pageName==='index.html'?[...document.querySelectorAll('.mode-option')].map(label=>{
             const luminance=color=>{
-              const values=color.match(/[\\d.]+/gu)?.slice(0,3).map(Number)??[0,0,0];
+              const values=color.match(/[\d.]+/gu)?.slice(0,3).map(Number)??[0,0,0];
               const linear=values.map(value=>{const channel=value/255;return channel<=.04045?channel/12.92:((channel+.055)/1.055)**2.4});
               return .2126*linear[0]+.7152*linear[1]+.0722*linear[2];
             };
@@ -84,7 +84,7 @@ try {
             const background=getComputedStyle(label).backgroundColor;
             const parentBackground=getComputedStyle(label.closest('fieldset')).backgroundColor;
             const effectiveBackground=background.includes(', 0)')||background==='transparent'?parentBackground:background;
-            return {label:label.querySelector('strong')?.innerText??'',strong:ratio(getComputedStyle(label.querySelector('strong')).color,effectiveBackground),detail:ratio(getComputedStyle(label.querySelector('em')).color,effectiveBackground),background:effectiveBackground};
+            return {label:label.querySelector('strong')?.innerText??'',strongColor:getComputedStyle(label.querySelector('strong')).color,detailColor:getComputedStyle(label.querySelector('em')).color,strong:ratio(getComputedStyle(label.querySelector('strong')).color,effectiveBackground),detail:ratio(getComputedStyle(label.querySelector('em')).color,effectiveBackground),background:effectiveBackground};
           }):null,
           heading:document.querySelector('h1')?.innerText ?? '',
           controls:touchControls.map(el => {
