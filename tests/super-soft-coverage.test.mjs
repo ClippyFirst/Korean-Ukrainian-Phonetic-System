@@ -207,13 +207,13 @@ test('service exposes the opt-in control only inside research mode and labels it
   const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
   const main=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
   assert.match(html,/id="super-soft-morphology"/u);
-  assert.match(html,/Контекстні фонологічні та морфологічні правила навмисно не вгадуються/u);
-  assert.match(main,/superSoftToggle&&superSoftToggle\.checked\?'super-soft'/u);
+  assert.match(main,/description:'Розкладає склади хангиля на графеми, формує IPA й передає його до українського адаптера\. Контекстні правила не вгадуються; це найширше графемне покриття з найнижчою впевненістю\.'/u);
+  assert.match(main,/morphologyDescriptions\[Number\(morphologyLevel\?\.value\)\|\|0\]\?\.mode/u);
   assert.match(main,/super-soft-low-confidence/u);
-  assert.match(html,/М’який режим · ширші евристики, низька впевненість/u);
+  assert.match(html,/id="morphology-level-guidance"/u);
   assert.match(main,/покриття складів Hangul/u);
   assert.match(main,/r\.coverage\.input_covered/u);
-  assert.match(main,/superSoftToggle\.checked&&softToggle/u);
+  assert.match(main,/if\(superSoftToggle\)superSoftToggle\.checked=level===2/u);
   const methodology=readFileSync(new URL('../system.html',import.meta.url),'utf8');
   assert.match(methodology,/methodology-02a-super-soft/u);
   assert.match(methodology,/11&nbsp;172 сучасні склади хангиля/u);

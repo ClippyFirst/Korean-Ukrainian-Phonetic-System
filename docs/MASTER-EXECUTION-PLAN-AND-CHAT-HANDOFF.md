@@ -1090,3 +1090,28 @@ The first vertical-flow correction met the reading-order and object-chrome requi
 - No pull request was created; the repository's operating guide designates direct continuation on `main`.
 - No linguistic, phonological, IPA, corpus, benchmark or runtime-dependency changes were made.
 - The redesign is deployed and visually verified. This is a UI delivery, not a claim that unresolved linguistic research items elsewhere in the repository have been completed.
+
+
+## 2026-11-11 — follow-up visual refinements (PR #481)
+
+Starting main: `339b281b6135edee751b2c99a1f53b78bf041a03`. Work branch: `design/palette-specimen-research-slider-syllable-layout-2026-11-11`.
+
+Requested refinements:
+- Remove isolated inline bold emphasis from prose.
+- Give the Hangul / IPA / Ukrainian hero specimen a stitched jogakbo treatment.
+- Use one shared colour-token palette across the site and header.
+- Replace visible research-mode checkboxes with one strict → soft → super-soft slider and mode explanations.
+- Compact the syllable trace into a responsive information grid.
+
+Implementation:
+- `index.html`: specimen patch classes; range control with three named stops, accessible live description, and hidden legacy checkbox hooks retained for compatibility.
+- `src/main.js`: slider is the source of truth for the existing `strict`, `soft`, and `super-soft` engine modes; mode descriptions and aria-valuetext update with selection.
+- `src/styles/editorial.css`: shared palette aliases, diagonal specimen patchwork and inset seams, prose emphasis normalization, slider styling, and 4/2/1-column trace cards.
+- `tests/korean-editorial-design-contract.test.mjs`: added contract checks for slider mapping hooks, palette, specimen, responsive trace and paragraph weights.
+- `DESIGN.md` and the dated jogakbo spec updated.
+
+No linguistic engine, IPA adapter, Ukrainian mapping, corpus, benchmark, source-rights or dependency changes.
+
+Verification constraints: the local container cannot resolve github.com, so no local checkout or local npm test/build was possible. Exact-head GitHub Actions verification and the rendered visual review are required before merge/deployment. Do not claim visual acceptance or Pages deployment until those runs pass.
+
+PR: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/481

@@ -79,3 +79,18 @@ mattpocock: shared project vocabulary and small, inspectable engineering steps. 
 - Asian Art Museum, [Wrapping cloth (bojagi), object 2005.71](https://searchcollection.asianart.org/objects/16968/wrapping-cloth-bojagi): function and collection context for bojagi/jogakbo.
 
 The implementation abstracts the geometric composition for the header only; it does not reproduce a textile, museum object or historical colour code.
+
+
+## 2026-11-11 refinement — palette, specimen, analysis control and trace
+
+Follow-up to the deployed header/vertical-module design, based on the owner's next visual review.
+
+- **Typography:** prose paragraphs do not use inline bold emphasis; headings and standalone control labels retain their hierarchy.
+- **Shared palette:** a single set of palette tokens now defines paper, surfaces, ink, muted text, jade, blue, ochre, clay and indigo. Existing component variables are aliases; the masthead patchwork and specimen use the same palette. Semantic success/warning/error states remain separate by meaning.
+- **Specimen:** the three Hangul → IPA → Ukrainian panels now have irregular diagonal patch divisions, inset seam lines and varied inset geometry. They read as a small jogakbo composition rather than three flat colour swatches.
+- **Research mode:** one keyboard-accessible three-stop range control selects strict, soft or super-soft. Its live description explains coverage and confidence. Existing internal checkbox IDs remain hidden as compatibility state; the range value is the authoritative selection and maps to the existing engine modes.
+- **Syllable trace:** trace entries use responsive data cards: four columns on wide screens, two on medium screens and one on narrow screens. Each row keeps the source, surface, IPA, target mapping, Ukrainian output, rules and status together.
+
+No linguistic processing, IPA mapping, target adaptation, evidence, data or runtime dependency was changed.
+
+Acceptance: contract tests assert the slider/engine mapping hooks, live explanation, palette aliases, diagonal specimen patches, prose weight and responsive trace grid. Exact-head CI and rendered screenshots remain the verification gate.
