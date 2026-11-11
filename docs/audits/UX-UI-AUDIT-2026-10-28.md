@@ -323,3 +323,14 @@ No linguistic engine, phonology, IPA adapter, Ukrainian mapping, research corpus
 An initial test run exposed one stale copy assertion that expected the old methodology introduction. The test was updated alongside the new copy. The final exact-head PR and mainline workflows passed. An intermediate failed run is not represented as a passing result.
 
 No linguistic behavior changed. This closes the reported typography and header defects, not the repository's separate linguistic research acceptance gates.
+
+
+## 2026-11-11 — restore the hero as an asymmetrical jogakbo textile collage
+
+**Outcome: DONE_VERIFIED for the requested visual direction.** The previous specimen had regressed into three equal, contiguous columns. That read as one table with coloured cells, not Korean patchwork.
+
+The correction replaces that layout with three overlapping, differently sized pieces. Each has its own polygon-cut silhouette, slight rotation, layered textile colour fields and inset dashed seam. The narrow decorative selvage is now staggered across two rows with unequal patch widths. On narrow screens, the pieces rearrange into an offset vertical sequence rather than becoming uniform cards. Existing semantic labels and the Hangul → IPA → Ukrainian example values remain intact.
+
+**Evidence:** implementation snapshot `ffc77abe33ab65eebbf1c08b7fb20147225381a0`; test contract covers asymmetric spans, overlap, rotation, polygon cuts, stitches, and mobile reflow. Editorial visual review [43090011855](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43090011855) passed desktop, laptop, tablet, mobile and narrow-mobile on both pages. Rendered artifacts were manually inspected at desktop and mobile. Tests [43090011990](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43090011990) and Verify [43090011905](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43090011905) passed. The NIKL metadata-only inventory was skipped and is not counted as a pass.
+
+**Scope:** CSS, stylesheet cache versions and the visual contract test only. No linguistic runtime, phonology, IPA or target mapping changed. Pages deployment [43090011820](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43090011820) was still running when this note was authored; publication must not be claimed until it completes.
