@@ -56,6 +56,14 @@
       </section>
     </div>
     <p class="input-guidance" id="input-guidance">Введіть корейський текст або виберіть приклад. Результат оновлюється автоматично. Щоб побачити, як сервіс визначив вимову, відкрийте поскладовий розбір.</p>
+      <div class="chip-row" role="group" aria-label="Швидкі приклади">
+        <button class="mini-button" data-example="현대 한국어의 표준 발음" type="button">현대 한국어의 표준 발음</button>
+        <button class="mini-button" data-example="값이" type="button">값이</button>
+        <button class="mini-button" data-example="옷이" type="button">옷이</button>
+        <button class="mini-button" data-example="시" type="button">시</button>
+        <button class="mini-button" id="nikl-stress-example" type="button">Довгий тестовий текст · 5 198 символів</button>
+      </div>
+      <p class="input-hint">Довгий тестовий текст потрібен для перевірки роботи сервісу на великих уривках; обробка може тривати довше.</p>
       <fieldset class="mode-fieldset" id="transliteration-mode">
         <legend class="mode-legend">Спосіб обробки</legend>
         <label class="mode-option" for="mode-practical">
@@ -87,15 +95,7 @@
         <p class="soft-morphology-hint">Розкладає кожен склад хангиля на початкову, голосну та кінцеву графеми, формує з них IPA й передає її до українського адаптера. Контекстні фонологічні та морфологічні правила навмисно не вгадуються. Це найнижчий рівень точності, але найширше графемне покриття; результат позначається як непідтверджений кандидат.</p>
       </div>
     <div class="action-row">
-      <div class="chip-row" role="group" aria-label="Швидкі приклади">
-        <button class="mini-button" data-example="현대 한국어의 표준 발음" type="button">현대 한국어의 표준 발음</button>
-        <button class="mini-button" data-example="값이" type="button">값이</button>
-        <button class="mini-button" data-example="옷이" type="button">옷이</button>
-        <button class="mini-button" data-example="시" type="button">시</button>
-        <button class="mini-button" id="nikl-stress-example" type="button">Довгий тестовий текст · 5 198 символів</button>
-      </div>
-      <p class="input-hint">Довгий тестовий текст потрібен для перевірки роботи сервісу на великих уривках; обробка може тривати довше.</p>
-      <div class="action-cell">
+<div class="action-cell">
         <button id="example-button" class="button button-primary" type="button">Перетворити</button>
         <button id="clear-button" class="button button-secondary" type="button">Очистити</button>
       </div>
