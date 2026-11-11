@@ -344,3 +344,12 @@ The correction replaces that layout with three overlapping, differently sized pi
 - **Ukrainian glyph weight:** the output now explicitly uses a Cyrillic-capable text font stack, regular weight and disabled synthetic font styling. This avoids relying on Korean display-font fallback for Ukrainian-specific І/Ї.
 - No engine, IPA, mapping, corpus or linguistic result logic changed.
 - Acceptance: design-contract tests assert palette roles across all object families and explicit regular Cyrillic output styling. Exact-head CI and rendered visual review remain required before merge.
+
+
+### Final verification — 2026-11-11
+
+- **DONE_VERIFIED:** PR #484 merged by squash as `8d4a1d84888811e27bf0f0ac547173ca59588d9f`.
+- Exact final PR-head `5b12bce2f4dbe18fef9b02fbb938ab3c9412d924`: browser regression tests, source redistribution rights gate, public-page build and generated-page verification all passed; Python regression/data-integrity job passed.
+- Rendered desktop, laptop, tablet, mobile and narrow-mobile review passed at UI-code revision `701b5891feebfcbcf77e75f4d962ee5edb29b15f`. The only later change before merge was a test assertion update; no UI/CSS/HTML changed after the visual pass.
+- **BLOCKED / skipped:** official NIKL metadata-only source inventory was skipped because credentials were not configured; unrelated to the visual change.
+- No phonology, IPA, target mapping, corpus or engine behavior changed.
