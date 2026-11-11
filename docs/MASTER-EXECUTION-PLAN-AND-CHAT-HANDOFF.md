@@ -1007,3 +1007,39 @@ The first vertical-flow correction met the reading-order and object-chrome requi
 
 
 **Final focus-review correction:** the previous attempt to update the focus assertion did not match the script's exact source block. The current source now determines whether the focused control is inside the dark workbench and expects acid-yellow there, cobalt on light surfaces. A source-contract assertion covers this branch. The exact-head rendered review must confirm it.
+
+
+## Final verification — 2026-11-11
+
+**Verified implementation commit:** `0cb829d2d44077eba9296a1c8759cc8216a3859d`  
+**Final integration branch:** `main`  
+**Starting commit:** `04214ecdce34b6efb76823060012d8481e3bbeb2`
+
+### Completed outcomes
+
+- **DONE_VERIFIED — design research and direction:** seven visual anchors documented; primary sources and studio case studies linked in `DESIGN.md` and the dated spec.
+- **DONE_VERIFIED — two-page visual redesign:** service and methodology use the Seoul Type system; no runtime, IPA, phonology, data or conversion code changed.
+- **DONE_VERIFIED — layout scope:** only the input and answer windows are vertically stacked; hero/specimen, result support grid, methodology index, evidence grids and tables retain their independent editorial layouts.
+- **DONE_VERIFIED — accessibility/responsive checks:** focus is context-sensitive (acid yellow on the dark workbench, cobalt on light surfaces); reduced motion, touch targets, 320px layout and no horizontal overflow are checked.
+- **DONE_VERIFIED — deployment:** both public pages return HTTP 200 and the live practical-mode browser smoke passed.
+
+### Exact-head verification evidence
+
+- **Tests:** [run 43000524061](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43000524061) — success. Node web suite: 1,445 tests passed, 0 failed. Python 3.11, 3.12 and 3.13 passed; wheel install and teacher-corpus audit passed.
+- **Verify:** [run 43000523976](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43000523976) — success. Browser regression/build and Python regression/data integrity passed. Official NIKL metadata-only inventory was skipped by its configured condition.
+- **Rendered visual review:** [run 43000524213](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43000524213) — success. Ten rendered combinations (both pages at 1440, 1024, 768, 390 and 320 px); no horizontal overflow; input/output order, editorial compositions, zero object-level chrome, visible focus, reduced motion and touch targets passed. Screenshots uploaded as workflow artifact.
+- **Pages deployment and live smoke:** [run 43000523955](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43000523955) — success. Python 3.11/3.12/3.13 data checks, browser tests, production build, Pages deployment, public-page smoke and live practical-mode adversarial Korean passage all passed.
+- **Research/corpus artifacts:** [run 43000381085](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43000381085) — success.
+
+### Failed attempts and resolution
+
+- Initial design commit `fd6af056be15c634ebf2771e9d9c93676b6954a5` exposed six stale assertions tied to the retired jogakbo palette and copy, and the old visual review expected cobalt focus even inside the dark workbench.
+- The design-contract tests were rewritten for Seoul Type; the rendered review now validates acid focus inside the workbench and cobalt elsewhere. The exact-head runs listed above pass.
+- No local shell test/build is claimed; implementation and verification were performed through GitHub and its CI runners.
+- Superdesign CLI preflight timed out in the connector-only environment. No Superdesign canvas or mockup is claimed; the actual repository implementation was verified through the project's rendered-review workflow.
+
+### Repository state
+
+- No pull request was created; the repository's operating guide designates direct continuation on `main`.
+- No linguistic, phonological, IPA, corpus, benchmark or runtime-dependency changes were made.
+- The redesign is deployed and visually verified. This is a UI delivery, not a claim that unresolved linguistic research items elsewhere in the repository have been completed.

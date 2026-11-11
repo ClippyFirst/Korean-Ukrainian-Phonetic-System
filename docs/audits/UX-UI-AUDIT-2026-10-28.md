@@ -206,10 +206,32 @@ A rendered desktop capture from the existing visual-review artifact [13841806466
 **Required exact-head evidence:** Node web tests, production build, Verify, Tests, rendered visual review at 1440/1024/768/390/320 px, public Pages deployment and live browser smoke. No local test run is claimed in this connector-only session.
 
 
-**Contrast and focus contract follow-up — 2026-11-11:** darkened the small signal-red index colour to `#AD3426` (5.44:1 against `#EF EDE6`); updated the rendered-review focus assertion to match the new cobalt token `#254BD8`. Exact-head visual review must pass before this redesign is marked DONE_VERIFIED.
+**Contrast and focus contract follow-up — 2026-11-11:** darkened the small signal-red index colour to `#AD3426` (5.44:1 against `#EFEDE6`); updated the rendered-review focus assertion to match the new cobalt token `#254BD8`. Exact-head visual review must pass before this redesign is marked DONE_VERIFIED.
 
 
 **Exact-head correction note — 2026-11-11:** the initial visual review exposed a stale global focus-colour expectation; the dark workbench correctly uses high-contrast acid-yellow focus while light reading surfaces use cobalt. The review now checks the active element's context. The initial Verify run exposed six stale assertions for the retired jogakbo design; `tests/korean-editorial-design-contract.test.mjs` now tests the replacement identity and contrast ratios. Rerun both gates before acceptance.
 
 
 **Rendered focus assertion implementation:** the first edit did not replace the old check in `capture-editorial-review.mjs`; this was identified by reading the committed file and the second failed run log. The script is now rewritten by exact source-block boundaries, and a test asserts both context detection and expected token selection. Do not mark this gate complete until a fresh rendered review passes.
+
+
+## Final verification — 2026-11-11
+
+**Implementation SHA:** `0cb829d2d44077eba9296a1c8759cc8216a3859d` on `main`.
+
+The Seoul Type redesign is **DONE_VERIFIED**:
+- Research direction, seven visual anchors and cited primary sources are recorded in `DESIGN.md` and the dated spec.
+- Both public pages use the replacement visual system; no linguistic or runtime code changed.
+- The input and answer windows alone are stacked vertically; other editorial compositions remain grouped.
+- Rendered review passed 10 page/viewport combinations (1440, 1024, 768, 390, 320 px), with no overflow and zero object-level chrome.
+- Node web tests: 1,445 passed, 0 failed; Python 3.11/3.12/3.13, wheel install and teacher corpus audit passed.
+- Verify passed browser regression/build and Python regression/data integrity.
+- GitHub Pages deployment and live practical-mode adversarial Korean smoke passed; both public pages returned HTTP 200.
+
+Evidence:
+- [Tests 43000524061](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43000524061)
+- [Verify 43000523976](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43000523976)
+- [Rendered visual review 43000524213](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43000524213)
+- [Pages deployment and live smoke 43000523955](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43000523955)
+
+The first design attempt revealed stale legacy test expectations and a global focus-colour assumption; both were corrected and all final exact-head gates passed. Superdesign CLI preflight timed out, so no canvas artifact is claimed. Local shell tests were not run because this session used the GitHub connector and CI runners rather than a verified local checkout.
