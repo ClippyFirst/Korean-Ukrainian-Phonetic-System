@@ -24,7 +24,7 @@ test('ordinary and detailed modes disclose the two actual browser engines', () =
 });
 
 test('methodology documents all three native modes and their real constraints', () => {
-  for (const term of ['Строгий режим','М’який режим','Суперм’який режим','R002','R003','R007','orthographic-phonemic','11&nbsp;172','квадратних дужках','Apache-2.0','G2pBrowser','descriptive: false','engine_rules_ctx.js','engine_rules_phrase.js']) {
+  for (const term of ['Строгий режим','М’який режим','Суперм’який режим','R002','R003','R007','графемно-фонемний резерв','11&nbsp;172','квадратних дужках','Apache-2.0','G2pBrowser','descriptive: false','engine_rules_ctx.js','engine_rules_phrase.js']) {
     assert.ok(system.includes(term), 'methodology must document ' + term);
   }
   assert.match(engine, /morphologyMode==='super-soft'/u);
@@ -32,16 +32,21 @@ test('methodology documents all three native modes and their real constraints', 
   assert.match(soft, /belongs to public Soft and remains lower-confidence than Strict/u);
 });
 
-test('methodology reports corrected benchmark metrics, coverage, and evidence limits', () => {
+test('methodology reports the current three-mode benchmark, CI evidence, and evidence limits', () => {
   for (const term of [
-    '1 341 / 1 341','41144925083','41144925101','41144925095','41144925073','live Playwright practical-mode smoke',
-    '41138727409','2 698 scored / 5 abstentions','998 scored / 1 abstention',
-    '53,0022%','53,0892%','35,7715%','35,3353%',
-    '9,1697%','9,2285%','14,6978%','14,8222%',
-    '9,6139%','9,6472%','16,2343%','16,3126%',
-    '4,8765%','4,8952%','7,5491%','7,5990%',
-    'не встановлюють універсального переможця',
-    'не доводить лінгвістичну правильність','METHODOLOGY-CLAIMS-AND-EVIDENCE-REGISTER-2026-10-30.md','METHODOLOGY-DEBATE-REVIEW-2026-10-30.md'
+    '1 438 / 1 438',
+    '42885341194','42885341473','42885341205','42885341317','42885341249',
+    '42858765799',
+    'UGTPHON','SIGMORPHON','K-SPAN Modern','K-SPAN Conservative','IPA-Dict',
+    'Strict 52,72%','Soft 46,54%','Strict 35,84%','Soft 33,73%',
+    'Strict 10,80%','Soft 9,60%','Strict 7,50%','Soft 5,80%',
+    'Strict 41,10%','Soft 37,60%',
+    'Super-soft: 100%',
+    '2,03%','1,50%','0,40%','0,30%',
+    'не дають одного універсального переможця',
+    'не доказ точності вимови',
+    'METHODOLOGY-CLAIMS-AND-EVIDENCE-REGISTER-2026-10-30.md',
+    'METHODOLOGY-DEBATE-REVIEW-2026-10-30.md'
   ]) {
     assert.ok(system.includes(term), 'methodology must include ' + term);
   }

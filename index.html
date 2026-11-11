@@ -3,19 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Введіть корейський текст і перегляньте його вимову та український запис.">
+  <meta name="description" content="Корейська вимова українськими літерами: фонетичний запис, IPA та поскладовий аналіз.">
+  <meta name="theme-color" content="#f2f3ef">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'none'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; frame-ancestors 'none';">
   <title>한국어 / УКРАЇНСЬКА</title>
-  <link rel="stylesheet" href="./src/styles/main.css?v=20261030-design-polish">
+  <link rel="stylesheet" href="./src/styles/main.css?v=20261110-seoul-graphic">
   <link rel="stylesheet" href="./src/styles/spelling-suggestions.css">
+  <link rel="stylesheet" href="./src/styles/editorial.css?v=20261110-seoul-graphic">
 </head>
 <body>
 <a class="skip-link" href="#input-heading">Перейти до інструмента</a>
-<main class="page-shell">
+<main class="page-shell editorial-site" data-visual-system="jogakbo">
   <header class="site-header">
     <div class="topline">
       <a class="brand" href="./index.html" aria-label="Корейсько-українська система">
-        <span class="taegeuk" aria-hidden="true"><i></i><b></b></span>
+        <span class="brand-mark" aria-hidden="true">한</span>
         <span>한국어 / УКРАЇНСЬКА</span>
       </a>
       <nav class="site-nav" aria-label="Основна навігація">
@@ -25,20 +27,19 @@
     </div>
     <div class="hero hero-home">
       <div class="hero-copy">
-        <p class="eyebrow">Корейсько-український сервіс передачі вимови</p>
-        <h1>Від корейського тексту — <em>до українського читання.</em></h1>
-        <p class="subtitle">Введіть корейське слово, речення або уривок — сервіс покаже приблизну вимову українськими літерами. За потреби можна переглянути IPA та докладний розбір. Сервіс передає звучання, а не перекладає зміст.</p>
-        <div class="method-line" aria-label="Послідовність перетворення"><span><b>01 · Корейський текст</b></span><span><b>02 · Вимова</b></span><span><b>03 · Фонетичний запис</b></span><span><b>04 · Українське читання</b></span></div>
+        <h1>Корейська вимова українськими літерами</h1>
+        <p class="subtitle">Введіть корейський текст, щоб отримати його вимову українськими літерами. Відкрийте IPA та поскладовий розбір, якщо потрібні деталі. Сервіс не перекладає зміст.</p>
+        <div class="method-line" aria-label="Послідовність перетворення"><span><b>Корейське написання</b></span><span><b>Вимова</b></span><span><b>IPA</b></span><span><b>Український запис</b></span></div>
       </div>
       <aside class="hero-specimen" aria-label="Приклад шляху транскрипції">
-        <div class="specimen-top"><span>Приклад</span><span>№ 001</span></div>
-        <div>
-          <span class="specimen-glyph" lang="ko">시</span>
-          <div class="specimen-rule"></div>
-          <div class="specimen-ipa">/ɕi/</div>
-          <div class="specimen-ua">ші</div>
+        <div class="specimen-top"><span>Один склад · три рівні</span><span>IPA — проміжний етап</span></div>
+        <div class="specimen-grid" aria-label="Приклад перетворення корейського складу 시 на український запис">
+          <div class="specimen-tile specimen-tile-hangul"><span class="specimen-label">Хангиль</span><span class="specimen-glyph" lang="ko">시</span></div>
+          <div class="specimen-tile specimen-tile-ipa"><span class="specimen-label">IPA</span><strong class="specimen-ipa">/ɕi/</strong></div>
+          <div class="specimen-tile specimen-tile-ua"><span class="specimen-label">Українська</span><strong class="specimen-ua">ші</strong></div>
+          
         </div>
-        <div class="specimen-bottom"><span>текст → вимова → читання</span><span>Через IPA</span></div>
+        <div class="specimen-bottom"><span>Корейська фонологія → IPA → українська адаптація</span><span>Приклад, не повний стандарт</span></div>
       </aside>
     </div>
   </header>
@@ -100,7 +101,7 @@
           <input type="checkbox" id="super-soft-morphology" />
           Суперм’який режим · графемний IPA-резерв
         </label>
-        <p class="soft-morphology-hint">Складає кожен блок Hangul з початкової, голосної та кінцевої графем, формує з них IPA і передає IPA до українського адаптера. Контекстні фонологічні та морфологічні правила навмисно не вгадуються. Це найнижчий рівень точності, але найширше графемне покриття; результат позначається як непідтверджений кандидат.</p>
+        <p class="soft-morphology-hint">Розкладає кожен склад хангиля на початкову, голосну та кінцеву графеми, формує з них IPA й передає її до українського адаптера. Контекстні фонологічні та морфологічні правила навмисно не вгадуються. Це найнижчий рівень точності, але найширше графемне покриття; результат позначається як непідтверджений кандидат.</p>
       </div>
     </div>
   </section>
@@ -128,7 +129,7 @@
         <p id="candidate-note" class="candidate-footnote" hidden>Це попередній варіант, а не підтверджена нормативна передача. Його варто перевірити за IPA та правилами української адаптації.</p>
       </article>
       <article id="panel-romanization" class="result-card romanization-card" data-result-panel="romanization">
-        <div class="result-meta"><span>RR</span><strong>Романізація (Revised Romanization)</strong><button class="copy-button" data-copy="romanization" type="button">Копіювати</button></div>
+        <div class="result-meta"><span>RR</span><strong>Романізація (RR)</strong><button class="copy-button" data-copy="romanization" type="button">Копіювати</button></div>
         <p id="result-romanization" class="result-body romanization" lang="ko-Latn"></p>
         <p class="romanization-note">Додатковий запис корейської вимови латинськими літерами. Він не призначений для читання за правилами англійської мови й не використовується для побудови українського результату.</p>
       </article>
