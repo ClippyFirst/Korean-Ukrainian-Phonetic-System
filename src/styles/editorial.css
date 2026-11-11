@@ -1390,8 +1390,3 @@ input,textarea { caret-color: var(--cobalt); }
   padding-top: 22px;
   border-top: 1px solid var(--seam);
 }
-@media (max-width: 760px) {
-  .editorial-site .hero { padding-top: 38px; }
-  .editorial-site .hero h1 { max-width: 13ch; }
-  .editorial-site .input-shell textarea { min-height: 190px; }
-}
