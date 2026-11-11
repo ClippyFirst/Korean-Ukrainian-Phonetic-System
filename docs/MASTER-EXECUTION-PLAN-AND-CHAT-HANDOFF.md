@@ -1187,3 +1187,37 @@ Final main commit: `446d07405358f2b706e0bc0249ffa802f1516ce1`.
 - Official NIKL metadata-only inventory was skipped by its configured credential condition; it is not counted as a pass.
 
 The public pages are deployed. This is a typography and header correction only; the broader product remains a research prototype with the independent linguistic validation limits already recorded above.
+
+
+## Execution continuation — 2026-11-11 — asymmetrical jogakbo hero collage
+
+**Implementation snapshot:** `ffc77abe33ab65eebbf1c08b7fb20147225381a0` (main; visual/tested source snapshot).  
+**Starting main commit:** `bb3101cf87fc0cf90fb26995977f307893129d0e`.
+
+The user asked to restore the Korean textile-patch visual identity, explicitly rejecting three equal table-like cells. The hero specimen is now a deliberately irregular, overlapping composition: three differently sized and angled pieces, polygon-cut edges, visible dashed stitch lines and layered textile colour fields. The small header selvage is also assembled from staggered fragments of different widths and heights. The specimen remains semantic HTML with the existing labels and Hangul / IPA / Ukrainian values; no linguistic or conversion behavior changed.
+
+### Task ledger
+
+| Work item | Status | Evidence |
+|---|---|---|
+| Replace equal specimen columns with irregular patchwork | DONE_VERIFIED | CSS uses 12-column asymmetric overlap, distinct row/column spans, individual rotations and polygon cuts |
+| Restore visible textile seams and layered patch colours | DONE_VERIFIED | Dashed inset stitch line and multi-layer gradients on each specimen patch |
+| Make the narrow header selvage irregular | DONE_VERIFIED | 24-column / 2-row staggered patch placement |
+| Responsive composition | DONE_VERIFIED | Editorial visual review passed desktop, laptop, tablet, mobile and narrow-mobile for both pages |
+| Regression contract | DONE_VERIFIED | Added test asserting unequal placements, overlap, rotation, polygon edges, stitches and mobile reflow |
+| Existing content and linguistic pipeline | DONE_VERIFIED unchanged | Only `src/styles/editorial.css`, cache versions in `index.html` / `system.html`, and design-contract test changed before this handoff update |
+| Exact-source CI | DONE_VERIFIED | Tests run 43090011990; Verify 43090011905; Editorial visual review 43090011855 — all passed |
+| Pages deployment | PARTIAL at this handoff edit | Deployment run 43090011820 was still running its browser/static-build stage; verify final status before claiming publication |
+
+### Visual review
+
+Artifact `editorial-visual-review-43090011855` contains rendered captures for both pages at desktop, laptop, tablet, mobile and narrow-mobile. Desktop and mobile service captures were manually inspected: the three samples read as overlapping textile pieces rather than a table; the narrow layout keeps them distinct and in reading order. The automated review passed all configured viewport, overflow, focus, reduced-motion and touch-target checks.
+
+### Commands / checks
+
+- Tests workflow 43090011990: PASS (web and Python 3.11 / 3.12 / 3.13, wheel-install and teacher-corpus audit).
+- Verify workflow 43090011905: PASS (Python regression/data integrity and browser regression/build). Official NIKL metadata-only inventory was SKIPPED by its credentials/policy gate; it is not counted as a pass.
+- Editorial visual review 43090011855: PASS (both pages, five viewport classes).
+- Local shell execution was not available in this connector-only session; no local test pass is claimed.
+
+**Scope:** presentation-only. The earlier regular-weight specimen/output typography and the existing semantic specimen values are preserved. No phonology, IPA, Ukrainian target mapping, datasets or engine behavior changed.
