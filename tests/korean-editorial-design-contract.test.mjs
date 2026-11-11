@@ -41,6 +41,7 @@ test('service modules pair the input and output objects with concise guidance',(
   assert.ok(outputGuide>=0&&output>outputGuide,'output guidance introduces the result object');
   assert.match(html,/class="output-module-title"/u);
   assert.match(html,/class="module-guidance module-guidance-dark"/u);
+  assert.match(html,/натисніть «Перетворити»/u);
   assert.match(html,/class="module-guidance module-guidance-light"/u);
 });
 
