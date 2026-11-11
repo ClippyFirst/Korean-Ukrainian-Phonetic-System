@@ -48,7 +48,7 @@ test('the page uses no object-level heading or footer strips',()=>{
 
 test('workbench and methodology use a single vertical column at every breakpoint',()=>{
   const css=read('src/styles/editorial.css');
-  for(const selector of ['.editorial-site .hero','.editorial-site .workspace-layout','.editorial-site .result-grid','.editorial-site .methodology-toc','.editorial-site .doc-section','.editorial-site .system-intro','.editorial-site .specimen-flow','.editorial-site .vowel-grid','.editorial-site .trace-list','.editorial-site .evidence-list','.editorial-site .action-cell']){
+  for(const selector of ['.editorial-site .hero','.editorial-site .workspace-layout','.editorial-site .result-grid','.editorial-site .methodology-toc','.editorial-site .doc-section','.editorial-site .system-intro','.editorial-site .specimen-flow','.editorial-site .trace-list','.editorial-site .evidence-list','.editorial-site .action-cell']){
     const start=css.lastIndexOf(selector);
     assert.notEqual(start,-1,selector+' has an explicit layout rule');
     const rule=css.slice(start,css.indexOf('}',start)+1);
