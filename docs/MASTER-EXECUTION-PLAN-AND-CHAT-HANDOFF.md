@@ -1237,3 +1237,17 @@ Scope:
 - No phonological or IPA runtime changes.
 
 Status at handoff: implementation and contract-test changes prepared on the branch; exact-head CI, rendered visual review and merge are pending.
+
+
+## 2026-11-11 palette and Ukrainian glyph follow-up — completed
+
+- Branch: `design/unified-jogakbo-palette-ukrainian-glyph-weight-2026-11-11`.
+- PR #484: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/484 — merged.
+- Final merge commit on `main`: `8d4a1d84888811e27bf0f0ac547173ca59588d9f`.
+- Final PR head: `5b12bce2f4dbe18fef9b02fbb938ab3c9412d924`.
+- **DONE_VERIFIED:** palette roles now govern all interface object colors; component styles contain no one-off hex color values outside the root palette definitions. The approved asymmetrical jogakbo header remains the signature visual and content modules remain restrained.
+- **DONE_VERIFIED:** Ukrainian result text and Ukrainian header specimen use a Cyrillic-capable sans family, explicit regular weight and `font-synthesis:none`, avoiding dependence on Korean display-font fallback for І/Ї.
+- **DONE_VERIFIED:** exact-head browser regression, source redistribution rights gate, public build, generated-page verification and Python regression/data-integrity checks passed.
+- **DONE_VERIFIED:** rendered desktop/laptop/tablet/mobile/narrow-mobile review passed at the last UI-code revision; the only subsequent commit adjusted a test assertion to use the new palette token.
+- **BLOCKED / skipped:** official NIKL metadata-only inventory skipped because credentials were unavailable; it is unrelated to this task.
+- No linguistic runtime behavior, IPA, data or source evidence changed.
