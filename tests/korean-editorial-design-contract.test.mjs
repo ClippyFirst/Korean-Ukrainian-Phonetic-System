@@ -107,7 +107,7 @@ test('the specimen keeps its three-colour editorial hierarchy without object lab
 
 test('the result provenance note belongs to the Ukrainian output, not the result grid',()=>{
   const html=read('index.html');
-  const ukrainian=html.match(/<article id="panel-ukrainian"[\\s\\S]*?<\\/article>/u)?.[0]||'';
+  const ukrainian=html.match(/<article id="panel-ukrainian"[\s\S]*?<\/article>/u)?.[0]||'';
   assert.match(ukrainian,/<p id="status-note" class="results-note">/u);
-  assert.doesNotMatch(html,/<\\/article>\\s*<p id="status-note" class="results-note">/u);
+  assert.doesNotMatch(html,/<\/article>\s*<p id="status-note" class="results-note">/u);
 });
