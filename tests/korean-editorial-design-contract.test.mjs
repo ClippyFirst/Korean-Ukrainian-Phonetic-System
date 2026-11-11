@@ -256,14 +256,9 @@ test('the entire interface resolves through one restrained jogakbo palette',()=>
 test('large working and reading surfaces share the warm paper system',()=>{
   const css=read('src/styles/editorial.css');
   const lastRule=selector=>{
-    const escaped=selector.replace(/[.*+?^${}()|[\\]\\\\]/gu,'\\\\const lastRule=selector=>{
-    const start=css.lastIndexOf(selector);
+    const start=css.lastIndexOf(selector+'{');
     assert.ok(start>=0,'missing final surface rule '+selector);
     return css.slice(start,css.indexOf('}',start)+1);
-  };');
-    const matches=[...css.matchAll(new RegExp(escaped+'\\\\s*\\\\{[^}]*\\\\}','gu'))];
-    assert.ok(matches.length,'missing final surface rule '+selector);
-    return matches.at(-1)[0];
   };
   assert.match(css,/--palette-panel:var\(--palette-surface\)/u);
   assert.match(css,/--palette-panel-raised:var\(--palette-surface-bright\)/u);
