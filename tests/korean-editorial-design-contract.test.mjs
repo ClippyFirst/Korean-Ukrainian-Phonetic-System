@@ -63,7 +63,7 @@ test('methodology section anchors are carried by headings in the reading flow',(
   assert.doesNotMatch(html,/class="doc-label"/u);
   assert.match(html,/<h2 id="methodology-00a">/u);
   assert.match(html,/<h2 id="methodology-01">/u);
-  assert.match(html,/<h2 id="methodology-02c-kozak-kim">/u);
+  assert.match(html,/<h2 id="methodology-02c-kozak-kim"><span class="heading-index">02C<\/span>/u);
   assert.equal((html.match(/class="doc-section"/gu)||[]).length,24);
 });
 
