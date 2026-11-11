@@ -16,7 +16,7 @@ test('public web contract stays exactly two pages',()=>{
 });
 
 test('Korean visual identity and no-gradient rule are encoded in source',()=>{
-  const css=read('src/styles/main.css');
+  const css=read('src/styles/main.css');\n  const editorial=read('src/styles/editorial.css');
   assert.match(css,/--red:#cd2e3a/i);
   assert.match(css,/--blue:#0047a0/i);
   assert.doesNotMatch(css,/gradient\s*\(/i);
@@ -64,11 +64,11 @@ test('redesigned workbench preserves accessible navigation and responsive result
   assert.match(html,/class="workspace-layout"/);
   assert.match(html,/class="output-workspace"/);
   assert.match(html,/aria-current="page"/);
-  assert.match(html,/class="method-line"/);
+  assert.match(html,/class="specimen-flow"/);\n  assert.doesNotMatch(html,/class="method-line"/);
   assert.match(css,/:focus-visible/);
   assert.match(css,/@media\s*\(max-width:\s*720px\)/);
   assert.match(css,/@media\s*\(prefers-reduced-motion:reduce\)/);
-  assert.match(css,/\.result-card:first-child/);
+  assert.match(css,/\.result-card:first-child/);\n  assert.match(editorial,/\.editorial-site \.workspace-layout\\s*\\{[^}]*flex-direction:\\s*column/su);
 });
 
 test('editable adversarial passage has a complete IPA path without inline placeholders',()=>{
