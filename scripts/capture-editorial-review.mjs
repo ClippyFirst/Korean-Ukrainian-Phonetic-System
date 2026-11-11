@@ -28,6 +28,7 @@ try {
       const pageErrors = [];
       page.on('pageerror', error => pageErrors.push(error.message));
       await page.goto(new URL(pageName,baseUrl).href,{waitUntil:'networkidle'});
+      await page.evaluate(()=>document.fonts.ready);
       if (pageName === 'index.html') {
         await page.locator('#source-input').fill('시');
         await page.locator('#results:not([hidden])').waitFor({state:'visible'});
@@ -57,6 +58,50 @@ try {
         await page.locator('.trace-disclosure').last().locator('summary').click();
       }
 
+      const visualContracts = await page.evaluate(pageName => {
+        const ukrainian = pageName === 'index.html' ? document.querySelector('#result-ukrainian') : document.querySelector('.specimen-flow .specimen-ua');
+        const specimen = document.querySelector('.specimen-flow .specimen-ua');
+        const surface = selector => {
+          const element=document.querySelector(selector);
+          return element ? getComputedStyle(element).backgroundColor : null;
+        };
+        return {
+          ukrainianTypography: ukrainian ? {
+            fontFamily:getComputedStyle(ukrainian).fontFamily,
+            fontWeight:getComputedStyle(ukrainian).fontWeight,
+            fontSynthesis:getComputedStyle(ukrainian).fontSynthesis,
+            fontLoaded:document.fonts.check('400 16px "Noto Sans Ukrainian"','ІЇЄҐіїєґ')
+          } : null,
+          specimenTypography: specimen ? {
+            fontFamily:getComputedStyle(specimen).fontFamily,
+            fontWeight:getComputedStyle(specimen).fontWeight,
+            fontSynthesis:getComputedStyle(specimen).fontSynthesis
+          } : null,
+          surfaceMaterials: {
+            workbench:surface('.workbench'),
+            input:surface('.input-shell'),
+            modes:surface('.mode-fieldset'),
+            answer:surface('.result-card:first-child'),
+            methodology:surface('.methodology-toc')
+          }
+        };
+      },pageName);
+      const expectedPaper='rgb(250, 249, 244)';
+      const expectedBright='rgb(255, 254, 250)';
+      const expectedSoft='rgb(233, 229, 220)';
+      const expectedSurfaces=pageName==='index.html'
+        ? {workbench:expectedPaper,input:expectedBright,modes:expectedSoft,answer:expectedPaper}
+        : {methodology:expectedPaper};
+      for(const [surface,expected] of Object.entries(expectedSurfaces)){
+        if(visualContracts.surfaceMaterials[surface]!==expected){
+          failures.push(`${pageName} at ${viewport.name}: ${surface} surface is not using the shared paper palette: ${JSON.stringify(visualContracts.surfaceMaterials)}`);
+        }
+      }
+      for(const [label,typography] of [['Ukrainian output',visualContracts.ukrainianTypography],['Ukrainian hero specimen',visualContracts.specimenTypography]]){
+        if(!typography || !typography.fontFamily.includes('Noto Sans Ukrainian') || typography.fontWeight!=='400' || typography.fontSynthesis!=='none' || !visualContracts.ukrainianTypography?.fontLoaded){
+          failures.push(`${pageName} at ${viewport.name}: ${label} did not load the bundled regular Cyrillic font: ${JSON.stringify(visualContracts)}`);
+        }
+      }
       const metrics = await page.evaluate(({expectedWidth,pageName}) => {
         const visible = selector => [...document.querySelectorAll(selector)]
           .filter(el => {
@@ -219,7 +264,7 @@ try {
         failures.push(`${prefix}: content order is not top-to-bottom: ${JSON.stringify(metrics.taskOrder)}`);
       }
       if (pageErrors.length) failures.push(`${prefix}: page errors: ${pageErrors.join('; ')}`);
-      console.log(JSON.stringify({page:pageName,viewport:viewport.name,...metrics,researchUi,screenshot:file}));
+      console.log(JSON.stringify({page:pageName,viewport:viewport.name,...metrics,visualContracts,researchUi,screenshot:file}));
       await page.close();
     }
   }
