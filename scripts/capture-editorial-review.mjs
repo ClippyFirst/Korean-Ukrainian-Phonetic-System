@@ -140,9 +140,9 @@ try {
         const list=document.querySelector('#trace-list');
         const style=list?getComputedStyle(list):null;
         const row=list?.querySelector('.trace-row');
-        return {researchVisible:!document.querySelector('#research-options')?.hidden,sliderVisible:Boolean(document.querySelector('#morphology-level')?.getBoundingClientRect().height),sliderValue:document.querySelector('#morphology-level')?.getAttribute('aria-valuetext')??null,gridDisplay:style?.display??null,gridColumns:style?.gridTemplateColumns?.split(' ').length??0,rowDisplay:row?getComputedStyle(row).display:null,rowCount:list?.querySelectorAll('.trace-row').length??0};
+        return {researchVisible:!document.querySelector('#research-options')?.hidden,sliderVisible:Boolean(document.querySelector('#morphology-level')?.getBoundingClientRect().height),sliderHeight:Math.round(document.querySelector('#morphology-level')?.getBoundingClientRect().height??0),sliderValue:document.querySelector('#morphology-level')?.getAttribute('aria-valuetext')??null,gridDisplay:style?.display??null,gridColumns:style?.gridTemplateColumns?.split(' ').length??0,rowDisplay:row?getComputedStyle(row).display:null,rowCount:list?.querySelectorAll('.trace-row').length??0};
       }):null;
-      if(pageName==='index.html'&&(!researchUi.researchVisible||!researchUi.sliderVisible||researchUi.sliderValue!=='М’який'||researchUi.gridDisplay!=='grid'||researchUi.gridColumns<1||researchUi.rowDisplay!=='grid')){
+      if(pageName==='index.html'&&(!researchUi.researchVisible||!researchUi.sliderVisible||researchUi.sliderValue!=='М’який'||researchUi.gridDisplay!=='grid'||researchUi.gridColumns<1||researchUi.rowDisplay!=='grid'||(viewport.touch&&researchUi.sliderHeight<44))){
         failures.push(`${pageName} at ${viewport.name}: research slider or compact syllable trace is not rendered as an interactive responsive grid: ${JSON.stringify(researchUi)}`);
       }
       const file = `${outputDir}/${pageName.replace('.html','')}-${viewport.name}.png`;
