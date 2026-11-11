@@ -877,8 +877,8 @@ input,textarea { caret-color: var(--cobalt); }
   color: inherit;
   font-size: clamp(1.7rem, 3vw, 2.3rem);
 }
-.editorial-site .system-page .doc-section { display: block; }
-.editorial-site .system-page .doc-content { max-width: 75ch; }
+.editorial-site.system-page .doc-section { display: block; }
+.editorial-site.system-page .doc-content { max-width: 75ch; }
 .editorial-site .button-primary { background: var(--cobalt); border-color: var(--cobalt); color: #fff; }
 .editorial-site .button-primary:hover { background: #182f9e; border-color: #182f9e; }
 @media (max-width: 760px) {
