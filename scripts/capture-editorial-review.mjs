@@ -71,6 +71,21 @@ try {
             outputTop:document.querySelector('#output-module-guidance')?.getBoundingClientRect().top??null
           }:null,
           methodologyGuideVisible:pageName==='system.html'?visible('#methodology-reading-guide').length===1:null,
+          modeOptionContrast:pageName==='index.html'?[...document.querySelectorAll('.mode-option')].map(label=>{
+            const luminance=color=>{
+              const values=color.match(/[\\d.]+/gu)?.slice(0,3).map(Number)??[0,0,0];
+              const linear=values.map(value=>{const channel=value/255;return channel<=.04045?channel/12.92:((channel+.055)/1.055)**2.4});
+              return .2126*linear[0]+.7152*linear[1]+.0722*linear[2];
+            };
+            const ratio=(foreground,background)=>{
+              const values=[luminance(foreground),luminance(background)].sort((a,b)=>b-a);
+              return Number(((values[0]+.05)/(values[1]+.05)).toFixed(2));
+            };
+            const background=getComputedStyle(label).backgroundColor;
+            const parentBackground=getComputedStyle(label.closest('fieldset')).backgroundColor;
+            const effectiveBackground=background.includes(', 0)')||background==='transparent'?parentBackground:background;
+            return {label:label.querySelector('strong')?.innerText??'',strong:ratio(getComputedStyle(label.querySelector('strong')).color,effectiveBackground),detail:ratio(getComputedStyle(label.querySelector('em')).color,effectiveBackground),background:effectiveBackground};
+          }):null,
           heading:document.querySelector('h1')?.innerText ?? '',
           controls:touchControls.map(el => {
             const rect=el.getBoundingClientRect();
@@ -130,6 +145,9 @@ try {
       }
       if (pageName === 'system.html' && !metrics.methodologyGuideVisible) {
         failures.push(prefix + ': methodology reading guide is not visible');
+      }
+      if (pageName === 'index.html' && metrics.modeOptionContrast.some(item=>item.strong<4.5||item.detail<4.5)) {
+        failures.push(prefix + ': mode option text must meet WCAG AA against its rendered surface: ' + JSON.stringify(metrics.modeOptionContrast));
       }
 
       if (metrics.viewportWidth > viewport.width + 1) {

@@ -140,6 +140,7 @@ test('the result provenance note belongs to the Ukrainian output, not the result
   assert.match(review,/headerPatchwork/);
   assert.match(review,/moduleGuidance/);
   assert.match(review,/methodologyGuideVisible/);
+  assert.match(review,/modeOptionContrast/);
   const ukrainian=html.match(/<article id="panel-ukrainian"[\s\S]*?<\/article>/u)?.[0]||'';
   assert.match(ukrainian,/<p id="status-note" class="results-note result-provenance">/u);
   assert.doesNotMatch(html,/<\/article>\s*<p id="status-note"/u);
