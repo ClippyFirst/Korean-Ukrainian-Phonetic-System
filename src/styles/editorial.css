@@ -838,7 +838,6 @@ input,textarea { caret-color: var(--cobalt); }
 .editorial-site .output-workspace { min-width: 0; width: 100%; }
 .editorial-site .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.12fr) minmax(290px, .88fr);
   align-items: center;
 }
 .editorial-site .specimen-flow {
@@ -892,4 +891,47 @@ input,textarea { caret-color: var(--cobalt); }
   .editorial-site .specimen-flow { grid-template-columns: minmax(0, 1fr); }
   .editorial-site .specimen-flow p:first-child { grid-column: auto; }
   .editorial-site .specimen-flow p { min-height: 100px; }
+}
+
+/* Keep the diagnostic trace readable after removing its decorative header band. */
+.editorial-site .trace-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.editorial-site .trace-row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 7px;
+  padding: 14px 0;
+  border: 0;
+  border-bottom: 1px solid var(--seam);
+  background: transparent;
+}
+.editorial-site .trace-row > [data-label] {
+  display: block;
+  padding: 0;
+  border: 0;
+}
+.editorial-site .trace-row > [data-label]::before {
+  content: attr(data-label);
+  display: block;
+  margin-bottom: 3px;
+  color: var(--muted);
+  font-size: .82rem;
+  font-weight: 650;
+}
+.editorial-site .trace-summary {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.editorial-site .trace-summary-copy {
+  display: flex;
+  flex: 1 1 16rem;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
 }
