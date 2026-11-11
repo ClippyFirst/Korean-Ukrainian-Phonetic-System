@@ -1098,7 +1098,7 @@ input,textarea { caret-color: var(--cobalt); }
   display: block;
   margin-bottom: 3px;
   color: var(--muted);
-  font-size: .78rem;
+  font-size: .82rem;
   font-weight: 650;
 }
 .editorial-site .evidence-list p {
