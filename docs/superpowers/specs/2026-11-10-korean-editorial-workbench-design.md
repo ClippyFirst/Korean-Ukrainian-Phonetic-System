@@ -90,3 +90,15 @@ Additional references:
 - [studio fnt](https://www.commarts.com/features/studio-fnt) — geometric forms, simple palettes and confident Hangul typography.
 
 These references inform a project-specific combination. They are not presented as a universal Korean style.
+
+## Applied design and implementation skills
+
+The redesign was reviewed against the following public skill guidance supplied for this task:
+
+- [taste-skill](https://github.com/Leonxlnx/taste-skill/tree/main/skills/taste-skill): keep the page grounded in the actual tool, avoid template copy and invented product claims, and make every visual carry real interface or linguistic content. Its copy-tells reference informed the Ukrainian terminology pass.
+- [Anthropic frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design): choose a product-specific visual identity, let typography carry the subject, avoid default hero/card/eyebrow patterns, and spend visual emphasis in one memorable place.
+- [Impeccable](https://github.com/pbakaus/impeccable): treat the service as Operate and methodology as Read; preserve familiar task affordances, give the reading page a calm measure, and verify responsive, focus, contrast, reduced-motion and real control states.
+- [Emil Kowalski's skills](https://github.com/emilkowalski/skills): motion must explain state or confirm an action; frequent controls remain immediate, transitions stay short and use explicit properties, and hover movement is limited to fine pointers.
+- [Superpowers](https://github.com/obra/superpowers): use test-first acceptance contracts and verify the actual branch head before calling work complete.
+
+The local skill command-line tools were not available in this connector-only runtime. The public skill documents were read directly from their repositories; project-native tests and GitHub Actions supplied implementation verification. No external skill code, runtime or dependencies were copied into the product.
