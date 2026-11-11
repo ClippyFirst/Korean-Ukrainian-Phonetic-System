@@ -103,7 +103,7 @@ test('jogakbo palette is restrained and action contrasts remain accessible',()=>
   for(const token of ['--jogakbo-ink:var(--palette-ink)','--jogakbo-jade:var(--palette-jade)','--jogakbo-blue:var(--palette-blue)','--jogakbo-ochre:var(--palette-ochre)','--jogakbo-clay:var(--palette-clay)','--jogakbo-ground:var(--palette-paper)']){
     assert.ok(css.toLowerCase().includes(token),`missing ${token}`);
   }
-  for(const token of ['--palette-paper:#efede6','--palette-ink:#17202c','--palette-jade:#9db7a7','--palette-blue:#a9bac6','--palette-ochre:#c9a66b','--palette-clay:#b9857a','--palette-signal:#ed593d','--palette-indigo:#254bd8']){
+  for(const token of ['--palette-paper:#efede6','--palette-ink:#17202c','--palette-jade:#9db7a7','--palette-blue:#a9bac6','--palette-ochre:#c9a66b','--palette-clay:#b9857a','--palette-signal:#b96f5f','--palette-indigo:#496477']){
     assert.ok(css.toLowerCase().includes(token),`missing shared palette token ${token}`);
   }
   assert.ok(contrast('#17202c','#efede6')>=4.5);
@@ -234,4 +234,18 @@ test('hero specimen is an asymmetrical overlapping jogakbo collage, not three eq
     'grid-template-columns:repeat(24,minmax(0,1fr))',
     'grid-column:3/7;grid-row:3/7'
   ]) assert.ok(css.includes(fragment),'missing collage treatment: '+fragment);
+});
+
+
+test('the entire interface resolves through one restrained jogakbo palette',()=>{
+  const css=read('src/styles/editorial.css');
+  for(const token of ['--palette-panel:#263548','--palette-panel-raised:#314257','--palette-panel-muted:#3b4b60','--palette-panel-line:#536276','--palette-tint-jade:#e7eee8','--palette-tint-blue:#e8edf0','--palette-tint-ochre:#f1eadc','--palette-tint-clay:#f2e6e1']){
+    assert.ok(css.toLowerCase().includes(token),'missing palette role '+token);
+  }
+  for(const selector of ['.workbench','.input-shell','.mode-fieldset','.button-primary','.output-workspace','.result-card','.empty-state','.trace-row','.doc-content .callout','.doc-content th','.site-footer']){
+    assert.ok(css.includes(selector),'palette mapping missing for '+selector);
+  }
+  assert.match(css,/--palette-indigo:#496477/u);
+  assert.match(css,/--palette-signal:#b96f5f/u);
+  assert.match(css,/--palette-acid:#d7c18a/u);
 });
