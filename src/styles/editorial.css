@@ -691,7 +691,7 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
   .hero { grid-template-columns: minmax(0,1fr); gap: 24px; padding: 38px 0 32px; }
   .hero h1 { max-width: 15ch; font-size: 3.25rem; }
   .result-card:first-child .result-body { font-size: 2.1rem; }
-  .doc-content h2 { font-size: 1.82rem; }
+  .doc-content h2 { font-size: 1.65rem; }
   .hero-specimen { max-width: 600px; }
   .specimen-grid { min-height: 210px; }
   .workspace-layout { grid-template-columns: minmax(0,1fr); }
