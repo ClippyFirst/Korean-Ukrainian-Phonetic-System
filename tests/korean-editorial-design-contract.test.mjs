@@ -239,7 +239,7 @@ test('hero specimen is an asymmetrical overlapping jogakbo collage, not three eq
 
 test('the entire interface resolves through one restrained jogakbo palette',()=>{
   const css=read('src/styles/editorial.css');
-  for(const token of ['--palette-panel:#263548','--palette-panel-raised:#314257','--palette-panel-muted:#3b4b60','--palette-panel-line:#536276','--palette-tint-jade:#e7eee8','--palette-tint-blue:#e8edf0','--palette-tint-ochre:#f1eadc','--palette-tint-clay:#f2e6e1']){
+  for(const token of ['--palette-panel:#263548','--palette-panel-raised:#314257','--palette-panel-muted:#3b4b60','--palette-panel-line:#536276','--palette-tint-jade:#e7eee8','--palette-tint-blue:#e8edf0','--palette-tint-ochre:#f1eadc','--palette-tint-clay:#f2e6e1','--palette-line-ochre:#d9cbb7','--palette-status-success:#285443','--palette-status-warning:#75463d']){
     assert.ok(css.toLowerCase().includes(token),'missing palette role '+token);
   }
   for(const selector of ['.workbench','.input-shell','.mode-fieldset','.button-primary','.output-workspace','.result-card','.empty-state','.trace-row','.doc-content .callout','.doc-content th','.site-footer']){
