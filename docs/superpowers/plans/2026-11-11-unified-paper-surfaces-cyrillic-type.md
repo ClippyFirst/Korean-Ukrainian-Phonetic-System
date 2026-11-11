@@ -3,8 +3,10 @@
 **Design:** [2026-11-11 unified paper surfaces and Cyrillic type](../specs/2026-11-11-unified-paper-surfaces-cyrillic-type-design.md)  
 **Starting main:** `d49a93544c4b49d4f3046fee5e9280c65356a0b5`  
 **Implementation head:** `e5633cb04bc7e3d757527806acc0721a8a4a0fd9`  
+**Merged main commit:** `e3fd592f373597dfbbabee7bddf12c11e88458da`  
 **Branch:** `fix/unified-paper-surfaces-cyrillic-font-2026-11-11`  
-**PR:** [#485](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/485)
+**PR:** [#485](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/485) — merged  
+**Live site:** [GitHub Pages](https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/)
 
 ## Task ledger
 
@@ -46,4 +48,4 @@ Official NIKL metadata-only inventory was skipped by its credential gate and is 
 - No CDN or runtime network dependency; the Ukrainian font is served same-origin.
 - No release or external settings changed.
 
-**Next action:** mark PR #485 ready, merge after exact-head checks, then verify GitHub Pages deployment and public live smoke.
+**Release outcome:** PR #485 merged as `e3fd592f373597dfbbabee7bddf12c11e88458da`; GitHub Pages deployment [43106616657](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43106616657) passed. Public HTTP smoke verified both pages and the JS asset; live Playwright smoke passed the UX controls and a 1,443-character adversarial Korean passage. The system remains a research prototype for linguistic validation purposes; this UI fix does not establish pronunciation accuracy.

@@ -1281,3 +1281,14 @@ This entry supersedes the premature 2026-11-11 PR #484 completion claims below. 
 ### Scope / next step
 
 No Korean pronunciation, IPA, Ukrainian target mapping, source corpus or engine code changed. Local shell tests/build were not claimed because this session used the GitHub connector without a verified local checkout. PR #485 is ready for merge; after merge, verify the Pages deployment and public live smoke before claiming the fix is published.
+
+
+## Post-merge publication record — PR #485 (2026-11-11)
+
+- **Merged PR:** [#485](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/485), squash merge.
+- **Main merge commit:** `e3fd592f373597dfbbabee7bddf12c11e88458da`.
+- **GitHub Pages deployment:** [43106616657](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43106616657) — SUCCESS.
+- **Live URL:** https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/
+- **Publication checks:** Python 3.11/3.12/3.13 tests passed; browser regression tests and static build passed; both public pages and the first JS asset passed HTTP smoke.
+- **Live Playwright smoke:** PASS — deterministic Hanja dictionary chunk/output, live result announcement, mode disclosure, clipboard-denial fallback, mobile trace labels at 390px, methodology navigation; 1,443-character Korean input yielded a 2,982-character inline candidate and 3,731-character IPA result. The application explicitly reported `g2pK` and “Контекстну вимову застосовано · Показано попередній кандидат, не підтверджений результат”; this is a functional smoke, not a linguistic accuracy claim.
+- **Final state:** visual correction is merged and published. The broader Korean pronunciation/transcription system remains a research prototype with its separate linguistic evidence, corpus and benchmark gates. No source/engine/IPA mapping was changed in this UI task.

@@ -370,3 +370,8 @@ A fresh review of the actual main-branch CSS and browser output showed that the 
 - No phonology, IPA, Ukrainian mapping, data or engine behavior changed.
 
 **Next:** merge PR #485, then verify the public GitHub Pages deployment and live browser smoke.
+
+
+### Post-merge publication verification
+
+PR #485 was squash-merged to `main` as `e3fd592f373597dfbbabee7bddf12c11e88458da`. GitHub Pages deployment [43106616657](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43106616657) passed Python 3.11/3.12/3.13 tests, browser tests, static build, public HTTP smoke for both pages and JS asset, and live Playwright UX smoke. The published site is https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/. Live smoke included a 1,443-character Korean passage; the app correctly labelled the generated candidate as provisional/unconfirmed. The UI correction is published; overall linguistic release readiness remains outside this visual audit.

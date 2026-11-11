@@ -4,8 +4,10 @@
 
 **Starting main:** `d49a93544c4b49d4f3046fee5e9280c65356a0b5`  
 **Implementation head:** `e5633cb04bc7e3d757527806acc0721a8a4a0fd9`  
+**Merged main commit:** `e3fd592f373597dfbbabee7bddf12c11e88458da`  
 **Branch:** `fix/unified-paper-surfaces-cyrillic-font-2026-11-11`  
-**PR:** [#485](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/485)
+**PR:** [#485](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/485) — merged  
+**GitHub Pages:** [live service](https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/) — deployment [43106616657](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43106616657) PASS
 
 | Work item | Status | Evidence |
 |---|---|---|
@@ -26,6 +28,7 @@
 - Master table/research artifacts [43105710890](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43105710890) — PASS.
 - Exhaustive test-case register [43105710680](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43105710680) — PASS.
 - Official NIKL metadata-only source inventory — SKIPPED by its credential gate; unrelated to this UI task and not counted as a pass.
+- Mainline deployment [43106616657](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43106616657) — PASS; Pages HTTP smoke and live Playwright smoke passed. Live exercise covered a 1,443-character Korean input, 2,982-character inline candidate and 3,731-character IPA output. The app correctly labelled the candidate provisional/unconfirmed.
 
 No local shell test/build is claimed: this session used the GitHub connector without a verified local checkout. No Korean pronunciation, IPA, Ukrainian mapping, corpus or engine code changed.
 
