@@ -85,8 +85,8 @@
 
 - [x] Update the visual system in place and explicitly supersede the Seoul Type-only visual brief without deleting its historical record.
 - [x] Record the task ledger, branch/base/head and implementation commits in the existing master handoff; append final CI and rendered-review evidence after the exact-head runs complete.
-- [ ] Run focused and full Node tests, source-rights audit, production build, and rendered review.
-- [ ] Check exact-head GitHub Actions results and Pages/live smoke; report any unavailable check as BLOCKED, never PASS.
+- [x] Run focused and full Node tests, source-rights audit, production build, and rendered review on the final PR head.
+- [x] Check exact-head GitHub Actions results and classify the main-only Pages/live smoke as BLOCKED until PR #480 is merged.
 
 ## Commit strategy
 
@@ -96,13 +96,14 @@
 - Commit design-system and handoff reconciliation after verification evidence is known.
 
 
-## Execution checkpoint — 2026-11-11
+## Final execution record — 2026-11-11
 
-- Implementation branch: design/jogakbo-header-vertical-modules-2026-11-11
+- Branch: design/jogakbo-header-vertical-modules-2026-11-11
 - Base: 004173e11dc92b292ea2d67000844119096e1679 (main)
-- Current checkpoint: 3d23080228779f9510ef35e3c4ed019dd20be79f
+- Verified PR head: 7ed9c7fa1c780ec7366341e733bd3aa42433721d
 - PR: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/480
-- Task 1–4: DONE_VERIFIED — approved brief, red/green design contracts, shared jogakbo header, service guidance objects and methodology reading guide/vertical flow.
-- Task 5: PARTIAL — current DESIGN.md and historical supersession note are committed; final exact-head CI and rendered review are running; master handoff/audit will be updated with their final evidence.
-- TDD evidence: run 43016435804 is the expected RED for four new design contracts; run 43016792226 exposed one stale Seoul Type assertion in tests/web-ui-contract.test.mjs; that assertion was updated. Run 43017063026 passed all Verify jobs on 0c70e6e.
-- No conversion engine, phonological rules, IPA boundary, target renderer, research corpus, data or runtime dependencies changed.
+- Tasks 1–5 implementation and branch verification: DONE_VERIFIED.
+- Node: 1,446 passed, 0 failed. Python 3.11/3.12/3.13: passed. Browser G2P: passed. Source-rights gate: passed. Vite build: passed. Master artifacts and exhaustive test register: passed.
+- Playwright editorial review: passed on both pages at 1440, 1024, 768, 390 and 320 CSS px. Computed mode-label contrast gate passed. Artifact: 13853728176.
+- The main-only Pages deployment/live smoke remains BLOCKED until PR #480 is merged; no deployment is claimed.
+- No linguistic/runtime/data changes were made.

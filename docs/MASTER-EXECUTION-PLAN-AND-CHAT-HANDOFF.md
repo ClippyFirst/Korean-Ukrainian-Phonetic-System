@@ -2,48 +2,45 @@
 
 ## Execution continuation — 2026-11-11 — Jogakbo header / vertical modules
 
-**Current workstream:** presentation-only redesign requested and approved by the user. This section supersedes the earlier Seoul Type-only visual direction for the active site; historical research and benchmark handoffs below remain intact.
+**Workstream status:** implementation and CI verification complete on the PR branch; live deployment awaits merge.
 
-- **Base:** main at 004173e11dc92b292ea2d67000844119096e1679.
+- **Starting main commit:** 004173e11dc92b292ea2d67000844119096e1679.
 - **Branch:** design/jogakbo-header-vertical-modules-2026-11-11.
-- **PR:** #480 — https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/480 (open, not merged).
-- **Current checkpoint:** 3d23080228779f9510ef35e3c4ed019dd20be79f.
-- **Design:** header-only jogakbo patchwork; service and methodology content remain vertical editorial modules. Service input is always above output. Each service module has an explanatory object; methodology begins with a reading guide and preserves the existing 24 sections/anchors.
-- **Changed scope:** DESIGN.md, both HTML pages, src/styles/editorial.css, design contract tests, web UI contract test, rendered-review script, dated spec/plan, and historical Seoul Type spec marker.
-- **Preserved:** all existing DOM/JS IDs and hooks, conversion/runtime behavior, phonology, IPA-first adapter, Ukrainian target renderer, candidate/provenance semantics, CSP, two-page GitHub Pages architecture and all research data.
-- **PR history:** #479 is already merged into the base. No open PR was reused or modified. No user branch was deleted or rewritten.
+- **Final verified PR head:** 7ed9c7fa1c780ec7366341e733bd3aa42433721d.
+- **PR:** #480 — https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/480 (open, mergeable, all required checks green at this checkpoint).
+- **Previous merged design work:** #479 and #473 are already represented in main. The older vertical-flow branch is behind main; restore-editorial-character retains its already-merged #473 history and is stale relative to main. Other inspected design/rationale/vertical-flow branches have no commits ahead of main. None were rewritten or deleted.
+- **No open PRs existed before #480.** PR #480 was created from the current main head; no competing open change was reused.
 
 ### Task ledger
 
-| Work item | Status | Evidence / next acceptance |
+| Work item | Status | Evidence / acceptance |
 |---|---|---|
-| User-approved jogakbo header direction | DONE_VERIFIED | Dated design brief and DESIGN.md; V&A and Asian Art Museum references |
-| Test-first design contract | DONE_VERIFIED | RED run 43016435804; stale legacy assertion isolated in 43016792226 and then updated |
-| Service header and vertical input/output modules | DONE_VERIFIED | index.html; static design contracts; Verify run 43017063026 |
-| Methodology guide and vertical reading flow | DONE_VERIFIED | system.html; 24 existing section anchors retained; vertical layers |
-| Existing behavior and linguistic pipeline | DONE_VERIFIED unchanged | No runtime, linguistic, corpus or benchmark files modified |
-| Exact final-head CI | PARTIAL | Verify run 43017604897 and PR checks for 3d230802 are in progress |
-| Rendered desktop/tablet/mobile review | PARTIAL | PR Editorial visual review run 43017646988 is in progress; inspect screenshot artifact before acceptance |
-| Pages deployment and live smoke | BLOCKED until merge | deploy-pages.yml triggers only on main; PR #480 is intentionally not merged in this run |
-| Local checkout / local shell tests | BLOCKED | git clone timed out in this connector-only runtime; tests are executed on GitHub Actions runners |
+| User-approved jogakbo header direction | DONE_VERIFIED | DESIGN.md and dated spec; museum references recorded |
+| Test-first visual contract | DONE_VERIFIED | Expected RED on first new contracts; final Node suite 1,446/1,446 |
+| Shared header and service modules | DONE_VERIFIED | Eight header fragments; input above result; explanatory guidance; empty textarea |
+| Methodology modules | DONE_VERIFIED | Reading guide; 25 content modules each with a real object; 24 existing section anchors preserved |
+| Contrast and responsive behavior | DONE_VERIFIED | Computed mode-label contrast check, visible focus, 320–1440 px review |
+| Existing linguistic pipeline and data | DONE_VERIFIED unchanged | No engine, IPA, target, corpus, benchmark or runtime files modified |
+| Final branch CI | DONE_VERIFIED | Verify 43019283132 / 43019293643; Tests 43019293505; G2P 43019293495; register 43019293652; master artifacts 43019293509 |
+| Rendered review | DONE_VERIFIED | Editorial review 43019293592; artifact 13853728176; manual desktop and narrow-mobile inspection |
+| GitHub Pages deployment/live smoke | BLOCKED until merge | Deployment workflow is main-branch-only; PR #480 is not yet merged |
+| Local checkout/local shell tests | BLOCKED | git clone timed out in this connector-only runtime; equivalent repository-defined checks ran on GitHub Actions |
 
-### Verification record
+### Commands and verification actually executed
 
-- Baseline main commit 004173e: existing Verify, Tests, Editorial visual review and Pages deployment runs passed.
-- RED: 43016435804 — 1,442 pass / 4 expected new design-contract failures; Python tests passed. This is intentional TDD evidence, not a final failure.
-- Intermediate: 43016792226 — 1,445 pass / 1 fail, caused by the existing web-ui contract still asserting data-visual-system="seoul-type"; updated to the approved jogakbo identity.
-- GREEN: 43017063026 on 0c70e6e — Verify passed: Node tests, source redistribution rights gate, Vite build/generated-page checks and Python regression/data integrity.
-- Exact branch and PR checks for checkpoint 3d230802: pending at this checkpoint; append final run IDs and conclusions after completion.
-- Rendered browser review must check all 10 page/viewport combinations at 1440, 1024, 768, 390 and 320 CSS px, including the new header patchwork and module guidance checks.
-- Do not claim live deployment or published-site smoke until PR #480 is merged and the main-only Pages workflow passes.
-
-### Skills and environment limits
-
-Superpowers planning/TDD/verification, Anthropic frontend-design, Impeccable Operate/Read/layout/typesetting, Emil Kowalski motion principles and Matt Pocock TDD/code-review guidance were applied. Taste-skill principles informed visual restraint; its local checker could not run without a local checkout. Unlazy/Ponytail runtimes are not claimed as executed. Superdesign CLI had timed out twice; the user explicitly authorized proceeding without it. No canvas mockup is claimed.
+- GitHub Actions ran the repository's Node test suite: **1,446 passed, 0 failed**.
+- Python regression/data-integrity jobs passed on 3.11, 3.12 and 3.13.
+- Browser G2P integration passed.
+- Source redistribution rights audit passed.
+- Vite production build passed; deterministic Hanja artifact preparation completed.
+- Master table/research corpus artifacts and exhaustive test-case register extraction passed.
+- Playwright rendered review passed at 1440, 1024, 768, 390 and 320 CSS px on both pages. A first review caught mode-label contrast; the fix and computed contrast gate were rerun and passed.
+- Local clone and local shell tests were not available; no local pass is claimed.
 
 ### Release assessment
 
-The redesign implementation is ready for review, not yet deployed. The overall repository remains a research prototype; visual/UI completion does not resolve the separate independent Korean IPA, Ukrainian target review, corpus provenance/licensing and other research gates recorded in the handoffs below.
+The UI redesign is implementation- and CI-verified, ready to merge. The site is not yet deployed because PR #480 remains open. The repository as a whole remains a research prototype; the visual work does not close the independent linguistic evidence, IPA review, target-form validation, corpus provenance/licensing or other research gates in the handoffs below.
+
 
 ## Execution continuation — 2026-11-10
 
