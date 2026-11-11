@@ -275,12 +275,12 @@ a:hover{color:var(--signal-deep)}
 
 /* Jogakbo belongs to the masthead; the working and reading modules stay linear. */
 :root{
-  --jogakbo-ink:#24354b;
-  --jogakbo-jade:#9db7a7;
-  --jogakbo-blue:#a9bac6;
-  --jogakbo-ochre:#c9a66b;
-  --jogakbo-clay:#b9857a;
-  --jogakbo-ground:#f1eee5;
+  --jogakbo-ink:var(--palette-ink);
+  --jogakbo-jade:var(--palette-jade);
+  --jogakbo-blue:var(--palette-blue);
+  --jogakbo-ochre:var(--palette-ochre);
+  --jogakbo-clay:var(--palette-clay);
+  --jogakbo-ground:var(--palette-paper);
 }
 .editorial-site .brand-mark{
   border-radius:2px;
@@ -370,3 +370,9 @@ a:hover{color:var(--signal-deep)}
 .editorial-site .trace-row .trace-status{grid-column:1/-1;justify-self:start;padding:5px 9px;border-radius:999px;background:#e6e9e4;font-size:.72rem}
 @media(max-width:900px){.editorial-site .trace-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.editorial-site .trace-list{grid-template-columns:minmax(0,1fr)}.editorial-site .trace-row{grid-template-columns:repeat(2,minmax(0,1fr));padding:10px}}
+
+.editorial-site #morphology-level{appearance:none;-webkit-appearance:none;height:28px;background:transparent}
+.editorial-site #morphology-level::-webkit-slider-runnable-track{height:6px;border:1px solid #718096;border-radius:999px;background:linear-gradient(90deg,var(--palette-jade),var(--palette-ochre),var(--palette-clay))}
+.editorial-site #morphology-level::-moz-range-track{height:6px;border:1px solid #718096;border-radius:999px;background:linear-gradient(90deg,var(--palette-jade),var(--palette-ochre),var(--palette-clay))}
+.editorial-site #morphology-level::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;margin-top:-8px;border:3px solid var(--palette-ink);border-radius:50%;background:var(--palette-paper);box-shadow:0 0 0 2px var(--palette-ochre)}
+.editorial-site #morphology-level::-moz-range-thumb{width:14px;height:14px;border:3px solid var(--palette-ink);border-radius:50%;background:var(--palette-paper);box-shadow:0 0 0 2px var(--palette-ochre)}
