@@ -862,8 +862,8 @@ input,textarea { caret-color: var(--cobalt); }
 }
 .editorial-site .specimen-flow p span { display: none; }
 .editorial-site .specimen-flow p:first-child { background: var(--ink-navy); color: var(--hanji); }
-.editorial-site .specimen-flow p:nth-child(2) { background: var(--signal-pink); color: var(--ink-navy); }
-.editorial-site .specimen-flow p:nth-child(3) { background: var(--signal-yellow); color: var(--ink-navy); }
+.editorial-site .specimen-flow p:nth-child(2) { background: var(--signal-yellow); color: var(--ink-navy); }
+.editorial-site .specimen-flow p:nth-child(3) { background: var(--signal-pink); color: var(--ink-navy); }
 .editorial-site .specimen-flow .specimen-glyph {
   color: inherit;
   font-size: clamp(3.2rem, 5.5vw, 5.5rem);
