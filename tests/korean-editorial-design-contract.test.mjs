@@ -48,12 +48,14 @@ test('the page uses no object-level heading or footer strips',()=>{
 
 test('workbench and methodology use a single vertical column at every breakpoint',()=>{
   const css=read('src/styles/editorial.css');
-  for(const selector of ['.editorial-site .hero','.editorial-site .workspace-layout','.editorial-site .result-grid','.editorial-site .methodology-toc','.editorial-site .doc-section','.editorial-site .system-intro','.editorial-site .specimen-flow','.editorial-site .trace-list']){
-    const start=css.lastIndexOf(selector);
-    assert.notEqual(start,-1,selector+' has an explicit layout rule');
-    const rule=css.slice(start,css.indexOf('}',start)+1);
-    assert.match(rule,/flex-direction:\s*column/u,selector+' flows vertically');
+  const groupStart=css.lastIndexOf('.editorial-site .hero,');
+  const groupEnd=css.indexOf('}',groupStart);
+  const verticalGroup=css.slice(groupStart,groupEnd+1);
+  for(const selector of ['.editorial-site .hero','.editorial-site .workspace-layout','.editorial-site .result-grid','.editorial-site .methodology-toc','.editorial-site .doc-section','.editorial-site .system-intro','.editorial-site .specimen-flow']){
+    assert.ok(verticalGroup.includes(selector),selector+' belongs to the shared vertical-flow rule');
   }
+  assert.match(verticalGroup,/flex-direction:\s*column/u,'the shared layout flows vertically');
+  assert.match(css,/\.editorial-site \.trace-list,\s*\.editorial-site \.evidence-list\s*\{[^}]*flex-direction:\s*column/su);
   assert.match(css,/\.editorial-site \.decision-table\s*\{[^}]*flex-direction:\s*column/su);
   assert.match(css,/\.editorial-site \.table-row\s*\{[^}]*flex-direction:\s*column/su);
   assert.match(css,/\.editorial-site \.vowel-grid\s*\{[^}]*flex-direction:\s*column/su);
@@ -104,4 +106,17 @@ test('user-facing terminology stays Ukrainian and the input remains placeholder-
   const end=service.indexOf('>',start);
   assert.ok(start>=0);
   assert.doesNotMatch(service.slice(start,end),/placeholder=/u);
+});
+
+
+test('vertical flow keeps a distinct Korean editorial visual identity',()=>{
+  const css=read('src/styles/editorial.css');
+  assert.match(css,/\.editorial-site \.specimen-flow p span \{ display:\s*none/u);
+  assert.match(css,/\.editorial-site \.specimen-flow p:nth-child\(2\) strong[\s\S]{0,180}var\(--cobalt\)/u);
+  assert.match(css,/\.editorial-site \.specimen-flow p:nth-child\(3\) strong[\s\S]{0,180}#a92c65/u);
+  assert.match(css,/\.editorial-site \.button-primary[\s\S]{0,220}color:\s*#fff/u);
+  assert.match(css,/\.editorial-site \.mode-fieldset[\s\S]{0,180}#eef0fa/u);
+  assert.match(css,/\.editorial-site \.result-card:first-child \.result-body[\s\S]{0,180}#a92c65/u);
+  assert.match(css,/\.editorial-site \.doc-content \.callout[\s\S]{0,220}var\(--cobalt\)/u);
+  assert.match(css,/\.editorial-site \.hero,\s*\.editorial-site \.workspace-layout[\s\S]{0,500}flex-direction:\s*column/u);
 });
