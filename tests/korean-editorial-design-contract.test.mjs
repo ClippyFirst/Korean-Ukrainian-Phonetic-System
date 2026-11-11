@@ -219,3 +219,17 @@ test('paragraph emphasis does not create isolated bold words or glyphs',()=>{
   const css=read('src/styles/editorial.css');
   assert.match(css,/\.editorial-site p strong,\.editorial-site p b,\.editorial-site li strong,\.editorial-site li b,\.editorial-site td strong,\.editorial-site td b\s*\{[^}]*font-weight:inherit/u);
 });
+
+test('hero specimen is an asymmetrical overlapping jogakbo collage, not three equal table cells',()=>{
+  const css=read('src/styles/editorial.css');
+  assert.match(css,/grid-template-columns:repeat\\(12,minmax\\(0,1fr\\)\\)/u);
+  assert.match(css,/grid-column:1 \/ 6;[\\s\\S]*?grid-row:1 \/ 8/u);
+  assert.match(css,/grid-column:5 \/ 11;[\\s\\S]*?grid-row:1 \/ 6/u);
+  assert.match(css,/grid-column:8 \/ 13;[\\s\\S]*?grid-row:4 \/ 9/u);
+  assert.match(css,/transform:rotate\\(-2\\.2deg\\)/u);
+  assert.match(css,/transform:rotate\\(2\\.6deg\\)/u);
+  assert.match(css,/clip-path:polygon/u);
+  assert.match(css,/border:1px dashed rgb\\(23 32 44 \/ 48%\\)/u);
+  assert.match(css,/grid-template-columns:repeat\\(24,minmax\\(0,1fr\\)\\)/u);
+  assert.match(css,/@media\\(max-width:560px\\)[\\s\\S]*?grid-column:3\\/7;grid-row:3\\/7/u);
+});
