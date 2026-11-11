@@ -63,7 +63,7 @@ try {
             const rect=el.getBoundingClientRect();
             return {label:(el.innerText||el.getAttribute('aria-label')||el.tagName).trim().slice(0,60),width:Math.round(rect.width),height:Math.round(rect.height)};
           }),
-          flowChecks:['.hero','.workspace-layout','.result-grid','.methodology-toc','.doc-section','.system-intro','.specimen-flow','.layers','.decision-table','.trace-list','.evidence-list','.vowel-grid','.action-cell'].map(selector=>{
+          flowChecks:['.hero','.workspace-layout','.result-grid','.methodology-toc','.doc-section','.system-intro','.specimen-flow','.layers','.rule-grid','.limits','.compare-strip','.decision-table','.table-row','.trace-list','.trace-row','.evidence-list','.vowel-grid','.action-cell'].map(selector=>{
             const el=document.querySelector(selector);
             if(!el)return {selector,exists:false};
             const style=getComputedStyle(el);
