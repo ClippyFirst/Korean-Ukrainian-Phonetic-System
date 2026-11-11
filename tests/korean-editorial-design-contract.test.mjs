@@ -103,7 +103,7 @@ test('jogakbo palette is restrained and action contrasts remain accessible',()=>
   for(const token of ['--jogakbo-ink:var(--palette-ink)','--jogakbo-jade:var(--palette-jade)','--jogakbo-blue:var(--palette-blue)','--jogakbo-ochre:var(--palette-ochre)','--jogakbo-clay:var(--palette-clay)','--jogakbo-ground:var(--palette-paper)']){
     assert.ok(css.toLowerCase().includes(token),`missing ${token}`);
   }
-  for(const token of ['--palette-paper:#efede6','--palette-ink:#17202c','--palette-jade:#9db7a7','--palette-blue:#a9bac6','--palette-ochre:#c9a66b','--palette-clay:#ed593d','--palette-indigo:#254bd8']){
+  for(const token of ['--palette-paper:#efede6','--palette-ink:#17202c','--palette-jade:#9db7a7','--palette-blue:#a9bac6','--palette-ochre:#c9a66b','--palette-clay:#b9857a','--palette-signal:#ed593d','--palette-indigo:#254bd8']){
     assert.ok(css.toLowerCase().includes(token),`missing shared palette token ${token}`);
   }
   assert.ok(contrast('#17202c','#efede6')>=4.5);
