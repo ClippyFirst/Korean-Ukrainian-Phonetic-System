@@ -213,7 +213,7 @@ test('hero specimens and Ukrainian results use regular rather than bold glyph we
   }
   assert.match(css,/\.editorial-site \.specimen-flow \.specimen-value\{[^}]*font-weight:400!important/su);
   assert.match(css,/\.editorial-site \.result-card:first-child \.result-body,[\s\S]*?#result-ukrainian\{font-weight:400!important/su);
-  assert.match(css,/\.editorial-site #result-ukrainian,[\s\S]*?font-family:"Noto Sans","Segoe UI",Arial,sans-serif/u);
+  assert.match(css,/\.editorial-site #result-ukrainian,[\s\S]*?font-family:"Noto Sans Ukrainian"/u);
   assert.match(css,/font-synthesis:none/u);
 });
 
@@ -285,4 +285,24 @@ test('Ukrainian output uses a bundled regular Cyrillic font, not platform fallba
   assert.match(css,/\.editorial-site #result-ukrainian,[\s\S]*?font-family:"Noto Sans Ukrainian"/u);
   assert.match(css,/\.editorial-site \.specimen-flow \.specimen-ua\{[^}]*font-family:"Noto Sans Ukrainian"/u);
   assert.match(css,/font-weight:400!important;[^}]*font-synthesis:none/su);
+});
+
+test('base surface declarations are light instead of relying on late dark-to-light overrides',()=>{
+  const css=read('src/styles/editorial.css');
+  assert.match(css, /\.editorial-site \.workbench\{[^}]*background:var\(--palette-surface\);color:var\(--palette-ink\)/u);
+  assert.match(css, /\.editorial-site \.input-shell\{[^}]*background:var\(--palette-surface-bright\);color:var\(--palette-ink\)/u);
+  assert.match(css, /\.editorial-site \.mode-fieldset\{[^}]*background:var\(--palette-surface-soft\);color:var\(--palette-ink\)/u);
+  assert.match(css, /\.editorial-site \.result-card:first-child\{[^}]*background:var\(--palette-surface\);color:var\(--palette-ink\)/u);
+  assert.match(css, /\.editorial-site \.methodology-toc\{[^}]*background:var\(--palette-surface\);color:var\(--palette-ink\)/u);
+});
+
+test('rendered browser review verifies Ukrainian font loading and shared surface materials',()=>{
+  const review=read('scripts/capture-editorial-review.mjs');
+  assert.match(review,/document\.fonts\.check\('400 16px "Noto Sans Ukrainian"','ІЇЄҐіїєґ'\)/u);
+  assert.match(review,/ukrainianTypography/u);
+  assert.match(review,/surfaceMaterials/u);
+  assert.match(review,/fontWeight/u);
+  assert.match(review,/fontSynthesis/u);
+  assert.match(review,/rgb\(250, 249, 244\)/u);
+  assert.match(review,/expectedFocusColor='rgb\(73, 100, 119\)'/u);
 });
