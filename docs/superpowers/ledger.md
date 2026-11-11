@@ -1,3 +1,24 @@
+# 2026-11-11 UI correction task ledger
+
+## Unified paper surfaces and Cyrillic typography
+
+**Base:** `d49a93544c4b49d4f3046fee5e9280c65356a0b5`  
+**Branch:** `fix/unified-paper-surfaces-cyrillic-font-2026-11-11`
+
+| Work item | Status | Evidence |
+|---|---|---|
+| Reproduce mixed dark/light interface materials | DONE_VERIFIED | Current CSS maps workbench, input controls, primary answer and methodology index to dark panel roles while adjacent cards use paper surfaces. |
+| Verify Ukrainian font is not bundled | DONE_VERIFIED | Repository tree contains no font asset; CSS only declares system fallback families. |
+| Failing design-contract coverage | TODO | Added failing Node contracts; exact-head Actions RED pending. |
+| Bundle licensed Cyrillic font | TODO | Noto Sans Regular WOFF2, SIL OFL 1.1 and attribution. |
+| Unify large surfaces and contrast | TODO | Use existing paper/surface palette and ink/muted text roles. |
+| Browser verification at five viewport classes | TODO | Exact-head Playwright visual review and screenshot inspection. |
+| Handoff reconciliation | TODO | Supersede premature completion claims with evidence. |
+
+Local repository clone and shell tests are unavailable in this session because outbound DNS resolution for github.com failed. GitHub Actions is the execution environment; no local test result is claimed.
+
+---
+
 # 2026-11-05 task ledger — reconstructed 236-candidate review and repository audit
 
 ## 2026-11-05 — 236-candidate review, S018 source correction and documentation continuation
