@@ -1165,3 +1165,25 @@ Final main commit: `446d07405358f2b706e0bc0249ffa802f1516ce1`.
 - Both PRs are merged; no open PRs remained at final inspection. Their branches were retained; no user branches were deleted.
 - No local shell test/build is claimed: this connector-only session did not have a verified local checkout. Verification is from the linked GitHub Actions runs.
 - The public UI refinement is complete and deployed. The broader system remains a **research prototype**, not a validated or release-ready Korean pronunciation/transcription product. Independent linguistic evidence, IPA review, target-form validation, corpus provenance/licensing and benchmark gates remain separate work.
+
+
+## 2026-11-11 — regular-weight reading typography and rebuilt page heroes (PR #483)
+
+**Status: DONE_VERIFIED — merged and deployed.** PR [#483](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/483) merged by squash as `970fc828be500c2811108bde478241de0e791c16`.
+
+### Delivered
+
+- Corrected the actual cascade source of heavy glyphs: the main Ukrainian result had explicit `font-weight:780`, and specimen Hangul / IPA / Ukrainian values had weights 850 / 720 / 850. The prior paragraph-level inheritance rule did not override these more specific selectors.
+- The Ukrainian reading result now uses regular weight in both practical and research modes, including the unconfirmed result state.
+- Both public-page heroes now use one full-width typographic hierarchy followed by a single continuous three-stage specimen strip. Stage labels are visible; desktop/tablet retain the horizontal sequence, mobile stacks it vertically.
+- Reduced and rebalanced the textile masthead strip, removing the oversized dark block while retaining the shared jogakbo palette.
+- Tightened both page titles and introductory copy. No pronunciation engine, phonology, IPA mapping, Ukrainian adaptation logic, corpus, licensing data or runtime dependency changed.
+
+### Verification
+
+- Exact-head PR checks at `b6c76cdf2de914f81ab76d97f7f2dab0222371e5`: Tests [43086326226](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43086326226), Verify [43086326448](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43086326448), Browser G2P [43086326247](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43086326247), rendered desktop/tablet/mobile review [43086326494](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43086326494), master/research artifacts [43086326331](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43086326331), exhaustive register [43086326284](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43086326284) — all success.
+- One intermediate Verify attempt failed because an existing copy assertion still required the old methodology hero sentence; the assertion was updated to the revised copy and the exact final PR head passed.
+- Mainline Tests [43086918427](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43086918427), Verify [43086918406](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43086918406), rendered review [43086918658](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43086918658), master/research artifacts [43086918684](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43086918684), and Pages deployment plus public HTTP/live-browser smoke [43086918490](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43086918490) — all success.
+- Official NIKL metadata-only inventory was skipped by its configured credential condition; it is not counted as a pass.
+
+The public pages are deployed. This is a typography and header correction only; the broader product remains a research prototype with the independent linguistic validation limits already recorded above.
