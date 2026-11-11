@@ -24,3 +24,14 @@ Scope: replace the site's generic visual system with a Korean editorial workbenc
 Local clone, local npm/Playwright and the unlazy gate-check binary were unavailable in this connector-only runtime. Exact-head GitHub Actions are the executable test oracle and the rendered production-preview screenshots captured in CI are the visual-review oracle. No local test execution is claimed.
 
 **All design gates met.** The remaining linguistic gold-data and independent reviewer requirements are outside this design task.
+
+- [x] G6: methodology page explains the Korean visual concept in Ukrainian without generic callout chrome
+  EVIDENCE: PR #468 merged as 2d56d5a5d4ccdabc53b503bea5891c4f14c3ac47; visual review [42976476724](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42976476724) PASS; screenshot artifact 13835153662.
+
+- [x] G7: input remains visually empty and fixed-size editorial text is at least 13px
+  EVIDENCE: contract tests 213 and 214 in [42976476837](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42976476837) PASS; mainline rerun [42976784058](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42976784058) PASS, 1,444/1,444.
+
+- [x] G8: merged main is deployed and live smoke-tested
+  EVIDENCE: main commit 2d56d5a5d4ccdabc53b503bea5891c4f14c3ac47; Pages run [42976783914](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42976783914) PASS, including deploy, public-page smoke and live practical-mode adversarial browser smoke.
+
+**Follow-up status: DONE_VERIFIED.** NIKL metadata-only inventory remains SKIPPED by configured policy; linguistic gold-data review remains outside the design gate.
