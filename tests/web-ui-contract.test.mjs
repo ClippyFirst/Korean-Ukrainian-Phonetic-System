@@ -204,15 +204,22 @@ test('three research profiles distinguish heuristic Soft from grapheme-only Supe
 });
 
 
-test('Seoul Type visual system is product-specific, responsive and keeps the two workbench windows vertical',()=>{
+test('Jogakbo masthead and vertical editorial modules preserve the two workbench windows',()=>{
   const html=read('index.html');
   const system=read('system.html');
   const css=read('src/styles/editorial.css');
   const input=html.indexOf('class="workbench"');
   const output=html.indexOf('class="output-workspace"');
   assert.ok(input>=0&&output>input,'Korean input precedes the answer window in the document');
-  assert.match(html,/data-visual-system="seoul-type"/);
-  assert.match(system,/data-visual-system="seoul-type"/);
+  assert.match(html,/data-visual-system="jogakbo-editorial"/);
+  assert.match(system,/data-visual-system="jogakbo-editorial"/);
+  assert.match(html,/class="jogakbo-band"/);
+  assert.match(system,/class="jogakbo-band"/);
+  assert.match(html,/id="input-module-guidance"/);
+  assert.match(html,/id="output-module-guidance"/);
+  assert.match(system,/id="methodology-reading-guide"/);
+  assert.match(css,/--jogakbo-ink:#24354b/i);
+  assert.match(css,/--jogakbo-jade:#9db7a7/i);
   assert.match(css,/--signal:#ed593d/i);
   assert.match(css,/--acid:#e6e84d/i);
   assert.match(css,/--cobalt:#254bd8/i);
@@ -221,6 +228,7 @@ test('Seoul Type visual system is product-specific, responsive and keeps the two
   assert.match(css,/\.editorial-site \.result-card:first-child\s*\{[^}]*grid-column:1\s*\/\s*-1/s);
   assert.match(css,/\.editorial-site \.methodology-toc ol/);
   assert.match(css,/\.editorial-site \.doc-content table/);
+  assert.match(css,/\.editorial-site\.system-page \.layers\s*\{[^}]*grid-template-columns:\s*minmax\(0,1fr\)/s);
   assert.match(css,/@media\(max-width:480px\)/);
   assert.match(css,/@media\(prefers-reduced-motion:reduce\)/);
   assert.doesNotMatch(css,/@import|url\(\s*https?:|gradient\s*\(/i);
