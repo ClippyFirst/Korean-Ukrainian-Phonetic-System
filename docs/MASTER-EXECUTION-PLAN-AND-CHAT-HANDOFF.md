@@ -1115,3 +1115,53 @@ No linguistic engine, IPA adapter, Ukrainian mapping, corpus, benchmark, source-
 Verification constraints: the local container cannot resolve github.com, so no local checkout or local npm test/build was possible. Exact-head GitHub Actions verification and the rendered visual review are required before merge/deployment. Do not claim visual acceptance or Pages deployment until those runs pass.
 
 PR: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/481
+
+
+## 2026-11-11 — palette, specimen, research slider and compact syllable trace (PR #481)
+
+**Status: DONE_VERIFIED — merged and deployed.** Starting main: `339b281b6135edee751b2c99a1f53b78bf041a03`. Work branch: `design/palette-specimen-research-slider-syllable-layout-2026-11-11`. PR #481 merged by squash as `88a53d23e0a350abd22b7e663ca1679266902130`.
+
+### Delivered changes
+
+- Normal prose no longer uses isolated inline bold emphasis for single letters; emphasis is normalized at the prose level.
+- The Hangul / IPA / Ukrainian hero triad now uses the stitched jogakbo specimen treatment rather than three plain colour cells.
+- Shared palette tokens are consolidated and applied consistently across the pages and specimen.
+- Research-mode choice is one accessible three-position range control: **Строгий → М’який → Суперм’який**, with live explanatory copy and accessible value text. Existing hidden checkbox IDs remain only as compatibility state; the slider is the source of truth.
+- Syllable trace uses a compact responsive information grid rather than a narrow left-aligned column with unused space.
+- No linguistic engine, IPA adapter, Ukrainian mapping, corpus, benchmark, source-rights or runtime dependency changes.
+
+### Exact-head PR evidence
+
+- Tests [43077903580](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43077903580) — success.
+- Verify [43077903464](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43077903464) — success; browser regression/build, Python/data integrity and source redistribution rights gate passed.
+- Browser G2P [43077903407](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43077903407) — success.
+- Rendered desktop/tablet/mobile review [43077903505](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43077903505) — success.
+- Master table/research corpus artifacts [43077903475](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43077903475) — success.
+- Exhaustive test-case register extraction [43077903399](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43077903399) — success.
+- The configured Official NIKL metadata-only inventory was skipped; it is not counted as a pass.
+
+### Post-merge live-smoke correction (PR #482)
+
+The first post-merge Pages run [43079823403](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43079823403) successfully deployed both pages and passed the public HTTP smoke, but its live Playwright smoke still clicked the intentionally hidden legacy `#super-soft-morphology` checkbox. The resulting timeout was a stale test interaction, not a UI/runtime failure.
+
+The smoke script was corrected to set the visible `#morphology-level` range to `2`, dispatch its input event, and assert both the selected value and accessible label. PR [#482](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/482) merged by squash as `446d07405358f2b706e0bc0249ffa802f1516ce1`. Its exact-head checks all passed:
+- Tests [43080376963](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43080376963) — success.
+- Verify [43080376742](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43080376742) and push Verify [43080346971](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43080346971) — success.
+- Rendered review [43080376861](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43080376861) — success.
+- Master/research artifacts [43080377048](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43080377048) — success.
+
+### Final mainline verification and deployment
+
+Final main commit: `446d07405358f2b706e0bc0249ffa802f1516ce1`.
+
+- Main Tests [43080701766](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43080701766) — success (Python 3.11/3.12/3.13, wheel installation, teacher-corpus audit, web tests/build).
+- Main Verify [43080701846](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43080701846) — success (browser regression/build and Python/data integrity).
+- Rendered desktop/tablet/mobile review [43080701777](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43080701777) — success.
+- Master table/research artifacts [43080701827](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43080701827) — success.
+- GitHub Pages deployment [43080701733](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43080701733) — success. Both public pages passed HTTP smoke. The corrected live Playwright smoke also passed: deterministic Hanja output, live result announcement, mode disclosure, clipboard-denial recovery, 390px mobile trace labels, methodology navigation, and a 1,443-character adversarial Korean input producing a 2,982-character inline candidate and 3,731-character IPA result. Output remained explicitly provisional/unconfirmed.
+
+### Repository and evidence boundaries
+
+- Both PRs are merged; no open PRs remained at final inspection. Their branches were retained; no user branches were deleted.
+- No local shell test/build is claimed: this connector-only session did not have a verified local checkout. Verification is from the linked GitHub Actions runs.
+- The public UI refinement is complete and deployed. The broader system remains a **research prototype**, not a validated or release-ready Korean pronunciation/transcription product. Independent linguistic evidence, IPA review, target-form validation, corpus provenance/licensing and benchmark gates remain separate work.

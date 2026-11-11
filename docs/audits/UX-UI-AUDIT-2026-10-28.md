@@ -277,3 +277,27 @@ The first design attempt revealed stale legacy test expectations and a global fo
 - Main-branch Verify, Tests, Editorial visual review and master/research artifact workflows passed (runs 43020048190, 43020048030, 43020048115 and 43020048102).
 
 The visual redesign is now publicly deployed. The broader repository remains a research prototype; visual and browser verification do not close independent linguistic evidence, IPA review, target-form validation, corpus provenance/licensing or other research gates.
+
+
+## 2026-11-11 — final acceptance: palette, specimen, research slider and syllable trace
+
+**Status: DONE_VERIFIED — merged and deployed.** PR [#481](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/481) merged as `88a53d23e0a350abd22b7e663ca1679266902130`; follow-up smoke-test correction PR [#482](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/482) merged as final main commit `446d07405358f2b706e0bc0249ffa802f1516ce1`.
+
+### UX acceptance ledger
+
+- **DONE_VERIFIED — prose emphasis:** isolated inline bold single-letter emphasis removed/normalized.
+- **DONE_VERIFIED — header specimen:** Hangul, IPA and Ukrainian triad integrated into the stitched jogakbo treatment.
+- **DONE_VERIFIED — colour system:** shared palette tokens applied consistently across the public pages and specimen.
+- **DONE_VERIFIED — research control:** accessible three-position slider (Строгий / М’який / Суперм’який), synchronized legacy compatibility state, live explanation and accessible value text.
+- **DONE_VERIFIED — syllable trace:** compact responsive information grid replaces the previous space-inefficient left column.
+- **DONE_VERIFIED — responsive/rendered review:** mainline rendered desktop/tablet/mobile workflow passed [43080701777](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43080701777).
+- **DONE_VERIFIED — regression/build:** main Tests [43080701766](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43080701766) and Verify [43080701846](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43080701846) passed.
+- **DONE_VERIFIED — publication/live browser:** Pages [43080701733](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43080701733) passed deployment, public HTTP smoke and live Playwright smoke. The live test selected Super-soft through the visible slider, verified the 100% grapheme fallback/candidate disclosure, checked Hanja conversion, result announcement, clipboard recovery, mobile trace labels and methodology navigation. Long adversarial passage: 1,443 Korean input characters, 2,982-character provisional inline candidate, 3,731-character IPA output.
+
+### Failed smoke attempt and verified repair
+
+The first post-#481 deployment passed HTTP checks but the live Playwright script timed out trying to click hidden compatibility checkbox `#super-soft-morphology`. The control had correctly been replaced by `#morphology-level`; only the smoke script was stale. The script was updated to set the visible range to level 2 and assert the accessible mode label. PR #482 checks passed (Tests [43080376963](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43080376963), Verify [43080376742](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43080376742), rendered review [43080376861](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43080376861), master artifacts [43080377048](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43080377048)); the subsequent mainline live smoke passed as recorded above.
+
+### Scope boundary
+
+No linguistic engine, phonology, IPA adapter, Ukrainian mapping, research corpus, benchmark, licensing data or runtime dependency was changed. The interface is publicly deployed and visually/browser verified. The overall repository remains a research prototype; this UX acceptance does not close independent linguistic or research acceptance criteria.
