@@ -248,7 +248,7 @@ test('the entire interface resolves through one restrained jogakbo palette',()=>
     assert.ok(css.includes(selector),'palette mapping missing for '+selector);
   }
   assert.match(css,/--palette-indigo:#496477/u);
-  assert.match(css,/--palette-signal:#b96f5f/u);
+  assert.match(css,/--palette-signal:#88574d/u);
   assert.match(css,/--palette-acid:#d7c18a/u);
-  assert.doesNotMatch(css.split('html{')[1]||css.split('html {')[1]||'',/#[0-9a-f]{3,8}\\b/iu,'component colors must resolve through palette tokens, not one-off hex values');
+  assert.doesNotMatch(css.split('html{')[1]||css.split('html {')[1]||'',/#[0-9a-f]{3,8}\b/iu,'component colors must resolve through palette tokens, not one-off hex values');
 });
