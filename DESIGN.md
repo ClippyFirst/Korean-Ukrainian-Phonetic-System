@@ -86,3 +86,5 @@ This decision is informed by:
 - [studio fnt](https://www.commarts.com/features/studio-fnt), a Seoul practice known for geometric form, restrained colour and confident Hangul typography.
 
 The result borrows the design methods, not any studio's artwork or identity.
+
+The methodology page also explains the visual idea in Ukrainian: jogakbo's visible seams are mapped to the distinct Hangul, IPA and Ukrainian stages, while the paper-like ground stays quiet so the linguistic content remains primary.
