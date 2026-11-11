@@ -103,15 +103,15 @@ test('jogakbo palette is restrained and action contrasts remain accessible',()=>
   for(const token of ['--jogakbo-ink:var(--palette-ink)','--jogakbo-jade:var(--palette-jade)','--jogakbo-blue:var(--palette-blue)','--jogakbo-ochre:var(--palette-ochre)','--jogakbo-clay:var(--palette-clay)','--jogakbo-ground:var(--palette-paper)']){
     assert.ok(css.toLowerCase().includes(token),`missing ${token}`);
   }
-  for(const token of ['--palette-paper:#efede6','--palette-ink:#17202c','--palette-jade:#9db7a7','--palette-blue:#a9bac6','--palette-ochre:#c9a66b','--palette-clay:#b9857a','--palette-signal:#b96f5f','--palette-indigo:#496477']){
+  for(const token of ['--palette-paper:#efede6','--palette-ink:#17202c','--palette-jade:#9db7a7','--palette-blue:#a9bac6','--palette-ochre:#c9a66b','--palette-clay:#b9857a','--palette-signal:#88574d','--palette-indigo:#496477']){
     assert.ok(css.toLowerCase().includes(token),`missing shared palette token ${token}`);
   }
   assert.ok(contrast('#17202c','#efede6')>=4.5);
   assert.ok(contrast('#5b6570','#efede6')>=4.5);
   assert.ok(contrast('#254bd8','#efede6')>=4.5);
   assert.ok(contrast('#ad3426','#efede6')>=4.5);
-  assert.ok(contrast('#17202c','#ed593d')>=4.5);
-  assert.ok(contrast('#17202c','#e6e84d')>=4.5);
+  assert.ok(contrast('#17202c','#c9a66b')>=4.5);
+  assert.ok(contrast('#17202c','#d7c18a')>=4.5);
   assert.match(css,/:focus-visible/u);
   assert.match(css,/@media\(prefers-reduced-motion:reduce\)/u);
 });
