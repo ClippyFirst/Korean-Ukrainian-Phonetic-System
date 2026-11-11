@@ -911,3 +911,22 @@ The browser research engine now distinguishes three levels by confidence/coverag
 **Repository state:** implementation branch `design/vertical-flow-no-object-chrome-2026-11-11`, based on `main` at `b5f9de943e1d578da33d6fcb7ba7ef7301472d6a`; implementation snapshot `1689da6b0e03130e0f8a38a36498d5755ed8f981`; final PR head `5e6d6dfe77ecde48309b27f3fa50f730815d3b6d`. PR [#470](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/470) was merged as `5cf22096dee9caae74cb9be7643184ec8c8b32d8`. The post-merge Pages deployment and live UX smoke passed. No pronunciation rules, IPA adapter, lexical data or runtime dependencies were changed. No local npm/pytest run is claimed; verification evidence is from GitHub Actions.
 
 **Readiness:** the vertical-flow UI correction is DONE_VERIFIED and published on GitHub Pages. This does not change the repository's broader status as a partial research prototype; independent phonetic/target review and source-rights gates remain separate.
+
+
+## 2026-11-11 — restore visual character after vertical-flow correction (PR #473)
+
+The first vertical-flow correction met the reading-order and object-chrome requirements but over-flattened the visual system. It removed much of the colour and typographic hierarchy that made the Korean editorial workbench recognisable. PR #473 restores those design cues without reverting the approved layout.
+
+| Requirement | State | Evidence |
+|---|---|---|
+| Keep all service and methodology content in one vertical reading flow | DONE_VERIFIED | Exact-head rendered review [42988127319](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42988127319) passed desktop, tablet, mobile and narrow-mobile viewports. |
+| Keep specimen free of visible object-level labels and top/bottom strips | DONE_VERIFIED | The specimen communicates through Hangul, IPA and Ukrainian typographic hierarchy; visible label strips remain absent. |
+| Restore Korean editorial identity and visual hierarchy | DONE_VERIFIED | Cobalt and restrained pink typography, hanji-like surfaces, clear control grouping, methodology accents and stronger section typography restored. |
+| Preserve high-contrast actions and accessible touch targets | DONE_VERIFIED | Primary action uses white-on-cobalt; copy controls are at least 44 px high. Rendered review passed. |
+| Regression suite and production build | DONE_VERIFIED | Tests [42988127248](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42988127248): 1,443/1,443 web tests, Python 3.11/3.12/3.13, wheel install and teacher-corpus audit passed. System Verify [42988127245](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42988127245) passed browser regression/build and Python regression/data integrity. |
+| Master/research artifacts and test-register extraction | DONE_VERIFIED | Runs [42988127246](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42988127246) and [42988127239](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42988127239) passed. |
+| Linguistic pipeline, rules and data | UNCHANGED | This is a CSS and UI-contract test correction only; no pronunciation, IPA adapter, lexical data or runtime logic changed. |
+
+**Repository state:** PR [#473](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/473) merged into `main` as `4dd7b600583fbb6f271664087e513d9fb1ce2fd6`. Final tested branch head: `f20f4d25a9a550dc278284f603a8df42fc571835`. No local test execution is claimed; verification is from the exact-head GitHub Actions runs above.
+
+**Readiness:** this specific visual correction is DONE_VERIFIED. The repository remains a partial research prototype overall; this UI fix does not close independent linguistic evidence, source-rights or human-evaluation gates.
