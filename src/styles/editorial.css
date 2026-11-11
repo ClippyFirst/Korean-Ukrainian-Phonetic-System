@@ -288,7 +288,6 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
   font-size: 1.25rem;
   line-height: 1.8;
 }
-.input-shell textarea::placeholder { color: #697579; opacity: 1; }
 .input-hint {
   border-top: 1px solid var(--seam);
   background: #f8f6f0;
