@@ -96,3 +96,11 @@ test('keeps the Korean text field completely free of placeholder copy',()=>{
   assert.ok(textarea,'the Korean input field remains present');
   assert.doesNotMatch(textarea,/\\bplaceholder\\s*=/u,'the field has no visible placeholder or instructional text');
 });
+
+test('keeps editorial microcopy at a readable minimum size',()=>{
+  const css=read('src/styles/editorial.css');
+  const sizes=[...css.matchAll(/font-size:\\s*([0-9]*\\.?[0-9]+)(rem|px)/gu)]
+    .map(([,value,unit])=>Number(value)*(unit==='rem'?16:1));
+  assert.ok(sizes.length>0,'editorial typography tokens are present');
+  assert.ok(Math.min(...sizes)>=13,`smallest editorial font is ${Math.min(...sizes)}px; minimum is 13px`);
+});
