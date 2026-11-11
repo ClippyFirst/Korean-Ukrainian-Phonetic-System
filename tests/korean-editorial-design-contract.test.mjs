@@ -58,6 +58,11 @@ test('workbench and methodology use a single vertical column at every breakpoint
   assert.match(css,/\.editorial-site \.table-row\s*\{[^}]*flex-direction:\s*column/su);
   assert.match(css,/\.editorial-site \.vowel-grid\s*\{[^}]*flex-direction:\s*column/su);
   assert.match(css,/\.editorial-site \.action-cell\s*\{[^}]*flex-direction:\s*column/su);
+  assert.match(css,/\.editorial-site \.layers[\s\S]{0,500}flex-direction:\s*column/u);
+  assert.match(css,/\.editorial-site \.rule-grid[\s\S]{0,500}flex-direction:\s*column/u);
+  assert.match(css,/\.editorial-site \.limits[\s\S]{0,500}flex-direction:\s*column/u);
+  assert.match(css,/\.editorial-site \.compare-strip[\s\S]{0,500}flex-direction:\s*column/u);
+  assert.match(css,/\.editorial-site \.trace-row\s*\{[^}]*flex-direction:\s*column/su);
 });
 
 test('methodology section anchors are carried by headings in the reading flow',()=>{
