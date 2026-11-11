@@ -128,7 +128,7 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
   gap: 8px 10px;
   margin: 26px 0 0;
   color: var(--ink-navy);
-  font-size: .78rem;
+  font-size: .82rem;
   line-height: 1.5;
 }
 .method-line span {
@@ -162,7 +162,7 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
   justify-content: space-between;
   gap: 12px;
   color: var(--muted);
-  font-size: .68rem;
+  font-size: .82rem;
   font-weight: 680;
   letter-spacing: .015em;
   text-transform: none;
@@ -188,7 +188,7 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
 }
 .specimen-label {
   color: inherit;
-  font-size: .65rem;
+  font-size: .82rem;
   font-weight: 760;
   letter-spacing: .08em;
   line-height: 1.35;
@@ -292,7 +292,7 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
   border-top: 1px solid var(--seam);
   background: #f8f6f0;
   color: var(--muted);
-  font-size: .76rem;
+  font-size: .82rem;
 }
 .input-guidance {
   margin: 13px 0 0;
@@ -313,7 +313,7 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
   font-weight: 620;
   transition: background-color .16s cubic-bezier(.23,1,.32,1), border-color .16s ease, color .16s ease, transform .16s cubic-bezier(.23,1,.32,1);
 }
-.mini-button { min-height: 35px; padding: 6px 10px; background: #f0eee7; font-size: .76rem; }
+.mini-button { min-height: 35px; padding: 6px 10px; background: #f0eee7; font-size: .82rem; }
 .mini-button:hover,.button-secondary:hover { border-color: var(--ink-navy); background: #e8e6dd; }
 @media (hover: hover) and (pointer: fine) {
   .button:hover { transform: translateY(-1px); }
@@ -336,7 +336,7 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
 }
 .mode-legend {
   color: var(--muted);
-  font-size: .68rem;
+  font-size: .82rem;
   font-weight: 760;
   letter-spacing: .025em;
   text-transform: none;
@@ -344,7 +344,7 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
 .mode-option { gap: 11px; margin: 13px 0 0; }
 .mode-option input,.soft-morphology-toggle input { accent-color: var(--cobalt); }
 .mode-option strong { color: var(--ink-navy); font-size: .9rem; }
-.mode-option em { color: var(--muted); font-size: .8rem; }
+.mode-option em { color: var(--muted); font-size: .82rem; }
 .mode-disclosure { border-left: 0; border-top: 1px solid var(--seam); background: transparent; }
 .mode-disclosure summary { padding: 10px 0; color: var(--ink-navy); }
 .mode-disclosure .practical-mode-hint { padding: 0 0 12px; }
@@ -353,7 +353,7 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
   background: #eef0fa;
 }
 .soft-morphology-toggle { color: var(--ink-navy); }
-.practical-mode-hint,.soft-morphology-hint,.stress-hint { font-size: .78rem; }
+.practical-mode-hint,.soft-morphology-hint,.stress-hint { font-size: .82rem; }
 .empty-state {
   display: grid;
   grid-template-columns: auto minmax(0,1fr);
@@ -391,7 +391,7 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
 .results-bar .section-title { margin: 0; }
 .results-note {
   color: var(--muted);
-  font-size: .74rem;
+  font-size: .82rem;
   text-align: right;
 }
 .result-grid {
@@ -427,7 +427,7 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
 }
 .result-meta > span {
   color: var(--cobalt);
-  font-size: .68rem;
+  font-size: .82rem;
   font-weight: 820;
   letter-spacing: .06em;
 }
@@ -439,7 +439,7 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
   border-radius: 3px;
   background: transparent;
   color: var(--ink-navy);
-  font-size: .76rem;
+  font-size: .82rem;
 }
 .copy-button:hover { border-color: var(--ink-navy); background: #eceae2; }
 .ua-output-switch { gap: 6px; margin: 10px 0 8px; }
@@ -450,7 +450,7 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
   border-radius: 3px;
   background: transparent;
   color: var(--ink-navy);
-  font-size: .78rem;
+  font-size: .82rem;
 }
 .ua-output-option.is-active { border-color: var(--ink-navy); background: var(--ink-navy); color: white; }
 .result-body {
@@ -471,7 +471,7 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
 .result-body.hanja { font-size: 1.45rem; }
 .candidate-footnote,.romanization-note,.hanja-note,.hanja-engine-status {
   color: var(--muted);
-  font-size: .76rem;
+  font-size: .82rem;
   line-height: 1.6;
 }
 .result-card:first-child .result-body.result-unconfirmed {
@@ -553,7 +553,7 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
   border-radius: 3px;
   background: var(--warm-white);
   color: var(--ink-navy);
-  font-size: .75rem;
+  font-size: .82rem;
 }
 .status-chip span { background: var(--green); }
 .methodology-toc {
@@ -590,7 +590,7 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
 }
 .doc-label {
   color: var(--cobalt);
-  font-size: .8rem;
+  font-size: .82rem;
   font-weight: 760;
   letter-spacing: .02em;
 }
@@ -691,7 +691,7 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
   .hero { grid-template-columns: minmax(0,1fr); gap: 24px; padding: 38px 0 32px; }
   .hero h1 { max-width: 15ch; font-size: 3.25rem; }
   .result-card:first-child .result-body { font-size: 2.1rem; }
-  .doc-content h2 { font-size: 1.65rem; }
+  .doc-content h2 { font-size: 1.82rem; }
   .hero-specimen { max-width: 600px; }
   .specimen-grid { min-height: 210px; }
   .workspace-layout { grid-template-columns: minmax(0,1fr); }
@@ -753,7 +753,7 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
 .table-head {
   background: var(--ink-navy);
   color: var(--hanji);
-  font-size: .68rem;
+  font-size: .82rem;
   font-weight: 760;
   letter-spacing: .025em;
   text-transform: none;
