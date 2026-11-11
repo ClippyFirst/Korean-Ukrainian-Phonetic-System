@@ -71,7 +71,7 @@ test('only the input and answer workbench windows are stacked',()=>{
   assert.match(css,/\.hero\s*\{[^}]*display:grid/su);
   assert.match(css,/\.editorial-site \.specimen-flow\s*\{[^}]*grid-template-columns:1\.14fr \.88fr \.88fr/su);
   assert.match(css,/\.editorial-site\.system-page \.doc-section\s*\{[^}]*display:block/su);
-  assert.match(css,/\.editorial-site \.button-primary\s*\{[^}]*color:var\(--ink\)/su);
+  assert.match(css,/\.editorial-site \.button-primary\s*\{[^}]*color:var\(--palette-ink\)/su);
   assert.doesNotMatch(css,/\.editorial-site \.hero,\s*\.editorial-site \.workspace-layout/su);
 });
 
@@ -152,7 +152,7 @@ test('the result provenance note belongs to the Ukrainian output, not the result
   assert.match(review,/methodologyGuideVisible/);
   assert.match(review,/modeOptionContrast/);
   assert.match(css,/\.editorial-site \.mode-option\{[^}]*background:transparent/su);
-  assert.match(css,/\.editorial-site \.mode-option:has\(input:checked\)\{[^}]*background:var\(--palette-panel-muted\)/su);
+  assert.match(css,/\.editorial-site \.mode-option:has\(input:checked\)\{[^}]*background:var\(--palette-tint-ochre\)/su);
   const ukrainian=html.match(/<article id="panel-ukrainian"[\s\S]*?<\/article>/u)?.[0]||'';
   assert.match(ukrainian,/<p id="status-note" class="results-note result-provenance">/u);
   assert.doesNotMatch(html,/<\/article>\s*<p id="status-note"/u);
