@@ -105,3 +105,16 @@ test('user-facing terminology stays Ukrainian and the input remains placeholder-
   assert.ok(start>=0);
   assert.doesNotMatch(service.slice(start,end),/placeholder=/u);
 });
+
+
+test('vertical flow keeps a distinct Korean editorial visual identity',()=>{
+  const css=read('src/styles/editorial.css');
+  assert.match(css,/\.editorial-site \.specimen-flow p span \{ display:\s*none/u);
+  assert.match(css,/\.editorial-site \.specimen-flow p:nth-child\(2\) strong[\s\S]{0,180}var\(--cobalt\)/u);
+  assert.match(css,/\.editorial-site \.specimen-flow p:nth-child\(3\) strong[\s\S]{0,180}#a92c65/u);
+  assert.match(css,/\.editorial-site \.button-primary[\s\S]{0,220}color:\s*#fff/u);
+  assert.match(css,/\.editorial-site \.mode-fieldset[\s\S]{0,180}#eef0fa/u);
+  assert.match(css,/\.editorial-site \.result-card:first-child \.result-body[\s\S]{0,180}#a92c65/u);
+  assert.match(css,/\.editorial-site \.doc-content \.callout[\s\S]{0,220}var\(--cobalt\)/u);
+  assert.match(css,/\.editorial-site \.hero,\s*\.editorial-site \.workspace-layout[\s\S]{0,500}flex-direction:\s*column/u);
+});
