@@ -58,12 +58,40 @@ try {
           }).filter(el=>el.width>expectedWidth+1||el.right>expectedWidth+1||el.scrollWidth>el.clientWidth+1).sort((a,b)=>b.width-a.width).slice(0,16),
           documentWidth:document.documentElement.scrollWidth,
           bodyWidth:document.body.scrollWidth,
+          headerPatchwork:(()=>{
+            const band=document.querySelector('.jogakbo-band');
+            const rect=band?.getBoundingClientRect();
+            const style=band?getComputedStyle(band):null;
+            return {visible:Boolean(band&&rect.width>0&&rect.height>0&&style.display!=='none'&&style.visibility!=='hidden'),insideHeader:Boolean(band?.closest('header.site-header')),patchCount:band?.querySelectorAll('.jogakbo-patch').length??0,width:Math.round(rect?.width??0),height:Math.round(rect?.height??0)};
+          })(),
+          moduleGuidance:pageName==='index.html'?{
+            inputVisible:visible('#input-module-guidance').length===1,
+            outputVisible:visible('#output-module-guidance').length===1,
+            inputTop:document.querySelector('#input-module-guidance')?.getBoundingClientRect().top??null,
+            outputTop:document.querySelector('#output-module-guidance')?.getBoundingClientRect().top??null
+          }:null,
+          methodologyGuideVisible:pageName==='system.html'?visible('#methodology-reading-guide').length===1:null,
+          modeOptionContrast:pageName==='index.html'?[...document.querySelectorAll('.mode-option')].map(label=>{
+            const luminance=color=>{
+              const values=color.match(/[\d.]+/gu)?.slice(0,3).map(Number)??[0,0,0];
+              const linear=values.map(value=>{const channel=value/255;return channel<=.04045?channel/12.92:((channel+.055)/1.055)**2.4});
+              return .2126*linear[0]+.7152*linear[1]+.0722*linear[2];
+            };
+            const ratio=(foreground,background)=>{
+              const values=[luminance(foreground),luminance(background)].sort((a,b)=>b-a);
+              return Number(((values[0]+.05)/(values[1]+.05)).toFixed(2));
+            };
+            const background=getComputedStyle(label).backgroundColor;
+            const parentBackground=getComputedStyle(label.closest('fieldset')).backgroundColor;
+            const effectiveBackground=background.includes(', 0)')||background==='transparent'?parentBackground:background;
+            return {label:label.querySelector('strong')?.innerText??'',strongColor:getComputedStyle(label.querySelector('strong')).color,detailColor:getComputedStyle(label.querySelector('em')).color,strong:ratio(getComputedStyle(label.querySelector('strong')).color,effectiveBackground),detail:ratio(getComputedStyle(label.querySelector('em')).color,effectiveBackground),background:effectiveBackground};
+          }):null,
           heading:document.querySelector('h1')?.innerText ?? '',
           controls:touchControls.map(el => {
             const rect=el.getBoundingClientRect();
             return {label:(el.innerText||el.getAttribute('aria-label')||el.tagName).trim().slice(0,60),width:Math.round(rect.width),height:Math.round(rect.height)};
           }),
-          flowChecks:['.hero','.workspace-layout','.result-grid','.methodology-toc','.doc-section','.system-intro','.specimen-flow','.layers','.rule-grid','.limits','.compare-strip','.decision-table','.table-row','.trace-list','.trace-row','.evidence-list','.vowel-grid','.action-cell'].map(selector=>{
+          flowChecks:['.hero','.workspace-layout','.result-grid','.methodology-toc','.doc-section','.system-intro','.methodology-reading-guide','.methodology-reading-steps','.specimen-flow','.layers','.rule-grid','.limits','.compare-strip','.decision-table','.table-row','.trace-list','.trace-row','.evidence-list','.vowel-grid','.action-cell'].map(selector=>{
             const el=document.querySelector(selector);
             if(!el)return {selector,exists:false};
             const style=getComputedStyle(el);
@@ -75,10 +103,10 @@ try {
           provenanceInsidePrimary:pageName==='index.html'?Boolean(document.querySelector('#panel-ukrainian')?.contains(document.querySelector('#status-note'))):null,
           resultGridChildrenAreCards:pageName==='index.html'?[...(document.querySelector('.result-grid')?.children??[])].every(el=>el.matches('.result-card')):null,
           resultGridCardCount:pageName==='index.html'?document.querySelectorAll('.result-grid > .result-card').length:null,
-          taskOrder:pageName==='index.html'?['#source-input','#transliteration-mode','#example-button','#panel-ukrainian','#panel-ipa','#panel-romanization'].map(selector=>{
+          taskOrder:pageName==='index.html'?['#source-input','#input-module-guidance','#transliteration-mode','#example-button','#output-module-guidance','#panel-ukrainian','#panel-ipa','#panel-romanization'].map(selector=>{
             const el=document.querySelector(selector);
             return el?{selector,top:Math.round(el.getBoundingClientRect().top)}:{selector,top:null};
-          }):['.hero-copy','.specimen-flow','.methodology-toc','.doc-section'].map(selector=>{
+          }):['.hero-copy','.specimen-flow','.system-intro','.methodology-reading-guide','.methodology-toc','.doc-section'].map(selector=>{
             const el=document.querySelector(selector);
             return el?{selector,top:Math.round(el.getBoundingClientRect().top)}:{selector,top:null};
           })
@@ -109,6 +137,19 @@ try {
       });
       if (!reducedMotion) failures.push(`${pageName} at ${viewport.name}: reduced-motion preference does not suppress control transitions`);
       const prefix = `${pageName} at ${viewport.name} (${viewport.width}×${viewport.height})`;
+      if (!metrics.headerPatchwork.visible || !metrics.headerPatchwork.insideHeader || metrics.headerPatchwork.patchCount !== 8) {
+        failures.push(prefix + ': jogakbo patchwork must render as eight decorative pieces inside the header only: ' + JSON.stringify(metrics.headerPatchwork));
+      }
+      if (pageName === 'index.html' && (!metrics.moduleGuidance.inputVisible || !metrics.moduleGuidance.outputVisible || metrics.moduleGuidance.outputTop <= metrics.moduleGuidance.inputTop)) {
+        failures.push(prefix + ': input/output guidance modules are missing or not in vertical order: ' + JSON.stringify(metrics.moduleGuidance));
+      }
+      if (pageName === 'system.html' && !metrics.methodologyGuideVisible) {
+        failures.push(prefix + ': methodology reading guide is not visible');
+      }
+      if (pageName === 'index.html' && metrics.modeOptionContrast.some(item=>item.strong<4.5||item.detail<4.5)) {
+        failures.push(prefix + ': mode option text must meet WCAG AA against its rendered surface: ' + JSON.stringify(metrics.modeOptionContrast));
+      }
+
       if (metrics.viewportWidth > viewport.width + 1) {
         failures.push(`${pageName} at ${viewport.name}: layout viewport expanded beyond requested width ${viewport.width}: ${JSON.stringify(metrics.wideElements)}`);
       }

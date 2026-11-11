@@ -7,22 +7,32 @@
   <meta name="theme-color" content="#efede6">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'none'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; frame-ancestors 'none';">
   <title>Система / 한국어 → УКРАЇНСЬКА</title>
-  <link rel="stylesheet" href="./src/styles/main.css?v=20261111-seoul-type">
-  <link rel="stylesheet" href="./src/styles/editorial.css?v=20261111-seoul-type">
+  <link rel="stylesheet" href="./src/styles/main.css?v=20261111-jogakbo-modules">
+  <link rel="stylesheet" href="./src/styles/editorial.css?v=20261111-jogakbo-modules">
 </head>
 <body>
 <a class="skip-link" href="#system-content">Перейти до методології</a>
-<main class="page-shell system-page editorial-site" id="system-content" data-visual-system="seoul-type">
+<main class="page-shell system-page editorial-site" id="system-content" data-visual-system="jogakbo-editorial">
   <header class="site-header">
     <div class="topline">
       <a class="brand" href="./index.html"><span class="brand-mark" aria-hidden="true">한</span><span>한국어 / УКРАЇНСЬКА</span></a>
       <nav class="site-nav" aria-label="Основна навігація"><a href="./index.html">Сервіс</a><a class="nav-active" aria-current="page" href="./system.html">Методологія</a></nav>
     </div>
+    <div class="jogakbo-band" aria-hidden="true">
+      <span class="jogakbo-patch patch-a"></span>
+      <span class="jogakbo-patch patch-b"></span>
+      <span class="jogakbo-patch patch-c"></span>
+      <span class="jogakbo-patch patch-d"></span>
+      <span class="jogakbo-patch patch-e"></span>
+      <span class="jogakbo-patch patch-f"></span>
+      <span class="jogakbo-patch patch-g"></span>
+      <span class="jogakbo-patch patch-h"></span>
+    </div>
     <div class="hero hero-system">
       <div class="hero-copy">
         <h1>Як працює корейсько-українська транскрипція</h1>
         <p class="subtitle">Методологія пояснює шлях від корейського написання й фонологічного аналізу до IPA та українського запису. Для кожного етапу вказано джерела, правила й межі застосування.</p>
-        <p class="design-rationale">Композиція спирається на сучасну корейську типографіку: хангиль тут не орнамент, а конструкція; великі літери, асиметрична сітка й чіткі кольорові площини допомагають побачити шлях від написання до вимови. Це авторська інтерпретація плакатного та редакційного дизайну Сеула, а не набір національних кліше.</p>
+        <p class="design-rationale">У розділах нижче зібрано джерела, правила й приклади. Вони дають змогу перевірити, звідки походить кожне рішення та де закінчується його застосування.</p>
       </div>
       <aside class="hero-specimen" aria-label="Схема фонетичного аналізу">
         <div class="specimen-flow" aria-label="Послідовність аналізу: написання, поверхнева вимова, IPA, український запис">
@@ -35,8 +45,18 @@
   </header>
 
   <section class="system-intro">
-    <h2>Авторська система української передачі корейської вимови</h2>
-    <p>Це дослідницький проєкт практичної передачі корейської вимови українською. Він не має статусу офіційного українського стандарту; рішення та їхні межі описано нижче.</p>
+    <h2>Про систему</h2>
+    <p>Це дослідницький проєкт про те, як передавати корейську вимову українською. Він не є офіційним стандартом; нижче наведено правила, джерела та межі їх застосування.</p>
+  
+
+  <aside id="methodology-reading-guide" class="methodology-reading-guide" aria-label="Як читати методологію">
+    <div class="methodology-reading-intro"><h2>Як читати цю сторінку</h2><p>Рухайтеся згори вниз. Кожен розділ пояснює окрему частину системи, а таблиці, схеми й приклади показують, як читати її на практиці.</p></div>
+    <div class="methodology-reading-steps">
+      <div class="methodology-reading-step"><strong>Пояснення</strong><p>Що саме відбувається на цьому етапі.</p></div>
+      <div class="methodology-reading-step"><strong>Приклад або таблиця</strong><p>Як правило чи відповідність працює на конкретному матеріалі.</p></div>
+      <div class="methodology-reading-step"><strong>Межі застосування</strong><p>Що підтверджено, що залишається кандидатом і де система утримується від припущень.</p></div>
+    </div>
+  </aside>
   </section>
 
   <nav class="methodology-toc" aria-labelledby="methodology-toc-title">
@@ -53,7 +73,8 @@
   </nav>
 
   <section class="doc-section">
-    <div class="doc-content"><h2 id="methodology-00a"><span class="heading-index">00A</span> — Корейська вимова й українська адаптація — два окремі об’єкти перевірки</h2><p>Основним джерелом для правил корейської вимови є <a href="https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002" rel="noreferrer">Національний інститут корейської мови — 표준 발음법</a>. Для форм із перевіреною словниковою вимовою сервіс показує окремий рядок «Нормативна корейська вимова». Це не надає офіційного статусу українському запису: попередні українські відповідники потребують окремої фонетичної та редакторської оцінки. Якщо морфологічні умови правила не можна підтвердити, система має показати невизначеність, а не вгадувати.</p></div>
+    <div class="doc-content"><h2 id="methodology-00a"><span class="heading-index">00A</span> — Корейська вимова й українська адаптація — два окремі об’єкти перевірки</h2><p>Основним джерелом для правил корейської вимови є <a href="https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002" rel="noreferrer">Національний інститут корейської мови — 표준 발음법</a>. Для форм із перевіреною словниковою вимовою сервіс показує окремий рядок «Нормативна корейська вимова». Це не надає офіційного статусу українському запису: попередні українські відповідники потребують окремої фонетичної та редакторської оцінки. Якщо морфологічні умови правила не можна підтвердити, система має показати невизначеність, а не вгадувати.</p>
+      <div class="callout blue"><strong>Два окремі об’єкти перевірки</strong><span>Спочатку встановлюємо корейську вимову. Лише після цього оцінюємо, як її передати українською. Підтвердження першого етапу саме по собі не робить український відповідник нормативним.</span></div></div>
   </section>
 
   <section class="doc-section">
@@ -506,7 +527,7 @@
 
   <section class="doc-section references">
     <div class="doc-content"><h2 id="methodology-16"><span class="heading-index">16</span> — Основні дослідницькі опори</h2>
-      <ul><li><a href="https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002">National Institute of Korean Language — Standard Korean Pronunciation</a></li><li><a href="https://movoznavstvo.org.ua/vsi-nomera-zhurnalu/statti/2009-1-sichen-lyutij/shchegel-o-m-praktichna-transkriptsiya-korejskikh-imen-ukrajinskoyu-movoyu-porivnyannya-problemi-i-propozitsiji">О. М. Щегель (2009) — Практична транскрипція корейських імен українською мовою</a></li><li><a href="https://bp-razvitie.ru/prilozhenie-9-sistemy-transkripcii-">Холодович—Концевич — практична транскрипція корейської мови</a></li><li><a href="https://www.journals.polon.uw.edu.pl/index.php/pj/article/view/1631">Kim Gwangseok & Jarosław A. Pietrow (2023) — Korean toponyms in Polish</a></li><li><a href="https://authors.uni-sofia.bg/AuthorPublications.aspx?id=2584c0a6-0810-4d34-8733-deee92e8bac7">Beneva et al. (2018) — Korean transcription in Bulgarian texts</a></li><li><a href="https://serbia-korea.rs/wp-content/uploads/2026/01/A-need-for-transcription-between-Korean-Hangul-and-Serbian-Cyrillic.pdf">Angelina Galjević (2023) — Korean Hangul and Serbian Cyrillic</a></li></ul>
+      <ul class="research-reference-list"><li><a href="https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002">National Institute of Korean Language — Standard Korean Pronunciation</a></li><li><a href="https://movoznavstvo.org.ua/vsi-nomera-zhurnalu/statti/2009-1-sichen-lyutij/shchegel-o-m-praktichna-transkriptsiya-korejskikh-imen-ukrajinskoyu-movoyu-porivnyannya-problemi-i-propozitsiji">О. М. Щегель (2009) — Практична транскрипція корейських імен українською мовою</a></li><li><a href="https://bp-razvitie.ru/prilozhenie-9-sistemy-transkripcii-">Холодович—Концевич — практична транскрипція корейської мови</a></li><li><a href="https://www.journals.polon.uw.edu.pl/index.php/pj/article/view/1631">Kim Gwangseok & Jarosław A. Pietrow (2023) — Korean toponyms in Polish</a></li><li><a href="https://authors.uni-sofia.bg/AuthorPublications.aspx?id=2584c0a6-0810-4d34-8733-deee92e8bac7">Beneva et al. (2018) — Korean transcription in Bulgarian texts</a></li><li><a href="https://serbia-korea.rs/wp-content/uploads/2026/01/A-need-for-transcription-between-Korean-Hangul-and-Serbian-Cyrillic.pdf">Angelina Galjević (2023) — Korean Hangul and Serbian Cyrillic</a></li></ul>
       <div class="repo-links"><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System">Відкрити GitHub репозиторій ↗</a><a href="./index.html">Повернутися до сервісу ↗</a></div>
     </div>
   </section>

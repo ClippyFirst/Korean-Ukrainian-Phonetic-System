@@ -15,16 +15,35 @@ const contrast=(a,b)=>{
   return (hi+.05)/(lo+.05);
 };
 
-test('both pages use the Seoul Type identity and real Hangul examples',()=>{
+test('both pages share a jogakbo header and retain real Hangul examples',()=>{
   for(const page of ['index.html','system.html']){
     const html=read(page);
-    assert.match(html,/data-visual-system="seoul-type"/u);
+    assert.match(html,/data-visual-system="jogakbo-editorial"/u);
     assert.match(html,/class="brand-mark"[^>]*>한</u);
     assert.match(html,/class="specimen-flow"/u);
-    assert.doesNotMatch(html,/class="taegeuk"/u);
+    const header=html.match(/<header class="site-header">[\s\S]*?<\/header>/u)?.[0]||'';
+    assert.match(header,/class="jogakbo-band"/u);
+    assert.ok((header.match(/class="jogakbo-patch /gu)||[]).length>=8,'header has at least eight textile fragments');
+    assert.equal((html.match(/class="jogakbo-band"/gu)||[]).length,1,'patchwork is used once per page');
+    assert.doesNotMatch(html.slice(html.indexOf('</header>')+9),/jogakbo-band/u,'patchwork does not enter content modules');
   }
   assert.match(read('index.html'),/lang="ko">시</u);
   assert.match(read('system.html'),/lang="ko">읽고</u);
+});
+
+test('service modules pair the input and output objects with concise guidance',()=>{
+  const html=read('index.html');
+  const input=html.indexOf('id="source-input"');
+  const inputGuide=html.indexOf('id="input-module-guidance"');
+  const outputGuide=html.indexOf('id="output-module-guidance"');
+  const output=html.indexOf('id="results"');
+  assert.ok(input>=0&&inputGuide>input,'input object is followed by its usage guidance');
+  assert.ok(outputGuide>=0&&output>outputGuide,'output guidance introduces the result object');
+  assert.match(html,/class="output-module-title"/u);
+  assert.match(html,/Український запис — головний результат/u);
+  assert.match(html,/class="module-guidance module-guidance-dark"/u);
+  assert.match(html,/натисніть «Перетворити»/u);
+  assert.match(html,/class="module-guidance module-guidance-light"/u);
 });
 
 test('service follows one task path from input through the selected mode to results',()=>{
@@ -56,17 +75,34 @@ test('only the input and answer workbench windows are stacked',()=>{
   assert.doesNotMatch(css,/\.editorial-site \.hero,\s*\.editorial-site \.workspace-layout/su);
 });
 
-test('methodology section anchors are carried by headings in the reading flow',()=>{
+test('methodology reading guide and sections remain a vertical sequence with real objects',()=>{
   const html=read('system.html');
-  assert.doesNotMatch(html,/class="doc-label"/u);
+  const css=read('src/styles/editorial.css');
+  assert.match(html,/id="methodology-reading-guide"/u);
+  assert.match(html,/class="methodology-reading-steps"/u);
+  assert.match(html,/class="research-reference-list"/u);
   assert.match(html,/<h2 id="methodology-00a">/u);
   assert.match(html,/<h2 id="methodology-01">/u);
   assert.match(html,/<h2 id="methodology-02c-kozak-kim"><span class="heading-index">02C<\/span>/u);
   assert.equal((html.match(/class="doc-section"/gu)||[]).length,24);
+  const firstSection=html.match(/<section class="doc-section">([\s\S]*?)<\/section>/u)?.[1]||'';
+  assert.match(firstSection,/class="callout/u,'the normative-base module includes a visible interpretive object');
+  const moduleStarts=[...html.matchAll(/<section[^>]*class="[^"]*doc-section[^"]*"[^>]*>/gu)].map(match=>match.index);
+  assert.equal(moduleStarts.length,25,'all 25 methodology modules remain in source order');
+  moduleStarts.forEach((moduleStart,index)=>{
+    const moduleEnd=moduleStarts[index+1]??html.indexOf('</main>',moduleStart);
+    const module=html.slice(moduleStart,moduleEnd);
+    assert.match(module,/<table\b|<ul\b|<ol\b|<pre\b|class="[^"]*(?:layers|rule-grid|limits|compare-strip|callout|decision-table|vowel-grid|evidence-list|repo-links)[^"]*"/u,`methodology module ${index+1} contains a real content object`);
+  });
+  assert.match(css,/\.editorial-site\.system-page \.doc-section\s*\{[^}]*display:block/su);
+  assert.match(css,/\.editorial-site \.system-intro\{[^}]*border:0/su);
 });
 
-test('Seoul Type palette keeps key text combinations above WCAG AA contrast',()=>{
+test('jogakbo palette is restrained and action contrasts remain accessible',()=>{
   const css=read('src/styles/editorial.css');
+  for(const token of ['--jogakbo-ink:#24354b','--jogakbo-jade:#9db7a7','--jogakbo-blue:#a9bac6','--jogakbo-ochre:#c9a66b','--jogakbo-clay:#b9857a','--jogakbo-ground:#f1eee5']){
+    assert.ok(css.toLowerCase().includes(token),`missing ${token}`);
+  }
   assert.match(css,/--paper:#efede6/iu);
   assert.match(css,/--ink:#17202c/iu);
   assert.match(css,/--cobalt:#254bd8/iu);
@@ -90,7 +126,8 @@ test('user-facing terminology stays Ukrainian and the input remains placeholder-
   assert.doesNotMatch(service,/Revised Romanization/u);
   assert.match(methodology,/Переглянута романізація \(RR\)/u);
   assert.doesNotMatch(methodology,/Revised Romanization/u);
-  assert.match(methodology,/сучасну корейську типографіку/u);
+  assert.match(methodology,/У розділах нижче зібрано джерела, правила й приклади/u);
+  assert.match(methodology,/<h2>Про систему<\/h2>/u);
   assert.doesNotMatch(methodology,/джогакбо/u);
   const start=service.indexOf('<textarea id="source-input"');
   const end=service.indexOf('>',start);
@@ -112,6 +149,12 @@ test('the result provenance note belongs to the Ukrainian output, not the result
   const review=read('scripts/capture-editorial-review.mjs');
   assert.match(review,/inWorkbench/);
   assert.match(review,/expectedFocusColor/);
+  assert.match(review,/headerPatchwork/);
+  assert.match(review,/moduleGuidance/);
+  assert.match(review,/methodologyGuideVisible/);
+  assert.match(review,/modeOptionContrast/);
+  assert.match(css,/\.editorial-site \.mode-option\{[^}]*background:transparent/su);
+  assert.match(css,/\.editorial-site \.mode-option:has\(input:checked\)\{[^}]*background:#29384b/su);
   const ukrainian=html.match(/<article id="panel-ukrainian"[\s\S]*?<\/article>/u)?.[0]||'';
   assert.match(ukrainian,/<p id="status-note" class="results-note result-provenance">/u);
   assert.doesNotMatch(html,/<\/article>\s*<p id="status-note"/u);

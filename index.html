@@ -7,13 +7,13 @@
   <meta name="theme-color" content="#efede6">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'none'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; frame-ancestors 'none';">
   <title>한국어 / УКРАЇНСЬКА</title>
-  <link rel="stylesheet" href="./src/styles/main.css?v=20261111-seoul-type">
+  <link rel="stylesheet" href="./src/styles/main.css?v=20261111-jogakbo-modules">
   <link rel="stylesheet" href="./src/styles/spelling-suggestions.css">
-  <link rel="stylesheet" href="./src/styles/editorial.css?v=20261111-seoul-type">
+  <link rel="stylesheet" href="./src/styles/editorial.css?v=20261111-jogakbo-modules">
 </head>
 <body>
 <a class="skip-link" href="#input-heading">Перейти до інструмента</a>
-<main class="page-shell editorial-site" data-visual-system="seoul-type">
+<main class="page-shell editorial-site" data-visual-system="jogakbo-editorial">
   <header class="site-header">
     <div class="topline">
       <a class="brand" href="./index.html" aria-label="Корейсько-українська система">
@@ -24,6 +24,16 @@
         <a class="nav-active" aria-current="page" href="./index.html">Сервіс</a>
         <a href="./system.html">Методологія</a>
       </nav>
+    </div>
+    <div class="jogakbo-band" aria-hidden="true">
+      <span class="jogakbo-patch patch-a"></span>
+      <span class="jogakbo-patch patch-b"></span>
+      <span class="jogakbo-patch patch-c"></span>
+      <span class="jogakbo-patch patch-d"></span>
+      <span class="jogakbo-patch patch-e"></span>
+      <span class="jogakbo-patch patch-f"></span>
+      <span class="jogakbo-patch patch-g"></span>
+      <span class="jogakbo-patch patch-h"></span>
     </div>
     <div class="hero hero-home">
       <div class="hero-copy">
@@ -55,7 +65,7 @@
         <div id="spelling-suggestions-list" class="spelling-suggestions-list"></div>
       </section>
     </div>
-    <p class="input-guidance" id="input-guidance">Введіть корейський текст або виберіть приклад. Результат оновлюється автоматично. Щоб побачити, як сервіс визначив вимову, відкрийте поскладовий розбір.</p>
+    <div id="input-module-guidance" class="module-guidance module-guidance-dark"><p class="input-guidance" id="input-guidance">Введіть корейський текст або виберіть приклад, а потім натисніть «Перетворити». Поскладовий розбір покаже, як сформовано запис.</p></div>
       <div class="chip-row" role="group" aria-label="Швидкі приклади">
         <button class="mini-button" data-example="현대 한국어의 표준 발음" type="button">현대 한국어의 표준 발음</button>
         <button class="mini-button" data-example="값이" type="button">값이</button>
@@ -103,7 +113,9 @@
   </section>
 
   <section class="output-workspace" aria-label="Результат перетворення">
-  <section id="empty-state" class="empty-state" aria-live="polite"><p>Введіть корейський текст або виберіть один із прикладів — українське читання з’явиться нижче.</p></section>
+  <h2 class="output-module-title">Результат</h2>
+  <p id="output-module-guidance" class="module-guidance module-guidance-light">Український запис — головний результат. Нижче можна перевірити IPA, романізацію, словникові підказки та поскладовий розбір.</p>
+  <section id="empty-state" class="empty-state" aria-live="polite"><p>Після введення тексту або вибору прикладу тут з’явиться українське читання.</p></section>
 
   <section id="results" class="results" aria-labelledby="results-heading" hidden>
     <h2 id="results-heading" class="sr-only">Результат перетворення</h2>

@@ -235,3 +235,38 @@ Evidence:
 - [Pages deployment and live smoke 43000523955](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43000523955)
 
 The first design attempt revealed stale legacy test expectations and a global focus-colour assumption; both were corrected and all final exact-head gates passed. Superdesign CLI preflight timed out, so no canvas artifact is claimed. Local shell tests were not run because this session used the GitHub connector and CI runners rather than a verified local checkout.
+
+
+## 2026-11-11 follow-up — Jogakbo header and vertical editorial modules
+
+**Status: DONE_VERIFIED on PR branch head 7ed9c7fa1c780ec7366341e733bd3aa42433721d.** PR #480 is green and mergeable; the live Pages deployment is not yet run because deployment is main-branch-only.
+
+### Design outcome
+
+- The jogakbo-inspired composition is limited to the shared header: eight unequal rectangular fields, visible page-ground seams, no fabric texture or decorative text.
+- The service is a vertical task path: Korean input window first, Ukrainian result below it. Each module has plain-language usage or interpretation guidance; the textarea remains empty and placeholder-free.
+- The methodology page uses one top-to-bottom reading flow. Its introductory module contains the reading guide; all 25 doc-section modules have at least one real content object (table, list, callout, diagram, example or evidence object). The six-level pipeline is vertical.
+- Supporting result objects remain subordinate to the Ukrainian result. Existing DOM IDs, JS hooks, accessibility names, result/provenance states and copy behavior are preserved.
+- Replaced the stale Seoul-specific visual explanation with user-facing methodology copy; the earlier Seoul Type brief is marked historical and superseded.
+
+### Review findings and repairs
+
+1. The first screenshot review exposed low-contrast mode descriptions on pale cards inside the dark workbench. The labels now inherit the dark surface, selected state is dark slate with acid accent, and the rendered-review script calculates contrast from computed foreground/background colours and enforces WCAG AA (4.5:1).
+2. Removed the inherited red side border from the methodology introduction; the reading guide is now part of that vertical module rather than a detached text-only section.
+3. Removed repeated input instructions and corrected the action copy to say that the user must press «Перетворити».
+4. Added a vertical research-reference list so the sources section also has a visible content object.
+
+### Verification evidence
+
+- Node suite: 1,446 passed, 0 failed (PR Tests run 43019293505).
+- Python regression/data-integrity suite: Python 3.11, 3.12 and 3.13 passed (run 43019293505).
+- Browser G2P integration: passed (run 43019293495).
+- Verify: Node tests, source-rights audit and production Vite build passed; Python regression/data integrity passed (push run 43019283132; PR run 43019293643).
+- Exhaustive test-case register extraction: passed (run 43019293652).
+- Master table and research corpus artifacts: passed (run 43019293509).
+- Editorial visual review: passed at 1440, 1024, 768, 390 and 320 CSS px on both pages (run 43019293592; artifact 13853728176). The desktop and narrow-mobile renders were inspected manually; the dark mode labels are readable, input precedes output, and no horizontal overflow is reported.
+- No linguistic/runtime/corpus/benchmark files were changed.
+
+### Remaining deployment step
+
+PR #480 must be merged before the main-only GitHub Pages workflow can deploy and perform a live-site smoke check. Until that happens, this redesign is implementation- and CI-verified on the PR branch, not yet published to the public site.
