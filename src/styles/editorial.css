@@ -517,6 +517,19 @@ a:hover { color: var(--cobalt); text-decoration-thickness: 2px; }
 .site-footer a { color: var(--ink-navy); }
 .site-footer > div { display: flex; flex-direction: column; gap: 7px; }
 .system-page .hero { padding-bottom: 44px; }
+
+.system-page .hero-copy .design-rationale {
+  max-width: 62ch;
+  margin: 16px 0 0;
+  padding: 11px 14px;
+  border-left: 2px solid var(--cobalt);
+  background: var(--warm-white);
+  color: var(--muted);
+  font-size: .82rem;
+  line-height: 1.55;
+}
+.system-page .design-rationale strong { color: var(--ink-navy); }
+
 .system-intro {
   display: grid;
   grid-template-columns: 58px minmax(0,1fr) auto;
