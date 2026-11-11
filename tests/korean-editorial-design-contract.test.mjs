@@ -222,14 +222,16 @@ test('paragraph emphasis does not create isolated bold words or glyphs',()=>{
 
 test('hero specimen is an asymmetrical overlapping jogakbo collage, not three equal table cells',()=>{
   const css=read('src/styles/editorial.css');
-  assert.match(css,/grid-template-columns:repeat\\(12,minmax\\(0,1fr\\)\\)/u);
-  assert.match(css,/grid-column:1 \/ 6;[\\s\\S]*?grid-row:1 \/ 8/u);
-  assert.match(css,/grid-column:5 \/ 11;[\\s\\S]*?grid-row:1 \/ 6/u);
-  assert.match(css,/grid-column:8 \/ 13;[\\s\\S]*?grid-row:4 \/ 9/u);
-  assert.match(css,/transform:rotate\\(-2\\.2deg\\)/u);
-  assert.match(css,/transform:rotate\\(2\\.6deg\\)/u);
-  assert.match(css,/clip-path:polygon/u);
-  assert.match(css,/border:1px dashed rgb\\(23 32 44 \/ 48%\\)/u);
-  assert.match(css,/grid-template-columns:repeat\\(24,minmax\\(0,1fr\\)\\)/u);
-  assert.match(css,/@media\\(max-width:560px\\)[\\s\\S]*?grid-column:3\\/7;grid-row:3\\/7/u);
+  for(const fragment of [
+    'grid-template-columns:repeat(12,minmax(0,1fr))',
+    'grid-column:1 / 6;grid-row:1 / 8',
+    'grid-column:5 / 11;grid-row:1 / 6',
+    'grid-column:8 / 13;grid-row:4 / 9',
+    'transform:rotate(-2.2deg)',
+    'transform:rotate(2.6deg)',
+    'clip-path:polygon',
+    'border:1px dashed rgb(23 32 44 / 48%)',
+    'grid-template-columns:repeat(24,minmax(0,1fr))',
+    'grid-column:3/7;grid-row:3/7'
+  ]) assert.ok(css.includes(fragment),'missing collage treatment: '+fragment);
 });
