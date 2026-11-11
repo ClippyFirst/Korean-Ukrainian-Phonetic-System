@@ -41,7 +41,7 @@ The selected combination spans type, editorial publishing, public information gr
 
 | Token | Value | Role |
 |---|---|---|
-| Paper | `#EF EDE6` | Warm neutral page ground |
+| Paper | `#EFEDE6` | Warm neutral page ground |
 | Surface | `#FAF9F4` | Reading and result surfaces |
 | Ink | `#17202C` | Main text and input workbench |
 | Signal orange | `#ED593D` | Brand mark, primary action and Ukrainian specimen |

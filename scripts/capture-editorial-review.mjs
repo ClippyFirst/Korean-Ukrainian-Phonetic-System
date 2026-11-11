@@ -92,7 +92,7 @@ try {
         const style=getComputedStyle(document.activeElement);
         return {outlineStyle:style.outlineStyle,outlineWidth:parseFloat(style.outlineWidth),outlineColor:style.outlineColor};
       });
-      if (focusStyle.outlineStyle === 'none' || focusStyle.outlineWidth < 2 || focusStyle.outlineColor !== 'rgb(36, 72, 216)') {
+      if (focusStyle.outlineStyle === 'none' || focusStyle.outlineWidth < 2 || focusStyle.outlineColor !== 'rgb(37, 75, 216)') {
         failures.push(`${pageName} at ${viewport.name}: keyboard focus is not visibly marked in cobalt: ${JSON.stringify(focusStyle)}`);
       }
       await page.emulateMedia({reducedMotion:'reduce'});

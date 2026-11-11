@@ -216,6 +216,7 @@ test('Seoul Type visual system is product-specific, responsive and keeps the two
   assert.match(css,/--signal:#ed593d/i);
   assert.match(css,/--acid:#e6e84d/i);
   assert.match(css,/--cobalt:#254bd8/i);
+  assert.match(css,/--signal-deep:#ad3426/i);
   assert.match(css,/\.editorial-site \.workspace-layout\s*\{[^}]*grid-template-columns:\s*minmax\(0,1fr\)/s);
   assert.match(css,/\.editorial-site \.result-card:first-child\s*\{[^}]*grid-column:1\s*\/\s*-1/s);
   assert.match(css,/\.editorial-site \.methodology-toc ol/);

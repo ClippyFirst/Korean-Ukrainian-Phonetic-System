@@ -998,3 +998,6 @@ The first vertical-flow correction met the reading-order and object-chrome requi
 - Local shell test/build: not run; no verified local repository checkout in this session.
 
 **Scope exclusions:** no phonology, IPA, Ukrainian mapping, data, corpus, benchmark, security policy or runtime dependency changes.
+
+
+**Rendered-review contract follow-up:** the focus-colour assertion now matches the replacement cobalt token (`#254BD8`); the small signal-red text token is darkened to `#AD3426` for contrast on the paper ground. Re-run the full exact-head visual review after this correction.

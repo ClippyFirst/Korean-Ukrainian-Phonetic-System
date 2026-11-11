@@ -204,3 +204,6 @@ A rendered desktop capture from the existing visual-review artifact [13841806466
 - Superdesign canvas output: **BLOCKED** — CLI preflight timed out in the connector-only runtime; no mockup is claimed.
 
 **Required exact-head evidence:** Node web tests, production build, Verify, Tests, rendered visual review at 1440/1024/768/390/320 px, public Pages deployment and live browser smoke. No local test run is claimed in this connector-only session.
+
+
+**Contrast and focus contract follow-up — 2026-11-11:** darkened the small signal-red index colour to `#AD3426` (5.44:1 against `#EF EDE6`); updated the rendered-review focus assertion to match the new cobalt token `#254BD8`. Exact-head visual review must pass before this redesign is marked DONE_VERIFIED.

@@ -62,3 +62,8 @@ These references establish several active Korean design practices; they do not d
 ## Applied skills
 
 Taste-skill, Anthropic frontend-design, Impeccable, Emil Kowalski, Superpowers, mattpocock, unlazy and ponytail guidance was reviewed and applied selectively. Superdesign CLI preflight timed out in the connector-only runtime; no canvas mockup is claimed.
+
+
+## Contrast review follow-up
+
+The accent text used for small editorial indices is darkened to `#AD3426` for AA contrast on the page ground. The rendered review's focus assertion is updated to the chosen cobalt token `#254BD8` (RGB 37, 75, 216); it still requires a visible outline of at least 2px.
