@@ -889,3 +889,17 @@ The browser research engine now distinguishes three levels by confidence/coverag
 - **Skills applied:** taste-skill, Anthropic frontend-design, Impeccable (Operate/Read modes and craft floor), Emil Kowalski's animation guidance, Superpowers TDD/systematic debugging, plus the previously applied unlazy, Matt Pocock and Ponytail workflows. No decorative animation was added because it would not improve this frequently used tool. Impeccable's local launcher was unavailable in the connector-only runtime; its references were read directly and the rendered captures were inspected.
 
 **Design task status: DONE_VERIFIED and published.** No design-specific blocker remains. Independent Korean pronunciation and Ukrainian target gold-data review remain separate research acceptance requirements.
+
+
+## 2026-11-11 — vertical-flow correction and removal of object chrome
+
+The earlier published redesign did not meet the requested reading order: desktop still placed the hero copy beside the specimen and the input beside the result, while the methodology retained a numbered side rail and boxed contents. This correction replaces those compositions rather than merely stacking them at a mobile breakpoint.
+
+- **Service order:** input → mode choice → explicit «Перетворити» action → Ukrainian result → IPA → romanization → Hanja → analysis → alternatives → syllable trace. The existing live input listener remains active; the action button calls the same renderer and does not introduce a second conversion path.
+- **Methodology:** one column from the introductory specimen through the contents and every section. Section anchors now sit on their actual headings; the separate number rail and status chip are removed.
+- **Object chrome:** specimen top/bottom strips, result metadata bars, table dark header bands, section-number rails and card-like panel frames are removed. Table rows and explanatory material remain legible in ordinary vertical flow.
+- **Responsive contract:** the same DOM order and one-column layout apply at desktop, tablet and mobile widths; no CSS order property or breakpoint reordering is used.
+- **Scope:** no pronunciation rules, IPA adapter, linguistic data, mode semantics or runtime dependencies changed.
+- **Verification:** tests/korean-editorial-design-contract.test.mjs now asserts the exact order, single-column selectors, heading anchors and absence of object chrome. GitHub Actions evidence is pending the pull request exact-head run; no local npm/Playwright execution is claimed in the connector-only runtime.
+
+**Status: PARTIAL pending exact-head CI and rendered visual review.** The prior PR #467 visual-review evidence does not verify this correction.
