@@ -201,5 +201,5 @@ test('syllable trace uses a compact responsive information grid',()=>{
 
 test('paragraph emphasis does not create isolated bold words or glyphs',()=>{
   const css=read('src/styles/editorial.css');
-  assert.match(css,/\.editorial-site p strong,\.editorial-site p b\s*\{[^}]*font-weight:inherit/u);
+  assert.match(css,/\.editorial-site p strong,\.editorial-site p b,\.editorial-site li strong,\.editorial-site li b,\.editorial-site td strong,\.editorial-site td b\s*\{[^}]*font-weight:inherit/u);
 });
