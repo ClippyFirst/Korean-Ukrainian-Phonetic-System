@@ -86,7 +86,7 @@
 - [x] Update the visual system in place and explicitly supersede the Seoul Type-only visual brief without deleting its historical record.
 - [x] Record the task ledger, branch/base/head and implementation commits in the existing master handoff; append final CI and rendered-review evidence after the exact-head runs complete.
 - [x] Run focused and full Node tests, source-rights audit, production build, and rendered review on the final PR head.
-- [x] Check exact-head GitHub Actions results and classify the main-only Pages/live smoke as BLOCKED until PR #480 is merged.
+- [x] Check exact-head GitHub Actions results and complete the main-only Pages deployment and live-site smoke after merge.
 
 ## Commit strategy
 
@@ -98,12 +98,11 @@
 
 ## Final execution record — 2026-11-11
 
-- Branch: design/jogakbo-header-vertical-modules-2026-11-11
-- Base: 004173e11dc92b292ea2d67000844119096e1679 (main)
-- Verified PR head: 7ed9c7fa1c780ec7366341e733bd3aa42433721d
-- PR: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/480
-- Tasks 1–5 implementation and branch verification: DONE_VERIFIED.
-- Node: 1,446 passed, 0 failed. Python 3.11/3.12/3.13: passed. Browser G2P: passed. Source-rights gate: passed. Vite build: passed. Master artifacts and exhaustive test register: passed.
+- Starting main: 004173e11dc92b292ea2d67000844119096e1679
+- Implementation branch: design/jogakbo-header-vertical-modules-2026-11-11
+- PR #480 merged at 2026-11-11T12:24:22Z; merge commit: 505bc4ffa448a66f6bf5a9c1c4f812ad8754edec
+- Public site: https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/
+- Node suite: 1,446 passed, 0 failed. Python 3.11/3.12/3.13: passed. Browser G2P: passed. Source-rights gate: passed. Vite build: passed. Master artifacts and exhaustive test register: passed.
 - Playwright editorial review: passed on both pages at 1440, 1024, 768, 390 and 320 CSS px. Computed mode-label contrast gate passed. Artifact: 13853728176.
-- The main-only Pages deployment/live smoke remains BLOCKED until PR #480 is merged; no deployment is claimed.
-- No linguistic/runtime/data changes were made.
+- GitHub Pages deployment and live browser smoke: passed (run 43020048051). HTTP smoke checked index.html, system.html and the built JS asset. Live browser smoke checked a 1,443-character Korean passage, Hanja chunk/output, live result announcement, mode disclosure, clipboard fallback, 390px trace labels and methodology navigation.
+- No linguistic/runtime/data changes were made. The broader repository remains a research prototype for independent research gates.

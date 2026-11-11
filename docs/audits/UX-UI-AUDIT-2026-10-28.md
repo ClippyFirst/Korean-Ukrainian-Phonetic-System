@@ -239,7 +239,7 @@ The first design attempt revealed stale legacy test expectations and a global fo
 
 ## 2026-11-11 follow-up — Jogakbo header and vertical editorial modules
 
-**Status: DONE_VERIFIED on PR branch head 7ed9c7fa1c780ec7366341e733bd3aa42433721d.** PR #480 is green and mergeable; the live Pages deployment is not yet run because deployment is main-branch-only.
+**Status: DONE_VERIFIED — merged and deployed.** PR #480 merged on 2026-11-11; merge commit 505bc4ffa448a66f6bf5a9c1c4f812ad8754edec. GitHub Pages deployment and live browser smoke both passed (run 43020048051).
 
 ### Design outcome
 
@@ -267,6 +267,13 @@ The first design attempt revealed stale legacy test expectations and a global fo
 - Editorial visual review: passed at 1440, 1024, 768, 390 and 320 CSS px on both pages (run 43019293592; artifact 13853728176). The desktop and narrow-mobile renders were inspected manually; the dark mode labels are readable, input precedes output, and no horizontal overflow is reported.
 - No linguistic/runtime/corpus/benchmark files were changed.
 
-### Remaining deployment step
+### Deployment and live verification
 
-PR #480 must be merged before the main-only GitHub Pages workflow can deploy and perform a live-site smoke check. Until that happens, this redesign is implementation- and CI-verified on the PR branch, not yet published to the public site.
+- Public URL: https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/
+- GitHub Pages deployment: passed (run 43020048051).
+- Public HTTP smoke: passed for index.html, system.html and the first built JavaScript asset.
+- Live Playwright smoke: passed. It verified the deterministic Hanja dictionary chunk/output, result announcement, mode disclosure, clipboard-denial fallback, mobile trace labels at 390px and methodology navigation.
+- Adversarial live input: 1,443 Korean characters; candidate output 2,982 characters; IPA 3,731 characters. The expected status remained a contextual/provisional candidate, not a confirmed linguistic result.
+- Main-branch Verify, Tests, Editorial visual review and master/research artifact workflows passed (runs 43020048190, 43020048030, 43020048115 and 43020048102).
+
+The visual redesign is now publicly deployed. The broader repository remains a research prototype; visual and browser verification do not close independent linguistic evidence, IPA review, target-form validation, corpus provenance/licensing or other research gates.

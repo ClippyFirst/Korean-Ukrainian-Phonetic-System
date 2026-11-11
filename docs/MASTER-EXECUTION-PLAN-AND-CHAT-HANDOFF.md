@@ -2,44 +2,49 @@
 
 ## Execution continuation — 2026-11-11 — Jogakbo header / vertical modules
 
-**Workstream status:** implementation and CI verification complete on the PR branch; live deployment awaits merge.
+**Workstream status: DONE_VERIFIED, merged and publicly deployed.**
 
 - **Starting main commit:** 004173e11dc92b292ea2d67000844119096e1679.
-- **Branch:** design/jogakbo-header-vertical-modules-2026-11-11.
-- **Final verified PR head:** 7ed9c7fa1c780ec7366341e733bd3aa42433721d.
-- **PR:** #480 — https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/480 (open, mergeable, all required checks green at this checkpoint).
+- **Implementation branch:** design/jogakbo-header-vertical-modules-2026-11-11 (preserved; not deleted).
+- **Verified PR head:** 7ed9c7fa1c780ec7366341e733bd3aa42433721d.
+- **PR:** #480 — https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/480 (merged 2026-11-11T12:24:22Z).
+- **Merge commit:** 505bc4ffa448a66f6bf5a9c1c4f812ad8754edec.
+- **Public site:** https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/
+- **Deployment and live smoke:** passed, run 43020048051.
 - **Previous merged design work:** #479 and #473 are already represented in main. The older vertical-flow branch is behind main; restore-editorial-character retains its already-merged #473 history and is stale relative to main. Other inspected design/rationale/vertical-flow branches have no commits ahead of main. None were rewritten or deleted.
-- **No open PRs existed before #480.** PR #480 was created from the current main head; no competing open change was reused.
+- **No open PRs existed before #480.** No competing open change was reused.
 
 ### Task ledger
 
 | Work item | Status | Evidence / acceptance |
 |---|---|---|
 | User-approved jogakbo header direction | DONE_VERIFIED | DESIGN.md and dated spec; museum references recorded |
-| Test-first visual contract | DONE_VERIFIED | Expected RED on first new contracts; final Node suite 1,446/1,446 |
+| Test-first visual contract | DONE_VERIFIED | Expected RED on new contracts; final Node suite 1,446/1,446 |
 | Shared header and service modules | DONE_VERIFIED | Eight header fragments; input above result; explanatory guidance; empty textarea |
 | Methodology modules | DONE_VERIFIED | Reading guide; 25 content modules each with a real object; 24 existing section anchors preserved |
 | Contrast and responsive behavior | DONE_VERIFIED | Computed mode-label contrast check, visible focus, 320–1440 px review |
 | Existing linguistic pipeline and data | DONE_VERIFIED unchanged | No engine, IPA, target, corpus, benchmark or runtime files modified |
 | Final branch CI | DONE_VERIFIED | Verify 43019283132 / 43019293643; Tests 43019293505; G2P 43019293495; register 43019293652; master artifacts 43019293509 |
-| Rendered review | DONE_VERIFIED | Editorial review 43019293592; artifact 13853728176; manual desktop and narrow-mobile inspection |
-| GitHub Pages deployment/live smoke | BLOCKED until merge | Deployment workflow is main-branch-only; PR #480 is not yet merged |
+| Main exact-head CI | DONE_VERIFIED | Verify 43020048190; Tests 43020048030; Editorial review 43020048115; master artifacts 43020048102 |
+| GitHub Pages deployment/live smoke | DONE_VERIFIED | Deploy run 43020048051; HTTP and live browser smoke passed |
 | Local checkout/local shell tests | BLOCKED | git clone timed out in this connector-only runtime; equivalent repository-defined checks ran on GitHub Actions |
 
 ### Commands and verification actually executed
 
-- GitHub Actions ran the repository's Node test suite: **1,446 passed, 0 failed**.
+- GitHub Actions Node suite: **1,446 passed, 0 failed**.
 - Python regression/data-integrity jobs passed on 3.11, 3.12 and 3.13.
 - Browser G2P integration passed.
 - Source redistribution rights audit passed.
 - Vite production build passed; deterministic Hanja artifact preparation completed.
 - Master table/research corpus artifacts and exhaustive test-case register extraction passed.
-- Playwright rendered review passed at 1440, 1024, 768, 390 and 320 CSS px on both pages. A first review caught mode-label contrast; the fix and computed contrast gate were rerun and passed.
+- Playwright editorial review passed at 1440, 1024, 768, 390 and 320 CSS px on both pages. The first visual review exposed mode-label contrast; the fix and computed contrast gate passed on the final head.
+- Pages deployment passed. Public HTTP smoke verified both HTML pages and the first built JS asset. Live browser smoke passed: deterministic Hanja output, result announcement, mode disclosure, clipboard-denial fallback, mobile trace labels at 390px and methodology navigation.
+- Live adversarial input was 1,443 Korean characters; browser output included a 2,982-character provisional candidate and 3,731-character IPA trace. The status explicitly remained a contextual/provisional candidate, not a confirmed linguistic result.
 - Local clone and local shell tests were not available; no local pass is claimed.
 
 ### Release assessment
 
-The UI redesign is implementation- and CI-verified, ready to merge. The site is not yet deployed because PR #480 remains open. The repository as a whole remains a research prototype; the visual work does not close the independent linguistic evidence, IPA review, target-form validation, corpus provenance/licensing or other research gates in the handoffs below.
+The visual redesign is now merged and deployed at the public Pages URL. The repository as a whole remains a research prototype; this presentation-only change does not close independent Korean pronunciation evidence, IPA review, Ukrainian target-form validation, corpus provenance/licensing or other research gates recorded in the handoffs below.
 
 
 ## Execution continuation — 2026-11-10
