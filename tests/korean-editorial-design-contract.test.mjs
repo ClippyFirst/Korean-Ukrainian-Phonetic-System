@@ -306,3 +306,11 @@ test('rendered browser review verifies Ukrainian font loading and shared surface
   assert.match(review,/rgb\(250, 249, 244\)/u);
   assert.match(review,/expectedFocusColor=.*rgb\(73, 100, 119\)/u);
 });
+
+
+test('the browser workflow audits every Ukrainian uppercase and lowercase glyph in the bundled font',()=>{
+  const audit=read('scripts/audit_ukrainian_font_cmap.py');
+  const workflow=read('.github/workflows/editorial-visual-review.yml');
+  for(const codepoint of ['0x0406','0x0407','0x0404','0x0490','0x0456','0x0457','0x0454','0x0491']) assert.ok(audit.includes(codepoint),'missing Ukrainian cmap assertion '+codepoint);
+  assert.ok(workflow.includes('python scripts/audit_ukrainian_font_cmap.py'));
+});
