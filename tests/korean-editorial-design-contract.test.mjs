@@ -213,6 +213,8 @@ test('hero specimens and Ukrainian results use regular rather than bold glyph we
   }
   assert.match(css,/\.editorial-site \.specimen-flow \.specimen-value\{[^}]*font-weight:400!important/su);
   assert.match(css,/\.editorial-site \.result-card:first-child \.result-body,[\s\S]*?#result-ukrainian\{font-weight:400!important/su);
+  assert.match(css,/\.editorial-site #result-ukrainian,[\s\S]*?font-family:"Noto Sans","Segoe UI",Arial,sans-serif/u);
+  assert.match(css,/font-synthesis:none/u);
 });
 
 test('paragraph emphasis does not create isolated bold words or glyphs',()=>{
