@@ -71,7 +71,7 @@ test('only the input and answer workbench windows are stacked',()=>{
   assert.match(css,/\.hero\s*\{[^}]*display:grid/su);
   assert.match(css,/\.editorial-site \.specimen-flow\s*\{[^}]*grid-template-columns:1\.14fr \.88fr \.88fr/su);
   assert.match(css,/\.editorial-site\.system-page \.doc-section\s*\{[^}]*display:block/su);
-  assert.match(css,/\.editorial-site \.button-primary\s*\{[^}]*color:var\(--ink\)/su);
+  assert.match(css,/\.editorial-site \.button-primary\s*\{[^}]*color:var\(--palette-ink\)/su);
   assert.doesNotMatch(css,/\.editorial-site \.hero,\s*\.editorial-site \.workspace-layout/su);
 });
 
@@ -152,7 +152,7 @@ test('the result provenance note belongs to the Ukrainian output, not the result
   assert.match(review,/methodologyGuideVisible/);
   assert.match(review,/modeOptionContrast/);
   assert.match(css,/\.editorial-site \.mode-option\{[^}]*background:transparent/su);
-  assert.match(css,/\.editorial-site \.mode-option:has\(input:checked\)\{[^}]*background:var\(--palette-panel-muted\)/su);
+  assert.match(css,/\.editorial-site \.mode-option:has\(input:checked\)\{[^}]*background:var\(--palette-tint-ochre\)/su);
   const ukrainian=html.match(/<article id="panel-ukrainian"[\s\S]*?<\/article>/u)?.[0]||'';
   assert.match(ukrainian,/<p id="status-note" class="results-note result-provenance">/u);
   assert.doesNotMatch(html,/<\/article>\s*<p id="status-note"/u);
@@ -213,7 +213,7 @@ test('hero specimens and Ukrainian results use regular rather than bold glyph we
   }
   assert.match(css,/\.editorial-site \.specimen-flow \.specimen-value\{[^}]*font-weight:400!important/su);
   assert.match(css,/\.editorial-site \.result-card:first-child \.result-body,[\s\S]*?#result-ukrainian\{font-weight:400!important/su);
-  assert.match(css,/\.editorial-site #result-ukrainian,[\s\S]*?font-family:"Noto Sans","Segoe UI",Arial,sans-serif/u);
+  assert.match(css,/\.editorial-site #result-ukrainian,[\s\S]*?font-family:"Noto Sans Ukrainian"/u);
   assert.match(css,/font-synthesis:none/u);
 });
 
@@ -241,7 +241,7 @@ test('hero specimen is an asymmetrical overlapping jogakbo collage, not three eq
 
 test('the entire interface resolves through one restrained jogakbo palette',()=>{
   const css=read('src/styles/editorial.css');
-  for(const token of ['--palette-panel:#263548','--palette-panel-raised:#314257','--palette-panel-muted:#3b4b60','--palette-panel-line:#536276','--palette-tint-jade:#e7eee8','--palette-tint-blue:#e8edf0','--palette-tint-ochre:#f1eadc','--palette-tint-clay:#f2e6e1','--palette-line-ochre:#d9cbb7','--palette-status-success:#285443','--palette-status-warning:#75463d']){
+  for(const token of ['--palette-panel:var(--palette-surface)','--palette-panel-raised:var(--palette-surface-bright)','--palette-panel-muted:var(--palette-surface-soft)','--palette-panel-line:var(--palette-line)','--palette-tint-jade:#e7eee8','--palette-tint-blue:#e8edf0','--palette-tint-ochre:#f1eadc','--palette-tint-clay:#f2e6e1','--palette-line-ochre:#d9cbb7','--palette-status-success:#285443','--palette-status-warning:#75463d']){
     assert.ok(css.toLowerCase().includes(token),'missing palette role '+token);
   }
   for(const selector of ['.workbench','.input-shell','.mode-fieldset','.button-primary','.output-workspace','.result-card','.empty-state','.trace-row','.doc-content .callout','.doc-content th','.site-footer']){
@@ -251,4 +251,66 @@ test('the entire interface resolves through one restrained jogakbo palette',()=>
   assert.match(css,/--palette-signal:#88574d/u);
   assert.match(css,/--palette-acid:#d7c18a/u);
   assert.doesNotMatch(css.split('html{')[1]||css.split('html {')[1]||'',/#[0-9a-f]{3,8}\b/iu,'component colors must resolve through palette tokens, not one-off hex values');
+});
+
+test('large working and reading surfaces share the warm paper system',()=>{
+  const css=read('src/styles/editorial.css');
+  const lastRule=selector=>{
+    const start=css.lastIndexOf(selector+'{');
+    assert.ok(start>=0,'missing final surface rule '+selector);
+    return css.slice(start,css.indexOf('}',start)+1);
+  };
+  assert.match(css,/--palette-panel:var\(--palette-surface\)/u);
+  assert.match(css,/--palette-panel-raised:var\(--palette-surface-bright\)/u);
+  assert.match(css,/--palette-panel-muted:var\(--palette-surface-soft\)/u);
+  assert.match(css,/--palette-panel-line:var\(--palette-line\)/u);
+  for(const [selector,background] of [
+    ['.editorial-site .workbench','var(--palette-surface)'],
+    ['.editorial-site .input-shell','var(--palette-surface-bright)'],
+    ['.editorial-site .mode-fieldset','var(--palette-surface-soft)'],
+    ['.editorial-site .result-card:first-child','var(--palette-surface)'],
+    ['.editorial-site .methodology-toc','var(--palette-surface)']
+  ]) assert.ok(lastRule(selector).includes('background:'+background),'wrong material for '+selector);
+  for(const selector of ['.editorial-site .workbench','.editorial-site .input-shell textarea','.editorial-site .result-card:first-child','.editorial-site .methodology-toc']){
+    assert.ok(lastRule(selector).includes('color:var(--palette-ink)'),'light surface must use ink text: '+selector);
+  }
+});
+
+test('Ukrainian output uses a bundled regular Cyrillic font, not platform fallback',()=>{
+  const css=read('src/styles/editorial.css');
+  const fontPath=path.join(root,'src/fonts/NotoSans-Regular.woff2');
+  assert.ok(fs.existsSync(fontPath),'bundled Noto Sans font asset is present');
+  assert.ok(fs.statSync(fontPath).size>5000,'font asset is complete, not an empty placeholder');
+  assert.match(css,/@font-face\s*\{[^}]*font-family:\s*"Noto Sans Ukrainian"[^}]*src:\s*url\("\.\.\/fonts\/NotoSans-Regular\.woff2"\)/su);
+  assert.match(css,/\.editorial-site #result-ukrainian,[\s\S]*?font-family:"Noto Sans Ukrainian"/u);
+  assert.match(css,/\.editorial-site \.specimen-flow \.specimen-ua\{[^}]*font-family:"Noto Sans Ukrainian"/u);
+  assert.match(css,/font-weight:400!important;[^}]*font-synthesis:none/su);
+});
+
+test('base surface declarations are light instead of relying on late dark-to-light overrides',()=>{
+  const css=read('src/styles/editorial.css');
+  assert.match(css, /\.editorial-site \.workbench\{[^}]*background:var\(--palette-surface\);color:var\(--palette-ink\)/u);
+  assert.match(css, /\.editorial-site \.input-shell\{[^}]*background:var\(--palette-surface-bright\);color:var\(--palette-ink\)/u);
+  assert.match(css, /\.editorial-site \.mode-fieldset\{[^}]*background:var\(--palette-surface-soft\);color:var\(--palette-ink\)/u);
+  assert.match(css, /\.editorial-site \.result-card:first-child\{[^}]*background:var\(--palette-surface\);color:var\(--palette-ink\)/u);
+  assert.match(css, /\.editorial-site \.methodology-toc\{[^}]*background:var\(--palette-surface\);color:var\(--palette-ink\)/u);
+});
+
+test('rendered browser review verifies Ukrainian font loading and shared surface materials',()=>{
+  const review=read('scripts/capture-editorial-review.mjs');
+  assert.match(review,/document\.fonts\.check\('400 16px "Noto Sans Ukrainian"','ІЇЄҐіїєґ'\)/u);
+  assert.match(review,/ukrainianTypography/u);
+  assert.match(review,/surfaceMaterials/u);
+  assert.match(review,/fontWeight/u);
+  assert.match(review,/fontSynthesis/u);
+  assert.match(review,/rgb\(250, 249, 244\)/u);
+  assert.match(review,/expectedFocusColor=.*rgb\(73, 100, 119\)/u);
+});
+
+
+test('the browser workflow audits every Ukrainian uppercase and lowercase glyph in the bundled font',()=>{
+  const audit=read('scripts/audit_ukrainian_font_cmap.py');
+  const workflow=read('.github/workflows/editorial-visual-review.yml');
+  for(const codepoint of ['0x0406','0x0407','0x0404','0x0490','0x0456','0x0457','0x0454','0x0491']) assert.ok(audit.includes(codepoint),'missing Ukrainian cmap assertion '+codepoint);
+  assert.ok(workflow.includes('python scripts/audit_ukrainian_font_cmap.py'));
 });

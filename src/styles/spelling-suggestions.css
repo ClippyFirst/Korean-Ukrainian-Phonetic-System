@@ -3,7 +3,7 @@
   padding: 14px;
   border: 1px solid var(--line-strong);
   border-left: 4px solid var(--warning);
-  background: #fffaf0;
+  background: var(--palette-tint-ochre);
 }
 .spelling-suggestions-heading { display: grid; gap: 4px; margin-bottom: 10px; }
 .spelling-suggestions-heading strong { font-size: .86rem; }

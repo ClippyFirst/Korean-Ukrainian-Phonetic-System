@@ -43,3 +43,9 @@ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
+Ukrainian text font
+- Family: Noto Sans Regular, subsetted for Ukrainian Cyrillic, punctuation and numerals; WOFF2 webfont.
+- Original source: Google Noto Fonts (https://github.com/notofonts/latin-greek-cyrillic); Debian package fonts-noto-core 20201225-2.
+- Copyright: 2010, 2012–2020 Google Inc.; 2015–2020 Google LLC.
+- License: SIL Open Font License 1.1; full text: ../licenses/Noto-Sans-OFL-1.1.txt.
+- Local processing: glyph subset and WOFF2 packaging only; no glyph outlines modified. The family is served same-origin and used only for Ukrainian result/specimen text.

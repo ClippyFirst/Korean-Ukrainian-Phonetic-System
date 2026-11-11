@@ -1,3 +1,36 @@
+# 2026-11-11 UI correction task ledger
+
+## Unified paper surfaces and Cyrillic typography
+
+**Starting main:** `d49a93544c4b49d4f3046fee5e9280c65356a0b5`  
+**Implementation head:** `e5633cb04bc7e3d757527806acc0721a8a4a0fd9`  
+**Branch:** `fix/unified-paper-surfaces-cyrillic-font-2026-11-11`  
+**PR:** [#485](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/485)
+
+| Work item | Status | Evidence |
+|---|---|---|
+| Reproduce the mixed dark/light surface problem | DONE_VERIFIED | Baseline CSS used dark panel tokens for workbench, input controls, main answer and methodology index while adjacent cards used paper surfaces. |
+| Confirm the Ukrainian font fallback defect | DONE_VERIFIED | Baseline had no bundled font or `@font-face`; Ukrainian glyphs depended on system fallback despite explicit regular-weight declarations. |
+| Add/update design regression contracts | DONE_VERIFIED | Exact-head Node suite: 1,458 tests passed, 0 failed (run [43105710769](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43105710769)). |
+| Bundle licensed Cyrillic font and verify glyph map | DONE_VERIFIED | Same-origin Noto Sans Ukrainian WOFF2 (7,292 bytes), OFL 1.1 and third-party notice; cmap audit confirmed all eight uppercase/lowercase Ukrainian letters (run [43105710901](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43105710901)). |
+| Unify large working/reading surfaces and contrast | DONE_VERIFIED | Workbench, input, controls, primary answer and methodology index now resolve to shared warm paper/surface/ink roles; contrast checks pass. |
+| Browser verification on both pages and five viewport classes | DONE_VERIFIED | Playwright reviewed desktop, laptop, tablet, mobile and 320px narrow mobile for both pages; font loaded, weight 400, synthesis disabled, no horizontal page overflow, touch targets and focus checks pass; screenshots manually inspected. |
+| Reconcile handoff and audit records | DONE_VERIFIED | Master handoff, execution plan, task ledger and UX/UI audit updated in this continuation. |
+
+### Exact-head verification
+
+- Tests [43105710769](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43105710769) — PASS; 1,458/1,458 Node tests; Python 3.11/3.12/3.13, wheel-install and teacher-corpus audit passed.
+- Verify [43105710859](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43105710859) — PASS; browser regression tests, redistribution-rights gate, public build and generated-page verification passed; Python regression/data-integrity passed.
+- Editorial visual review [43105710901](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43105710901) — PASS; font cmap audit and 10 page/viewport combinations passed.
+- Browser G2P integration [43105710936](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43105710936) — PASS.
+- Master table/research artifacts [43105710890](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43105710890) — PASS.
+- Exhaustive test-case register [43105710680](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43105710680) — PASS.
+- Official NIKL metadata-only source inventory — SKIPPED by its credential gate; unrelated to this UI task and not counted as a pass.
+
+No local shell test/build is claimed: this session used the GitHub connector without a verified local checkout. No Korean pronunciation, IPA, Ukrainian mapping, corpus or engine code changed.
+
+---
+
 # 2026-11-05 task ledger — reconstructed 236-candidate review and repository audit
 
 ## 2026-11-05 — 236-candidate review, S018 source correction and documentation continuation
