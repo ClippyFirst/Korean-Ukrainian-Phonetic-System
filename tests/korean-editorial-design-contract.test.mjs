@@ -92,15 +92,22 @@ test('methodology explains the Korean visual concept in Ukrainian',()=>{
 
 test('keeps the Korean text field completely free of placeholder copy',()=>{
   const service=read('index.html');
-  const textarea=service.match(/<textarea\\b[^>]*id="source-input"[^>]*>/u)?.[0] ?? '';
-  assert.ok(textarea,'the Korean input field remains present');
-  assert.doesNotMatch(textarea,/\\bplaceholder\\s*=/u,'the field has no visible placeholder or instructional text');
+  const start=service.indexOf('<textarea id="source-input"');
+  assert.notEqual(start,-1,'the Korean input field remains present');
+  const end=service.indexOf('>',start);
+  const textarea=service.slice(start,end);
+  assert.equal(textarea.includes('placeholder='),false,'the field has no visible placeholder or instructional text');
 });
 
 test('keeps editorial microcopy at a readable minimum size',()=>{
   const css=read('src/styles/editorial.css');
-  const sizes=[...css.matchAll(/font-size:\\s*([0-9]*\\.?[0-9]+)(rem|px)/gu)]
-    .map(([,value,unit])=>Number(value)*(unit==='rem'?16:1));
+  const sizes=css.split('font-size:').slice(1).map(chunk=>{
+    const value=chunk.split(';',1)[0].trim();
+    const number=Number.parseFloat(value);
+    if(value.endsWith('rem')) return number*16;
+    if(value.endsWith('px')) return number;
+    return null;
+  }).filter(Number.isFinite);
   assert.ok(sizes.length>0,'editorial typography tokens are present');
   assert.ok(Math.min(...sizes)>=13,`smallest editorial font is ${Math.min(...sizes)}px; minimum is 13px`);
 });
