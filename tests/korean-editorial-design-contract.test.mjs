@@ -79,6 +79,7 @@ test('methodology reading guide and sections remain a vertical sequence with rea
   const css=read('src/styles/editorial.css');
   assert.match(html,/id="methodology-reading-guide"/u);
   assert.match(html,/class="methodology-reading-steps"/u);
+  assert.match(html,/class="research-reference-list"/u);
   assert.match(html,/<h2 id="methodology-00a">/u);
   assert.match(html,/<h2 id="methodology-01">/u);
   assert.match(html,/<h2 id="methodology-02c-kozak-kim"><span class="heading-index">02C<\/span>/u);

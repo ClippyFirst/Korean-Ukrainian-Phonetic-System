@@ -320,3 +320,8 @@ a:hover{color:var(--signal-deep)}
   .editorial-site .jogakbo-band{grid-template-columns:1.2fr .8fr 1fr .7fr 1.1fr .8fr 1fr .7fr;grid-template-rows:17px 15px;height:36px;margin-top:12px}
   .editorial-site .methodology-reading-step{grid-template-columns:minmax(0,1fr);gap:2px}
 }
+
+.editorial-site .research-reference-list{display:grid;grid-template-columns:minmax(0,1fr);gap:0;margin:16px 0 20px;padding:0;list-style:none;border-top:1px solid var(--line)}
+.editorial-site .research-reference-list li{padding:12px 0;border-bottom:1px solid var(--line);font-size:.9rem;line-height:1.65}
+.editorial-site .research-reference-list a{color:var(--cobalt);text-decoration-thickness:1px;text-underline-offset:3px}
+.editorial-site .research-reference-list a:hover{color:var(--signal-deep)}
