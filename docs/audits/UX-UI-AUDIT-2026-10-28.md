@@ -144,3 +144,14 @@ The updated smoke is in [PR #363](https://github.com/ClippyFirst/Korean-Ukrainia
 - The earlier test run with six stale UI assertions was not accepted as evidence; the assertions were reconciled to the new accessible labels and IPA-first output order. The corrected complete suite passed 1,442/1,442. An intermediate test-only syntax error in the contract update was corrected before the exact-main runs; no production/runtime defect remained.
 
 **Remaining scope:** this closes the layout and rendered-responsive findings addressed here, not the entire historical UX audit. Real screen-reader speech/verbosity, participant comprehension of mode labels and measured conversion latency remain unverified. Overall historical UX/UI audit therefore remains PARTIAL.
+
+
+## 2026-11-11 — visual hierarchy restored without undoing the vertical-flow requirement
+
+The previous vertical-flow patch removed too much of the design language. Although it correctly removed object-level title/footer strips and split layouts, it flattened the service and methodology into an undifferentiated monochrome document. This was a design regression, not a reason to restore the old side-by-side composition.
+
+PR [#473](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/473) restores the visual identity through Hangul typography, cobalt and restrained pink accents, hanji-like surfaces, stronger type hierarchy, clear mode grouping and high-contrast controls. The specimen keeps no visible object-level label strips. Both pages remain strictly vertical at all breakpoints.
+
+**Verification:** rendered review [42988127319](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42988127319) passed desktop, tablet, mobile and narrow-mobile viewports, including overflow, focus, reduced-motion and touch-target checks. Test matrix [42988127248](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42988127248) passed 1,443/1,443 web tests and Python 3.11/3.12/3.13, wheel-install and teacher-corpus checks. System Verify [42988127245](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42988127245) passed browser build/regression and Python/data-integrity checks.
+
+**Outcome:** the visual regression is corrected and merged. The broader historical UX/UI audit remains PARTIAL because real screen-reader speech/verbosity, mode comprehension and measured conversion latency still need human evaluation.
