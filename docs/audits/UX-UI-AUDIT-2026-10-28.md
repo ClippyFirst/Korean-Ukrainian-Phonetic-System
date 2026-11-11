@@ -166,3 +166,18 @@ PR #475 restores those compositions and stacks only `.workspace-layout`. The her
 **Verification:** rendered review [42990218241](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42990218241) passed all 10 page/viewport combinations. Exact-head tests [42991034581](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42991034581), System Verify [42990597830](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42990597830), and post-colour rendered review [42991034345](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42991034345) passed.
 
 **Outcome:** the layout-scope regression is corrected and merged. Human screen-reader, mode-comprehension and conversion-latency studies remain separate uncompleted UX evidence tasks.
+
+
+## 2026-11-11 — attach provenance to the primary Ukrainian result
+
+A rendered desktop capture from the existing visual-review artifact [13841806466](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42991034345) showed the dynamic engine/mode status as a separate child of `.result-grid`. Because that grid is two columns, the status occupied a result cell and displaced the IPA card into the opposite column. The provenance was visually detached from the Ukrainian output it qualifies.
+
+**Correction:** move the existing `#status-note` element inside `#panel-ukrainian`, preserving its ID and all runtime updates. Style it as quiet, left-aligned provenance text without a badge background, border or padded object strip. The remaining five result cards retain their two-column desktop grid and responsive collapse. No conversion or phonology code changes.
+
+**Task ledger**
+- Provenance belongs to the Ukrainian output: **DONE_VERIFIED** — source-contract regression added; the test-only Verify run [42995360086](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42995360086) failed at the intended assertion before the markup/CSS correction.
+- Markup and visual treatment: **DONE_VERIFIED** — implementation commit `ba2ef860c515851f22618e8f33e1e1fa51aba71c`; Verify [42995616576](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42995616576) passed 1,444/1,444 Node tests, source-rights audit, build/generated-page checks and Python regression/data integrity.
+- Rendered five-viewport review after the correction: **TODO** — run on the PR head before merge.
+- Human screen-reader speech, mode-comprehension and conversion-latency studies: **PARTIAL** — remain separate human-evaluation tasks; screenshots and automated tests do not establish them.
+
+**Evidence limit:** the earlier malformed test-regex attempt [42995077792](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42995077792) failed at test-module parsing and is not counted as a RED test. The corrected test-only run above is the valid RED evidence.

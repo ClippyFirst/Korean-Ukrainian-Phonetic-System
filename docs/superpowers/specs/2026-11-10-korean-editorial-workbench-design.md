@@ -44,6 +44,7 @@ Use a robust system stack already available locally, preferring Noto Sans KR / N
 - Header becomes a quiet masthead with compact navigation.
 - Hero pairs the editorial introduction with an asymmetric Hangul → IPA → Ukrainian specimen on desktop; it adapts to a single column only at narrow responsive breakpoints.
 - Only the two workbench windows are stacked: Korean text input first, answer window second. Within the answer window, the Ukrainian result remains dominant while IPA, romanization, Hanja and diagnostics keep their grouped desktop composition.
+- The active engine/mode provenance line belongs to the Ukrainian result panel, not to the supporting-result grid. The supporting grid contains only IPA, romanization, Hanja and analysis panels.
 - Research controls stay progressive-disclosure, not a wall of technical options.
 - Methodology remains a long-form editorial page with a clear contents index, strong heading rhythm, grouped rule/evidence layouts and responsive tables.
 - Motion is limited to direct interaction feedback (field focus, disclosure, copy confirmation); no scroll choreography, parallax, autoplay or gratuitous reveal.

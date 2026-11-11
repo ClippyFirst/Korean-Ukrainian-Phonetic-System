@@ -953,3 +953,17 @@ The first vertical-flow correction met the reading-order and object-chrome requi
 **Repository state:** PR #475 merged as `12984dcf30ea414b45e6d5ff5e5e07623a047312`; PR #477 merged as `f786f6cee3882e2c495680b856041be678526b4a`. Final implementation branch head before squash merge: `103add651399205e6ff3a032db9e1412f03b1400`. Main now contains the scoped layout and corrected semantic palette.
 
 **Readiness:** the scoped visual correction is DONE_VERIFIED. The broader repository remains a partial research prototype; this UI correction does not close independent linguistic evidence or human-evaluation gates.
+
+
+## 2026-11-11 — result provenance belongs to the Ukrainian output
+
+**Scope:** a narrow visual-layout correction within the already-verified Korean editorial workbench. The earlier rendered desktop screenshot showed the live engine/mode provenance as an independent `.result-grid` child. This created an orphaned gray cell and displaced the IPA card. The provenance now lives inside `#panel-ukrainian`; CSS presents it as quiet text without a badge surface. The five supporting result cards remain in their two-column desktop grid. Conversion, phonology, IPA, Ukrainian mapping and data logic are unchanged.
+
+**Task ledger**
+- Regression contract for provenance ownership: **DONE_VERIFIED** — `tests/korean-editorial-design-contract.test.mjs`; valid RED run [42995360086](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42995360086).
+- Markup and CSS correction: **DONE_VERIFIED** — commit `ba2ef860c515851f22618e8f33e1e1fa51aba71c`.
+- Exact-head Verify: **DONE_VERIFIED** — [42995616576](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42995616576): 1,444/1,444 Node tests, source-rights gate, build and generated-page checks passed; Python regression/data-integrity job passed.
+- Browser-rendered ownership assertion and five-viewport captures: **TODO** until the PR visual-review workflow completes.
+- Manual screen-reader speech, mode comprehension and conversion-latency studies: **PARTIAL**; not claimed by this layout fix.
+
+**Execution environment:** the connector can read and write GitHub branches, but a local `git clone` could not resolve `github.com` (DNS/network unavailable). Tests and builds are therefore verified through GitHub Actions, not claimed as locally executed. The dedicated branch is `design/fix-result-provenance-layout-2026-11-11`, based on main `d0cd901a482e9fbcaa299de2274b9ba58f72ae35`. PR and rendered review evidence will be appended after creation.

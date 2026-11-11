@@ -72,6 +72,9 @@ try {
             return {selector,exists:true,display:style.display,flexDirection:style.flexDirection,verticallyStacked,childCount:children.length};
           }),
           objectChromeCount:document.querySelectorAll('.specimen-top,.specimen-bottom,.method-line,.result-meta,.table-head,.doc-label,.status-chip,.trace-summary-index,.trace-summary-mark').length,
+          provenanceInsidePrimary:pageName==='index.html'?Boolean(document.querySelector('#panel-ukrainian')?.contains(document.querySelector('#status-note'))):null,
+          resultGridChildrenAreCards:pageName==='index.html'?[...(document.querySelector('.result-grid')?.children??[])].every(el=>el.matches('.result-card')):null,
+          resultGridCardCount:pageName==='index.html'?document.querySelectorAll('.result-grid > .result-card').length:null,
           taskOrder:pageName==='index.html'?['#source-input','#transliteration-mode','#example-button','#panel-ukrainian','#panel-ipa','#panel-romanization'].map(selector=>{
             const el=document.querySelector(selector);
             return el?{selector,top:Math.round(el.getBoundingClientRect().top)}:{selector,top:null};
@@ -117,6 +120,9 @@ try {
         const workspace = flow['.workspace-layout'];
         if (!workspace?.exists || !workspace.verticallyStacked || workspace.childCount !== 2) {
           failures.push(`${prefix}: input and answer windows are not stacked in source order: ${JSON.stringify(workspace)}`);
+        }
+        if (!metrics.provenanceInsidePrimary || !metrics.resultGridChildrenAreCards || metrics.resultGridCardCount !== 5) {
+          failures.push(`${prefix}: provenance must stay inside the Ukrainian result and the supporting grid must contain five result cards only: ${JSON.stringify({inside:metrics.provenanceInsidePrimary,childrenAreCards:metrics.resultGridChildrenAreCards,cardCount:metrics.resultGridCardCount})}`);
         }
       }
       if (viewport.width >= 980) {
