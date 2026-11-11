@@ -169,7 +169,7 @@ test('research analysis uses one accessible three-level slider, not visible chec
   assert.match(html,/Суперм’який/u);
   assert.match(html,/aria-describedby="morphology-level-guidance"/u);
   assert.match(html,/id="morphology-level-guidance"/u);
-  assert.match(js,/morphologyLevel\.value/u);
+  assert.match(js,/morphologyLevel\\?\\.value/u);
   assert.match(js,/addEventListener\('input'/u);
   assert.match(html,/id="soft-morphology"[^>]*hidden/u);
   assert.match(html,/id="super-soft-morphology"[^>]*hidden/u);
