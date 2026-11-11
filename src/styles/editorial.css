@@ -16,13 +16,13 @@
   --palette-blue:#a9bac6;
   --palette-ochre:#c9a66b;
   --palette-clay:#b9857a;
-  --palette-signal:#ed593d;
-  --palette-clay-deep:#ad3426;
+  --palette-signal:#b96f5f;
+  --palette-clay-deep:#88574d;
   --palette-blue-soft:#e5edf7;
   --palette-success:#28644e;
   --palette-warning:#76551e;
   --palette-danger:#a63842;
-  --palette-indigo:#254bd8;
+  --palette-indigo:#496477;
   --palette-acid:#d7c18a;
   --palette-panel:#263548;
   --palette-panel-raised:#314257;
@@ -32,9 +32,6 @@
   --palette-tint-blue:#e8edf0;
   --palette-tint-ochre:#f1eadc;
   --palette-tint-clay:#f2e6e1;
-  --palette-indigo:#496477;
-  --palette-signal:#b96f5f;
-  --palette-clay-deep:#88574d;
   --palette-line-ochre:#d9cbb7;
   --palette-status-success:#285443;
   --palette-status-warning:#75463d;
