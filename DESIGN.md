@@ -10,7 +10,7 @@ Current visual identity for the GitHub Pages service and its methodology page.
 
 The system borrows compositional principles, not decorative motifs:
 
-- **Jogakbo / bojagi:** asymmetric modular panels, visible seams and measured negative space. The three-panel Hangul → IPA → Ukrainian specimen is the clearest expression of this grammar.
+- **Jogakbo / bojagi:** asymmetric modular panels, visible seams and measured negative space. The three-stage Hangul → IPA → Ukrainian sequence expresses this grammar through order and spacing, not separate panels.
 - **Hangul as structure:** real syllable blocks are used as typography. No random Jamo, fake pseudo-writing or decorative script textures.
 - **Paper as material cue:** a cool neutral ground with no simulated grain or fake paper noise; the surface stays subordinate to the live text.
 - **Contemporary Seoul graphic language:** confident Hangul forms, simple geometry, compact type systems and selective high-chroma color planes. The palette belongs to this project, not to a claim about one Korean tradition.
@@ -31,7 +31,7 @@ This is a project-specific interpretation, not a claim that one palette or motif
 | Graphite | `#30363D` | Long-form body copy |
 | Seam | `#D5D9D5` | Divisions between modular areas |
 
-The interface stays mostly neutral. Pink and yellow are confined to the three-panel typographic specimen; cobalt carries interactive state. The key text combinations are checked against WCAG AA: ink on paper, ink on pink, ink on yellow, cobalt on paper, and white on cobalt.
+The interface stays mostly neutral. Pink and yellow remain secondary palette tokens rather than framed panel backgrounds; cobalt carries interactive state and focus. The key text combinations are checked against WCAG AA: ink on paper, ink on pink, ink on yellow, cobalt on paper, and white on cobalt.
 
 ## Typography
 
@@ -49,7 +49,7 @@ The interface stays mostly neutral. Pink and yellow are confined to the three-pa
 - The Ukrainian result is the primary output; IPA, romanization, Hanja and trace data remain secondary but discoverable.
 - The Korean text area has no placeholder or text inside it; its visible label and instructions sit outside the editing surface.
 - Methodology uses a contents list and one readable text column; section numbers are part of headings, not a side rail. Tables and evidence lists have no decorative header/footer bands. The short design rationale is plain secondary copy, not a bordered callout card.
-- Breakpoints: 980px (tablet adjustments), 760px (single-column workbench), 480px (compact navigation and input).
+- Breakpoints adjust spacing, type scale and compact navigation only; they never change the one-column content order.
 
 ## Interaction and accessibility
 
