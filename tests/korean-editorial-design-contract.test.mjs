@@ -109,6 +109,9 @@ test('the specimen keeps its three-colour editorial hierarchy without object lab
 test('the result provenance note belongs to the Ukrainian output, not the result grid',()=>{
   const html=read('index.html');
   const css=read('src/styles/editorial.css');
+  const review=read('scripts/capture-editorial-review.mjs');
+  assert.match(review,/inWorkbench/);
+  assert.match(review,/expectedFocusColor/);
   const ukrainian=html.match(/<article id="panel-ukrainian"[\s\S]*?<\/article>/u)?.[0]||'';
   assert.match(ukrainian,/<p id="status-note" class="results-note result-provenance">/u);
   assert.doesNotMatch(html,/<\/article>\s*<p id="status-note"/u);

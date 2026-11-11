@@ -89,11 +89,18 @@ try {
       await page.screenshot({path:file,fullPage:true,animations:'disabled'});
       await page.keyboard.press('Tab');
       const focusStyle = await page.evaluate(() => {
-        const style=getComputedStyle(document.activeElement);
-        return {outlineStyle:style.outlineStyle,outlineWidth:parseFloat(style.outlineWidth),outlineColor:style.outlineColor};
+        const active=document.activeElement;
+        const style=getComputedStyle(active);
+        return {
+          outlineStyle:style.outlineStyle,
+          outlineWidth:parseFloat(style.outlineWidth),
+          outlineColor:style.outlineColor,
+          inWorkbench:Boolean(active.closest('.workbench'))
+        };
       });
-      if (focusStyle.outlineStyle === 'none' || focusStyle.outlineWidth < 2 || focusStyle.outlineColor !== 'rgb(37, 75, 216)') {
-        failures.push(`${pageName} at ${viewport.name}: keyboard focus is not visibly marked in cobalt: ${JSON.stringify(focusStyle)}`);
+      const expectedFocusColor=focusStyle.inWorkbench?'rgb(230, 232, 77)':'rgb(37, 75, 216)';
+      if (focusStyle.outlineStyle === 'none' || focusStyle.outlineWidth < 2 || focusStyle.outlineColor !== expectedFocusColor) {
+        failures.push(`${pageName} at ${viewport.name}: keyboard focus does not match the high-contrast context token: ${JSON.stringify(focusStyle)}`);
       }
       await page.emulateMedia({reducedMotion:'reduce'});
       const reducedMotion = await page.evaluate(() => {

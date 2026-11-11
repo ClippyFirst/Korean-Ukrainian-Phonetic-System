@@ -210,3 +210,6 @@ A rendered desktop capture from the existing visual-review artifact [13841806466
 
 
 **Exact-head correction note — 2026-11-11:** the initial visual review exposed a stale global focus-colour expectation; the dark workbench correctly uses high-contrast acid-yellow focus while light reading surfaces use cobalt. The review now checks the active element's context. The initial Verify run exposed six stale assertions for the retired jogakbo design; `tests/korean-editorial-design-contract.test.mjs` now tests the replacement identity and contrast ratios. Rerun both gates before acceptance.
+
+
+**Rendered focus assertion implementation:** the first edit did not replace the old check in `capture-editorial-review.mjs`; this was identified by reading the committed file and the second failed run log. The script is now rewritten by exact source-block boundaries, and a test asserts both context detection and expected token selection. Do not mark this gate complete until a fresh rendered review passes.

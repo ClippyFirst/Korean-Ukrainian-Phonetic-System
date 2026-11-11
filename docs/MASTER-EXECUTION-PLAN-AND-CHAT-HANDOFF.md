@@ -1004,3 +1004,6 @@ The first vertical-flow correction met the reading-order and object-chrome requi
 
 
 **CI reconciliation:** first visual-review run `42999975019` rendered all 10 combinations with no overflow, correct input/result order, preserved editorial compositions and zero object chrome; its only failure was a stale assertion requiring cobalt focus inside the dark workbench. First Verify run `42999975013` exposed six stale assertions in `tests/korean-editorial-design-contract.test.mjs` that still required the superseded jogakbo palette, markup and copy. Those tests and the focus contract were updated to the new system; exact-head reruns remain pending.
+
+
+**Final focus-review correction:** the previous attempt to update the focus assertion did not match the script's exact source block. The current source now determines whether the focused control is inside the dark workbench and expects acid-yellow there, cobalt on light surfaces. A source-contract assertion covers this branch. The exact-head rendered review must confirm it.
