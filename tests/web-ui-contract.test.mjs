@@ -71,7 +71,7 @@ test('redesigned workbench preserves accessible navigation and responsive result
   assert.match(css,/@media\s*\(max-width:\s*720px\)/);
   assert.match(css,/@media\s*\(prefers-reduced-motion:reduce\)/);
   assert.match(css,/\.result-card:first-child/);
-  assert.match(editorial,/\.editorial-site \.workspace-layout[\s\S]{0,600}flex-direction:\s*column/u);
+  assert.match(editorial,/\.editorial-site \.workspace-layout[\s\S]{0,180}grid-template-columns:\s*minmax\(0,\s*1fr\)/u);
 });
 
 test('editable adversarial passage has a complete IPA path without inline placeholders',()=>{
