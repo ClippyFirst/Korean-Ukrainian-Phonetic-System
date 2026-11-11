@@ -207,7 +207,7 @@ test('service exposes the opt-in control only inside research mode and labels it
   const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
   const main=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
   assert.match(html,/id="super-soft-morphology"/u);
-  assert.match(html,/Контекстні фонологічні та морфологічні правила навмисно не вгадуються/u);
+  assert.match(main,/description:'Розкладає склади хангиля на графеми, формує IPA й передає його до українського адаптера\. Контекстні правила не вгадуються; це найширше графемне покриття з найнижчою впевненістю\.'/u);
   assert.match(main,/morphologyDescriptions\[Number\(morphologyLevel\?\.value\)\|\|0\]\?\.mode/u);
   assert.match(main,/super-soft-low-confidence/u);
   assert.match(html,/id="morphology-level-guidance"/u);
