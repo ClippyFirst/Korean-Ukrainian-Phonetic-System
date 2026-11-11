@@ -125,7 +125,7 @@ test('user-facing terminology stays Ukrainian and the input remains placeholder-
   assert.doesNotMatch(service,/Revised Romanization/u);
   assert.match(methodology,/Переглянута романізація \(RR\)/u);
   assert.doesNotMatch(methodology,/Revised Romanization/u);
-  assert.match(methodology,/сучасну корейську типографіку/u);
+  assert.match(methodology,/У розділах нижче зібрано джерела, правила й приклади/u);
   assert.doesNotMatch(methodology,/джогакбо/u);
   const start=service.indexOf('<textarea id="source-input"');
   const end=service.indexOf('>',start);
