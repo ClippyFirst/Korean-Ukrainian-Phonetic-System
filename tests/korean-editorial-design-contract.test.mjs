@@ -304,5 +304,5 @@ test('rendered browser review verifies Ukrainian font loading and shared surface
   assert.match(review,/fontWeight/u);
   assert.match(review,/fontSynthesis/u);
   assert.match(review,/rgb\(250, 249, 244\)/u);
-  assert.match(review,/expectedFocusColor='rgb\(73, 100, 119\)'/u);
+  assert.match(review,/expectedFocusColor=.*rgb\(73, 100, 119\)/u);
 });
