@@ -1121,3 +1121,20 @@ input,textarea { caret-color: var(--cobalt); }
   gap: 8px;
 }
 .editorial-site .action-cell .button { width: 100%; }
+
+
+/* Even reference inventories follow the same top-to-bottom reading order. */
+.editorial-site .vowel-grid {
+  display: flex;
+  flex-direction: column;
+  border: 0;
+  background: transparent;
+}
+.editorial-site .vowel-grid > span,
+.editorial-site .vowel-grid > span.wide {
+  display: block;
+  padding: 10px 0;
+  border: 0;
+  border-bottom: 1px solid var(--seam);
+  background: transparent;
+}
