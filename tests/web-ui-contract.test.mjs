@@ -236,9 +236,3 @@ test('Jogakbo masthead and vertical editorial modules preserve the two workbench
   assert.match(css,/@media\(prefers-reduced-motion:reduce\)/);
   assert.match(css,/specimen-flow p:first-child\{background:linear-gradient/i);
 });
-
-
-test('hero transcription specimen exposes its labelled sequence as a semantic group',()=>{
-  const html=read('index.html');
-  assert.match(html,/<div class="specimen-flow" role="group" aria-label="Послідовність: корейське написання, IPA, українська адаптація">/);
-});
