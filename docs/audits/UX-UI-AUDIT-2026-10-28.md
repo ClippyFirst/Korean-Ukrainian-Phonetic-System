@@ -479,3 +479,16 @@ No phonological rules, IPA behavior, target mapping, corpus, or engine code chan
 | Conversion latency at short / 1,000 / 5,198 characters on desktop/mobile | TODO | Requires measured browser timing; no performance threshold inferred |
 
 No phonology, IPA, Ukrainian mapping, engine behavior or linguistic data changed. This verifies the visual mode workstream, not the system's independent linguistic research gates.
+
+
+## Publication record — PR #487 — 2026-11-12
+
+- **Merged:** PR [#487](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/487), squash merge.
+- **Merge commit:** 6a301a54b3d8cf7a32f2b79397a1ed28cecfe0ae.
+- **GitHub Pages deployment:** [43186479309](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43186479309) — SUCCESS.
+- **Public URL:** https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/
+- **HTTP smoke:** PASS for index.html, system.html and the first JavaScript asset.
+- **Live Playwright smoke:** PASS — deterministic Hanja dictionary chunk/output, live result announcement, mode disclosure, clipboard-denial fallback, mobile trace labels at 390 px and methodology navigation. The adversarial passage exercised 1,443 Korean input characters, a 2,982-character inline candidate and 3,731-character IPA result; the service correctly labeled it as a preliminary candidate, not an independently validated result.
+- **Scope:** this publication contains the mode-copy simplification and visual QA coverage only; no phonology, IPA or Ukrainian mapping behavior changed.
+
+The visual mode matrix remains DONE_VERIFIED. The broader UX/UI audit remains PARTIAL for manual assistive-technology/keyboard evaluation, user comprehension testing and measured conversion latency.

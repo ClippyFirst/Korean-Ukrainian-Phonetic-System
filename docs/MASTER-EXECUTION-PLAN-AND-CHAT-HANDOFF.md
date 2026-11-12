@@ -1379,3 +1379,18 @@ No Korean pronunciation, IPA, Ukrainian target mapping, source corpus or engine 
 | Short / 1,000 / 5,198-character latency measurement on desktop/mobile | TODO |
 
 The visual-mode task is software-verified and ready for merge. The broader product remains a research prototype; independent linguistic gold data, target review and other research acceptance gates are unchanged. The PR is still open at this checkpoint; merge and Pages publication are not yet claimed.
+
+
+## Post-merge publication record — PR #487 (2026-11-12)
+
+- **Merged PR:** [#487](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/487), squash merge.
+- **Main merge commit:** 6a301a54b3d8cf7a32f2b79397a1ed28cecfe0ae.
+- **Final visual implementation branch head before merge:** c5e8999bc25258515bd327356be98cde8fa3fcd2.
+- **GitHub Pages deployment:** [43186479309](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43186479309) — SUCCESS.
+- **Published URL:** https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/.
+- **Public HTTP smoke:** PASS — index.html, system.html and first JavaScript asset.
+- **Live Playwright smoke:** PASS — deterministic Hanja dictionary chunk/output, live result announcement, mode disclosure, clipboard-denial fallback, mobile trace labels at 390 px and methodology navigation. The 1,443-character Korean adversarial input produced a 2,982-character inline candidate and 3,731-character IPA result; the status explicitly identified it as a preliminary candidate, not a confirmed result.
+- **Main-commit CI:** tests [43186479233](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43186479233), Verify [43186479239](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43186479239), Editorial review [43186479363](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43186479363), and Pages deployment [43186479309](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43186479309) all passed.
+- The earlier statement that PR #487 was still open was a checkpoint before merge and is superseded by this record.
+- **Final classification:** the visual mode workstream is implemented, tested and published. The wider Korean pronunciation/transcription system remains a research prototype with independent linguistic evidence and accuracy gates. Manual screen-reader/keyboard review, human comprehension testing and conversion-latency measurements remain open; they are not silently treated as complete.
+
