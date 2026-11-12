@@ -821,3 +821,6 @@ a:hover{color:var(--signal-deep)}
   .editorial-site .specimen-flow .specimen-ipa{font-size:1.05rem}
   .editorial-site .specimen-flow .specimen-ua{font-size:1.55rem}
 }
+
+.editorial-site .target-status-note{margin-top:8px;color:var(--palette-muted);font-size:.74rem;line-height:1.45}
+.editorial-site .target-status-note[hidden]{display:none}

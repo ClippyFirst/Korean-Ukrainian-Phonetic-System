@@ -141,7 +141,7 @@ test('the specimen keeps its three-colour editorial hierarchy without object lab
   assert.match(css,/\.editorial-site \.specimen-flow p::after/u);
 });
 
-test('the result provenance note belongs to the Ukrainian output, not the result grid',()=>{
+test('pronunciation provenance belongs to IPA and target status belongs to Ukrainian output, not the result grid',()=>{
   const html=read('index.html');
   const css=read('src/styles/editorial.css');
   const review=read('scripts/capture-editorial-review.mjs');
@@ -154,7 +154,11 @@ test('the result provenance note belongs to the Ukrainian output, not the result
   assert.match(css,/\.editorial-site \.mode-option\{[^}]*background:transparent/su);
   assert.match(css,/\.editorial-site \.mode-option:has\(input:checked\)\{[^}]*background:var\(--palette-tint-ochre\)/su);
   const ukrainian=html.match(/<article id="panel-ukrainian"[\s\S]*?<\/article>/u)?.[0]||'';
-  assert.match(ukrainian,/<p id="status-note" class="results-note result-provenance">/u);
+  assert.match(ukrainian,/<p id="target-status-note" class="results-note target-status-note" hidden>/u);
+  const ipa=html.match(/<article id="panel-ipa"[\s\S]*?<\/article>/u)?.[0]||'';
+  assert.match(ipa,/<p id="phonology-status-note" class="results-note result-provenance phonology-provenance">/u);
+  assert.match(review,/targetStatusInsidePrimary/);
+  assert.match(review,/phonologyProvenanceInsideIpa/);
   assert.doesNotMatch(html,/<\/article>\s*<p id="status-note"/u);
   assert.match(css,/\.editorial-site \.result-provenance\{background:transparent\}/u);
 });

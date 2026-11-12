@@ -483,3 +483,6 @@ button { color: inherit; }
 .eyebrow,.section-kicker,.specimen-top,.specimen-bottom,.specimen-note,.input-hint,.mini-button,.practical-mode-hint,.soft-morphology-hint,.stress-hint,.results-note,.result-meta p,.copy-button,.site-nav a,.mode-option em{font-size:.8rem;line-height:1.5}
 .mini-button,.site-nav a{min-height:40px}
 .copy-button{min-height:40px}
+
+.target-status-note{margin:9px 0 0;color:var(--muted);font-size:.76rem;line-height:1.45;overflow-wrap:anywhere}
+.target-status-note[hidden]{display:none}

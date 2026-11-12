@@ -90,13 +90,14 @@ test('editable adversarial passage has a complete IPA path without inline placeh
 
 test('provisional target candidate is announced before generic unavailable status',()=>{
   const main=read('src/main.js');
-  assert.match(main,/r\.candidate_status==='provisional'\?' · Показано попередній кандидат, не підтверджений результат':r\.target_status==='unavailable'/);
+  assert.match(main,/targetStatusNote\.textContent=r\.candidate_status==='provisional'/);
+  assert.match(main,/Показано попередній кандидат, не підтверджений результат/);
 });
 
 
 test('model-selected target output is not presented as independently validated',()=>{
   const main=read('src/main.js');
-  assert.match(main,/r\.target_status==='model-selected'\?' · Український запис за проєктними відповідностями; незалежно не валідований'/);
+  assert.match(main,/r\.target_status==='model-selected'\?'Український запис за проєктними відповідностями; незалежно не валідований'/);
 });
 
 test('service UX keeps the hero, simplifies the workbench, and progressively discloses trace details',()=>{
@@ -144,6 +145,8 @@ test('phonology provenance stays with IPA while provisional target status stays 
   assert.match(ipaPanel,/id="phonology-status-note" class="results-note result-provenance phonology-provenance"/);
   assert.doesNotMatch(ukrainianPanel,/id="phonology-status-note"|id="status-note"/);
   assert.match(main,/phonologyStatusNote\.textContent=\(useG2p\?'g2pK · ':'Козак Кім · '\)/);
+  assert.match(main,/r\.candidate_status==='super-soft-low-confidence'/);
+  assert.match(html,/id="target-status-note" class="results-note target-status-note" hidden/);
   assert.doesNotMatch(main,/statusNote\.textContent=.*Показано попередній кандидат/);
   assert.match(main,/Попередній кандидат — не підтверджений результат/);
   assert.match(css,/\.phonology-provenance\s*\{[^}]*border-top:\s*1px solid/);
