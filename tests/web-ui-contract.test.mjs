@@ -155,7 +155,7 @@ test('mode choice is user-oriented while technical caveats remain available on d
   assert.match(html,/Як працює звичайний режим/);
   assert.match(html,/Для частини слів результат може бути неточним/);
   assert.match(html,/Для перевірки правил, невизначеностей і альтернативних вимов/);
-  assert.match(html,/Звичайний режим використовує готовий корейський рушій g2pK/);
+  assert.match(html,/На відміну від звичайного режиму на g2pK/);
   assert.match(html,/власний детермінований рушій Козака Кіма/);
 });
 
