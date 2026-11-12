@@ -103,10 +103,10 @@ a:hover{color:var(--signal-deep)}
 .editorial-site .workbench>.input-hint{margin:12px 0 0;border:0;background:transparent;color:var(--muted-inverse)}
 .editorial-site .mode-fieldset{min-width:0;margin:24px 0 0;padding:16px 18px;border:1px solid var(--palette-line);border-radius:var(--radius-small);background:var(--palette-surface-soft);color:var(--palette-ink)}
 .editorial-site .mode-legend{padding:0 7px;color:var(--palette-muted);font-size:.76rem;font-weight:750}
-.editorial-site .mode-option{display:grid;grid-template-columns:19px minmax(0,1fr);align-items:start;gap:12px;margin:0;padding:14px 14px 14px 18px;border:0;border-top:1px solid var(--palette-line);border-radius:0;background:transparent;box-shadow:none;color:var(--palette-ink)}
-.editorial-site .mode-option:has(input:checked){border:0;border-top:1px solid var(--palette-ochre);border-radius:0;background:var(--palette-tint-ochre);box-shadow:inset 3px 0 0 var(--palette-ochre)}
+.editorial-site .mode-option{display:grid;grid-template-columns:32px minmax(0,1fr);align-items:start;gap:14px;margin:8px 0;padding:14px 16px;border:1px solid var(--palette-line);border-radius:var(--radius-small);background:var(--palette-surface-bright);box-shadow:none;color:var(--palette-ink)}
+.editorial-site .mode-option:has(input:checked){border:1px solid var(--palette-ochre);border-radius:var(--radius-small);background:var(--palette-tint-ochre);box-shadow:none}
 .editorial-site .mode-option:has(input:focus-visible){outline:2px solid var(--palette-indigo);outline-offset:2px}
-.editorial-site .mode-option input,.editorial-site .soft-morphology-toggle input{width:17px;height:17px;margin:3px 0 0;accent-color:var(--acid)}
+.editorial-site .mode-option input{display:grid;place-items:center;width:20px;height:20px;margin:2px 0 0;justify-self:center;appearance:none;border:1.5px solid var(--palette-line-strong);border-radius:50%;background:var(--palette-surface-bright);cursor:pointer}.editorial-site .mode-option input:checked{border:2px solid var(--palette-signal);background:radial-gradient(circle,var(--palette-signal) 0 4px,var(--palette-surface-bright) 4.8px)}.editorial-site .soft-morphology-toggle input{width:17px;height:17px;margin:3px 0 0;accent-color:var(--palette-ochre)}
 .editorial-site .mode-option strong{display:block;color:var(--palette-ink);font-size:.92rem;font-weight:760}
 .editorial-site .mode-option em{display:block;margin-top:4px;color:var(--palette-muted);font-size:.8rem;font-style:normal;line-height:1.6}
 .editorial-site .mode-disclosure{margin:0;border:0;border-top:1px solid var(--palette-panel-line);border-radius:0;background:transparent}

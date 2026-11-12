@@ -541,3 +541,12 @@ The user's follow-up screenshot review identified that circular processing-mode 
 - Main-branch deployment after merge is tracked separately; do not claim publication until the main Pages workflow and public smoke finish.
 
 The wider UX/UI audit remains PARTIAL for the unrelated manual screen-reader, keyboard/zoom, user-comprehension and performance gates.
+
+
+## 2026-11-12 — follow-up: mode radio controls redesigned as inset cards (PR pending)
+
+- **Finding:** PR #490 increased label padding, but the mode choices still used a shared fieldset surface, top-only row separators, and a selected-state inset left stripe. The native circular radio remained visually crowded against those row boundaries; padding alone did not remove the visual collision.
+- **Change in progress:** each mode choice is now a distinct rounded card with a complete outline and a dedicated 32px control gutter. The radio is centered in that gutter and uses a clearly bounded circular control with a separate selected dot. The selected card uses a full ochre outline and warm tint; the old left-edge stripe and shared top-border treatment are removed. Native radio semantics, labels, keyboard selection, and mode logic are retained.
+- **Regression guard:** web UI contract now asserts the card boundary, dedicated radio gutter, custom checked state, and absence of the previous stripe treatment.
+- **Status:** implementation branch `fix/mode-radio-card-layout-2026-11-12`; pending exact-head CI, rendered screenshots and deployed Pages verification. Do not claim publication until those gates pass.
+- No linguistic, engine, IPA, Ukrainian mapping, or mode-selection behavior changed.
