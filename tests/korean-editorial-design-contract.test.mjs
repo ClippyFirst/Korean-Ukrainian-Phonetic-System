@@ -319,3 +319,12 @@ test('the browser workflow audits every Ukrainian uppercase and lowercase glyph 
 
 
 
+
+
+test('Ukrainian site text uses the bundled Cyrillic font before Korean/system fallbacks',()=>{
+  const css=read('src/styles/editorial.css');
+  assert.match(css,/body\s*\{[^}]*font-family:"Noto Sans Ukrainian","Noto Sans KR"/su);
+  assert.match(css,/\.editorial-site \.input-shell textarea,\.editorial-site #stress-input\s*\{[^}]*font-family:"Noto Sans Ukrainian","Noto Sans KR"/su);
+  assert.match(css,/\.editorial-site #result-ukrainian,[\s\S]*?font-family:"Noto Sans Ukrainian"/u);
+  assert.match(css,/@font-face\s*\{[^}]*font-family:"Noto Sans Ukrainian"[^}]*font-weight:400/su);
+});
