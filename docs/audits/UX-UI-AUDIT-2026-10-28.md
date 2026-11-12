@@ -10,6 +10,8 @@
 - **Responsive treatment:** metadata labels and values use a compact two-column layout with wrapping, no border, background, pill shape or right alignment.
 - **Scope:** HTML structure, status rendering text, CSS and contract tests only. No engine, phonology, IPA, Ukrainian mapping, candidate selection or linguistic data changed.
 - **Acceptance:** exact-head Node/browser tests and rendered editorial review at 1440, 1024, 768, 390 and 320 CSS px; verify long coverage text wraps without overflow and both status rows stay with the correct result cards.
+- **Rendered-review enhancement:** the Playwright editorial capture now checks the visible practical-mode label and the three research-level labels against the selected slider state, confirms the Kozak Kim engine identity, and verifies the metadata row is grid-aligned, left-aligned, borderless and background-free at all five widths.
+
 
 
 ## Status and scope

@@ -33,6 +33,17 @@ try {
         await page.locator('#source-input').fill('시');
         await page.locator('#results:not([hidden])').waitFor({state:'visible'});
         await page.locator('#result-ukrainian').waitFor({state:'visible'});
+        const practicalStatus=(await page.locator('#phonology-status-value').innerText()).trim();
+        const statusPresentation=await page.locator('#phonology-status-note').evaluate(element=>{
+          const style=getComputedStyle(element);
+          return {display:style.display,textAlign:style.textAlign,borderWidth:style.borderWidth,borderRadius:style.borderRadius,background:style.backgroundColor};
+        });
+        if(!practicalStatus.includes('Звичайний режим')||!practicalStatus.includes('g2pK')){
+          failures.push(`index.html at ${viewport.name}: practical result metadata must name the active mode and g2pK engine: ${practicalStatus}`);
+        }
+        if(statusPresentation.display!=='grid'||statusPresentation.textAlign!=='left'||statusPresentation.borderWidth!=='0px'||statusPresentation.borderRadius!=='0px'||statusPresentation.background!=='rgba(0, 0, 0, 0)'){
+          failures.push(`index.html at ${viewport.name}: pronunciation metadata must render as borderless, left-aligned editorial rows: ${JSON.stringify(statusPresentation)}`);
+        }
 
         // Capture the practical mode before switching engines. The former review
         // only captured the research state, so the default mode had no screenshot evidence.
@@ -60,10 +71,14 @@ try {
           const label=(await page.locator('#morphology-level-value').innerText()).trim();
           const guidance=(await page.locator('#morphology-level-guidance').innerText()).trim();
           const ariaValue=await slider.getAttribute('aria-valuetext');
+          const modeStatus=(await page.locator('#phonology-status-value').innerText()).trim();
           if(label!==expectedLevels[level]||ariaValue!==expectedLevels[level]||!guidance){
             failures.push(`index.html at ${viewport.name}: research slider level ${level} is not synchronized with its visible and accessible description: ${JSON.stringify({label,ariaValue,guidance})}`);
           }
-          levelGuidance.push({label,ariaValue,guidance});
+          if(!modeStatus.includes(`Дослідницький режим · ${expectedLevels[level]} рівень`)||!modeStatus.includes('Козак Кім')){
+            failures.push(`index.html at ${viewport.name}: result metadata does not identify the active research level and engine: ${modeStatus}`);
+          }
+          levelGuidance.push({label,ariaValue,guidance,modeStatus});
           await page.screenshot({path:`${outputDir}/index-${viewport.name}-research-${level}.png`,fullPage:true});
         }
         await slider.evaluate(element=>{
