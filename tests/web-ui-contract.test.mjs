@@ -199,6 +199,9 @@ test('live browser smoke follows the inline Ukrainian result contract',()=>{
   assert.match(smoke,/page\.locator\('#candidate-note'\)\.isVisible\(\)/);
   assert.match(smoke,/page\.locator\('#candidate-panel'\)\.count\(\)/);
   assert.match(smoke,/Дослідницький результат/u);
+  assert.match(smoke,/#phonology-status-note/u,'live smoke reads pronunciation provenance from the IPA panel');
+  assert.match(smoke,/#target-status-note/u,'live smoke reads Ukrainian candidate status from the Ukrainian panel');
+  assert.doesNotMatch(smoke,/#status-note/u,'live smoke must not use the removed legacy status selector');
   assert.doesNotMatch(smoke,/candidate-copy-button|Показано попередній кандидат.*окрем/u);
 });
 
