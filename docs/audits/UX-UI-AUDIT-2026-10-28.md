@@ -1,5 +1,17 @@
 # UX/UI audit — 2026-10-28
 
+## 2026-11-12 — result/mode metadata visual cleanup
+
+**Status: IN PROGRESS pending exact-head browser and rendered visual verification.**
+
+- **Finding:** the IPA provenance and Ukrainian target-status messages were attached to the correct result cards, but their visual treatment was inconsistent: the IPA note retained a top divider while the target note inherited right alignment. The IPA line also concatenated mode, engine, status and coverage into one dense string, and did not explicitly name the active practical mode.
+- **Change:** present provenance as aligned, borderless metadata rows: active mode + engine + pronunciation state, followed by a separate coverage row only when research-mode coverage exists. Label the Ukrainian target note as its own status row. Both remain attached to their corresponding result cards; no floating notice or new result card is introduced.
+- **Mode clarity:** practical mode is named explicitly as “Звичайний режим”; research mode includes the selected “Строгий / М’який / Суперм’який” level. Engine identity and pronunciation state remain visible.
+- **Responsive treatment:** metadata labels and values use a compact two-column layout with wrapping, no border, background, pill shape or right alignment.
+- **Scope:** HTML structure, status rendering text, CSS and contract tests only. No engine, phonology, IPA, Ukrainian mapping, candidate selection or linguistic data changed.
+- **Acceptance:** exact-head Node/browser tests and rendered editorial review at 1440, 1024, 768, 390 and 320 CSS px; verify long coverage text wraps without overflow and both status rows stay with the correct result cards.
+
+
 ## Status and scope
 
 **Status: PARTIAL — source/contract audit completed; visual and assistive-technology verification blocked.**

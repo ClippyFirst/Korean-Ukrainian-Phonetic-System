@@ -1,4 +1,16 @@
 
+## Execution continuation — 2026-11-12 — result/mode metadata visual cleanup
+
+**Status: IN PROGRESS on branch `design/result-mode-status-typography-2026-11-12`.**
+
+- **Starting main:** `6767d6e163b9eda32ac8cac41511dcd88d12b38c`; no open PRs existed at inspection.
+- **Finding:** the IPA provenance line was a dense concatenation and had a top divider; the Ukrainian target-status line inherited right alignment. Practical mode was not named explicitly in the pronunciation provenance. Both therefore looked like disconnected technical notices rather than a coordinated explanation of which mode ran and what kind of result is shown.
+- **Implementation:** split pronunciation metadata into labelled mode/engine/status and optional coverage rows; explicitly name “Звичайний режим” or “Дослідницький режим · [рівень]”; give the Ukrainian target note its own labelled status value. Use borderless, background-free, left-aligned metadata rows with wrapping. Keep each note beside its corresponding output.
+- **Files:** `index.html`, `src/main.js`, `src/styles/main.css`, `src/styles/editorial.css`, `tests/web-ui-contract.test.mjs`, this handoff and `docs/audits/UX-UI-AUDIT-2026-10-28.md`.
+- **Scope boundary:** presentation and status copy only; no phonology, IPA, engine, candidate selection, Ukrainian mapping or linguistic data changes.
+- **Verification required:** exact-head Node suite, browser build/regression, editorial screenshots at 1440 / 1024 / 768 / 390 / 320 CSS px, and public Pages live smoke after merge.
+- **Remaining accessibility gates:** NVDA/VoiceOver and true 200% browser zoom remain unverified; do not mark broad accessibility audit complete.
+
 ## Execution continuation — 2026-11-12 — visual review of all interface modes
 
 **Status: IN PROGRESS on PR #487.** This continuation inspects the existing rendered screenshots, removes a confirmed source-level copy-density issue, and expands the existing Playwright review to cover every mode state.

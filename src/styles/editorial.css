@@ -148,7 +148,11 @@ a:hover{color:var(--signal-deep)}
 .editorial-site .ua-output-option{min-height:40px;padding:8px 13px;border:1px solid var(--palette-line-strong);border-radius:999px;background:var(--palette-surface-bright);color:var(--palette-ink);font-size:.78rem;font-weight:700}
 .editorial-site .ua-output-option.is-active{border-color:var(--palette-ochre);background:var(--palette-tint-ochre);color:var(--palette-ink)}
 .editorial-site .ua-output-option:disabled{opacity:.45}
-.editorial-site .result-provenance{background:transparent}.editorial-site .phonology-provenance{margin-top:10px;padding-top:8px;border-color:var(--palette-line);color:var(--palette-muted);font-size:.72rem;line-height:1.45}
+.editorial-site .result-provenance,.editorial-site .target-status-note{display:grid;grid-template-columns:max-content minmax(0,1fr);align-items:baseline;gap:5px 12px;width:100%;margin:12px 0 0;padding:0;border:0;border-radius:0;background:transparent;color:var(--palette-muted);font-size:.76rem;line-height:1.5;text-align:left}
+.editorial-site .status-meta-label{color:var(--palette-jade);font-size:.62rem;font-weight:780;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.editorial-site .status-meta-value,.editorial-site .status-meta-detail{min-width:0;overflow-wrap:anywhere}
+.editorial-site .status-meta-detail{color:var(--palette-muted);font-size:.72rem;line-height:1.5}
+.editorial-site .status-meta-label[hidden],.editorial-site .status-meta-value[hidden],.editorial-site .status-meta-detail[hidden]{display:none!important}
 .editorial-site .result-provenance,.editorial-site .candidate-footnote,.editorial-site .romanization-note,.editorial-site .hanja-note,.editorial-site .hanja-engine-status{margin:14px 0 0;color:var(--muted);font-size:.78rem;line-height:1.6}
 .editorial-site .result-card:first-child .result-provenance,.editorial-site .result-card:first-child .candidate-footnote{color:var(--palette-muted)}
 .editorial-site .result-card:first-child .result-body.result-unconfirmed{min-height:64px;padding:10px 0;border:0;border-bottom:1px dashed var(--palette-line);background:transparent;color:var(--palette-muted);font-size:1.1rem!important}
