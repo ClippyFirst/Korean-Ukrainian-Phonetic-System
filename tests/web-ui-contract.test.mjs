@@ -236,3 +236,18 @@ test('Jogakbo masthead and vertical editorial modules preserve the two workbench
   assert.match(css,/@media\(prefers-reduced-motion:reduce\)/);
   assert.match(css,/specimen-flow p:first-child\{background:linear-gradient/i);
 });
+
+
+test('jogakbo hero keeps all three specimen labels and values visible without overlapping grid tracks',()=>{
+  const html=read('index.html');
+  const css=read('src/styles/editorial.css');
+  assert.match(html,/01 · Написання[\s\S]*02 · Вимова · IPA[\s\S]*03 · Український запис/u);
+  assert.match(css,/Readable jogakbo specimen: preserve the textile collage without hiding its content/);
+  assert.match(css,/grid-template-columns:repeat\(12,minmax\(0,1fr\)\)/);
+  assert.match(css,/grid-column:1 \/ 5/);
+  assert.match(css,/grid-column:5 \/ 9/);
+  assert.match(css,/grid-column:9 \/ 13/);
+  assert.match(css,/grid-template-rows:repeat\(3,minmax\(116px,auto\)\)/);
+  assert.match(css,/\.specimen-flow \.specimen-label\{[\s\S]*display:block/);
+  assert.match(css,/\.specimen-flow \.specimen-ua\{[\s\S]*white-space:normal/);
+});
