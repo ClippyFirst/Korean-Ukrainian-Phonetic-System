@@ -346,3 +346,14 @@ test('browser visual review captures the complete Ukrainian vowel set as a rende
   assert.match(review,/ukrainian-vowel-specimen\.png/u);
   assert.match(review,/bodyFontFamily:getComputedStyle\(document\.body\)\.fontFamily/u);
 });
+
+
+test('rendered visual review captures the practical mode and every research slider level',()=>{
+  const review=read('scripts/capture-editorial-review.mjs');
+  assert.match(review,/index-\$\{viewport\.name\}-mode-practical\.png/u);
+  assert.match(review,/index-\$\{viewport\.name\}-research-\$\{level\}\.png/u);
+  assert.match(review,/practicalMode\.isChecked\(\)/u);
+  assert.match(review,/researchOptions\.evaluate\(element=>element\.hidden\)/u);
+  assert.match(review,/researchMode\.check\(\)/u);
+  assert.match(review,/expectedLevels=\['Строгий','М’який','Суперм’який'\]/u);
+});
