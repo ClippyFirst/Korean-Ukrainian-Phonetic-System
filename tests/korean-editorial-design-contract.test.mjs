@@ -338,3 +338,11 @@ test('rendered QA checks the actual site and input font stacks, not only output 
   assert.match(review,/bodyFont\.startsWith\('\"Noto Sans Ukrainian\"'\)/u);
   assert.match(review,/inputFont\.startsWith\('\"Noto Sans Ukrainian\"'\)/u);
 });
+
+
+test('browser visual review captures the complete Ukrainian vowel set as a rendered specimen',()=>{
+  const review=read('scripts/capture-editorial-review.mjs');
+  assert.match(review,/АаЕеЄєИиІіЇїОоУуЮюЯя/u);
+  assert.match(review,/ukrainian-vowel-specimen\.png/u);
+  assert.match(review,/fontFamily:getComputedStyle\(document\.body\)\.fontFamily/u);
+});
