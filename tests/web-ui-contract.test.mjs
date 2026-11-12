@@ -227,7 +227,9 @@ test('Jogakbo masthead and vertical editorial modules preserve the two workbench
   assert.match(css,/--acid:var\(--palette-acid\)/i);
   assert.match(css,/--cobalt:var\(--palette-indigo\)/i);
   assert.match(css,/--signal-deep:var\(--palette-clay-deep\)/i);
-  assert.match(css,/\.editorial-site \.mode-option\{[^}]*padding:14px 14px 14px 18px/s,'radio controls stay visibly inset from the selected-row accent stripe');
+  assert.match(css,/\.editorial-site \.mode-option\{[^}]*grid-template-columns:32px minmax\(0,1fr\)[^}]*border:1px solid var\(--palette-line\)[^}]*border-radius:var\(--radius-small\)/s,'mode choices render as separate inset cards rather than touching shared row rules');
+  assert.match(css,/\.editorial-site \.mode-option input\{[^}]*width:20px[^}]*justify-self:center[^}]*appearance:none/s,'radio controls sit centered in a dedicated control gutter');
+  assert.match(css,/\.editorial-site \.mode-option:has\(input:checked\)\{[^}]*border:1px solid var\(--palette-ochre\)[^}]*box-shadow:none/s,'selected mode uses a full card outline instead of an edge stripe');
   assert.match(css,/\.editorial-site \.workspace-layout\s*\{[^}]*grid-template-columns:\s*minmax\(0,1fr\)/s);
   assert.match(css,/\.editorial-site \.result-card:first-child\s*\{[^}]*grid-column:1\s*\/\s*-1/s);
   assert.match(css,/\.editorial-site \.methodology-toc ol/);

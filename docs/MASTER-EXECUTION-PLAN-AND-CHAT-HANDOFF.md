@@ -1458,3 +1458,12 @@ The visual-mode task is software-verified and ready for merge. The broader produ
 - Exact-head checks: tests [43226503874] SUCCESS; exhaustive test register [43226503778] SUCCESS; System Verify [43226503757] SUCCESS; Editorial visual review [43226503704] SUCCESS; master/research artifacts [43226504092] SUCCESS. Python 3.11/3.12/3.13, wheel install, browser tests/build and responsive visual review passed; NIKL metadata-only inventory skipped by policy.
 - No changes to mode behavior, linguistic processing, palette or type system.
 - Main-branch checks and Pages publication after merge must be verified separately; this entry does not presume deployment success.
+
+
+## 2026-11-12 — follow-up: mode radio controls redesigned as inset cards (PR pending)
+
+- **Finding:** PR #490 increased label padding, but the mode choices still used a shared fieldset surface, top-only row separators, and a selected-state inset left stripe. The native circular radio remained visually crowded against those row boundaries; padding alone did not remove the visual collision.
+- **Change in progress:** each mode choice is now a distinct rounded card with a complete outline and a dedicated 32px control gutter. The radio is centered in that gutter and uses a clearly bounded circular control with a separate selected dot. The selected card uses a full ochre outline and warm tint; the old left-edge stripe and shared top-border treatment are removed. Native radio semantics, labels, keyboard selection, and mode logic are retained.
+- **Regression guard:** web UI contract now asserts the card boundary, dedicated radio gutter, custom checked state, and absence of the previous stripe treatment.
+- **Status:** implementation branch `fix/mode-radio-card-layout-2026-11-12`; pending exact-head CI, rendered screenshots and deployed Pages verification. Do not claim publication until those gates pass.
+- No linguistic, engine, IPA, Ukrainian mapping, or mode-selection behavior changed.
