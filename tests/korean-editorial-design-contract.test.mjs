@@ -314,3 +314,18 @@ test('the browser workflow audits every Ukrainian uppercase and lowercase glyph 
   for(const codepoint of ['0x0406','0x0407','0x0404','0x0490','0x0456','0x0457','0x0454','0x0491']) assert.ok(audit.includes(codepoint),'missing Ukrainian cmap assertion '+codepoint);
   assert.ok(workflow.includes('python scripts/audit_ukrainian_font_cmap.py'));
 });
+
+
+test('the bundled regular font covers the entire Ukrainian alphabet at true regular weight',()=>{
+  const audit=read('scripts/audit_ukrainian_font_cmap.py');
+  const review=read('scripts/capture-editorial-review.mjs');
+  const alphabet='АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯабвгґдеєжзиіїйклмнопрстуфхцчшщьюя';
+  for(const char of alphabet){
+    const codepoint='0x'+char.codePointAt(0).toString(16).toUpperCase().padStart(4,'0');
+    assert.ok(audit.includes(codepoint),'font cmap audit must require '+char+' '+codepoint);
+  }
+  assert.match(audit,/usWeightClass\s*!=?\s*400/u,'font audit must verify real regular weight metadata');
+  assert.ok(review.includes(alphabet),'browser review must request the full Ukrainian alphabet from the font');
+  assert.match(review,/fontWeight[^\\n]*400/u,'browser review must verify computed regular weight');
+  assert.match(review,/fontSynthesis[^\\n]*none/u,'browser review must verify synthetic weight is disabled');
+});
