@@ -335,8 +335,8 @@ test('rendered QA checks the actual site and input font stacks, not only output 
   assert.match(review,/siteTypography:\s*\{/u);
   assert.match(review,/bodyFontFamily:getComputedStyle\(document\.body\)\.fontFamily/u);
   assert.match(review,/inputFontFamily:/u);
-  assert.match(review,/bodyFont\.startsWith\('\"Noto Sans Ukrainian\"'\)/u);
-  assert.match(review,/inputFont\.startsWith\('\"Noto Sans Ukrainian\"'\)/u);
+  assert.match(review,/bodyFont\.startsWith\('"Noto Sans Ukrainian"'\)/u);
+  assert.match(review,/inputFont\.startsWith\('"Noto Sans Ukrainian"'\)/u);
 });
 
 
