@@ -379,7 +379,7 @@ PR #485 was squash-merged to `main` as `e3fd592f373597dfbbabee7bddf12c11e88458da
 
 ## Follow-up verification — 2026-11-12 — Ukrainian glyph weight
 
-**Status: DONE_VERIFIED on PR #486; publication check pending.**
+**Status: DONE_VERIFIED, merged and published in PR #486.**
 
 A follow-up investigation addressed the user's report that individual Ukrainian vowels (especially І/Ї) still looked heavier than neighboring letters.
 
@@ -403,4 +403,14 @@ The earlier typography correction bundled a Noto Sans Regular WOFF2 and applied 
 - Python 3.11/3.12/3.13, wheel-install, teacher-corpus audit, font cmap audit and Playwright desktop/laptop/tablet/mobile/narrow-mobile review all passed.
 - The visual artifact includes a rendered all-vowel specimen; the browser's computed body and input font stacks both begin with the bundled Ukrainian face.
 
-No phonology, IPA, Ukrainian mapping, data or engine behavior changed. Merge PR #486 and verify the public Pages deployment/live smoke before marking the change published.
+No phonology, IPA, Ukrainian mapping, data or engine behavior changed.
+
+### Post-merge publication verification
+
+- **PR:** [#486](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/486), squash-merged.
+- **Main commit:** `f9c862319765d0c0265f2c31a9d3e12312397d57`.
+- **GitHub Pages deployment:** [43182394417](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43182394417) — SUCCESS.
+- **Deployment checks:** Python 3.11/3.12/3.13, browser tests, static build, both public pages and JS asset HTTP smoke, and live Playwright smoke all passed.
+- **Published URL:** https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/.
+
+The typography correction is published; no outstanding action remains for this issue.
