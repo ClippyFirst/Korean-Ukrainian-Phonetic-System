@@ -1,3 +1,36 @@
+
+## Execution continuation — 2026-11-12 — visual review of all interface modes
+
+**Status: IN PROGRESS on PR #487.** This continuation inspects the existing rendered screenshots, removes a confirmed source-level copy-density issue, and expands the existing Playwright review to cover every mode state.
+
+- **Starting main commit:** c9d10b8e9c6d4d5d22d00ee2036709002bd13ac1.
+- **Branch:** fix/visual-mode-review-matrix-2026-11-12.
+- **PR:** [#487](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/487).
+- **Implementation commits so far:** c7f7a57d5285666dd777a09419c3bec1eb02b638 (visual capture matrix), 3ca9a8eec00fc70c76306b62d470843fdde4baba (capture contract), e738b552c5a2f6261cf6d6eae4290a9ff218bbd4 (concise mode copy), 9c6ebe169cc014ff4337b649d6d95fb5f73ccb14 (copy contract), followed by audit/handoff updates.
+- **Open PRs at start:** none. No existing branch or PR changes were reused or overwritten.
+- **Visual evidence inspected:** current-main artifact from Editorial visual review run [43182787204](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43182787204). Desktop 1440, mobile 390 and narrow mobile 320 screenshots were opened; the captured state was research / Soft.
+- **Confirmed issue and fix:** the research choice duplicated technical detail already in its disclosure, and the static slider paragraph duplicated the live level-specific guidance. The choice is now concise and user-goal-led; provenance remains in the disclosure; one short methodology link replaces the redundant paragraph.
+- **Visual matrix:** Playwright now captures practical mode and Strict / Soft / Super-soft research states at all five existing widths (1440, 1024, 768, 390, 320). It asserts default practical-mode selection, hidden research controls in practical mode, and visible slider controls in research mode.
+- **Scope:** UI copy and QA only. No engine, IPA, phonology, target mapping or corpus changes.
+
+### Task ledger
+
+| Work item | Status | Evidence / next acceptance |
+|---|---|---|
+| Inspect existing desktop/mobile screenshots | DONE_VERIFIED | Artifact run 43182787204 visually inspected at 1440 / 390 / 320 |
+| Simplify redundant research-mode copy | DONE_VERIFIED (source) | index.html change plus design-contract test |
+| Capture practical mode at five widths | PARTIAL | New PR-head Playwright run must pass and artifact must be inspected |
+| Capture all three research levels at five widths | PARTIAL | New PR-head Playwright run must pass and artifact must be inspected |
+| Assert mode-switch visibility and default state | PARTIAL | New browser assertions await CI |
+| Screen-reader and manual keyboard evaluation | BLOCKED | Requires actual assistive technology/manual test |
+| Measure short / 1,000 / 5,198-character conversion latency | TODO | Needs measured desktop/mobile browser timings |
+
+### Verification snapshot
+
+- Main HEAD baseline: c9d10b8e9c6d4d5d22d00ee2036709002bd13ac1; latest mainline tests, Verify, Editorial visual review and Pages deployment all passed (runs 43182787226, 43182787221, 43182787204, 43182787198).
+- PR-head runs are pending at the time of this update. Do not mark the new visual matrix DONE_VERIFIED until exact latest-head checks pass and the screenshot artifact is opened.
+- The earlier typography and Jogakbo design work remains preserved and already merged/deployed.
+
 # Master execution plan and handoff — 2026-11-08
 
 ## Execution continuation — 2026-11-12 — Ukrainian glyph weight consistency
