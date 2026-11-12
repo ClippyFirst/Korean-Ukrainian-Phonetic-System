@@ -160,7 +160,8 @@ test('pronunciation provenance belongs to IPA and target status belongs to Ukrai
   assert.match(review,/targetStatusInsidePrimary/);
   assert.match(review,/phonologyProvenanceInsideIpa/);
   assert.doesNotMatch(html,/<\/article>\s*<p id="status-note"/u);
-  assert.match(css,/\.editorial-site \.result-provenance,\.editorial-site \.target-status-note\{display:flex;flex-wrap:wrap;[^}]*width:fit-content;max-width:100%;[^}]*border:0;border-radius:0;background:transparent/u);\n  assert.match(css,/@media\(max-width:480px\)\{[\\s\\S]*?\.editorial-site \.result-provenance,\.editorial-site \.target-status-note\{flex-direction:column;align-items:flex-start/u);
+  assert.match(css,/\.editorial-site \.result-provenance,\.editorial-site \.target-status-note\{display:flex;flex-wrap:wrap;[^}]*width:fit-content;max-width:100%;[^}]*border:0;border-radius:0;background:transparent/u);
+  assert.match(css,/@media\(max-width:480px\)\{[\s\S]*?\.editorial-site \.result-provenance,\.editorial-site \.target-status-note\{flex-direction:column;align-items:flex-start/u);
 });
 
 
