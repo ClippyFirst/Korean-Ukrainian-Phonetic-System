@@ -828,3 +828,8 @@ a:hover{color:var(--signal-deep)}
 
 .editorial-site .target-status-note{margin-top:8px;color:var(--palette-muted);font-size:.74rem;line-height:1.45}
 .editorial-site .target-status-note[hidden]{display:none}
+
+@media(max-width:480px){
+  .editorial-site .result-provenance,.editorial-site .target-status-note{grid-template-columns:minmax(0,1fr);gap:2px;margin-top:10px}
+  .editorial-site .status-meta-label{font-size:.66rem}
+}

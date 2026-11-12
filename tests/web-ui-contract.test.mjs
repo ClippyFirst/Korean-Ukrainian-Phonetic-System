@@ -157,6 +157,7 @@ test('result provenance uses compact labelled metadata and names the active proc
   assert.match(main,/targetStatusValue\.textContent=/);
   assert.match(main,/Показано попередній кандидат, не підтверджений результат/);
   assert.match(editorial,/grid-template-columns:max-content minmax\(0,1fr\)/);
+  assert.match(editorial,/@media\(max-width:480px\)\{[\s\S]*?\.editorial-site \.result-provenance,\.editorial-site \.target-status-note\{grid-template-columns:minmax\(0,1fr\)/);
   assert.match(editorial,/border:0;border-radius:0;background:transparent/);
   assert.match(css,/\.phonology-provenance\s*\{[^}]*border:\s*0/);
   assert.match(css,/\.target-status-note\{[^}]*text-align:left/);

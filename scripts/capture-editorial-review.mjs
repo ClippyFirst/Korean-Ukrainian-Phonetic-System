@@ -36,12 +36,14 @@ try {
         const practicalStatus=(await page.locator('#phonology-status-value').innerText()).trim();
         const statusPresentation=await page.locator('#phonology-status-note').evaluate(element=>{
           const style=getComputedStyle(element);
-          return {display:style.display,textAlign:style.textAlign,borderWidth:style.borderWidth,borderRadius:style.borderRadius,background:style.backgroundColor};
+          const value=element.querySelector('#phonology-status-value');
+          return {display:style.display,textAlign:style.textAlign,borderWidth:style.borderWidth,borderRadius:style.borderRadius,background:style.backgroundColor,columnCount:style.gridTemplateColumns.split(' ').length,valueFits:value?value.scrollWidth<=value.clientWidth+1:false};
         });
         if(!practicalStatus.includes('Звичайний режим')||!practicalStatus.includes('g2pK')){
           failures.push(`index.html at ${viewport.name}: practical result metadata must name the active mode and g2pK engine: ${practicalStatus}`);
         }
-        if(statusPresentation.display!=='grid'||statusPresentation.textAlign!=='left'||statusPresentation.borderWidth!=='0px'||statusPresentation.borderRadius!=='0px'||statusPresentation.background!=='rgba(0, 0, 0, 0)'){
+        const expectedStatusColumns=viewport.width<=480?1:2;
+        if(statusPresentation.display!=='grid'||statusPresentation.textAlign!=='left'||statusPresentation.borderWidth!=='0px'||statusPresentation.borderRadius!=='0px'||statusPresentation.background!=='rgba(0, 0, 0, 0)'||statusPresentation.columnCount!==expectedStatusColumns||!statusPresentation.valueFits){
           failures.push(`index.html at ${viewport.name}: pronunciation metadata must render as borderless, left-aligned editorial rows: ${JSON.stringify(statusPresentation)}`);
         }
 
