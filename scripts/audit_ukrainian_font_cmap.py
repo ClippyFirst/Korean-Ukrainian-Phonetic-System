@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify that the bundled Ukrainian webfont contains every required Ukrainian letter."""
+"""Verify full Ukrainian alphabet coverage and true regular weight of the bundled webfont."""
 
 from pathlib import Path
 import json
@@ -8,10 +8,8 @@ import sys
 from fontTools.ttLib import TTFont
 
 FONT_PATH = Path(__file__).resolve().parents[1] / "src" / "fonts" / "NotoSans-Regular.woff2"
-REQUIRED = {
-    "І": 0x0406, "Ї": 0x0407, "Є": 0x0404, "Ґ": 0x0490,
-    "і": 0x0456, "ї": 0x0457, "є": 0x0454, "ґ": 0x0491,
-}
+UKRAINIAN_ALPHABET = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯабвгґдеєжзиіїйклмнопрстуфхцчшщьюя"
+REQUIRED = {letter: ord(letter) for letter in UKRAINIAN_ALPHABET}
 
 
 def main() -> int:
@@ -22,17 +20,30 @@ def main() -> int:
     for table in font["cmap"].tables:
         if table.isUnicode():
             cmap.update(table.cmap)
-    missing = {letter: f"U+{codepoint:04X}" for letter, codepoint in REQUIRED.items() if codepoint not in cmap}
+
+    missing = {
+        letter: f"U+{codepoint:04X}"
+        for letter, codepoint in REQUIRED.items()
+        if codepoint not in cmap
+    }
+    weight_class = font["OS/2"].usWeightClass if "OS/2" in font else None
+    errors = []
     if missing:
-        print(json.dumps({"font": str(FONT_PATH), "missing": missing}, ensure_ascii=False, indent=2))
-        return 1
-    print(json.dumps({
+        errors.append("missing Ukrainian glyphs")
+    if weight_class != 400:
+        errors.append("font metadata is not regular weight 400")
+
+    report = {
         "font": FONT_PATH.as_posix(),
         "format": "WOFF2",
-        "required_ukrainian_codepoints": {letter: f"U+{codepoint:04X}" for letter, codepoint in REQUIRED.items()},
-        "coverage": "PASS",
-    }, ensure_ascii=False, indent=2))
-    return 0
+        "required_ukrainian_alphabet": UKRAINIAN_ALPHABET,
+        "missing": missing,
+        "os2_weight_class": weight_class,
+        "coverage": "FAIL" if errors else "PASS",
+        "errors": errors,
+    }
+    print(json.dumps(report, ensure_ascii=False, indent=2))
+    return 1 if errors else 0
 
 
 if __name__ == "__main__":
