@@ -33,7 +33,21 @@ try {
         await page.locator('#source-input').fill('시');
         await page.locator('#results:not([hidden])').waitFor({state:'visible'});
         await page.locator('#result-ukrainian').waitFor({state:'visible'});
-        await page.locator('#mode-research').check();
+
+        // Capture the practical mode before switching engines. The former review
+        // only captured the research state, so the default mode had no screenshot evidence.
+        const practicalMode=page.locator('#mode-practical');
+        const researchMode=page.locator('#mode-research');
+        const researchOptions=page.locator('#research-options');
+        if(!await practicalMode.isChecked() || !await researchOptions.evaluate(element=>element.hidden)){
+          failures.push(`index.html at ${viewport.name}: practical mode must be selected and research controls hidden by default`);
+        }
+        await page.screenshot({path:`${outputDir}/index-${viewport.name}-mode-practical.png`,fullPage:true});
+
+        await researchMode.check();
+        if(!await researchMode.isChecked() || await researchOptions.evaluate(element=>element.hidden)){
+          failures.push(`index.html at ${viewport.name}: research mode selection must reveal its controls`);
+        }
         const slider=page.locator('#morphology-level');
         await slider.waitFor({state:'visible'});
         const expectedLevels=['Строгий','М’який','Суперм’який'];
@@ -50,6 +64,7 @@ try {
             failures.push(`index.html at ${viewport.name}: research slider level ${level} is not synchronized with its visible and accessible description: ${JSON.stringify({label,ariaValue,guidance})}`);
           }
           levelGuidance.push({label,ariaValue,guidance});
+          await page.screenshot({path:`${outputDir}/index-${viewport.name}-research-${level}.png`,fullPage:true});
         }
         await slider.evaluate(element=>{
           element.value='1';
@@ -289,4 +304,4 @@ try {
 }
 
 assert.deepEqual(failures,[],failures.join('\n'));
-console.log('Editorial browser review passed: 10 page/viewport combinations; screenshots saved.');
+console.log('Editorial browser review passed: 10 page/viewport combinations plus practical and all three research-level screenshots at five widths.');

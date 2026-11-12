@@ -1,3 +1,36 @@
+
+## Execution continuation — 2026-11-12 — visual review of all interface modes
+
+**Status: IN PROGRESS on PR #487.** This continuation inspects the existing rendered screenshots, removes a confirmed source-level copy-density issue, and expands the existing Playwright review to cover every mode state.
+
+- **Starting main commit:** c9d10b8e9c6d4d5d22d00ee2036709002bd13ac1.
+- **Branch:** fix/visual-mode-review-matrix-2026-11-12.
+- **PR:** [#487](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/487).
+- **Implementation commits so far:** c7f7a57d5285666dd777a09419c3bec1eb02b638 (visual capture matrix), 3ca9a8eec00fc70c76306b62d470843fdde4baba (capture contract), e738b552c5a2f6261cf6d6eae4290a9ff218bbd4 (concise mode copy), 9c6ebe169cc014ff4337b649d6d95fb5f73ccb14 (copy contract), followed by audit/handoff updates.
+- **Open PRs at start:** none. No existing branch or PR changes were reused or overwritten.
+- **Visual evidence inspected:** current-main artifact from Editorial visual review run [43182787204](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43182787204). Desktop 1440, mobile 390 and narrow mobile 320 screenshots were opened; the captured state was research / Soft.
+- **Confirmed issue and fix:** the research choice duplicated technical detail already in its disclosure, and the static slider paragraph duplicated the live level-specific guidance. The choice is now concise and user-goal-led; provenance remains in the disclosure; one short methodology link replaces the redundant paragraph.
+- **Visual matrix:** Playwright now captures practical mode and Strict / Soft / Super-soft research states at all five existing widths (1440, 1024, 768, 390, 320). It asserts default practical-mode selection, hidden research controls in practical mode, and visible slider controls in research mode.
+- **Scope:** UI copy and QA only. No engine, IPA, phonology, target mapping or corpus changes.
+
+### Task ledger
+
+| Work item | Status | Evidence / next acceptance |
+|---|---|---|
+| Inspect existing desktop/mobile screenshots | DONE_VERIFIED | Artifact run 43182787204 visually inspected at 1440 / 390 / 320 |
+| Simplify redundant research-mode copy | DONE_VERIFIED (source) | index.html change plus design-contract test |
+| Capture practical mode at five widths | PARTIAL | New PR-head Playwright run must pass and artifact must be inspected |
+| Capture all three research levels at five widths | PARTIAL | New PR-head Playwright run must pass and artifact must be inspected |
+| Assert mode-switch visibility and default state | PARTIAL | New browser assertions await CI |
+| Screen-reader and manual keyboard evaluation | BLOCKED | Requires actual assistive technology/manual test |
+| Measure short / 1,000 / 5,198-character conversion latency | TODO | Needs measured desktop/mobile browser timings |
+
+### Verification snapshot
+
+- Main HEAD baseline: c9d10b8e9c6d4d5d22d00ee2036709002bd13ac1; latest mainline tests, Verify, Editorial visual review and Pages deployment all passed (runs 43182787226, 43182787221, 43182787204, 43182787198).
+- PR-head runs are pending at the time of this update. Do not mark the new visual matrix DONE_VERIFIED until exact latest-head checks pass and the screenshot artifact is opened.
+- The earlier typography and Jogakbo design work remains preserved and already merged/deployed.
+
 # Master execution plan and handoff — 2026-11-08
 
 ## Execution continuation — 2026-11-12 — Ukrainian glyph weight consistency
@@ -1313,3 +1346,36 @@ No Korean pronunciation, IPA, Ukrainian target mapping, source corpus or engine 
 - **Publication checks:** Python 3.11/3.12/3.13 tests passed; browser regression tests and static build passed; both public pages and the first JS asset passed HTTP smoke.
 - **Live Playwright smoke:** PASS — deterministic Hanja dictionary chunk/output, live result announcement, mode disclosure, clipboard-denial fallback, mobile trace labels at 390px, methodology navigation; 1,443-character Korean input yielded a 2,982-character inline candidate and 3,731-character IPA result. The application explicitly reported `g2pK` and “Контекстну вимову застосовано · Показано попередній кандидат, не підтверджений результат”; this is a functional smoke, not a linguistic accuracy claim.
 - **Final state:** visual correction is merged and published. The broader Korean pronunciation/transcription system remains a research prototype with its separate linguistic evidence, corpus and benchmark gates. No source/engine/IPA mapping was changed in this UI task.
+
+
+## Final verification update — PR #487 — 2026-11-12
+
+**Implementation branch:** fix/visual-mode-review-matrix-2026-11-12  
+**PR head:** af3559ea5004818440a8db4d08ef104ff075cd85  
+**Starting main:** c9d10b8e9c6d4d5d22d00ee2036709002bd13ac1  
+**PR:** [#487](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/487)
+
+### Completed and verified
+
+- The practical mode and all three research slider levels are now captured independently at 1440, 1024, 768, 390 and 320 CSS px.
+- Exact-head Editorial visual review [43185725842](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43185725842) passed. Its artifact contains 31 images: 20 service mode-state screenshots, 5 methodology screenshots, and the Ukrainian vowel specimen. The artifact was downloaded; representative desktop, mobile and 320px screenshots were opened and inspected.
+- The research-mode option now describes the user's goal rather than repeating technical implementation details. The existing disclosure still identifies the g2pK vs. Kozak Kim engine distinction and links to methodology. The static paragraph beneath the slider no longer repeats the live Strict / Soft / Super-soft guidance.
+- Browser assertions verify practical mode defaults with research controls hidden, research selection reveals its controls, and the slider's visible name, accessible value and dynamic explanation stay synchronized.
+- The final test run [43185725590](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43185725590) passed **1,463 / 1,463** Node tests; npm production build passed.
+- System Verify [43185725646](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43185725646) passed, including Python 3.11/3.12/3.13, wheel-install, teacher-corpus audit, browser regression and build. NIKL metadata-only inventory remained SKIPPED by policy.
+- Browser G2P integration [43185725859](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43185725859), master/research artifacts [43185725742](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43185725742), and exhaustive test-case register [43185725675](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43185725675) all passed.
+- Intermediate stale test assertions were reconciled with the retained disclosure copy; no production engine or phonology code was changed.
+
+### Final status ledger
+
+| Work item | Status |
+|---|---|
+| Practical mode screenshot coverage at five widths | DONE_VERIFIED |
+| Strict / Soft / Super-soft screenshot coverage at five widths | DONE_VERIFIED |
+| Mode switch visibility and slider accessibility-value synchronization | DONE_VERIFIED |
+| Simplified redundant research-mode copy | DONE_VERIFIED |
+| Manual screen-reader and keyboard-only evaluation | BLOCKED — requires assistive technology/manual test |
+| Human comprehension test of mode descriptions | TODO |
+| Short / 1,000 / 5,198-character latency measurement on desktop/mobile | TODO |
+
+The visual-mode task is software-verified and ready for merge. The broader product remains a research prototype; independent linguistic gold data, target review and other research acceptance gates are unchanged. The PR is still open at this checkpoint; merge and Pages publication are not yet claimed.

@@ -346,3 +346,26 @@ test('browser visual review captures the complete Ukrainian vowel set as a rende
   assert.match(review,/ukrainian-vowel-specimen\.png/u);
   assert.match(review,/bodyFontFamily:getComputedStyle\(document\.body\)\.fontFamily/u);
 });
+
+
+test('rendered visual review captures the practical mode and every research slider level',()=>{
+  const review=read('scripts/capture-editorial-review.mjs');
+  assert.match(review,/index-\$\{viewport\.name\}-mode-practical\.png/u);
+  assert.match(review,/index-\$\{viewport\.name\}-research-\$\{level\}\.png/u);
+  assert.match(review,/practicalMode\.isChecked\(\)/u);
+  assert.match(review,/researchOptions\.evaluate\(element=>element\.hidden\)/u);
+  assert.match(review,/researchMode\.check\(\)/u);
+  assert.match(review,/expectedLevels=\['Строгий','М’який','Суперм’який'\]/u);
+});
+
+
+test('research mode keeps its choice concise and shows level-specific guidance only beside the slider',()=>{
+  const html=read('index.html');
+  const research=html.match(/<label class="mode-option" for="mode-research">([\s\S]*?)<\/label>/u)?.[1]||'';
+  assert.match(research,/<strong>Режим докладного аналізу<\/strong>/u);
+  assert.match(research,/Для перевірки правил, невизначеностей і альтернативних вимов/u);
+  assert.doesNotMatch(research,/детермінованим рушієм Козака Кіма/u);
+  assert.match(html,/id="morphology-level-guidance" class="soft-morphology-hint" aria-live="polite"/u);
+  assert.match(html,/Детальні правила й межі впевненості/u);
+  assert.doesNotMatch(html,/Що м’якший режим, то ширше покриття/u);
+});

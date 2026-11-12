@@ -154,7 +154,9 @@ test('mode choice is user-oriented while technical caveats remain available on d
   assert.match(html,/<details class="mode-disclosure">/);
   assert.match(html,/Як працює звичайний режим/);
   assert.match(html,/Для частини слів результат може бути неточним/);
-  assert.match(html,/Власна розробка з детермінованим рушієм Козака Кіма/);
+  assert.match(html,/Для перевірки правил, невизначеностей і альтернативних вимов/);
+  assert.match(html,/На відміну від звичайного режиму на g2pK/);
+  assert.match(html,/власний детермінований рушій Козака Кіма/);
 });
 
 test('mobile trace values carry explicit labels and methodology has in-page navigation',()=>{
