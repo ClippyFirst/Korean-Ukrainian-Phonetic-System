@@ -83,7 +83,8 @@ try {
   const superSoftStatus = (await page.locator('#phonology-status-note').innerText()).trim();
   const superSoftCandidate = (await page.locator('#candidate-value').innerText()).trim();
   assert.ok(superSoftCandidate.length > 0, 'live Super-soft must expose a Ukrainian candidate');
-  assert.match(superSoftStatus, /Суперм’який режим/u, 'live status must identify Super-soft');
+  assert.match(superSoftStatus, /Дослідницький режим · Суперм’який рівень/u, 'live status must identify the active research mode and Super-soft level');
+  assert.match(superSoftStatus, /Козак Кім/u, 'live status must identify the research engine');
   assert.match(superSoftStatus, /низької впевненості/u, 'live status must disclose low-confidence fallback');
   assert.match(superSoftStatus, /низька впевненість: \d+% \(\d+\/\d+\)/u, 'live status must quantify the low-confidence share and its Hangul denominator');
   await page.locator('#ua-candidate-button').click();
