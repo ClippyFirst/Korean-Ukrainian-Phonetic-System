@@ -34,18 +34,36 @@ try {
         await page.locator('#results:not([hidden])').waitFor({state:'visible'});
         await page.locator('#result-ukrainian').waitFor({state:'visible'});
         const practicalStatus=(await page.locator('#phonology-status-value').innerText()).trim();
-        const statusPresentation=await page.locator('#phonology-status-note').evaluate(element=>{
-          const style=getComputedStyle(element);
-          const value=element.querySelector('#phonology-status-value');
-          return {display:style.display,textAlign:style.textAlign,borderWidth:style.borderWidth,borderRadius:style.borderRadius,background:style.backgroundColor,columnCount:style.gridTemplateColumns.split(' ').length,valueFits:value?value.scrollWidth<=value.clientWidth+1:false};
-        });
+        const inspectStatus=async (selector,valueSelector,forcedText)=>{
+          const note=page.locator(selector);
+          if(forcedText!==undefined){
+            await note.evaluate((element,text)=>{
+              element.hidden=false;
+              const value=element.querySelector('[id$="-value"]');
+              if(value)value.textContent=text;
+            },forcedText);
+          }
+          return note.evaluate(element=>{
+            const style=getComputedStyle(element);
+            const value=element.querySelector('[id$="-value"]');
+            const rect=element.getBoundingClientRect();
+            const parent=element.parentElement.getBoundingClientRect();
+            return {display:style.display,flexWrap:style.flexWrap,flexDirection:style.flexDirection,textAlign:style.textAlign,borderWidth:style.borderWidth,borderRadius:style.borderRadius,background:style.backgroundColor,width:rect.width,parentWidth:parent.width,valueFits:value?value.scrollWidth<=value.clientWidth+1:false,insideParent:rect.right<=parent.right+1};
+          });
+        };
+        const statusPresentation=await inspectStatus('#phonology-status-note');
         if(!practicalStatus.includes('Звичайний режим')||!practicalStatus.includes('g2pK')){
           failures.push(`index.html at ${viewport.name}: practical result metadata must name the active mode and g2pK engine: ${practicalStatus}`);
         }
-        const expectedStatusColumns=viewport.width<=480?1:2;
-        if(statusPresentation.display!=='grid'||statusPresentation.textAlign!=='left'||statusPresentation.borderWidth!=='0px'||statusPresentation.borderRadius!=='0px'||statusPresentation.background!=='rgba(0, 0, 0, 0)'||statusPresentation.columnCount!==expectedStatusColumns||!statusPresentation.valueFits){
-          failures.push(`index.html at ${viewport.name}: pronunciation metadata must render as borderless, left-aligned editorial rows: ${JSON.stringify(statusPresentation)}`);
+        const expectedDirection=viewport.width<=480?'column':'row';
+        if(statusPresentation.display!=='flex'||statusPresentation.flexDirection!==expectedDirection||statusPresentation.flexWrap!=='wrap'||statusPresentation.textAlign!=='left'||statusPresentation.borderWidth!=='0px'||statusPresentation.borderRadius!=='0px'||statusPresentation.background!=='rgba(0, 0, 0, 0)'||!statusPresentation.valueFits||!statusPresentation.insideParent||statusPresentation.width>=statusPresentation.parentWidth){
+          failures.push(`index.html at ${viewport.name}: pronunciation metadata must be compact, content-sized, borderless and responsive: ${JSON.stringify(statusPresentation)}`);
         }
+        const targetStatusPresentation=await inspectStatus('#target-status-note','#target-status-value','Показано попередній кандидат, не підтверджений результат');
+        if(targetStatusPresentation.display!=='flex'||targetStatusPresentation.flexDirection!==expectedDirection||targetStatusPresentation.flexWrap!=='wrap'||targetStatusPresentation.textAlign!=='left'||targetStatusPresentation.borderWidth!=='0px'||targetStatusPresentation.borderRadius!=='0px'||targetStatusPresentation.background!=='rgba(0, 0, 0, 0)'||!targetStatusPresentation.valueFits||!targetStatusPresentation.insideParent||targetStatusPresentation.width>=targetStatusPresentation.parentWidth){
+          failures.push(`index.html at ${viewport.name}: Ukrainian target status must be compact, content-sized, borderless and responsive: ${JSON.stringify(targetStatusPresentation)}`);
+        }
+        await page.locator('#target-status-note').evaluate(element=>{element.hidden=true;});
 
         // Capture the practical mode before switching engines. The former review
         // only captured the research state, so the default mode had no screenshot evidence.
