@@ -450,3 +450,32 @@ The typography correction is published; no outstanding action remains for this i
 | Measure conversion latency at short / 1,000 / 5,198 characters | TODO | Requires measured browser timing on representative desktop and mobile devices |
 
 No phonological rules, IPA behavior, target mapping, corpus, or engine code changed. The overall audit remains PARTIAL until exact-head visual CI and the independent accessibility/performance checks are addressed.
+
+
+## Final verification — 2026-11-12 — PR #487
+
+**Visual mode matrix: DONE_VERIFIED on exact PR head af3559ea5004818440a8db4d08ef104ff075cd85. Overall UX/UI audit remains PARTIAL for the separate manual accessibility and performance gates below.**
+
+- Exact-head Editorial visual review [43185725842](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43185725842): **SUCCESS**. Artifact [13928367250](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43185725842) contains 31 images: 5 practical-mode screenshots, 15 research-level screenshots (Strict / Soft / Super-soft × five widths), 5 methodology screenshots and the Ukrainian vowel specimen.
+- The final artifact was downloaded and checked. The narrow-mobile Super-soft screenshot was opened; desktop practical, Strict and Soft, mobile Super-soft, and narrow-mobile practical/Soft states were also visually inspected in the preceding identical-code artifact. The selected state is visually distinguishable; the slider and dynamic explanation remain legible within the stacked mobile layout; no horizontal overflow/clipping was observed in the inspected screenshots.
+- Browser runtime assertions passed: practical mode is the default and hides research controls; selecting research reveals the slider; all three level labels, aria-valuetext values and dynamic guidance remain synchronized.
+- Tests [43185725590](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43185725590): **SUCCESS — 1,463 passed, 0 failed**; npm production build passed.
+- System Verify [43185725646](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43185725646): **SUCCESS** — Python regression/data-integrity and browser regression/build passed. Python 3.11 / 3.12 / 3.13, clean wheel-install and teacher-corpus audit passed. NIKL metadata-only inventory was **SKIPPED** by configured policy, not counted as a pass.
+- Browser G2P integration [43185725859](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43185725859): **SUCCESS**.
+- Master/research artifacts [43185725742](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43185725742): **SUCCESS**. Exhaustive test-case register [43185725675](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43185725675): **SUCCESS**.
+- Two intermediate exact-head test runs exposed stale copy assertions in tests/kozak-kim-methodology-contract.test.mjs and tests/web-ui-contract.test.mjs. Those assertions were updated to match the retained engine disclosure and its grammatical wording; the final exact-head test run above is fully green.
+
+### Final task ledger
+
+| Work item | Status | Evidence / remaining acceptance |
+|---|---|---|
+| Inspect practical mode at five responsive widths | DONE_VERIFIED | 5 screenshots; runtime default/hidden-control assertion |
+| Inspect Strict / Soft / Super-soft at five widths | DONE_VERIFIED | 15 screenshots; synchronized visible and accessible slider labels |
+| Responsive layout, selected states, no clipping in inspected states | DONE_VERIFIED | Editorial Playwright checks + manual screenshot inspection |
+| Simplify duplicate research-mode explanation | DONE_VERIFIED | Short user-goal description; provenance retained in disclosure; one methodology link replaces repeated paragraph |
+| Screen-reader speech / verbosity | BLOCKED | Requires manual evaluation with an actual screen reader |
+| Manual keyboard-only and browser-zoom evaluation | TODO | Requires a human/manual browser pass |
+| First-time user comprehension of mode labels | TODO | Requires short usability check with representative users |
+| Conversion latency at short / 1,000 / 5,198 characters on desktop/mobile | TODO | Requires measured browser timing; no performance threshold inferred |
+
+No phonology, IPA, Ukrainian mapping, engine behavior or linguistic data changed. This verifies the visual mode workstream, not the system's independent linguistic research gates.
