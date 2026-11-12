@@ -550,3 +550,12 @@ The wider UX/UI audit remains PARTIAL for the unrelated manual screen-reader, ke
 - **Regression guard:** web UI contract now asserts the card boundary, dedicated radio gutter, custom checked state, and absence of the previous stripe treatment.
 - **Status:** implementation branch `fix/mode-radio-card-layout-2026-11-12`; pending exact-head CI, rendered screenshots and deployed Pages verification. Do not claim publication until those gates pass.
 - No linguistic, engine, IPA, Ukrainian mapping, or mode-selection behavior changed.
+
+
+## 2026-11-12 — provenance/status placement — PR pending
+
+- **Finding:** the single long status line combined two different stages: source-language pronunciation provenance (engine + contextual/lexical status) and the confidence status of the Ukrainian target candidate. It was rendered under the Ukrainian result, visually reading as an unrelated extra panel and assigning source-pronunciation metadata to the wrong result.
+- **Change:** moved the compact engine/pronunciation provenance line into the IPA card, directly below the IPA value. The Ukrainian candidate warning remains attached to the Ukrainian result and appears only when the provisional candidate view is selected. Coverage detail remains with the engine provenance. The status is a restrained inline note, not a new card or floating notice.
+- **Regression guard:** added a web UI contract test asserting that pronunciation provenance is inside the IPA panel, absent from the Ukrainian panel, and that the provisional-candidate warning remains attached to candidate output.
+- **Status:** implementation branch `fix/provenance-status-placement-2026-11-12`; pending exact-head CI, responsive rendered review, merge and Pages publication.
+- No engine, phonological rule, IPA, Ukrainian mapping, candidate selection or linguistic data changed.

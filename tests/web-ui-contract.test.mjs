@@ -135,6 +135,20 @@ test('Ukrainian status and research candidate share one visible result field',()
 });
 
 
+test('phonology provenance stays with IPA while provisional target status stays with Ukrainian candidate',()=>{
+  const html=read('index.html');
+  const main=read('src/main.js');
+  const css=read('src/styles/main.css');
+  const ipaPanel=html.slice(html.indexOf('id="panel-ipa"'),html.indexOf('id="panel-romanization"'));
+  const ukrainianPanel=html.slice(html.indexOf('id="panel-ukrainian"'),html.indexOf('id="panel-ipa"'));
+  assert.match(ipaPanel,/id="phonology-status-note" class="results-note result-provenance phonology-provenance"/);
+  assert.doesNotMatch(ukrainianPanel,/id="phonology-status-note"|id="status-note"/);
+  assert.match(main,/phonologyStatusNote\.textContent=\(useG2p\?'g2pK · ':'Козак Кім · '\)/);
+  assert.doesNotMatch(main,/statusNote\.textContent=.*Показано попередній кандидат/);
+  assert.match(main,/Попередній кандидат — не підтверджений результат/);
+  assert.match(css,/\.phonology-provenance\s*\{[^}]*border-top:\s*1px solid/);
+});
+
 test('UX follow-up announces meaningful result state and provides visible clipboard recovery',()=>{
   const html=read('index.html');
   const main=read('src/main.js');

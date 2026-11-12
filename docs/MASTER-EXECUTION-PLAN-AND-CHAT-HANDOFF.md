@@ -1467,3 +1467,14 @@ The visual-mode task is software-verified and ready for merge. The broader produ
 - **Regression guard:** web UI contract now asserts the card boundary, dedicated radio gutter, custom checked state, and absence of the previous stripe treatment.
 - **Status:** implementation branch `fix/mode-radio-card-layout-2026-11-12`; pending exact-head CI, rendered screenshots and deployed Pages verification. Do not claim publication until those gates pass.
 - No linguistic, engine, IPA, Ukrainian mapping, or mode-selection behavior changed.
+
+
+## 2026-11-12 — provenance/status placement follow-up (PR pending)
+
+- Starting main: `e28e9149171312d232d6de335177af564dc94b1e`.
+- Branch: `fix/provenance-status-placement-2026-11-12`.
+- Reconciled the long status line into two semantically correct locations: engine + contextual/lexical pronunciation provenance directly below IPA; provisional Ukrainian candidate warning directly below the Ukrainian output and visible only when that candidate is selected.
+- Styled the IPA provenance as a compact editorial footnote, not a separate card. Coverage detail remains with the pronunciation engine.
+- Added web UI contract regression coverage for panel placement and candidate-status separation.
+- Pending exact-head CI, rendered responsive review, merge and deployed Pages verification. Do not claim publication until the Pages workflow and public smoke succeed.
+- No linguistic engine, rules, IPA, target mapping or candidate-selection behavior changed.

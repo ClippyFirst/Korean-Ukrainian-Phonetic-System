@@ -395,6 +395,15 @@ button { color: inherit; }
   font-size: .78rem;
   line-height: 1.5;
 }
+.phonology-provenance {
+  margin: 12px 0 0;
+  padding-top: 9px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: .72rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
 /* UX follow-up: progressive disclosure, visible copy recovery, and labelled mobile traces. */
 .mode-disclosure { margin: 10px 0 0; border-left: 3px solid var(--line-strong); background: var(--surface-soft); }
 .mode-disclosure summary { padding: 10px 12px; cursor: pointer; color: var(--blue); font-size: .8rem; font-weight: 750; }
