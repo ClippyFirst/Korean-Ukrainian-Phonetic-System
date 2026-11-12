@@ -1435,3 +1435,14 @@ The visual-mode task is software-verified and ready for merge. The broader produ
 - Main-branch deployment and public HTTP/live smoke: verify after merge; do not infer publication from PR CI alone.
 - Wider accessibility audit remains PARTIAL: actual screen-reader evaluation, manual keyboard-only and 200% browser zoom/reflow, human comprehension testing and measured conversion latency are still outstanding.
 - This UI repair does not change the linguistic research prototype's independent evidence and accuracy status.
+
+
+## Post-merge publication record — PR #489 — 2026-11-12
+
+- **Published main implementation:** `a76ad09b29f5607e6ee6a504bacc9aabb98c7d57`.
+- **GitHub Pages deployment:** [43223340126](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43223340126) — SUCCESS, including public-page smoke and live Playwright practical-mode smoke with an adversarial Korean passage.
+- The subsequent documentation-only commits updated the audit and handoff; latest main at this record is `1b54e973fe025ba63739085bfee5e001e0d174ff`.
+- Latest-main checks [43223797803](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43223797803) (tests), [43223797839](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43223797839) (System Verify), [43223797955](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43223797955) (Editorial visual review), [43223798308](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43223798308) (master/research artifacts), and [43223797804](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43223797804) (Pages deployment) all completed successfully. Python 3.11/3.12/3.13, browser regression/build, responsive visual review, and deployed live smoke passed; NIKL metadata-only inventory remains skipped by policy.
+- **Live URL:** https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/
+- A separate connected-browser screenshot fetch was not run because the Firecrawl connected-app allowance was exhausted. This does not negate the successful GitHub Actions rendered-review and deployed Playwright checks; no claim is made that an independent manual screenshot review was performed after deployment.
+- **Outcome:** the screenshot-reported overlapping specimen layout is repaired, regression-guarded, merged and published. The broader UX/UI audit remains PARTIAL only for the independent human/assistive-technology and performance gates listed above.
