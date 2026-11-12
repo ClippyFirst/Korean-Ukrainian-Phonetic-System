@@ -198,7 +198,7 @@ function selectUaView(view){
     output.classList.toggle('result-unconfirmed',currentTargetUnconfirmed&&!candidateSelected);
   }
   if(candidateNote)candidateNote.hidden=!candidateSelected||!candidateValue?.textContent;
-  if(targetStatusNote&&currentCandidateStatus==='provisional')targetStatusNote.textContent=candidateSelected?'Показано попередній кандидат, не підтверджений результат':'Доступний попередній кандидат, не підтверджений результат';
+  if(targetStatusValue&&currentCandidateStatus==='provisional')targetStatusValue.textContent=candidateSelected?'Показано попередній кандидат, не підтверджений результат':'Доступний попередній кандидат, не підтверджений результат';
   if(ukrainianOutputLabel)ukrainianOutputLabel.textContent=candidateSelected?'Дослідницький результат':currentTargetUnconfirmed?'Достовірний варіант недоступний':'Достовірний варіант';
   if(ukrainianCopyButton){ukrainianCopyButton.hidden=currentTargetUnconfirmed&&!candidateSelected;ukrainianCopyButton.textContent=candidateSelected?'Копіювати результат':'Копіювати';}
 }

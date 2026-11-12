@@ -38,6 +38,8 @@ try {
   const shortCandidate = (await page.locator('#candidate-value').innerText()).trim();
   if (shortCandidate) {
     await page.locator('#ua-candidate-button').click();
+  if(!(await page.locator('#target-status-note .status-meta-label').isVisible()))throw new Error('Ukrainian status label must remain after selecting a provisional candidate');
+  if(!(await page.locator('#target-status-note .status-meta-value').innerText()).includes('Показано попередній кандидат'))throw new Error('selected candidate status must update in the labelled value row');
     await page.waitForFunction(() => document.querySelector('#ukrainian-output-label')?.textContent?.trim() === 'Дослідницький результат');
   }
   const conventionOutput = (await page.locator('#result-ukrainian').innerText()).trim();

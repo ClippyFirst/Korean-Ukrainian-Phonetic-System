@@ -155,6 +155,8 @@ test('result provenance uses compact labelled metadata and names the active proc
   assert.match(ukrainianPanel,/id="target-status-note" class="results-note target-status-note" hidden/);
   assert.match(ukrainianPanel,/id="target-status-value" class="status-meta-value"/);
   assert.match(main,/targetStatusValue\.textContent=/);
+  assert.match(main,/if\(targetStatusValue&&currentCandidateStatus==='provisional'\)targetStatusValue\.textContent=/);
+  assert.doesNotMatch(main,/targetStatusNote\.textContent/);
   assert.match(main,/r\.candidate_status==='super-soft-low-confidence'\?\(candidateText\?/);
   assert.match(main,/Український запис недоступний; резервні читання мають низьку впевненість/);
   assert.match(main,/Показано попередній кандидат, не підтверджений результат/);
