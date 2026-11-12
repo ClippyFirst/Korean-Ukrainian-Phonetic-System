@@ -525,3 +525,19 @@ The user-provided screenshots showed the three Hangul / IPA / Ukrainian specimen
 - No pronunciation, phonology, IPA, Ukrainian mapping, engine or linguistic dataset was changed.
 
 **Remaining independent UX gates:** actual NVDA/VoiceOver speech and verbosity; manual keyboard-only and browser-zoom/reflow review; user comprehension testing; and measured conversion latency. The broad UX/UI audit therefore remains **PARTIAL**. Main-branch deployment and public live smoke are tracked separately in the handoff.
+
+
+## 2026-11-12 — radio-control inset spacing — PR #490
+
+**Scoped visual defect: DONE_VERIFIED.**
+
+The user's follow-up screenshot review identified that circular processing-mode radio controls visually touched the selected row's left inset accent stripe. The previous horizontal padding was only 2px, placing the radio almost on top of the stripe.
+
+- Changed `.editorial-site .mode-option` horizontal padding from `2px` to `18px` on the left and `14px` on the right (vertical padding remains 14px). Radio controls now sit clearly inside the row rather than on its boundary.
+- Added a web UI contract regression assertion for the exact inset.
+- [PR #490](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/490) merged; merge commit `f710557a1b4465cc29dc9f5bb5eb5ec9b36f7e05`.
+- Implementation head `d8461f9a16448759576b4a00a73ab940a79ec76f`: [tests](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43226503874) SUCCESS; [exhaustive test register](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43226503778) SUCCESS; [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43226503757) SUCCESS; [editorial visual review](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43226503704) SUCCESS; [master/research artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43226504092) SUCCESS. Python 3.11/3.12/3.13, wheel install, browser tests, build and rendered responsive review passed. NIKL metadata inventory was skipped per policy.
+- No mode logic, semantics, palette, typography, or linguistic pipeline was changed.
+- Main-branch deployment after merge is tracked separately; do not claim publication until the main Pages workflow and public smoke finish.
+
+The wider UX/UI audit remains PARTIAL for the unrelated manual screen-reader, keyboard/zoom, user-comprehension and performance gates.
