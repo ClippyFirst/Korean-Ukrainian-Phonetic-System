@@ -204,6 +204,27 @@ try {
           })
         };
       }, {expectedWidth:viewport.width,pageName});
+      const specimenGeometry=await page.evaluate(()=>{
+        const cards=[...(document.querySelector('.specimen-flow')?.children??[])];
+        const rects=cards.map(card=>card.getBoundingClientRect());
+        const overlaps=[];
+        for(let i=0;i<rects.length;i++)for(let j=i+1;j<rects.length;j++){
+          const a=rects[i],b=rects[j];
+          if(a.left<b.right-1&&a.right>b.left+1&&a.top<b.bottom-1&&a.bottom>b.top+1)overlaps.push([i,j]);
+        }
+        const textInside=cards.every(card=>{
+          const outer=card.getBoundingClientRect();
+          return [...card.querySelectorAll('.specimen-label,.specimen-value')].every(node=>{
+            const inner=node.getBoundingClientRect();
+            return inner.width>0&&inner.height>0&&inner.left>=outer.left-1&&inner.right<=outer.right+1&&inner.top>=outer.top-1&&inner.bottom<=outer.bottom+1;
+          });
+        });
+        return {cardCount:cards.length,overlaps,textInside};
+      });
+      if(specimenGeometry.cardCount!==3||specimenGeometry.overlaps.length||!specimenGeometry.textInside){
+        failures.push(`${pageName} at ${viewport.name}: specimen cards or their text overlap/escape their patches: ${JSON.stringify(specimenGeometry)}`);
+      }
+
 
       const researchUi = pageName==='index.html'?await page.evaluate(()=>{
         const list=document.querySelector('#trace-list');
