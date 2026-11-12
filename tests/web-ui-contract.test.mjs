@@ -227,6 +227,7 @@ test('Jogakbo masthead and vertical editorial modules preserve the two workbench
   assert.match(css,/--acid:var\(--palette-acid\)/i);
   assert.match(css,/--cobalt:var\(--palette-indigo\)/i);
   assert.match(css,/--signal-deep:var\(--palette-clay-deep\)/i);
+  assert.match(css,/\.editorial-site \.mode-option\{[^}]*padding:14px 14px 14px 18px/s,'radio controls stay visibly inset from the selected-row accent stripe');
   assert.match(css,/\.editorial-site \.workspace-layout\s*\{[^}]*grid-template-columns:\s*minmax\(0,1fr\)/s);
   assert.match(css,/\.editorial-site \.result-card:first-child\s*\{[^}]*grid-column:1\s*\/\s*-1/s);
   assert.match(css,/\.editorial-site \.methodology-toc ol/);
