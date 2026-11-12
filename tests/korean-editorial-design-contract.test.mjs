@@ -313,7 +313,7 @@ test('the browser workflow audits every Ukrainian uppercase and lowercase glyph 
   const workflow=read('.github/workflows/editorial-visual-review.yml');
   const alphabet='АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯабвгґдеєжзиіїйклмнопрстуфхцчшщьюя';
   assert.ok(audit.includes(alphabet),'font cmap audit must require the complete Ukrainian alphabet');
-  assert.match(audit,/usWeightClass\s*!=\s*400/u,'font metadata must be true regular weight');
+  assert.match(audit,/weight_class\\s*!=\\s*400/u,'font metadata must be true regular weight');
   assert.ok(workflow.includes('python scripts/audit_ukrainian_font_cmap.py'));
 });
 
