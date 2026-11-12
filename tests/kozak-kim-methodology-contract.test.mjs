@@ -15,7 +15,7 @@ test('ordinary and detailed modes disclose the two actual browser engines', () =
   assert.match(index, /Звичайний режим/u);
   assert.match(index, /Режим докладного аналізу/u);
   assert.match(index, /На відміну від звичайного режиму на g2pK/u, 'the visible service copy must explicitly distinguish the two engines');
-  assert.match(index, /детермінованим рушієм Козака Кіма/u);
+  assert.match(index, /детермінований рушій Козака Кіма/u);
   assert.match(index, /href="\.\/system\.html#methodology-02c-kozak-kim"/u);
   assert.match(main, /const useG2p=!\(modeResearch&&modeResearch\.checked\)/u);
   assert.match(main, /useG2p\?webEngine\.convert\(value\):engine\.convert\(value,\{morphologyMode\}\)/u);
