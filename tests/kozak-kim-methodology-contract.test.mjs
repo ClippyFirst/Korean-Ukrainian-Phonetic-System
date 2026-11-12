@@ -19,7 +19,9 @@ test('ordinary and detailed modes disclose the two actual browser engines', () =
   assert.match(index, /href="\.\/system\.html#methodology-02c-kozak-kim"/u);
   assert.match(main, /const useG2p=!\(modeResearch&&modeResearch\.checked\)/u);
   assert.match(main, /useG2p\?webEngine\.convert\(value\):engine\.convert\(value,\{morphologyMode\}\)/u);
-  assert.match(main, /useG2p\?'g2pK · ':'Козак Кім · '/u);
+  assert.match(main, /const modeLabel=useG2p\?'Звичайний режим':/u);
+  assert.match(main, /useG2p\?'g2pK':'Козак Кім'/u);
+  assert.match(main, /Дослідницький режим · \$\{morphologyDescriptions\.find/u);
   assert.match(g2pk, /vendored JavaScript port of g2pK/u);
 });
 

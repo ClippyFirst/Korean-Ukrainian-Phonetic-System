@@ -90,7 +90,7 @@ test('editable adversarial passage has a complete IPA path without inline placeh
 
 test('provisional target candidate is announced before generic unavailable status',()=>{
   const main=read('src/main.js');
-  assert.match(main,/targetStatusNote\.textContent=r\.candidate_status==='provisional'/);
+  assert.match(main,/targetStatusValue\.textContent=r\.candidate_status==='provisional'/);
   assert.match(main,/Показано попередній кандидат, не підтверджений результат/);
 });
 

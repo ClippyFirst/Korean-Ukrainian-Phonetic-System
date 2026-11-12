@@ -154,13 +154,13 @@ test('pronunciation provenance belongs to IPA and target status belongs to Ukrai
   assert.match(css,/\.editorial-site \.mode-option\{[^}]*background:transparent/su);
   assert.match(css,/\.editorial-site \.mode-option:has\(input:checked\)\{[^}]*background:var\(--palette-tint-ochre\)/su);
   const ukrainian=html.match(/<article id="panel-ukrainian"[\s\S]*?<\/article>/u)?.[0]||'';
-  assert.match(ukrainian,/<p id="target-status-note" class="results-note target-status-note" hidden>/u);
+  assert.match(ukrainian,/<p id="target-status-note" class="results-note target-status-note" hidden><span class="status-meta-label">Стан запису<\/span><span id="target-status-value" class="status-meta-value"><\/span><\/p>/u);
   const ipa=html.match(/<article id="panel-ipa"[\s\S]*?<\/article>/u)?.[0]||'';
-  assert.match(ipa,/<p id="phonology-status-note" class="results-note result-provenance phonology-provenance">/u);
+  assert.match(ipa,/<p id="phonology-status-note" class="results-note result-provenance phonology-provenance"><span class="status-meta-label">Режим \/ вимова<\/span><span id="phonology-status-value" class="status-meta-value"><\/span>/u);
   assert.match(review,/targetStatusInsidePrimary/);
   assert.match(review,/phonologyProvenanceInsideIpa/);
   assert.doesNotMatch(html,/<\/article>\s*<p id="status-note"/u);
-  assert.match(css,/\.editorial-site \.result-provenance\{background:transparent\}/u);
+  assert.match(css,/\.editorial-site \.result-provenance,\.editorial-site \.target-status-note\{display:grid;grid-template-columns:max-content minmax\(0,1fr\)[^}]*border:0;border-radius:0;background:transparent/u);
 });
 
 
