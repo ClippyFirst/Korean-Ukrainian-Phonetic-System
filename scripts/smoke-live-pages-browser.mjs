@@ -63,19 +63,23 @@ try {
   const superSoftInput = '짧은소리의 베갯잇 ㄱ 123 🙂';
   await page.locator('#source-input').fill(superSoftInput);
   await page.waitForFunction(() => {
-    const status = document.querySelector('#status-note')?.textContent || '';
+    const status = document.querySelector('#phonology-status-note')?.textContent || '';
     const candidate = document.querySelector('#candidate-value')?.textContent?.trim() || '';
     const ipa = document.querySelector('#result-ipa')?.textContent?.trim() || '';
     return status.includes('покриття складів Hangul: 100%') &&
       status.includes('облік фрагментів: 100%') && candidate.length > 0 && ipa.length > 0;
   }, null, { timeout: 20000 });
-  const superSoftStatus = (await page.locator('#status-note').innerText()).trim();
+  const superSoftStatus = (await page.locator('#phonology-status-note').innerText()).trim();
   const superSoftCandidate = (await page.locator('#candidate-value').innerText()).trim();
   assert.ok(superSoftCandidate.length > 0, 'live Super-soft must expose a Ukrainian candidate');
   assert.match(superSoftStatus, /Суперм’який режим/u, 'live status must identify Super-soft');
   assert.match(superSoftStatus, /низької впевненості/u, 'live status must disclose low-confidence fallback');
   assert.match(superSoftStatus, /низька впевненість: \d+% \(\d+\/\d+\)/u, 'live status must quantify the low-confidence share and its Hangul denominator');
   await page.locator('#ua-candidate-button').click();
+  assert.equal(await page.locator('#target-status-note').isVisible(), true,
+    'live Super-soft target confidence must be disclosed in the Ukrainian result panel');
+  assert.match(await page.locator('#target-status-note').innerText(), /низької впевненості/u,
+    'live Super-soft target status must identify low-confidence Ukrainian readings');
   const annotatedSuperSoftCandidate = (await page.locator('#result-ukrainian').innerText()).trim();
   assert.match(annotatedSuperSoftCandidate, /\[[^\]]+\]/u,
     'live Super-soft candidate must bracket at least one low-confidence target span');
@@ -123,7 +127,8 @@ try {
       candidateNoteHidden: document.querySelector('#candidate-note')?.hidden ?? null,
       ukrainianOutputLabel: document.querySelector('#ukrainian-output-label')?.textContent?.trim() ?? null,
       ipaLength: document.querySelector('#result-ipa')?.textContent?.trim().length ?? null,
-      status: document.querySelector('#status-note')?.textContent?.trim() ?? null,
+      status: document.querySelector('#phonology-status-note')?.textContent?.trim() ?? null,
+      targetStatus: document.querySelector('#target-status-note')?.textContent?.trim() ?? null,
       bodyExcerpt: document.body.innerText.slice(0, 1200),
       scriptUrls: [...document.scripts].map(script => script.src).filter(Boolean)
     }));
@@ -135,7 +140,7 @@ try {
   const candidate = (await page.locator('#candidate-value').innerText()).trim();
   const outputLabel = (await page.locator('#ukrainian-output-label').innerText()).trim();
   const ipa = (await page.locator('#result-ipa').innerText()).trim();
-  const status = (await page.locator('#status-note').innerText()).trim();
+  const status = (await page.locator('#phonology-status-note').innerText()).trim();
 
   assert.ok(candidate.length > 100, 'long input should produce a substantial research candidate');
   assert.equal(await page.locator('#ua-candidate-button').isEnabled(), true,
@@ -159,8 +164,9 @@ try {
     'copy action must copy the selected research result');
   assert.equal(await page.locator('#candidate-panel').count(), 0,
     'obsolete standalone candidate panel must not exist');
-  assert.match(status, /Показано попередній кандидат, не підтверджений результат/u,
-    'status note must disclose that the candidate is provisional');
+  const targetStatus = (await page.locator('#target-status-note').innerText()).trim();
+  assert.match(targetStatus, /Показано попередній кандидат, не підтверджений результат/u,
+    'Ukrainian target status must disclose that the selected candidate is provisional');
 
   // Return to the unconfirmed option to ensure the accepted-result slot is neutral.
   await page.locator('#ua-unconfirmed-button').click();
