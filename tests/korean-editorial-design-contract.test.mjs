@@ -298,7 +298,7 @@ test('base surface declarations are light instead of relying on late dark-to-lig
 
 test('rendered browser review verifies Ukrainian font loading and shared surface materials',()=>{
   const review=read('scripts/capture-editorial-review.mjs');
-  assert.match(review,/document\\.fonts\\.check\\('400 16px "Noto Sans Ukrainian"','АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯабвгґдеєжзиіїйклмнопрстуфхцчшщьюя'\\)/u);
+  assert.match(review,/document\.fonts\.check\('400 16px "Noto Sans Ukrainian"','АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯабвгґдеєжзиіїйклмнопрстуфхцчшщьюя'\)/u);
   assert.match(review,/ukrainianTypography/u);
   assert.match(review,/surfaceMaterials/u);
   assert.match(review,/fontWeight/u);
