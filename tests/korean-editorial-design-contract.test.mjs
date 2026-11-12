@@ -328,3 +328,13 @@ test('Ukrainian site text uses the bundled Cyrillic font before Korean/system fa
   assert.match(css,/\.editorial-site #result-ukrainian,[\s\S]*?font-family:"Noto Sans Ukrainian"/u);
   assert.match(css,/@font-face\s*\{[^}]*font-family:"Noto Sans Ukrainian"[^}]*font-weight:400/su);
 });
+
+
+test('rendered QA checks the actual site and input font stacks, not only output CSS',()=>{
+  const review=read('scripts/capture-editorial-review.mjs');
+  assert.match(review,/siteTypography:\s*\{/u);
+  assert.match(review,/bodyFontFamily:getComputedStyle\(document\.body\)\.fontFamily/u);
+  assert.match(review,/inputFontFamily:/u);
+  assert.match(review,/bodyFont\.startsWith\('\"Noto Sans Ukrainian\"'\)/u);
+  assert.match(review,/inputFont\.startsWith\('\"Noto Sans Ukrainian\"'\)/u);
+});
