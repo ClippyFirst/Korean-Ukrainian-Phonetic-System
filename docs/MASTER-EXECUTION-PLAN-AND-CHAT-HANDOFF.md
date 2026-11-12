@@ -1405,3 +1405,33 @@ The visual-mode task is software-verified and ready for merge. The broader produ
 - **BLOCKED:** fresh live axe rerun and screenshot inspection could not be performed because the connected browser-audit service ran out of credits. Do not describe the earlier incomplete axe checks as resolved by a new axe run.
 - **Still PARTIAL:** real screen-reader output; manual keyboard-only/200% browser zoom; user comprehension of mode labels; short/1,000/5,198-character conversion latency. These require separate human/browser evidence.
 - **Next step:** when browser-audit access is available, rerun axe on the deployed main page and manually inspect the three-stage specimen at 1440px and 390px. Continue with outstanding assistive-technology and latency acceptance gates; do not change the visual palette absent a reproduced contrast failure.
+
+
+## 2026-11-12 — PR #489: readable hero specimen composition
+
+- **Starting main:** `6d5ba39e1d5c3e2c506df7e3fd1091d4426364da`.
+- **Implementation branch:** `fix/jogakbo-specimen-readable-layout-2026-11-12`.
+- **Final exact-head implementation:** `e52f50747c28a3cab9f7c094104e47d1215828af`.
+- **Merged PR:** [#489](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/489), squash merge.
+- **Merge commit:** `a76ad09b29f5607e6ee6a504bacc9aabb98c7d57`.
+
+### Changes
+- Replaced overlapping hero specimen card placement with three separate asymmetric grid patches: Hangul, IPA, Ukrainian output. Tablet and mobile receive responsive reflow; mobile stacks the three patches.
+- Ensured labels and values wrap inside their own patch. Added browser geometry assertions for three cards, no overlap, and text containment.
+- Corrected base body font preference to the bundled Noto Sans Ukrainian and aligned the global focus token with the editorial palette; refreshed both page stylesheet cache keys.
+- Preserved the jogakbo palette and texture. No linguistic/engine/IPA changes.
+
+### Exact-head evidence (implementation SHA e52f507)
+- Editorial visual review [43223002702](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43223002702): **PASS**.
+- Node tests [43223002480](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43223002480): **PASS**, including production build.
+- System Verify [43223002239](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43223002239): **PASS**.
+- Browser G2P [43223002388](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43223002388): **PASS**.
+- Master/research artifacts [43223002455](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43223002455): **PASS**.
+- Exhaustive test-case register [43223002368](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43223002368): **PASS**.
+- Python 3.11/3.12/3.13, wheel-install, teacher-corpus audit, browser regression/build all passed. NIKL metadata-only inventory skipped by policy.
+- The visual workflow exercised all five established viewport widths and passed the added no-overlap/text-containment assertions.
+
+### Remaining work / release state
+- Main-branch deployment and public HTTP/live smoke: verify after merge; do not infer publication from PR CI alone.
+- Wider accessibility audit remains PARTIAL: actual screen-reader evaluation, manual keyboard-only and 200% browser zoom/reflow, human comprehension testing and measured conversion latency are still outstanding.
+- This UI repair does not change the linguistic research prototype's independent evidence and accuracy status.
