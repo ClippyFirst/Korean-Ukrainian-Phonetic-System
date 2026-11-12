@@ -1394,3 +1394,14 @@ The visual-mode task is software-verified and ready for merge. The broader produ
 - The earlier statement that PR #487 was still open was a checkpoint before merge and is superseded by this record.
 - **Final classification:** the visual mode workstream is implemented, tested and published. The wider Korean pronunciation/transcription system remains a research prototype with independent linguistic evidence and accuracy gates. Manual screen-reader/keyboard review, human comprehension testing and conversion-latency measurements remain open; they are not silently treated as complete.
 
+
+
+## 2026-11-12 — accessibility follow-up: hero specimen named group
+
+- **Merged:** PR [#488](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/488), squash commit cde68ce0a0184e81683cb93257816b0b2c8baf84.
+- **Change:** the hero's Hangul → IPA → Ukrainian specimen now exposes role=group for its existing aria-label; added a UI contract test. No CSS, typography, engine, phonology, IPA or Ukrainian mapping changes.
+- **Exact implementation-head evidence:** Tests [43217403313](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43217403313), Verify [43217404060](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43217404060), Browser G2P [43217404155](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43217404155), rendered review [43217403277](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43217403277): **PASS**. Python 3.11/3.12/3.13, wheel install, teacher corpus and browser build/regression passed. Metadata-only NIKL inventory was skipped by configured policy.
+- **Contrast:** calculated from CSS foreground #17202c and each gradient stop; minimum 5.24:1 (clay), maximum 14.01:1 (paper). The five stops meet WCAG AA for normal text; no colour adjustment made.
+- **BLOCKED:** fresh live axe rerun and screenshot inspection could not be performed because the connected browser-audit service ran out of credits. Do not describe the earlier incomplete axe checks as resolved by a new axe run.
+- **Still PARTIAL:** real screen-reader output; manual keyboard-only/200% browser zoom; user comprehension of mode labels; short/1,000/5,198-character conversion latency. These require separate human/browser evidence.
+- **Next step:** when browser-audit access is available, rerun axe on the deployed main page and manually inspect the three-stage specimen at 1440px and 390px. Continue with outstanding assistive-technology and latency acceptance gates; do not change the visual palette absent a reproduced contrast failure.

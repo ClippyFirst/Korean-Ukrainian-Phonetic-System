@@ -492,3 +492,19 @@ No phonology, IPA, Ukrainian mapping, engine behavior or linguistic data changed
 - **Scope:** this publication contains the mode-copy simplification and visual QA coverage only; no phonology, IPA or Ukrainian mapping behavior changed.
 
 The visual mode matrix remains DONE_VERIFIED. The broader UX/UI audit remains PARTIAL for manual assistive-technology/keyboard evaluation, user comprehension testing and measured conversion latency.
+
+
+## 2026-11-12 — hero specimen accessibility semantics and contrast review
+
+**Scoped outcome: DONE_VERIFIED for the specimen's named-group semantics; PARTIAL for the wider accessibility audit.**
+
+The live automated audit had reported an incomplete aria-prohibited-attr result for .specimen-flow, which carried aria-label on a plain div. The element represents one coherent three-stage example (Hangul → IPA → Ukrainian adaptation), so the repair is a named group, not removal of the useful label.
+
+- PR [#488](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/488) merged as cde68ce0a0184e81683cb93257816b0b2c8baf84.
+- .specimen-flow now has role=group alongside its existing Ukrainian aria-label; visible layout and content are unchanged.
+- A UI contract test requires the named group so the semantic repair cannot silently regress.
+- Exact-head tests [43217403313](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43217403313), System Verify [43217404060](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43217404060), Browser G2P [43217404155](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43217404155), and rendered desktop/tablet/mobile review [43217403277](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43217403277) all passed on implementation head bb124fa0720e50c526850d7e886d7c9cc8288c28. Python 3.11/3.12/3.13, wheel-install and teacher-corpus jobs passed. Metadata-only NIKL inventory was skipped by workflow policy, not counted as passed.
+- The three decorative card gradients were checked from actual CSS token colours against foreground #17202c: jade #9db7a7 7.63:1; paper #efede6 14.01:1; blue #a9bac6 8.23:1; ochre #c9a66b 7.15:1; clay #b9857a 5.24:1. All sampled stops exceed WCAG AA's 4.5:1 normal-text threshold. No palette change was warranted by the earlier incomplete automated result.
+- A fresh live axe rerun was not completed because the connected browser-audit service exhausted its available credits. This static contrast calculation is not represented as a replacement axe run, and the prior incomplete axe result is not retroactively called passed.
+
+**Remaining gates:** actual NVDA/VoiceOver speech and verbosity; manual keyboard-only and browser-zoom/reflow review; mode-label comprehension with representative users; and measured conversion latency. Overall UX/UI audit remains **PARTIAL**.
