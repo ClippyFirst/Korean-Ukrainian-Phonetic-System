@@ -508,3 +508,20 @@ The live automated audit had reported an incomplete aria-prohibited-attr result 
 - A fresh live axe rerun was not completed because the connected browser-audit service exhausted its available credits. This static contrast calculation is not represented as a replacement axe run, and the prior incomplete axe result is not retroactively called passed.
 
 **Remaining gates:** actual NVDA/VoiceOver speech and verbosity; manual keyboard-only and browser-zoom/reflow review; mode-label comprehension with representative users; and measured conversion latency. Overall UX/UI audit remains **PARTIAL**.
+
+
+## 2026-11-12 — hero specimen layout and shared typography/focus repair — PR #489
+
+**Scoped implementation: DONE_VERIFIED. Wider UX/UI audit remains PARTIAL.**
+
+The user-provided screenshots showed the three Hangul / IPA / Ukrainian specimen patches physically colliding and hiding the third label and parts of the content. The cause was an absolutely/overlapping collage composition with content laid over the same visual area. Rebuilt only the specimen composition as three asymmetrical, separately tracked jogakbo patches with responsive desktop/tablet/mobile layouts; retained the existing palette and textile character.
+
+- PR [#489](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/489) merged by squash as `a76ad09b29f5607e6ee6a504bacc9aabb98c7d57`.
+- The three patches now occupy independent grid tracks at desktop/tablet and a vertical three-patch sequence on narrow mobile. Text wraps inside each patch instead of being positioned across overlapping areas.
+- Updated the shared base stylesheet to prefer the bundled Noto Sans Ukrainian font on all page surfaces and align the base keyboard-focus token with the editorial indigo token. Refreshed both pages' stylesheet cache keys.
+- Added a rendered geometry regression assertion: exactly three specimen patches, no pairwise patch overlap, and every specimen label/value remains inside its own patch.
+- Exact-head CI on implementation head `e52f50747c28a3cab9f7c094104e47d1215828af`: Editorial visual review [43223002702](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43223002702) **SUCCESS**; tests [43223002480](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43223002480) **SUCCESS**; System Verify [43223002239](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43223002239) **SUCCESS**; Browser G2P [43223002388](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43223002388) **SUCCESS**; master/research artifacts [43223002455](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43223002455) **SUCCESS**; exhaustive test register [43223002368](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43223002368) **SUCCESS**. Python 3.11/3.12/3.13, wheel installation, teacher-corpus audit, browser regression/build all passed. Metadata-only NIKL inventory was skipped by policy, not counted as a pass.
+- The additional geometry assertion passed in the rendered review across the existing desktop, laptop, tablet, mobile and narrow-mobile viewports. No horizontal overflow or text escaping the patch rectangles was reported by the final run.
+- No pronunciation, phonology, IPA, Ukrainian mapping, engine or linguistic dataset was changed.
+
+**Remaining independent UX gates:** actual NVDA/VoiceOver speech and verbosity; manual keyboard-only and browser-zoom/reflow review; user comprehension testing; and measured conversion latency. The broad UX/UI audit therefore remains **PARTIAL**. Main-branch deployment and public live smoke are tracked separately in the handoff.
