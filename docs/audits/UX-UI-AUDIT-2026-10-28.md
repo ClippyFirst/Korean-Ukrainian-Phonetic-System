@@ -414,3 +414,39 @@ No phonology, IPA, Ukrainian mapping, data or engine behavior changed.
 - **Published URL:** https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/.
 
 The typography correction is published; no outstanding action remains for this issue.
+
+
+## Visual mode review continuation — 2026-11-12
+
+**Status: PARTIAL — existing research-mode screenshots visually inspected; complete mode-state matrix added and awaiting exact-head CI evidence.**
+
+### Evidence inspected
+
+- Downloaded the latest main Editorial visual review artifact from run [43182787204](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43182787204), generated from commit c9d10b8e9c6d4d5d22d00ee2036709002bd13ac1.
+- Opened and visually inspected the service screenshots at 1440 px, 390 px and 320 px. They showed the research mode selected at the Soft level.
+- The input and result workspaces remain vertically ordered; the Jogakbo header remains a collage rather than a three-cell table; the result hierarchy is preserved; the visible slider and selected research option remain within the page at narrow widths.
+- No obvious clipping or horizontal layout break was visible in those three screenshots. This is a visual inspection of the captured Soft research state, not proof that all mode states or all accessibility criteria pass.
+- **Confirmed design issue:** the research-mode option repeated implementation detail already available in its disclosure, while the static paragraph beneath the slider repeated information that the live level-specific guidance already communicates. This made the mode panel unnecessarily dense, particularly at 320–390 px.
+
+### Implemented on branch fix/visual-mode-review-matrix-2026-11-12
+
+- Shortened the research-mode choice to its user goal: checking rules, uncertainty and alternative readings.
+- Kept the detailed engine distinction and provenance in the existing disclosure.
+- Replaced the redundant static slider paragraph with one short methodology link. The dynamic Strict / Soft / Super-soft guidance remains the single level-specific explanation.
+- Expanded scripts/capture-editorial-review.mjs to capture the practical mode and all three research slider levels at each of the five existing viewports (1440, 1024, 768, 390 and 320 px).
+- Added runtime assertions that practical mode is selected by default with research controls hidden, and that selecting research reveals the slider.
+- Added design-contract tests for the new visual coverage and concise research-mode copy.
+
+### Task ledger
+
+| Work item | Status | Acceptance |
+|---|---|---|
+| Inspect existing 1440 / 390 / 320 px research Soft screenshots | DONE_VERIFIED | Artifact from run 43182787204 opened and visually reviewed |
+| Simplify duplicated research-mode copy | DONE_VERIFIED (source change) | Concise mode choice; engine detail remains in disclosure; live slider guidance retained |
+| Capture practical mode at five widths | PARTIAL | New Playwright screenshot capture awaits exact-head CI |
+| Capture Strict / Soft / Super-soft at five widths | PARTIAL | New Playwright screenshot capture awaits exact-head CI |
+| Verify mode switching and hidden/visible controls | PARTIAL | Runtime assertions added; awaiting CI |
+| Screen-reader speech, manual keyboard-only review and human comprehension | BLOCKED | Requires assistive-technology/manual evaluation; source tests cannot establish this |
+| Measure conversion latency at short / 1,000 / 5,198 characters | TODO | Requires measured browser timing on representative desktop and mobile devices |
+
+No phonological rules, IPA behavior, target mapping, corpus, or engine code changed. The overall audit remains PARTIAL until exact-head visual CI and the independent accessibility/performance checks are addressed.
