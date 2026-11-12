@@ -1478,3 +1478,12 @@ The visual-mode task is software-verified and ready for merge. The broader produ
 - Added web UI contract regression coverage for panel placement and candidate-status separation.
 - Pending exact-head CI, rendered responsive review, merge and deployed Pages verification. Do not claim publication until the Pages workflow and public smoke succeed.
 - No linguistic engine, rules, IPA, target mapping or candidate-selection behavior changed.
+
+
+## PR #492 verification update — 2026-11-12
+
+- Final implementation commit at verification: `4e85bf434cf06dfb19f92ce0be218f354edf9dce`.
+- Exact-head checks all passed: tests (1,465 passed, 0 failed), Python regression/data integrity, wheel installation, Python 3.11/3.12/3.13, browser regression and production build, browser G2P, master table/research corpus artifacts, exhaustive test-case register extraction, and editorial visual review.
+- Visual review passed 10 page/viewport combinations; the service UI was checked at 1440, 1024, 768, 390 and 320 CSS px. Geometry assertions confirm pronunciation provenance is inside the IPA panel and target status is inside the Ukrainian panel.
+- NIKL metadata-only inventory was skipped per repository policy.
+- PR #492 remains open and unmerged pending explicit merge instruction. No Pages deployment/publication is claimed.
