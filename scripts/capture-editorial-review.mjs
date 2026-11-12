@@ -66,6 +66,10 @@ try {
           return element ? getComputedStyle(element).backgroundColor : null;
         };
         return {
+          siteTypography: {
+            bodyFontFamily:getComputedStyle(document.body).fontFamily,
+            inputFontFamily:document.querySelector('#source-input') ? getComputedStyle(document.querySelector('#source-input')).fontFamily : null
+          },
           ukrainianTypography: ukrainian ? {
             fontFamily:getComputedStyle(ukrainian).fontFamily,
             fontWeight:getComputedStyle(ukrainian).fontWeight,
@@ -96,6 +100,11 @@ try {
         if(visualContracts.surfaceMaterials[surface]!==expected){
           failures.push(`${pageName} at ${viewport.name}: ${surface} surface is not using the shared paper palette: ${JSON.stringify(visualContracts.surfaceMaterials)}`);
         }
+      }
+      const bodyFont=visualContracts.siteTypography.bodyFontFamily;
+      const inputFont=visualContracts.siteTypography.inputFontFamily;
+      if(!bodyFont.startsWith('"Noto Sans Ukrainian"') || (pageName==='index.html' && !inputFont.startsWith('"Noto Sans Ukrainian"'))){
+        failures.push(`${pageName} at ${viewport.name}: Ukrainian text does not prefer the bundled Cyrillic font across site surfaces: ${JSON.stringify(visualContracts.siteTypography)}`);
       }
       for(const [label,typography] of [['Ukrainian output',visualContracts.ukrainianTypography],['Ukrainian hero specimen',visualContracts.specimenTypography]]){
         if(!typography || !typography.fontFamily.includes('Noto Sans Ukrainian') || typography.fontWeight!=='400' || typography.fontSynthesis!=='none' || !visualContracts.ukrainianTypography?.fontLoaded){
