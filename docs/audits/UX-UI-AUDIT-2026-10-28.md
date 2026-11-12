@@ -2,7 +2,7 @@
 
 ## 2026-11-12 — result/mode metadata visual cleanup
 
-**Status: IN PROGRESS pending exact-head browser and rendered visual verification.**
+**Status: DONE_VERIFIED on PR head; public deployment smoke pending merge.**
 
 - **Finding:** the IPA provenance and Ukrainian target-status messages were attached to the correct result cards, but their visual treatment was inconsistent: the IPA note retained a top divider while the target note inherited right alignment. The IPA line also concatenated mode, engine, status and coverage into one dense string, and did not explicitly name the active practical mode.
 - **Change:** present provenance as aligned, borderless metadata rows: active mode + engine + pronunciation state, followed by a separate coverage row only when research-mode coverage exists. Label the Ukrainian target note as its own status row. Both remain attached to their corresponding result cards; no floating notice or new result card is introduced.
@@ -11,7 +11,7 @@
 - **Result-state accuracy:** when Super-soft has low-confidence fallback metadata but no Ukrainian candidate text, the target note now says the Ukrainian record is unavailable and fallback readings are low-confidence. It only calls the output a candidate when candidate text actually exists.
 
 - **Scope:** HTML structure, status rendering text, CSS and contract tests only. No engine, phonology, IPA, Ukrainian mapping, candidate selection or linguistic data changed.
-- **Acceptance:** exact-head Node/browser tests and rendered editorial review at 1440, 1024, 768, 390 and 320 CSS px; verify long coverage text wraps without overflow and both status rows stay with the correct result cards.
+- **Verification:** 1,465 Node tests passed; System Verify, browser G2P, master/research artifacts, exhaustive register, Python 3.11/3.12/3.13, wheel installation, teacher-corpus audit and rendered editorial review all passed on PR head `31164183216e4ba6af0923164f126751b28f7bbd`. Rendered screenshots at desktop/mobile/narrow mobile were inspected. NIKL metadata-only inventory was skipped by policy. Exact run IDs are recorded in the master handoff above. Live Pages smoke is pending merge/deployment.
 - **Rendered-review enhancement:** the Playwright editorial capture now checks the visible practical-mode label and the three research-level labels against the selected slider state, confirms the Kozak Kim engine identity, and verifies the metadata row is grid-aligned, left-aligned, borderless and background-free at all five widths.
 
 

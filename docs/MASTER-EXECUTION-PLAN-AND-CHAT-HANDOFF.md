@@ -1,7 +1,7 @@
 
 ## Execution continuation — 2026-11-12 — result/mode metadata visual cleanup
 
-**Status: IN PROGRESS on branch `design/result-mode-status-typography-2026-11-12`.**
+**Status: DONE_VERIFIED on PR head; merge pending. Branch `design/result-mode-status-typography-2026-11-12`.**
 
 - **Starting main:** `6767d6e163b9eda32ac8cac41511dcd88d12b38c`; no open PRs existed at inspection.
 - **Finding:** the IPA provenance line was a dense concatenation and had a top divider; the Ukrainian target-status line inherited right alignment. Practical mode was not named explicitly in the pronunciation provenance. Both therefore looked like disconnected technical notices rather than a coordinated explanation of which mode ran and what kind of result is shown.
@@ -9,8 +9,22 @@
 - **Files:** `index.html`, `src/main.js`, `src/styles/main.css`, `src/styles/editorial.css`, `tests/web-ui-contract.test.mjs`, `scripts/capture-editorial-review.mjs`, this handoff and `docs/audits/UX-UI-AUDIT-2026-10-28.md`.
 - **Result-state accuracy:** if Super-soft fallback confidence is low but there is no Ukrainian candidate text, the note says the record is unavailable and fallback readings are low-confidence; it only says “candidate” when candidate text exists.
 - **Scope boundary:** presentation and status copy only; no phonology, IPA, engine, candidate selection, Ukrainian mapping or linguistic data changes.
-- **Verification required:** exact-head Node suite, browser build/regression, editorial screenshots at 1440 / 1024 / 768 / 390 / 320 CSS px, and public Pages live smoke after merge.
+- **Verification:** see the final exact-head evidence below. Public Pages live smoke remains pending until the PR is merged and deployment finishes.
 - **Remaining accessibility gates:** NVDA/VoiceOver and true 200% browser zoom remain unverified; do not mark broad accessibility audit complete.
+
+### Final verification — DONE_VERIFIED on PR head `31164183216e4ba6af0923164f126751b28f7bbd`
+
+- PR [#494](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/494) is open, cleanly mergeable, and has no conflicts; merge is pending.
+- Node/web tests: **1,465 passed, 0 failed** — [run 43277728644](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43277728644).
+- System Verify: browser regression/build and Python data integrity **SUCCESS** — [run 43277726359](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43277726359).
+- Editorial rendered review **SUCCESS** at 1440, 1024, 768, 390 and 320 CSS px — [run 43277726450](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43277726450). The generated desktop, mobile and narrow-mobile screenshots were inspected; practical and all three research levels were captured. Mode labels match the selected level, the metadata is borderless and left-aligned, mobile labels stack above values at 390/320 px, and the result ownership checks pass.
+- Browser G2P integration **SUCCESS** — [run 43277726106](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43277726106).
+- Master table/research corpus artifacts **SUCCESS** — [run 43277726348](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43277726348).
+- Exhaustive test-case register extraction **SUCCESS** — [run 43277726129](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43277726129).
+- Python 3.11/3.12/3.13, wheel installation and teacher-corpus audit **SUCCESS** in the Tests workflow. NIKL metadata-only inventory was **SKIPPED by policy**, not counted as a pass.
+- The initial two CI attempts exposed only stale source-contract expectations for the old status string and its capitalization. Those contracts were corrected; the final exact-head suite is green.
+- No engine, phonology, IPA, target mapping, candidate-selection logic or linguistic data changed. The UI now states whether the ordinary g2pK mode or research/Kozak Kim mode ran, names the research level, separates pronunciation provenance from Ukrainian target status, and does not claim a candidate exists when no candidate text exists.
+- The broad UX audit remains **PARTIAL** for separate manual NVDA/VoiceOver, true 200% browser zoom, comprehension and performance gates.
 
 ## Execution continuation — 2026-11-12 — visual review of all interface modes
 
