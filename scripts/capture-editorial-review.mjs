@@ -201,6 +201,13 @@ try {
       }
       const file = `${outputDir}/${pageName.replace('.html','')}-${viewport.name}.png`;
       await page.screenshot({path:file,fullPage:true,animations:'disabled'});
+      if(pageName==='index.html'&&viewport.name==='desktop'){
+        const ukrainianResult=page.locator('#result-ukrainian');
+        const originalResult=await ukrainianResult.textContent();
+        await ukrainianResult.evaluate(element=>{element.textContent='АаЕеЄєИиІіЇїОоУуЮюЯя';});
+        await page.screenshot({path:`${outputDir}/ukrainian-vowel-specimen.png`,fullPage:true,animations:'disabled'});
+        await ukrainianResult.evaluate((element,value)=>{element.textContent=value;},originalResult);
+      }
       await page.keyboard.press('Tab');
       const focusStyle = await page.evaluate(() => {
         const active=document.activeElement;
