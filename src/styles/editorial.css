@@ -148,7 +148,7 @@ a:hover{color:var(--signal-deep)}
 .editorial-site .ua-output-option{min-height:40px;padding:8px 13px;border:1px solid var(--palette-line-strong);border-radius:999px;background:var(--palette-surface-bright);color:var(--palette-ink);font-size:.78rem;font-weight:700}
 .editorial-site .ua-output-option.is-active{border-color:var(--palette-ochre);background:var(--palette-tint-ochre);color:var(--palette-ink)}
 .editorial-site .ua-output-option:disabled{opacity:.45}
-.editorial-site .result-provenance{background:transparent}
+.editorial-site .result-provenance{background:transparent}.editorial-site .phonology-provenance{margin-top:10px;padding-top:8px;border-color:var(--palette-line);color:var(--palette-muted);font-size:.72rem;line-height:1.45}
 .editorial-site .result-provenance,.editorial-site .candidate-footnote,.editorial-site .romanization-note,.editorial-site .hanja-note,.editorial-site .hanja-engine-status{margin:14px 0 0;color:var(--muted);font-size:.78rem;line-height:1.6}
 .editorial-site .result-card:first-child .result-provenance,.editorial-site .result-card:first-child .candidate-footnote{color:var(--palette-muted)}
 .editorial-site .result-card:first-child .result-body.result-unconfirmed{min-height:64px;padding:10px 0;border:0;border-bottom:1px dashed var(--palette-line);background:transparent;color:var(--palette-muted);font-size:1.1rem!important}
@@ -821,3 +821,6 @@ a:hover{color:var(--signal-deep)}
   .editorial-site .specimen-flow .specimen-ipa{font-size:1.05rem}
   .editorial-site .specimen-flow .specimen-ua{font-size:1.55rem}
 }
+
+.editorial-site .target-status-note{margin-top:8px;color:var(--palette-muted);font-size:.74rem;line-height:1.45}
+.editorial-site .target-status-note[hidden]{display:none}

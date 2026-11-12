@@ -1467,3 +1467,23 @@ The visual-mode task is software-verified and ready for merge. The broader produ
 - **Regression guard:** web UI contract now asserts the card boundary, dedicated radio gutter, custom checked state, and absence of the previous stripe treatment.
 - **Status:** implementation branch `fix/mode-radio-card-layout-2026-11-12`; pending exact-head CI, rendered screenshots and deployed Pages verification. Do not claim publication until those gates pass.
 - No linguistic, engine, IPA, Ukrainian mapping, or mode-selection behavior changed.
+
+
+## 2026-11-12 — provenance/status placement follow-up (PR pending)
+
+- Starting main: `e28e9149171312d232d6de335177af564dc94b1e`.
+- Branch: `fix/provenance-status-placement-2026-11-12`.
+- Reconciled the long status line into two semantically correct locations: engine + contextual/lexical pronunciation provenance directly below IPA; Ukrainian target-status note directly below the Ukrainian output, with wording that distinguishes an available candidate from a selected candidate.
+- Styled the IPA provenance as a compact editorial footnote, not a separate card. Coverage detail remains with the pronunciation engine.
+- Added web UI contract regression coverage for panel placement and candidate-status separation.
+- Pending exact-head CI, rendered responsive review, merge and deployed Pages verification. Do not claim publication until the Pages workflow and public smoke succeed.
+- No linguistic engine, rules, IPA, target mapping or candidate-selection behavior changed.
+
+
+## PR #492 verification update — 2026-11-12
+
+- Final implementation commit at verification: `4e85bf434cf06dfb19f92ce0be218f354edf9dce`.
+- Exact-head checks all passed: tests (1,465 passed, 0 failed), Python regression/data integrity, wheel installation, Python 3.11/3.12/3.13, browser regression and production build, browser G2P, master table/research corpus artifacts, exhaustive test-case register extraction, and editorial visual review.
+- Visual review passed 10 page/viewport combinations; the service UI was checked at 1440, 1024, 768, 390 and 320 CSS px. Geometry assertions confirm pronunciation provenance is inside the IPA panel and target status is inside the Ukrainian panel.
+- NIKL metadata-only inventory was skipped per repository policy.
+- PR #492 remains open and unmerged pending explicit merge instruction. No Pages deployment/publication is claimed.
