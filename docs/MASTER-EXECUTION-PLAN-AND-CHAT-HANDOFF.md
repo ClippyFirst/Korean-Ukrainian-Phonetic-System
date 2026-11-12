@@ -1446,3 +1446,15 @@ The visual-mode task is software-verified and ready for merge. The broader produ
 - **Live URL:** https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/
 - A separate connected-browser screenshot fetch was not run because the Firecrawl connected-app allowance was exhausted. This does not negate the successful GitHub Actions rendered-review and deployed Playwright checks; no claim is made that an independent manual screenshot review was performed after deployment.
 - **Outcome:** the screenshot-reported overlapping specimen layout is repaired, regression-guarded, merged and published. The broader UX/UI audit remains PARTIAL only for the independent human/assistive-technology and performance gates listed above.
+
+
+## 2026-11-12 — PR #490: circular radio controls no longer touch row edge
+
+- Starting main: `fd34b2b8e542c85105f171b8552371e045f54178`.
+- Branch: `fix/radio-control-inset-spacing-2026-11-12`.
+- Implementation head: `d8461f9a16448759576b4a00a73ab940a79ec76f`.
+- PR [#490](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/490) merged as `f710557a1b4465cc29dc9f5bb5eb5ec9b36f7e05`.
+- Changed selected and unselected processing-mode row padding from 2px horizontal to 18px left / 14px right. The radio buttons are now visually inset from the selected-row accent stripe. Added CSS contract regression assertion.
+- Exact-head checks: tests [43226503874] SUCCESS; exhaustive test register [43226503778] SUCCESS; System Verify [43226503757] SUCCESS; Editorial visual review [43226503704] SUCCESS; master/research artifacts [43226504092] SUCCESS. Python 3.11/3.12/3.13, wheel install, browser tests/build and responsive visual review passed; NIKL metadata-only inventory skipped by policy.
+- No changes to mode behavior, linguistic processing, palette or type system.
+- Main-branch checks and Pages publication after merge must be verified separately; this entry does not presume deployment success.
