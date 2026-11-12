@@ -1,5 +1,22 @@
 # Master execution plan and handoff — 2026-11-08
 
+## Execution continuation — 2026-11-12 — Ukrainian glyph weight consistency
+
+**Status: DONE_VERIFIED on the implementation branch; merge and public deployment verification pending.**
+
+- **Starting default-branch commit:** `4690d7d05baccb645df4d1f66caee4c38b55f80c`.
+- **Implementation branch:** `fix/consistent-ukrainian-glyph-weight-2026-11-12`.
+- **Pull request:** [#486](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/486).
+- **Verified implementation head:** `422806d0ef4801ef22237f6227f1c3361d747b25`.
+- **Root cause:** the bundled Noto Sans Ukrainian face covered the alphabet and was genuinely weight 400, but it was applied only to the answer/specimen. The page-wide stack preferred Noto Sans KR before the Ukrainian face, and a later duplicate textarea rule overrode the earlier corrected stack. Ukrainian glyphs outside the result could therefore be rendered by a platform/Korean-first fallback.
+- **Implementation:** put the bundled Ukrainian face first in the page-wide and input font stacks, retain Noto Sans KR immediately after it for Hangul, fix the later textarea override, and bump the editorial stylesheet query version on both pages.
+- **Font evidence:** `audit_ukrainian_font_cmap.py` now checks every uppercase and lowercase Ukrainian alphabet glyph and the font's OS/2 weight class (400). The browser review checks the computed body/input stacks, the full alphabet, regular output weight, disabled synthesis, and captures a rendered Ukrainian-vowel specimen.
+- **Exact-head CI at `422806d0ef4801ef22237f6227f1c3361d747b25`:** tests [43181728153](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43181728153), Browser G2P [43181728264](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43181728264), editorial visual review [43181728148](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43181728148), Verify [43181728180](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43181728180), master table/corpus artifacts [43181728386](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43181728386), exhaustive test register [43181728399](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43181728399), and push Verify [43181718918](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43181718918) — all SUCCESS.
+- **Test results:** `npm test` 1,461/1,461 passed; `npm run build` passed; Python 3.11/3.12/3.13 passed; wheel-install and teacher-corpus audit passed; browser visual review passed for desktop, laptop, tablet, mobile and narrow mobile on both pages, including the all-vowel specimen.
+- **Scope:** no Korean phonology, IPA, Ukrainian mapping, corpus or engine behavior changed.
+- **Next:** merge PR #486, then verify GitHub Pages deployment and public live smoke before claiming publication.
+
+
 ## Execution continuation — 2026-11-11 — Jogakbo header / vertical modules
 
 **Workstream status: DONE_VERIFIED, merged and publicly deployed.**
