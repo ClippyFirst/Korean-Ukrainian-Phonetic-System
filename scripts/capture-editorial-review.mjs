@@ -70,7 +70,7 @@ try {
             fontFamily:getComputedStyle(ukrainian).fontFamily,
             fontWeight:getComputedStyle(ukrainian).fontWeight,
             fontSynthesis:getComputedStyle(ukrainian).fontSynthesis,
-            fontLoaded:document.fonts.check('400 16px "Noto Sans Ukrainian"','ІЇЄҐіїєґ')
+            fontLoaded:document.fonts.check('400 16px "Noto Sans Ukrainian"','АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯабвгґдеєжзиіїйклмнопрстуфхцчшщьюя')
           } : null,
           specimenTypography: specimen ? {
             fontFamily:getComputedStyle(specimen).fontFamily,
