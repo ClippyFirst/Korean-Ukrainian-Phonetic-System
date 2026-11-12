@@ -160,8 +160,8 @@ test('result provenance uses compact labelled metadata and names the active proc
   assert.match(main,/r\.candidate_status==='super-soft-low-confidence'\?\(candidateText\?/);
   assert.match(main,/Український запис недоступний; резервні читання мають низьку впевненість/);
   assert.match(main,/Показано попередній кандидат, не підтверджений результат/);
-  assert.match(editorial,/grid-template-columns:max-content minmax\(0,1fr\)/);
-  assert.match(editorial,/@media\(max-width:480px\)\{[\s\S]*?\.editorial-site \.result-provenance,\.editorial-site \.target-status-note\{grid-template-columns:minmax\(0,1fr\)/);
+  assert.match(editorial,/\.editorial-site \.result-provenance,\.editorial-site \.target-status-note\{display:flex;flex-wrap:wrap;[\s\S]*?width:fit-content;max-width:100%/);
+  assert.match(editorial,/@media\(max-width:480px\)\{[\s\S]*?\.editorial-site \.result-provenance,\.editorial-site \.target-status-note\{flex-direction:column;align-items:flex-start/);
   assert.match(editorial,/border:0;border-radius:0;background:transparent/);
   assert.match(css,/\.phonology-provenance\s*\{[^}]*border:\s*0/);
   assert.match(css,/\.target-status-note\{[^}]*text-align:left/);
