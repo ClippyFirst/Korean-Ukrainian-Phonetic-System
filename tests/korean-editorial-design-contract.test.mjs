@@ -298,7 +298,7 @@ test('base surface declarations are light instead of relying on late dark-to-lig
 
 test('rendered browser review verifies Ukrainian font loading and shared surface materials',()=>{
   const review=read('scripts/capture-editorial-review.mjs');
-  assert.match(review,/document\.fonts\.check\('400 16px "Noto Sans Ukrainian"','ІЇЄҐіїєґ'\)/u);
+  assert.match(review,/document\.fonts\.check\('400 16px "Noto Sans Ukrainian"','АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯабвгґдеєжзиіїйклмнопрстуфхцчшщьюя'\)/u);
   assert.match(review,/ukrainianTypography/u);
   assert.match(review,/surfaceMaterials/u);
   assert.match(review,/fontWeight/u);
@@ -311,6 +311,38 @@ test('rendered browser review verifies Ukrainian font loading and shared surface
 test('the browser workflow audits every Ukrainian uppercase and lowercase glyph in the bundled font',()=>{
   const audit=read('scripts/audit_ukrainian_font_cmap.py');
   const workflow=read('.github/workflows/editorial-visual-review.yml');
-  for(const codepoint of ['0x0406','0x0407','0x0404','0x0490','0x0456','0x0457','0x0454','0x0491']) assert.ok(audit.includes(codepoint),'missing Ukrainian cmap assertion '+codepoint);
+  const alphabet='АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯабвгґдеєжзиіїйклмнопрстуфхцчшщьюя';
+  assert.ok(audit.includes(alphabet),'font cmap audit must require the complete Ukrainian alphabet');
+  assert.match(audit,/weight_class\s*!=\s*400/u,'font metadata must be true regular weight');
   assert.ok(workflow.includes('python scripts/audit_ukrainian_font_cmap.py'));
+});
+
+
+
+
+
+test('Ukrainian site text uses the bundled Cyrillic font before Korean/system fallbacks',()=>{
+  const css=read('src/styles/editorial.css');
+  assert.match(css,/body\s*\{[^}]*font-family:"Noto Sans Ukrainian","Noto Sans KR"/su);
+  assert.match(css,/\.editorial-site \.input-shell textarea,\.editorial-site #stress-input\s*\{[^}]*font-family:"Noto Sans Ukrainian","Noto Sans KR"/su);
+  assert.match(css,/\.editorial-site #result-ukrainian,[\s\S]*?font-family:"Noto Sans Ukrainian"/u);
+  assert.match(css,/@font-face\s*\{[^}]*font-family:"Noto Sans Ukrainian"[^}]*font-weight:400/su);
+});
+
+
+test('rendered QA checks the actual site and input font stacks, not only output CSS',()=>{
+  const review=read('scripts/capture-editorial-review.mjs');
+  assert.match(review,/siteTypography:\s*\{/u);
+  assert.match(review,/bodyFontFamily:getComputedStyle\(document\.body\)\.fontFamily/u);
+  assert.match(review,/inputFontFamily:/u);
+  assert.match(review,/bodyFont\.startsWith\('"Noto Sans Ukrainian"'\)/u);
+  assert.match(review,/inputFont\.startsWith\('"Noto Sans Ukrainian"'\)/u);
+});
+
+
+test('browser visual review captures the complete Ukrainian vowel set as a rendered specimen',()=>{
+  const review=read('scripts/capture-editorial-review.mjs');
+  assert.match(review,/АаЕеЄєИиІіЇїОоУуЮюЯя/u);
+  assert.match(review,/ukrainian-vowel-specimen\.png/u);
+  assert.match(review,/bodyFontFamily:getComputedStyle\(document\.body\)\.fontFamily/u);
 });

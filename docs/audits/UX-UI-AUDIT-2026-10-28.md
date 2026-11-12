@@ -375,3 +375,32 @@ A fresh review of the actual main-branch CSS and browser output showed that the 
 ### Post-merge publication verification
 
 PR #485 was squash-merged to `main` as `e3fd592f373597dfbbabee7bddf12c11e88458da`. GitHub Pages deployment [43106616657](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43106616657) passed Python 3.11/3.12/3.13 tests, browser tests, static build, public HTTP smoke for both pages and JS asset, and live Playwright UX smoke. The published site is https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/. Live smoke included a 1,443-character Korean passage; the app correctly labelled the generated candidate as provisional/unconfirmed. The UI correction is published; overall linguistic release readiness remains outside this visual audit.
+
+
+## Follow-up verification — 2026-11-12 — Ukrainian glyph weight
+
+**Status: DONE_VERIFIED on PR #486; publication check pending.**
+
+A follow-up investigation addressed the user's report that individual Ukrainian vowels (especially І/Ї) still looked heavier than neighboring letters.
+
+### Confirmed cause
+
+The earlier typography correction bundled a Noto Sans Regular WOFF2 and applied it to the Ukrainian result and hero specimen only. The body stack still prioritized Noto Sans KR, and a later duplicate textarea rule restored the Korean-first stack after an earlier override. This left other Ukrainian interface text dependent on browser/platform fallback even though the result selector itself declared weight 400.
+
+### Corrective implementation
+
+- Prioritize the bundled `Noto Sans Ukrainian` face for body and input text; retain `Noto Sans KR` as the next fallback for Hangul.
+- Correct the later textarea rule so it cannot undo the font-stack change.
+- Preserve explicit regular weight 400 and `font-synthesis:none` for the Ukrainian result/specimen.
+- Bump the editorial stylesheet query version on both public pages.
+- Expand the font cmap audit from eight special letters to the complete uppercase/lowercase Ukrainian alphabet and assert OS/2 weight class 400.
+- Extend the browser review to inspect computed body/input font stacks and capture a dedicated specimen containing all Ukrainian vowels.
+
+### Verification evidence
+
+- Exact-head CI at `422806d0ef4801ef22237f6227f1c3361d747b25`: tests [43181728153](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43181728153), Browser G2P [43181728264](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43181728264), editorial visual review [43181728148](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43181728148), Verify [43181728180](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43181728180), master artifacts [43181728386](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43181728386), exhaustive register [43181728399](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43181728399), and push Verify [43181718918](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43181718918) all passed.
+- `npm test`: 1,461 passed, 0 failed. `npm run build`: passed.
+- Python 3.11/3.12/3.13, wheel-install, teacher-corpus audit, font cmap audit and Playwright desktop/laptop/tablet/mobile/narrow-mobile review all passed.
+- The visual artifact includes a rendered all-vowel specimen; the browser's computed body and input font stacks both begin with the bundled Ukrainian face.
+
+No phonology, IPA, Ukrainian mapping, data or engine behavior changed. Merge PR #486 and verify the public Pages deployment/live smoke before marking the change published.

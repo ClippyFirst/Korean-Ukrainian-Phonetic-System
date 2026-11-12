@@ -66,11 +66,15 @@ try {
           return element ? getComputedStyle(element).backgroundColor : null;
         };
         return {
+          siteTypography: {
+            bodyFontFamily:getComputedStyle(document.body).fontFamily,
+            inputFontFamily:document.querySelector('#source-input') ? getComputedStyle(document.querySelector('#source-input')).fontFamily : null
+          },
           ukrainianTypography: ukrainian ? {
             fontFamily:getComputedStyle(ukrainian).fontFamily,
             fontWeight:getComputedStyle(ukrainian).fontWeight,
             fontSynthesis:getComputedStyle(ukrainian).fontSynthesis,
-            fontLoaded:document.fonts.check('400 16px "Noto Sans Ukrainian"','ІЇЄҐіїєґ')
+            fontLoaded:document.fonts.check('400 16px "Noto Sans Ukrainian"','АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯабвгґдеєжзиіїйклмнопрстуфхцчшщьюя')
           } : null,
           specimenTypography: specimen ? {
             fontFamily:getComputedStyle(specimen).fontFamily,
@@ -96,6 +100,11 @@ try {
         if(visualContracts.surfaceMaterials[surface]!==expected){
           failures.push(`${pageName} at ${viewport.name}: ${surface} surface is not using the shared paper palette: ${JSON.stringify(visualContracts.surfaceMaterials)}`);
         }
+      }
+      const bodyFont=visualContracts.siteTypography.bodyFontFamily;
+      const inputFont=visualContracts.siteTypography.inputFontFamily;
+      if(!bodyFont.startsWith('"Noto Sans Ukrainian"') || (pageName==='index.html' && !inputFont.startsWith('"Noto Sans Ukrainian"'))){
+        failures.push(`${pageName} at ${viewport.name}: Ukrainian text does not prefer the bundled Cyrillic font across site surfaces: ${JSON.stringify(visualContracts.siteTypography)}`);
       }
       for(const [label,typography] of [['Ukrainian output',visualContracts.ukrainianTypography],['Ukrainian hero specimen',visualContracts.specimenTypography]]){
         if(!typography || !typography.fontFamily.includes('Noto Sans Ukrainian') || typography.fontWeight!=='400' || typography.fontSynthesis!=='none' || !visualContracts.ukrainianTypography?.fontLoaded){
@@ -192,6 +201,13 @@ try {
       }
       const file = `${outputDir}/${pageName.replace('.html','')}-${viewport.name}.png`;
       await page.screenshot({path:file,fullPage:true,animations:'disabled'});
+      if(pageName==='index.html'&&viewport.name==='desktop'){
+        const ukrainianResult=page.locator('#result-ukrainian');
+        const originalResult=await ukrainianResult.textContent();
+        await ukrainianResult.evaluate(element=>{element.textContent='АаЕеЄєИиІіЇїОоУуЮюЯя';});
+        await page.screenshot({path:`${outputDir}/ukrainian-vowel-specimen.png`,fullPage:true,animations:'disabled'});
+        await ukrainianResult.evaluate((element,value)=>{element.textContent=value;},originalResult);
+      }
       await page.keyboard.press('Tab');
       const focusStyle = await page.evaluate(() => {
         const active=document.activeElement;

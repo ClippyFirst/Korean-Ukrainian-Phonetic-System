@@ -46,7 +46,7 @@
   --radius:10px; --radius-small:6px; --ease-out:cubic-bezier(.23,1,.32,1);
 }
 html{color-scheme:light;background:var(--paper);scroll-behavior:auto;scrollbar-color:var(--line-strong) var(--paper);scrollbar-width:thin}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans KR","Noto Sans","Apple SD Gothic Neo","Malgun Gothic","Segoe UI",sans-serif;line-height:1.62;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans Ukrainian","Noto Sans KR","Noto Sans","Apple SD Gothic Neo","Malgun Gothic","Segoe UI",sans-serif;line-height:1.62;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
 a{color:var(--cobalt);text-decoration-thickness:1px;text-underline-offset:.2em}
 a:hover{color:var(--signal-deep)}
 ::selection{background:var(--acid);color:var(--ink)}
@@ -91,7 +91,7 @@ a:hover{color:var(--signal-deep)}
 .editorial-site .output-workspace{min-width:0;width:100%;padding:clamp(18px,2.4vw,30px);border:1px solid var(--palette-line);border-radius:var(--radius);background:var(--palette-surface);color:var(--palette-ink)}
 .editorial-site .input-shell{overflow:hidden;border:1px solid var(--palette-line);border-radius:var(--radius-small);background:var(--palette-surface-bright);color:var(--palette-ink)}
 .editorial-site .input-shell:focus-within{border-color:var(--palette-indigo);outline:2px solid var(--palette-indigo);outline-offset:2px;box-shadow:none}
-.editorial-site .input-shell textarea,.editorial-site #stress-input{display:block;width:100%;min-height:248px;padding:22px 24px;border:0;outline:0;background:transparent;color:var(--palette-ink);caret-color:var(--palette-signal);font-family:"Noto Sans KR","Noto Sans","Apple SD Gothic Neo",sans-serif;font-size:clamp(1.15rem,1.7vw,1.48rem);font-weight:400;line-height:1.8;resize:vertical}
+.editorial-site .input-shell textarea,.editorial-site #stress-input{display:block;width:100%;min-height:248px;padding:22px 24px;border:0;outline:0;background:transparent;color:var(--palette-ink);caret-color:var(--palette-signal);font-family:"Noto Sans Ukrainian","Noto Sans KR","Noto Sans","Apple SD Gothic Neo",sans-serif;font-size:clamp(1.15rem,1.7vw,1.48rem);font-weight:400;line-height:1.8;resize:vertical}
 .editorial-site .input-shell textarea::placeholder{color:var(--palette-muted-inverse);opacity:1}
 .editorial-site .input-hint{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 16px;border-top:1px solid var(--palette-panel-line);background:var(--palette-panel);color:var(--muted-inverse);font-size:.78rem}
 .editorial-site .mode-note{color:var(--palette-signal)}
@@ -667,7 +667,7 @@ a:hover{color:var(--signal-deep)}
 .editorial-site #stress-input{
   color:var(--palette-ink);
   caret-color:var(--palette-signal);
-  font-family:"Noto Sans KR","Noto Sans","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  font-family:"Noto Sans Ukrainian","Noto Sans KR","Noto Sans","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
   font-weight:400;
 }
 .editorial-site .input-shell textarea{color:var(--palette-ink)}
