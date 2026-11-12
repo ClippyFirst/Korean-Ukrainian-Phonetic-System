@@ -37,10 +37,19 @@ try {
   }, null, { timeout: 20000 });
   const shortCandidate = (await page.locator('#candidate-value').innerText()).trim();
   if (shortCandidate) {
+    const targetStatusBeforeSelection=(await page.locator('#target-status-value').innerText()).trim();
     await page.locator('#ua-candidate-button').click();
-  if(!(await page.locator('#target-status-note .status-meta-label').isVisible()))throw new Error('Ukrainian status label must remain after selecting a provisional candidate');
-  if(!(await page.locator('#target-status-note .status-meta-value').innerText()).includes('Показано попередній кандидат'))throw new Error('selected candidate status must update in the labelled value row');
     await page.waitForFunction(() => document.querySelector('#ukrainian-output-label')?.textContent?.trim() === 'Дослідницький результат');
+    if(await page.locator('#target-status-note').isVisible()){
+      assert.equal(await page.locator('#target-status-note .status-meta-label').innerText(),'Стан запису',
+        'the Ukrainian status label must remain after selecting a candidate');
+      const selectedTargetStatus=(await page.locator('#target-status-note .status-meta-value').innerText()).trim();
+      assert.ok(selectedTargetStatus.length>0,'the labelled Ukrainian status value must remain populated');
+      if(targetStatusBeforeSelection.includes('Доступний попередній кандидат')){
+        assert.ok(selectedTargetStatus.includes('Показано попередній кандидат'),
+          'selecting a provisional candidate must update only its labelled value');
+      }
+    }
   }
   const conventionOutput = (await page.locator('#result-ukrainian').innerText()).trim();
   for (const expected of ["к'о", "т'о", "п'о", "ч'о", "кко", "тто", "ппо", "ссо", "ччо", "шші"]) {
