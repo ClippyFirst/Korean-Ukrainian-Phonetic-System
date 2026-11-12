@@ -1,4 +1,32 @@
 
+## Execution continuation — 2026-11-12 — result/mode metadata visual cleanup
+
+**Status: DONE_VERIFIED on PR head; merge pending. Branch `design/result-mode-status-typography-2026-11-12`.**
+
+- **Starting main:** `6767d6e163b9eda32ac8cac41511dcd88d12b38c`; no open PRs existed at inspection.
+- **Finding:** the IPA provenance line was a dense concatenation and had a top divider; the Ukrainian target-status line inherited right alignment. Practical mode was not named explicitly in the pronunciation provenance. Both therefore looked like disconnected technical notices rather than a coordinated explanation of which mode ran and what kind of result is shown.
+- **Implementation:** split pronunciation metadata into labelled mode/engine/status and optional coverage rows; explicitly name “Звичайний режим” or “Дослідницький режим · [рівень]”; give the Ukrainian target note its own labelled status value. Use borderless, background-free, left-aligned metadata rows with wrapping. Keep each note beside its corresponding output.
+- **Files:** `index.html`, `src/main.js`, `src/styles/main.css`, `src/styles/editorial.css`, `tests/web-ui-contract.test.mjs`, `scripts/capture-editorial-review.mjs`, this handoff and `docs/audits/UX-UI-AUDIT-2026-10-28.md`.
+- **Result-state accuracy:** if Super-soft fallback confidence is low but there is no Ukrainian candidate text, the note says the record is unavailable and fallback readings are low-confidence; it only says “candidate” when candidate text exists.
+- **Scope boundary:** presentation and status copy only; no phonology, IPA, engine, candidate selection, Ukrainian mapping or linguistic data changes.
+- **Verification:** see the final exact-head evidence below. Public Pages live smoke remains pending until the PR is merged and deployment finishes.
+- **Remaining accessibility gates:** NVDA/VoiceOver and true 200% browser zoom remain unverified; do not mark broad accessibility audit complete.
+
+### Final verification — DONE_VERIFIED on PR head `2d07161d7b2fa29012a75d8b46aa408d8f1e48b2`
+
+- PR [#494](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/494) is open, cleanly mergeable, and has no conflicts; merge is pending.
+- Node/web tests: **1,465 passed, 0 failed** — [run 43278716006](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43278716006).
+- System Verify: browser regression/build and Python data integrity **SUCCESS** — [run 43278716054](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43278716054).
+- Editorial rendered review **SUCCESS** at 1440, 1024, 768, 390 and 320 CSS px — [run 43278716012](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43278716012). The generated desktop, mobile and narrow-mobile screenshots were inspected; practical and all three research levels were captured. Mode labels match the selected level, the metadata is borderless and left-aligned, mobile labels stack above values at 390/320 px, and the result ownership checks pass.
+- Browser G2P integration **SUCCESS** — [run 43278716026](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43278716026).
+- Master table/research corpus artifacts **SUCCESS** — [run 43278716291](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43278716291).
+- Exhaustive test-case register extraction **SUCCESS** — [run 43278716197](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/43278716197).
+- Python 3.11/3.12/3.13, wheel installation and teacher-corpus audit **SUCCESS** in the Tests workflow. NIKL metadata-only inventory was **SKIPPED by policy**, not counted as a pass.
+- The initial CI attempts exposed stale source-contract expectations for the old status string/capitalization and a test assertion that expected uppercase coverage text. Those contracts were corrected; the final exact-head suite is green.
+- Candidate selection now updates only the labelled status value (never replacing the label container); the live browser smoke explicitly verifies label persistence and provisional-status updates after selecting a candidate.
+- No engine, phonology, IPA, target mapping, candidate-selection logic or linguistic data changed. The UI now states whether the ordinary g2pK mode or research/Kozak Kim mode ran, names the research level, separates pronunciation provenance from Ukrainian target status, and does not claim a candidate exists when no candidate text exists.
+- The broad UX audit remains **PARTIAL** for separate manual NVDA/VoiceOver, true 200% browser zoom, comprehension and performance gates.
+
 ## Execution continuation — 2026-11-12 — visual review of all interface modes
 
 **Status: IN PROGRESS on PR #487.** This continuation inspects the existing rendered screenshots, removes a confirmed source-level copy-density issue, and expands the existing Playwright review to cover every mode state.

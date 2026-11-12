@@ -397,11 +397,12 @@ button { color: inherit; }
 }
 .phonology-provenance {
   margin: 12px 0 0;
-  padding-top: 9px;
-  border-top: 1px solid var(--line);
+  padding: 0;
+  border: 0;
   color: var(--muted);
   font-size: .72rem;
   line-height: 1.45;
+  text-align: left;
   overflow-wrap: anywhere;
 }
 /* UX follow-up: progressive disclosure, visible copy recovery, and labelled mobile traces. */
@@ -484,5 +485,5 @@ button { color: inherit; }
 .mini-button,.site-nav a{min-height:40px}
 .copy-button{min-height:40px}
 
-.target-status-note{margin:9px 0 0;color:var(--muted);font-size:.76rem;line-height:1.45;overflow-wrap:anywhere}
+.target-status-note{margin:9px 0 0;color:var(--muted);font-size:.76rem;line-height:1.45;text-align:left;overflow-wrap:anywhere}
 .target-status-note[hidden]{display:none}

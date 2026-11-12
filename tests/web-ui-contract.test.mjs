@@ -90,7 +90,7 @@ test('editable adversarial passage has a complete IPA path without inline placeh
 
 test('provisional target candidate is announced before generic unavailable status',()=>{
   const main=read('src/main.js');
-  assert.match(main,/targetStatusNote\.textContent=r\.candidate_status==='provisional'/);
+  assert.match(main,/targetStatusValue\.textContent=r\.candidate_status==='provisional'/);
   assert.match(main,/Показано попередній кандидат, не підтверджений результат/);
 });
 
@@ -136,20 +136,35 @@ test('Ukrainian status and research candidate share one visible result field',()
 });
 
 
-test('phonology provenance stays with IPA while provisional target status stays with Ukrainian candidate',()=>{
+test('result provenance uses compact labelled metadata and names the active processing mode',()=>{
   const html=read('index.html');
   const main=read('src/main.js');
   const css=read('src/styles/main.css');
+  const editorial=read('src/styles/editorial.css');
   const ipaPanel=html.slice(html.indexOf('id="panel-ipa"'),html.indexOf('id="panel-romanization"'));
   const ukrainianPanel=html.slice(html.indexOf('id="panel-ukrainian"'),html.indexOf('id="panel-ipa"'));
   assert.match(ipaPanel,/id="phonology-status-note" class="results-note result-provenance phonology-provenance"/);
+  assert.match(ipaPanel,/id="phonology-status-value" class="status-meta-value"/);
+  assert.match(ipaPanel,/id="phonology-coverage-value" class="status-meta-detail" hidden/);
   assert.doesNotMatch(ukrainianPanel,/id="phonology-status-note"|id="status-note"/);
-  assert.match(main,/phonologyStatusNote\.textContent=\(useG2p\?'g2pK · ':'Козак Кім · '\)/);
+  assert.match(main,/const modeLabel=useG2p\?'Звичайний режим':/);
+  assert.match(main,/Дослідницький режим · \$\{morphologyDescriptions\.find/);
+  assert.match(main,/phonologyStatusValue\.textContent=/);
+  assert.match(main,/phonologyCoverageValue\.textContent=coverageLabel/);
   assert.match(main,/r\.candidate_status==='super-soft-low-confidence'/);
-  assert.match(html,/id="target-status-note" class="results-note target-status-note" hidden/);
-  assert.doesNotMatch(main,/statusNote\.textContent=.*Показано попередній кандидат/);
-  assert.match(main,/Попередній кандидат — не підтверджений результат/);
-  assert.match(css,/\.phonology-provenance\s*\{[^}]*border-top:\s*1px solid/);
+  assert.match(ukrainianPanel,/id="target-status-note" class="results-note target-status-note" hidden/);
+  assert.match(ukrainianPanel,/id="target-status-value" class="status-meta-value"/);
+  assert.match(main,/targetStatusValue\.textContent=/);
+  assert.match(main,/if\(targetStatusValue&&currentCandidateStatus==='provisional'\)targetStatusValue\.textContent=/);
+  assert.doesNotMatch(main,/targetStatusNote\.textContent/);
+  assert.match(main,/r\.candidate_status==='super-soft-low-confidence'\?\(candidateText\?/);
+  assert.match(main,/Український запис недоступний; резервні читання мають низьку впевненість/);
+  assert.match(main,/Показано попередній кандидат, не підтверджений результат/);
+  assert.match(editorial,/grid-template-columns:max-content minmax\(0,1fr\)/);
+  assert.match(editorial,/@media\(max-width:480px\)\{[\s\S]*?\.editorial-site \.result-provenance,\.editorial-site \.target-status-note\{grid-template-columns:minmax\(0,1fr\)/);
+  assert.match(editorial,/border:0;border-radius:0;background:transparent/);
+  assert.match(css,/\.phonology-provenance\s*\{[^}]*border:\s*0/);
+  assert.match(css,/\.target-status-note\{[^}]*text-align:left/);
 });
 
 test('UX follow-up announces meaningful result state and provides visible clipboard recovery',()=>{
