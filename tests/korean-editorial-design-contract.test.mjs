@@ -344,5 +344,5 @@ test('browser visual review captures the complete Ukrainian vowel set as a rende
   const review=read('scripts/capture-editorial-review.mjs');
   assert.match(review,/АаЕеЄєИиІіЇїОоУуЮюЯя/u);
   assert.match(review,/ukrainian-vowel-specimen\.png/u);
-  assert.match(review,/fontFamily:getComputedStyle\(document\.body\)\.fontFamily/u);
+  assert.match(review,/bodyFontFamily:getComputedStyle\(document\.body\)\.fontFamily/u);
 });
