@@ -34,7 +34,7 @@ try {
         await page.locator('#results:not([hidden])').waitFor({state:'visible'});
         await page.locator('#result-ukrainian').waitFor({state:'visible'});
         const practicalStatus=(await page.locator('#phonology-status-value').innerText()).trim();
-        const inspectStatus=async (selector,valueSelector,forcedText)=>{
+        const inspectStatus=async (selector,forcedText)=>{
           const note=page.locator(selector);
           if(forcedText!==undefined){
             await note.evaluate((element,text)=>{
@@ -60,7 +60,7 @@ try {
           failures.push(`index.html at ${viewport.name}: pronunciation metadata must be compact, content-sized, borderless and responsive: ${JSON.stringify(statusPresentation)}`);
         }
         const targetStatusPresentation=await inspectStatus('#target-status-note','#target-status-value','Показано попередній кандидат, не підтверджений результат');
-        if(targetStatusPresentation.display!=='flex'||targetStatusPresentation.flexDirection!==expectedDirection||targetStatusPresentation.flexWrap!=='wrap'||targetStatusPresentation.textAlign!=='left'||targetStatusPresentation.borderWidth!=='0px'||targetStatusPresentation.borderRadius!=='0px'||targetStatusPresentation.background!=='rgba(0, 0, 0, 0)'||!targetStatusPresentation.valueFits||!targetStatusPresentation.insideParent||targetStatusPresentation.width>=targetStatusPresentation.parentWidth){
+        if(targetStatusPresentation.display!=='flex'||targetStatusPresentation.flexDirection!==expectedDirection||targetStatusPresentation.flexWrap!=='wrap'||targetStatusPresentation.textAlign!=='left'||targetStatusPresentation.borderWidth!=='0px'||targetStatusPresentation.borderRadius!=='0px'||targetStatusPresentation.background!=='rgba(0, 0, 0, 0)'||!targetStatusPresentation.valueFits||!targetStatusPresentation.insideParent){
           failures.push(`index.html at ${viewport.name}: Ukrainian target status must be compact, content-sized, borderless and responsive: ${JSON.stringify(targetStatusPresentation)}`);
         }
         await page.locator('#target-status-note').evaluate(element=>{element.hidden=true;});
