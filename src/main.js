@@ -6,7 +6,7 @@ import {createEngine} from './app/engine.js';
 import {createG2pWebAdapter} from './app/g2pk_web.js';
 import {traceIpaMappingDetailed} from './app/engine_ipa.js';
 import {romanizeRevised} from './app/romanization.js';
-import {renderSuperSoftCandidate} from './app/super_soft_annotation.js';
+import {renderSuperSoftCandidate, stripUncertaintyBrackets} from './app/super_soft_annotation.js';
 import {convertHangulToHanja, createHanjaConverter} from './app/hanja.js';
 import niklMasterPassage from '../tests/fixtures/nikl-all-articles-master-passage-2026-10-22.txt?raw';
 
@@ -92,6 +92,7 @@ const candidateNote=document.querySelector('#candidate-note');
 const candidateValue=document.querySelector('#candidate-value');
 const ukrainianOutputLabel=document.querySelector('#ukrainian-output-label');
 const ukrainianCopyButton=document.querySelector('#ukrainian-copy-button');
+const ukrainianCleanCopyButton=document.querySelector('#ukrainian-clean-copy-button');
 const surfaceReading=document.querySelector('#surface-reading');
 const surfaceOutput=document.querySelector('#result-surface');
 const ipa=document.querySelector('#result-ipa');
@@ -201,6 +202,7 @@ function selectUaView(view){
   if(targetStatusValue&&currentCandidateStatus==='provisional')targetStatusValue.textContent=candidateSelected?'Показано попередній кандидат, не підтверджений результат':'Доступний попередній кандидат, не підтверджений результат';
   if(ukrainianOutputLabel)ukrainianOutputLabel.textContent=candidateSelected?'Дослідницький результат':currentTargetUnconfirmed?'Достовірний варіант недоступний':'Достовірний варіант';
   if(ukrainianCopyButton){ukrainianCopyButton.hidden=currentTargetUnconfirmed&&!candidateSelected;ukrainianCopyButton.textContent=candidateSelected?'Копіювати результат':'Копіювати';}
+  if(ukrainianCleanCopyButton){ukrainianCleanCopyButton.hidden=!candidateSelected||!/\\[[^\\]]+\\]/u.test(output?.textContent||'');}
 }
 if(uaUnconfirmedButton)uaUnconfirmedButton.addEventListener('click',()=>selectUaView('unconfirmed'));
 if(uaCandidateButton)uaCandidateButton.addEventListener('click',()=>selectUaView('candidate'));
@@ -242,6 +244,40 @@ document.querySelector('#clear-button').addEventListener('click',()=>{input.valu
 document.querySelector('#example-button').addEventListener('click',()=>{render();input.focus();});
 document.querySelector('#nikl-stress-example').addEventListener('click',()=>{input.value=niklMasterPassage.trim();render();input.focus();});
 for(const button of document.querySelectorAll('[data-example]'))button.addEventListener('click',()=>{input.value=button.dataset.example;render();input.focus();});
-for(const button of document.querySelectorAll('[data-copy]'))button.addEventListener('click',async()=>{clearTimeout(announcementTimer);const key=button.dataset.copy;const source=key==='ukrainian'?output:key==='ipa'?ipa:key==='romanization'?romanization:key==='hanja'?hanjaOutput:analysis;try{if(!navigator.clipboard?.writeText)throw new Error('Clipboard API unavailable');await navigator.clipboard.writeText(source.textContent);button.textContent='Скопійовано';setCopyFeedback('Результат скопійовано.');setTimeout(()=>button.textContent='Копіювати',1200);}catch{const selection=window.getSelection();const range=document.createRange();range.selectNodeContents(source);selection?.removeAllRanges();selection?.addRange(range);source.setAttribute('tabindex','-1');source.focus();setCopyFeedback('Автоматичне копіювання недоступне. Текст виділено: натисніть Ctrl+C або скористайтеся командою копіювання пристрою.');}});
+for(const button of document.querySelectorAll('[data-copy]'))button.addEventListener('click',async()=>{
+  clearTimeout(announcementTimer);
+  const key=button.dataset.copy;
+  const cleanUkrainian=key==='ukrainian-clean';
+  const source=key==='ukrainian'||cleanUkrainian?output:key==='ipa'?ipa:key==='romanization'?romanization:key==='hanja'?hanjaOutput:analysis;
+  const copyValue=cleanUkrainian?stripUncertaintyBrackets(source.textContent):source.textContent;
+  try{
+    if(!navigator.clipboard?.writeText)throw new Error('Clipboard API unavailable');
+    await navigator.clipboard.writeText(copyValue);
+    button.textContent='Скопійовано';
+    setCopyFeedback(cleanUkrainian?'Результат скопійовано без квадратних дужок.':'Результат скопійовано.');
+    setTimeout(()=>button.textContent=cleanUkrainian?'Копіювати без дужок':cleanUkrainianCopyButton===button?'Копіювати без дужок':'Копіювати',1200);
+  }catch{
+    if(cleanUkrainian){
+      const temporary=document.createElement('textarea');
+      temporary.value=copyValue;
+      temporary.setAttribute('readonly','');
+      temporary.style.position='fixed';
+      temporary.style.opacity='0';
+      document.body.append(temporary);
+      temporary.select();
+      setCopyFeedback('Текст без квадратних дужок виділено: натисніть Ctrl+C або скористайтеся командою копіювання пристрою.');
+      temporary.addEventListener('blur',()=>temporary.remove(),{once:true});
+    }else{
+      const selection=window.getSelection();
+      const range=document.createRange();
+      range.selectNodeContents(source);
+      selection?.removeAllRanges();
+      selection?.addRange(range);
+      source.setAttribute('tabindex','-1');
+      source.focus();
+      setCopyFeedback('Автоматичне копіювання недоступне. Текст виділено: натисніть Ctrl+C або скористайтеся командою копіювання пристрою.');
+    }
+  }
+});
 
 render();
