@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { stripUncertaintyBrackets } from '../src/app/super_soft_annotation.js';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const main = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
@@ -28,4 +29,18 @@ test('quick examples and clipboard actions have matching public controls', () =>
   assert.match(html, /data-copy="ukrainian"/u);
   assert.match(html, /data-copy="ipa"/u);
   assert.match(html, /data-copy="analysis"/u);
+});
+
+test('uncertainty cleanup removes only square-bracket markers and keeps their text', () => {
+  assert.equal(stripUncertaintyBrackets('га[н]уль'), 'гануль');
+  assert.equal(stripUncertaintyBrackets('[а][б] в [г]'), 'аб в г');
+  assert.equal(stripUncertaintyBrackets('а (б) {в}'), 'а (б) {в}');
+  assert.equal(stripUncertaintyBrackets('без сумнівів'), 'без сумнівів');
+});
+
+test('uncertain candidate offers a separate copy-without-brackets action', () => {
+  assert.match(html, /id="ukrainian-clean-copy-button"[^>]*data-copy="ukrainian-clean"/u);
+  assert.match(html, /Копіювати без дужок/u);
+  assert.match(main, /stripUncertaintyBrackets/);
+  assert.match(main, /ukrainianCleanCopyButton\.hidden=/u);
 });
