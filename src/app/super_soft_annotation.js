@@ -29,3 +29,11 @@ export function renderSuperSoftCandidate(trace, fallback = '') {
   }).join('');
   return rendered || String(fallback ?? '');
 }
+
+/**
+ * Remove only the square-bracket markers used for provisional target spans.
+ * Keep their text and every other character unchanged for convenient copying.
+ */
+export function stripUncertaintyBrackets(value) {
+  return String(value ?? '').replace(/\[([^\[\]]*)\]/gu, '$1');
+}
