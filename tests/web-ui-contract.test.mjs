@@ -128,7 +128,7 @@ test('Ukrainian status and research candidate share one visible result field',()
   assert.match(main,/output\.hidden=false/);
   assert.match(main,/output\.textContent=candidateSelected\?\(candidateValue\?\.textContent/);
   assert.match(main,/ukrainianCopyButton\.hidden=currentTargetUnconfirmed&&!candidateSelected/);
-  assert.match(main,/key==='ukrainian'\?output/);
+  assert.match(main,/key==='ukrainian'\|\|cleanUkrainian\?output/);
   assert.doesNotMatch(main,/key==='candidate'\?candidateValue|Копіювати кандидата|Непідтверджений дослідницький кандидат скопійовано/);
   assert.doesNotMatch(css,/\.candidate-panel\s*\{|\.candidate-copy-button/);
   assert.match(css,/\.candidate-footnote\s*\{/);
