@@ -264,6 +264,7 @@ for(const button of document.querySelectorAll('[data-copy]'))button.addEventList
       temporary.style.position='fixed';
       temporary.style.opacity='0';
       document.body.append(temporary);
+      temporary.focus();
       temporary.select();
       setCopyFeedback('Текст без квадратних дужок виділено: натисніть Ctrl+C або скористайтеся командою копіювання пристрою.');
       temporary.addEventListener('blur',()=>temporary.remove(),{once:true});
