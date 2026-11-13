@@ -202,7 +202,7 @@ function selectUaView(view){
   if(targetStatusValue&&currentCandidateStatus==='provisional')targetStatusValue.textContent=candidateSelected?'Показано попередній кандидат, не підтверджений результат':'Доступний попередній кандидат, не підтверджений результат';
   if(ukrainianOutputLabel)ukrainianOutputLabel.textContent=candidateSelected?'Дослідницький результат':currentTargetUnconfirmed?'Достовірний варіант недоступний':'Достовірний варіант';
   if(ukrainianCopyButton){ukrainianCopyButton.hidden=currentTargetUnconfirmed&&!candidateSelected;ukrainianCopyButton.textContent=candidateSelected?'Копіювати результат':'Копіювати';}
-  if(ukrainianCleanCopyButton){ukrainianCleanCopyButton.hidden=!candidateSelected||!/\\[[^\\]]+\\]/u.test(output?.textContent||'');}
+  if(ukrainianCleanCopyButton){ukrainianCleanCopyButton.hidden=!candidateSelected||!(/\[[^\]]+\]/u.test(output?.textContent||''));}
 }
 if(uaUnconfirmedButton)uaUnconfirmedButton.addEventListener('click',()=>selectUaView('unconfirmed'));
 if(uaCandidateButton)uaCandidateButton.addEventListener('click',()=>selectUaView('candidate'));
