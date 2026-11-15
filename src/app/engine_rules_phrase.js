@@ -16,14 +16,29 @@ export function applyPhraseBoundaryAssimilation(results,parts,map){
   };
   const lastTrace=(result)=>[...(result?.trace||[])].reverse().find(item=>item.status!=='literal');
   const firstTrace=(result)=>(result?.trace||[]).find(item=>item.status!=='literal');
+  // The Ukrainian text is a function of the final IPA. This pass rewrites a
+  // word's IPA and its per-syllable target; keep the word's aggregated Ukrainian
+  // (and candidate) strings in step instead of leaving the pre-rewrite text,
+  // which for lexical words came from the sourced IPA before the boundary change.
+  const syncUkrainian=(result,oldOutput,newOutput,edge)=>{
+    if(oldOutput==null||newOutput==null||oldOutput===newOutput)return;
+    for(const field of ['ukrainian','candidate_ukrainian']){
+      const text=result[field];
+      if(typeof text!=='string'||!text)continue;
+      if(edge==='end'&&text.endsWith(oldOutput))result[field]=text.slice(0,text.length-oldOutput.length)+newOutput;
+      else if(edge==='start'&&text.startsWith(oldOutput))result[field]=newOutput+text.slice(oldOutput.length);
+    }
+  };
   const rewriteCoda=(result,oldCoda,newCoda,rule)=>{
     const oldIpa=get(map,'coda',oldCoda)?.ipa||'',newIpa=get(map,'coda',newCoda)?.ipa||'';
     if(!oldIpa||!newIpa)return false;
     const trace=lastTrace(result);
     if(!trace||!result.ipa.endsWith(oldIpa)||!trace.ipa.endsWith(oldIpa))return false;
+    const previousOutput=trace.output;
     result.ipa=result.ipa.slice(0,-oldIpa.length)+newIpa;
     trace.ipa=trace.ipa.slice(0,-oldIpa.length)+newIpa;
     trace.output=ipaSyllableToUkrainian(trace.ipa).text;
+    syncUkrainian(result,previousOutput,trace.output,'end');
     addRule(trace,rule);
     return true;
   };
@@ -33,9 +48,11 @@ export function applyPhraseBoundaryAssimilation(results,parts,map){
     if(!oldIpa||!newIpa)return false;
     const trace=firstTrace(result);
     if(!trace||!result.ipa.startsWith(oldIpa)||!trace.ipa.startsWith(oldIpa))return false;
+    const previousOutput=trace.output;
     result.ipa=newIpa+result.ipa.slice(oldIpa.length);
     trace.ipa=newIpa+trace.ipa.slice(oldIpa.length);
     trace.output=ipaSyllableToUkrainian(trace.ipa).text;
+    syncUkrainian(result,previousOutput,trace.output,'start');
     addRule(trace,rule);
     return true;
   };
@@ -64,9 +81,11 @@ export function applyPhraseBoundaryAssimilation(results,parts,map){
     if(!newIpa)return false;
     const trace=firstTrace(result);
     if(!trace)return false;
+    const previousOutput=trace.output;
     result.ipa=newIpa+result.ipa;
     trace.ipa=newIpa+trace.ipa;
     trace.output=ipaSyllableToUkrainian(trace.ipa).text;
+    syncUkrainian(result,previousOutput,trace.output,'start');
     addRule(trace,rule);
     return true;
   };
