@@ -44,6 +44,34 @@ LEXICAL_PRONUNCIATIONS=_load_lexicon()
 RESEARCH_LEXICAL_INPUT_KINDS = frozenset({"kozak-research-only", "variant-aware-research"})
 
 
+def _cross_word_onset_to_preserve(items,start,end,lexical_surface):
+    """Return a first onset set by a cross-word rule that a lexical row must keep.
+
+    The first syllable of a word has no preceding syllable inside the word, so
+    an onset that differs from its orthographic onset can only have been
+    changed by a rule across the preceding word boundary (e.g. NIKL §27
+    adnominal fortition in `만날 사람[만날싸람]`). A lexical row is an
+    attestation of the word's own pronunciation, not of the neighbouring
+    context, so it must not undo that change. When the row itself changes the
+    first onset relative to the orthography, the row stays authoritative.
+    """
+    from .phonology import L_JAMO
+    if start<=0 or items[start-1].boundary_after!="word" or not lexical_surface:
+        return None
+    first=items[start]
+    orthographic=L_JAMO[first.L]
+    if first.onset==orthographic or lexical_surface[0].onset!=orthographic:
+        return None
+    return first.onset
+
+
+def _substitute_leading_onset(ipa_syllable,old_prefix,new_prefix):
+    """Swap only the onset segment of a sourced lexical IPA syllable."""
+    if ipa_syllable.startswith(old_prefix):
+        return new_prefix+ipa_syllable[len(old_prefix):]
+    return None
+
+
 def _apply_lexical_pronunciations(items, *, include_research_lexical=True):
     """Apply exact lexical forms; optionally ablate research-only overlays with traceability."""
     from .phonology import parse_syllables
@@ -78,15 +106,23 @@ def _apply_lexical_pronunciations(items, *, include_research_lexical=True):
                 })
             else:
                 before=[s.to_dict() for s in group]
+                preserved_onset=_cross_word_onset_to_preserve(items,i,j,surface)
                 for target,source in zip(group,surface):
                     target.onset,target.nucleus,target.coda=source.onset,source.nucleus,source.coda
-                traces.append({
+                if preserved_onset is not None:
+                    group[0].onset=preserved_onset
+                trace={
                     "rule_id":"LEXICON","name":"lexical-pronunciation","changed":before != [s.to_dict() for s in group],
                     "before":before,"after":[s.to_dict() for s in group],
                     "status":"lexical-override","input_kind":input_kind,
                     "confidence":entry.get("confidence","unknown"),
                     "source":entry.get("source_url",""),"license_context":entry.get("rule_notes","")
-                })
+                }
+                if preserved_onset is not None:
+                    # Typed provenance: an earlier cross-word rule changed this
+                    # word's first onset; the lexical row governs only the rest.
+                    trace["cross_word_onset_preserved"]=preserved_onset
+                traces.append(trace)
         i=j
     return traces
 
@@ -139,6 +175,24 @@ def _render_surface_hangul(items):
             rendered.append(" ")
     return "".join(rendered).strip()
 
+def _preserved_first_onset_ipa(items,start,entry,level):
+    """IPA onset prefixes (lexical, current) when a cross-word onset was kept."""
+    from dataclasses import replace
+    from .ipa import onset_ipa
+    from .phonology import parse_syllables
+    if start<=0 or items[start-1].boundary_after!="word":
+        return None
+    lexical=parse_syllables(entry.get("surface_hangul",""))
+    if not lexical:
+        return None
+    current=items[start]
+    if current.onset==lexical[0].onset:
+        return None
+    old_prefix="".join(onset_ipa(replace(current,onset=lexical[0].onset),start,items,level=level))
+    new_prefix="".join(onset_ipa(current,start,items,level=level))
+    return old_prefix,new_prefix
+
+
 def _apply_lexical_ipa(items,ipa_result, *, lexicon=None):
     """Use allowed sourced surface IPA without overriding phonemic mode."""
     lexicon = LEXICAL_PRONUNCIATIONS if lexicon is None else lexicon
@@ -155,7 +209,15 @@ def _apply_lexical_ipa(items,ipa_result, *, lexicon=None):
         if entry:
             values=entry.get("ipa_syllables","").split("|")
             if len(values)==j-i and all(values):
+                rule_first=syllable_ipa[i]
                 syllable_ipa[i:j]=values
+                replacement=_preserved_first_onset_ipa(items,i,entry,ipa_result.get("level","broad"))
+                if replacement is not None:
+                    old_prefix,new_prefix=replacement
+                    swapped=_substitute_leading_onset(values[0],old_prefix,new_prefix)
+                    # If the sourced IPA does not begin with the expected onset,
+                    # keep the rule-derived first syllable rather than guess.
+                    syllable_ipa[i]=swapped if swapped is not None else rule_first
         i=j
     rendered=syllable_ipa[0] if syllable_ipa else ""
     for i in range(1,len(syllable_ipa)):
