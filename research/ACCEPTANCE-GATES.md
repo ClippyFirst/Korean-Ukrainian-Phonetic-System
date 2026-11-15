@@ -1840,3 +1840,11 @@ The browser research engine now distinguishes three levels by confidence/coverag
 - **Mainline Pages run [42858765455](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42858765455):** Python 3.11/3.12/3.13, browser regression/build, deployment and public-page smoke test **PASS**. The final live adversarial practical-mode browser smoke is still running; do not claim the whole Pages workflow complete until it finishes.
 - **Fresh three-mode benchmark [42858765799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42858765799):** still running at this checkpoint. Historical Soft/Super-soft figures must not be presented as results for the new definitions. Reconcile benchmark outputs and generated artifacts after completion.
 - **Source/documentation note:** benchmark scores are not updated by this documentation checkpoint. No local npm/pytest execution is claimed; results above are GitHub Actions evidence.
+
+
+## 2026-11-15 — cross-word lexical interaction and runtime IPA parity checkpoint
+
+- **Status:** PARTIAL (unchanged). Five engine corrections are `DONE_VERIFIED` as software contracts on the local tree (commits `8f336bce`, `6f7b081f`, `494707ec`, `6369fe74`, `aba5a636`); they are not independent linguistic validation.
+- **Local evidence (no GitHub Actions):** Python 832 passed; browser 1,472 passed; IPA target data current; source-rights, source-register and NIKL test-index audits exit 0; build and wheel build pass; UGTPHON pinned token-level diagnostic unchanged in both runtimes (1,425/2,702; CER 0.09013).
+- **Parity:** Python/browser IPA equal on 450/458 pattern-extracted NIKL examples, 676/677 lexical keys and 3,250/3,260 phrase combinations; remainder classified in `docs/CROSS-WORD-LEXICAL-AND-RUNTIME-IPA-PARITY-AUDIT-2026-11-15.md`.
+- **Still open:** exact-head GitHub Actions on the branch, independent IPA adjudication, target allowlist, multi-engine comparison re-run, phrase-internal vowel-length convention.

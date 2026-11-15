@@ -178,3 +178,13 @@ Record consequential linguistic, data, architecture, testing, licensing, and rel
 - **Consequences:** no productive general-purpose rule or automatic Ukrainian output is licensed by this decision. The /ɰi/ → Ukrainian target choice remains provisional/candidate-only. All 40 residual occurrences remain unresolved as speaker-specific IPA gold.
 - **Validation:** exact-head Python/browser regressions, Python 3.11–3.13 tests, browser tests/build, wheel install, source-rights gate and research artifact checks passed on PR #456 head. The long multi-engine run 42414467825 was still running at the last check.
 - **Revisit when:** independent speaker-level IPA evidence or qualified review becomes available, or the official NIKL rule/FAQ is superseded.
+
+
+## 2026-11-15 — Cross-word effects survive lexical rows; word-initial lenis is phrase-initial
+
+- **Question:** may an exact lexical row for one word undo changes made across its word boundary, and does broad IPA voice a lenis stop at the start of a following word?
+- **Evidence:** official §27 `만날 사람[만날싸람]`; official §18 `밥 먹는다[밤멍는다]` (connected-phrase scope, rule-derived for the lexical-left cases); `docs/korean-phonology.md` (phrase-initial lenis stays `[k t p]` in the broad layer); browser runtime behavior; 4 of 1,783 lexical IPA syllables lacking `̚` against the `ipa.CODA` convention.
+- **Decision:** (1) a lexical row attests one word in isolation, so a first onset set by a cross-word rule and a final coda that differs from the word's own isolated rule result are preserved, with only the corresponding IPA segment swapped (`cross_word_onset_preserved` / `cross_word_coda_preserved` trace keys); a row that itself restates a different value stays authoritative. (2) Python phrase mode may use exact adjacent-eojeol lexical rows only when the ordered rules have not already produced the attested surface. (3) Word-initial lenis stops are voiceless in Python broad IPA, matching the browser. (4) Sourced lexical IPA syllables ending in a stop carry `̚`.
+- **Not decided:** phrase-internal realization of source-backed vowel length (`사람` in `만날 사람`); Sino-Korean ㄹ+ㄷ/ㅅ/ㅈ policy (unchanged, no productive heuristic); browser-only ㄷ+ㄹ nasalization remains a project inference.
+- **Consequences:** no new productive phonological rule; no Ukrainian output newly enabled. Tests are software contracts, not independent linguistic validation.
+- **Revisit when:** a source for phrase-internal length or for cross-word ㄷ+ㄹ is identified, or prosodic phrasing is modeled beyond the whitespace proxy.

@@ -1515,3 +1515,12 @@ The visual-mode task is software-verified and ready for merge. The broader produ
 - Visual review passed 10 page/viewport combinations; the service UI was checked at 1440, 1024, 768, 390 and 320 CSS px. Geometry assertions confirm pronunciation provenance is inside the IPA panel and target status is inside the Ukrainian panel.
 - NIKL metadata-only inventory was skipped per repository policy.
 - PR #492 remains open and unmerged pending explicit merge instruction. No Pages deployment/publication is claimed.
+
+
+## 2026-11-15 — cross-word lexical interactions and runtime IPA parity (branch, not merged)
+
+- Branch `feature/kozak-kim-phonetic-accuracy-advancement` from `main` `70f7bdde`; not pushed, no PR, no CI run. `AGENTS.md` designates `main`; the dedicated branch was requested by the owner for this assignment and is a fast-forward of `main`.
+- Commits: `8f336bce` (Python: lexical row no longer erases a cross-word first onset), `6f7b081f` (browser: §29-inserted ㄹ lateral), `494707ec` (Python: exact multi-word lexical rows in phrase mode), `6369fe74` (left-word coda preservation; four lexical rows regain `̚`; browser ㄹ|ㄹ lateral; parity-audit scripts), `aba5a636` (Python: word-initial lenis voiceless after a boundary).
+- Local verification on the final tree: Python 832 passed; browser 1,472 passed; `check:ipa-target-data`, `audit:source-rights`, `audit:source-register`, `audit:nikl-test-index`, `npm run build` and wheel build passed. UGTPHON token-level diagnostic identical before/after in both runtimes (1,425/2,702 exact, CER 0.09013).
+- Parity audit (`scripts/audit_runtime_ipa_parity.py`): 4,395 inputs, remaining IPA differences are classified (7 abstention-representation, 2 length-mark on `만날 사람`, 10 browser-only ㄷ+ㄹ nasalization). Full classification, task ledger and limits: `docs/CROSS-WORD-LEXICAL-AND-RUNTIME-IPA-PARITY-AUDIT-2026-11-15.md`.
+- Not done: GitHub Actions evidence, multi-engine competitor re-run, independent IPA adjudication, Ukrainian target allowlist. Status remains partial research prototype.

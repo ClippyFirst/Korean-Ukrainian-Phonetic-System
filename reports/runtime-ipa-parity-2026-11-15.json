@@ -1,0 +1,354 @@
+{
+ "schema": "runtime-ipa-parity-v1",
+ "python_boundary_mode": "phrase",
+ "browser_mode": "strict",
+ "groups": {
+  "official": {
+   "inputs": 458,
+   "classes": {
+    "equal": 450,
+    "abstention-representation": 7,
+    "length-mark": 1
+   }
+  },
+  "lexicon": {
+   "inputs": 677,
+   "classes": {
+    "equal": 676,
+    "length-mark": 1
+   }
+  },
+  "phrase_combinations": {
+   "inputs": 3260,
+   "classes": {
+    "equal": 3250,
+    "other": 10
+   }
+  }
+ },
+ "discrepancies": [
+  {
+   "group": "official",
+   "input": "긁개",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "극개",
+    "ipa": "kɯk̚.kɛ",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "극개",
+    "ipa": "",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "official",
+   "input": "끓이다",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "끌이다",
+    "ipa": "k͈ɯl.i.da",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "끌이다",
+    "ipa": "",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "official",
+   "input": "닭은",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "닥은",
+    "ipa": "tak̚.ɯn",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "닥은",
+    "ipa": "",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "official",
+   "input": "만날 사람",
+   "class": "length-mark",
+   "python": {
+    "surface": "만날싸람",
+    "ipa": "man.nal s͈aː.ɾam",
+    "status": "provisional",
+    "unresolved": false
+   },
+   "browser": {
+    "surface": "만날싸람",
+    "ipa": "man.nal s͈a.ɾam",
+    "status": "resolved",
+    "issues": 0
+   }
+  },
+  {
+   "group": "official",
+   "input": "먼 옛날",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "먼옌날",
+    "ipa": "mʌn jen.nal",
+    "status": "provisional",
+    "unresolved": false
+   },
+   "browser": {
+    "surface": "먼 옌날",
+    "ipa": " nal",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "official",
+   "input": "슬픈 얘기",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "슬픈얘기",
+    "ipa": "sɯl.pʰɯn jɛ.ɡi",
+    "status": "provisional",
+    "unresolved": false
+   },
+   "browser": {
+    "surface": "슬픈 얘기",
+    "ipa": "sɯl ɡi",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "official",
+   "input": "여덟은",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "여덜은",
+    "ipa": "jʌ.dʌl.ɯn",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "여덜은",
+    "ipa": "",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "official",
+   "input": "흙은",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "흑은",
+    "ipa": "hɯk̚.ɯn",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "흑은",
+    "ipa": "",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "lexicon",
+   "input": "만날 사람",
+   "class": "length-mark",
+   "python": {
+    "surface": "만날싸람",
+    "ipa": "man.nal s͈aː.ɾam",
+    "status": "provisional",
+    "unresolved": false
+   },
+   "browser": {
+    "surface": "만날싸람",
+    "ipa": "man.nal s͈a.ɾam",
+    "status": "resolved",
+    "issues": 0
+   }
+  },
+  {
+   "group": "phrase_combinations",
+   "input": "겉옷 리본",
+   "class": "other",
+   "python": {
+    "surface": "거돋리본",
+    "ipa": "kʌ.dot̚ ɾi.bon",
+    "status": "provisional",
+    "unresolved": false
+   },
+   "browser": {
+    "surface": "거돋 ",
+    "ipa": "kʌ.don ni.bon",
+    "status": "resolved",
+    "issues": 0
+   }
+  },
+  {
+   "group": "phrase_combinations",
+   "input": "꽃밭 리본",
+   "class": "other",
+   "python": {
+    "surface": "꼳빧리본",
+    "ipa": "k͈ot̚.p͈at̚ ɾi.bon",
+    "status": "provisional",
+    "unresolved": false
+   },
+   "browser": {
+    "surface": "꼳빧 ",
+    "ipa": "k͈ot̚.p͈an ni.bon",
+    "status": "resolved",
+    "issues": 0
+   }
+  },
+  {
+   "group": "phrase_combinations",
+   "input": "콩엿 리본",
+   "class": "other",
+   "python": {
+    "surface": "콩녇리본",
+    "ipa": "kʰoŋ.ɲʌt̚ ɾi.bon",
+    "status": "provisional",
+    "unresolved": false
+   },
+   "browser": {
+    "surface": "콩녇 ",
+    "ipa": "kʰoŋ.ɲʌn ni.bon",
+    "status": "resolved",
+    "issues": 0
+   }
+  },
+  {
+   "group": "phrase_combinations",
+   "input": "밤윷 리본",
+   "class": "other",
+   "python": {
+    "surface": "밤뉻리본",
+    "ipa": "paːm.ɲut̚ ɾi.bon",
+    "status": "provisional",
+    "unresolved": false
+   },
+   "browser": {
+    "surface": "밤뉻 ",
+    "ipa": "paːm.ɲun ni.bon",
+    "status": "resolved",
+    "issues": 0
+   }
+  },
+  {
+   "group": "phrase_combinations",
+   "input": "고갯짓 리본",
+   "class": "other",
+   "python": {
+    "surface": "고개찓리본",
+    "ipa": "ko.ɡɛ.tɕ͈it̚ ɾi.bon",
+    "status": "provisional",
+    "unresolved": false
+   },
+   "browser": {
+    "surface": "고개찓 ",
+    "ipa": "ko.ɡɛ.tɕ͈in ni.bon",
+    "status": "resolved",
+    "issues": 0
+   }
+  },
+  {
+   "group": "phrase_combinations",
+   "input": "베갯잇 리본",
+   "class": "other",
+   "python": {
+    "surface": "베갠닏리본",
+    "ipa": "pe.ɡɛn.nit̚ ɾi.bon",
+    "status": "provisional",
+    "unresolved": false
+   },
+   "browser": {
+    "surface": "베갠닏 ",
+    "ipa": "pe.ɡɛn.nin ni.bon",
+    "status": "resolved",
+    "issues": 0
+   }
+  },
+  {
+   "group": "phrase_combinations",
+   "input": "뒷윷 리본",
+   "class": "other",
+   "python": {
+    "surface": "뒨뉻리본",
+    "ipa": "tyːn.ɲut̚ ɾi.bon",
+    "status": "provisional",
+    "unresolved": false
+   },
+   "browser": {
+    "surface": "뒨뉻 ",
+    "ipa": "tyːn.ɲun ni.bon",
+    "status": "resolved",
+    "issues": 0
+   }
+  },
+  {
+   "group": "phrase_combinations",
+   "input": "물엿 리본",
+   "class": "other",
+   "python": {
+    "surface": "물렫리본",
+    "ipa": "mul.ljʌt̚ ɾi.bon",
+    "status": "provisional",
+    "unresolved": false
+   },
+   "browser": {
+    "surface": "물렫 ",
+    "ipa": "mul.ljʌn ni.bon",
+    "status": "resolved",
+    "issues": 0
+   }
+  },
+  {
+   "group": "phrase_combinations",
+   "input": "서른여섯 리본",
+   "class": "other",
+   "python": {
+    "surface": "서른녀섣리본",
+    "ipa": "sʌ.ɾɯn.ɲʌ.sʌt̚ ɾi.bon",
+    "status": "provisional",
+    "unresolved": false
+   },
+   "browser": {
+    "surface": "서른녀섣 ",
+    "ipa": "sʌ.ɾɯn.ɲʌ.sʌn ni.bon",
+    "status": "resolved",
+    "issues": 0
+   }
+  },
+  {
+   "group": "phrase_combinations",
+   "input": "스물여섯 리본",
+   "class": "other",
+   "python": {
+    "surface": "스물려섣리본",
+    "ipa": "sɯ.mul.ljʌ.sʌt̚ ɾi.bon",
+    "status": "provisional",
+    "unresolved": false
+   },
+   "browser": {
+    "surface": "스물려섣 ",
+    "ipa": "sɯ.mul.ljʌ.sʌn ni.bon",
+    "status": "resolved",
+    "issues": 0
+   }
+  }
+ ]
+}
