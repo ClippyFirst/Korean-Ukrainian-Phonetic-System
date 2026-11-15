@@ -44,6 +44,56 @@ LEXICAL_PRONUNCIATIONS=_load_lexicon()
 RESEARCH_LEXICAL_INPUT_KINDS = frozenset({"kozak-research-only", "variant-aware-research"})
 
 
+_MAX_LEXICAL_PHRASE_WORDS=3
+
+def _word_groups(items):
+    groups=[];i=0
+    while i<len(items):
+        j=i+1
+        while j<len(items) and items[j-1].boundary_after!="word":
+            j+=1
+        groups.append((i,j));i=j
+    return groups
+
+
+def _lexical_phrase_matches(items,lexicon,boundary_mode):
+    """Exact adjacent-eojeol lexical rows, only in explicit phrase mode.
+
+    The shared lexicon carries official NIKL phrase examples (밭 아래[바다래],
+    꽃 한 송이[꼬탄송이], ...) as space-containing rows that the browser runtime
+    resolves. Mirror that here without inferring hidden spaces: the row key must
+    equal the input's own word-spaced text. A row is used only when the ordered
+    rules have not already produced its attested surface, so rule-derived
+    output and IPA of phrases the rules handle correctly stay unchanged.
+    """
+    from .phonology import parse_syllables
+    if boundary_mode!="phrase":
+        return []
+    groups=_word_groups(items)
+    matches=[];w=0
+    while w<len(groups):
+        hit=None
+        for k in range(min(_MAX_LEXICAL_PHRASE_WORDS,len(groups)-w),1,-1):
+            start,end=groups[w][0],groups[w+k-1][1]
+            key=" ".join("".join(x.text for x in items[a:b]) for a,b in groups[w:w+k])
+            entry=lexicon.get(key)
+            if not entry:
+                continue
+            surface=parse_syllables(entry.get("surface_hangul",""))
+            ipa_syllables=entry.get("ipa_syllables","").split("|")
+            if len(surface)!=end-start or len(ipa_syllables)!=end-start or not all(ipa_syllables):
+                continue
+            if _render_surface_hangul(items[start:end]).replace(" ","")==entry["surface_hangul"]:
+                continue
+            hit=(start,end,key,entry,k)
+            break
+        if hit:
+            matches.append(hit[:4]);w+=hit[4]
+        else:
+            w+=1
+    return matches
+
+
 def _cross_word_onset_to_preserve(items,start,end,lexical_surface):
     """Return a first onset set by a cross-word rule that a lexical row must keep.
 
@@ -72,12 +122,28 @@ def _substitute_leading_onset(ipa_syllable,old_prefix,new_prefix):
     return None
 
 
-def _apply_lexical_pronunciations(items, *, include_research_lexical=True):
+def _apply_lexical_pronunciations(items, *, include_research_lexical=True, phrase_matches=()):
     """Apply exact lexical forms; optionally ablate research-only overlays with traceability."""
     from .phonology import parse_syllables
     traces=[]
+    phrase_by_start={m[0]:m for m in phrase_matches}
     i=0
     while i<len(items):
+        if i in phrase_by_start:
+            start,end,key,entry=phrase_by_start[i]
+            before=[s.to_dict() for s in items[start:end]]
+            for target,source in zip(items[start:end],parse_syllables(entry["surface_hangul"])):
+                target.onset,target.nucleus,target.coda=source.onset,source.nucleus,source.coda
+            traces.append({
+                "rule_id":"LEXICON","name":"lexical-pronunciation","changed":True,
+                "before":before,"after":[s.to_dict() for s in items[start:end]],
+                "status":"lexical-override","input_kind":entry.get("input_kind",""),
+                "lexical_scope":"phrase","phrase_key":key,
+                "confidence":entry.get("confidence","unknown"),
+                "source":entry.get("source_url",""),"license_context":entry.get("rule_notes","")
+            })
+            i=end
+            continue
         j=i+1
         while j<len(items) and items[j-1].boundary_after!="word":
             j+=1
@@ -193,14 +259,20 @@ def _preserved_first_onset_ipa(items,start,entry,level):
     return old_prefix,new_prefix
 
 
-def _apply_lexical_ipa(items,ipa_result, *, lexicon=None):
+def _apply_lexical_ipa(items,ipa_result, *, lexicon=None, phrase_matches=()):
     """Use allowed sourced surface IPA without overriding phonemic mode."""
     lexicon = LEXICAL_PRONUNCIATIONS if lexicon is None else lexicon
     if ipa_result.get("level")!="broad":
         return ipa_result
     syllable_ipa=list(ipa_result["syllables"])
+    phrase_by_start={m[0]:m for m in phrase_matches}
     i=0
     while i<len(items):
+        if i in phrase_by_start:
+            start,end,_key,entry=phrase_by_start[i]
+            syllable_ipa[start:end]=entry["ipa_syllables"].split("|")
+            i=end
+            continue
         j=i+1
         while j<len(items) and items[j-1].boundary_after!="word":
             j+=1
@@ -230,6 +302,9 @@ def _apply_lexical_ipa(items,ipa_result, *, lexicon=None):
     lexical_alternatives=[]
     i=0
     while i<len(items):
+        if i in phrase_by_start:
+            i=phrase_by_start[i][1]
+            continue
         j=i+1
         while j<len(items) and items[j-1].boundary_after!="word":
             j+=1
@@ -363,9 +438,11 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
         word: entry for word, entry in LEXICAL_PRONUNCIATIONS.items()
         if entry.get("input_kind", "") not in RESEARCH_LEXICAL_INPUT_KINDS
     }
-    lexical_traces=_apply_lexical_pronunciations(items,include_research_lexical=include_research_lexical)
+    # Decide phrase rows from the post-rule state, before any lexical mutation.
+    phrase_matches=_lexical_phrase_matches(items,active_lexicon,boundary_mode)
+    lexical_traces=_apply_lexical_pronunciations(items,include_research_lexical=include_research_lexical,phrase_matches=phrase_matches)
     surface_hangul=_render_surface_hangul(items)
-    ipa=_apply_lexical_ipa(items,realize_syllables(items,level=ipa_level),lexicon=active_lexicon)
+    ipa=_apply_lexical_ipa(items,realize_syllables(items,level=ipa_level),lexicon=active_lexicon,phrase_matches=phrase_matches)
     all_traces=[x.to_dict() for x in traces]+lexical_traces
     unresolved_contexts=_unlicensed_ambiguous_pronunciation_contexts(all_traces, items, lexicon=active_lexicon)
     # A lexicon entry may have directly attested Korean surface Hangul while
