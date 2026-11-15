@@ -332,7 +332,11 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     const previousOpenSyllable=Boolean(prev)&&prev.coda==='';
     const voiced=!graphemeFallbackOn&&(liaisonOnset||previousSonorant||previousOpenSyllable)&&['ㄱ','ㄷ','ㅂ','ㅈ'].includes(onset);
     const fortis=!graphemeFallbackOn&&!options.surfaceMode&&!liaisonOnset&&previousObstruent&&['ㄱ','ㄷ','ㅂ','ㅅ','ㅈ'].includes(onset);
-    const liquid=!graphemeFallbackOn&&onset==='ㄹ'&&['ㄴ','ㄹ','ㅁ','ㅇ'].includes(previousCoda);
+    // The exact §29 phrase insertion (할 일[할릴]) sets this onset across a
+    // word boundary, where prevHangul() sees no previous syllable; the inserted
+    // ㄹ follows the realized ㄹ coda and is therefore the lateral, as in Python.
+    const phraseInsertedLateral=!graphemeFallbackOn&&onset==='ㄹ'&&applied.includes('phrase-n-insertion-§29');
+    const liquid=!graphemeFallbackOn&&onset==='ㄹ'&&(phraseInsertedLateral||['ㄴ','ㄹ','ㅁ','ㅇ'].includes(previousCoda));
     const traceRules=[...applied];
     if(graphemeFallbackOn)traceRules.push('super-soft-grapheme-ipa-fallback');
     if(u.__superSoftFallback)traceRules.push('super-soft-orthographic-fallback');
