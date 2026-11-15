@@ -429,8 +429,8 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 곧이어,고디어,ко|ді|о,ko|di|ʌ,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=316101,NIKL Online Q&A (answer 2025-06-11) directly gives 곧이어[고디어] and explicitly says §29 ㄴ-insertion does not occur in this lexical item. This is a source-backed negative control against predicting insertion from a sound environment alone. Korean bracket notation is not IPA; Ukrainian target provisional.,high,provisional,,,,,
 음용,으묭,и|мйон,ɯ|mjoŋ,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=279931,"NIKL Q&A question supplies [으묭] as the reading under discussion; answer says §29 ㄴ-insertion is not obligatory in every similar environment. Rule-context / negative-control evidence, not a standalone direct attestation; Korean bracket notation is not IPA. Ukrainian target remains provisional.",high,provisional,,,,,
 들일,들릴,тил|ліл,tɯlː|lil,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,표준 발음법 제29항 붙임 1: 들일[들ː릴]. ㄹ 받침 뒤 첨가된 ㄴ이 [ㄹ]로 실현; 장음은 IPA에 표시. Ukrainian target provisional.,high,provisional,,,,,
-솔잎,솔립,сол|ліп,sol|lip,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,표준 발음법 제29항 붙임 1: 솔잎[솔립]. ㄹ 받침 뒤 ㄴ 첨가가 [ㄹ]로 실현. Ukrainian target provisional.,high,provisional,,,,,
-설익다,설릭따,сол|лік|тта,sʌl|lik|t͈a,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,표준 발음법 제29항 붙임 1: 설익다[설릭따]. ㄹ 받침 뒤 ㄴ 첨가가 [ㄹ]로 실현되며 뒤 ㄷ은 된소리. Ukrainian target provisional.,high,provisional,,,,,
+솔잎,솔립,сол|ліп,sol|lip̚,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,표준 발음법 제29항 붙임 1: 솔잎[솔립]. ㄹ 받침 뒤 ㄴ 첨가가 [ㄹ]로 실현. Ukrainian target provisional.,high,provisional,,,,,
+설익다,설릭따,сол|лік|тта,sʌl|lik̚|t͈a,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,표준 발음법 제29항 붙임 1: 설익다[설릭따]. ㄹ 받침 뒤 ㄴ 첨가가 [ㄹ]로 실현되며 뒤 ㄷ은 된소리. Ukrainian target provisional.,high,provisional,,,,,
 물약,물략,мул|ляк,mul|ljak̚,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,표준 발음법 제29항 붙임 1: 물약[물략]. ㄹ 받침 뒤 첨가되는 ㄴ은 [ㄹ]로 실현. Ukrainian target provisional.,high,provisional,,,,,
 불여우,불려우,пул|льо|у,pul|ljʌ|u,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,표준 발음법 제29항 붙임 1: 불여우[불려우]. ㄹ 받침 뒤 ㄴ 첨가가 [ㄹ]로 실현. Ukrainian target provisional.,high,provisional,,,,,
 물엿,물렫,мул|льот,mul|ljʌt̚,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,표준 발음법 제29항 붙임 1: 물엿[물렫]. ㄹ 받침 뒤 ㄴ 첨가가 [ㄹ]로 실현되고 종성은 중화. Ukrainian target provisional.,high,provisional,,,,,
@@ -493,7 +493,7 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 꽃 위,꼬뒤,кко|тві,k͈o|twi,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,§15 official phrase example [꼬뒤].,high,provisional,,,,,mixed-script
 넋 없다,너겁따,но|коп|тта,nʌ|kʌp̚|t͈a,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,§15 붙임 official phrase example [너겁따].,high,provisional,,,,,mixed-script
 닭 앞에,다가페,та|ка|п'е,ta|ka|pʰe,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,§15 붙임 official phrase example [다가페].,high,provisional,,,,,mixed-script
-담력,담녁,там|ньок,tam|ɲʌk,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,§19 official example [담ː녁].,high,provisional,,,,,
+담력,담녁,там|ньок,tam|ɲʌk̚,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,§19 official example [담ː녁].,high,provisional,,,,,
 항로,항노,ган|но,haŋ|no,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,§19 official example [항ː노].,high,provisional,,,,,
 대통령,대통녕,те|тон|ньон,tɛː|toŋ|ɲʌŋ,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,§19 official example [대ː통녕].,high,provisional,,,,,
 백리,뱅니,пен|ні,pɛŋ|ni,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,§19 붙임 official example [백니→뱅니].,high,provisional,,,,,

@@ -94,6 +94,29 @@ def _lexical_phrase_matches(items,lexicon,boundary_mode):
     return matches
 
 
+def _cross_word_codas_to_preserve(items,*,boundary_mode,rule_kwargs):
+    """Map word-final syllable index -> (phrase coda, isolated coda).
+
+    The final coda of a word can change for two different reasons: rules inside
+    the word (neutralization, which a lexical row legitimately restates) and
+    rules across the following word boundary (NIKL §18/§20 connected-phrase
+    assimilation, §29 insertion). Run the same ordered rules on the word alone
+    to separate them: a coda that differs from its isolated value was changed
+    by the neighbouring word and must survive the word's own lexical row.
+    """
+    from .phonology import parse_syllables
+    from .rules import apply_ordered_rules
+    result={}
+    for start,end in _word_groups(items):
+        if end>=len(items) or items[end-1].boundary_after!="word":
+            continue
+        isolated=parse_syllables("".join(x.text for x in items[start:end]))
+        isolated,_=apply_ordered_rules(isolated,None,boundary_mode=boundary_mode,**rule_kwargs)
+        if items[end-1].coda!=isolated[-1].coda:
+            result[end-1]=(items[end-1].coda,isolated[-1].coda)
+    return result
+
+
 def _cross_word_onset_to_preserve(items,start,end,lexical_surface):
     """Return a first onset set by a cross-word rule that a lexical row must keep.
 
@@ -122,7 +145,7 @@ def _substitute_leading_onset(ipa_syllable,old_prefix,new_prefix):
     return None
 
 
-def _apply_lexical_pronunciations(items, *, include_research_lexical=True, phrase_matches=()):
+def _apply_lexical_pronunciations(items, *, include_research_lexical=True, phrase_matches=(), coda_preservations=None):
     """Apply exact lexical forms; optionally ablate research-only overlays with traceability."""
     from .phonology import parse_syllables
     traces=[]
@@ -173,10 +196,18 @@ def _apply_lexical_pronunciations(items, *, include_research_lexical=True, phras
             else:
                 before=[s.to_dict() for s in group]
                 preserved_onset=_cross_word_onset_to_preserve(items,i,j,surface)
+                preserved_coda=None
+                phrase_coda=(coda_preservations or {}).get(j-1)
+                # Preserve only when the row itself restates the word-alone coda;
+                # a row that deliberately differs from the rules stays authoritative.
+                if phrase_coda is not None and surface[-1].coda==phrase_coda[1]:
+                    preserved_coda=phrase_coda[0]
                 for target,source in zip(group,surface):
                     target.onset,target.nucleus,target.coda=source.onset,source.nucleus,source.coda
                 if preserved_onset is not None:
                     group[0].onset=preserved_onset
+                if preserved_coda is not None:
+                    group[-1].coda=preserved_coda
                 trace={
                     "rule_id":"LEXICON","name":"lexical-pronunciation","changed":before != [s.to_dict() for s in group],
                     "before":before,"after":[s.to_dict() for s in group],
@@ -188,6 +219,8 @@ def _apply_lexical_pronunciations(items, *, include_research_lexical=True, phras
                     # Typed provenance: an earlier cross-word rule changed this
                     # word's first onset; the lexical row governs only the rest.
                     trace["cross_word_onset_preserved"]=preserved_onset
+                if preserved_coda is not None:
+                    trace["cross_word_coda_preserved"]=preserved_coda
                 traces.append(trace)
         i=j
     return traces
@@ -259,6 +292,21 @@ def _preserved_first_onset_ipa(items,start,entry,level):
     return old_prefix,new_prefix
 
 
+def _preserved_last_coda_ipa(items,end,entry):
+    """IPA coda suffixes (lexical, current) when a cross-word coda was kept."""
+    from .ipa import coda_ipa
+    from .phonology import parse_syllables
+    if end>=len(items) or items[end-1].boundary_after!="word":
+        return None
+    lexical=parse_syllables(entry.get("surface_hangul",""))
+    if not lexical:
+        return None
+    current=items[end-1]
+    if current.coda==lexical[-1].coda:
+        return None
+    return "".join(coda_ipa(lexical[-1].coda)),"".join(coda_ipa(current.coda))
+
+
 def _apply_lexical_ipa(items,ipa_result, *, lexicon=None, phrase_matches=()):
     """Use allowed sourced surface IPA without overriding phonemic mode."""
     lexicon = LEXICAL_PRONUNCIATIONS if lexicon is None else lexicon
@@ -281,7 +329,7 @@ def _apply_lexical_ipa(items,ipa_result, *, lexicon=None, phrase_matches=()):
         if entry:
             values=entry.get("ipa_syllables","").split("|")
             if len(values)==j-i and all(values):
-                rule_first=syllable_ipa[i]
+                rule_ipa=list(syllable_ipa[i:j])
                 syllable_ipa[i:j]=values
                 replacement=_preserved_first_onset_ipa(items,i,entry,ipa_result.get("level","broad"))
                 if replacement is not None:
@@ -289,7 +337,13 @@ def _apply_lexical_ipa(items,ipa_result, *, lexicon=None, phrase_matches=()):
                     swapped=_substitute_leading_onset(values[0],old_prefix,new_prefix)
                     # If the sourced IPA does not begin with the expected onset,
                     # keep the rule-derived first syllable rather than guess.
-                    syllable_ipa[i]=swapped if swapped is not None else rule_first
+                    syllable_ipa[i]=swapped if swapped is not None else rule_ipa[0]
+                coda_replacement=_preserved_last_coda_ipa(items,j,entry)
+                if coda_replacement is not None:
+                    old_suffix,new_suffix=coda_replacement
+                    current=syllable_ipa[j-1]
+                    swapped=new_suffix.join(current.rsplit(old_suffix,1)) if current.endswith(old_suffix) else None
+                    syllable_ipa[j-1]=swapped if swapped is not None else rule_ipa[-1]
         i=j
     rendered=syllable_ipa[0] if syllable_ipa else ""
     for i in range(1,len(syllable_ipa)):
@@ -440,7 +494,10 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
     }
     # Decide phrase rows from the post-rule state, before any lexical mutation.
     phrase_matches=_lexical_phrase_matches(items,active_lexicon,boundary_mode)
-    lexical_traces=_apply_lexical_pronunciations(items,include_research_lexical=include_research_lexical,phrase_matches=phrase_matches)
+    coda_preservations=_cross_word_codas_to_preserve(
+        items,boundary_mode=boundary_mode,
+        rule_kwargs={"n_insertion_licensed":n_insertion_licensed,"rule_licenses":rule_licenses,"morphology_mode":morphology_mode})
+    lexical_traces=_apply_lexical_pronunciations(items,include_research_lexical=include_research_lexical,phrase_matches=phrase_matches,coda_preservations=coda_preservations)
     surface_hangul=_render_surface_hangul(items)
     ipa=_apply_lexical_ipa(items,realize_syllables(items,level=ipa_level),lexicon=active_lexicon,phrase_matches=phrase_matches)
     all_traces=[x.to_dict() for x in traces]+lexical_traces

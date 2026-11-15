@@ -129,6 +129,12 @@ export function applyPhraseBoundaryAssimilation(results,parts,map){
     if(leftRep==='ㄹ'&&rightOnset==='ㄴ'){
       if(rewriteOnset(next,'ㄴ','ㄹ',true,'liquid-assimilation'))addRule(lastTrace(previous),'liquid-assimilation');
     }
+
+    // ㄹ|ㄹ across the boundary is the geminate lateral [l.l] (as ㄹ|ㄴ above and
+    // as inside a word); a lexical-split segment otherwise keeps the flap.
+    if(leftRep==='ㄹ'&&rightOnset==='ㄹ'){
+      rewriteOnset(next,'ㄹ','ㄹ',true,'liquid-assimilation');
+    }
   }
 }
 

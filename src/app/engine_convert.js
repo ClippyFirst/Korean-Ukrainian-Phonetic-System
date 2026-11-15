@@ -336,7 +336,15 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     // word boundary, where prevHangul() sees no previous syllable; the inserted
     // ㄹ follows the realized ㄹ coda and is therefore the lateral, as in Python.
     const phraseInsertedLateral=!graphemeFallbackOn&&onset==='ㄹ'&&applied.includes('phrase-n-insertion-§29');
-    const liquid=!graphemeFallbackOn&&onset==='ㄹ'&&(phraseInsertedLateral||['ㄴ','ㄹ','ㅁ','ㅇ'].includes(previousCoda));
+    // ㄹ onset after a realized ㄹ coda in the preceding word of a connected
+    // phrase (whitespace proxy; punctuation blocks it) is the geminate lateral,
+    // exactly as inside a word and as the Python runtime realizes it.
+    let phraseLiquidPrev=null;
+    for(let k=i-1;k>=0&&units[k].type==='literal'&&/^\s$/u.test(units[k].char);k--){
+      if(k-1>=0&&isHangulUnit(units,k-1)){phraseLiquidPrev=units[k-1];break;}
+    }
+    const phraseLateral=!graphemeFallbackOn&&onset==='ㄹ'&&!prev&&phraseLiquidPrev&&(phraseLiquidPrev.__effectiveCoda??phraseLiquidPrev.coda)==='ㄹ';
+    const liquid=!graphemeFallbackOn&&onset==='ㄹ'&&(phraseInsertedLateral||phraseLateral||['ㄴ','ㄹ','ㅁ','ㅇ'].includes(previousCoda));
     const traceRules=[...applied];
     if(graphemeFallbackOn)traceRules.push('super-soft-grapheme-ipa-fallback');
     if(u.__superSoftFallback)traceRules.push('super-soft-orthographic-fallback');
