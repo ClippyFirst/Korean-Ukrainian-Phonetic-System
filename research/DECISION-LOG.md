@@ -188,3 +188,13 @@ Record consequential linguistic, data, architecture, testing, licensing, and rel
 - **Not decided:** phrase-internal realization of source-backed vowel length (`사람` in `만날 사람`); Sino-Korean ㄹ+ㄷ/ㅅ/ㅈ policy (unchanged, no productive heuristic); browser-only ㄷ+ㄹ nasalization remains a project inference.
 - **Consequences:** no new productive phonological rule; no Ukrainian output newly enabled. Tests are software contracts, not independent linguistic validation.
 - **Revisit when:** a source for phrase-internal length or for cross-word ㄷ+ㄹ is identified, or prosodic phrasing is modeled beyond the whitespace proxy.
+
+
+## 2026-11-15 (second pass) — the Ukrainian text must follow the final IPA after boundary rewrites
+
+- **Question:** after the browser phrase pass rewrites a lexical word's IPA, which value is the word's Ukrainian text?
+- **Evidence:** 623 of 3,834 resolved phrases had Ukrainian text inconsistent with the IPA-derived per-syllable trace; the Python path already derives its text from the final IPA string (3,762 of 3,762 available cases equal the adapter applied to the final IPA).
+- **Decision:** the phrase pass keeps `ukrainian` and `candidate_ukrainian` in step with the rewritten edge syllable (replace only when the old edge text matches). Lexical target syllables remain candidates with their existing status; nothing newly becomes confirmed output.
+- **Open (not decided):** the fortis-onset convention (`canonical_correspondence.csv` doubles the Ukrainian consonant; browser phrase-pass comments say fortisness is not doubled) and the `ɲ` versus `nj` realization for ㄴ before a glide (14 lexical rows use `ɲ`, the rule path `nj`).
+- **Consequences:** no new rule; the 10 residual parity differences stay classified as one browser-only project inference.
+- **Revisit when:** an independent target review or allowlist decision is made.

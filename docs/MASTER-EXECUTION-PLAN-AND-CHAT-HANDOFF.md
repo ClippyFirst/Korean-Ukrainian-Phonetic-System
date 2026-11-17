@@ -1524,3 +1524,13 @@ The visual-mode task is software-verified and ready for merge. The broader produ
 - Local verification on the final tree: Python 832 passed; browser 1,472 passed; `check:ipa-target-data`, `audit:source-rights`, `audit:source-register`, `audit:nikl-test-index`, `npm run build` and wheel build passed. UGTPHON token-level diagnostic identical before/after in both runtimes (1,425/2,702 exact, CER 0.09013).
 - Parity audit (`scripts/audit_runtime_ipa_parity.py`): 4,395 inputs, remaining IPA differences are classified (7 abstention-representation, 2 length-mark on `만날 사람`, 10 browser-only ㄷ+ㄹ nasalization). Full classification, task ledger and limits: `docs/CROSS-WORD-LEXICAL-AND-RUNTIME-IPA-PARITY-AUDIT-2026-11-15.md`.
 - Not done: GitHub Actions evidence, multi-engine competitor re-run, independent IPA adjudication, Ukrainian target allowlist. Status remains partial research prototype.
+
+
+## 2026-11-15 (second pass) — right-side lexical overrides and Ukrainian/IPA consistency
+
+- Starting local SHA `484bb8aa`; code verified at `8c5b73e2`. Branch `feature/kozak-kim-phonetic-accuracy-advancement`, unpushed, no PR; `main` unchanged at `70f7bdde`.
+- Right-side and middle-word lexical overrides were confirmed on `70f7bdde` (236 right-word onsets and 182 middle-word codas overwritten) and are fixed on the branch (0). Interior/own-coda hypothesis: negative. New tests: `tests/test_phrase_boundary_lexical_matrix.py` (red on `70f7bdde`).
+- Browser defect fixed in `29e7aa16`: a lexical word's `ukrainian` text was left stale after a phrase-pass IPA rewrite (623 of 3,834 phrases inconsistent → 0).
+- Verification: Python 852 passed; browser 1,477 passed; IPA target data current; source-rights, source-register, NIKL test-index, build, wheel, generated-artifact scripts passed; pinned UGTPHON token benchmark identical to `70f7bdde` in both runtimes.
+- Residual 10 IPA parity cases are one browser-only `project-inferred` ㄷ+ㄹ rule (classified, unchanged). Python target output stays fail-closed (unreviewed `ɰ`, `ø`, `y`, `ɲ` correspondences). Details: `docs/CROSS-WORD-LEXICAL-AND-RUNTIME-IPA-PARITY-AUDIT-2026-11-15.md` (second pass).
+- Not done: GitHub Actions, multi-engine re-run, independent adjudication, allowlist, fortis-doubling convention decision.

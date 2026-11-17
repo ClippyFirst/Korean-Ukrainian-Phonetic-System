@@ -1739,3 +1739,8 @@ The earlier #470/#473 implementation incorrectly made the entire service and met
 ## 2026-11-15 — continuation: cross-word lexical interactions and runtime IPA parity
 
 Five engine corrections on branch `feature/kozak-kim-phonetic-accuracy-advancement` (from `main` `70f7bdde`, unpushed) and a reproducible Python/browser IPA parity audit. Status remains a partial research prototype. Task ledger, evidence and limits: [CROSS-WORD-LEXICAL-AND-RUNTIME-IPA-PARITY-AUDIT-2026-11-15.md](CROSS-WORD-LEXICAL-AND-RUNTIME-IPA-PARITY-AUDIT-2026-11-15.md). The oversized master handoff was appended directly in the branch (local git write path); its earlier content is unchanged.
+
+
+## 2026-11-15 (second pass)
+
+Right-side and middle-word lexical overrides, a boundary matrix test, and browser Ukrainian/IPA consistency were verified and fixed on the unpushed branch (`29e7aa16`, `8c5b73e2`). See the "Second pass" section of [CROSS-WORD-LEXICAL-AND-RUNTIME-IPA-PARITY-AUDIT-2026-11-15.md](CROSS-WORD-LEXICAL-AND-RUNTIME-IPA-PARITY-AUDIT-2026-11-15.md). Status remains a partial research prototype.

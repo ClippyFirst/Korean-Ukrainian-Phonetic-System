@@ -142,3 +142,142 @@ made without independent IPA adjudication.
    coda and the right word's first onset are covered (the two demonstrated cases). The
    isolated-baseline method also assumes the ordered rules are deterministic for the
    word alone.
+
+
+---
+
+# Second pass — right-side lexical overrides, boundary matrix, Ukrainian/IPA consistency
+
+Code verified at `8c5b73e2` (commits after it are documentation only). Branch still
+local and unpushed; `main` and `origin/main` remained `70f7bdde` (0 commits ahead).
+Working tree and the diff against `main` contain no `__pycache__`/`.pyc` files.
+
+## Second-pass ledger
+
+| ID | Task | Status | Implementation | Evidence |
+|---|---|---|---|---|
+| R1 | Hypothesis: a lexical row for the **right** word undoes a boundary-changed onset | CONFIRMED on `70f7bdde`, DONE_VERIFIED on the branch | already covered by L1 (`8f336bce`), generalized here with tests | 11,736-phrase probe: baseline 236/236 changed right onsets (ㄴ→ㄹ) overwritten, branch 0; IPA level 0 non-lateral |
+| R2 | Hypothesis: a lexical row for a **middle** word undoes its coda changed by the next word | CONFIRMED on `70f7bdde`, DONE_VERIFIED on the branch | L4 (`6369fe74`) | baseline 182 middle-word coda overwrites, branch 0 |
+| R3 | Negative hypothesis: the right word's own coda / interior syllables are altered by a left boundary rule | NEGATIVE (verified) | none | interior 0 mismatches; the 180 first-nucleus differences come from 12 distinct rows (`쪄 쳐 져 희어 희망 씌어 틔어 띄어쓰기 쓸어 희떱다 늴리리 닁큼`: ㅕ→ㅓ after affricates, ㅢ→ㅣ) and every one of the 12 shows the same difference when the word is converted alone, so none is a boundary effect |
+| R4 | Boundary matrix regression test | DONE_VERIFIED | `tests/test_phrase_boundary_lexical_matrix.py` (20 tests) — `8c5b73e2` | red on `70f7bdde` (10 failed / 10 passed), green on the branch |
+| R5 | Browser: a lexical word's `ukrainian` text left stale after a phrase-pass IPA rewrite | CONFIRMED, DONE_VERIFIED | `engine_rules_phrase.js` `syncUkrainian` — `29e7aa16` | `tests/phrase-pass-ukrainian-follows-ipa.test.mjs` (red 4 of 5, then green); inconsistent Ukrainian over 3,834 resolved phrases 623 → 0 |
+| R6 | IPA → Ukrainian audit, Python side | PARTIAL | none | below |
+| R7 | Lexicon vs rule-path IPA audit | PARTIAL | none | below |
+| R8 | Classify the 10 residual parity cases | DONE_VERIFIED (classification), DEFERRED (behavior) | none | below |
+
+The oracle in R1–R4 is the repository's own ordered rule pipeline: it proves a
+lexical row no longer undoes a rule that already applied. It is an internal
+consistency check, not independent linguistic evidence; the rule outputs themselves
+rest on the official examples cited in the first pass.
+
+## R5 — the Ukrainian text must be a function of the final IPA
+
+The browser phrase pass rewrote a word's IPA and its per-syllable `trace.output` but
+not the word's aggregated `ukrainian` / `candidate_ukrainian`. For generic words the
+two agreed; for words served by a lexical row the Ukrainian came from the sourced
+IPA before the boundary change. Example on `70f7bdde`: `밥 꽃잎 나무` showed IPA
+`pap̚ k͈on.nim na.mu` and Ukrainian `пап кконніп наму`; `발 내복약` showed `pal lɛː…`
+with `небонняк`. Over 3,834 resolved phrases (every lexical word after `밥 발 책 한`,
+before `나무`, before `리본`) 623 (16%) were inconsistent. The helper updates the
+string only when the replaced edge text matches the old syllable output, so a
+non-matching string is left unchanged rather than guessed. Now 0 of 3,834.
+
+## R6 — Python IPA → Ukrainian
+
+- The Python adapter consumes the actual IPA string: for 3,912 phrases the
+  `ukrainian_orthography` equals `render_ipa_sequence_to_ukrainian(final IPA)` in all
+  3,762 cases where the adapter is available.
+- For the other 150 phrases (e.g. `밥 되어`, `밥 의견란`, `밥 주의`) the raw adapter
+  returns `unavailable / provisional_mapping_requires_review` because the IPA contains
+  `ɰ`, `ø`, `y` or `ɲ`, whose correspondences are unreviewed. The pipeline still
+  shows a **candidate** (`пап твео`) built from the lexical target reference, labeled
+  `lexical_target_reference_provisional`, with `target_status: unavailable` and
+  `selected_candidate_is_output_source: False`. This is the documented fail-closed
+  separation of candidate availability from an output the project may present as
+  confirmed (`IPA-PRODUCTION-PATH-AUDIT-2026-10-27`). Those 150 candidate strings are
+  not derivable from the IPA stage and are therefore not evidence for the adapter.
+- Ordinary words such as `한국어` and `사람` are withheld for the same reason
+  (`lexical_target_reference_provisional`): a candidate exists (`ганґуґо`, `сарам`),
+  the right to display it as confirmed does not. No allowlist was enabled.
+- Orthographic note found, not changed: `canonical_correspondence.csv` records that a
+  fortis onset is "preserved by doubling the Ukrainian consonant" (`кк`), while the
+  browser phrase pass comments state fortisness is not represented by doubling. The
+  convention needs a decision before an allowlist; recorded under Remaining work.
+
+## R7 — lexicon versus rule-path IPA (677 rows, single words 675)
+
+- Syllable counts: all rows consistent except `6·25` and `3·1절` (non-Hangul
+  characters, expected).
+- Bare stop-final syllables: 0 after the first-pass repair (was 4).
+- Lexical rows differing from the rule-only (unlicensed, fail-closed) pipeline:
+  250 equal; 320 segmental differences (mostly rules that stay unlicensed in strict
+  mode, so the sourced row supplies the attested form); 68 length only (the row
+  carries dictionary length the rule path never emits); 14 differ by `ɲ` (row) versus
+  `nj` (rule path) for ㄴ before a glide, e.g. `한여름 han.ɲʌ.ɾɯm` against rule-only
+  `han.njʌ.ɾɯm`. `KOREAN-IPA-CONVENTION-REVIEW-2026-10-26` lists `ɲ` versus `n` as an
+  open hypothesis, so this is an **unresolved convention discrepancy** (dataset rows
+  against the rule realization inside one broad profile); no diacritic or symbol was
+  added or removed. Both runtimes use the same rows, so it does not cause parity gaps.
+- Tone: none in the IPA contract (Korean); no tone marks exist in the data.
+
+## R8 — the 10 residual Python/browser IPA differences
+
+All ten are one phenomenon: a left word whose final coda is a neutralized ㄷ
+(from ㅅ/ㅆ/ㅈ/ㅊ/ㅌ) followed by a word beginning with ㄹ (`… 리본`).
+
+| Input | Python | Browser |
+|---|---|---|
+| 겉옷 리본 | `kʌ.dot̚ ɾi.bon` | `kʌ.don ni.bon` |
+| 꽃밭 리본 | `k͈ot̚.p͈at̚ ɾi.bon` | `k͈ot̚.p͈an ni.bon` |
+| 콩엿 리본 | `kʰoŋ.ɲʌt̚ ɾi.bon` | `kʰoŋ.ɲʌn ni.bon` |
+| 밤윷 리본 | `paːm.ɲut̚ ɾi.bon` | `paːm.ɲun ni.bon` |
+| 고갯짓 리본 | `ko.ɡɛ.tɕ͈it̚ ɾi.bon` | `ko.ɡɛ.tɕ͈in ni.bon` |
+| 베갯잇 리본 | `pe.ɡɛn.nit̚ ɾi.bon` | `pe.ɡɛn.nin ni.bon` |
+| 뒷윷 리본 | `tyːn.ɲut̚ ɾi.bon` | `tyːn.ɲun ni.bon` |
+| 물엿 리본 | `mul.ljʌt̚ ɾi.bon` | `mul.ljʌn ni.bon` |
+| 서른여섯 리본 | `sʌ.ɾɯn.ɲʌ.sʌt̚ ɾi.bon` | `sʌ.ɾɯn.ɲʌ.sʌn ni.bon` |
+| 스물여섯 리본 | `sɯ.mul.ljʌ.sʌt̚ ɾi.bon` | `sɯ.mul.ljʌ.sʌn ni.bon` |
+
+- **Location:** browser `src/app/engine_rules_phrase.js` (`rightOnset==='ㄹ'` with a
+  ㄷ-class left coda, rule label `project-inferred-d-liquid-nasalization`); Python makes
+  no cross-word change in this environment (observed output `ɾi.bon`; the pipeline
+  location was not traced further because the behavior is a policy difference).
+- **Type:** intended policy difference (project inference versus fail-closed).
+- **Evidence:** none official. The norm text in the repository does not contain
+  `몇 리`; the lexical row `몇 리[면니]` is a "rule-derived practical entry", and
+  `docs/korean-system-audit-report-2026-10.md` labels the browser step an inference.
+  The ten rows are consequences of one browser rule, not ten independent defects.
+- **Decision:** unchanged, as instructed — parity is not forced for its own sake.
+- Also unchanged and classified: the 7 typed abstentions (`닭은`, `흙은`, `끓이다`,
+  `먼 옛날`, `슬픈 얘기`, `여덟은`, `긁개`: Python exposes diagnostic IPA with a typed
+  unresolved status, the browser an empty IPA with `unresolved`, a documented contract
+  difference) and `만날 사람` (Python keeps source-backed `ː`, the phrase row has none;
+  unresolved linguistic uncertainty).
+
+## Second-pass verification (exact code state `8c5b73e2`)
+
+| Check | Result |
+|---|---|
+| `python -m pytest` | PASS — 852 passed, 0 failed |
+| `npm test` | PASS — 1,477 passed, 0 failed, 0 skipped |
+| `npm run check:ipa-target-data` | PASS |
+| `npm run audit:source-rights` / `audit:source-register` / `audit:nikl-test-index` | PASS — exit 0 each |
+| `npm run build` | PASS (chunk-size warning only) |
+| `python -m build --wheel` | PASS |
+| `scripts/generate_master_table.py` (with `PYTHONPATH=src`), `generate_korean_corpus.py --strict`, `build_test_case_register.py` | PASS — exit 0; generated outputs untracked, no drift in tracked files |
+| Runtime IPA parity audit | 450/458, 676/677, 3,250/3,260 equal; residual classified above |
+| Pinned UGTPHON token benchmark (both runtimes) vs `70f7bdde` | identical: 1,425/2,702 exact (0.527387), CER 0.09013 |
+| Official-example differential vs `70f7bdde` | Python +9 / 0 regressions; browser 0 / 0 (gold is pattern-extracted, see first pass) |
+| GitHub Actions on the branch | NOT RUN — branch not pushed (no credentials) |
+| Clean-install check (`npm install` then build; `pip` editable install not repeated) | PARTIAL — npm path PASS; the CI editable-install step was not reproduced |
+| Multi-engine competitor comparison, independent linguistic review | NOT RUN / NOT AVAILABLE |
+
+## Branch policy note
+
+`AGENTS.md` (item 7) designates `main` and forbids task branches unless the owner
+changes it; the owner's assignment explicitly requested this feature branch. The
+branch is a fast-forward of `main` with no shared-history rewrites, so integrating it
+into `main` later is a plain fast-forward. The master handoff's own history records
+task-specific branches with PRs (for example `fix/consistent-ukrainian-glyph-weight-2026-11-12`),
+which contradicts item 7 of `AGENTS.md`; the contradiction is recorded here and not
+resolved — that is an owner decision.
