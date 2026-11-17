@@ -1534,3 +1534,8 @@ The visual-mode task is software-verified and ready for merge. The broader produ
 - Verification: Python 852 passed; browser 1,477 passed; IPA target data current; source-rights, source-register, NIKL test-index, build, wheel, generated-artifact scripts passed; pinned UGTPHON token benchmark identical to `70f7bdde` in both runtimes.
 - Residual 10 IPA parity cases are one browser-only `project-inferred` ㄷ+ㄹ rule (classified, unchanged). Python target output stays fail-closed (unreviewed `ɰ`, `ø`, `y`, `ɲ` correspondences). Details: `docs/CROSS-WORD-LEXICAL-AND-RUNTIME-IPA-PARITY-AUDIT-2026-11-15.md` (second pass).
 - Not done: GitHub Actions, multi-engine re-run, independent adjudication, allowlist, fortis-doubling convention decision.
+
+
+## 2026-11-15 (third pass) — UGTPHON error-pattern analysis
+
+- `scripts/analyze_ugtphon_ko_errors.py` + `tests/test_ugtphon_error_analysis_relaxation.py`. Of 1,277 mismatched tokens (2,702 scored) 130 remain after a documented, conservative notation-equivalence table; the remainder are mostly NIKL-permitted variants (§4 붙임 ㅟ diphthong, §5 다만 4 non-initial 의) and reference convention (`̚`). One candidate real discrepancy, `장르` (loanword, engine applies §19), has no citable source here and was not changed. Status unchanged (partial research prototype). Details: third-pass section of `docs/CROSS-WORD-LEXICAL-AND-RUNTIME-IPA-PARITY-AUDIT-2026-11-15.md`.

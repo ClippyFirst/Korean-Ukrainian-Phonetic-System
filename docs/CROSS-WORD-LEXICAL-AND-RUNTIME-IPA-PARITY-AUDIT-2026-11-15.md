@@ -281,3 +281,66 @@ into `main` later is a plain fast-forward. The master handoff's own history reco
 task-specific branches with PRs (for example `fix/consistent-ukrainian-glyph-weight-2026-11-12`),
 which contradicts item 7 of `AGENTS.md`; the contradiction is recorded here and not
 resolved — that is an owner decision.
+
+
+---
+
+# Third pass — UGTPHON error-pattern analysis (Korean → IPA)
+
+Tool: `scripts/analyze_ugtphon_ko_errors.py` (reproducible; the Apache-2.0 corpus is
+downloaded to a temporary directory and not stored in the repository) with a validity
+test `tests/test_ugtphon_error_analysis_relaxation.py` (5 tests). Python runtime,
+single-token, pinned corpus `ef0d5a09…`. This is a diagnostic against an external
+narrower transcription, not a gold standard and not independent validation.
+
+| Quantity | Value |
+|---|---:|
+| Scored tokens | 2,702 |
+| Raw mismatched tokens (exact match 1,425 → 1,277 differ) | 1,277 |
+| Still different after the documented equivalence table | 130 (4.8% of scored) |
+
+**Raw confusions are dominated by notation, not phonology** (predicted → reference):
+`l → ɭ` 543, missing `ʰ` 450 (the reference writes weak aspiration on `s`/`ɕ` and
+fricative release such as `kx`/`kç`), `h → ɦ` 167, missing `ɕ` 198, `n → ɲ` 76.
+The equivalence table in the script (lateral/h-region/palatalized allophones,
+fricative-released aspiration read as aspiration, weak aspiration after fricatives)
+is an **analysis choice, not a claim of phonological identity**; it never relaxes
+aspiration on stops, fortis, voicing or `tɕʰ`. A first version of the table wrongly
+erased the aspiration of the affricate `tɕʰ` (ㅊ); the new unit test caught it and the
+table was corrected before any number was recorded.
+
+**The 130 residual tokens** (top residual operations, predicted vs reference):
+
+| Operation | Count | Reading |
+|---|---:|---|
+| `y` vs `ɥi` (ㅟ monophthong vs diphthong) | 38 | NIKL §4 [붙임] permits ㅚ/ㅟ as diphthongs; the engine emits the default monophthong. Variant, not an error |
+| unreleased marker `̚` present vs absent | 34 | reference omits `̚`; project broad profile keeps it. Convention |
+| `ɰ` present vs absent (non-initial 의) | 16 | NIKL §5 다만 4 permits non-initial 의 → [ㅣ] and particle 의 → [ㅔ]; the engine's default keeps `ɰi`. Variant |
+| `l` vs `ɾ` | 12 | includes `장르` (below) and ㄹ-coda realization differences |
+| vowel length `ː` | 9 | dictionary length marked by one side only |
+
+The §4/§5 passages were checked verbatim in the local `한국어 어문 규범.htm`.
+
+**Rule check on the productive §19/§20 liquid assimilations.** Of 23 distinct tokens
+with a coda followed by an ㄹ-onset syllable, the engine's assimilated surface
+(`논리 놀리`, `원래 월래`, `상류층 상뉴층`, `합리적 함니저기고`) agrees with the
+reference in every case except notation differences, with one exception below.
+
+**Single candidate real discrepancy — `장르`:** the engine applies §19 (ㅇ+ㄹ → ㅇㄴ)
+and returns `장느` (`tɕaŋ.nɯ`); the reference shows the unassimilated `ŋɾɯ`. The
+repository contains no source for the pronunciation of this loanword and the Korean
+Standard Language Dictionary is not reachable from this environment, so **no lexical
+entry or exception was added** (status BLOCKED on evidence, not a confirmed defect).
+Acceptance criterion: a citable dictionary or norm entry for the exact word, a
+regression test, and a lexical-row exception that does not narrow §19 for Sino-Korean
+words.
+
+Also unchanged by design and visible in the residual: `한국여자로` (the reference
+applies ㄴ-insertion `[한궁녀자로]`; the engine, without a license, does not),
+and multi-word tokens without spaces.
+
+Ledger: **A1** UGTPHON error-pattern tooling — DONE_VERIFIED (script, unit test).
+**A2** `장르` — BLOCKED (missing citable source). **A3** optional-variant exposure for
+ㅟ/ㅚ diphthong and non-initial 의 (alternative readings) — TODO: the engine emits one
+default reading; whether to expose NIKL-permitted alternatives in the IPA result is a
+product decision not made here.
