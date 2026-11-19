@@ -484,6 +484,51 @@ def _unlicensed_ambiguous_pronunciation_contexts(traces, final_items, *, lexicon
     return findings
 
 
+def _unlicensed_cross_word_vowel_contexts(items,phrase_matches,boundary_mode):
+    """Withhold `coda + vowel-initial next word` contexts that no exact entry licenses.
+
+    NIKL §13/§15: whether a final consonant resyllabifies into a following
+    vowel-initial word depends on formal versus substantive morpheme status, and
+    the norm's own phrase examples (밭 아래[바다래], 꽃 위[꼬뒤], 닭 앞에[다가페])
+    show liaison for substantive words. The default no-liaison reading is
+    therefore not a safe guess for unlisted pairs. Only phrase mode crosses word
+    boundaries; ㅇ codas never resyllabify. Only vowels the norm ties to the
+    ambiguity count: §15 ㅏㅓㅗㅜㅟ after obstruent codas, §29 ㅣㅑㅒㅕㅖㅛㅠ after any
+    consonant coda (ㄴ-insertion / palatalization). A pair inside an applied exact
+    phrase row, or one a rule already resolved (onset no longer ㅇ), is not a finding.
+    """
+    if boundary_mode!="phrase":
+        return []
+    covered=[(start,end) for start,end,_key,_entry in phrase_matches]
+    groups=_word_groups(items)
+    findings=[]
+    # §15 names these vowels for substantive words after an obstruent coda; §29
+    # names these for ㄴ-insertion (and §17 palatalization for ㅣ).
+    section_15_vowels={"ㅏ","ㅓ","ㅗ","ㅜ","ㅟ"}
+    section_29_vowels={"ㅣ","ㅑ","ㅒ","ㅕ","ㅖ","ㅛ","ㅠ"}
+    sonorant_codas={"ㄴ","ㅁ","ㄹ","ㄵ","ㄶ","ㄻ","ㄼ","ㄽ","ㄾ","ㅀ"}
+    for i in range(len(items)-1):
+        a,b=items[i],items[i+1]
+        if a.boundary_after!="word" or a.coda in ("","ㅇ") or b.onset!="ㅇ":
+            continue
+        triggers=section_29_vowels if a.coda in sonorant_codas else (section_15_vowels|section_29_vowels)
+        if b.nucleus not in triggers:
+            continue
+        if any(start<=i and i+1<end for start,end in covered):
+            continue
+        left=next(g for g in groups if g[0]<=i<g[1])
+        right=next(g for g in groups if g[0]<=i+1<g[1])
+        findings.append({
+            "rule_id":"R002",
+            "input_span":" ".join("".join(x.text for x in items[g[0]:g[1]]) for g in (left,right)),
+            "pair":f"{a.text}>{b.text}",
+            "reason":"cross-word vowel-initial liaison depends on a substantive/formal morpheme boundary (§13/§15)",
+            "source":"https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+            "status":"unresolved-no-exact-license",
+        })
+    return findings
+
+
 def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad",n_insertion_licensed=False,rule_licenses=None,morphology_mode="strict",include_research_lexical=True):
     _validate_korean_input(text)
     items=parse_syllables(text)
@@ -494,6 +539,7 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
     }
     # Decide phrase rows from the post-rule state, before any lexical mutation.
     phrase_matches=_lexical_phrase_matches(items,active_lexicon,boundary_mode)
+    cross_word_findings=_unlicensed_cross_word_vowel_contexts(items,phrase_matches,boundary_mode)
     coda_preservations=_cross_word_codas_to_preserve(
         items,boundary_mode=boundary_mode,
         rule_kwargs={"n_insertion_licensed":n_insertion_licensed,"rule_licenses":rule_licenses,"morphology_mode":morphology_mode})
@@ -502,6 +548,7 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
     ipa=_apply_lexical_ipa(items,realize_syllables(items,level=ipa_level),lexicon=active_lexicon,phrase_matches=phrase_matches)
     all_traces=[x.to_dict() for x in traces]+lexical_traces
     unresolved_contexts=_unlicensed_ambiguous_pronunciation_contexts(all_traces, items, lexicon=active_lexicon)
+    unresolved_contexts.extend(cross_word_findings)
     # A lexicon entry may have directly attested Korean surface Hangul while
     # its IPA rendering remains unreviewed. Do not let a lexical override
     # silently promote project-generated IPA to an accepted pronunciation.

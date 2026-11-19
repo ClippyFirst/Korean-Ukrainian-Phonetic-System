@@ -8,8 +8,10 @@ the browser runtime, and classifies every discrepancy. Writes a JSON report.
 
 Classification (rule-based, never silently forced to agree):
   equal                       identical IPA
-  abstention-representation   one side withholds IPA/typed-unresolved, other side
-                              exposes diagnostic IPA (documented contract)
+  abstention-representation   BOTH withhold; Python exposes flagged diagnostic IPA, the
+                              browser an empty IPA (documented contract)
+  python-withholds-browser-resolves / browser-withholds-python-resolves
+                              policy difference in what is withheld (not a representation difference)
   length-mark                 differ only by the length mark ː
   unreleased-mark             differ only by the unreleased diacritic ̚
   other                       needs manual classification (a candidate bug)
@@ -43,7 +45,13 @@ def build_inputs() -> dict[str, list[str]]:
     lexical = [k for k in LEXICAL_PRONUNCIATIONS if HANGUL.match(k)]
     single = [k for k in lexical if " " not in k]
     combos = [f"{w} {r}" for w in single for r in RIGHT_TRIGGERS]
-    return {"official": official, "lexicon": lexical, "phrase_combinations": combos}
+    # Exact multi-word rows must not capture the stem of a longer eojeol, and must
+    # behave the same inside a longer sentence (particle attached / words around).
+    phrase_rows = [k for k in lexical if " " in k]
+    embedded = ([f"{k}{p}" for k in phrase_rows for p in ("이", "을", "에", "은")]
+                + [f"다시 {k} 없다" for k in phrase_rows])
+    return {"official": official, "lexicon": lexical, "phrase_combinations": combos,
+            "phrase_rows_embedded": embedded}
 
 
 def python_result(text: str) -> dict:
@@ -57,8 +65,13 @@ def classify(py: dict, js: dict) -> str:
         return "other"
     if py["ipa"] == js["ipa"]:
         return "equal"
-    if py["unresolved"] or js["status"] == "unresolved" or not js["ipa"].strip():
-        return "abstention-representation"
+    js_withholds = js["status"] == "unresolved" or not js["ipa"].strip()
+    if py["unresolved"] and js_withholds:
+        return "abstention-representation"      # both withhold; only the diagnostic IPA differs
+    if py["unresolved"]:
+        return "python-withholds-browser-resolves"
+    if js_withholds:
+        return "browser-withholds-python-resolves"
     strip = lambda s, ch: s.replace(ch, "")
     if strip(py["ipa"], "ː") == strip(js["ipa"], "ː"):
         return "length-mark"
