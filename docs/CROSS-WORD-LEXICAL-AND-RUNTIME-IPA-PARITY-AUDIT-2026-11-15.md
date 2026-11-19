@@ -344,3 +344,131 @@ Ledger: **A1** UGTPHON error-pattern tooling — DONE_VERIFIED (script, unit tes
 ㅟ/ㅚ diphthong and non-initial 의 (alternative readings) — TODO: the engine emits one
 default reading; whether to expose NIKL-permitted alternatives in the IPA result is a
 product decision not made here.
+
+
+---
+
+# Fourth pass — open-question research, eojeol boundaries, Python refusal alignment
+
+Starting local SHA `80858b07`; code verified at `2a05d4f1`. Branch still local and
+unpushed; `origin/main` still `70f7bdde` (0 commits ahead). Open pull requests and
+workflow runs could **not** be checked: the unauthenticated GitHub API returned a rate
+limit error (status NOT CHECKED, not "none exist").
+
+## Code changes
+
+| ID | Change | Status | Commit | Evidence |
+|---|---|---|---|---|
+| B1 | Browser: exact multi-word lexical rows must cover complete eojeol (`갈 곳이` was `갈 곳` + `이`, IPA `k͈ot̚i`, a vowel directly after an unreleased stop) | DONE_VERIFIED | `482e9f00` | `tests/phrase-row-eojeol-boundary.test.mjs` red 2 of 4 → green; matches Python `kal ko.si` |
+| B2 | Browser: §27 fortis rewrite keeps the Ukrainian in step with the IPA; one pinned expectation (`읽을 수 있습니다`, IPA `s͈u` with `су` while `s͈ɯm` was `ссим` in the same string) corrected | DONE_VERIFIED | `23ccef3c` | Python already gave `ссу`; both runtimes now `ілґил ссу ітссимніда` |
+| B3 | Python phrase mode withholds unlicensed cross-word `coda + vowel-initial` contexts, limited to vowels the norm ties to the ambiguity | DONE_VERIFIED | `2a05d4f1` | `tests/test_phrase_cross_word_vowel_initial_unresolved.py` (30 tests; 8 red before) |
+
+**B3 rationale and consequence.** Python phrase mode answered `밭 위` with a confident
+`provisional` no-liaison reading, while the norm's own phrase examples for the same
+structure (밭 아래[바다래], 꽃 위[꼬뒤], 닭 앞에[다가페]) show liaison. The browser already
+withheld such pairs. Python now returns the same typed refusal (rule `R002`, status
+`unresolved-no-exact-license`, `target_status: unresolved`). The condition is
+deliberately narrow: §15 vowels `ㅏㅓㅗㅜㅟ` after obstruent codas, and §29 vowels
+`ㅣㅑㅒㅕㅖㅛㅠ` after any consonant coda (n-insertion/palatalization). `ㅇ` codas, open
+syllables, sonorant codas before other vowels (`나는 할 수는 없다`), obstruent codas
+before unlisted vowels (`한국 음식`), `same_word` mode, and exact phrase rows are
+unchanged. Initially a broader filter would have refused ordinary sentences; the tests
+for those sentences are the guard. **Policy consequence:** phrase-mode inputs such as
+`먼 옛날` are now diagnostic-only in Python. The browser still withholds only within
+one generic part, not across a lexical-row part boundary (`다시 만날 사람 없다`
+resolves there); that residual inconsistency is recorded, not changed.
+
+## Resolution of the open questions
+
+1. **`장르`.** The engine applies §19 (ㅇ+ㄹ → ㅇㄴ) and returns `장느`. English Wiktionary
+   (`wiktionary.com/wiki/장르`) gives `[t͡ɕa̠ŋnɯ]`, i.e. the engine's reading. No
+   authoritative dictionary entry for the word could be retrieved (the Korean Standard
+   Language Dictionary is not reachable here), so Wiktionary is a **secondary,
+   community** source. The UGTPHON reference `ŋɾɯ` is an utterance-level transcription.
+   Decision: no lexical exception. The earlier "candidate defect" is downgraded;
+   authoritative confirmation remains PARTIAL. Acceptance: a dictionary entry citing the
+   pronunciation, then either no change or a row-level exception with a test.
+2. **`ɲ` versus `nj`.** `docs/KOREAN-IPA-RUNTIME-PROFILE-CONTRACT-2026-10-27.md` and the
+   convention review treat `[ɲ]` as a **narrow, research-only** realization and keep the
+   broad profile as `n`+`j`. Scholarly transcription of n-insertion writes `[nj]`
+   (`[comnjak]`, `[tonnjaNmal]` in Jun 2015, *Phonology* 32, doi
+   10.1017/S0952675715000275). So `ɲ` is a **phonetic-realization / project-convention**
+   difference, not a different phonology. Erratum to the earlier pass: **25** lexical
+   rows contain `ɲ` (14 of them differ from the rule path), all in ㄴ-before-glide
+   environments; `ɲ` is `model-selected` in the target layer (`KUA-IPA-010/011/012/022-024`),
+   not unreviewed. Nothing was normalized: rewriting the rows to `nj` would change
+   target-layer availability and needs an owner decision. Acceptance: decide whether
+   lexical IPA is broad-only; if so convert the 25 rows with provenance, regenerate the
+   target data and re-run the parity audit.
+3. **Length in `만날 사람`.** NIKL §6 distinguishes vowel length and realizes it in the
+   **first syllable of a word** (verified in the local norm text); `사람` is attested
+   `[사ː람]` and the 2026-11-01 decision retains source-backed length. The norm prints
+   its phrase examples without length (`만날 사람[만날싸람]`) and states no phrase-level
+   shortening rule. Two phrase rows (`만날 사람`, `넋 없다`) omit their component's
+   lemma length. Python keeps lemma length; the phrase rows do not. Unresolved, no change.
+4. **Fortis doubling.** `canonical_correspondence.csv` maps IPA fortis to a doubled
+   Ukrainian consonant (`k͈` → `кк`, `s͈` → `сс`). Ukrainian has no fortis series, so this
+   is a **practical adapter convention**, not a phonetic reproduction. Both runtimes
+   applied it consistently in every tested path; a stale browser comment claiming the
+   opposite was corrected, and B2 closes the one path that changed IPA without output.
+5. **`ㅟ` and `의`.** Verified in the local norm text: §4 [붙임] permits `ㅚ ㅟ` as
+   diphthongs; §5 다만 4 permits non-initial `의` → `[ㅣ]` and particle `의` → `[ㅔ]`
+   (`강의의[강ː의의/강ː이에]`). The engine emits one default reading. Alternatives are not
+   represented in the IPA result; this is a product decision (TODO), and the UGTPHON
+   residual operations for these are classified as normative variants.
+6. **The 10 parity cases.** One browser-only `project-inferred` ㄷ+ㄹ rule; see the table
+   above. No official cross-word ㄷ+ㄹ example exists; unchanged.
+7. **The 7 typed refusals.** Five (`닭은 흙은 끓이다 여덟은 긁개`) are consistent: both
+   runtimes withhold for the same rule family (§§13–15 liaison, §12(4) ㅎ deletion, §11
+   ㄺ+ㄱ) and differ only in representation (flagged diagnostic IPA versus empty IPA).
+   Two (`먼 옛날`, `슬픈 얘기`) were a **real policy difference** (browser withheld,
+   Python resolved) and are aligned by B3.
+8. **IPA → Ukrainian unavailable cases.** Per `data/korean/ipa_target_overrides.csv` the
+   150 withheld phrase cases come from three explicit `provisional` overrides:
+   `ɰi` → `ий` (KUA-IPA-025, "only render when the upstream IPA has passed its
+   pronunciation-adjudication gate"), `ø` → `ве` (026) and `y` → `ві` (027, "retain
+   provisional status": `y` is a monophthong distinct from the sequence `wi`). `ɲ` is not
+   among them. `ɥi` and `ʑ` are unmapped. The provisional candidates stay withheld.
+   Acceptance: independent adjudication of the target choice per segment, then an
+   allowlist entry with a regression test.
+9. **UGTPHON.** Normative variants (§4/§5), notation (`̚`, `ɭ`, `ɦ`) and candidate real
+   errors stay separate; see the third pass. No numbers changed.
+
+## Supporting sources used (secondary unless stated)
+
+NIKL norm text, local `한국어 어문 규범.htm` (§4 [붙임], §5 다만 4, §6; primary).
+Jun, J. (2015), "Korean n-insertion: a mismatch between data and learning",
+*Phonology* 32 (doi 10.1017/S0952675715000275): n-insertion is variable and occurs at
+a juncture before a high front vocoid; phrase junctures such as `/han#il/ [hannil]`
+are given (peer-reviewed; read from the publisher abstract/excerpts). English Wikipedia
+"Help:IPA/Korean" and the ASHA summary of Shin, Kiaer & Cha (2012), *The Sounds of
+Korean*, state that obstruents are voiceless phrase-/word-initially (consistent with the
+documented broad convention behind L7). English Wiktionary `장르` (secondary).
+
+## Verification (exact code state `2a05d4f1`; later commits documentation only)
+
+| Check | Result |
+|---|---|
+| `python -m pytest` (with `g2pk==0.9.4`) | PASS — 887 passed, 0 failed |
+| `npm test` | PASS — 1,481 passed, 0 failed, 0 skipped |
+| `npm run check:ipa-target-data` | PASS |
+| `audit:source-rights`, `audit:source-register`, `audit:nikl-test-index` | PASS — exit 0 each |
+| `npm run build` | PASS |
+| `python -m build --wheel`, then clean venv install of the wheel and a smoke run | PASS (phrase result, Ukrainian output and refusal behave as in the tree) |
+| `generate_master_table.py` (with `PYTHONPATH=src`), `generate_korean_corpus.py --strict`, `build_test_case_register.py` | PASS — exit 0, no drift in tracked files (generated `data/derived/` is untracked and was removed) |
+| Runtime IPA parity audit (4,520 inputs) | official 450/458, lexicon 676/677, combinations 3,250/3,260, embedded phrase rows 80/125; remaining: 47 both-withhold representation differences, 10+4 browser-only ㄷ+ㄹ, 3 length-mark entries (all `만날 사람`); 0 one-sided policy differences |
+| Pinned UGTPHON token benchmark, both runtimes, vs `70f7bdde` | identical: 1,425/2,702 exact (0.527387), CER 0.09013 |
+| Official-example differential vs `70f7bdde` | Python 418 vs 409 exact on `70f7bdde` (+9 fixed items, 0 regressions); browser unchanged at 417 (same extractor, both trees) |
+| GitHub Actions, open PRs | NOT RUN / NOT CHECKED — branch unpushed; unauthenticated API rate-limited |
+| `npm ci` clean install | NOT RUN — no `package-lock.json` is tracked; `npm install` path passed |
+| Multi-engine competitor comparison, independent linguistic review | NOT RUN / NOT AVAILABLE |
+
+## Remaining work
+
+1. Push the branch and obtain exact-head Actions evidence (blocker: credentials).
+2. Owner decisions: lexical IPA broad-only (`ɲ` rows), phrase-internal vowel length,
+   exposure of normative alternatives (`ㅟ`, `의`), target allowlist for `ɰi ø y`.
+3. Authoritative dictionary confirmation for `장르`.
+4. Make the browser's cross-word refusal consistent across lexical-row part boundaries,
+   or document it as intended (current behavior recorded).
+5. Curated official-example gold, multi-engine re-run, independent review.

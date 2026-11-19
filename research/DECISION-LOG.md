@@ -198,3 +198,13 @@ Record consequential linguistic, data, architecture, testing, licensing, and rel
 - **Open (not decided):** the fortis-onset convention (`canonical_correspondence.csv` doubles the Ukrainian consonant; browser phrase-pass comments say fortisness is not doubled) and the `ɲ` versus `nj` realization for ㄴ before a glide (14 lexical rows use `ɲ`, the rule path `nj`).
 - **Consequences:** no new rule; the 10 residual parity differences stay classified as one browser-only project inference.
 - **Revisit when:** an independent target review or allowlist decision is made.
+
+
+## 2026-11-15 (fourth pass) — unlicensed cross-word vowel-initial contexts are withheld in both runtimes
+
+- **Question:** should Python phrase mode return a confident reading for `coda + vowel-initial next word` when no exact entry licenses the pair?
+- **Evidence:** the norm's own phrase examples show liaison for substantive words (밭 아래[바다래], 꽃 위[꼬뒤], 닭 앞에[다가페]); §15 names `ㅏㅓㅗㅜㅟ` for obstruent codas; §29 names `ㅣㅑㅒㅕㅖㅛㅠ` (n-insertion is variable, Jun 2015); the browser already withheld such pairs.
+- **Decision:** Python phrase mode withholds exactly those pairs (rule `R002`, `unresolved-no-exact-license`); ㅇ codas, open syllables, other vowels after sonorant codas, `same_word` mode and exact phrase rows are unchanged. Exact phrase rows in both runtimes must cover complete eojeol. The Ukrainian text follows the IPA after every phrase-pass rewrite; fortis doubling is a practical adapter convention.
+- **Not decided:** `ɲ` rows in the broad lexicon, phrase-internal vowel length, exposure of normative alternatives (`ㅟ`, `의`), allowlist for `ɰi ø y`.
+- **Consequences:** some phrase-mode inputs that previously showed a provisional guess are now diagnostic-only; same-word inputs are unaffected.
+- **Revisit when:** a source states cross-word liaison for these environments or prosodic phrasing is modeled.

@@ -24,6 +24,15 @@
     "equal": 3250,
     "other": 10
    }
+  },
+  "phrase_rows_embedded": {
+   "inputs": 125,
+   "classes": {
+    "equal": 80,
+    "abstention-representation": 40,
+    "other": 4,
+    "length-mark": 1
+   }
   }
  },
  "discrepancies": [
@@ -102,8 +111,8 @@
    "python": {
     "surface": "먼옌날",
     "ipa": "mʌn jen.nal",
-    "status": "provisional",
-    "unresolved": false
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
    },
    "browser": {
     "surface": "먼 옌날",
@@ -119,8 +128,8 @@
    "python": {
     "surface": "슬픈얘기",
     "ipa": "sɯl.pʰɯn jɛ.ɡi",
-    "status": "provisional",
-    "unresolved": false
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
    },
    "browser": {
     "surface": "슬픈 얘기",
@@ -346,6 +355,771 @@
    "browser": {
     "surface": "스물려섣 ",
     "ipa": "sɯ.mul.ljʌ.sʌn ni.bon",
+    "status": "resolved",
+    "issues": 0
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "밭 아래이",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "받아래이",
+    "ipa": "pat̚ a.ɾɛ.i",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "받 아래이",
+    "ipa": " ɾɛ.i",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "밭 아래을",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "받아래을",
+    "ipa": "pat̚ a.ɾɛ.ɯl",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "받 아래을",
+    "ipa": " ɾɛ.ɯl",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "밭 아래에",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "받아래에",
+    "ipa": "pat̚ a.ɾɛ.e",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "받 아래에",
+    "ipa": " ɾɛ.e",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "밭 아래은",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "받아래은",
+    "ipa": "pat̚ a.ɾɛ.ɯn",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "받 아래은",
+    "ipa": " ɾɛ.ɯn",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "늪 앞이",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "늡아피",
+    "ipa": "nɯp̚ a.pʰi",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "늡 아피",
+    "ipa": " pʰi",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "늪 앞을",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "늡아플",
+    "ipa": "nɯp̚ a.pʰɯl",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "늡 아플",
+    "ipa": " pʰɯl",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "늪 앞에",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "늡아페",
+    "ipa": "nɯp̚ a.pʰe",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "늡 아페",
+    "ipa": " pʰe",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "늪 앞은",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "늡아픈",
+    "ipa": "nɯp̚ a.pʰɯn",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "늡 아픈",
+    "ipa": " pʰɯn",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "꽃 위이",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "꼳위이",
+    "ipa": "k͈ot̚ y.i",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "꼳 위이",
+    "ipa": " i",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "꽃 위을",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "꼳위을",
+    "ipa": "k͈ot̚ y.ɯl",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "꼳 위을",
+    "ipa": " ɯl",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "꽃 위에",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "꼳위에",
+    "ipa": "k͈ot̚ y.e",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "꼳 위에",
+    "ipa": " e",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "꽃 위은",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "꼳위은",
+    "ipa": "k͈ot̚ y.ɯn",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "꼳 위은",
+    "ipa": " ɯn",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "넋 없다이",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "넉업따이",
+    "ipa": "nʌk̚ ʌp̚.t͈a.i",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "넉 업따이",
+    "ipa": " t͈a.i",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "넋 없다을",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "넉업따을",
+    "ipa": "nʌk̚ ʌp̚.t͈a.ɯl",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "넉 업따을",
+    "ipa": " t͈a.ɯl",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "넋 없다에",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "넉업따에",
+    "ipa": "nʌk̚ ʌp̚.t͈a.e",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "넉 업따에",
+    "ipa": " t͈a.e",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "넋 없다은",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "넉업따은",
+    "ipa": "nʌk̚ ʌp̚.t͈a.ɯn",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "넉 업따은",
+    "ipa": " t͈a.ɯn",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "닭 앞에이",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "닥아페이",
+    "ipa": "tak̚ a.pʰe.i",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "닥 아페이",
+    "ipa": " pʰe.i",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "닭 앞에을",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "닥아페을",
+    "ipa": "tak̚ a.pʰe.ɯl",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "닥 아페을",
+    "ipa": " pʰe.ɯl",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "닭 앞에에",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "닥아페에",
+    "ipa": "tak̚ a.pʰe.e",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "닥 아페에",
+    "ipa": " pʰe.e",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "닭 앞에은",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "닥아페은",
+    "ipa": "tak̚ a.pʰe.ɯn",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "닥 아페은",
+    "ipa": " pʰe.ɯn",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "몇 리이",
+   "class": "other",
+   "python": {
+    "surface": "멷리이",
+    "ipa": "mjʌt̚ ɾi.i",
+    "status": "provisional",
+    "unresolved": false
+   },
+   "browser": {
+    "surface": "면 니이",
+    "ipa": "mjʌn ni.i",
+    "status": "resolved",
+    "issues": 0
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "몇 리을",
+   "class": "other",
+   "python": {
+    "surface": "멷리을",
+    "ipa": "mjʌt̚ ɾi.ɯl",
+    "status": "provisional",
+    "unresolved": false
+   },
+   "browser": {
+    "surface": "면 니을",
+    "ipa": "mjʌn ni.ɯl",
+    "status": "resolved",
+    "issues": 0
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "몇 리에",
+   "class": "other",
+   "python": {
+    "surface": "멷리에",
+    "ipa": "mjʌt̚ ɾi.e",
+    "status": "provisional",
+    "unresolved": false
+   },
+   "browser": {
+    "surface": "면 니에",
+    "ipa": "mjʌn ni.e",
+    "status": "resolved",
+    "issues": 0
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "몇 리은",
+   "class": "other",
+   "python": {
+    "surface": "멷리은",
+    "ipa": "mjʌt̚ ɾi.ɯn",
+    "status": "provisional",
+    "unresolved": false
+   },
+   "browser": {
+    "surface": "면 니은",
+    "ipa": "mjʌn ni.ɯn",
+    "status": "resolved",
+    "issues": 0
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "한 일이",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "한이리",
+    "ipa": "han i.ɾi",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "한 이리",
+    "ipa": " ɾi",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "한 일을",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "한이를",
+    "ipa": "han i.ɾɯl",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "한 이를",
+    "ipa": " ɾɯl",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "한 일에",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "한이레",
+    "ipa": "han i.ɾe",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "한 이레",
+    "ipa": " ɾe",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "한 일은",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "한이른",
+    "ipa": "han i.ɾɯn",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "한 이른",
+    "ipa": " ɾɯn",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "옷 입다이",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "옫입따이",
+    "ipa": "ot̚ ip̚.t͈a.i",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "옫 입따이",
+    "ipa": " t͈a.i",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "옷 입다을",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "옫입따을",
+    "ipa": "ot̚ ip̚.t͈a.ɯl",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "옫 입따을",
+    "ipa": " t͈a.ɯl",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "옷 입다에",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "옫입따에",
+    "ipa": "ot̚ ip̚.t͈a.e",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "옫 입따에",
+    "ipa": " t͈a.e",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "옷 입다은",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "옫입따은",
+    "ipa": "ot̚ ip̚.t͈a.ɯn",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "옫 입따은",
+    "ipa": " t͈a.ɯn",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "먹은 엿이",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "머근여시",
+    "ipa": "mʌ.ɡɯn jʌ.si",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "머근 여시",
+    "ipa": "mʌ si",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "먹은 엿을",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "머근여슬",
+    "ipa": "mʌ.ɡɯn jʌ.sɯl",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "머근 여슬",
+    "ipa": "mʌ sɯl",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "먹은 엿에",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "머근여세",
+    "ipa": "mʌ.ɡɯn jʌ.se",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "머근 여세",
+    "ipa": "mʌ se",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "먹은 엿은",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "머근여슨",
+    "ipa": "mʌ.ɡɯn jʌ.sɯn",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "머근 여슨",
+    "ipa": "mʌ sɯn",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "잘 입다이",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "잘입따이",
+    "ipa": "tɕal ip̚.t͈a.i",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "잘 입따이",
+    "ipa": " t͈a.i",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "잘 입다을",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "잘입따을",
+    "ipa": "tɕal ip̚.t͈a.ɯl",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "잘 입따을",
+    "ipa": " t͈a.ɯl",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "잘 입다에",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "잘입따에",
+    "ipa": "tɕal ip̚.t͈a.e",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "잘 입따에",
+    "ipa": " t͈a.e",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "잘 입다은",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "잘입따은",
+    "ipa": "tɕal ip̚.t͈a.ɯn",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "잘 입따은",
+    "ipa": " t͈a.ɯn",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "먹을 엿이",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "머글여시",
+    "ipa": "mʌ.ɡɯl jʌ.si",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "머글 여시",
+    "ipa": "mʌ si",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "먹을 엿을",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "머글여슬",
+    "ipa": "mʌ.ɡɯl jʌ.sɯl",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "머글 여슬",
+    "ipa": "mʌ sɯl",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "먹을 엿에",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "머글여세",
+    "ipa": "mʌ.ɡɯl jʌ.se",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "머글 여세",
+    "ipa": "mʌ se",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "먹을 엿은",
+   "class": "abstention-representation",
+   "python": {
+    "surface": "머글여슨",
+    "ipa": "mʌ.ɡɯl jʌ.sɯn",
+    "status": "diagnostic_only_unresolved_pronunciation",
+    "unresolved": true
+   },
+   "browser": {
+    "surface": "머글 여슨",
+    "ipa": "mʌ sɯn",
+    "status": "unresolved",
+    "issues": 1
+   }
+  },
+  {
+   "group": "phrase_rows_embedded",
+   "input": "다시 만날 사람 없다",
+   "class": "length-mark",
+   "python": {
+    "surface": "다시만날싸람업따",
+    "ipa": "ta.si man.nal s͈aː.ɾam ʌːp̚.t͈a",
+    "status": "provisional",
+    "unresolved": false
+   },
+   "browser": {
+    "surface": " 만날싸람 업따",
+    "ipa": "ta.si man.nal s͈a.ɾam ʌːp̚.t͈a",
     "status": "resolved",
     "issues": 0
    }

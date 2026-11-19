@@ -1744,3 +1744,8 @@ Five engine corrections on branch `feature/kozak-kim-phonetic-accuracy-advanceme
 ## 2026-11-15 (second pass)
 
 Right-side and middle-word lexical overrides, a boundary matrix test, and browser Ukrainian/IPA consistency were verified and fixed on the unpushed branch (`29e7aa16`, `8c5b73e2`). See the "Second pass" section of [CROSS-WORD-LEXICAL-AND-RUNTIME-IPA-PARITY-AUDIT-2026-11-15.md](CROSS-WORD-LEXICAL-AND-RUNTIME-IPA-PARITY-AUDIT-2026-11-15.md). Status remains a partial research prototype.
+
+
+## 2026-11-15 (fourth pass)
+
+Eojeol-boundary, fortis/Ukrainian consistency and Python cross-word refusal fixes verified on the unpushed branch (`482e9f00`, `23ccef3c`, `2a05d4f1`); open questions researched with no behavior change. See the "Fourth pass" section of [CROSS-WORD-LEXICAL-AND-RUNTIME-IPA-PARITY-AUDIT-2026-11-15.md](CROSS-WORD-LEXICAL-AND-RUNTIME-IPA-PARITY-AUDIT-2026-11-15.md). Status remains a partial research prototype.

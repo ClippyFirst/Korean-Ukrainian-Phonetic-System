@@ -1855,3 +1855,10 @@ The browser research engine now distinguishes three levels by confidence/coverag
 - **Status:** PARTIAL (unchanged). Left, right and middle-word lexical-override defects are `DONE_VERIFIED` as software contracts on the local tree; the 20-test boundary matrix is red on `70f7bdde` and green on the branch. The browser Ukrainian text now follows the phrase-pass IPA (`29e7aa16`).
 - **Local evidence at `8c5b73e2` (no GitHub Actions):** Python 852 passed; browser 1,477 passed; target data, three audits, build, wheel and generated-artifact scripts exit 0; pinned UGTPHON token diagnostic identical to `70f7bdde` in both runtimes.
 - **Still open:** exact-head GitHub Actions, independent IPA adjudication and target allowlist, multi-engine re-run, fortis-doubling and `ɲ`/`nj` convention decisions, phrase-internal vowel length.
+
+
+## 2026-11-15 (fourth pass) — checkpoint
+
+- **Status:** PARTIAL (unchanged). Browser eojeol-boundary and fortis/Ukrainian consistency fixes and the Python cross-word refusal are `DONE_VERIFIED` as software contracts (`482e9f00`, `23ccef3c`, `2a05d4f1`).
+- **Local evidence at `2a05d4f1` (no GitHub Actions):** Python 887 passed; browser 1,481 passed; target data, three audits, build, wheel, clean-wheel smoke test and generators exit 0; UGTPHON token diagnostic identical to `70f7bdde`; runtime parity has no one-sided policy differences left.
+- **Still open:** exact-head Actions, owner decisions (`ɲ` rows, length, alternatives, allowlist), authoritative `장르` entry, independent review, multi-engine re-run.

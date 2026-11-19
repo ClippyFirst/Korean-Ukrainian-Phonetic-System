@@ -1539,3 +1539,12 @@ The visual-mode task is software-verified and ready for merge. The broader produ
 ## 2026-11-15 (third pass) — UGTPHON error-pattern analysis
 
 - `scripts/analyze_ugtphon_ko_errors.py` + `tests/test_ugtphon_error_analysis_relaxation.py`. Of 1,277 mismatched tokens (2,702 scored) 130 remain after a documented, conservative notation-equivalence table; the remainder are mostly NIKL-permitted variants (§4 붙임 ㅟ diphthong, §5 다만 4 non-initial 의) and reference convention (`̚`). One candidate real discrepancy, `장르` (loanword, engine applies §19), has no citable source here and was not changed. Status unchanged (partial research prototype). Details: third-pass section of `docs/CROSS-WORD-LEXICAL-AND-RUNTIME-IPA-PARITY-AUDIT-2026-11-15.md`.
+
+
+## 2026-11-15 (fourth pass) — open-question research, eojeol boundaries, refusal alignment
+
+- Start `80858b07`, code verified at `2a05d4f1`; local branch, unpushed; `origin/main` `70f7bdde`. Open PRs/workflows NOT CHECKED (unauthenticated API rate limit).
+- Fixed: browser exact phrase rows now cover complete eojeol (`482e9f00`); browser §27 fortis rewrite keeps Ukrainian in step with IPA (`23ccef3c`; one pinned expectation corrected with rationale); Python phrase mode withholds unlicensed cross-word `coda + vowel-initial` contexts for norm-named vowels (`2a05d4f1`), aligning the two runtimes' refusals.
+- Researched, no behavior change: `장르` (engine matches Wiktionary; no authoritative entry found), `ɲ` vs `nj` (25 lexical rows use the narrow symbol; owner decision), length in `만날 사람` (§6 first-syllable principle; unresolved), fortis doubling (practical adapter convention), `ㅟ`/`의` (normative variants, alternatives not exposed), 10 parity cases and 5 of 7 refusals (classified), unavailable targets (explicit `provisional` overrides for `ɰi ø y`; `ɲ` is model-selected).
+- Verification at `2a05d4f1`: Python 887 passed; browser 1,481 passed; audits, build, wheel and clean-wheel smoke test passed; UGTPHON identical to `70f7bdde`. Status unchanged: partial research prototype. Details: fourth-pass section of `docs/CROSS-WORD...`
+
