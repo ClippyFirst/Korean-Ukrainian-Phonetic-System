@@ -92,7 +92,11 @@ test('값의 exposes both standard particle readings under NIKL §§5 and 14', (
 
 test('§27 fortition survives mixed lexical/generic tokenization in 읽을 수 있습니다', () => {
   const result = engine.convert('읽을 수 있습니다');
-  assert.equal(result.ukrainian, 'ілґил су ітссимніда');
+  // The Ukrainian follows the IPA: IPA [s͈u] maps to `ссу` through the canonical
+  // correspondence (s͈ → сс), exactly as [s͈ɯm] in the same string maps to `ссим`.
+  // This test previously pinned `су` for [s͈u], an IPA/Ukrainian inconsistency left by
+  // the §27 rewrite, which changed the IPA but not the syllable output.
+  assert.equal(result.ukrainian, 'ілґил ссу ітссимніда');
   assert.equal(result.ipa, 'il.ɡɯl s͈u it̚.s͈ɯm.ni.da');
   assert.equal(result.issues.length, 0);
   assert.equal(result.status, 'lexical-review');

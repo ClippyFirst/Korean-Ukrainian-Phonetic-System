@@ -57,9 +57,11 @@ export function applyPhraseBoundaryAssimilation(results,parts,map){
     return true;
   };
 
-  // NIKL §27 fortisness is not represented by doubling Ukrainian letters,
-  // but the IPA must retain it. Apply only to exact licensed eojeol pairs;
-  // this also covers mixed lexical/generic phrases split by the browser adapter.
+  // NIKL §27 fortition. The IPA must retain it, and the Ukrainian follows the IPA
+  // through the project's canonical correspondence (k͈ → кк, s͈ → сс, a practical
+  // doubling convention, not a phonetic reproduction: Ukrainian has no fortis
+  // series). Apply only to exact licensed eojeol pairs; this also covers mixed
+  // lexical/generic phrases split by the browser adapter.
   const rewriteFortisOnset=(result,onset,rule)=>{
     const ipaPairs={
       'ㄱ':['k','k͈'],'ㄷ':['t','t͈'],'ㅂ':['p','p͈'],
@@ -68,8 +70,11 @@ export function applyPhraseBoundaryAssimilation(results,parts,map){
     const pair=ipaPairs[onset];
     const trace=firstTrace(result);
     if(!pair||!trace||!result.ipa.startsWith(pair[0])||!trace.ipa.startsWith(pair[0]))return false;
+    const previousOutput=trace.output;
     result.ipa=pair[1]+result.ipa.slice(pair[0].length);
     trace.ipa=pair[1]+trace.ipa.slice(pair[0].length);
+    trace.output=ipaSyllableToUkrainian(trace.ipa).text;
+    syncUkrainian(result,previousOutput,trace.output,'start');
     addRule(trace,rule);
     return true;
   };
