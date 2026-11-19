@@ -48,10 +48,26 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     const mixedKeys=[...lexicon.keys()].filter(key=>/[^가-힣]/u.test(key)).sort((a,b)=>b.length-a.length);
     const parts=[];
     let cursor=0;
+    // A multi-word (or mixed-script) lexical row attests complete eojeol. Do not
+    // let it capture the stem of a longer eojeol (`갈 곳이` is not `갈 곳` + `이`):
+    // the leftover particle would be converted apart from its stem and lose §13
+    // liaison. Boundary checks apply only on a side where the key itself is Hangul.
+    const isSyllable=ch=>ch!==undefined&&/[가-힣]/u.test(ch);
+    const keyFits=(key,position)=>{
+      if(/^[가-힣]/u.test(key)&&isSyllable(text[position-1]))return false;
+      if(/[가-힣]$/u.test(key)&&isSyllable(text[position+key.length]))return false;
+      return true;
+    };
+    const firstFit=(key,from)=>{
+      for(let position=text.indexOf(key,from);position>=0;position=text.indexOf(key,position+1)){
+        if(keyFits(key,position))return position;
+      }
+      return -1;
+    };
     while(cursor<text.length){
-      const exactKey=mixedKeys.find(key=>text.startsWith(key,cursor));
+      const exactKey=mixedKeys.find(key=>text.startsWith(key,cursor)&&keyFits(key,cursor));
       if(exactKey){parts.push(exactKey);cursor+=exactKey.length;continue;}
-      const nextKeyPositions=mixedKeys.map(key=>text.indexOf(key,cursor)).filter(position=>position>=0);
+      const nextKeyPositions=mixedKeys.map(key=>firstFit(key,cursor)).filter(position=>position>=0);
       const nextKey=nextKeyPositions.length?Math.min(...nextKeyPositions):text.length;
       const segment=text.slice(cursor,nextKey);
       parts.push(...(segment.match(/(?:\[[ㄱ-ㅎㅏ-ㅣ]\]|[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+[가-힣]+(?:[\s\p{P}]+[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+[\s\p{P}]*[가-힣]+)+|[가-힣]+(?:과|와)\s+[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+|[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+(?:[\s\p{P}]+[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+)*[\s\p{P}]*[가-힣]+|[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+|[가-힣]+|[^가-힣ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+)/gu)||[]));
