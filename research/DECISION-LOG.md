@@ -208,3 +208,11 @@ Record consequential linguistic, data, architecture, testing, licensing, and rel
 - **Not decided:** `ɲ` rows in the broad lexicon, phrase-internal vowel length, exposure of normative alternatives (`ㅟ`, `의`), allowlist for `ɰi ø y`.
 - **Consequences:** some phrase-mode inputs that previously showed a provisional guess are now diagnostic-only; same-word inputs are unaffected.
 - **Revisit when:** a source states cross-word liaison for these environments or prosodic phrasing is modeled.
+
+### DEC-2026-BROWSER-REFUSAL-ALIGN-001 — Cross-word vowel-liaison refusal parity
+- Date: 2026-11-21
+- Status: accepted (implementation)
+- Context: Browser previously refused any coda+ㅇ; Python used §15/§29 vowel sets.
+- Decision: Narrowed browser `engine_rules_ctx.js` to the same trigger sets as Python `_unlicensed_cross_word_vowel_contexts`. Exact phrase rows remain resolved.
+- Validation: manual cases (먼 옛날 unresolved; 한국 음식 / 만날 사람 없다 resolved). Full suite re-run pending.
+- Revisit: if new official cross-word examples appear.
