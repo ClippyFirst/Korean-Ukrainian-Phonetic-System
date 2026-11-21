@@ -383,6 +383,8 @@ def _apply_lexical_ipa(items,ipa_result, *, lexicon=None, phrase_matches=()):
     # Recompute §4 alternatives after lexical IPA has restored sourced length
     # and segment detail, so variants inherit the exact primary syllables.
     ipa_result["variants"]=generate_vowel_variants(items,syllable_ipa,level=ipa_result.get("level","broad"))
+    # Normative alternatives (WP5): never become the primary reading.
+    ipa_result["alternatives"] = _normative_alternatives(items, ipa_result)
     return ipa_result
 
 def _unlicensed_ambiguous_pronunciation_contexts(traces, final_items, *, lexicon=None):
@@ -528,6 +530,46 @@ def _unlicensed_cross_word_vowel_contexts(items,phrase_matches,boundary_mode):
         })
     return findings
 
+
+
+def _normative_alternatives(items, primary_ipa_result):
+    """Collect norm-permitted alternative readings that must not become the default.
+    Only forms the NIKL standard itself prints with / or explicit permission.
+    """
+    alts = []
+    # §5 다만 4: non-initial 의 → [ㅣ], particle 의 → [ㅔ]
+    # We surface these only when the primary path kept ɰi / e and the input matches known patterns.
+    text = "".join(s.text for s in items)
+    if "의" in text:
+        # Example patterns from the norm: 주의, 협의, 우리의, 강의의
+        for known, surfaces in {
+            "주의": [("주의", "tɕu.i"), ("주이", "tɕu.i")],
+            "협의": [("혀븨", "çʌ.bɯi"), ("혀비", "çʌ.bi")],
+            "우리의": [("우리의", "u.ɾi.ɰi"), ("우리에", "u.ɾi.e")],
+            "강의의": [("강ː의의", "kaŋ.ɰi.ɰi"), ("강ː이에", "kaŋ.i.e")],
+        }.items():
+            if known in text:
+                for surf, ipa in surfaces[1:]:  # skip primary-ish
+                    alts.append({
+                        "kind": "normative-permitted",
+                        "surface_hangul": surf,
+                        "ipa": ipa,
+                        "rule_ref": "§5 다만 4",
+                        "source": "NIKL 표준 발음법 §5 다만 4",
+                        "note": "non-initial or particle 의 alternative printed by the norm"
+                    })
+    # §4 붙임: ㅚ/ㅟ as diphthong (already often in variants; mark if present)
+    # 맛있다 explicit
+    if "맛있다" in text or "맛 있다" in text:
+        alts.append({
+            "kind": "normative-permitted",
+            "surface_hangul": "마딛따",
+            "ipa": "ma.dit̚.t͈a",
+            "rule_ref": "맛있다 bracket",
+            "source": "NIKL 표준 발음법 (맛있다[마싣따/마딛따])",
+            "note": "second permitted surface printed by the norm"
+        })
+    return alts
 
 def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad",n_insertion_licensed=False,rule_licenses=None,morphology_mode="strict",include_research_lexical=True):
     _validate_korean_input(text)

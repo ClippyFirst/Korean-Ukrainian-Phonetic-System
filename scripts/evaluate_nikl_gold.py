@@ -21,7 +21,7 @@ def surface_match(got: str, forms: list[str]) -> bool:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--gold", default=str(HERE / "data/korean/nikl_gold_curated_priority.json"))
+    ap.add_argument("--gold", default=str(HERE / "data/korean/nikl_gold_curated_full.json"))
     ap.add_argument("--out")
     args = ap.parse_args()
     sys.path.insert(0, str(HERE / "src"))
