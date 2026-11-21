@@ -1,0 +1,1947 @@
+[
+ {
+  "id": "nikl-sp-12-0000",
+  "article": 12,
+  "clause": "main",
+  "source": "놓고",
+  "source_raw": "놓고",
+  "bracket_forms": [
+   {
+    "form": "노코",
+    "raw": "노코",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제12항 pattern-extract verified"
+  }
+ },
+ {
+  "id": "nikl-sp-12-0001",
+  "article": 12,
+  "clause": "main",
+  "source": "좋던",
+  "source_raw": "좋던",
+  "bracket_forms": [
+   {
+    "form": "조턴",
+    "raw": "조ː턴",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제12항 pattern-extract verified"
+  }
+ },
+ {
+  "id": "nikl-sp-12-0002",
+  "article": 12,
+  "clause": "main",
+  "source": "쌓지",
+  "source_raw": "쌓지",
+  "bracket_forms": [
+   {
+    "form": "싸치",
+    "raw": "싸치",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제12항 pattern-extract verified"
+  }
+ },
+ {
+  "id": "nikl-sp-12-0003",
+  "article": 12,
+  "clause": "main",
+  "source": "많고",
+  "source_raw": "많고",
+  "bracket_forms": [
+   {
+    "form": "만코",
+    "raw": "만ː코",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제12항 pattern-extract verified"
+  }
+ },
+ {
+  "id": "nikl-sp-12-0004",
+  "article": 12,
+  "clause": "main",
+  "source": "않던",
+  "source_raw": "않던",
+  "bracket_forms": [
+   {
+    "form": "안턴",
+    "raw": "안턴",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제12항 pattern-extract verified"
+  }
+ },
+ {
+  "id": "nikl-sp-12-0005",
+  "article": 12,
+  "clause": "main",
+  "source": "않는",
+  "source_raw": "않는",
+  "bracket_forms": [
+   {
+    "form": "안는",
+    "raw": "안는",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제12항 pattern-extract verified"
+  }
+ },
+ {
+  "id": "nikl-sp-12-0006",
+  "article": 12,
+  "clause": "main",
+  "source": "닿지",
+  "source_raw": "닿지",
+  "bracket_forms": [
+   {
+    "form": "다치",
+    "raw": "다치",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-selected from norm print / official examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제12항 main example (pattern+known)"
+  }
+ },
+ {
+  "id": "nikl-sp-12-0007",
+  "article": 12,
+  "clause": "main",
+  "source": "많고도",
+  "source_raw": "많고도",
+  "bracket_forms": [
+   {
+    "form": "만코도",
+    "raw": "만ː코도",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-selected from norm print / official examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제12항 main example (pattern+known)"
+  }
+ },
+ {
+  "id": "nikl-sp-12-0008",
+  "article": 12,
+  "clause": "main",
+  "source": "싫다",
+  "source_raw": "싫다",
+  "bracket_forms": [
+   {
+    "form": "실타",
+    "raw": "실타",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-selected from norm print / official examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제12항 main example (pattern+known)"
+  }
+ },
+ {
+  "id": "nikl-sp-12-0009",
+  "article": 12,
+  "clause": "main",
+  "source": "좋지",
+  "source_raw": "좋지",
+  "bracket_forms": [
+   {
+    "form": "조치",
+    "raw": "조치",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-selected from norm print / official examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제12항 main example (pattern+known)"
+  }
+ },
+ {
+  "id": "nikl-sp-12-0010",
+  "article": 12,
+  "clause": "main",
+  "source": "많네",
+  "source_raw": "많네",
+  "bracket_forms": [
+   {
+    "form": "만네",
+    "raw": "만ː네",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-selected from norm print / official examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제12항 main example (pattern+known)"
+  }
+ },
+ {
+  "id": "nikl-sp-12-0011",
+  "article": 12,
+  "clause": "main",
+  "source": "않네",
+  "source_raw": "않네",
+  "bracket_forms": [
+   {
+    "form": "안네",
+    "raw": "안네",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제12항 pattern-extract verified"
+  }
+ },
+ {
+  "id": "nikl-sp-12-0012",
+  "article": 12,
+  "clause": "main",
+  "source": "닿네",
+  "source_raw": "닿네",
+  "bracket_forms": [
+   {
+    "form": "단네",
+    "raw": "단네",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-selected from norm print / official examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제12항 main example (pattern+known)"
+  }
+ },
+ {
+  "id": "nikl-sp-12-0013",
+  "article": 12,
+  "clause": "main",
+  "source": "좋네",
+  "source_raw": "좋네",
+  "bracket_forms": [
+   {
+    "form": "존네",
+    "raw": "존네",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-selected from norm print / official examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제12항 main example (pattern+known)"
+  }
+ },
+ {
+  "id": "nikl-sp-15-0014",
+  "article": 15,
+  "clause": "main",
+  "source": "밭 아래",
+  "source_raw": "밭 아래",
+  "bracket_forms": [
+   {
+    "form": "바다래",
+    "raw": "바다래",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "phrase",
+  "boundary": "phrase",
+  "notes": "",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제15항 pattern-extract verified"
+  }
+ },
+ {
+  "id": "nikl-sp-15-0015",
+  "article": 15,
+  "clause": "main",
+  "source": "늪 앞",
+  "source_raw": "늪 앞",
+  "bracket_forms": [
+   {
+    "form": "느밥",
+    "raw": "느밥",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "phrase",
+  "boundary": "phrase",
+  "notes": "",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제15항 pattern-extract verified"
+  }
+ },
+ {
+  "id": "nikl-sp-15-0016",
+  "article": 15,
+  "clause": "main",
+  "source": "젖어미",
+  "source_raw": "젖어미",
+  "bracket_forms": [
+   {
+    "form": "저더미",
+    "raw": "저더미",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제15항 pattern-extract verified"
+  }
+ },
+ {
+  "id": "nikl-sp-15-0017",
+  "article": 15,
+  "clause": "main",
+  "source": "맛없다",
+  "source_raw": "맛없다",
+  "bracket_forms": [
+   {
+    "form": "마덥따",
+    "raw": "마덥따",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제15항 pattern-extract verified"
+  }
+ },
+ {
+  "id": "nikl-sp-15-0018",
+  "article": 15,
+  "clause": "main",
+  "source": "겉옷",
+  "source_raw": "겉옷",
+  "bracket_forms": [
+   {
+    "form": "거돋",
+    "raw": "거돋",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제15항 pattern-extract verified"
+  }
+ },
+ {
+  "id": "nikl-sp-15-0019",
+  "article": 15,
+  "clause": "main",
+  "source": "옷 한 벌",
+  "source_raw": "옷 한 벌",
+  "bracket_forms": [
+   {
+    "form": "오탄벌",
+    "raw": "오탄벌",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "phrase",
+  "boundary": "phrase",
+  "notes": "agent-selected from norm print / official examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제15항 main example (pattern+known)"
+  }
+ },
+ {
+  "id": "nikl-sp-15-0020",
+  "article": 15,
+  "clause": "main",
+  "source": "낮 한때",
+  "source_raw": "낮 한때",
+  "bracket_forms": [
+   {
+    "form": "나탄때",
+    "raw": "나탄때",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "phrase",
+  "boundary": "phrase",
+  "notes": "agent-selected from norm print / official examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제15항 main example (pattern+known)"
+  }
+ },
+ {
+  "id": "nikl-sp-15-0021",
+  "article": 15,
+  "clause": "main",
+  "source": "꽃 한 송이",
+  "source_raw": "꽃 한 송이",
+  "bracket_forms": [
+   {
+    "form": "꼬탄송이",
+    "raw": "꼬탄송이",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "phrase",
+  "boundary": "phrase",
+  "notes": "agent-selected from norm print / official examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제15항 main example (pattern+known)"
+  }
+ },
+ {
+  "id": "nikl-sp-15-0022",
+  "article": 15,
+  "clause": "main",
+  "source": "닭 앞에",
+  "source_raw": "닭 앞에",
+  "bracket_forms": [
+   {
+    "form": "다가페",
+    "raw": "다가페",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "phrase",
+  "boundary": "phrase",
+  "notes": "",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제15항 pattern-extract verified"
+  }
+ },
+ {
+  "id": "nikl-sp-15-0023",
+  "article": 15,
+  "clause": "main",
+  "source": "꽃 위",
+  "source_raw": "꽃 위",
+  "bracket_forms": [
+   {
+    "form": "꼬뒤",
+    "raw": "꼬뒤",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "phrase",
+  "boundary": "phrase",
+  "notes": "",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제15항 pattern-extract verified"
+  }
+ },
+ {
+  "id": "nikl-sp-15-0024",
+  "article": 15,
+  "clause": "main",
+  "source": "넋 없다",
+  "source_raw": "넋 없다",
+  "bracket_forms": [
+   {
+    "form": "너겁따",
+    "raw": "너겁따",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "phrase",
+  "boundary": "phrase",
+  "notes": "",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제15항 pattern-extract verified"
+  }
+ },
+ {
+  "id": "nikl-sp-18-0000",
+  "article": 18,
+  "clause": "main",
+  "source": "먹는",
+  "source_raw": "먹는",
+  "bracket_forms": [
+   {
+    "form": "멍는",
+    "raw": "멍는",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제18항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-18-0001",
+  "article": 18,
+  "clause": "main",
+  "source": "입는",
+  "source_raw": "입는",
+  "bracket_forms": [
+   {
+    "form": "임는",
+    "raw": "임는",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제18항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-18-0002",
+  "article": 18,
+  "clause": "main",
+  "source": "있는",
+  "source_raw": "있는",
+  "bracket_forms": [
+   {
+    "form": "인는",
+    "raw": "인는",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제18항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-18-0003",
+  "article": 18,
+  "clause": "main",
+  "source": "없는",
+  "source_raw": "없는",
+  "bracket_forms": [
+   {
+    "form": "엄는",
+    "raw": "엄는",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제18항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-18-0004",
+  "article": 18,
+  "clause": "main",
+  "source": "덮는",
+  "source_raw": "덮는",
+  "bracket_forms": [
+   {
+    "form": "덤는",
+    "raw": "덤는",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제18항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-18-0005",
+  "article": 18,
+  "clause": "main",
+  "source": "밥 먹는다",
+  "source_raw": "밥 먹는다",
+  "bracket_forms": [
+   {
+    "form": "밤 멍는다",
+    "raw": "밤 멍는다",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "phrase",
+  "boundary": "phrase",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제18항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-18-0006",
+  "article": 18,
+  "clause": "main",
+  "source": "옷 만나다",
+  "source_raw": "옷 만나다",
+  "bracket_forms": [
+   {
+    "form": "온 만나다",
+    "raw": "온 만나다",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "phrase",
+  "boundary": "phrase",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제18항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-19-0000",
+  "article": 19,
+  "clause": "main",
+  "source": "담력",
+  "source_raw": "담력",
+  "bracket_forms": [
+   {
+    "form": "담녁",
+    "raw": "담ː녁",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제19항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-19-0001",
+  "article": 19,
+  "clause": "main",
+  "source": "침략",
+  "source_raw": "침략",
+  "bracket_forms": [
+   {
+    "form": "침냑",
+    "raw": "침ː냑",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제19항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-19-0002",
+  "article": 19,
+  "clause": "main",
+  "source": "강릉",
+  "source_raw": "강릉",
+  "bracket_forms": [
+   {
+    "form": "강능",
+    "raw": "강능",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제19항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-19-0003",
+  "article": 19,
+  "clause": "main",
+  "source": "항로",
+  "source_raw": "항로",
+  "bracket_forms": [
+   {
+    "form": "항노",
+    "raw": "항ː노",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제19항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-19-0004",
+  "article": 19,
+  "clause": "main",
+  "source": "대통령",
+  "source_raw": "대통령",
+  "bracket_forms": [
+   {
+    "form": "대통녕",
+    "raw": "대ː통녕",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제19항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-20-0000",
+  "article": 20,
+  "clause": "main",
+  "source": "난로",
+  "source_raw": "난로",
+  "bracket_forms": [
+   {
+    "form": "날로",
+    "raw": "날ː로",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제20항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-20-0001",
+  "article": 20,
+  "clause": "main",
+  "source": "신라",
+  "source_raw": "신라",
+  "bracket_forms": [
+   {
+    "form": "실라",
+    "raw": "실라",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제20항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-20-0002",
+  "article": 20,
+  "clause": "main",
+  "source": "천리",
+  "source_raw": "천리",
+  "bracket_forms": [
+   {
+    "form": "철리",
+    "raw": "철리",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제20항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-20-0003",
+  "article": 20,
+  "clause": "main",
+  "source": "칼날",
+  "source_raw": "칼날",
+  "bracket_forms": [
+   {
+    "form": "칼랄",
+    "raw": "칼랄",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제20항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-20-0004",
+  "article": 20,
+  "clause": "main",
+  "source": "물난리",
+  "source_raw": "물난리",
+  "bracket_forms": [
+   {
+    "form": "물랄리",
+    "raw": "물랄리",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제20항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-24-0000",
+  "article": 24,
+  "clause": "main",
+  "source": "신고",
+  "source_raw": "신고",
+  "bracket_forms": [
+   {
+    "form": "신꼬",
+    "raw": "신ː꼬",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제24항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-24-0001",
+  "article": 24,
+  "clause": "main",
+  "source": "껴안다",
+  "source_raw": "껴안다",
+  "bracket_forms": [
+   {
+    "form": "껴안따",
+    "raw": "껴안따",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제24항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-24-0002",
+  "article": 24,
+  "clause": "main",
+  "source": "앉고",
+  "source_raw": "앉고",
+  "bracket_forms": [
+   {
+    "form": "안꼬",
+    "raw": "안꼬",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제24항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-24-0003",
+  "article": 24,
+  "clause": "main",
+  "source": "얹다",
+  "source_raw": "얹다",
+  "bracket_forms": [
+   {
+    "form": "언따",
+    "raw": "언따",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제24항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-24-0004",
+  "article": 24,
+  "clause": "main",
+  "source": "삼고",
+  "source_raw": "삼고",
+  "bracket_forms": [
+   {
+    "form": "삼꼬",
+    "raw": "삼ː꼬",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제24항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-24-0005",
+  "article": 24,
+  "clause": "main",
+  "source": "더듬다",
+  "source_raw": "더듬다",
+  "bracket_forms": [
+   {
+    "form": "더듬따",
+    "raw": "더듬따",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제24항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-25-0000",
+  "article": 25,
+  "clause": "main",
+  "source": "넓게",
+  "source_raw": "넓게",
+  "bracket_forms": [
+   {
+    "form": "널께",
+    "raw": "널께",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제25항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-25-0001",
+  "article": 25,
+  "clause": "main",
+  "source": "핥다",
+  "source_raw": "핥다",
+  "bracket_forms": [
+   {
+    "form": "할따",
+    "raw": "할따",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제25항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-25-0002",
+  "article": 25,
+  "clause": "main",
+  "source": "훑다",
+  "source_raw": "훑다",
+  "bracket_forms": [
+   {
+    "form": "훌따",
+    "raw": "훌따",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제25항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-25-0003",
+  "article": 25,
+  "clause": "main",
+  "source": "얇다",
+  "source_raw": "얇다",
+  "bracket_forms": [
+   {
+    "form": "얄따",
+    "raw": "얄따",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제25항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-26-0000",
+  "article": 26,
+  "clause": "main",
+  "source": "갈등",
+  "source_raw": "갈등",
+  "bracket_forms": [
+   {
+    "form": "갈뜽",
+    "raw": "갈뜽",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "sino-korean",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제26항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-26-0001",
+  "article": 26,
+  "clause": "main",
+  "source": "발동",
+  "source_raw": "발동",
+  "bracket_forms": [
+   {
+    "form": "발똥",
+    "raw": "발똥",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "sino-korean",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제26항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-26-0002",
+  "article": 26,
+  "clause": "main",
+  "source": "절도",
+  "source_raw": "절도",
+  "bracket_forms": [
+   {
+    "form": "절또",
+    "raw": "절또",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "sino-korean",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제26항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-26-0003",
+  "article": 26,
+  "clause": "main",
+  "source": "말살",
+  "source_raw": "말살",
+  "bracket_forms": [
+   {
+    "form": "말쌀",
+    "raw": "말쌀",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "sino-korean",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제26항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-26-0004",
+  "article": 26,
+  "clause": "main",
+  "source": "불소",
+  "source_raw": "불소",
+  "bracket_forms": [
+   {
+    "form": "불쏘",
+    "raw": "불쏘",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "sino-korean",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제26항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-26-0005",
+  "article": 26,
+  "clause": "main",
+  "source": "결정",
+  "source_raw": "결정",
+  "bracket_forms": [
+   {
+    "form": "결쩡",
+    "raw": "결쩡",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "sino-korean",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제26항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-26-0006",
+  "article": 26,
+  "clause": "main",
+  "source": "열정",
+  "source_raw": "열정",
+  "bracket_forms": [
+   {
+    "form": "열쩡",
+    "raw": "열쩡",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "sino-korean",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제26항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-27-0000",
+  "article": 27,
+  "clause": "main",
+  "source": "할 것을",
+  "source_raw": "할 것을",
+  "bracket_forms": [
+   {
+    "form": "할꺼슬",
+    "raw": "할꺼슬",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "phrase",
+  "boundary": "phrase",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제27항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-27-0001",
+  "article": 27,
+  "clause": "main",
+  "source": "갈 데가",
+  "source_raw": "갈 데가",
+  "bracket_forms": [
+   {
+    "form": "갈떼가",
+    "raw": "갈떼가",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "phrase",
+  "boundary": "phrase",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제27항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-27-0002",
+  "article": 27,
+  "clause": "main",
+  "source": "할 바를",
+  "source_raw": "할 바를",
+  "bracket_forms": [
+   {
+    "form": "할빠를",
+    "raw": "할빠를",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "phrase",
+  "boundary": "phrase",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제27항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-27-0003",
+  "article": 27,
+  "clause": "main",
+  "source": "할 수는",
+  "source_raw": "할 수는",
+  "bracket_forms": [
+   {
+    "form": "할쑤는",
+    "raw": "할쑤는",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "phrase",
+  "boundary": "phrase",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제27항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-27-0004",
+  "article": 27,
+  "clause": "main",
+  "source": "할 적에",
+  "source_raw": "할 적에",
+  "bracket_forms": [
+   {
+    "form": "할쩌게",
+    "raw": "할쩌게",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "phrase",
+  "boundary": "phrase",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제27항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-27-0005",
+  "article": 27,
+  "clause": "main",
+  "source": "갈 곳",
+  "source_raw": "갈 곳",
+  "bracket_forms": [
+   {
+    "form": "갈꼳",
+    "raw": "갈꼳",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "phrase",
+  "boundary": "phrase",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제27항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-27-0006",
+  "article": 27,
+  "clause": "main",
+  "source": "만날 사람",
+  "source_raw": "만날 사람",
+  "bracket_forms": [
+   {
+    "form": "만날싸람",
+    "raw": "만날싸람",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "phrase",
+  "boundary": "phrase",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제27항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-29-0000",
+  "article": 29,
+  "clause": "main",
+  "source": "문고리",
+  "source_raw": "문고리",
+  "bracket_forms": [
+   {
+    "form": "문꼬리",
+    "raw": "문꼬리",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제29항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-29-0001",
+  "article": 29,
+  "clause": "main",
+  "source": "눈동자",
+  "source_raw": "눈동자",
+  "bracket_forms": [
+   {
+    "form": "눈똥자",
+    "raw": "눈똥자",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제29항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-29-0002",
+  "article": 29,
+  "clause": "main",
+  "source": "신바람",
+  "source_raw": "신바람",
+  "bracket_forms": [
+   {
+    "form": "신빠람",
+    "raw": "신빠람",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제29항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-29-0003",
+  "article": 29,
+  "clause": "main",
+  "source": "산새",
+  "source_raw": "산새",
+  "bracket_forms": [
+   {
+    "form": "산쌔",
+    "raw": "산쌔",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제29항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-29-0004",
+  "article": 29,
+  "clause": "main",
+  "source": "손재주",
+  "source_raw": "손재주",
+  "bracket_forms": [
+   {
+    "form": "손째주",
+    "raw": "손째주",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제29항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-29-0005",
+  "article": 29,
+  "clause": "main",
+  "source": "한 일",
+  "source_raw": "한 일",
+  "bracket_forms": [
+   {
+    "form": "한닐",
+    "raw": "한닐",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "phrase",
+  "boundary": "phrase",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제29항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-29-0006",
+  "article": 29,
+  "clause": "main",
+  "source": "옷 입다",
+  "source_raw": "옷 입다",
+  "bracket_forms": [
+   {
+    "form": "온닙따",
+    "raw": "온닙따",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "phrase",
+  "boundary": "phrase",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제29항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-29-0007",
+  "article": 29,
+  "clause": "main",
+  "source": "할 일",
+  "source_raw": "할 일",
+  "bracket_forms": [
+   {
+    "form": "할릴",
+    "raw": "할릴",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "phrase",
+  "boundary": "phrase",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제29항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-29-0008",
+  "article": 29,
+  "clause": "main",
+  "source": "먹을 엿",
+  "source_raw": "먹을 엿",
+  "bracket_forms": [
+   {
+    "form": "머글렫",
+    "raw": "머글렫",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "phrase",
+  "boundary": "phrase",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제29항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-30-0000",
+  "article": 30,
+  "clause": "main",
+  "source": "냇가",
+  "source_raw": "냇가",
+  "bracket_forms": [
+   {
+    "form": "내까",
+    "raw": "내ː까",
+    "permitted": true
+   },
+   {
+    "form": "낻까",
+    "raw": "낻ː까",
+    "permitted": true
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제30항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-30-0001",
+  "article": 30,
+  "clause": "main",
+  "source": "샛길",
+  "source_raw": "샛길",
+  "bracket_forms": [
+   {
+    "form": "새낄",
+    "raw": "새ː낄",
+    "permitted": true
+   },
+   {
+    "form": "샏낄",
+    "raw": "샏ː낄",
+    "permitted": true
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제30항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-30-0002",
+  "article": 30,
+  "clause": "main",
+  "source": "콧등",
+  "source_raw": "콧등",
+  "bracket_forms": [
+   {
+    "form": "코뜽",
+    "raw": "코뜽",
+    "permitted": true
+   },
+   {
+    "form": "콛뜽",
+    "raw": "콛뜽",
+    "permitted": true
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제30항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-30-0003",
+  "article": 30,
+  "clause": "main",
+  "source": "깃발",
+  "source_raw": "깃발",
+  "bracket_forms": [
+   {
+    "form": "기빨",
+    "raw": "기빨",
+    "permitted": true
+   },
+   {
+    "form": "긷빨",
+    "raw": "긷빨",
+    "permitted": true
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제30항 main printed example"
+  }
+ },
+ {
+  "id": "nikl-sp-30-0004",
+  "article": 30,
+  "clause": "main",
+  "source": "뱃사공",
+  "source_raw": "뱃사공",
+  "bracket_forms": [
+   {
+    "form": "배싸공",
+    "raw": "배ː싸공",
+    "permitted": true
+   },
+   {
+    "form": "뱻싸공",
+    "raw": "뱻ː싸공",
+    "permitted": true
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from norm printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제30항 main printed example"
+  }
+ }
+]
