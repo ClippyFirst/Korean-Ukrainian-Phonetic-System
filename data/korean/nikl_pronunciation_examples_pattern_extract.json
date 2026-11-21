@@ -1,0 +1,4664 @@
+[
+ {
+  "article": 1,
+  "source": "읽고",
+  "gold_surface": "일꼬",
+  "golds": [
+   "일꼬"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 1,
+  "source": "읽거든",
+  "gold_surface": "일꺼든",
+  "golds": [
+   "일꺼든"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 1,
+  "source": "닭이",
+  "gold_surface": "달기",
+  "golds": [
+   "달기"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 1,
+  "source": "닭을",
+  "gold_surface": "달글",
+  "golds": [
+   "달글"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 1,
+  "source": "닭은",
+  "gold_surface": "달근",
+  "golds": [
+   "달근"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 1,
+  "source": "흙이",
+  "gold_surface": "흘기",
+  "golds": [
+   "흘기"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 1,
+  "source": "흙을",
+  "gold_surface": "흘글",
+  "golds": [
+   "흘글"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 1,
+  "source": "흙은",
+  "gold_surface": "흘근",
+  "golds": [
+   "흘근"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 1,
+  "source": "여덟이",
+  "gold_surface": "여덜비",
+  "golds": [
+   "여덜비"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 1,
+  "source": "여덟을",
+  "gold_surface": "여덜블",
+  "golds": [
+   "여덜블"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 1,
+  "source": "여덟은",
+  "gold_surface": "여덜븐",
+  "golds": [
+   "여덜븐"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 5,
+  "source": "가져",
+  "gold_surface": "가저",
+  "golds": [
+   "가저"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 5,
+  "source": "쪄",
+  "gold_surface": "쩌",
+  "golds": [
+   "쩌"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 5,
+  "source": "다쳐",
+  "gold_surface": "다처",
+  "golds": [
+   "다처"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 5,
+  "source": "계집",
+  "gold_surface": "계ː집/게ː집",
+  "golds": [
+   "계ː집",
+   "게ː집"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 5,
+  "source": "계시다",
+  "gold_surface": "계ː시다/게ː시다",
+  "golds": [
+   "계ː시다",
+   "게ː시다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 5,
+  "source": "시계",
+  "gold_surface": "시계/시게",
+  "golds": [
+   "시계",
+   "시게"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 5,
+  "source": "연계",
+  "gold_surface": "연계/연게",
+  "golds": [
+   "연계",
+   "연게"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 5,
+  "source": "몌별",
+  "gold_surface": "몌별/메별",
+  "golds": [
+   "몌별",
+   "메별"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 5,
+  "source": "개폐",
+  "gold_surface": "개폐/개페",
+  "golds": [
+   "개폐",
+   "개페"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 5,
+  "source": "혜택",
+  "gold_surface": "혜ː택/헤ː택",
+  "golds": [
+   "혜ː택",
+   "헤ː택"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 5,
+  "source": "지혜",
+  "gold_surface": "지혜/지헤",
+  "golds": [
+   "지혜",
+   "지헤"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 5,
+  "source": "주의",
+  "gold_surface": "주의/주이",
+  "golds": [
+   "주의",
+   "주이"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 5,
+  "source": "협의",
+  "gold_surface": "혀븨/혀비",
+  "golds": [
+   "혀븨",
+   "혀비"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 5,
+  "source": "우리의",
+  "gold_surface": "우리의/우리에",
+  "golds": [
+   "우리의",
+   "우리에"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 5,
+  "source": "강의의",
+  "gold_surface": "강ː의의/강ː이에",
+  "golds": [
+   "강ː의의",
+   "강ː이에"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 6,
+  "source": "눈보라",
+  "gold_surface": "눈ː보라",
+  "golds": [
+   "눈ː보라"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 6,
+  "source": "말씨",
+  "gold_surface": "말ː씨",
+  "golds": [
+   "말ː씨"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 6,
+  "source": "밤나무",
+  "gold_surface": "밤ː나무",
+  "golds": [
+   "밤ː나무"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 6,
+  "source": "많다",
+  "gold_surface": "만ː타",
+  "golds": [
+   "만ː타"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 6,
+  "source": "멀리",
+  "gold_surface": "멀ː리",
+  "golds": [
+   "멀ː리"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 6,
+  "source": "벌리다",
+  "gold_surface": "벌ː리다",
+  "golds": [
+   "벌ː리다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 6,
+  "source": "첫눈",
+  "gold_surface": "천눈",
+  "golds": [
+   "천눈"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 6,
+  "source": "참말",
+  "gold_surface": "참말",
+  "golds": [
+   "참말"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 6,
+  "source": "쌍동밤",
+  "gold_surface": "쌍동밤",
+  "golds": [
+   "쌍동밤"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 6,
+  "source": "수많이",
+  "gold_surface": "수ː마니",
+  "golds": [
+   "수ː마니"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 6,
+  "source": "눈멀다",
+  "gold_surface": "눈멀다",
+  "golds": [
+   "눈멀다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 6,
+  "source": "떠벌리다",
+  "gold_surface": "떠벌리다",
+  "golds": [
+   "떠벌리다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 6,
+  "source": "반신반의",
+  "gold_surface": "반ː신바ː늬/반ː신바ː니",
+  "golds": [
+   "반ː신바ː늬",
+   "반ː신바ː니"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 6,
+  "source": "재삼재사",
+  "gold_surface": "재ː삼재ː사",
+  "golds": [
+   "재ː삼재ː사"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 6,
+  "source": "봐",
+  "gold_surface": "봐ː",
+  "golds": [
+   "봐ː"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 6,
+  "source": "겨",
+  "gold_surface": "겨ː",
+  "golds": [
+   "겨ː"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 6,
+  "source": "돼",
+  "gold_surface": "돼ː",
+  "golds": [
+   "돼ː"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 6,
+  "source": "둬",
+  "gold_surface": "둬ː",
+  "golds": [
+   "둬ː"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 6,
+  "source": "해",
+  "gold_surface": "해ː",
+  "golds": [
+   "해ː"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 6,
+  "source": "반반",
+  "gold_surface": "반ː반",
+  "golds": [
+   "반ː반"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 6,
+  "source": "간간",
+  "gold_surface": "간ː간",
+  "golds": [
+   "간ː간"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 6,
+  "source": "영영",
+  "gold_surface": "영ː영",
+  "golds": [
+   "영ː영"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 6,
+  "source": "시시비비",
+  "gold_surface": "시ː시비비",
+  "golds": [
+   "시ː시비비"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 6,
+  "source": "뵈다",
+  "gold_surface": "뵈ː다",
+  "golds": [
+   "뵈ː다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 6,
+  "source": "띄다",
+  "gold_surface": "띠ː다",
+  "golds": [
+   "띠ː다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "어미가 결합되는 경우 감다",
+  "gold_surface": "감ː따",
+  "golds": [
+   "감ː따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "감으니",
+  "gold_surface": "가므니",
+  "golds": [
+   "가므니"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "밟다",
+  "gold_surface": "밥ː따",
+  "golds": [
+   "밥ː따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "밟으면",
+  "gold_surface": "발브면",
+  "golds": [
+   "발브면"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "신다",
+  "gold_surface": "신ː따",
+  "golds": [
+   "신ː따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "신어",
+  "gold_surface": "시너",
+  "golds": [
+   "시너"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "알다",
+  "gold_surface": "알ː다",
+  "golds": [
+   "알ː다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "알아",
+  "gold_surface": "아라",
+  "golds": [
+   "아라"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "끌다",
+  "gold_surface": "끌ː다",
+  "golds": [
+   "끌ː다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "끌어",
+  "gold_surface": "끄ː러",
+  "golds": [
+   "끄ː러"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "떫다",
+  "gold_surface": "떨ː따",
+  "golds": [
+   "떨ː따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "떫은",
+  "gold_surface": "떨ː븐",
+  "golds": [
+   "떨ː븐"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "벌다",
+  "gold_surface": "벌ː다",
+  "golds": [
+   "벌ː다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "벌어",
+  "gold_surface": "버ː러",
+  "golds": [
+   "버ː러"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "썰다",
+  "gold_surface": "썰ː다",
+  "golds": [
+   "썰ː다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "썰어",
+  "gold_surface": "써ː러",
+  "golds": [
+   "써ː러"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "없다",
+  "gold_surface": "업ː따",
+  "golds": [
+   "업ː따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "없으니",
+  "gold_surface": "업ː쓰니",
+  "golds": [
+   "업ː쓰니"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "접미사가 결합되는 경우 감다",
+  "gold_surface": "감ː따",
+  "golds": [
+   "감ː따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "감기다",
+  "gold_surface": "감기다",
+  "golds": [
+   "감기다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "꼬다",
+  "gold_surface": "꼬ː다",
+  "golds": [
+   "꼬ː다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "꼬이다",
+  "gold_surface": "꼬이다",
+  "golds": [
+   "꼬이다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "밟히다",
+  "gold_surface": "발피다",
+  "golds": [
+   "발피다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "끌리다",
+  "gold_surface": "끌ː리다",
+  "golds": [
+   "끌ː리다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "벌리다",
+  "gold_surface": "벌ː리다",
+  "golds": [
+   "벌ː리다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "없애다",
+  "gold_surface": "업ː쌔다",
+  "golds": [
+   "업ː쌔다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "알면",
+  "gold_surface": "알ː면",
+  "golds": [
+   "알ː면"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "괴다",
+  "gold_surface": "괴ː다",
+  "golds": [
+   "괴ː다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "뉘다",
+  "gold_surface": "뉘ː다",
+  "golds": [
+   "뉘ː다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "호다",
+  "gold_surface": "호ː다",
+  "golds": [
+   "호ː다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "괴어",
+  "gold_surface": "괴어",
+  "golds": [
+   "괴어"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "뉘어",
+  "gold_surface": "뉘어",
+  "golds": [
+   "뉘어"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "호아",
+  "gold_surface": "호아",
+  "golds": [
+   "호아"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "썰리다",
+  "gold_surface": "썰ː리다",
+  "golds": [
+   "썰ː리다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "밀",
+  "gold_surface": "밀ː",
+  "golds": [
+   "밀ː"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "쏜",
+  "gold_surface": "쏜ː",
+  "golds": [
+   "쏜ː"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 7,
+  "source": "작은",
+  "gold_surface": "자ː근",
+  "golds": [
+   "자ː근"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 9,
+  "source": "닦다",
+  "gold_surface": "닥따",
+  "golds": [
+   "닥따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 9,
+  "source": "키읔",
+  "gold_surface": "키윽",
+  "golds": [
+   "키윽"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 9,
+  "source": "키읔과",
+  "gold_surface": "키윽꽈",
+  "golds": [
+   "키윽꽈"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 9,
+  "source": "옷",
+  "gold_surface": "옫",
+  "golds": [
+   "옫"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 9,
+  "source": "웃다",
+  "gold_surface": "욷ː따",
+  "golds": [
+   "욷ː따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 9,
+  "source": "있다",
+  "gold_surface": "읻따",
+  "golds": [
+   "읻따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 9,
+  "source": "젖",
+  "gold_surface": "젇",
+  "golds": [
+   "젇"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 9,
+  "source": "빚다",
+  "gold_surface": "빋따",
+  "golds": [
+   "빋따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 9,
+  "source": "꽃",
+  "gold_surface": "꼳",
+  "golds": [
+   "꼳"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 9,
+  "source": "쫓다",
+  "gold_surface": "쫃따",
+  "golds": [
+   "쫃따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 9,
+  "source": "솥",
+  "gold_surface": "솓",
+  "golds": [
+   "솓"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 9,
+  "source": "뱉다",
+  "gold_surface": "밷ː따",
+  "golds": [
+   "밷ː따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 9,
+  "source": "앞",
+  "gold_surface": "압",
+  "golds": [
+   "압"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 9,
+  "source": "덮다",
+  "gold_surface": "덥따",
+  "golds": [
+   "덥따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 10,
+  "source": "넋",
+  "gold_surface": "넉",
+  "golds": [
+   "넉"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 10,
+  "source": "넋과",
+  "gold_surface": "넉꽈",
+  "golds": [
+   "넉꽈"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 10,
+  "source": "앉다",
+  "gold_surface": "안따",
+  "golds": [
+   "안따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 10,
+  "source": "여덟",
+  "gold_surface": "여덜",
+  "golds": [
+   "여덜"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 10,
+  "source": "넓다",
+  "gold_surface": "널따",
+  "golds": [
+   "널따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 10,
+  "source": "외곬",
+  "gold_surface": "외골",
+  "golds": [
+   "외골"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 10,
+  "source": "핥다",
+  "gold_surface": "할따",
+  "golds": [
+   "할따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 10,
+  "source": "값",
+  "gold_surface": "갑",
+  "golds": [
+   "갑"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 10,
+  "source": "없다",
+  "gold_surface": "업ː따",
+  "golds": [
+   "업ː따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 10,
+  "source": "밟다",
+  "gold_surface": "밥ː따",
+  "golds": [
+   "밥ː따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 10,
+  "source": "밟소",
+  "gold_surface": "밥ː쏘",
+  "golds": [
+   "밥ː쏘"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 10,
+  "source": "밟지",
+  "gold_surface": "밥ː찌",
+  "golds": [
+   "밥ː찌"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 10,
+  "source": "밟게",
+  "gold_surface": "밥ː께",
+  "golds": [
+   "밥ː께"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 10,
+  "source": "밟고",
+  "gold_surface": "밥ː꼬",
+  "golds": [
+   "밥ː꼬"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 10,
+  "source": "넓죽하다",
+  "gold_surface": "넙쭈카다",
+  "golds": [
+   "넙쭈카다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 10,
+  "source": "넓둥글다",
+  "gold_surface": "넙뚱글다",
+  "golds": [
+   "넙뚱글다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 11,
+  "source": "닭",
+  "gold_surface": "닥",
+  "golds": [
+   "닥"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 11,
+  "source": "흙과",
+  "gold_surface": "흑꽈",
+  "golds": [
+   "흑꽈"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 11,
+  "source": "맑다",
+  "gold_surface": "막따",
+  "golds": [
+   "막따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 11,
+  "source": "늙지",
+  "gold_surface": "늑찌",
+  "golds": [
+   "늑찌"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 11,
+  "source": "삶",
+  "gold_surface": "삼ː",
+  "golds": [
+   "삼ː"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 11,
+  "source": "젊다",
+  "gold_surface": "점ː따",
+  "golds": [
+   "점ː따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 11,
+  "source": "읊고",
+  "gold_surface": "읍꼬",
+  "golds": [
+   "읍꼬"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 11,
+  "source": "읊다",
+  "gold_surface": "읍따",
+  "golds": [
+   "읍따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 11,
+  "source": "맑게",
+  "gold_surface": "말께",
+  "golds": [
+   "말께"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 11,
+  "source": "묽고",
+  "gold_surface": "물꼬",
+  "golds": [
+   "물꼬"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 11,
+  "source": "얽거나",
+  "gold_surface": "얼꺼나",
+  "golds": [
+   "얼꺼나"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 11,
+  "source": "긁개",
+  "gold_surface": "글깨",
+  "golds": [
+   "글깨"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 11,
+  "source": "밝기",
+  "gold_surface": "발끼",
+  "golds": [
+   "발끼"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "놓고",
+  "gold_surface": "노코",
+  "golds": [
+   "노코"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "좋던",
+  "gold_surface": "조ː턴",
+  "golds": [
+   "조ː턴"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "쌓지",
+  "gold_surface": "싸치",
+  "golds": [
+   "싸치"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "많고",
+  "gold_surface": "만ː코",
+  "golds": [
+   "만ː코"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "않던",
+  "gold_surface": "안턴",
+  "golds": [
+   "안턴"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "닳지",
+  "gold_surface": "달치",
+  "golds": [
+   "달치"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "각하",
+  "gold_surface": "가카",
+  "golds": [
+   "가카"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "먹히다",
+  "gold_surface": "머키다",
+  "golds": [
+   "머키다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "밝히다",
+  "gold_surface": "발키다",
+  "golds": [
+   "발키다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "맏형",
+  "gold_surface": "마텽",
+  "golds": [
+   "마텽"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "좁히다",
+  "gold_surface": "조피다",
+  "golds": [
+   "조피다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "넓히다",
+  "gold_surface": "널피다",
+  "golds": [
+   "널피다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "꽂히다",
+  "gold_surface": "꼬치다",
+  "golds": [
+   "꼬치다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "앉히다",
+  "gold_surface": "안치다",
+  "golds": [
+   "안치다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "옷 한 벌",
+  "gold_surface": "오탄벌",
+  "golds": [
+   "오탄벌"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "낮 한때",
+  "gold_surface": "나탄때",
+  "golds": [
+   "나탄때"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "꽃 한 송이",
+  "gold_surface": "꼬탄송이",
+  "golds": [
+   "꼬탄송이"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "숱하다",
+  "gold_surface": "수타다",
+  "golds": [
+   "수타다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "닿소",
+  "gold_surface": "다ː쏘",
+  "golds": [
+   "다ː쏘"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "많소",
+  "gold_surface": "만ː쏘",
+  "golds": [
+   "만ː쏘"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "싫소",
+  "gold_surface": "실쏘",
+  "golds": [
+   "실쏘"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "놓는",
+  "gold_surface": "논는",
+  "golds": [
+   "논는"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "쌓네",
+  "gold_surface": "싼네",
+  "golds": [
+   "싼네"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "않네",
+  "gold_surface": "안네",
+  "golds": [
+   "안네"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "않는",
+  "gold_surface": "안는",
+  "golds": [
+   "안는"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "낳은",
+  "gold_surface": "나은",
+  "golds": [
+   "나은"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "놓아",
+  "gold_surface": "노아",
+  "golds": [
+   "노아"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "쌓이다",
+  "gold_surface": "싸이다",
+  "golds": [
+   "싸이다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "많아",
+  "gold_surface": "마ː나",
+  "golds": [
+   "마ː나"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "않은",
+  "gold_surface": "아는",
+  "golds": [
+   "아는"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "닳아",
+  "gold_surface": "다라",
+  "golds": [
+   "다라"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "싫어도",
+  "gold_surface": "시러도",
+  "golds": [
+   "시러도"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "염증",
+  "gold_surface": "염쯩",
+  "golds": [
+   "염쯩"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "건조증",
+  "gold_surface": "건조쯩",
+  "golds": [
+   "건조쯩"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "끓이다",
+  "gold_surface": "끄리다",
+  "golds": [
+   "끄리다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 12,
+  "source": "젖살",
+  "gold_surface": "젇쌀",
+  "golds": [
+   "젇쌀"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 13,
+  "source": "깎아",
+  "gold_surface": "까까",
+  "golds": [
+   "까까"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 13,
+  "source": "옷이",
+  "gold_surface": "오시",
+  "golds": [
+   "오시"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 13,
+  "source": "있어",
+  "gold_surface": "이써",
+  "golds": [
+   "이써"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 13,
+  "source": "낮이",
+  "gold_surface": "나지",
+  "golds": [
+   "나지"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 13,
+  "source": "꽂아",
+  "gold_surface": "꼬자",
+  "golds": [
+   "꼬자"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 13,
+  "source": "꽃을",
+  "gold_surface": "꼬츨",
+  "golds": [
+   "꼬츨"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 13,
+  "source": "쫓아",
+  "gold_surface": "쪼차",
+  "golds": [
+   "쪼차"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 13,
+  "source": "밭에",
+  "gold_surface": "바테",
+  "golds": [
+   "바테"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 13,
+  "source": "앞으로",
+  "gold_surface": "아프로",
+  "golds": [
+   "아프로"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 13,
+  "source": "덮이다",
+  "gold_surface": "더피다",
+  "golds": [
+   "더피다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 13,
+  "source": "굳이",
+  "gold_surface": "구지",
+  "golds": [
+   "구지"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 13,
+  "source": "밭이",
+  "gold_surface": "바치",
+  "golds": [
+   "바치"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 13,
+  "source": "부엌이",
+  "gold_surface": "부어기",
+  "golds": [
+   "부어기"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 13,
+  "source": "부엌을",
+  "gold_surface": "부어글",
+  "golds": [
+   "부어글"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 13,
+  "source": "꽃이",
+  "gold_surface": "꼬시",
+  "golds": [
+   "꼬시"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 13,
+  "source": "꽃을",
+  "gold_surface": "꼬슬",
+  "golds": [
+   "꼬슬"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 13,
+  "source": "부엌이",
+  "gold_surface": "부어키",
+  "golds": [
+   "부어키"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 13,
+  "source": "부엌을",
+  "gold_surface": "부어클",
+  "golds": [
+   "부어클"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 13,
+  "source": "꽃이",
+  "gold_surface": "꼬치",
+  "golds": [
+   "꼬치"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 14,
+  "source": "넋이",
+  "gold_surface": "넉씨",
+  "golds": [
+   "넉씨"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 14,
+  "source": "앉아",
+  "gold_surface": "안자",
+  "golds": [
+   "안자"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 14,
+  "source": "닭을",
+  "gold_surface": "달글",
+  "golds": [
+   "달글"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 14,
+  "source": "젊어",
+  "gold_surface": "절머",
+  "golds": [
+   "절머"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 14,
+  "source": "곬이",
+  "gold_surface": "골씨",
+  "golds": [
+   "골씨"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 14,
+  "source": "핥아",
+  "gold_surface": "할타",
+  "golds": [
+   "할타"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 14,
+  "source": "읊어",
+  "gold_surface": "을퍼",
+  "golds": [
+   "을퍼"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 14,
+  "source": "값을",
+  "gold_surface": "갑쓸",
+  "golds": [
+   "갑쓸"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 14,
+  "source": "없어",
+  "gold_surface": "업ː써",
+  "golds": [
+   "업ː써"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 14,
+  "source": "닭이",
+  "gold_surface": "다기",
+  "golds": [
+   "다기"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 14,
+  "source": "닭을",
+  "gold_surface": "다글",
+  "golds": [
+   "다글"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 14,
+  "source": "여덟이",
+  "gold_surface": "여더리",
+  "golds": [
+   "여더리"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 14,
+  "source": "여덟을",
+  "gold_surface": "여더를",
+  "golds": [
+   "여더를"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 14,
+  "source": "닭이",
+  "gold_surface": "달기",
+  "golds": [
+   "달기"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 14,
+  "source": "여덟이",
+  "gold_surface": "여덜비",
+  "golds": [
+   "여덜비"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 14,
+  "source": "여덟을",
+  "gold_surface": "여덜블",
+  "golds": [
+   "여덜블"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 15,
+  "source": "밭 아래",
+  "gold_surface": "바다래",
+  "golds": [
+   "바다래"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 15,
+  "source": "늪 앞",
+  "gold_surface": "느밥",
+  "golds": [
+   "느밥"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 15,
+  "source": "젖어미",
+  "gold_surface": "저더미",
+  "golds": [
+   "저더미"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 15,
+  "source": "맛없다",
+  "gold_surface": "마덥따",
+  "golds": [
+   "마덥따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 15,
+  "source": "겉옷",
+  "gold_surface": "거돋",
+  "golds": [
+   "거돋"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 15,
+  "source": "헛웃음",
+  "gold_surface": "허두슴",
+  "golds": [
+   "허두슴"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 15,
+  "source": "꽃 위",
+  "gold_surface": "꼬뒤",
+  "golds": [
+   "꼬뒤"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 15,
+  "source": "넋 없다",
+  "gold_surface": "너겁따",
+  "golds": [
+   "너겁따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 15,
+  "source": "닭 앞에",
+  "gold_surface": "다가페",
+  "golds": [
+   "다가페"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 15,
+  "source": "값어치",
+  "gold_surface": "가버치",
+  "golds": [
+   "가버치"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 15,
+  "source": "값있는",
+  "gold_surface": "가빈는",
+  "golds": [
+   "가빈는"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 15,
+  "source": "앞일",
+  "gold_surface": "암닐",
+  "golds": [
+   "암닐"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 15,
+  "source": "꽃잎",
+  "gold_surface": "꼰닙",
+  "golds": [
+   "꼰닙"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 15,
+  "source": "맛있다",
+  "gold_surface": "마딛따/마싣따",
+  "golds": [
+   "마딛따",
+   "마싣따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 15,
+  "source": "멋있다",
+  "gold_surface": "머딛따/머싣따",
+  "golds": [
+   "머딛따",
+   "머싣따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "디귿이",
+  "gold_surface": "디그시",
+  "golds": [
+   "디그시"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "디귿을",
+  "gold_surface": "디그슬",
+  "golds": [
+   "디그슬"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "디귿에",
+  "gold_surface": "디그세",
+  "golds": [
+   "디그세"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "지읒이",
+  "gold_surface": "지으시",
+  "golds": [
+   "지으시"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "지읒을",
+  "gold_surface": "지으슬",
+  "golds": [
+   "지으슬"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "지읒에",
+  "gold_surface": "지으세",
+  "golds": [
+   "지으세"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "치읓이",
+  "gold_surface": "치으시",
+  "golds": [
+   "치으시"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "치읓을",
+  "gold_surface": "치으슬",
+  "golds": [
+   "치으슬"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "치읓에",
+  "gold_surface": "치으세",
+  "golds": [
+   "치으세"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "키읔이",
+  "gold_surface": "키으기",
+  "golds": [
+   "키으기"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "키읔을",
+  "gold_surface": "키으글",
+  "golds": [
+   "키으글"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "키읔에",
+  "gold_surface": "키으게",
+  "golds": [
+   "키으게"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "티읕이",
+  "gold_surface": "티으시",
+  "golds": [
+   "티으시"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "티읕을",
+  "gold_surface": "티으슬",
+  "golds": [
+   "티으슬"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "티읕에",
+  "gold_surface": "티으세",
+  "golds": [
+   "티으세"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "피읖이",
+  "gold_surface": "피으비",
+  "golds": [
+   "피으비"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "피읖을",
+  "gold_surface": "피으블",
+  "golds": [
+   "피으블"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "피읖에",
+  "gold_surface": "피으베",
+  "golds": [
+   "피으베"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "히읗이",
+  "gold_surface": "히으시",
+  "golds": [
+   "히으시"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "히읗을",
+  "gold_surface": "히으슬",
+  "golds": [
+   "히으슬"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "히읗에",
+  "gold_surface": "히으세",
+  "golds": [
+   "히으세"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "곧이듣다",
+  "gold_surface": "고지듣따",
+  "golds": [
+   "고지듣따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "굳이",
+  "gold_surface": "구지",
+  "golds": [
+   "구지"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "미닫이",
+  "gold_surface": "미ː다지",
+  "golds": [
+   "미ː다지"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "땀받이",
+  "gold_surface": "땀바지",
+  "golds": [
+   "땀바지"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "밭이",
+  "gold_surface": "바치",
+  "golds": [
+   "바치"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "벼훑이",
+  "gold_surface": "벼훌치",
+  "golds": [
+   "벼훌치"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "굳히다",
+  "gold_surface": "구치다",
+  "golds": [
+   "구치다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "닫히다",
+  "gold_surface": "다치다",
+  "golds": [
+   "다치다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "묻히다",
+  "gold_surface": "무치다",
+  "golds": [
+   "무치다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "먹는",
+  "gold_surface": "멍는",
+  "golds": [
+   "멍는"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "국물",
+  "gold_surface": "궁물",
+  "golds": [
+   "궁물"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "깎는",
+  "gold_surface": "깡는",
+  "golds": [
+   "깡는"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "키읔만",
+  "gold_surface": "키응만",
+  "golds": [
+   "키응만"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "몫몫이",
+  "gold_surface": "몽목씨",
+  "golds": [
+   "몽목씨"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "긁는",
+  "gold_surface": "긍는",
+  "golds": [
+   "긍는"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "흙만",
+  "gold_surface": "흥만",
+  "golds": [
+   "흥만"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "닫는",
+  "gold_surface": "단는",
+  "golds": [
+   "단는"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "짓는",
+  "gold_surface": "진ː는",
+  "golds": [
+   "진ː는"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "옷맵시",
+  "gold_surface": "온맵씨",
+  "golds": [
+   "온맵씨"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "있는",
+  "gold_surface": "인는",
+  "golds": [
+   "인는"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "맞는",
+  "gold_surface": "만는",
+  "golds": [
+   "만는"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "젖멍울",
+  "gold_surface": "전멍울",
+  "golds": [
+   "전멍울"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "쫓는",
+  "gold_surface": "쫀는",
+  "golds": [
+   "쫀는"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "꽃망울",
+  "gold_surface": "꼰망울",
+  "golds": [
+   "꼰망울"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "붙는",
+  "gold_surface": "분는",
+  "golds": [
+   "분는"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "놓는",
+  "gold_surface": "논는",
+  "golds": [
+   "논는"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "잡는",
+  "gold_surface": "잠는",
+  "golds": [
+   "잠는"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "밥물",
+  "gold_surface": "밤물",
+  "golds": [
+   "밤물"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "앞마당",
+  "gold_surface": "암마당",
+  "golds": [
+   "암마당"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "밟는",
+  "gold_surface": "밤ː는",
+  "golds": [
+   "밤ː는"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "읊는",
+  "gold_surface": "음는",
+  "golds": [
+   "음는"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "없는",
+  "gold_surface": "엄ː는",
+  "golds": [
+   "엄ː는"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "책 넣는다",
+  "gold_surface": "챙넌는다",
+  "golds": [
+   "챙넌는다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "흙 말리다",
+  "gold_surface": "흥말리다",
+  "golds": [
+   "흥말리다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "옷 맞추다",
+  "gold_surface": "온맏추다",
+  "golds": [
+   "온맏추다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "밥 먹는다",
+  "gold_surface": "밤멍는다",
+  "golds": [
+   "밤멍는다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 18,
+  "source": "값 매기다",
+  "gold_surface": "감매기다",
+  "golds": [
+   "감매기다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "담력",
+  "gold_surface": "담ː녁",
+  "golds": [
+   "담ː녁"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "침략",
+  "gold_surface": "침ː냑",
+  "golds": [
+   "침ː냑"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "강릉",
+  "gold_surface": "강능",
+  "golds": [
+   "강능"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "항로",
+  "gold_surface": "항ː노",
+  "golds": [
+   "항ː노"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "대통령",
+  "gold_surface": "대ː통녕",
+  "golds": [
+   "대ː통녕"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "난로",
+  "gold_surface": "날ː로",
+  "golds": [
+   "날ː로"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "신라",
+  "gold_surface": "실라",
+  "golds": [
+   "실라"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "천리",
+  "gold_surface": "철리",
+  "golds": [
+   "철리"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "광한루",
+  "gold_surface": "광ː할루",
+  "golds": [
+   "광ː할루"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "대관령",
+  "gold_surface": "대ː괄령",
+  "golds": [
+   "대ː괄령"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "칼날",
+  "gold_surface": "칼랄",
+  "golds": [
+   "칼랄"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "물난리",
+  "gold_surface": "물랄리",
+  "golds": [
+   "물랄리"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "줄넘기",
+  "gold_surface": "줄럼끼",
+  "golds": [
+   "줄럼끼"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "할는지",
+  "gold_surface": "할른지",
+  "golds": [
+   "할른지"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "닳는",
+  "gold_surface": "달른",
+  "golds": [
+   "달른"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "뚫는",
+  "gold_surface": "뚤른",
+  "golds": [
+   "뚤른"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "핥네",
+  "gold_surface": "할레",
+  "golds": [
+   "할레"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "의견란",
+  "gold_surface": "의ː견난",
+  "golds": [
+   "의ː견난"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "임진란",
+  "gold_surface": "임ː진난",
+  "golds": [
+   "임ː진난"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "생산량",
+  "gold_surface": "생산냥",
+  "golds": [
+   "생산냥"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "결단력",
+  "gold_surface": "결딴녁",
+  "golds": [
+   "결딴녁"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "공권력",
+  "gold_surface": "공꿘녁",
+  "golds": [
+   "공꿘녁"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "동원령",
+  "gold_surface": "동ː원녕",
+  "golds": [
+   "동ː원녕"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "상견례",
+  "gold_surface": "상견녜",
+  "golds": [
+   "상견녜"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "횡단로",
+  "gold_surface": "횡단노",
+  "golds": [
+   "횡단노"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "이원론",
+  "gold_surface": "이ː원논",
+  "golds": [
+   "이ː원논"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "입원료",
+  "gold_surface": "이붠뇨",
+  "golds": [
+   "이붠뇨"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "구근류",
+  "gold_surface": "구근뉴",
+  "golds": [
+   "구근뉴"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "아는",
+  "gold_surface": "아ː는",
+  "golds": [
+   "아ː는"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "무는",
+  "gold_surface": "무는",
+  "golds": [
+   "무는"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "감기",
+  "gold_surface": "감ː기",
+  "golds": [
+   "감ː기"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "옷감",
+  "gold_surface": "옫깜",
+  "golds": [
+   "옫깜"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "있고",
+  "gold_surface": "읻꼬",
+  "golds": [
+   "읻꼬"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "꽃길",
+  "gold_surface": "꼳낄",
+  "golds": [
+   "꼳낄"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "젖먹이",
+  "gold_surface": "전머기",
+  "golds": [
+   "전머기"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "문법",
+  "gold_surface": "문뻡",
+  "golds": [
+   "문뻡"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "꽃밭",
+  "gold_surface": "꼳빧",
+  "golds": [
+   "꼳빧"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "감기",
+  "gold_surface": "강ː기",
+  "golds": [
+   "강ː기"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "옷감",
+  "gold_surface": "옥깜",
+  "golds": [
+   "옥깜"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "문법",
+  "gold_surface": "뭄뻡",
+  "golds": [
+   "뭄뻡"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 21,
+  "source": "꽃밭",
+  "gold_surface": "꼽빧",
+  "golds": [
+   "꼽빧"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 22,
+  "source": "되어",
+  "gold_surface": "되어/되여",
+  "golds": [
+   "되어",
+   "되여"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 22,
+  "source": "피어",
+  "gold_surface": "피어/피여",
+  "golds": [
+   "피어",
+   "피여"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 23,
+  "source": "국밥",
+  "gold_surface": "국빱",
+  "golds": [
+   "국빱"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 23,
+  "source": "깎다",
+  "gold_surface": "깍따",
+  "golds": [
+   "깍따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 23,
+  "source": "넋받이",
+  "gold_surface": "넉빠지",
+  "golds": [
+   "넉빠지"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 23,
+  "source": "삯돈",
+  "gold_surface": "삭똔",
+  "golds": [
+   "삭똔"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 23,
+  "source": "닭장",
+  "gold_surface": "닥짱",
+  "golds": [
+   "닥짱"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 23,
+  "source": "칡범",
+  "gold_surface": "칙뻠",
+  "golds": [
+   "칙뻠"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 23,
+  "source": "뻗대다",
+  "gold_surface": "뻗때다",
+  "golds": [
+   "뻗때다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 23,
+  "source": "옷고름",
+  "gold_surface": "옫꼬름",
+  "golds": [
+   "옫꼬름"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 23,
+  "source": "있던",
+  "gold_surface": "읻떤",
+  "golds": [
+   "읻떤"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 23,
+  "source": "꽂고",
+  "gold_surface": "꼳꼬",
+  "golds": [
+   "꼳꼬"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 23,
+  "source": "꽃다발",
+  "gold_surface": "꼳따발",
+  "golds": [
+   "꼳따발"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 23,
+  "source": "낯설다",
+  "gold_surface": "낟썰다",
+  "golds": [
+   "낟썰다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 23,
+  "source": "밭갈이",
+  "gold_surface": "받까리",
+  "golds": [
+   "받까리"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 23,
+  "source": "솥전",
+  "gold_surface": "솓쩐",
+  "golds": [
+   "솓쩐"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 23,
+  "source": "곱돌",
+  "gold_surface": "곱똘",
+  "golds": [
+   "곱똘"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 23,
+  "source": "덮개",
+  "gold_surface": "덥깨",
+  "golds": [
+   "덥깨"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 23,
+  "source": "옆집",
+  "gold_surface": "엽찝",
+  "golds": [
+   "엽찝"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 23,
+  "source": "넓죽하다",
+  "gold_surface": "넙쭈카다",
+  "golds": [
+   "넙쭈카다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 23,
+  "source": "읊조리다",
+  "gold_surface": "읍쪼리다",
+  "golds": [
+   "읍쪼리다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 23,
+  "source": "값지다",
+  "gold_surface": "갑찌다",
+  "golds": [
+   "갑찌다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 24,
+  "source": "신고",
+  "gold_surface": "신ː꼬",
+  "golds": [
+   "신ː꼬"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 24,
+  "source": "껴안다",
+  "gold_surface": "껴안따",
+  "golds": [
+   "껴안따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 24,
+  "source": "앉고",
+  "gold_surface": "안꼬",
+  "golds": [
+   "안꼬"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 24,
+  "source": "얹다",
+  "gold_surface": "언따",
+  "golds": [
+   "언따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 24,
+  "source": "삼고",
+  "gold_surface": "삼ː꼬",
+  "golds": [
+   "삼ː꼬"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 24,
+  "source": "더듬지",
+  "gold_surface": "더듬찌",
+  "golds": [
+   "더듬찌"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 24,
+  "source": "닮고",
+  "gold_surface": "담ː꼬",
+  "golds": [
+   "담ː꼬"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 24,
+  "source": "젊지",
+  "gold_surface": "점ː찌",
+  "golds": [
+   "점ː찌"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 24,
+  "source": "신기다",
+  "gold_surface": "신끼다",
+  "golds": [
+   "신끼다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 25,
+  "source": "넓게",
+  "gold_surface": "널께",
+  "golds": [
+   "널께"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 25,
+  "source": "핥다",
+  "gold_surface": "할따",
+  "golds": [
+   "할따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 25,
+  "source": "훑소",
+  "gold_surface": "훌쏘",
+  "golds": [
+   "훌쏘"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 25,
+  "source": "떫지",
+  "gold_surface": "떨ː찌",
+  "golds": [
+   "떨ː찌"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 25,
+  "source": "읽고",
+  "gold_surface": "일꼬",
+  "golds": [
+   "일꼬"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 25,
+  "source": "읽기",
+  "gold_surface": "일끼",
+  "golds": [
+   "일끼"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 26,
+  "source": "갈등",
+  "gold_surface": "갈뜽",
+  "golds": [
+   "갈뜽"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 26,
+  "source": "발동",
+  "gold_surface": "발똥",
+  "golds": [
+   "발똥"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 26,
+  "source": "절도",
+  "gold_surface": "절또",
+  "golds": [
+   "절또"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 26,
+  "source": "말살",
+  "gold_surface": "말쌀",
+  "golds": [
+   "말쌀"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 26,
+  "source": "불소",
+  "gold_surface": "불쏘",
+  "golds": [
+   "불쏘"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 26,
+  "source": "일시",
+  "gold_surface": "일씨",
+  "golds": [
+   "일씨"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 26,
+  "source": "갈증",
+  "gold_surface": "갈쯩",
+  "golds": [
+   "갈쯩"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 26,
+  "source": "물질",
+  "gold_surface": "물찔",
+  "golds": [
+   "물찔"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 26,
+  "source": "발전",
+  "gold_surface": "발쩐",
+  "golds": [
+   "발쩐"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 26,
+  "source": "몰상식",
+  "gold_surface": "몰쌍식",
+  "golds": [
+   "몰쌍식"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 26,
+  "source": "불세출",
+  "gold_surface": "불쎄출",
+  "golds": [
+   "불쎄출"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 26,
+  "source": "허허실실",
+  "gold_surface": "허허실실",
+  "golds": [
+   "허허실실"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 26,
+  "source": "절절하다",
+  "gold_surface": "절절하다",
+  "golds": [
+   "절절하다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 27,
+  "source": "할 것을",
+  "gold_surface": "할꺼슬",
+  "golds": [
+   "할꺼슬"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 27,
+  "source": "갈 데가",
+  "gold_surface": "갈떼가",
+  "golds": [
+   "갈떼가"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 27,
+  "source": "할 바를",
+  "gold_surface": "할빠를",
+  "golds": [
+   "할빠를"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 27,
+  "source": "할 수는",
+  "gold_surface": "할쑤는",
+  "golds": [
+   "할쑤는"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 27,
+  "source": "할 적에",
+  "gold_surface": "할쩌게",
+  "golds": [
+   "할쩌게"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 27,
+  "source": "갈 곳",
+  "gold_surface": "갈꼳",
+  "golds": [
+   "갈꼳"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 27,
+  "source": "할 도리",
+  "gold_surface": "할또리",
+  "golds": [
+   "할또리"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 27,
+  "source": "만날 사람",
+  "gold_surface": "만날싸람",
+  "golds": [
+   "만날싸람"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 27,
+  "source": "할걸",
+  "gold_surface": "할껄",
+  "golds": [
+   "할껄"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 27,
+  "source": "할밖에",
+  "gold_surface": "할빠께",
+  "golds": [
+   "할빠께"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 27,
+  "source": "할세라",
+  "gold_surface": "할쎄라",
+  "golds": [
+   "할쎄라"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 27,
+  "source": "할수록",
+  "gold_surface": "할쑤록",
+  "golds": [
+   "할쑤록"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 27,
+  "source": "할지라도",
+  "gold_surface": "할찌라도",
+  "golds": [
+   "할찌라도"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 27,
+  "source": "할지언정",
+  "gold_surface": "할찌언정",
+  "golds": [
+   "할찌언정"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 27,
+  "source": "할진대",
+  "gold_surface": "할찐대",
+  "golds": [
+   "할찐대"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 27,
+  "source": "할 듯하다",
+  "gold_surface": "할뜨타다",
+  "golds": [
+   "할뜨타다"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 27,
+  "source": "할 성싶다",
+  "gold_surface": "할썽십따",
+  "golds": [
+   "할썽십따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "문고리",
+  "gold_surface": "문꼬리",
+  "golds": [
+   "문꼬리"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "눈동자",
+  "gold_surface": "눈똥자",
+  "golds": [
+   "눈똥자"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "신바람",
+  "gold_surface": "신빠람",
+  "golds": [
+   "신빠람"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "산새",
+  "gold_surface": "산쌔",
+  "golds": [
+   "산쌔"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "손재주",
+  "gold_surface": "손째주",
+  "golds": [
+   "손째주"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "길가",
+  "gold_surface": "길까",
+  "golds": [
+   "길까"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "물동이",
+  "gold_surface": "물똥이",
+  "golds": [
+   "물똥이"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "발바닥",
+  "gold_surface": "발빠닥",
+  "golds": [
+   "발빠닥"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "굴속",
+  "gold_surface": "굴ː쏙",
+  "golds": [
+   "굴ː쏙"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "술잔",
+  "gold_surface": "술짠",
+  "golds": [
+   "술짠"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "바람결",
+  "gold_surface": "바람껼",
+  "golds": [
+   "바람껼"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "그믐달",
+  "gold_surface": "그믐딸",
+  "golds": [
+   "그믐딸"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "아침밥",
+  "gold_surface": "아침빱",
+  "golds": [
+   "아침빱"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "잠자리",
+  "gold_surface": "잠짜리",
+  "golds": [
+   "잠짜리"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "강가",
+  "gold_surface": "강까",
+  "golds": [
+   "강까"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "초승달",
+  "gold_surface": "초승딸",
+  "golds": [
+   "초승딸"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "등불",
+  "gold_surface": "등뿔",
+  "golds": [
+   "등뿔"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "창살",
+  "gold_surface": "창쌀",
+  "golds": [
+   "창쌀"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "강줄기",
+  "gold_surface": "강쭐기",
+  "golds": [
+   "강쭐기"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "솜이불",
+  "gold_surface": "솜ː니불",
+  "golds": [
+   "솜ː니불"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "홑이불",
+  "gold_surface": "혼니불",
+  "golds": [
+   "혼니불"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "막일",
+  "gold_surface": "망닐",
+  "golds": [
+   "망닐"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "삯일",
+  "gold_surface": "상닐",
+  "golds": [
+   "상닐"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "맨입",
+  "gold_surface": "맨닙",
+  "golds": [
+   "맨닙"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "꽃잎",
+  "gold_surface": "꼰닙",
+  "golds": [
+   "꼰닙"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "내복약",
+  "gold_surface": "내ː봉냑",
+  "golds": [
+   "내ː봉냑"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "한여름",
+  "gold_surface": "한녀름",
+  "golds": [
+   "한녀름"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "남존여비",
+  "gold_surface": "남존녀비",
+  "golds": [
+   "남존녀비"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "신여성",
+  "gold_surface": "신녀성",
+  "golds": [
+   "신녀성"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "색연필",
+  "gold_surface": "생년필",
+  "golds": [
+   "생년필"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "직행열차",
+  "gold_surface": "지캥녈차",
+  "golds": [
+   "지캥녈차"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "늑막염",
+  "gold_surface": "능망념",
+  "golds": [
+   "능망념"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "콩엿",
+  "gold_surface": "콩녇",
+  "golds": [
+   "콩녇"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "담요",
+  "gold_surface": "담ː뇨",
+  "golds": [
+   "담ː뇨"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "눈요기",
+  "gold_surface": "눈뇨기",
+  "golds": [
+   "눈뇨기"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "영업용",
+  "gold_surface": "영엄뇽",
+  "golds": [
+   "영엄뇽"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "식용유",
+  "gold_surface": "시굥뉴",
+  "golds": [
+   "시굥뉴"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "백분율",
+  "gold_surface": "백뿐뉼",
+  "golds": [
+   "백뿐뉼"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "밤윷",
+  "gold_surface": "밤ː뉻",
+  "golds": [
+   "밤ː뉻"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "이죽이죽",
+  "gold_surface": "이중니죽/이주기죽",
+  "golds": [
+   "이중니죽",
+   "이주기죽"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "야금야금",
+  "gold_surface": "야금냐금/야그먀금",
+  "golds": [
+   "야금냐금",
+   "야그먀금"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "검열",
+  "gold_surface": "검ː녈/거ː멸",
+  "golds": [
+   "검ː녈",
+   "거ː멸"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "욜랑욜랑",
+  "gold_surface": "욜랑뇰랑/욜랑욜랑",
+  "golds": [
+   "욜랑뇰랑",
+   "욜랑욜랑"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "금융",
+  "gold_surface": "금늉/그뮹",
+  "golds": [
+   "금늉",
+   "그뮹"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "들일",
+  "gold_surface": "들ː릴",
+  "golds": [
+   "들ː릴"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "솔잎",
+  "gold_surface": "솔립",
+  "golds": [
+   "솔립"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "설익다",
+  "gold_surface": "설릭따",
+  "golds": [
+   "설릭따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "물약",
+  "gold_surface": "물략",
+  "golds": [
+   "물략"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "불여우",
+  "gold_surface": "불려우",
+  "golds": [
+   "불려우"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "서울역",
+  "gold_surface": "서울력",
+  "golds": [
+   "서울력"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "물엿",
+  "gold_surface": "물렫",
+  "golds": [
+   "물렫"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "휘발유",
+  "gold_surface": "휘발류",
+  "golds": [
+   "휘발류"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "유들유들",
+  "gold_surface": "유들류들",
+  "golds": [
+   "유들류들"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "한 일",
+  "gold_surface": "한닐",
+  "golds": [
+   "한닐"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "옷 입다",
+  "gold_surface": "온닙따",
+  "golds": [
+   "온닙따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "서른여섯",
+  "gold_surface": "서른녀섣",
+  "golds": [
+   "서른녀섣"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "연대",
+  "gold_surface": "삼년대",
+  "golds": [
+   "삼년대"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "먹은 엿",
+  "gold_surface": "머근녇",
+  "golds": [
+   "머근녇"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "할 일",
+  "gold_surface": "할릴",
+  "golds": [
+   "할릴"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "잘 입다",
+  "gold_surface": "잘립따",
+  "golds": [
+   "잘립따"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "스물여섯",
+  "gold_surface": "스물려섣",
+  "golds": [
+   "스물려섣"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "연대",
+  "gold_surface": "일련대",
+  "golds": [
+   "일련대"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "먹을 엿",
+  "gold_surface": "머글렫",
+  "golds": [
+   "머글렫"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "절",
+  "gold_surface": "사밀쩔",
+  "golds": [
+   "사밀쩔"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "송별연",
+  "gold_surface": "송ː벼련",
+  "golds": [
+   "송ː벼련"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "등용문",
+  "gold_surface": "등용문",
+  "golds": [
+   "등용문"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "슬픈 얘기",
+  "gold_surface": "슬픈냬기",
+  "golds": [
+   "슬픈냬기"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 29,
+  "source": "먼 옛날",
+  "gold_surface": "먼ː녠날",
+  "golds": [
+   "먼ː녠날"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 30,
+  "source": "냇가",
+  "gold_surface": "내ː까/낻ː까",
+  "golds": [
+   "내ː까",
+   "낻ː까"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 30,
+  "source": "샛길",
+  "gold_surface": "새ː낄/샏ː낄",
+  "golds": [
+   "새ː낄",
+   "샏ː낄"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 30,
+  "source": "빨랫돌",
+  "gold_surface": "빨래똘/빨랟똘",
+  "golds": [
+   "빨래똘",
+   "빨랟똘"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 30,
+  "source": "콧등",
+  "gold_surface": "코뜽/콛뜽",
+  "golds": [
+   "코뜽",
+   "콛뜽"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 30,
+  "source": "깃발",
+  "gold_surface": "기빨/긷빨",
+  "golds": [
+   "기빨",
+   "긷빨"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 30,
+  "source": "대팻밥",
+  "gold_surface": "대ː패빱/대ː팯빱",
+  "golds": [
+   "대ː패빱",
+   "대ː팯빱"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 30,
+  "source": "햇살",
+  "gold_surface": "해쌀/핻쌀",
+  "golds": [
+   "해쌀",
+   "핻쌀"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 30,
+  "source": "뱃속",
+  "gold_surface": "배쏙/밷쏙",
+  "golds": [
+   "배쏙",
+   "밷쏙"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 30,
+  "source": "뱃전",
+  "gold_surface": "배쩐/밷쩐",
+  "golds": [
+   "배쩐",
+   "밷쩐"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 30,
+  "source": "고갯짓",
+  "gold_surface": "고개찓/고갣찓",
+  "golds": [
+   "고개찓",
+   "고갣찓"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 30,
+  "source": "훗일",
+  "gold_surface": "훈ː닐",
+  "golds": [
+   "훈ː닐"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ },
+ {
+  "article": 30,
+  "source": "뒷일",
+  "gold_surface": "뒨ː닐",
+  "golds": [
+   "뒨ː닐"
+  ],
+  "curation_status": "raw-pattern-extract",
+  "notes": ""
+ }
+]
