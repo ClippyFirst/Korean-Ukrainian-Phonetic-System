@@ -472,3 +472,13 @@ documented broad convention behind L7). English Wiktionary `장르` (secondary).
 4. Make the browser's cross-word refusal consistent across lexical-row part boundaries,
    or document it as intended (current behavior recorded).
 5. Curated official-example gold, multi-engine re-run, independent review.
+
+---
+
+## Sixth pass — 2026-11-21 (continuation 3)
+
+- Python: **887 passed** (full suite with g2pk + jsonschema).
+- Browser: **1463 pass / 1464 total**; single OOM in super-soft (reproduced on main) — environment.
+- Curated priority gold (§12,15,18–20,24–30): 80 agent-curated examples; surface precision@resolved 0.925 (74/80). Mismatches are morphology-guarded fortition cases expected to abstain or lack license.
+- WP4: browser refusal narrowed to Python condition; shared fixture added.
+- Remaining: full §1–§23 gold, WP5 alternatives field, WP3 licenses for the 6 mismatches where appropriate, CI.
