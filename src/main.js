@@ -45,9 +45,9 @@ const modePractical=document.querySelector('#mode-practical');
 const modeResearch=document.querySelector('#mode-research');
 const researchOptions=document.querySelector('#research-options');
 const morphologyDescriptions=[
-  {name:'Строгий',mode:'strict',description:'Лише правила з належним джерельним обґрунтуванням. Найвища обережність; невирішені випадки залишаються невизначеними.'},
-  {name:'М’який',mode:'soft',description:'Додає формальні морфологічні та практичні евристики й типізований IPA-резерв для невирішених переходів. Покриття ширше, але частина результатів має низьку впевненість.'},
-  {name:'Суперм’який',mode:'super-soft',description:'Розкладає склади хангиля на графеми, формує IPA й передає його до українського адаптера. Контекстні правила не вгадуються; це найширше графемне покриття з найнижчою впевненістю.'}
+  {name:'Strict',mode:'strict',description:'Лише правила з належним джерельним обґрунтуванням. Найвища обережність; невирішені випадки залишаються невизначеними.'},
+  {name:'Soft',mode:'soft',description:'Додає формальні морфологічні та практичні евристики й типізований IPA-резерв для невирішених переходів. Покриття ширше, але частина результатів має низьку впевненість.'},
+  {name:'Super-soft',mode:'super-soft',description:'Розкладає склади хангиля на графеми, формує IPA й передає його до українського адаптера. Контекстні правила не вгадуються; це найширше графемне покриття з найнижчою впевненістю.'}
 ];
 function currentMorphologyMode(){
   if(modeResearch&&modeResearch.checked){
@@ -195,7 +195,7 @@ function selectUaView(view){
   // switching to a candidate: candidateValue is only hidden storage.
   if(output){
     output.hidden=false;
-    output.textContent=candidateSelected?(candidateValue?.textContent||'Дослідницький результат недоступний'):(currentTargetUnconfirmed?'Немає підтвердженого запису':currentConfirmedOutput);
+    output.textContent=candidateSelected?(candidateValue?.textContent||'Дослідницький результат недоступний'):(currentTargetUnconfirmed?'???':currentConfirmedOutput);
     output.classList.toggle('result-unconfirmed',currentTargetUnconfirmed&&!candidateSelected);
   }
   if(candidateNote)candidateNote.hidden=!candidateSelected||!candidateValue?.textContent;
