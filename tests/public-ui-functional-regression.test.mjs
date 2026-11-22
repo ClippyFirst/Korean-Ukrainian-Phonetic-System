@@ -44,15 +44,3 @@ test('uncertain candidate offers a separate copy-without-brackets action', () =>
   assert.match(main, /stripUncertaintyBrackets/);
   assert.match(main, /ukrainianCleanCopyButton\.hidden=/u);
 });
-
-
-test('shared strictness labels and unresolved final-output marker are explicit', () => {
-  assert.match(html, /<output id="morphology-level-value"[^>]*>Strict<\/output>/u);
-  assert.match(html, /<span>Strict<\/span><span>Soft<\/span><span>Super-soft<\/span>/u);
-  assert.match(main, /name:'Strict',mode:'strict'/u);
-  assert.match(main, /name:'Soft',mode:'soft'/u);
-  assert.match(main, /name:'Super-soft',mode:'super-soft'/u);
-  assert.match(main, /currentTargetUnconfirmed\?'\?\?\?':currentConfirmedOutput/u);
-  assert.match(html, /Основний результат/u);
-  assert.match(html, /Дослідницький результат/u);
-});

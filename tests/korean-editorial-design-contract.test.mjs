@@ -169,9 +169,9 @@ test('research analysis uses one accessible three-level slider, not visible chec
   const html=read('index.html');
   const js=read('src/main.js');
   assert.match(html,/<input[^>]*id="morphology-level"[^>]*type="range"/u);
-  assert.match(html,/Strict/u);
-  assert.match(html,/Soft/u);
-  assert.match(html,/Super-soft/u);
+  assert.match(html,/Строгий/u);
+  assert.match(html,/М’який/u);
+  assert.match(html,/Суперм’який/u);
   assert.match(html,/aria-describedby="morphology-level-guidance"/u);
   assert.match(html,/id="morphology-level-guidance"/u);
   assert.match(js,/morphologyLevel\?\.value/u);
@@ -360,7 +360,7 @@ test('rendered visual review captures the practical mode and every research slid
   assert.match(review,/practicalMode\.isChecked\(\)/u);
   assert.match(review,/researchOptions\.evaluate\(element=>element\.hidden\)/u);
   assert.match(review,/researchMode\.check\(\)/u);
-  assert.match(review,/expectedLevels=\['Strict','Soft','Super-soft'\]/u);
+  assert.match(review,/expectedLevels=\['Строгий','М’який','Суперм’який'\]/u);
 });
 
 

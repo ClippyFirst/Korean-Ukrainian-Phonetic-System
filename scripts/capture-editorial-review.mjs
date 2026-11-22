@@ -81,7 +81,7 @@ try {
         }
         const slider=page.locator('#morphology-level');
         await slider.waitFor({state:'visible'});
-        const expectedLevels=['Strict','Soft','Super-soft'];
+        const expectedLevels=['Строгий','М’який','Суперм’який'];
         const levelGuidance=[];
         for(let level=0;level<expectedLevels.length;level++){
           await slider.evaluate((element,value)=>{
@@ -268,7 +268,7 @@ try {
         const row=list?.querySelector('.trace-row');
         return {researchVisible:!document.querySelector('#research-options')?.hidden,sliderVisible:Boolean(document.querySelector('#morphology-level')?.getBoundingClientRect().height),sliderHeight:Math.round(document.querySelector('#morphology-level')?.getBoundingClientRect().height??0),sliderValue:document.querySelector('#morphology-level')?.getAttribute('aria-valuetext')??null,gridDisplay:style?.display??null,gridColumns:style?.gridTemplateColumns?.split(' ').length??0,rowDisplay:row?getComputedStyle(row).display:null,rowCount:list?.querySelectorAll('.trace-row').length??0};
       }):null;
-      if(pageName==='index.html'&&(!researchUi.researchVisible||!researchUi.sliderVisible||researchUi.sliderValue!=='Soft'||researchUi.gridDisplay!=='grid'||researchUi.gridColumns<1||researchUi.rowDisplay!=='grid'||(viewport.touch&&researchUi.sliderHeight<44))){
+      if(pageName==='index.html'&&(!researchUi.researchVisible||!researchUi.sliderVisible||researchUi.sliderValue!=='М’який'||researchUi.gridDisplay!=='grid'||researchUi.gridColumns<1||researchUi.rowDisplay!=='grid'||(viewport.touch&&researchUi.sliderHeight<44))){
         failures.push(`${pageName} at ${viewport.name}: research slider or compact syllable trace is not rendered as an interactive responsive grid: ${JSON.stringify(researchUi)}`);
       }
       const file = `${outputDir}/${pageName.replace('.html','')}-${viewport.name}.png`;

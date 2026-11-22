@@ -67,7 +67,7 @@ try {
     input.dispatchEvent(new Event('input', { bubbles: true }));
   });
   await page.waitForFunction(() =>
-    ['Суперм’який', 'Super-soft'].includes(document.querySelector('#morphology-level')?.getAttribute('aria-valuetext'))
+    document.querySelector('#morphology-level')?.getAttribute('aria-valuetext') === 'Суперм’який'
   );
   assert.equal(await morphologyLevel.inputValue(), '2',
     'live Super-soft mode must be selected through the public three-position slider');
@@ -83,7 +83,7 @@ try {
   const superSoftStatus = (await page.locator('#phonology-status-note').innerText()).trim();
   const superSoftCandidate = (await page.locator('#candidate-value').innerText()).trim();
   assert.ok(superSoftCandidate.length > 0, 'live Super-soft must expose a Ukrainian candidate');
-  assert.match(superSoftStatus, /Дослідницький режим · (?:Суперм’який|Super-soft) рівень/u, 'live status must identify the active research mode and Super-soft level');
+  assert.match(superSoftStatus, /Дослідницький режим · Суперм’який рівень/u, 'live status must identify the active research mode and Super-soft level');
   assert.match(superSoftStatus, /Козак Кім/u, 'live status must identify the research engine');
   assert.match(superSoftStatus, /низької впевненості/u, 'live status must disclose low-confidence fallback');
   assert.match(superSoftStatus, /низька впевненість: \d+% \(\d+\/\d+\)/u, 'live status must quantify the low-confidence share and its Hangul denominator');
@@ -124,11 +124,7 @@ try {
       const ukrainian = document.querySelector('#result-ukrainian')?.textContent?.trim() || '';
       const candidate = document.querySelector('#candidate-value')?.textContent?.trim() || '';
       const ipa = document.querySelector('#result-ipa')?.textContent?.trim() || '';
-      const targetStatus = document.querySelector('#target-status-note')?.textContent?.trim() || '';
-      const unresolvedWithCandidate = ukrainian === '???' &&
-        targetStatus.includes('попередній кандидат, не підтверджений результат');
-      return results && !results.hidden && (ukrainian.length > 20 || unresolvedWithCandidate) &&
-        candidate.length > 20 && ipa.length > 20;
+      return results && !results.hidden && ukrainian.length > 20 && candidate.length > 20 && ipa.length > 20;
     }, null, { timeout: 45000 });
   } catch (error) {
     const diagnostics = await page.evaluate(() => ({
@@ -161,7 +157,7 @@ try {
   assert.ok(candidate.length > 100, 'long input should produce a substantial research candidate');
   assert.equal(await page.locator('#ua-candidate-button').isEnabled(), true,
     'candidate option must be enabled when the engine returns a candidate');
-  assert.equal(initialUkrainian, '???',
+  assert.equal(initialUkrainian, 'Немає підтвердженого запису',
     'unconfirmed mode must not present a candidate as an accepted result');
   assert.equal(outputLabel, 'Достовірний варіант недоступний',
     'the primary-result label must disclose that no accepted Ukrainian output exists');
@@ -186,7 +182,7 @@ try {
 
   // Return to the unconfirmed option to ensure the accepted-result slot is neutral.
   await page.locator('#ua-unconfirmed-button').click();
-  assert.equal((await page.locator('#result-ukrainian').innerText()).trim(), '???');
+  assert.equal((await page.locator('#result-ukrainian').innerText()).trim(), 'Немає підтвердженого запису');
   assert.equal(await page.locator('#ukrainian-copy-button').isVisible(), false);
   assert.ok(ipa.length > 100, 'long input should produce a substantial IPA result');
   assert.match(status, /g2pK ·/u, 'the live page must stay in the practical JavaScript-port mode');

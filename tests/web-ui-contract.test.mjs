@@ -214,9 +214,8 @@ test('live browser smoke follows the inline Ukrainian result contract',()=>{
   assert.match(smoke,/page\.locator\('#candidate-note'\)\.isVisible\(\)/);
   assert.match(smoke,/page\.locator\('#candidate-panel'\)\.count\(\)/);
   assert.match(smoke,/Дослідницький результат/u);
-  assert.match(smoke,/Суперм’який/u,'live smoke must still accept the currently deployed legacy label');
-  assert.match(smoke,/Super-soft/u,'live smoke must also accept the shared label after deployment');
-  assert.doesNotMatch(smoke,/Super-soft режим/u,'live smoke must not require the superseded status wording');
+  assert.match(smoke,/Дослідницький режим · Суперм’який рівень/u,'live smoke must expect the explicit active mode label');
+  assert.doesNotMatch(smoke,/Суперм’який режим/u,'live smoke must not require the superseded status wording');
   assert.match(smoke,/#phonology-status-note/u,'live smoke reads pronunciation provenance from the IPA panel');
   assert.match(smoke,/#target-status-note/u,'live smoke reads Ukrainian candidate status from the Ukrainian panel');
   assert.doesNotMatch(smoke,/#status-note/u,'live smoke must not use the removed legacy status selector');
@@ -235,7 +234,7 @@ test('three research profiles distinguish heuristic Soft from grapheme-only Supe
   const engine=read('src/app/engine_convert.js');
   const main=read('src/main.js');
   assert.match(html,/id="morphology-level" type="range"/u);
-  assert.match(html,/Strict[\s\S]*Soft[\s\S]*Super-soft/u);
+  assert.match(html,/Строгий[\s\S]*М’який[\s\S]*Суперм’який/u);
   assert.ok(html.indexOf('id="morphology-level"')<html.indexOf('id="soft-morphology"'),'the visible slider precedes hidden compatibility inputs');
   assert.match(engine,/requestedMorphologyMode==='soft'\?'super-soft'/u);
   assert.match(engine,/requestedMorphologyMode==='super-soft'\?'grapheme-fallback'/u);
@@ -291,25 +290,4 @@ test('jogakbo hero keeps all three specimen labels and values visible without ov
   assert.match(css,/grid-template-rows:repeat\(3,minmax\(116px,auto\)\)/);
   assert.match(css,/\.specimen-flow \.specimen-label\{[\s\S]*display:block/);
   assert.match(css,/\.specimen-flow \.specimen-ua\{[\s\S]*white-space:normal/);
-});
-
-
-test('live smoke accepts an explicit unresolved final result when a research candidate and IPA are present', () => {
-  const smoke = read('scripts/smoke-live-pages-browser.mjs');
-  assert.match(smoke, /ukrainian === '\?\?\?'/u);
-  assert.match(smoke, /попередній кандидат, не підтверджений результат/u);
-  assert.match(smoke, /candidate.length > 20 && ipa.length > 20/u);
-});
-
-
-test('live smoke expects the canonical unresolved final-output marker', () => {
-  const smoke = read('scripts/smoke-live-pages-browser.mjs');
-  assert.match(smoke, /assert\.equal\(initialUkrainian, '\?\?\?'/u);
-});
-
-
-test('live smoke contains no legacy unresolved-result prose placeholder', () => {
-  const smoke = read('scripts/smoke-live-pages-browser.mjs');
-  assert.doesNotMatch(smoke, /Немає підтвердженого запису/u);
-  assert.match(smoke, /result-ukrainian'\)\.innerText\(\)\)\.trim\(\), '\?\?\?'/u);
 });
