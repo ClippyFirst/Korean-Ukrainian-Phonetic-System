@@ -306,3 +306,10 @@ test('live smoke expects the canonical unresolved final-output marker', () => {
   const smoke = read('scripts/smoke-live-pages-browser.mjs');
   assert.match(smoke, /assert\.equal\(initialUkrainian, '\?\?\?'/u);
 });
+
+
+test('live smoke contains no legacy unresolved-result prose placeholder', () => {
+  const smoke = read('scripts/smoke-live-pages-browser.mjs');
+  assert.doesNotMatch(smoke, /Немає підтвердженого запису/u);
+  assert.match(smoke, /result-ukrainian'\)\.innerText\(\)\)\.trim\(\), '\?\?\?'/u);
+});
