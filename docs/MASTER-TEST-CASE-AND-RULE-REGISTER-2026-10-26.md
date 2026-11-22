@@ -665,3 +665,16 @@ The 181 profile-convention cases and 40 abstained/unadjudicated cases are not co
 - Added Python/browser tests for the phrase pairs, compact-input negative controls, no-glide and hiatus decisions, broad /s/ retention, the `ㅠㅠ` non-speech jamo path, all-40 occurrence coverage, source-row crosswalk, and source-register IDs.
 - 22 `아끼셔` rows are treated as one source-row/token family, not 22 independent speakers.
 - Completion vocabulary is intentionally split: `ENGINE_POLICY_RESOLVED_NO_AUDIO` for all 40; `UNRESOLVED_NO_AUDIO` for all speaker-level IPA gold. This is not 40 new categorical phonology rules and does not alter the historical 236-candidate cohort totals.
+
+
+## UI/output contract regression cases — 2026-11-22
+
+| Case ID | Contract | Automated evidence |
+|---|---|---|
+| UI-MODE-001 | Visible morphology levels are Strict / Soft / Super-soft while retaining Korean-specific inclusion rules | `tests/public-ui-functional-regression.test.mjs`, `tests/web-ui-contract.test.mjs`, `tests/korean-editorial-design-contract.test.mjs`, `scripts/capture-editorial-review.mjs` |
+| UI-RESULT-002 | Unconfirmed primary Ukrainian result is displayed as `???`; structured API remains `null` + unavailable status/reason | `tests/public-ui-functional-regression.test.mjs`, `docs/OUTPUT-CONTRACT.md` |
+| UI-CANDIDATE-003 | Research candidate remains separately selectable and is never presented as a confirmed result | `tests/public-ui-functional-regression.test.mjs`, `scripts/smoke-live-pages-browser.mjs` |
+| UI-SMOKE-004 | Live smoke accepts `???` only when the candidate and IPA diagnostics are also populated | `scripts/smoke-live-pages-browser.mjs`, `tests/web-ui-contract.test.mjs` |
+| UI-SMOKE-005 | Live smoke expects `???` for the unconfirmed primary output and forbids the legacy prose placeholder | `scripts/smoke-live-pages-browser.mjs`, `tests/deploy-pages-smoke-contract.test.mjs`, `tests/web-ui-contract.test.mjs` |
+
+These are UI contract tests, not new linguistic gold items or accuracy claims. API/Python structured values remain typed and separate from the display marker.
