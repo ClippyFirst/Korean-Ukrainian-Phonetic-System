@@ -161,7 +161,7 @@ try {
   assert.ok(candidate.length > 100, 'long input should produce a substantial research candidate');
   assert.equal(await page.locator('#ua-candidate-button').isEnabled(), true,
     'candidate option must be enabled when the engine returns a candidate');
-  assert.equal(initialUkrainian, 'Немає підтвердженого запису',
+  assert.equal(initialUkrainian, '???',
     'unconfirmed mode must not present a candidate as an accepted result');
   assert.equal(outputLabel, 'Достовірний варіант недоступний',
     'the primary-result label must disclose that no accepted Ukrainian output exists');

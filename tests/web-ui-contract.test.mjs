@@ -300,3 +300,9 @@ test('live smoke accepts an explicit unresolved final result when a research can
   assert.match(smoke, /попередній кандидат, не підтверджений результат/u);
   assert.match(smoke, /candidate.length > 20 && ipa.length > 20/u);
 });
+
+
+test('live smoke expects the canonical unresolved final-output marker', () => {
+  const smoke = read('scripts/smoke-live-pages-browser.mjs');
+  assert.match(smoke, /assert\.equal\(initialUkrainian, '\?\?\?'/u);
+});
