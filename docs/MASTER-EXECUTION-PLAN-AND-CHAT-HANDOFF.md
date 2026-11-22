@@ -1529,3 +1529,13 @@ The visual-mode task is software-verified and ready for merge. The broader produ
 - Final post-merge Pages run [45005154469](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45005154469) and main tests [45005154520](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45005154520) are queued/in progress at this checkpoint. Do not call final live smoke verified until both finish successfully.
 - Published URL: https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/.
 - No Korean phonological rules, IPA mappings, lexical evidence or confidence values were changed by these UI/smoke-contract changes.
+
+
+### Final live-smoke and deployment closure — 2026-11-22
+
+- The initial post-merge Pages run exposed stale browser-smoke expectations, not a pronunciation-engine regression. PRs #498, #499 and #502 successively corrected the candidate, unconfirmed-result and final remaining legacy assertion.
+- PR #502 is merged; the latest main commit at this checkpoint is `fdc397417979d8c2458e8ffd11d065901ae3f93c`.
+- Final main verification [45005791184](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45005791184), full system verification [45005791192](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45005791192), master corpus/register [45005791291](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45005791291), editorial review [45005791198](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45005791198), and final Pages deploy [45005791187](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45005791187) all completed SUCCESS on that main SHA.
+- The remaining open PR #501 is superseded by merged PR #502 and should be closed as duplicate; PR #500 carries this documentation update.
+- Published site: https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/.
+- This closes the engineering UI/output rollout; it does not change Korean phonological rules, IPA evidence or linguistic accuracy claims.
