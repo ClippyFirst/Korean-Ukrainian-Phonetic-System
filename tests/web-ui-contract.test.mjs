@@ -292,3 +292,11 @@ test('jogakbo hero keeps all three specimen labels and values visible without ov
   assert.match(css,/\.specimen-flow \.specimen-label\{[\s\S]*display:block/);
   assert.match(css,/\.specimen-flow \.specimen-ua\{[\s\S]*white-space:normal/);
 });
+
+
+test('live smoke accepts an explicit unresolved final result when a research candidate and IPA are present', () => {
+  const smoke = read('scripts/smoke-live-pages-browser.mjs');
+  assert.match(smoke, /ukrainian === '\?\?\?'/u);
+  assert.match(smoke, /попередній кандидат, не підтверджений результат/u);
+  assert.match(smoke, /candidate.length > 20 && ipa.length > 20/u);
+});
