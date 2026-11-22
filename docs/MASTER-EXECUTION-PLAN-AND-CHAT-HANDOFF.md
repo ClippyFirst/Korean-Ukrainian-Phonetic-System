@@ -1515,3 +1515,13 @@ The visual-mode task is software-verified and ready for merge. The broader produ
 - Visual review passed 10 page/viewport combinations; the service UI was checked at 1440, 1024, 768, 390 and 320 CSS px. Geometry assertions confirm pronunciation provenance is inside the IPA panel and target status is inside the Ukrainian panel.
 - NIKL metadata-only inventory was skipped per repository policy.
 - PR #492 remains open and unmerged pending explicit merge instruction. No Pages deployment/publication is claimed.
+
+
+## Shared output contract — final verification, 2026-11-22
+
+- PR [#497](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/497) merged as `fc733006b9ccdb9e12e50474c0564233043243e7`: visible Strict / Soft / Super-soft labels; unresolved final UI output `???`; confirmed result and research candidate remain separate; API/Python unavailable values remain typed null with status/reason.
+- PR [#498](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/498) and PR [#499](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/499) updated the long-result and first legacy-marker smoke expectations. PR [#502](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/502) corrected the final unconfirmed-view assertion and its source-contract test; merged as `fdc397417979d8c2458e8ffd11d065901ae3f93c`.
+- PR #502 exact-head checks: tests [45005626034](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45005626034), verification [45005625907](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45005625907), editorial review [45005625937](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45005625937) SUCCESS.
+- Post-merge Pages workflow [45005791187](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45005791187) SUCCESS. Python 3.11/3.12/3.13, wheel install, browser regression/build, public page smoke and live Chromium smoke all passed.
+- Published site: https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/.
+- No Korean phonological rules, IPA mappings, lexical evidence, source rows or confidence values changed in this output-contract batch.
