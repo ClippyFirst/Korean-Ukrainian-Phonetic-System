@@ -214,8 +214,8 @@ test('live browser smoke follows the inline Ukrainian result contract',()=>{
   assert.match(smoke,/page\.locator\('#candidate-note'\)\.isVisible\(\)/);
   assert.match(smoke,/page\.locator\('#candidate-panel'\)\.count\(\)/);
   assert.match(smoke,/Дослідницький результат/u);
-  assert.match(smoke,/Дослідницький режим · Суперм’який рівень/u,'live smoke must expect the explicit active mode label');
-  assert.doesNotMatch(smoke,/Суперм’який режим/u,'live smoke must not require the superseded status wording');
+  assert.match(smoke,/Дослідницький режим · Super-soft рівень/u,'live smoke must expect the explicit active mode label');
+  assert.doesNotMatch(smoke,/Super-soft режим/u,'live smoke must not require the superseded status wording');
   assert.match(smoke,/#phonology-status-note/u,'live smoke reads pronunciation provenance from the IPA panel');
   assert.match(smoke,/#target-status-note/u,'live smoke reads Ukrainian candidate status from the Ukrainian panel');
   assert.doesNotMatch(smoke,/#status-note/u,'live smoke must not use the removed legacy status selector');
@@ -234,7 +234,7 @@ test('three research profiles distinguish heuristic Soft from grapheme-only Supe
   const engine=read('src/app/engine_convert.js');
   const main=read('src/main.js');
   assert.match(html,/id="morphology-level" type="range"/u);
-  assert.match(html,/Строгий[\s\S]*М’який[\s\S]*Суперм’який/u);
+  assert.match(html,/Strict[\s\S]*Soft[\s\S]*Super-soft/u);
   assert.ok(html.indexOf('id="morphology-level"')<html.indexOf('id="soft-morphology"'),'the visible slider precedes hidden compatibility inputs');
   assert.match(engine,/requestedMorphologyMode==='soft'\?'super-soft'/u);
   assert.match(engine,/requestedMorphologyMode==='super-soft'\?'grapheme-fallback'/u);
