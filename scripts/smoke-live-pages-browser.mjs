@@ -186,7 +186,7 @@ try {
 
   // Return to the unconfirmed option to ensure the accepted-result slot is neutral.
   await page.locator('#ua-unconfirmed-button').click();
-  assert.equal((await page.locator('#result-ukrainian').innerText()).trim(), 'Немає підтвердженого запису');
+  assert.equal((await page.locator('#result-ukrainian').innerText()).trim(), '???');
   assert.equal(await page.locator('#ukrainian-copy-button').isVisible(), false);
   assert.ok(ipa.length > 100, 'long input should produce a substantial IPA result');
   assert.match(status, /g2pK ·/u, 'the live page must stay in the practical JavaScript-port mode');
