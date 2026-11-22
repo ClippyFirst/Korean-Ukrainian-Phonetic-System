@@ -678,3 +678,11 @@ The 181 profile-convention cases and 40 abstained/unadjudicated cases are not co
 | UI-SMOKE-005 | Live smoke expects `???` for the unconfirmed primary output, not the obsolete explanatory sentence | `scripts/smoke-live-pages-browser.mjs`, `tests/web-ui-contract.test.mjs`; exact-head PR #499 tests passed |
 
 These are UI contract tests, not new linguistic gold items or accuracy claims. API/Python structured values remain typed and separate from the display marker.
+
+
+## Final smoke/deployment verification — 2026-11-22
+
+- PR #502 removed the final stale legacy unresolved-result expectation after #497–#499 had aligned mode labels, candidate display and the primary `???` state.
+- Current main SHA: `fdc397417979d8c2458e8ffd11d065901ae3f93c`.
+- Main tests [45005791184](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45005791184), full verification [45005791192](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45005791192), register [45005791291](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45005791291), editorial review [45005791198](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45005791198), and Pages deploy [45005791187](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45005791187) all SUCCESS.
+- These are engineering/UI regressions only, not independently adjudicated pronunciation gold.
