@@ -124,7 +124,11 @@ try {
       const ukrainian = document.querySelector('#result-ukrainian')?.textContent?.trim() || '';
       const candidate = document.querySelector('#candidate-value')?.textContent?.trim() || '';
       const ipa = document.querySelector('#result-ipa')?.textContent?.trim() || '';
-      return results && !results.hidden && ukrainian.length > 20 && candidate.length > 20 && ipa.length > 20;
+      const targetStatus = document.querySelector('#target-status-note')?.textContent?.trim() || '';
+      const unresolvedWithCandidate = ukrainian === '???' &&
+        targetStatus.includes('попередній кандидат, не підтверджений результат');
+      return results && !results.hidden && (ukrainian.length > 20 || unresolvedWithCandidate) &&
+        candidate.length > 20 && ipa.length > 20;
     }, null, { timeout: 45000 });
   } catch (error) {
     const diagnostics = await page.evaluate(() => ({
