@@ -38,7 +38,8 @@ test('live browser smoke verifies inline research candidate and neutral confirme
   assert.match(browserSmoke, /#ua-candidate-button/u);
   assert.match(browserSmoke, /#candidate-value/u);
   assert.match(browserSmoke, /#candidate-note/u);
-  assert.match(browserSmoke, /Немає підтвердженого запису/u);
+  assert.match(browserSmoke, /initialUkrainian, '???'/u);
+  assert.doesNotMatch(browserSmoke, /Немає підтвердженого запису/u);
   assert.match(browserSmoke, /Достовірний варіант недоступний/u);
   assert.match(browserSmoke, /Дослідницький результат/u);
   assert.match(browserSmoke, /#ukrainian-copy-button/u);
