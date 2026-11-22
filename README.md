@@ -1,6 +1,6 @@
 # Korean–Ukrainian Phonetic System
 
- > **Current browser mode semantics (merged PR #466):** Strict is unchanged; Soft is the former broad heuristic/maximum-coverage path; Super-soft is the grapheme-only Jamo → IPA → Ukrainian fallback. Earlier benchmark figures are historical and do not score the new definitions. The Super-soft 11,172-syllable test measures candidate availability, not pronunciation accuracy. These changes are deployed to GitHub Pages from main commit `fa2998acaa0fdd154c9b4d3c1927778f77bac199`.
+ > **Current browser mode semantics (merged PR #466):** Strict is unchanged; Soft is the former broad heuristic/maximum-coverage path; Super-soft is the grapheme-only Jamo → IPA → Ukrainian fallback. The visible controls use the shared Strict / Soft / Super-soft labels. An unconfirmed final Ukrainian result is displayed as `???`; structured Python/API results retain `null` plus typed status/reason, and research candidates remain separately selectable. Earlier benchmark figures are historical and do not score the new definitions. The Super-soft 11,172-syllable test measures candidate availability, not pronunciation accuracy. These changes are deployed to GitHub Pages from main commit `fa2998acaa0fdd154c9b4d3c1927778f77bac199`.
 
 ## Historical benchmark baseline — PR #465 (2026-11-10)
 
