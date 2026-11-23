@@ -197,6 +197,8 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
         pronunciation_status,
         candidate_ukrainian:hasCandidate||superSoftCandidateOnly?candidateText:null,
         status:graphemeFallbackOn?'super-soft-grapheme-fallback':superSoftOn?(results.some(r=>r.status==='super-soft-orthographic-fallback'||(r.trace||[]).some(item=>item.status==='super-soft-orthographic-fallback'))?'super-soft-orthographic-fallback':hasSuperSoftFallback?'super-soft-heuristic-coverage':results.some(r=>r.status==='unresolved')?'unresolved':'super-soft-maximum-coverage'):issues.length?'unresolved':results.some(r=>r.status==='lexical-review')?'lexical-review':results.some(r=>r.status==='lexical')?'lexical':results.some(r=>r.status==='practical-transliteration')?'practical-transliteration':results.some(r=>r.status==='heuristic-low-confidence')?'heuristic-low-confidence':results.some(r=>r.status==='contextual')?'contextual':'canonical',
+
+        alternatives: normativeAlternatives(text),
         phonetic_result_type:graphemeFallbackOn?'orthographic-phonemic-ipa-fallback':hasSuperSoftFallback?(results.some(r=>r.status==='super-soft-orthographic-fallback'||(r.trace||[]).some(item=>item.status==='super-soft-orthographic-fallback'))?'mixed-surface-ipa-and-orthographic-fallback':'mixed-surface-ipa-and-heuristic'):'surface-ipa',
         candidate_status:hasSuperSoftFallback?'super-soft-low-confidence':coverageModeOn&&hasProvisionalTarget?'provisional':hasCandidate?'provisional':null
       };
@@ -512,6 +514,49 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     : provisionalTargetAvailable
       ? 'provisional'
       : 'model-selected';
+
+/** Normative alternatives (WP5) — mirrors Python _normative_alternatives.
+ *  Only forms the NIKL standard itself prints. Never become primary output.
+ */
+function normativeAlternatives(sourceText) {
+  const alts = [];
+  if (!sourceText) return alts;
+  // §5 다만 4 patterns
+  const uiPatterns = {
+    '주의': [{surface_hangul: '주이', ipa: 'tɕu.i'}],
+    '협의': [{surface_hangul: '혀비', ipa: 'çʌ.bi'}],
+    '우리의': [{surface_hangul: '우리에', ipa: 'u.ɾi.e'}],
+    '강의의': [{surface_hangul: '강ː이에', ipa: 'kaŋ.i.e'}]
+  };
+  for (const [key, list] of Object.entries(uiPatterns)) {
+    if (sourceText.includes(key)) {
+      for (const item of list) {
+        alts.push({
+          kind: 'normative-permitted',
+          surface_hangul: item.surface_hangul,
+          ipa: item.ipa,
+          rule_ref: '§5 다만 4',
+          source: 'NIKL 표준 발음법 §5 다만 4',
+          note: 'non-initial or particle 의 alternative printed by the norm'
+        });
+      }
+    }
+  }
+  if (sourceText.includes('맛있다') || sourceText.includes('맛 있다')) {
+    alts.push({
+      kind: 'normative-permitted',
+      surface_hangul: '마딛따',
+      ipa: 'ma.dit̚.t͈a',
+      rule_ref: '맛있다 bracket',
+      source: 'NIKL 표준 발음법 (맛있다[마싣따/마딛따])',
+      note: 'second permitted surface printed by the norm'
+    });
+  }
+  return alts;
+}
+
+
+  const _alts = normativeAlternatives(text);
   return{
     source:text,
     ipa_profile:useSharedBroadIpaProfile?'clippyfirst-korean-broad-v1':graphemeFallbackOn?'browser-super-soft-grapheme-ipa-v1':superSoftOn?'browser-soft-maximum-coverage-v1':options.surfaceMode?'browser-surface-mode-legacy-v1':'browser-legacy-contextual-v1',
@@ -530,7 +575,8 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     issues,
     status,
     target_status,
-    pronunciation_status
+    pronunciation_status,
+    alternatives: _alts
   };
 }
 
