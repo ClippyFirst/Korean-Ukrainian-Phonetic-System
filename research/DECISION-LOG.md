@@ -216,3 +216,41 @@ Record consequential linguistic, data, architecture, testing, licensing, and rel
 - Decision: Narrowed browser `engine_rules_ctx.js` to the same trigger sets as Python `_unlicensed_cross_word_vowel_contexts`. Exact phrase rows remain resolved.
 - Validation: manual cases (먼 옛날 unresolved; 한국 음식 / 만날 사람 없다 resolved). Full suite re-run pending.
 - Revisit: if new official cross-word examples appear.
+
+### DEC-2026-PHRASE-LENGTH-002 — Options for vowel length inside phrases (pending owner)
+- Date: 2026-11-23
+- Status: pending
+- Options:
+  - (A) Keep lemma length on non-initial words (current).
+  - (B) Strip length on non-first word of a whitespace phrase.
+  - (C) Keep primary as (A) and expose stripped form via `alternatives` kind=`uncertain`.
+- Consequences: (B)/(C) affect every phrase that embeds a long-vowel lemma; target-layer availability may change.
+- Evidence: primary norm §6 speaks of 단어; secondary encyclopaedia notes breath-group shortening.
+- Decision: owner only.
+
+### DEC-2026-NY-VS-NJ-002 — Impact measurement of ɲ → nj (pending owner)
+- Date: 2026-11-23
+- Status: deferred (measurement to be attached)
+- Action required: in a disposable worktree replace ɲ with nj in the ~25 lexical rows and report:
+  - which rows change
+  - effect on target-layer availability
+  - effect on parity and gold metrics
+- Do not commit the replacement into the feature branch.
+
+### DEC-2026-TARGET-ALLOWLIST-001 — Adjudication sheet for ɰi / ø / y (pending reviewer)
+- Date: 2026-11-23
+- Status: pending
+- Candidates: KUA-IPA-025 ɰi→ий, 026 ø→ве, 027 y→ві
+- Required from reviewer (Ukrainian + Korean phonologist): confirm or reject each mapping with rationale.
+- State: **disabled**. Do not enable allowlist without signed adjudication.
+- Fixtures: to be added under tests/ once reviewer accepts.
+
+### DEC-2026-ALTERNATIVES-UI-001 — Whether to surface alternatives in the UI
+- Date: 2026-11-23
+- Status: pending
+- Options: hide / show as secondary chips / show only in research mode.
+- Risk: users treating permitted alternatives as primary.
+
+### DEC-2026-BRANCH-POLICY-001 — AGENTS.md §7 vs feature-branch practice
+- Date: 2026-11-23
+- Status: pending owner clarification.
