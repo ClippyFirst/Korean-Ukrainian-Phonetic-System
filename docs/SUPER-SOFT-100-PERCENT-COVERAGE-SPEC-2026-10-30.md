@@ -1,7 +1,7 @@
 # Super-soft Korean → Ukrainian engine mode: 100% input coverage contract
 
 **Date:** 2026-10-30  
-**Status:** Original Super-soft browser implementation DONE_VERIFIED on PR head c57f34c52e15e5a55fc5943e4069c019bfb12a07; the three-mode coverage and verified-accuracy ordering is tracked in §15 and remains IN PROGRESS on PR #507.  
+**Status:** Browser implementation and three-mode coverage / source-resolved accuracy acceptance DONE_VERIFIED on PR #507 head f701834f064f192165ccaa1a8e468aa133fc04e3. Deployment smoke and independent pronunciation-gold adjudication remain pending / evidence-limited.  
 **Runtime constraint:** deterministic, browser-local; no neural model and no runtime API.
 
 ## 1. Product requirement
@@ -190,7 +190,7 @@ The browser status line displays the low-confidence share next to candidate and 
 
 ## 15. Three-mode coverage and verified-accuracy contract (2026-11-25)
 
-**Status: PARTIAL / CI VERIFICATION IN PROGRESS on PR #507.** This section refines measurement and presentation only; it does not change Korean phonological rules, IPA normalization, lexical data, or Ukrainian target correspondences.
+**Status: DONE_VERIFIED for implementation and repository acceptance on PR #507 head f701834f064f192165ccaa1a8e468aa133fc04e3.** This section refines measurement and presentation only; it does not change Korean phonological rules, IPA normalization, lexical data, or Ukrainian target correspondences.
 
 ### Product contract
 
@@ -221,12 +221,12 @@ Candidate-only exact rates are reported separately: Strict 52.7387%, Soft 52.830
 
 | Work item | Status | Evidence / next gate |
 |---|---|---|
-| Shared coverage calculation for Strict, Soft, Super-soft | PARTIAL | Implemented in `src/app/engine.js`; exact-head browser regression still pending |
-| UI shows comparable coverage for all three modes | PARTIAL | `src/main.js` updated; exact-head browser regression still pending |
-| Soft > Strict on registered strict morphology gaps | PARTIAL | Test added in `tests/super-soft-coverage.test.mjs`; exact-head browser regression pending |
-| Super-soft = 100% on all 11,172 modern Hangul syllables | PARTIAL | Exhaustive test added for explicit Super-soft mode; exact-head browser regression pending |
-| Source-resolved accuracy ordering Strict > Soft > Super-soft | PARTIAL | Pinned split measurements above; workflow gate updated to use source-resolved coverage-adjusted exact, not candidate exact |
-| Heuristic candidate accuracy kept separate | PARTIAL | `candidate_*` metrics and synthetic test added; exact-head suite pending |
-| Public UI wording explains evidence-backed accuracy order | PARTIAL | Mode descriptions updated; exact-head suite pending |
+| Shared coverage calculation for Strict, Soft, Super-soft | DONE_VERIFIED | Exact-head browser regression/build passed in run [45501926297](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45501926297) |
+| UI shows comparable coverage for all three modes | DONE_VERIFIED | Exact-head browser regression/build passed in run [45501926297](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45501926297) |
+| Soft > Strict on registered strict morphology gaps | DONE_VERIFIED | Regression test passed in exact-head run [45501926297](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45501926297); pinned UGTPHON output coverage also 100% vs Strict 99.963% |
+| Super-soft = 100% on all 11,172 modern Hangul syllables | DONE_VERIFIED | Exhaustive Super-soft test passed in exact-head run [45501926297](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45501926297) |
+| Source-resolved accuracy ordering Strict > Soft > Super-soft | DONE_VERIFIED | Three-mode pinned matrix passed in run [45501847669](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45501847669) |
+| Heuristic candidate accuracy kept separate | DONE_VERIFIED | Candidate metrics and source-resolved distinction passed exact-head browser suite; synthetic regression included |
+| Public UI wording explains evidence-backed accuracy order | DONE_VERIFIED | Mode descriptions and their source assertions passed exact-head browser suite |
 
-Do not claim release completion until PR #507's latest-head browser tests, Python checks, build, external three-mode matrix, Browser G2P integration, editorial review, and release verification complete. The official NIKL metadata-only job is skipped by workflow policy and is not a pass.
+The implementation and requested mode contract are DONE_VERIFIED. Exact-head run [45501926297](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45501926297) passed 1,469 browser tests, source-rights gate, public build, generated-page verification, and Python regression/data-integrity jobs. Supporting workflows passed: pinned three-mode matrix [45501847669](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45501847669), Browser G2P [45501847935](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45501847935), editorial review [45501847733](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45501847733), master artifacts [45501847983](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45501847983), and test-case register [45501847690](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45501847690). Official NIKL metadata-only job was skipped by workflow policy and is not a pass. Independent pronunciation-gold adjudication and deployment smoke remain evidence-limited; do not claim 100% accuracy or release readiness.
