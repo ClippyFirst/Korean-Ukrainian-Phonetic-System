@@ -491,3 +491,5 @@ function main() {
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   main();
 }
+
+// Benchmark-trigger marker only; no engine behavior changes.
