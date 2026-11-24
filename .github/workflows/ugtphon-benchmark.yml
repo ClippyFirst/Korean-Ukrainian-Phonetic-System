@@ -129,6 +129,7 @@ jobs:
           for mode, report in reports.items():
               print(
                   f"{mode}: output_coverage={report['output_availability_rate']:.6%} "
+                  f"verified_adjusted_exact={report['source_resolved_coverage_adjusted_exact_match_rate']:.6%} "
                   f"candidate_exact={report['candidate_exact_match_rate']:.6%} "
                   f"candidate_adjusted_exact={report['candidate_coverage_adjusted_exact_match_rate']:.6%} "
                   f"candidate_CER={report['candidate_character_error_rate']:.6%} "
@@ -141,13 +142,13 @@ jobs:
           assert super_soft["output_availability_rate"] == 1.0, (
               "Super-soft must provide IPA output for 100% of eligible modern Hangul tokens"
           )
-          rates = [reports[mode]["candidate_exact_match_rate"] for mode in modes]
+          rates = [reports[mode]["source_resolved_coverage_adjusted_exact_match_rate"] for mode in modes]
           assert rates[0] is not None and rates[1] is not None and rates[2] is not None
           assert rates[0] > rates[1] > rates[2], (
-              "candidate IPA exact-match ordering must be Strict > Soft > Super-soft; "
+              "source-resolved, coverage-adjusted IPA accuracy must be Strict > Soft > Super-soft; "
               f"observed {rates}"
           )
-          print("Three-tier acceptance passed: coverage Strict < Soft <= Super-soft; accuracy Strict > Soft > Super-soft.")
+          print("Three-tier acceptance passed: coverage Strict < Soft <= Super-soft; verified accuracy Strict > Soft > Super-soft.")
           PY
       - uses: actions/upload-artifact@v4
         if: always()
