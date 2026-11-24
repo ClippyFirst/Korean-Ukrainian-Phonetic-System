@@ -523,7 +523,7 @@ function main() {
       const summary = Object.fromEntries([
         'engine', 'split', 'morphology_mode', 'ipa_profile', 'ipa_profile_status', 'eligible_tokens',
         'scored_tokens', 'coverage_rate', 'source_resolved_coverage_rate', 'output_available_tokens', 'output_availability_rate', 'candidate_output_availability_rate', 'exact_matches', 'exact_match_rate',
-        'coverage_adjusted_exact_match_rate', 'character_error_rate',
+        'coverage_adjusted_exact_match_rate', 'candidate_scored_tokens', 'candidate_exact_match_rate', 'candidate_coverage_adjusted_exact_match_rate', 'candidate_character_error_rate', 'character_error_rate',
         'unresolved_tokens', 'partial_tokens', 'heuristic_tokens', 'typed_fallback_tokens', 'source_resolved_scored_tokens',
         'target_unavailable_tokens', 'target_provisional_tokens', 'engine_errors'
       ].map(key => [key, report[key]]));
