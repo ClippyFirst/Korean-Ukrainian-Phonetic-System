@@ -303,3 +303,34 @@ test('new Super-soft covers all modern Hangul blocks through the IPA adapter',()
   assert.ok(result.candidate_ukrainian);
   assert.equal(result.trace.filter(item=>/^[가-힣]$/u.test(item.source)&&item.ipa).length,11172);
 });
+
+
+test('Strict, Soft, and Super-soft expose comparable coverage with monotonic fallback guarantees',()=>{
+  const gaps=['짧은소리의','수많이는','없으니를','없애다에서는','값에서는','밟으니와','싫어도에서는','외곬에를','값있는에서는','히읗을의','벼훑이를','밭이와','붙임'];
+  const source=gaps.join(' ');
+  const strict=engine.convert(source,STRICT);
+  const soft=engine.convert(source,SOFT);
+  const superSoft=engine.convert(source,{morphologyMode:'super-soft'});
+  for(const [mode,result] of [['Strict',strict],['Soft',soft],['Super-soft',superSoft]]){
+    assert.equal(result.coverage?.scope,'modern-hangul-syllable-blocks',mode+' must report the same coverage metric');
+    assert.equal(result.coverage?.input_total,[...source].filter(char=>/[가-힣]/u.test(char)).length,mode);
+    assert.equal(result.coverage?.trace_coverage,1,mode+' must account for every source span');
+  }
+  assert.ok(soft.coverage.input_coverage>strict.coverage.input_coverage,
+    'Soft must produce more Korean-syllable candidates than Strict on registered strict-mode gaps');
+  assert.equal(superSoft.coverage.input_coverage,1,'Super-soft must cover every modern Hangul syllable');
+  assert.equal(superSoft.coverage.complete,true);
+});
+
+test('Super-soft produces a candidate for every one of the 11,172 modern Hangul syllables',()=>{
+  const syllables=Array.from({length:11172},(_,i)=>String.fromCodePoint(0xAC00+i));
+  const source=syllables.join(' ');
+  const result=graphemeEngine.convert(source,{morphologyMode:'super-soft'});
+  assert.equal(result.coverage.input_total,11172);
+  assert.equal(result.coverage.input_covered,11172);
+  assert.equal(result.coverage.input_coverage,1);
+  assert.equal(result.coverage.trace_coverage,1);
+  assert.equal(result.coverage.complete,true);
+  assert.ok(result.ipa.length>0);
+  assert.ok((result.candidate_ukrainian||result.ukrainian).length>0);
+});
