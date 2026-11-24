@@ -299,7 +299,9 @@ test('new Super-soft covers all modern Hangul blocks through the IPA adapter',()
   assert.equal(result.coverage.input_total,11172);
   assert.equal(result.coverage.input_covered,11172);
   assert.equal(result.coverage.input_coverage,1);
+  assert.equal(result.coverage.trace_coverage,1);
   assert.equal(result.coverage.complete,true);
+  assert.ok(result.ipa.length>0);
   assert.ok(result.candidate_ukrainian);
   assert.equal(result.trace.filter(item=>/^[가-힣]$/u.test(item.source)&&item.ipa).length,11172);
 });
@@ -320,17 +322,4 @@ test('Strict, Soft, and Super-soft expose comparable coverage with monotonic fal
     'Soft must produce more Korean-syllable candidates than Strict on registered strict-mode gaps');
   assert.equal(superSoft.coverage.input_coverage,1,'Super-soft must cover every modern Hangul syllable');
   assert.equal(superSoft.coverage.complete,true);
-});
-
-test('Super-soft produces a candidate for every one of the 11,172 modern Hangul syllables',()=>{
-  const syllables=Array.from({length:11172},(_,i)=>String.fromCodePoint(0xAC00+i));
-  const source=syllables.join(' ');
-  const result=graphemeEngine.convert(source,{morphologyMode:'super-soft'});
-  assert.equal(result.coverage.input_total,11172);
-  assert.equal(result.coverage.input_covered,11172);
-  assert.equal(result.coverage.input_coverage,1);
-  assert.equal(result.coverage.trace_coverage,1);
-  assert.equal(result.coverage.complete,true);
-  assert.ok(result.ipa.length>0);
-  assert.ok((result.candidate_ukrainian||result.ukrainian).length>0);
 });
