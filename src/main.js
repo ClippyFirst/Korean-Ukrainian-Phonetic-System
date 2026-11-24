@@ -45,9 +45,9 @@ const modePractical=document.querySelector('#mode-practical');
 const modeResearch=document.querySelector('#mode-research');
 const researchOptions=document.querySelector('#research-options');
 const morphologyDescriptions=[
-  {name:'Строгий',mode:'strict',description:'Лише правила з належним джерельним обґрунтуванням. Найвища обережність; невирішені випадки залишаються невизначеними.'},
-  {name:'М’який',mode:'soft',description:'Додає формальні морфологічні та практичні евристики й типізований IPA-резерв для невирішених переходів. Покриття ширше, але частина результатів має низьку впевненість.'},
-  {name:'Суперм’який',mode:'super-soft',description:'Розкладає склади хангиля на графеми, формує IPA й передає його до українського адаптера. Контекстні правила не вгадуються; це найширше графемне покриття з найнижчою впевненістю.'}
+  {name:'Строгий',mode:'strict',description:'Лише правила з належним джерельним обґрунтуванням. Найвища підтверджена точність; невирішені випадки залишаються невизначеними.'},
+  {name:'М’який',mode:'soft',description:'Додає формальні морфологічні та практичні евристики й типізований IPA-резерв. Покриття вище за Strict, але неперевірені евристики знижують підтверджену точність.'},
+  {name:'Суперм’який',mode:'super-soft',description:'Графемний IPA-резерв забезпечує 100% покриття сучасних складів Hangul. Контекстні правила не вгадуються; це найнижча підтверджена точність і найменша впевненість.'}
 ];
 function currentMorphologyMode(){
   if(modeResearch&&modeResearch.checked){
