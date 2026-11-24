@@ -415,6 +415,7 @@ export function evaluateRows(rows, engine, morphologyMode = 'strict', benchmarkN
     exact_matches: exactMatches,
     exact_match_rate: scoredTokens ? Number((exactMatches / scoredTokens).toFixed(6)) : null,
     coverage_adjusted_exact_match_rate: eligibleTokens ? Number((exactMatches / eligibleTokens).toFixed(6)) : null,
+    source_resolved_coverage_adjusted_exact_match_rate: eligibleTokens ? Number((exactMatches / eligibleTokens).toFixed(6)) : null,
     candidate_scored_tokens: candidateScoredRecords.length,
     candidate_exact_matches: candidateExactMatches,
     candidate_exact_match_rate: candidateScoredRecords.length
