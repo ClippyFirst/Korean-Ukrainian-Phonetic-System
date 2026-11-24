@@ -665,9 +665,10 @@ test('benchmark scores candidate IPA for every mode while keeping heuristic accu
       const strict=options.morphologyMode==='strict';
       const soft=options.morphologyMode==='soft';
       const ipa=strict?(input==='가'?'ka':'na'):soft?(input==='가'?'kha':'na'):(input==='가'?'ga':'ma');
+      const softResolved=input==='나'&&soft;
       return {
         ipa,
-        pronunciation_status:strict?'resolved':'heuristic',
+        pronunciation_status:strict||softResolved?'resolved':'heuristic',
         target_status:'model-selected',
         ukrainian:strict?'кандидат':'',
         candidate_ukrainian:strict?null:'кандидат',
@@ -687,6 +688,9 @@ test('benchmark scores candidate IPA for every mode while keeping heuristic accu
   assert.equal(superSoft.candidate_exact_match_rate,0);
   assert.ok(strict.candidate_exact_match_rate>soft.candidate_exact_match_rate);
   assert.ok(soft.candidate_exact_match_rate>superSoft.candidate_exact_match_rate);
-  assert.equal(soft.scored_tokens,0,'heuristics must not be promoted to source-resolved IPA accuracy');
+  assert.equal(strict.coverage_adjusted_exact_match_rate,1);
+  assert.equal(soft.coverage_adjusted_exact_match_rate,0.5);
+  assert.equal(superSoft.coverage_adjusted_exact_match_rate,0);
+  assert.equal(soft.scored_tokens,1,'only the non-heuristic Soft result counts as source-resolved accuracy');
   assert.equal(superSoft.scored_tokens,0,'grapheme fallback must not be promoted to source-resolved IPA accuracy');
 });
