@@ -1861,3 +1861,10 @@ The browser research engine now distinguishes three levels by confidence/coverag
 - **BLOCKED:** narrow IPA target compatibility pending independent phonetic adjudication and Ukrainian target review.
 - **TODO:** same-split speaker/source-separated benchmark diagnostics; benchmark scores cannot define profile semantics.
 - **NOT RELEASE-READY:** do not merge, publish or describe the Extended IPA mode as complete until all scientific, rights, parity and CI gates pass.
+
+
+## Evidence review addendum — typed acoustic context
+
+The Extended IPA result contract now has nullable context fields for pseudonymous speaker ID, dialect, age group, speech style, speech rate, focus, prosodic position and recording conditions. It also has a separate acoustic_annotations array for measured/derived/unavailable/hypothesized values such as VOT, burst duration, closure duration/voicing, post-stop F0, H1*-H2*, H1*-A1*, CPP, spectral centroid and formants.
+
+These fields are not inferred from Hangul. Text-only conversion leaves speaker/prosody metadata null and the acoustic array empty. A measurement marked measured requires a source span, measurement method and evidence reference. The IPA segmental layers remain separate from these acoustic annotations.

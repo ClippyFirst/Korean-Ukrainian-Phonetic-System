@@ -129,3 +129,4 @@ The current source review includes a 2021 spontaneous-speech study of ㄴ+ㄹ an
 - Um, H.-Y. (2014). *Phonetic realizations of /h/ after a sonorant in Korean*. Studies in Phonetics, Phonology, and Morphology 20(3), 357–377. https://doi.org/10.17959/sppm.2014.20.3.357
 - Ahn, M.-J. (2009). *Korean /n/-deletion: phonetic initial strengthening to denasalization*. Studies in Phonetics, Phonology, and Morphology 15(1), 53–72. https://doi.org/10.17959/sppm.2009.15.1.53
 - Kim, Y. S. (2011). *An acoustic, aerodynamic and perceptual investigation of word-initial denasalization in Korean*. University College London thesis. https://discovery.ucl.ac.uk/id/eprint/1324541/1/1324541.pdf
+undefined

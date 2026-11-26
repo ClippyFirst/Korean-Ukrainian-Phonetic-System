@@ -57,3 +57,8 @@ The mode is complete only after:
 - exact-head CI and rendered UI checks pass.
 
 A passing benchmark is necessary diagnostic evidence but is not sufficient for completion.
+
+
+## Additional research annotation contract
+
+The result contract also carries nullable speaker/prosody context (pseudonymous speaker ID, dialect, age group, style, speech rate, focus, prosodic position and recording conditions) and a separate acoustic_annotations array. Text-only conversion must leave these context fields null and acoustic_annotations empty. A measured acoustic annotation is valid only with a source span, measurement method and evidence reference. Acoustic values are not guessed from orthography and do not automatically rewrite segmental IPA.

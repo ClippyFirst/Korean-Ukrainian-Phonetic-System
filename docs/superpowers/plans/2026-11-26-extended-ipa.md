@@ -89,3 +89,11 @@
 ## Execution notes
 
 The implementation is being carried out inline on a dedicated GitHub branch because this environment has no local Git worktree/runtime. GitHub Actions is the available executable verification environment. This limits local red/green iteration; CI output must be read in full and no test pass is claimed before exact-head workflows finish.
+
+
+### Task 1 extension: speaker/prosody and acoustic annotation
+
+- [x] Add nullable speaker, dialect, age, style, speech-rate, focus, prosodic-position and recording-condition fields.
+- [x] Add separate acoustic annotation records for VOT, burst/closure duration, closure voicing, F0, voice quality, spectral centroid and formants.
+- [x] Require source span, measurement method and evidence reference for measurements marked measured.
+- [x] Add schema and Python/browser validator tests for text-only unknown context and measured provenance.

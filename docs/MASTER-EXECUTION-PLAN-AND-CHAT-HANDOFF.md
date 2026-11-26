@@ -1580,3 +1580,24 @@ The visual-mode task is software-verified and ready for merge. The broader produ
 ### Superpowers workflow
 
 Used the relevant brainstorming, planning, TDD, systematic-debugging and verification guidance. Work is inline on a dedicated GitHub branch because no local Git worktree is available; a fresh independent reviewer is still required before merge.
+
+
+## 2026-11-26 — Extended IPA implementation checkpoint 2
+
+**Current branch head:** dbe608cdfb3dd42d279e3d410dcfa981561a58a8  
+**Draft PR:** #509  
+**State:** PARTIAL; exact-head CI queued.
+
+### Additional work
+
+- Added explicit nullable speaker/prosody context and a separate acoustic annotation array to the typed contract. Text-only inputs do not invent dialect, age, speech rate, focus, prosodic position or measured F0/VOT/voice-quality values.
+- Measured acoustic annotations require a source span, method and source reference.
+- Added browser UI wiring and static regression tests for opt-in visibility, separate layers, context note and responsive layout.
+- Extended browser trace to retain engine rule IDs as well as narrow-profile rule IDs; variants retain source spans where the engine supplies syllable indices.
+- Withholds the entire narrow string if a whole input or any source trace is unresolved, avoiding a misleading partial string.
+- Reordered the ㅎ narrow conditions so [ç]/[x] before the relevant vowels are preserved while post-sonorant weakening/deletion remains unresolved; the profile still does not emit categorical [ɦ].
+- Tightened [ɲ] source attribution: Ahn (2009) is recorded as related initial /n/-deletion evidence, not direct proof of generalized [ɲ].
+
+### Verification state
+
+The earlier CI attempt on an older head failed on stale v5 profile assertions, expected post-sonorant [ɦ], source-register row counts, and the newly added missing acoustic-context contract. Those failures were traced to outdated expectations and missing contract fields. Corrections and tests are now committed. Current exact-head workflows for dbe608cdfb3dd42d279e3d410dcfa981561a58a8 are queued; no pass is claimed until completion.
