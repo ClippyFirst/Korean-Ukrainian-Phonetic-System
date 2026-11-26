@@ -933,7 +933,7 @@ def apply_ordered_rules(
 
     # The canonical CSV plan is the only default ordering source. Explicit
     # diagnostic sequences remain caller-controlled and are never reordered.
-    ids = rule_ids or default_rule_ids()
+    ids = default_rule_ids() if rule_ids is None else tuple(rule_ids)
     exact = list(rule_licenses or ())
     # Use exact-form licenses for source-listed examples in NIKL §§25–30.
     # Other words still need an explicit caller license or verified morphology.

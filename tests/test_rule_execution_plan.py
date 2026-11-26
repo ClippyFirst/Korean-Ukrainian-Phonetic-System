@@ -156,3 +156,8 @@ def test_rule_plan_rejects_duplicate_rule_ids_in_ordering(tmp_path: Path):
     )
     with pytest.raises(ValueError, match="rule_ordering.csv contains duplicate rule_id"):
         load_rule_execution_plan(tmp_path)
+
+def test_explicit_empty_rule_sequence_applies_no_rules():
+    items, traces = apply_ordered_rules(parse_syllables("낫"), [])
+    assert items[0].coda == "ㅅ"
+    assert traces == []
