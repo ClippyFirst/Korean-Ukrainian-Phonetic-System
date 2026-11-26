@@ -178,3 +178,79 @@ Record consequential linguistic, data, architecture, testing, licensing, and rel
 - **Consequences:** no productive general-purpose rule or automatic Ukrainian output is licensed by this decision. The /ɰi/ → Ukrainian target choice remains provisional/candidate-only. All 40 residual occurrences remain unresolved as speaker-specific IPA gold.
 - **Validation:** exact-head Python/browser regressions, Python 3.11–3.13 tests, browser tests/build, wheel install, source-rights gate and research artifact checks passed on PR #456 head. The long multi-engine run 42414467825 was still running at the last check.
 - **Revisit when:** independent speaker-level IPA evidence or qualified review becomes available, or the official NIKL rule/FAQ is superseded.
+
+
+## 2026-11-15 — Cross-word effects survive lexical rows; word-initial lenis is phrase-initial
+
+- **Question:** may an exact lexical row for one word undo changes made across its word boundary, and does broad IPA voice a lenis stop at the start of a following word?
+- **Evidence:** official §27 `만날 사람[만날싸람]`; official §18 `밥 먹는다[밤멍는다]` (connected-phrase scope, rule-derived for the lexical-left cases); `docs/korean-phonology.md` (phrase-initial lenis stays `[k t p]` in the broad layer); browser runtime behavior; 4 of 1,783 lexical IPA syllables lacking `̚` against the `ipa.CODA` convention.
+- **Decision:** (1) a lexical row attests one word in isolation, so a first onset set by a cross-word rule and a final coda that differs from the word's own isolated rule result are preserved, with only the corresponding IPA segment swapped (`cross_word_onset_preserved` / `cross_word_coda_preserved` trace keys); a row that itself restates a different value stays authoritative. (2) Python phrase mode may use exact adjacent-eojeol lexical rows only when the ordered rules have not already produced the attested surface. (3) Word-initial lenis stops are voiceless in Python broad IPA, matching the browser. (4) Sourced lexical IPA syllables ending in a stop carry `̚`.
+- **Not decided:** phrase-internal realization of source-backed vowel length (`사람` in `만날 사람`); Sino-Korean ㄹ+ㄷ/ㅅ/ㅈ policy (unchanged, no productive heuristic); browser-only ㄷ+ㄹ nasalization remains a project inference.
+- **Consequences:** no new productive phonological rule; no Ukrainian output newly enabled. Tests are software contracts, not independent linguistic validation.
+- **Revisit when:** a source for phrase-internal length or for cross-word ㄷ+ㄹ is identified, or prosodic phrasing is modeled beyond the whitespace proxy.
+
+
+## 2026-11-15 (second pass) — the Ukrainian text must follow the final IPA after boundary rewrites
+
+- **Question:** after the browser phrase pass rewrites a lexical word's IPA, which value is the word's Ukrainian text?
+- **Evidence:** 623 of 3,834 resolved phrases had Ukrainian text inconsistent with the IPA-derived per-syllable trace; the Python path already derives its text from the final IPA string (3,762 of 3,762 available cases equal the adapter applied to the final IPA).
+- **Decision:** the phrase pass keeps `ukrainian` and `candidate_ukrainian` in step with the rewritten edge syllable (replace only when the old edge text matches). Lexical target syllables remain candidates with their existing status; nothing newly becomes confirmed output.
+- **Open (not decided):** the fortis-onset convention (`canonical_correspondence.csv` doubles the Ukrainian consonant; browser phrase-pass comments say fortisness is not doubled) and the `ɲ` versus `nj` realization for ㄴ before a glide (14 lexical rows use `ɲ`, the rule path `nj`).
+- **Consequences:** no new rule; the 10 residual parity differences stay classified as one browser-only project inference.
+- **Revisit when:** an independent target review or allowlist decision is made.
+
+
+## 2026-11-15 (fourth pass) — unlicensed cross-word vowel-initial contexts are withheld in both runtimes
+
+- **Question:** should Python phrase mode return a confident reading for `coda + vowel-initial next word` when no exact entry licenses the pair?
+- **Evidence:** the norm's own phrase examples show liaison for substantive words (밭 아래[바다래], 꽃 위[꼬뒤], 닭 앞에[다가페]); §15 names `ㅏㅓㅗㅜㅟ` for obstruent codas; §29 names `ㅣㅑㅒㅕㅖㅛㅠ` (n-insertion is variable, Jun 2015); the browser already withheld such pairs.
+- **Decision:** Python phrase mode withholds exactly those pairs (rule `R002`, `unresolved-no-exact-license`); ㅇ codas, open syllables, other vowels after sonorant codas, `same_word` mode and exact phrase rows are unchanged. Exact phrase rows in both runtimes must cover complete eojeol. The Ukrainian text follows the IPA after every phrase-pass rewrite; fortis doubling is a practical adapter convention.
+- **Not decided:** `ɲ` rows in the broad lexicon, phrase-internal vowel length, exposure of normative alternatives (`ㅟ`, `의`), allowlist for `ɰi ø y`.
+- **Consequences:** some phrase-mode inputs that previously showed a provisional guess are now diagnostic-only; same-word inputs are unaffected.
+- **Revisit when:** a source states cross-word liaison for these environments or prosodic phrasing is modeled.
+
+### DEC-2026-BROWSER-REFUSAL-ALIGN-001 — Cross-word vowel-liaison refusal parity
+- Date: 2026-11-21
+- Status: accepted (implementation)
+- Context: Browser previously refused any coda+ㅇ; Python used §15/§29 vowel sets.
+- Decision: Narrowed browser `engine_rules_ctx.js` to the same trigger sets as Python `_unlicensed_cross_word_vowel_contexts`. Exact phrase rows remain resolved.
+- Validation: manual cases (먼 옛날 unresolved; 한국 음식 / 만날 사람 없다 resolved). Full suite re-run pending.
+- Revisit: if new official cross-word examples appear.
+
+### DEC-2026-PHRASE-LENGTH-002 — Options for vowel length inside phrases (pending owner)
+- Date: 2026-11-23
+- Status: pending
+- Options:
+  - (A) Keep lemma length on non-initial words (current).
+  - (B) Strip length on non-first word of a whitespace phrase.
+  - (C) Keep primary as (A) and expose stripped form via `alternatives` kind=`uncertain`.
+- Consequences: (B)/(C) affect every phrase that embeds a long-vowel lemma; target-layer availability may change.
+- Evidence: primary norm §6 speaks of 단어; secondary encyclopaedia notes breath-group shortening.
+- Decision: owner only.
+
+### DEC-2026-NY-VS-NJ-002 — Impact measurement of ɲ → nj (pending owner)
+- Date: 2026-11-23
+- Status: deferred (measurement to be attached)
+- Action required: in a disposable worktree replace ɲ with nj in the ~25 lexical rows and report:
+  - which rows change
+  - effect on target-layer availability
+  - effect on parity and gold metrics
+- Do not commit the replacement into the feature branch.
+
+### DEC-2026-TARGET-ALLOWLIST-001 — Adjudication sheet for ɰi / ø / y (pending reviewer)
+- Date: 2026-11-23
+- Status: pending
+- Candidates: KUA-IPA-025 ɰi→ий, 026 ø→ве, 027 y→ві
+- Required from reviewer (Ukrainian + Korean phonologist): confirm or reject each mapping with rationale.
+- State: **disabled**. Do not enable allowlist without signed adjudication.
+- Fixtures: to be added under tests/ once reviewer accepts.
+
+### DEC-2026-ALTERNATIVES-UI-001 — Whether to surface alternatives in the UI
+- Date: 2026-11-23
+- Status: pending
+- Options: hide / show as secondary chips / show only in research mode.
+- Risk: users treating permitted alternatives as primary.
+
+### DEC-2026-BRANCH-POLICY-001 — AGENTS.md §7 vs feature-branch practice
+- Date: 2026-11-23
+- Status: pending owner clarification.

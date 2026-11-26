@@ -1734,3 +1734,18 @@ The browser research engine now distinguishes three levels by confidence/coverag
 ## 2026-11-11 — correction to the vertical-layout interpretation
 
 The earlier #470/#473 implementation incorrectly made the entire service and methodology pages single-column. The user clarified that only the two service workbench windows — Korean text input and answer — should stack vertically. PR #475 restored the editorial hero, horizontal three-stage specimen, result detail grid and grouped methodology layouts; PR #477 corrected the IPA-yellow / Ukrainian-pink specimen palette. Both are merged. Exact rendered review, browser regression/build, Python matrix and data-integrity evidence are recorded in the master handoff. No linguistic runtime or corpus changes were made.
+
+
+## 2026-11-15 — continuation: cross-word lexical interactions and runtime IPA parity
+
+Five engine corrections on branch `feature/kozak-kim-phonetic-accuracy-advancement` (from `main` `70f7bdde`, unpushed) and a reproducible Python/browser IPA parity audit. Status remains a partial research prototype. Task ledger, evidence and limits: [CROSS-WORD-LEXICAL-AND-RUNTIME-IPA-PARITY-AUDIT-2026-11-15.md](CROSS-WORD-LEXICAL-AND-RUNTIME-IPA-PARITY-AUDIT-2026-11-15.md). The oversized master handoff was appended directly in the branch (local git write path); its earlier content is unchanged.
+
+
+## 2026-11-15 (second pass)
+
+Right-side and middle-word lexical overrides, a boundary matrix test, and browser Ukrainian/IPA consistency were verified and fixed on the unpushed branch (`29e7aa16`, `8c5b73e2`). See the "Second pass" section of [CROSS-WORD-LEXICAL-AND-RUNTIME-IPA-PARITY-AUDIT-2026-11-15.md](CROSS-WORD-LEXICAL-AND-RUNTIME-IPA-PARITY-AUDIT-2026-11-15.md). Status remains a partial research prototype.
+
+
+## 2026-11-15 (fourth pass)
+
+Eojeol-boundary, fortis/Ukrainian consistency and Python cross-word refusal fixes verified on the unpushed branch (`482e9f00`, `23ccef3c`, `2a05d4f1`); open questions researched with no behavior change. See the "Fourth pass" section of [CROSS-WORD-LEXICAL-AND-RUNTIME-IPA-PARITY-AUDIT-2026-11-15.md](CROSS-WORD-LEXICAL-AND-RUNTIME-IPA-PARITY-AUDIT-2026-11-15.md). Status remains a partial research prototype.

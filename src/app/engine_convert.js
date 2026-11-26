@@ -48,10 +48,26 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     const mixedKeys=[...lexicon.keys()].filter(key=>/[^가-힣]/u.test(key)).sort((a,b)=>b.length-a.length);
     const parts=[];
     let cursor=0;
+    // A multi-word (or mixed-script) lexical row attests complete eojeol. Do not
+    // let it capture the stem of a longer eojeol (`갈 곳이` is not `갈 곳` + `이`):
+    // the leftover particle would be converted apart from its stem and lose §13
+    // liaison. Boundary checks apply only on a side where the key itself is Hangul.
+    const isSyllable=ch=>ch!==undefined&&/[가-힣]/u.test(ch);
+    const keyFits=(key,position)=>{
+      if(/^[가-힣]/u.test(key)&&isSyllable(text[position-1]))return false;
+      if(/[가-힣]$/u.test(key)&&isSyllable(text[position+key.length]))return false;
+      return true;
+    };
+    const firstFit=(key,from)=>{
+      for(let position=text.indexOf(key,from);position>=0;position=text.indexOf(key,position+1)){
+        if(keyFits(key,position))return position;
+      }
+      return -1;
+    };
     while(cursor<text.length){
-      const exactKey=mixedKeys.find(key=>text.startsWith(key,cursor));
+      const exactKey=mixedKeys.find(key=>text.startsWith(key,cursor)&&keyFits(key,cursor));
       if(exactKey){parts.push(exactKey);cursor+=exactKey.length;continue;}
-      const nextKeyPositions=mixedKeys.map(key=>text.indexOf(key,cursor)).filter(position=>position>=0);
+      const nextKeyPositions=mixedKeys.map(key=>firstFit(key,cursor)).filter(position=>position>=0);
       const nextKey=nextKeyPositions.length?Math.min(...nextKeyPositions):text.length;
       const segment=text.slice(cursor,nextKey);
       parts.push(...(segment.match(/(?:\[[ㄱ-ㅎㅏ-ㅣ]\]|[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+[가-힣]+(?:[\s\p{P}]+[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+[\s\p{P}]*[가-힣]+)+|[가-힣]+(?:과|와)\s+[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+|[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+(?:[\s\p{P}]+[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+)*[\s\p{P}]*[가-힣]+|[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+|[가-힣]+|[^가-힣ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+)/gu)||[]));
@@ -181,6 +197,8 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
         pronunciation_status,
         candidate_ukrainian:hasCandidate||superSoftCandidateOnly?candidateText:null,
         status:graphemeFallbackOn?'super-soft-grapheme-fallback':superSoftOn?(results.some(r=>r.status==='super-soft-orthographic-fallback'||(r.trace||[]).some(item=>item.status==='super-soft-orthographic-fallback'))?'super-soft-orthographic-fallback':hasSuperSoftFallback?'super-soft-heuristic-coverage':results.some(r=>r.status==='unresolved')?'unresolved':'super-soft-maximum-coverage'):issues.length?'unresolved':results.some(r=>r.status==='lexical-review')?'lexical-review':results.some(r=>r.status==='lexical')?'lexical':results.some(r=>r.status==='practical-transliteration')?'practical-transliteration':results.some(r=>r.status==='heuristic-low-confidence')?'heuristic-low-confidence':results.some(r=>r.status==='contextual')?'contextual':'canonical',
+
+        alternatives: normativeAlternatives(text),
         phonetic_result_type:graphemeFallbackOn?'orthographic-phonemic-ipa-fallback':hasSuperSoftFallback?(results.some(r=>r.status==='super-soft-orthographic-fallback'||(r.trace||[]).some(item=>item.status==='super-soft-orthographic-fallback'))?'mixed-surface-ipa-and-orthographic-fallback':'mixed-surface-ipa-and-heuristic'):'surface-ipa',
         candidate_status:hasSuperSoftFallback?'super-soft-low-confidence':coverageModeOn&&hasProvisionalTarget?'provisional':hasCandidate?'provisional':null
       };
@@ -332,7 +350,19 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     const previousOpenSyllable=Boolean(prev)&&prev.coda==='';
     const voiced=!graphemeFallbackOn&&(liaisonOnset||previousSonorant||previousOpenSyllable)&&['ㄱ','ㄷ','ㅂ','ㅈ'].includes(onset);
     const fortis=!graphemeFallbackOn&&!options.surfaceMode&&!liaisonOnset&&previousObstruent&&['ㄱ','ㄷ','ㅂ','ㅅ','ㅈ'].includes(onset);
-    const liquid=!graphemeFallbackOn&&onset==='ㄹ'&&['ㄴ','ㄹ','ㅁ','ㅇ'].includes(previousCoda);
+    // The exact §29 phrase insertion (할 일[할릴]) sets this onset across a
+    // word boundary, where prevHangul() sees no previous syllable; the inserted
+    // ㄹ follows the realized ㄹ coda and is therefore the lateral, as in Python.
+    const phraseInsertedLateral=!graphemeFallbackOn&&onset==='ㄹ'&&applied.includes('phrase-n-insertion-§29');
+    // ㄹ onset after a realized ㄹ coda in the preceding word of a connected
+    // phrase (whitespace proxy; punctuation blocks it) is the geminate lateral,
+    // exactly as inside a word and as the Python runtime realizes it.
+    let phraseLiquidPrev=null;
+    for(let k=i-1;k>=0&&units[k].type==='literal'&&/^\s$/u.test(units[k].char);k--){
+      if(k-1>=0&&isHangulUnit(units,k-1)){phraseLiquidPrev=units[k-1];break;}
+    }
+    const phraseLateral=!graphemeFallbackOn&&onset==='ㄹ'&&!prev&&phraseLiquidPrev&&(phraseLiquidPrev.__effectiveCoda??phraseLiquidPrev.coda)==='ㄹ';
+    const liquid=!graphemeFallbackOn&&onset==='ㄹ'&&(phraseInsertedLateral||phraseLateral||['ㄴ','ㄹ','ㅁ','ㅇ'].includes(previousCoda));
     const traceRules=[...applied];
     if(graphemeFallbackOn)traceRules.push('super-soft-grapheme-ipa-fallback');
     if(u.__superSoftFallback)traceRules.push('super-soft-orthographic-fallback');
@@ -484,6 +514,49 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     : provisionalTargetAvailable
       ? 'provisional'
       : 'model-selected';
+
+/** Normative alternatives (WP5) — mirrors Python _normative_alternatives.
+ *  Only forms the NIKL standard itself prints. Never become primary output.
+ */
+function normativeAlternatives(sourceText) {
+  const alts = [];
+  if (!sourceText) return alts;
+  // §5 다만 4 patterns
+  const uiPatterns = {
+    '주의': [{surface_hangul: '주이', ipa: 'tɕu.i'}],
+    '협의': [{surface_hangul: '혀비', ipa: 'çʌ.bi'}],
+    '우리의': [{surface_hangul: '우리에', ipa: 'u.ɾi.e'}],
+    '강의의': [{surface_hangul: '강ː이에', ipa: 'kaŋ.i.e'}]
+  };
+  for (const [key, list] of Object.entries(uiPatterns)) {
+    if (sourceText.includes(key)) {
+      for (const item of list) {
+        alts.push({
+          kind: 'normative-permitted',
+          surface_hangul: item.surface_hangul,
+          ipa: item.ipa,
+          rule_ref: '§5 다만 4',
+          source: 'NIKL 표준 발음법 §5 다만 4',
+          note: 'non-initial or particle 의 alternative printed by the norm'
+        });
+      }
+    }
+  }
+  if (sourceText.includes('맛있다') || sourceText.includes('맛 있다')) {
+    alts.push({
+      kind: 'normative-permitted',
+      surface_hangul: '마딛따',
+      ipa: 'ma.dit̚.t͈a',
+      rule_ref: '맛있다 bracket',
+      source: 'NIKL 표준 발음법 (맛있다[마싣따/마딛따])',
+      note: 'second permitted surface printed by the norm'
+    });
+  }
+  return alts;
+}
+
+
+  const _alts = normativeAlternatives(text);
   return{
     source:text,
     ipa_profile:useSharedBroadIpaProfile?'clippyfirst-korean-broad-v1':graphemeFallbackOn?'browser-super-soft-grapheme-ipa-v1':superSoftOn?'browser-soft-maximum-coverage-v1':options.surfaceMode?'browser-surface-mode-legacy-v1':'browser-legacy-contextual-v1',
@@ -502,7 +575,8 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     issues,
     status,
     target_status,
-    pronunciation_status
+    pronunciation_status,
+    alternatives: _alts
   };
 }
 

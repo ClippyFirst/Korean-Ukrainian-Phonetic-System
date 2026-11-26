@@ -52,3 +52,6 @@ None — all listed priority forms are present.
 ## Notes
 
 - (none)
+
+
+Snapshot: `data/korean/lexical_pronunciations.csv` contains **647** rows; **0** rows meet the audit filter for missing article references.

@@ -60,8 +60,10 @@ def onset_ipa(s:Syllable,index:int,items:list[Syllable],*,phonemic=False,level="
         if c in {"ㄱ","ㄷ","ㅂ","ㅈ"} and index>0:
             previous=items[index-1]
             # Broad surface voicing of lenis stops after a vowel or sonorant.
-            # ㅈ is represented as [dʑ] in the same environment.
-            if previous.coda=="" or previous.coda in {"ㄴ","ㄹ","ㅁ","ㅇ"}:
+            # ㅈ is represented as [dʑ] in the same environment. A word-initial
+            # lenis stop is phrase-initial (docs/korean-phonology.md) and stays
+            # voiceless, as in the browser runtime and the sibling ㅎ/ɭ rules.
+            if previous.boundary_after!="word" and (previous.coda=="" or previous.coda in {"ㄴ","ㄹ","ㅁ","ㅇ"}):
                 voiced={"ㄱ":"ɡ","ㄷ":"d","ㅂ":"b","ㅈ":"dʑ"}
                 return [voiced[c]]
         return [LENIS[c]]

@@ -1,0 +1,14 @@
+[
+  {"input": "먼 옛날", "mode": "phrase", "expected_status": "unresolved", "expected_ipa": null, "note": "§15/§29 unlicensed cross-word vowel after sonorant"},
+  {"input": "슬픈 얘기", "mode": "phrase", "expected_status": "unresolved", "expected_ipa": null, "note": "sonorant + ㅑ"},
+  {"input": "밭 위", "mode": "phrase", "expected_status": "unresolved", "expected_ipa": null, "note": "obstruent + ㅟ, no exact row"},
+  {"input": "한국 음식", "mode": "phrase", "expected_status": "resolved", "expected_ipa": null, "note": "coda ㄱ + ㅡ not in trigger set"},
+  {"input": "나는 할 수는 없다", "mode": "phrase", "expected_status": "resolved", "expected_ipa": null, "note": "exact rows / non-trigger"},
+  {"input": "만날 사람 없다", "mode": "phrase", "expected_status": "resolved", "expected_ipa": null, "note": "lexical phrase rows"},
+  {"input": "다시 만날 사람 없다", "mode": "phrase", "expected_status": "resolved", "expected_ipa": null, "note": "multi lexical"},
+  {"input": "밭 아래", "mode": "phrase", "expected_status": "resolved", "expected_ipa": null, "note": "exact §15 row"},
+  {"input": "꽃 위", "mode": "phrase", "expected_status": "resolved", "expected_ipa": null, "note": "exact §15 row"},
+  {"input": "넋 없다", "mode": "phrase", "expected_status": "resolved", "expected_ipa": null, "note": "exact row"},
+  {"input": "한 일", "mode": "phrase", "expected_status": "resolved", "expected_ipa": null, "note": "§29 exact"},
+  {"input": "먹을 엿", "mode": "phrase", "expected_status": "resolved", "expected_ipa": null, "note": "§29 exact"}
+]

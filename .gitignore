@@ -4,3 +4,7 @@ reports/nikl/*.txt
 
 src/app/hanja-dictionary-data.js
 src/app/hanja-dictionary/
+
+# Python bytecode
+__pycache__/
+*.pyc

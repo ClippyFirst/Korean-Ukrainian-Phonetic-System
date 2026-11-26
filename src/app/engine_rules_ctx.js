@@ -411,12 +411,22 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
       continue;
     }
 
-    if(b.onset==='ㅇ'){
-      a.__crossWordLiaisonUnlicensed='left';
-      b.__crossWordLiaisonUnlicensed='right';
-      rules.push('cross-word-vowel-liaison-requires-morphology');
-      nextRules.push('cross-word-vowel-liaison-requires-morphology');
-      continue;
+    // Align with Python _unlicensed_cross_word_vowel_contexts (pipeline.py):
+    // withhold only when coda is non-empty/non-ㅇ, onset is ㅇ, and nucleus is
+    // in the norm-tied sets (§15 after obstruent, §29 after any consonant).
+    // Exact phrase rows / already-resolved onsets are handled above.
+    const SECTION_15_VOWELS=new Set(['ㅏ','ㅓ','ㅗ','ㅜ','ㅟ']);
+    const SECTION_29_VOWELS=new Set(['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ']);
+    const SONORANT_CODAS=new Set(['ㄴ','ㅁ','ㄹ','ㄵ','ㄶ','ㄻ','ㄼ','ㄽ','ㄾ','ㅀ']);
+    if(b.onset==='ㅇ' && a.coda && a.coda!=='ㅇ'){
+      const triggers=SONORANT_CODAS.has(a.coda)?SECTION_29_VOWELS:new Set([...SECTION_15_VOWELS,...SECTION_29_VOWELS]);
+      if(triggers.has(b.vowel)){
+        a.__crossWordLiaisonUnlicensed='left';
+        b.__crossWordLiaisonUnlicensed='right';
+        rules.push('cross-word-vowel-liaison-requires-morphology');
+        nextRules.push('cross-word-vowel-liaison-requires-morphology');
+        continue;
+      }
     }
 
     const beforeLiquidRep=representative(a.coda);

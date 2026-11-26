@@ -1,0 +1,800 @@
+[
+ {
+  "id": "nikl-sp-04-0000",
+  "article": 4,
+  "clause": "main",
+  "source": "괴다",
+  "source_raw": "괴다",
+  "bracket_forms": [
+   {
+    "form": "괴다",
+    "raw": "괴ː다",
+    "permitted": true
+   },
+   {
+    "form": "궤다",
+    "raw": "궤ː다",
+    "permitted": true
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제4항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-05-0000",
+  "article": 5,
+  "clause": "다만",
+  "source": "의의",
+  "source_raw": "의의",
+  "bracket_forms": [
+   {
+    "form": "의이",
+    "raw": "의이",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제5항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-05-0001",
+  "article": 5,
+  "clause": "다만",
+  "source": "주의",
+  "source_raw": "주의",
+  "bracket_forms": [
+   {
+    "form": "주의",
+    "raw": "주의",
+    "permitted": true
+   },
+   {
+    "form": "주이",
+    "raw": "주이",
+    "permitted": true
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제5항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-05-0002",
+  "article": 5,
+  "clause": "다만",
+  "source": "협의",
+  "source_raw": "협의",
+  "bracket_forms": [
+   {
+    "form": "혀븨",
+    "raw": "혀븨",
+    "permitted": true
+   },
+   {
+    "form": "혀비",
+    "raw": "혀비",
+    "permitted": true
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제5항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-05-0003",
+  "article": 5,
+  "clause": "다만",
+  "source": "우리의",
+  "source_raw": "우리의",
+  "bracket_forms": [
+   {
+    "form": "우리의",
+    "raw": "우리의",
+    "permitted": true
+   },
+   {
+    "form": "우리에",
+    "raw": "우리에",
+    "permitted": true
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제5항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-05-0004",
+  "article": 5,
+  "clause": "다만",
+  "source": "강의의",
+  "source_raw": "강의의",
+  "bracket_forms": [
+   {
+    "form": "강의의",
+    "raw": "강ː의의",
+    "permitted": true
+   },
+   {
+    "form": "강이에",
+    "raw": "강ː이에",
+    "permitted": true
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제5항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-06-0000",
+  "article": 6,
+  "clause": "main",
+  "source": "눈보라",
+  "source_raw": "눈보라",
+  "bracket_forms": [
+   {
+    "form": "눈보라",
+    "raw": "눈ː보라",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제6항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-06-0001",
+  "article": 6,
+  "clause": "main",
+  "source": "말씨",
+  "source_raw": "말씨",
+  "bracket_forms": [
+   {
+    "form": "말씨",
+    "raw": "말ː씨",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제6항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-06-0002",
+  "article": 6,
+  "clause": "main",
+  "source": "밤나무",
+  "source_raw": "밤나무",
+  "bracket_forms": [
+   {
+    "form": "밤나무",
+    "raw": "밤ː나무",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제6항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-06-0003",
+  "article": 6,
+  "clause": "main",
+  "source": "많다",
+  "source_raw": "많다",
+  "bracket_forms": [
+   {
+    "form": "만타",
+    "raw": "만ː타",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제6항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-06-0004",
+  "article": 6,
+  "clause": "main",
+  "source": "멀리",
+  "source_raw": "멀리",
+  "bracket_forms": [
+   {
+    "form": "멀리",
+    "raw": "멀ː리",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제6항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-06-0005",
+  "article": 6,
+  "clause": "main",
+  "source": "벌리다",
+  "source_raw": "벌리다",
+  "bracket_forms": [
+   {
+    "form": "벌리다",
+    "raw": "벌ː리다",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제6항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-06-0006",
+  "article": 6,
+  "clause": "main",
+  "source": "첫눈",
+  "source_raw": "첫눈",
+  "bracket_forms": [
+   {
+    "form": "눈",
+    "raw": "눈",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제6항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-06-0007",
+  "article": 6,
+  "clause": "main",
+  "source": "눈멀다",
+  "source_raw": "눈멀다",
+  "bracket_forms": [
+   {
+    "form": "눈멀다",
+    "raw": "눈멀다",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제6항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-06-0008",
+  "article": 6,
+  "clause": "main",
+  "source": "참말",
+  "source_raw": "참말",
+  "bracket_forms": [
+   {
+    "form": "참말",
+    "raw": "참말",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제6항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-06-0009",
+  "article": 6,
+  "clause": "main",
+  "source": "떠벌리다",
+  "source_raw": "떠벌리다",
+  "bracket_forms": [
+   {
+    "form": "떠벌리다",
+    "raw": "떠벌리다",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제6항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-06-0010",
+  "article": 6,
+  "clause": "main",
+  "source": "쌍동밤",
+  "source_raw": "쌍동밤",
+  "bracket_forms": [
+   {
+    "form": "쌍동밤",
+    "raw": "쌍동밤",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제6항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-06-0011",
+  "article": 6,
+  "clause": "main",
+  "source": "수많이",
+  "source_raw": "수많이",
+  "bracket_forms": [
+   {
+    "form": "수마니",
+    "raw": "수ː마니",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제6항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-06-0012",
+  "article": 6,
+  "clause": "main",
+  "source": "반신반의",
+  "source_raw": "반신반의",
+  "bracket_forms": [
+   {
+    "form": "반신바늬",
+    "raw": "반ː신 바ː늬",
+    "permitted": true
+   },
+   {
+    "form": "반신바니",
+    "raw": "반ː신 바ː니",
+    "permitted": true
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제6항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-06-0013",
+  "article": 6,
+  "clause": "main",
+  "source": "재삼재사",
+  "source_raw": "재삼재사",
+  "bracket_forms": [
+   {
+    "form": "재삼재사",
+    "raw": "재ː삼 재ː사",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제6항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-07-0000",
+  "article": 7,
+  "clause": "main",
+  "source": "감다",
+  "source_raw": "감다",
+  "bracket_forms": [
+   {
+    "form": "감따",
+    "raw": "감ː따",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제7항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-07-0001",
+  "article": 7,
+  "clause": "main",
+  "source": "감으니",
+  "source_raw": "감으니",
+  "bracket_forms": [
+   {
+    "form": "가므니",
+    "raw": "가므니",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제7항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-07-0002",
+  "article": 7,
+  "clause": "main",
+  "source": "신다",
+  "source_raw": "신다",
+  "bracket_forms": [
+   {
+    "form": "신따",
+    "raw": "신ː따",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제7항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-07-0003",
+  "article": 7,
+  "clause": "main",
+  "source": "신어",
+  "source_raw": "신어",
+  "bracket_forms": [
+   {
+    "form": "시너",
+    "raw": "시너",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제7항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-07-0004",
+  "article": 7,
+  "clause": "main",
+  "source": "밟다",
+  "source_raw": "밟다",
+  "bracket_forms": [
+   {
+    "form": "밥따",
+    "raw": "밥ː따",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제7항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-07-0005",
+  "article": 7,
+  "clause": "main",
+  "source": "밟으면",
+  "source_raw": "밟으면",
+  "bracket_forms": [
+   {
+    "form": "발브면",
+    "raw": "발브면",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제7항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-07-0006",
+  "article": 7,
+  "clause": "main",
+  "source": "알다",
+  "source_raw": "알다",
+  "bracket_forms": [
+   {
+    "form": "알다",
+    "raw": "알ː다",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제7항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-07-0007",
+  "article": 7,
+  "clause": "main",
+  "source": "알아",
+  "source_raw": "알아",
+  "bracket_forms": [
+   {
+    "form": "아라",
+    "raw": "아라",
+    "permitted": false
+   }
+  ],
+  "length_marked": false,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제7항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-07-0008",
+  "article": 7,
+  "clause": "main",
+  "source": "끌다",
+  "source_raw": "끌다",
+  "bracket_forms": [
+   {
+    "form": "끌다",
+    "raw": "끌ː다",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제7항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-07-0009",
+  "article": 7,
+  "clause": "main",
+  "source": "끌어",
+  "source_raw": "끌어",
+  "bracket_forms": [
+   {
+    "form": "끄러",
+    "raw": "끄ː러",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제7항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-07-0010",
+  "article": 7,
+  "clause": "main",
+  "source": "벌다",
+  "source_raw": "벌다",
+  "bracket_forms": [
+   {
+    "form": "벌다",
+    "raw": "벌ː다",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제7항 printed example (P5a)"
+  }
+ },
+ {
+  "id": "nikl-sp-07-0011",
+  "article": 7,
+  "clause": "main",
+  "source": "벌어",
+  "source_raw": "벌어",
+  "bracket_forms": [
+   {
+    "form": "버러",
+    "raw": "버ː러",
+    "permitted": false
+   }
+  ],
+  "length_marked": true,
+  "morphology": "none",
+  "boundary": "same-word",
+  "notes": "agent-curated from NIKL 표준 발음법 printed examples",
+  "curation": {
+   "status": "curated",
+   "curator": "agent-curated",
+   "date": "2026-11-21",
+   "locator": "제7항 printed example (P5a)"
+  }
+ }
+]

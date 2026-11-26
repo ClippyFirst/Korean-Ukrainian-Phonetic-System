@@ -1515,3 +1515,36 @@ The visual-mode task is software-verified and ready for merge. The broader produ
 - Visual review passed 10 page/viewport combinations; the service UI was checked at 1440, 1024, 768, 390 and 320 CSS px. Geometry assertions confirm pronunciation provenance is inside the IPA panel and target status is inside the Ukrainian panel.
 - NIKL metadata-only inventory was skipped per repository policy.
 - PR #492 remains open and unmerged pending explicit merge instruction. No Pages deployment/publication is claimed.
+
+
+## 2026-11-15 — cross-word lexical interactions and runtime IPA parity (branch, not merged)
+
+- Branch `feature/kozak-kim-phonetic-accuracy-advancement` from `main` `70f7bdde`; not pushed, no PR, no CI run. `AGENTS.md` designates `main`; the dedicated branch was requested by the owner for this assignment and is a fast-forward of `main`.
+- Commits: `8f336bce` (Python: lexical row no longer erases a cross-word first onset), `6f7b081f` (browser: §29-inserted ㄹ lateral), `494707ec` (Python: exact multi-word lexical rows in phrase mode), `6369fe74` (left-word coda preservation; four lexical rows regain `̚`; browser ㄹ|ㄹ lateral; parity-audit scripts), `aba5a636` (Python: word-initial lenis voiceless after a boundary).
+- Local verification on the final tree: Python 832 passed; browser 1,472 passed; `check:ipa-target-data`, `audit:source-rights`, `audit:source-register`, `audit:nikl-test-index`, `npm run build` and wheel build passed. UGTPHON token-level diagnostic identical before/after in both runtimes (1,425/2,702 exact, CER 0.09013).
+- Parity audit (`scripts/audit_runtime_ipa_parity.py`): 4,395 inputs, remaining IPA differences are classified (7 abstention-representation, 2 length-mark on `만날 사람`, 10 browser-only ㄷ+ㄹ nasalization). Full classification, task ledger and limits: `docs/CROSS-WORD-LEXICAL-AND-RUNTIME-IPA-PARITY-AUDIT-2026-11-15.md`.
+- Not done: GitHub Actions evidence, multi-engine competitor re-run, independent IPA adjudication, Ukrainian target allowlist. Status remains partial research prototype.
+
+
+## 2026-11-15 (second pass) — right-side lexical overrides and Ukrainian/IPA consistency
+
+- Starting local SHA `484bb8aa`; code verified at `8c5b73e2`. Branch `feature/kozak-kim-phonetic-accuracy-advancement`, unpushed, no PR; `main` unchanged at `70f7bdde`.
+- Right-side and middle-word lexical overrides were confirmed on `70f7bdde` (236 right-word onsets and 182 middle-word codas overwritten) and are fixed on the branch (0). Interior/own-coda hypothesis: negative. New tests: `tests/test_phrase_boundary_lexical_matrix.py` (red on `70f7bdde`).
+- Browser defect fixed in `29e7aa16`: a lexical word's `ukrainian` text was left stale after a phrase-pass IPA rewrite (623 of 3,834 phrases inconsistent → 0).
+- Verification: Python 852 passed; browser 1,477 passed; IPA target data current; source-rights, source-register, NIKL test-index, build, wheel, generated-artifact scripts passed; pinned UGTPHON token benchmark identical to `70f7bdde` in both runtimes.
+- Residual 10 IPA parity cases are one browser-only `project-inferred` ㄷ+ㄹ rule (classified, unchanged). Python target output stays fail-closed (unreviewed `ɰ`, `ø`, `y`, `ɲ` correspondences). Details: `docs/CROSS-WORD-LEXICAL-AND-RUNTIME-IPA-PARITY-AUDIT-2026-11-15.md` (second pass).
+- Not done: GitHub Actions, multi-engine re-run, independent adjudication, allowlist, fortis-doubling convention decision.
+
+
+## 2026-11-15 (third pass) — UGTPHON error-pattern analysis
+
+- `scripts/analyze_ugtphon_ko_errors.py` + `tests/test_ugtphon_error_analysis_relaxation.py`. Of 1,277 mismatched tokens (2,702 scored) 130 remain after a documented, conservative notation-equivalence table; the remainder are mostly NIKL-permitted variants (§4 붙임 ㅟ diphthong, §5 다만 4 non-initial 의) and reference convention (`̚`). One candidate real discrepancy, `장르` (loanword, engine applies §19), has no citable source here and was not changed. Status unchanged (partial research prototype). Details: third-pass section of `docs/CROSS-WORD-LEXICAL-AND-RUNTIME-IPA-PARITY-AUDIT-2026-11-15.md`.
+
+
+## 2026-11-15 (fourth pass) — open-question research, eojeol boundaries, refusal alignment
+
+- Start `80858b07`, code verified at `2a05d4f1`; local branch, unpushed; `origin/main` `70f7bdde`. Open PRs/workflows NOT CHECKED (unauthenticated API rate limit).
+- Fixed: browser exact phrase rows now cover complete eojeol (`482e9f00`); browser §27 fortis rewrite keeps Ukrainian in step with IPA (`23ccef3c`; one pinned expectation corrected with rationale); Python phrase mode withholds unlicensed cross-word `coda + vowel-initial` contexts for norm-named vowels (`2a05d4f1`), aligning the two runtimes' refusals.
+- Researched, no behavior change: `장르` (engine matches Wiktionary; no authoritative entry found), `ɲ` vs `nj` (25 lexical rows use the narrow symbol; owner decision), length in `만날 사람` (§6 first-syllable principle; unresolved), fortis doubling (practical adapter convention), `ㅟ`/`의` (normative variants, alternatives not exposed), 10 parity cases and 5 of 7 refusals (classified), unavailable targets (explicit `provisional` overrides for `ɰi ø y`; `ɲ` is model-selected).
+- Verification at `2a05d4f1`: Python 887 passed; browser 1,481 passed; audits, build, wheel and clean-wheel smoke test passed; UGTPHON identical to `70f7bdde`. Status unchanged: partial research prototype. Details: fourth-pass section of `docs/CROSS-WORD...`
+

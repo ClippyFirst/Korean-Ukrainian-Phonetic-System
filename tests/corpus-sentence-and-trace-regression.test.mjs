@@ -137,7 +137,10 @@ test('user-supplied stress corpus: exact phrase entries preserve word boundaries
     ['갈 데가', '갈떼가', 'кал ттеґа', 'kal t͈e ɡa'],
     ['읽을 수', '일글쑤', 'ілґил ссу', 'il ɡɯl s͈u'],
     ['읽을 것을', '일글꺼슬', 'ілґил ккосил', 'il ɡɯl k͈ʌ sɯl'],
-    ['옷 입다', '온닙따', 'он ніптта', 'on nip t͈a'],
+    // Unreleased [p̚] is the project coda convention (ipa.CODA; 1,779 of 1,783 sourced
+    // lexical syllables). The previous bare `nip` was a dataset inconsistency; the
+    // rule path already pins `on nip̚.t͈a` (nikl-articles-9-18-23-29-interaction test).
+    ['옷 입다', '온닙따', 'он ніптта', 'on nip̚ t͈a'],
   ];
   for (const [input, surface, target, ipa] of cases) {
     const result = engine.convert(input, { morphologyMode: 'practical' });

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://clippyfirst.example/schemas/nikl_gold_example.schema.json",
+  "title": "NIKL Standard Pronunciation curated example",
+  "type": "object",
+  "required": ["id", "article", "clause", "source", "bracket_forms", "curation"],
+  "properties": {
+    "id": {"type": "string"},
+    "article": {"type": "integer", "minimum": 1, "maximum": 30},
+    "clause": {"type": "string"},
+    "source": {"type": "string"},
+    "source_raw": {"type": "string"},
+    "bracket_forms": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["form", "raw", "permitted"],
+        "properties": {
+          "form": {"type": "string"},
+          "raw": {"type": "string"},
+          "permitted": {"type": "boolean"}
+        }
+      }
+    },
+    "length_marked": {"type": "boolean"},
+    "morphology": {"type": "string"},
+    "boundary": {"type": "string", "enum": ["same-word", "phrase"]},
+    "notes": {"type": "string"},
+    "curation": {
+      "type": "object",
+      "required": ["status", "curator", "date", "locator"],
+      "properties": {
+        "status": {"type": "string", "enum": ["raw-dom-extract", "raw-pattern-extract", "curated", "rejected"]},
+        "curator": {"type": "string"},
+        "date": {"type": "string"},
+        "locator": {"type": "string"},
+        "reject_reason": {"type": "string"}
+      }
+    }
+  },
+  "additionalProperties": true
+}
