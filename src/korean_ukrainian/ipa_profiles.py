@@ -55,6 +55,10 @@ def validate_extended_ipa_result(result: dict[str, Any]) -> list[str]:
     for name in ("variants", "boundaries", "trace"):
         if not isinstance(result[name], list):
             errors.append(f"{name} must be an array")
+    if isinstance(result["trace"], list):
+        for item in result["trace"]:
+            if not isinstance(item, dict) or item.get("layer") not in {"phonemic", "broad", "narrow"}:
+                errors.append("every trace item requires a valid IPA layer")
     context = result["context"]
     context_fields = {
         "speaker_id", "dialect", "age_group", "speech_style",
