@@ -1745,3 +1745,37 @@ A further review found that generic browser variant indices are token-local. Map
 - Local verification: attempted public `git clone`, blocked by DNS/network resolution failure (`Could not resolve host: github.com`). No local test/build command is claimed.
 - External evidence blockers: independent Korean phonetic adjudication, rights-cleared audio annotation pilot/dataset terms, and independent Ukrainian target-layer review. Extended IPA remains a research preview and PR #509 remains draft/open.
 - Next genuine blocker: complete the latest exact-code-head CI runs above; fix any newly exposed failures and rerun. Do not merge or call this release-ready before those checks and the independent linguistic/rights gates.
+
+### Exact-head CI result — 2026-11-26 21:33 EET
+
+**Verified code head:** `a3fb2ec8a962ffd37d202eab95c99387d0d83638`  
+**Branch:** `feat/kozak-kim-extended-ipa-2026-11-26`
+
+The previously failing test-oracle issues were corrected on the branch. The next exact-head workflow matrix now reports:
+
+- **PASS** Verify Korean–Ukrainian system — run `45882049688`.
+- **PASS** Browser G2P integration — run `45882049461`.
+- **PASS** full tests — run `45882049481`: Node web suite 1,483/1,483 passed; Python 3.11, 3.12 and 3.13 passed; wheel-install passed; teacher-corpus audit passed.
+- **PASS** rendered desktop/tablet/mobile review — run `45882049653`.
+- **PASS** external UGTPHON diagnostic — run `45882049445`.
+- **PASS** master research artifacts — run `45882049697`.
+- **PASS** exhaustive test-register extraction — run `45882049680`.
+- **PASS** paired native Korean vs g2pk diagnostic — run `45882049571`.
+- **PASS** morphology consensus diagnostic — run `45882049560`.
+- **PASS** optional g2pK integration — run `45882049460`.
+- **PASS** research morphology adapter smoke — run `45882049520`.
+- **IN PROGRESS** multi-engine IPA comparison benchmark — run `45882049729`, Python 3.12 job `140131796752`.
+- **SKIPPED by workflow policy** Charsiu train/dev queue and optional ByT5/Charsiu inference jobs. These are not pass results and no third-party weights were redistributed.
+
+Historical failures on earlier commit `19e4d95bacb8f3f62e4344828bb7ed70c08cbf02` were test-oracle failures: the coda expectation used `paps` instead of `kaps`; the CSS assertion assumed a minified declaration order; the source-register assertion expected 247 rows instead of 248. The latest head's successful tests cover the corrected state. The source count is 248. Do not infer phonetic gold from the grapheme-derived `kaps` output.
+
+### Updated status ledger
+
+- **DONE_VERIFIED:** exact-head Node/browser regression, Python 3.11–3.13 regression, wheel install, Verify, Browser G2P, rendered review, source/teacher corpus audit, test-register extraction and the named diagnostic workflows above, all on `a3fb2ec8a962ffd37d202eab95c99387d0d83638`.
+- **PARTIAL:** broad IPA Python/browser reconciliation and exhaustive inventory parity. The known profile decision for `시` is represented as shared broad `si` with optional `ɕ` variant; independent phonetic adjudication remains necessary.
+- **PARTIAL:** narrow IPA and typed acoustic schema; actual rights-cleared acoustic annotation pipeline is not implemented/validated.
+- **BLOCKED:** independent Korean phonetic adjudication, rights-cleared audio/corpus access and independent Ukrainian target-layer review.
+- **TODO:** finish the running multi-engine benchmark and inspect its pinned splits, metrics and artifacts before interpreting any score.
+- **NOT RELEASE-READY:** despite green software CI, independent linguistic/rights/target gates remain open. PR #509 stays draft/open.
+
+No local test command is claimed; verification above is GitHub Actions evidence.
