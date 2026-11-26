@@ -1734,3 +1734,14 @@ The subsequent shared broad-profile change exposed a test-schema assertion error
 ### Variant source-span safety for multiword inputs — 2026-11-26
 
 A further review found that generic browser variant indices are token-local. Mapping them directly against the whole phrase's Hangul-only span array could assign a later-word variant to the first word. The Extended IPA adapter now maps these indices only when the complete input is one Hangul eojeol; for multiword/mixed input it leaves the variant span null rather than fabricate a location. Tests cover both the single-word positive span and the multiword null/abstention case. Commits: `28fc58aa21a07cfbc8e8b03a0d468695e6c433c8`, `47e8162ca8557e269b6a337416a802a5048ba39a`. Exact-head CI is required.
+
+### Final handoff checkpoint — 2026-11-26
+
+- Latest code/test checkpoint before this handoff refresh: `47e8162ca8557e269b6a337416a802a5048ba39a`.
+- Branch head before this handoff refresh: `bc548c7e58d1d5eadf1a393cce4ed4e13078a3f9`; branch comparison against `main` is 81 commits ahead, 0 behind at the last comparison.
+- Latest exact-code-head runs: tests `45881751726`, Verify `45881752147`, Browser G2P `45881751645`, rendered review `45881751769`, master artifacts `45881751741`, test-register extraction `45881752107`, UGTPHON `45881751663`, morphology consensus `45881751961`, paired Native/g2pK `45881752091`, g2pK integration `45881751857`, morphology adapter smoke `45881751817`. At last poll all primary checks were queued; no final-code pass is claimed.
+- Intermediate verification evidence: the `kaps`/CSS/source-count corrections passed Verify/tests/Browser G2P on `b2f18a9c6f8f35dc24c4c7d5d1c4d5f01b5fa461`; the Python variant-field correction passed Python 3.13, Verify and Browser G2P on `7a56963d7a2996066a15aa9baf594d13beaf0d09`. Those runs predate the final source-span mapping guard and are not substituted for latest-head CI.
+- Test-oracle failures encountered and corrected: expected `paps` instead of `kaps`; CSS test assumed grid declaration order; source register expected 247 rather than 248; Python variant assertion used `note` instead of schema field `environment`. The latest source-span guard deliberately leaves multiword variant spans null rather than misattribute token-local indices.
+- Local verification: attempted public `git clone`, blocked by DNS/network resolution failure (`Could not resolve host: github.com`). No local test/build command is claimed.
+- External evidence blockers: independent Korean phonetic adjudication, rights-cleared audio annotation pilot/dataset terms, and independent Ukrainian target-layer review. Extended IPA remains a research preview and PR #509 remains draft/open.
+- Next genuine blocker: complete the latest exact-code-head CI runs above; fix any newly exposed failures and rerun. Do not merge or call this release-ready before those checks and the independent linguistic/rights gates.
