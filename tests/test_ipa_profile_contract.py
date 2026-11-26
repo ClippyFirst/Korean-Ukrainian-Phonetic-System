@@ -75,3 +75,16 @@ def test_acoustic_annotation_requires_measurement_provenance():
         "status": "measured",
     }]
     assert "measured acoustic annotations require a method and evidence reference" in validate_extended_ipa_result(result)
+
+def test_measured_acoustic_annotation_is_accepted_with_full_provenance():
+    result = phoneticize_korean("시")["extended_ipa"]
+    result["acoustic_annotations"] = [{
+        "feature": "post_stop_f0",
+        "value": 185.0,
+        "unit": "Hz",
+        "source_span": {"start": 0, "end": 1},
+        "measurement_method": "Praat autocorrelation; 50 ms window; 10 ms step",
+        "evidence_refs": ["https://doi.org/10.1371/journal.pone.0240682"],
+        "status": "measured",
+    }]
+    assert validate_extended_ipa_result(result) == []

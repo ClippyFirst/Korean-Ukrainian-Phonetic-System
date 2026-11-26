@@ -55,6 +55,34 @@ def validate_extended_ipa_result(result: dict[str, Any]) -> list[str]:
     for name in ("variants", "boundaries", "trace"):
         if not isinstance(result[name], list):
             errors.append(f"{name} must be an array")
+    context = result["context"]
+    context_fields = {
+        "speaker_id", "dialect", "age_group", "speech_style",
+        "speech_rate_syllables_per_second", "focus", "prosodic_position",
+        "recording_conditions",
+    }
+    if not isinstance(context, dict) or set(context) != context_fields:
+        errors.append("context must contain all nullable speaker/prosody fields")
+    else:
+        if context["focus"] is not None and not isinstance(context["focus"], bool):
+            errors.append("context.focus must be boolean or null")
+        rate = context["speech_rate_syllables_per_second"]
+        if rate is not None and (not isinstance(rate, (int, float)) or rate < 0):
+            errors.append("context speech rate must be a non-negative number or null")
+    annotations = result["acoustic_annotations"]
+    if not isinstance(annotations, list):
+        errors.append("acoustic_annotations must be an array")
+    else:
+        for annotation in annotations:
+            if not isinstance(annotation, dict):
+                errors.append("acoustic annotation must be an object")
+                continue
+            if annotation.get("status") == "measured" and (
+                not annotation.get("measurement_method")
+                or not annotation.get("evidence_refs")
+                or annotation.get("source_span") is None
+            ):
+                errors.append("measured acoustic annotations require a method and evidence reference")
     target = result["target_adapter"]
     if not isinstance(target, dict) or target.get("input_layer") not in {"phonemic", "broad", "narrow", "none"}:
         errors.append("target_adapter.input_layer is invalid")
@@ -83,6 +111,12 @@ def build_extended_ipa_result(source: str, layers: dict[str, dict[str, Any]], *,
             "status": "not-run-by-phoneticizer", "input_layer": "none", "profile_id": None
         },
         "pronunciation_status": pronunciation_status,
+        "context": {
+            "speaker_id": None, "dialect": None, "age_group": None,
+            "speech_style": None, "speech_rate_syllables_per_second": None,
+            "focus": None, "prosodic_position": None, "recording_conditions": None,
+        },
+        "acoustic_annotations": [],
     }
     errors = validate_extended_ipa_result(result)
     if errors:

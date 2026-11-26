@@ -127,6 +127,14 @@ export function validateExtendedIpaResult(result) {
   if (!result.source || typeof result.source.text !== 'string' || result.source.offset_unit !== 'unicode-code-points') errors.push('invalid source metadata');
   if (!result.layers || !['phonemic','broad','narrow'].every(level => result.layers[level]?.level === level)) errors.push('all three IPA layers are required');
   if (!Array.isArray(result.variants) || !Array.isArray(result.boundaries) || !Array.isArray(result.trace)) errors.push('variants, boundaries and trace must be arrays');
+  const contextKeys = ['speaker_id','dialect','age_group','speech_style','speech_rate_syllables_per_second','focus','prosodic_position','recording_conditions'];
+  if (!result.context || contextKeys.some(key => !(key in result.context))) errors.push('speaker and prosody context fields are required, even when unknown');
+  if (!Array.isArray(result.acoustic_annotations)) errors.push('acoustic_annotations must be an array');
+  else for (const annotation of result.acoustic_annotations) {
+    if (annotation?.status === 'measured' && (!annotation.measurement_method || !annotation.evidence_refs?.length || !annotation.source_span)) {
+      errors.push('measured acoustic annotations require a method and evidence reference');
+    }
+  }
   if (!result.target_adapter || !['phonemic','broad','narrow','none'].includes(result.target_adapter.input_layer)) errors.push('invalid target adapter metadata');
   if (result.layers?.narrow?.target_compatible !== true && result.target_adapter.input_layer === 'narrow' && !['unavailable','blocked','not-run-for-extended-profile'].includes(result.target_adapter.status)) errors.push('partial narrow IPA cannot be marked as adapted');
   return errors;
@@ -198,6 +206,12 @@ export function buildExtendedIpaResult(source, engineResult) {
         target_compatible: false
       }
     },
+    context: {
+      speaker_id: null, dialect: null, age_group: null, speech_style: null,
+      speech_rate_syllables_per_second: null, focus: null,
+      prosodic_position: null, recording_conditions: null
+    },
+    acoustic_annotations: [],
     variants: (Array.isArray(engineResult.variants) ? engineResult.variants : []).map((variant, index) => ({
       id: 'broad-variant-' + (index + 1), layer: 'broad', ipa: String(variant.ipa ?? ''),
       evidence_status: variant.note?.startsWith('Research-only') ? 'research-hypothesis' : 'source-or-rule-derived-variant',

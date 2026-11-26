@@ -73,3 +73,14 @@ test('text-only browser results never invent speaker metadata or acoustic measur
   assert.equal(result.context.prosodic_position, null);
   assert.deepEqual(result.acoustic_annotations, []);
 });
+test('measured acoustic annotations require method, source and source-span provenance', () => {
+  const result = extended('시');
+  result.acoustic_annotations = [{
+    feature: 'post_stop_f0', value: 185, unit: 'Hz',
+    source_span: { start: 0, end: 1 },
+    measurement_method: 'Praat autocorrelation; 50 ms window; 10 ms step',
+    evidence_refs: ['https://doi.org/10.1371/journal.pone.0240682'],
+    status: 'measured'
+  }];
+  assert.deepEqual(validateExtendedIpaResult(result), []);
+});

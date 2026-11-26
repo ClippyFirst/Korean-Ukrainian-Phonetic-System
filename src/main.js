@@ -105,6 +105,7 @@ const extendedIpaNarrow=document.querySelector('#extended-ipa-narrow');
 const extendedIpaStatus=document.querySelector('#extended-ipa-status');
 const extendedIpaVariants=document.querySelector('#extended-ipa-variants');
 const extendedIpaTrace=document.querySelector('#extended-ipa-trace');
+const extendedIpaContext=document.querySelector('#extended-ipa-context');
 const romanization=document.querySelector('#result-romanization');
 const hanjaOutput=document.querySelector('#result-hanja');
 const hanjaEngineStatus=document.querySelector('#hanja-engine-status');
@@ -243,6 +244,7 @@ function renderExtendedIpa(source,result,useG2p){
   if(extendedIpaBroad)extendedIpaBroad.textContent=view.layers.broad.ipa||'Немає повного результату';
   if(extendedIpaNarrow)extendedIpaNarrow.textContent=view.layers.narrow.ipa||'Невизначено: IPA не формується для цього фрагмента';
   if(extendedIpaStatus)extendedIpaStatus.textContent='Вузький профіль: '+view.layers.narrow.profile_id+' · v'+view.layers.narrow.profile_version+' · '+view.layers.narrow.status+'. Український запис не перебудовується з цього часткового профілю; цільовий адаптер для нього не схвалений.';
+  if(extendedIpaContext)extendedIpaContext.textContent='Дані про мовця, діалект, вік, стиль, темп, фокус і просодичну позицію не надані. Акустичні вимірювання не виводяться з написання; для цього текстового запиту їх немає.';
   if(extendedIpaVariants){
     extendedIpaVariants.textContent='';
     for(const variant of view.variants){
