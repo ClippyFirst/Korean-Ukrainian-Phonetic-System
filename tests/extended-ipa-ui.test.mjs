@@ -10,6 +10,7 @@ test('Extended IPA is opt-in inside Kozak Kim research mode and has separate out
   assert.match(html, /id="extended-ipa-enabled"/);
   assert.match(html, /id="panel-extended-ipa"[^>]*hidden/);
   assert.match(html, /id="extended-ipa-phonemic"/);
+  assert.match(html, /id="extended-ipa-phonemic-status"/);
   assert.match(html, /id="extended-ipa-broad"/);
   assert.match(html, /id="extended-ipa-narrow"/);
   assert.match(html, /id="extended-ipa-context"/);

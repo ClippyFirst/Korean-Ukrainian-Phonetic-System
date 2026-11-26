@@ -100,6 +100,7 @@ const ipa=document.querySelector('#result-ipa');
 const extendedIpaToggle=document.querySelector('#extended-ipa-enabled');
 const extendedIpaPanel=document.querySelector('#panel-extended-ipa');
 const extendedIpaPhonemic=document.querySelector('#extended-ipa-phonemic');
+const extendedIpaPhonemicStatus=document.querySelector('#extended-ipa-phonemic-status');
 const extendedIpaBroad=document.querySelector('#extended-ipa-broad');
 const extendedIpaNarrow=document.querySelector('#extended-ipa-narrow');
 const extendedIpaStatus=document.querySelector('#extended-ipa-status');
@@ -242,6 +243,7 @@ function renderExtendedIpa(source,result,useG2p){
   const phonemicResult=engine.convert(source,{morphologyMode:'super-soft'});
   const view=buildExtendedIpaResult(source,result,phonemicResult);
   if(extendedIpaPhonemic)extendedIpaPhonemic.textContent=view.layers.phonemic.ipa||'Ще не реалізовано в браузерному рушії';
+  if(extendedIpaPhonemicStatus)extendedIpaPhonemicStatus.textContent='Профіль: '+(view.layers.phonemic.profile_id||'недоступний')+' · '+view.layers.phonemic.status+'. Це графемний fallback без морфофонологічного аналізу, а не незалежно підтверджений фонемний gold.';
   if(extendedIpaBroad)extendedIpaBroad.textContent=view.layers.broad.ipa||'Немає повного результату';
   if(extendedIpaNarrow)extendedIpaNarrow.textContent=view.layers.narrow.ipa||'Невизначено: IPA не формується для цього фрагмента';
   if(extendedIpaStatus)extendedIpaStatus.textContent='Вузький профіль: '+view.layers.narrow.profile_id+' · v'+view.layers.narrow.profile_version+' · '+view.layers.narrow.status+'. Український запис не перебудовується з цього часткового профілю; цільовий адаптер для нього не схвалений.';
