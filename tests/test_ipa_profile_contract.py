@@ -134,3 +134,12 @@ def test_extended_phonemic_trace_is_distinct_from_surface_and_narrow_layers():
     assert len(phonemic) == 1
     assert phonemic[0]["ipa"] == "si"
     assert phonemic[0]["status"] == "underlying-phonemic-grapheme-derived"
+
+def test_extended_phonemic_layer_preserves_complex_coda_components():
+    result = phoneticize_korean("값")["extended_ipa"]
+    assert result["layers"]["phonemic"]["ipa"] == "paps"
+    item = next(
+        item for item in result["trace"]
+        if item.get("layer") == "phonemic" and item["source"] == "값"
+    )
+    assert item["ipa"] == "paps"
