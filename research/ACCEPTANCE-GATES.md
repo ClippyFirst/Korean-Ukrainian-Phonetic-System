@@ -1910,3 +1910,10 @@ The Extended IPA browser panel previously consumed the legacy browser-contextual
 - **Acceptance:** exact-head Browser G2P, Verify, and tests matrix must pass; then confirm Python/browser outputs and optional variant agree for the representative fixture. Broader exhaustive parity and independent Korean phonetic adjudication remain separate gates.
 - **Evidence:** https://doi.org/10.17959/sppm.2010.16.1.3; https://www.eksss.org/archive/view_article?pid=pss-13-1-37.
 - **No claim:** this change does not establish universal [ɕ], independent phonetic gold, benchmark uplift, or Ukrainian target compatibility.
+
+### Python variant-schema assertion correction — 2026-11-26
+
+The first Python 3.13 test run after the shared broad-profile reconciliation failed because the new regression asserted `variant["note"]`, while the Extended IPA result contract exposes the same note as `variant["environment"]`. The implementation already emits the note under the schema-defined `environment` field. Corrected the assertion in commit `7a56963d7a2996066a15aa9baf594d13beaf0d09`.
+
+- Failed historical run: tests `45880894598`, Python 3.13 job `140119675948`.
+- **TODO:** rerun tests, Verify and Browser G2P on the corrected exact head; the failed/cancelled matrix is not a pass.
