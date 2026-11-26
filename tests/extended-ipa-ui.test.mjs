@@ -19,6 +19,6 @@ test('Extended IPA is opt-in inside Kozak Kim research mode and has separate out
 });
 
 test('Extended IPA responsive layout stacks layers on narrow screens', () => {
-  assert.match(css, /\.extended-ipa-layers\{grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/);
+  assert.match(css, /\.extended-ipa-layers\{[^}]*grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/);
   assert.match(css, /@media\(max-width:760px\)\{\.extended-ipa-layers\{grid-template-columns:1fr\}\}/);
 });
