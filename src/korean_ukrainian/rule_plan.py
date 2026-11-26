@@ -66,7 +66,9 @@ def _read_rows(path: Path, required_fields: set[str]) -> list[dict[str, str]]:
         return list(reader)
 
 
-def _unique_by_rule_id(rows: Iterable[dict[str, str]], source_name: str) -> dict[str, dict[str, str]]:
+def _unique_by_rule_id(
+    rows: Iterable[dict[str, str]], source_name: str, *, allow_empty: bool = False
+) -> dict[str, dict[str, str]]:
     indexed: dict[str, dict[str, str]] = {}
     for line_number, row in enumerate(rows, start=2):
         if not any((value or "").strip() for value in row.values()):
@@ -77,7 +79,7 @@ def _unique_by_rule_id(rows: Iterable[dict[str, str]], source_name: str) -> dict
         if rule_id in indexed:
             raise ValueError(f"{source_name} contains duplicate rule_id {rule_id!r}")
         indexed[rule_id] = row
-    if not indexed:
+    if not indexed and not allow_empty:
         raise ValueError(f"{source_name} contains no rule rows")
     return indexed
 
@@ -104,6 +106,7 @@ def load_rule_execution_plan(data_dir: Path | None = None) -> RuleExecutionPlan:
     ordering = _unique_by_rule_id(
         _read_rows(ordering_path, {"rule_id", "preferred_order", "analysis_status"}),
         "rule_ordering.csv",
+        allow_empty=True,
     )
 
     rule_ids = set(rules)
