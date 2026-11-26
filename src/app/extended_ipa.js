@@ -138,6 +138,7 @@ export function validateExtendedIpaResult(result) {
   if (!result.source || typeof result.source.text !== 'string' || result.source.offset_unit !== 'unicode-code-points') errors.push('invalid source metadata');
   if (!result.layers || !['phonemic','broad','narrow'].every(level => result.layers[level]?.level === level)) errors.push('all three IPA layers are required');
   if (!Array.isArray(result.variants) || !Array.isArray(result.boundaries) || !Array.isArray(result.trace)) errors.push('variants, boundaries and trace must be arrays');
+  else for (const item of result.trace) if (!item || !['phonemic','broad','narrow'].includes(item.layer)) errors.push('every trace item requires a valid IPA layer');
   const contextKeys = ['speaker_id','dialect','age_group','speech_style','speech_rate_syllables_per_second','focus','prosodic_position','recording_conditions'];
   if (!result.context || contextKeys.some(key => !(key in result.context))) errors.push('speaker and prosody context fields are required, even when unknown');
   else {
