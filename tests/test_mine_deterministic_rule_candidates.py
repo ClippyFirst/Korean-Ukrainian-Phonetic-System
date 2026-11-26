@@ -182,3 +182,45 @@ def test_provenance_rejects_unreviewed_ipa_convention_comparison(tmp_path):
     provenance_path.write_text(json.dumps(provenance), encoding="utf-8")
     with pytest.raises(ValueError, match="must be explicitly reviewed as comparable"):
         load_provenance(provenance_path)
+
+
+def test_teacher_disagreements_are_attributed_to_contexts_only_after_syllable_alignment(tmp_path):
+    input_path, provenance_path = write_inputs(tmp_path)
+    report = build_report(input_path, provenance_path, min_context_support=1)
+    by_case = {row["case_id"]: row for row in report["cases"]}
+
+    assert by_case["dev-001"]["context_alignment_status"] == "aligned-by-syllable-boundaries"
+    assert by_case["dev-001"]["context_disagreements"] == []
+    assert by_case["dev-002"]["context_disagreements"][0]["changed_syllable_indices"] == [0]
+    assert by_case["dev-003"]["context_disagreements"][0]["changed_syllable_indices"] == [0, 1]
+    assert report["summary"]["aligned_case_count"] == 3
+    assert report["summary"]["unaligned_case_count"] == 0
+
+
+def test_unaligned_teacher_output_is_retained_but_excluded_from_context_candidate_stats(tmp_path):
+    input_path, provenance_path = write_inputs(tmp_path)
+    row = json.loads(input_path.read_text(encoding="utf-8").splitlines()[0])
+    row["teacher_ipa"] = "kukp͈ap̚"
+    input_path.write_text(json.dumps(row, ensure_ascii=False) + "\n", encoding="utf-8")
+
+    report = build_report(input_path, provenance_path, min_context_support=1)
+    case = report["cases"][0]
+    assert case["context_alignment_status"] == "unaligned-no-safe-syllable-boundary-map"
+    assert case["context_disagreements"] == []
+    assert report["summary"]["aligned_case_count"] == 0
+    assert report["summary"]["unaligned_case_count"] == 1
+    assert report["context_associations"] == []
+
+
+def test_context_pattern_mining_aligns_multiple_eojeols_without_crossing_word_boundaries(tmp_path):
+    input_path, provenance_path = write_inputs(tmp_path)
+    row = json.loads(input_path.read_text(encoding="utf-8").splitlines()[0])
+    row["source_text"] = "국밥 국물"
+    row["teacher_ipa"] = "kuk̚.p͈ap̚ kuŋ.mul"
+    row["strict_ipa"] = "kuk̚.p͈ap̚ kuŋ.mul"
+    input_path.write_text(json.dumps(row, ensure_ascii=False) + "\n", encoding="utf-8")
+
+    report = build_report(input_path, provenance_path, min_context_support=1)
+    assert report["cases"][0]["context_alignment_status"] == "aligned-by-syllable-boundaries"
+    assert report["cases"][0]["context_disagreements"] == []
+    assert report["summary"]["aligned_case_count"] == 1
