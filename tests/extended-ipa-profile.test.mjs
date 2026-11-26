@@ -119,7 +119,7 @@ test('browser phonemic adapter counts Unicode code points and abstains on unsupp
 
 test('browser phonemic adapter preserves underlying codas rather than neutralizing them', () => {
   assert.equal(phonemicIpaFromHangul('시').ipa, 'si');
-  assert.equal(phonemicIpaFromHangul('값').ipa, 'paps');
+  assert.equal(phonemicIpaFromHangul('값').ipa, 'kaps');
   assert.equal(phonemicIpaFromHangul('안하').ipa, 'an.ha');
   assert.equal(phonemicIpaFromHangul('시 나').ipa, 'si na');
   assert.equal(phonemicIpaFromHangul('시!').ipa, 'si!');
