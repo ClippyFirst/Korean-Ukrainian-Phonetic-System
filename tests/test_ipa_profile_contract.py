@@ -100,3 +100,13 @@ def test_json_schema_requires_research_context_and_separate_acoustic_annotations
     measured = schema["properties"]["acoustic_annotations"]["items"]["allOf"][0]
     assert measured["if"]["properties"]["status"]["const"] == "measured"
     assert {"measurement_method", "evidence_refs", "source_span"} <= set(measured["then"]["required"])
+
+def test_extended_ipa_trace_marks_post_sonorant_h_as_unresolved_variation():
+    result = phoneticize_korean("안하")["extended_ipa"]
+    item = next(
+        trace for trace in result["trace"]
+        if "narrow-h-sonorant-variation-unresolved" in trace["rule_ids"]
+    )
+    assert item["status"] == "unresolved-variation"
+    assert len(item["evidence_refs"]) == 2
+    assert "speaker-/dialect-conditioned" in item["environment"]

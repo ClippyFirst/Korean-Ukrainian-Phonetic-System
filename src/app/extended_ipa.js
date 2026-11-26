@@ -80,6 +80,11 @@ function narrowSyllable(current, previous, sameWord) {
         rules.push('narrow-h-palatal-allophone');
         evidence.push(EVIDENCE['narrow-h-palatal-allophone']);
         environment = 'onset ㅎ before selected high-front/glide nuclei';
+        if (prior && SONORANT_CODAS.has(prior.coda)) {
+          rules.push('narrow-h-sonorant-variation-unresolved');
+          evidence.push(EVIDENCE['narrow-h-sonorant-variation-unresolved']);
+          environment += '; preceding sonorant: optional weakening/deletion remains unresolved';
+        }
       }
     } else if (parsed.vowel === 'ㅜ') {
       ipa = replaceInitial(ipa, ['h'], 'x');
@@ -87,6 +92,11 @@ function narrowSyllable(current, previous, sameWord) {
         rules.push('narrow-h-palatal-allophone');
         evidence.push(EVIDENCE['narrow-h-palatal-allophone']);
         environment = 'onset ㅎ before ㅜ';
+        if (prior && SONORANT_CODAS.has(prior.coda)) {
+          rules.push('narrow-h-sonorant-variation-unresolved');
+          evidence.push(EVIDENCE['narrow-h-sonorant-variation-unresolved']);
+          environment += '; preceding sonorant: optional weakening/deletion remains unresolved';
+        }
       }
     } else if (prior && SONORANT_CODAS.has(prior.coda)) {
       rules.push('narrow-h-sonorant-variation-unresolved');
@@ -105,6 +115,7 @@ function narrowSyllable(current, previous, sameWord) {
       ipa = replaceInitial(ipa, ['ɾ','ɭ'], 'l');
       if (ipa.startsWith('l')) {
         rules.push('liquid-assimilation');
+        evidence.push(EVIDENCE['narrow-liquid-allophone']);
         environment = 'same word: ㄹ coda + ㄹ onset';
       }
     } else if (prior.coda === '' || PALATAL_LIQUID_NUCLEI.has(parsed.vowel)) {

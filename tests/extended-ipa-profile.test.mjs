@@ -32,12 +32,20 @@ test('narrow /s/ and /n/ retain the currently source-scoped contextual restricti
   assert.equal(extended('니').layers.narrow.ipa, 'ni');
 });
 
-test('post-sonorant /h/ is not forced to a categorical [ɦ] realization', () => {
+test('post-sonorant /h/ is unresolved variation while the default remains [h]', () => {
   const result = extended('안하');
   assert.equal(result.layers.narrow.ipa, 'an.ha');
   const h = result.trace.find(item => item.source === '하');
   assert.ok(h.rule_ids.includes('narrow-h-sonorant-variation-unresolved'));
   assert.match(h.evidence_status, /speaker-and-dialect-variable/);
+});
+
+test('high-front [ç] realization retains the separate post-sonorant variation trace', () => {
+  const result = extended('감히');
+  assert.equal(result.layers.narrow.ipa, 'kam.çi');
+  const h = result.trace.find(item => item.source === '히');
+  assert.ok(h.rule_ids.includes('narrow-h-palatal-allophone'));
+  assert.ok(h.rule_ids.includes('narrow-h-sonorant-variation-unresolved'));
 });
 
 test('narrow /h/ and lateral realizations remain explicitly context-bound', () => {

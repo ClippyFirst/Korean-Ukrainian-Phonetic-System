@@ -409,6 +409,27 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
             "evidence_status": "structural-syllable-alignment",
             "status": "aligned" if span else "source-span-unavailable",
         })
+    for index, item in enumerate(items):
+        if index == 0 or item.onset != "ㅎ":
+            continue
+        previous = items[index - 1]
+        if previous.boundary_after == "word" or previous.coda not in {"ㄴ", "ㄹ", "ㅁ", "ㅇ", "ㄵ", "ㄶ", "ㄻ", "ㄼ", "ㄽ", "ㄾ", "ㅀ"}:
+            continue
+        extended_trace.append({
+            "source_span": source_spans[index],
+            "source": item.text,
+            "surface": item.text,
+            "ipa": narrow_layer.get("syllables", [None] * len(items))[index],
+            "rule_ids": ["narrow-h-sonorant-variation-unresolved"],
+            "environment": "same-word sonorant coda + onset ㅎ; weakening/deletion is speaker-/dialect-conditioned",
+            "evidence_refs": [
+                "https://doi.org/10.17290/jlsk.2019..84.175",
+                "https://doi.org/10.17959/sppm.2014.20.3.357",
+            ],
+            "evidence_status": "speaker-and-dialect-variable-no-single-IPA-selected",
+            "status": "unresolved-variation",
+        })
+
     for rule in all_traces:
         rule_id = str(rule.get("rule_id") or rule.get("name") or "unclassified-rule")
         source_value = str(rule.get("input_span") or rule.get("source") or text)
