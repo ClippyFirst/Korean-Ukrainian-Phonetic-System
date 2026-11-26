@@ -114,7 +114,7 @@ test('browser Extended IPA matches its side of the runtime comparison fixtures',
 test('browser phonemic adapter counts Unicode code points and abstains on unsupported characters', () => {
   const result = phonemicIpaFromHangul('시😀');
   assert.equal(result.ipa, null);
-  assert.deepEqual(result.trace[0].source_span, { start: 1, end: 2 });
+  assert.deepEqual(result.trace[1].source_span, { start: 1, end: 2 });
 });
 
 test('browser phonemic adapter preserves underlying codas rather than neutralizing them', () => {
