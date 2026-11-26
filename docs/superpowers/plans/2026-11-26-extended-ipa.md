@@ -54,9 +54,9 @@
 - [x] Build typed browser result from the current engine trace.
 - [x] Preserve source spans, boundaries, narrow rule IDs, environments and evidence refs.
 - [x] Withhold the whole narrow IPA string when the engine marks the source unresolved.
-- [x] Expose the existing underlying-grapheme IPA fallback as an explicitly labelled candidate, not phonemic gold.
-- [ ] Implement and verify full browser underlying phonological analysis equivalent to Python.
-- [ ] Establish exact Python/browser parity and document intentional gaps.
+- [x] Replace the super-soft fallback with a dedicated browser underlying phonemic adapter for onset, nucleus and coda inventory; preserve complex codas, exact lexical length and unsupported-input abstention.
+- [x] Connect the adapter to the Extended IPA panel and expose layer-specific trace provenance.
+- [ ] Exhaustively verify Python/browser phonemic parity over the frozen Hangul inventory and source fixtures; reconcile the known broad-layer discrepancy without benchmark-driven overfitting.
 
 ### Task 4: Kozak Kim UI
 
