@@ -22,6 +22,9 @@ test('Extended IPA contract exposes separate layers without changing the default
   assert.equal(sibilantVariant.selected, false);
   assert.deepEqual(sibilantVariant.source_span, { start: 0, end: 1 });
   assert.match(sibilantVariant.environment, /Kang 2010/);
+  const multiwordVariant = extended('나 시').variants.find(item => /Kang 2010/.test(item.environment));
+  assert.ok(multiwordVariant);
+  assert.equal(multiwordVariant.source_span, null, 'token-local indices must not be misattributed to another word');
   assert.equal(result.layers.narrow.ipa, 'ɕʰi');
   assert.equal(result.layers.narrow.status, 'partial-research-only');
   assert.equal(result.layers.narrow.target_compatible, false);
