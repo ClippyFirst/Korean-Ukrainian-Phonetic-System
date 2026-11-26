@@ -1,3 +1,19 @@
+## Final follow-up — 2026-11-27 — explicit rule-sequence semantics
+
+**Latest code head:** `a4aa821b1cc16b1fa755a34f3d2c89e624538401` on `feat/kozak-kim-extended-ipa-2026-11-26`; PR #509 remains Draft/Open/Unmerged.
+
+- Fixed a subtle API bug: `rule_ids=[]` previously fell through to the default canonical rule list because the implementation used truthiness. The runtime now defaults only when `rule_ids is None`; any explicit iterable is preserved as a tuple, including an empty sequence.
+- Added regression: `apply_ordered_rules(parse_syllables("낫"), [])` leaves the written coda unchanged and returns no rule traces.
+- Exact-head verification: [Tests 45905259115](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45905259115) PASS (full Python suite, Python 3.11/3.12/3.13, wheel install, web suite); [System Verify 45905259144](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45905259144) PASS (Python regression/data integrity and browser regression/build); [Master/research artifacts 45905259115](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45905259115) PASS.
+- NIKL metadata-only inventory was SKIPPED by policy. This is not a source-validation pass.
+- Python regression emits a diagnostic warning documenting two pre-existing Python/browser-port divergences: `넓죽하다` and `읽고`. The Python native engine agrees with g2pk and the recorded NIKL practical adapter on these cases; the raw browser JS port differs. IPA gold is not independently adjudicated. This remains a browser/Python parity TODO, not silently fixed here.
+- Paired native-vs-g2pk diagnostic [45905013319](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45905013319), run on immediately preceding code head `385a4ea4` (same default rule sequence; before the explicit-empty API fix), used 275 UGTPHON Korean test sentences and 2,702 paired tokens: native 1,425/2,702 exact (52.7387%), CER 0.090130; g2pk 1,435/2,703 exact (53.0892%), CER 0.092328. On the paired subset, g2pk exact rate is +0.003701 but CER is +0.002207 (worse). Diagnostic only; no rule selection or accuracy claim follows.
+- Charsiu inference remained SKIPPED by the workflow condition: the workflow runs only on manual dispatch or when the PR has the `enhancement` label. No label was added and no model inference was claimed. Existing teacher candidate records remain hypotheses; no teacher-derived production rule was added.
+- No local pytest/npm/build was run: local clone had previously failed because this runtime could not resolve github.com. GitHub Actions provides the exact-head verification evidence.
+- No PR was merged, no branch deleted, no force-push, release or deployment occurred.
+
+**Disposition:** deterministic rule-plan and API semantics are software-verified; overall Korean phonology remains a research prototype. Open work: typed segment-level IPA IR; full browser/Python shared analysis/parity; independent layer-matched phonetic gold; independently reviewed Ukrainian target correspondences; source-adjudicated new rule candidates. The core runtime remains neural-free.
+
 ## Execution continuation — 2026-11-27 — deterministic model-free rule engine
 
 **Status: DONE_VERIFIED for the implemented software increments; overall engine remains a research prototype.**  

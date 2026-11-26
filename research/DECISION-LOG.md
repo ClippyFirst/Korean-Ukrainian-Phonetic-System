@@ -193,3 +193,14 @@ Record consequential linguistic, data, architecture, testing, licensing, and rel
 - **Affected files/rule IDs/runtimes:** src/korean_ukrainian/rule_plan.py; src/korean_ukrainian/rules.py; data/korean/rules.csv; data/korean/rule_ordering.csv; scripts/mine_deterministic_rule_candidates.py; tests/test_rule_execution_plan.py; tests/test_mine_deterministic_rule_candidates.py; .github/workflows/test.yml.
 - **Validation/tests:** Tests/Python 3.11–3.13, wheel and web PASS (run 45904119310); System Verify PASS (45904119391); Browser G2P PASS (45904119145); relevant diagnostics and research smoke PASS as recorded in the 2026-11-27 master handoff. Charsiu train/dev inference SKIPPED by policy (45904119457); multi-engine benchmark remained pending at the last check (45904119230).
 - **Revisit when:** a rights-cleared and convention-reviewed teacher output set is available, or the owner changes the runtime contract.
+
+
+## DEC-2026-010 — explicit empty rule sequences must not activate defaults
+
+- **Date:** 2026-11-27
+- **Status:** accepted and implemented; exact-head CI passed on PR #509.
+- **Problem:** `rule_ids or default_rule_ids()` treated an explicitly supplied empty list as though no argument had been supplied, unexpectedly executing the full canonical rule sequence.
+- **Decision:** only `rule_ids is None` selects the canonical default. An explicit sequence is preserved exactly, including `[]` (zero rules).
+- **Implementation:** `ids = default_rule_ids() if rule_ids is None else tuple(rule_ids)`; regression test proves that input `낫` retains coda ㅅ and yields no rule traces when passed an empty list.
+- **Validation:** Tests 45905259115 PASS; System Verify 45905259144 PASS; Master/research artifacts 45905259115 PASS.
+- **Scope:** no phonological rule content/order or IPA/UA correspondence was changed.

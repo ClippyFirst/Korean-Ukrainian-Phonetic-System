@@ -42,7 +42,7 @@
 - load_rule_execution_plan(data_dir: Path | None = None) -> RuleExecutionPlan
 - default_rule_ids() -> tuple[str, ...]
 - RuleExecutionPlan.rule_ids -> tuple[str, ...]
-- apply_ordered_rules(..., rule_ids=None) uses default_rule_ids() only when no explicit non-empty sequence is supplied.
+- apply_ordered_rules(..., rule_ids=None) uses default_rule_ids() only when rule_ids is None; explicit empty sequences apply no rules.
 
 - [x] Step 1: Write failing tests for canonical preferred-order sorting, deterministic repeated loads, duplicate/missing/unknown rule IDs, duplicate/invalid order positions, runtime default execution order, and explicit override preservation.
 - [x] Step 2: Observed the expected initial import/API RED state in PR-head GitHub Actions before implementation. Local targeted pytest could not run because the local clone failed DNS resolution.
@@ -74,3 +74,16 @@ These are genuine next tasks, not acceptance claims for Tasks 1–2:
 - Replace browser-side divergent phonemic adapters with the same serialized deterministic analysis contract.
 - Expand morphology-aware rules only when supported by primary sources, independent examples, negative controls and held-out development evaluation.
 - Keep neural-teacher pattern mining offline and diagnostic; manual review is required before a rule enters canonical data.
+
+### Task 3: Preserve explicit empty rule sequences
+
+**Files:**
+- Modify: src/korean_ukrainian/rules.py
+- Modify: tests/test_rule_execution_plan.py
+
+- [x] Step 1: Identify that truthiness fallback made an explicit empty list activate all default rules.
+- [x] Step 2: Use the canonical plan only for `None`; tuple-ize any explicit iterable without truthiness fallback.
+- [x] Step 3: Add a regression proving `rule_ids=[]` leaves `낫` unchanged and emits no traces.
+- [x] Step 4: Run exact-head full Python matrix, wheel, web, System Verify and browser build.
+
+**Evidence:** code commit `a4aa821b1cc16b1fa755a34f3d2c89e624538401`; Tests [45905259115](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45905259115) PASS; System Verify [45905259144](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45905259144) PASS.
