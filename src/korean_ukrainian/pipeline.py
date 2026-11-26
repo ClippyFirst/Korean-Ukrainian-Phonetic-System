@@ -397,8 +397,32 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
         })
 
     extended_trace = []
+    underlying_source_spans = []
+    underlying_cursor = 0
+    for item in underlying_items:
+        position = text.find(item.text, underlying_cursor)
+        if position < 0:
+            underlying_source_spans.append(None)
+        else:
+            underlying_source_spans.append({"start": position, "end": position + len(item.text)})
+            underlying_cursor = position + len(item.text)
+    phonemic_syllables = phonemic_layer.get("syllables", [])
+    for index, item in enumerate(underlying_items):
+        extended_trace.append({
+            "layer": "phonemic",
+            "source_span": underlying_source_spans[index],
+            "source": item.text,
+            "surface": None,
+            "ipa": phonemic_syllables[index] if index < len(phonemic_syllables) else None,
+            "rule_ids": [],
+            "environment": "underlying onset+nucleus+coda inventory; no surface rules",
+            "evidence_refs": [],
+            "evidence_status": "deterministic-underlying-phonemic-inventory",
+            "status": "underlying-phonemic-grapheme-derived",
+        })
     for item, span in zip(items, source_spans):
         extended_trace.append({
+            "layer": "broad",
             "source_span": span,
             "source": item.text,
             "surface": item.text,
@@ -416,6 +440,7 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
         if previous.boundary_after == "word" or previous.coda not in {"ㄴ", "ㄹ", "ㅁ", "ㅇ", "ㄵ", "ㄶ", "ㄻ", "ㄼ", "ㄽ", "ㄾ", "ㅀ"}:
             continue
         extended_trace.append({
+            "layer": "narrow",
             "source_span": source_spans[index],
             "source": item.text,
             "surface": item.text,
@@ -436,6 +461,7 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
         source_ref = rule.get("source")
         refs = [source_ref] if isinstance(source_ref, str) and source_ref.startswith(("http://", "https://")) else []
         extended_trace.append({
+            "layer": "broad",
             "source_span": None,
             "source": source_value,
             "surface": None,
