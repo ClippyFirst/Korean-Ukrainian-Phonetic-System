@@ -11,7 +11,7 @@ def test_phoneticize_exposes_all_three_extended_ipa_layers_without_changing_lega
     assert extended["mode"] == "extended-ipa"
     assert extended["layers"]["phonemic"]["level"] == "phonemic"
     assert extended["layers"]["broad"]["ipa"] == result["ipa"]["ipa"] == "si"
-    assert any(variant["ipa"] == "ɕi" and "Kang 2010" in variant["note"] for variant in extended["variants"])
+    assert any(variant["ipa"] == "ɕi" and "Kang 2010" in variant["environment"] for variant in extended["variants"])
     assert extended["layers"]["narrow"]["ipa"] == "ɕʰi"
     assert extended["layers"]["narrow"]["status"] == "partial-narrow-research-profile"
     assert extended["layers"]["narrow"]["target_compatible"] is False
