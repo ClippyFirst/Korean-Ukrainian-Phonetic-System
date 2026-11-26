@@ -231,7 +231,7 @@ export function buildExtendedIpaResult(source, engineResult) {
       return {
         id: 'broad-variant-' + (index + 1), layer: 'broad', ipa: String(variant.ipa ?? ''),
         evidence_status: variant.note?.startsWith('Research-only') ? 'research-hypothesis' : 'source-or-rule-derived-variant',
-        evidence_refs: (String(variant.note || '').match(/https?:\\/\\/[^\\s)]+/gu) || []),
+        evidence_refs: String(variant.note || '').split(' ').filter(ref => ref.startsWith('http://') || ref.startsWith('https://')),
         environment: variant.note || null,
         uncertainty: 'Speaker-specific realization is not identified by this result.',
         source_span: sourceSpan, selected: false
