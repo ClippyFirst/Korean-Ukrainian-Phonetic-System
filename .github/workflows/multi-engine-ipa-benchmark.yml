@@ -372,6 +372,7 @@ jobs:
         run: |
           set -euo pipefail
           node --check scripts/benchmark_extended_ipa_ab.mjs
+          node --test tests/benchmark-extended-ipa-ab.test.mjs
           node scripts/benchmark_extended_ipa_ab.mjs \
             --ugtphon "$RUNNER_TEMP/ko-test.json" \
             --sigmorphon "$RUNNER_TEMP/sigmorphon-kor-test.json" \
