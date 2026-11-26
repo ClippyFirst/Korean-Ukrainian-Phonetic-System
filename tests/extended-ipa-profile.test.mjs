@@ -123,4 +123,5 @@ test('browser phonemic adapter preserves underlying codas rather than neutralizi
   assert.equal(phonemicIpaFromHangul('안하').ipa, 'an.ha');
   assert.equal(phonemicIpaFromHangul('시 나').ipa, 'si na');
   assert.equal(phonemicIpaFromHangul('시!').ipa, 'si!');
+  assert.equal(phonemicIpaFromHangul('유사성').ipa, 'juː.sa.sʌŋ');
 });
