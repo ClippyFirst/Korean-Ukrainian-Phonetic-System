@@ -64,7 +64,10 @@ def test_rule_plan_rejects_unknown_rule_id_in_ordering(tmp_path: Path):
     _write_catalogue(
         tmp_path,
         [{"rule_id": "R001", "name": "first", "source_id": "S1", "status": "established"}],
-        [{"rule_id": "R999", "preferred_order": "1", "analysis_status": "primary"}],
+        [
+            {"rule_id": "R001", "preferred_order": "1", "analysis_status": "primary"},
+            {"rule_id": "R999", "preferred_order": "2", "analysis_status": "primary"},
+        ],
     )
     with pytest.raises(ValueError, match="unknown rule IDs"):
         load_rule_execution_plan(tmp_path)
