@@ -88,3 +88,15 @@ def test_measured_acoustic_annotation_is_accepted_with_full_provenance():
         "status": "measured",
     }]
     assert validate_extended_ipa_result(result) == []
+
+def test_json_schema_requires_research_context_and_separate_acoustic_annotations():
+    import json
+    from pathlib import Path
+    schema_path = Path(__file__).resolve().parents[1] / "schemas" / "ipa-profile-result.schema.json"
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    required = set(schema["required"])
+    assert {"layers", "variants", "boundaries", "trace", "context", "acoustic_annotations"} <= required
+    assert "speaker_id" in schema["properties"]["context"]["required"]
+    measured = schema["properties"]["acoustic_annotations"]["items"]["allOf"][0]
+    assert measured["if"]["properties"]["status"]["const"] == "measured"
+    assert {"measurement_method", "evidence_refs", "source_span"} <= set(measured["then"]["required"])
