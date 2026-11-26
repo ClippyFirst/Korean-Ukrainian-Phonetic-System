@@ -148,6 +148,7 @@
       "items": {
         "type": "object",
         "required": [
+          "layer",
           "source_span",
           "source",
           "rule_ids",
@@ -198,6 +199,13 @@
           },
           "status": {
             "type": "string"
+          },
+          "layer": {
+            "enum": [
+              "phonemic",
+              "broad",
+              "narrow"
+            ]
           }
         },
         "additionalProperties": false
