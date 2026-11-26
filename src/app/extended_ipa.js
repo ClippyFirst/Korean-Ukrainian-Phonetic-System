@@ -134,7 +134,7 @@ function narrowSyllable(current, previous, sameWord) {
 export function validateExtendedIpaResult(result) {
   const errors = [];
   if (!result || typeof result !== 'object' || Array.isArray(result)) return ['result must be an object'];
-  if (result.schema_version !== '1.0' || result.mode !== 'extended-ipa') errors.push('unsupported schema or mode');
+  if (result.schema_version !== '1.1' || result.mode !== 'extended-ipa') errors.push('unsupported schema or mode');
   if (!result.source || typeof result.source.text !== 'string' || result.source.offset_unit !== 'unicode-code-points') errors.push('invalid source metadata');
   if (!result.layers || !['phonemic','broad','narrow'].every(level => result.layers[level]?.level === level)) errors.push('all three IPA layers are required');
   if (!Array.isArray(result.variants) || !Array.isArray(result.boundaries) || !Array.isArray(result.trace)) errors.push('variants, boundaries and trace must be arrays');
@@ -212,7 +212,7 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
     return left - right || (order[a.layer] ?? 3) - (order[b.layer] ?? 3);
   });
   const result = {
-    schema_version: '1.0',
+    schema_version: '1.1',
     mode: 'extended-ipa',
     source: { text: source, offset_unit: 'unicode-code-points' },
     layers: {
