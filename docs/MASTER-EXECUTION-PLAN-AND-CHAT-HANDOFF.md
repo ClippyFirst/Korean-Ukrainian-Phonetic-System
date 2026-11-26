@@ -1842,3 +1842,15 @@ The benchmark provides a positive but limited signal for the current shared **br
 - **Release status:** research preview / partial prototype, **not release-ready**.
 
 No benchmark score is a scientific endorsement of the current profile. Treat these numbers as diagnostic evidence for prioritizing the next independent review and dataset work.
+
+
+### Paired standard-versus-Extended IPA benchmark — 2026-11-26
+
+Added a reproducible A/B-style layer diagnostic on the existing benchmark branch:
+- `scripts/benchmark_extended_ipa_ab.mjs` runs standard strict IPA and Extended phonemic/broad/narrow through the same Kozak Kim browser engine and identical corpus occurrences.
+- `tests/benchmark-extended-ipa-ab.test.mjs` asserts the paired standard-vs-Extended-broad output is identical by design and that phonemic/narrow layers are independently surfaced.
+- `.github/workflows/multi-engine-ipa-benchmark.yml` now runs the paired diagnostic on the pinned UGTPHON and SIGMORPHON inputs and uploads a per-occurrence artifact.
+
+**Interpretation guardrails:** Extended broad wraps the same strict broad renderer as standard IPA; therefore any identical scores are expected and are not a model improvement. Phonemic and narrow scores are cross-layer reference agreement unless the corpus gold layer is verified as compatible. Neither corpus is independently adjudicated narrow-IPA gold. This run does not score Ukrainian output and does not touch the second Korean engine.
+
+**Run status at handoff update:** workflow run `45893331177` was pending. No A/B scores or successful test claim are made until the run and artifact are inspected.
