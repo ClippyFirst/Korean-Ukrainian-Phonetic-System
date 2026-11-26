@@ -4,6 +4,7 @@ import lexicalAdditionsCsv from '../data/korean/lexical_additions_2026-10-15.csv
 import ipaAdjudicationCsv from '../data/korean/lexical_additions_ipa-adjudication-2026-10-24.csv?raw';
 import {createEngine} from './app/engine.js';
 import {buildExtendedIpaResult} from './app/extended_ipa.js';
+import {phonemicIpaFromHangul} from './app/phonemic_ipa.js';
 import {createG2pWebAdapter} from './app/g2pk_web.js';
 import {traceIpaMappingDetailed} from './app/engine_ipa.js';
 import {romanizeRevised} from './app/romanization.js';
@@ -240,10 +241,10 @@ function renderExtendedIpa(source,result,useG2p){
   const enabled=Boolean(extendedIpaToggle?.checked&&!useG2p);
   if(extendedIpaPanel)extendedIpaPanel.hidden=!enabled;
   if(!enabled)return;
-  const phonemicResult=engine.convert(source,{morphologyMode:'super-soft'});
+  const phonemicResult=phonemicIpaFromHangul(source);
   const view=buildExtendedIpaResult(source,result,phonemicResult);
   if(extendedIpaPhonemic)extendedIpaPhonemic.textContent=view.layers.phonemic.ipa||'Ще не реалізовано в браузерному рушії';
-  if(extendedIpaPhonemicStatus)extendedIpaPhonemicStatus.textContent='Профіль: '+(view.layers.phonemic.profile_id||'недоступний')+' · '+view.layers.phonemic.status+'. Це графемний fallback без морфофонологічного аналізу, а не незалежно підтверджений фонемний gold.';
+  if(extendedIpaPhonemicStatus)extendedIpaPhonemicStatus.textContent='Профіль: '+(view.layers.phonemic.profile_id||'недоступний')+' · '+view.layers.phonemic.status+'. Це детерміноване відображення underlying onset–nucleus–coda у фонеми; поверхневі чергування, лексичні винятки й акустична реалізація не моделюються. Результат не є незалежно adjudicated gold.';
   if(extendedIpaBroad)extendedIpaBroad.textContent=view.layers.broad.ipa||'Немає повного результату';
   if(extendedIpaNarrow)extendedIpaNarrow.textContent=view.layers.narrow.ipa||'Невизначено: IPA не формується для цього фрагмента';
   if(extendedIpaStatus)extendedIpaStatus.textContent='Вузький профіль: '+view.layers.narrow.profile_id+' · v'+view.layers.narrow.profile_version+' · '+view.layers.narrow.status+'. Український запис не перебудовується з цього часткового профілю; цільовий адаптер для нього не схвалений.';
@@ -261,7 +262,7 @@ function renderExtendedIpa(source,result,useG2p){
     extendedIpaTrace.textContent='';
     for(const item of view.trace){
       const row=document.createElement('p');
-      row.textContent=item.source+' → '+(item.ipa||'—')+' · '+(item.rule_ids.join(', ')||'без вузької зміни')+' · '+(item.environment||item.evidence_status);
+      row.textContent='['+(item.layer||'analysis')+'] '+item.source+' → '+(item.ipa||'—')+' · '+(item.rule_ids.join(', ')||'без контекстної зміни')+' · '+(item.environment||item.evidence_status);
       extendedIpaTrace.append(row);
     }
   }
