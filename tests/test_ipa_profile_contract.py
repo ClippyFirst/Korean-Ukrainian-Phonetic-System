@@ -122,3 +122,8 @@ def test_extended_ipa_matches_shared_browser_conformance_smoke_cases():
         assert result["phonemic"]["ipa"] == case["phonemic"], case["source"]
         assert result["broad"]["ipa"] == case["broad"], case["source"]
         assert result["narrow"]["ipa"] == case["narrow"], case["source"]
+
+def test_extended_ipa_source_spans_use_unicode_code_points():
+    result = phoneticize_korean("😀시")["extended_ipa"]
+    span = next(item["source_span"] for item in result["trace"] if item["source"] == "시")
+    assert span == {"start": 1, "end": 2}

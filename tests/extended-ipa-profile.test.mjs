@@ -108,3 +108,8 @@ test('browser Extended IPA matches the shared cross-runtime smoke fixtures', () 
     assert.equal(result.layers.narrow.ipa, item.narrow, item.source + ' narrow');
   }
 });
+test('browser source spans count Unicode code points rather than UTF-16 units', () => {
+  const result = extended('😀시');
+  const span = result.trace.find(item => item.source === '시').source_span;
+  assert.deepEqual(span, { start: 1, end: 2 });
+});
