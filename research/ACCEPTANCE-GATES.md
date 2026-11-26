@@ -2022,4 +2022,5 @@ Exact code head: d19c5686ef8031cdcbfc2be10e1a0fe0c30ee33e on feat/kozak-kim-exte
 - Neural ByT5/Charsiu jobs and NIKL metadata-only inventory were skipped by workflow policy, not passed.
 
 Disposition: PR #509 remains open/unmerged. Extended IPA remains a research preview, not beta-/production-ready. Green software CI verifies the implementation contract and regressions; it does not certify Korean phonetic accuracy, dataset rights, browser/Python parity or Ukrainian target suitability.
+| Segment-level typed IPA representation | PARTIAL | Current schema stores IPA strings plus syllable/rule traces; requires explicit segment objects, feature bundles, segment-local spans, diacritic/length fields and per-segment provenance. Acceptance requires Unicode-safe tokenization and Python/Browser round-trip parity fixtures |
 
