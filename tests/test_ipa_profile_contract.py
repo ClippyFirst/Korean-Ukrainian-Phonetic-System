@@ -111,7 +111,7 @@ def test_extended_ipa_trace_marks_post_sonorant_h_as_unresolved_variation():
     assert len(item["evidence_refs"]) == 2
     assert "speaker-/dialect-conditioned" in item["environment"]
 
-def test_extended_ipa_matches_shared_browser_conformance_smoke_cases():
+def test_extended_ipa_matches_python_side_of_runtime_comparison_fixtures():
     import json
     from pathlib import Path
     fixture = json.loads(
@@ -119,11 +119,18 @@ def test_extended_ipa_matches_shared_browser_conformance_smoke_cases():
     )
     for case in fixture["cases"]:
         result = phoneticize_korean(case["source"])["extended_ipa"]["layers"]
-        assert result["phonemic"]["ipa"] == case["phonemic"], case["source"]
-        assert result["broad"]["ipa"] == case["broad"], case["source"]
-        assert result["narrow"]["ipa"] == case["narrow"], case["source"]
+        assert result["phonemic"]["ipa"] == case["python"]["phonemic"], case["source"]
+        assert result["broad"]["ipa"] == case["python"]["broad"], case["source"]
+        assert result["narrow"]["ipa"] == case["python"]["narrow"], case["source"]
 
 def test_extended_ipa_source_spans_use_unicode_code_points():
-    result = phoneticize_korean("😀시")["extended_ipa"]
-    span = next(item["source_span"] for item in result["trace"] if item["source"] == "시")
-    assert span == {"start": 1, "end": 2}
+    result = phoneticize_korean("시 나")["extended_ipa"]
+    span = next(item["source_span"] for item in result["trace"] if item["source"] == "나" and item.get("layer") == "broad")
+    assert span == {"start": 2, "end": 3}
+
+def test_extended_phonemic_trace_is_distinct_from_surface_and_narrow_layers():
+    result = phoneticize_korean("시")["extended_ipa"]
+    phonemic = [item for item in result["trace"] if item.get("layer") == "phonemic"]
+    assert len(phonemic) == 1
+    assert phonemic[0]["ipa"] == "si"
+    assert phonemic[0]["status"] == "underlying-phonemic-grapheme-derived"
