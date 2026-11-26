@@ -232,7 +232,7 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
         level: 'broad', status: engineResult.pronunciation_status === 'unresolved'
           ? 'diagnostic-only-unresolved-source'
           : engineResult.ipa_profile_status || 'unadjudicated-cross-runtime',
-        evidence_status: 'existing-browser-surface-IPA',
+        evidence_status: 'shared-versioned-broad-profile-clippyfirst-korean-broad-v1',
         target_compatible: false
       },
       narrow: {
