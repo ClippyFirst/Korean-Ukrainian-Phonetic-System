@@ -172,6 +172,7 @@ export function buildExtendedIpaResult(source, engineResult) {
     previousHangul = item;
     boundarySincePrevious = false;
   }
+  if (engineResult.pronunciation_status === 'unresolved') narrowIpa = '';
   const result = {
     schema_version: '1.0',
     mode: 'extended-ipa',

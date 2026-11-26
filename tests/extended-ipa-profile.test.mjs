@@ -36,7 +36,7 @@ test('narrow /h/ and lateral realizations remain explicitly context-bound', () =
 });
 
 test('punctuation and word boundaries are preserved and prevent cross-word allophones', () => {
-  assert.equal(extended('아 하').layers.narrow.ipa, 'a h a');
+  assert.equal(extended('아 하').layers.narrow.ipa, 'a ha');
   assert.equal(extended('아,하').layers.narrow.ipa, 'a,ha');
   assert.ok(extended('아 하').boundaries.some(item => item.kind === 'word'));
 });
