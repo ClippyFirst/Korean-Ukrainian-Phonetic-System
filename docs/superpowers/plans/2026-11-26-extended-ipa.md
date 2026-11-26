@@ -98,3 +98,22 @@ The implementation is being carried out inline on a dedicated GitHub branch beca
 - [x] Add separate acoustic annotation records for VOT, burst/closure duration, closure voicing, F0, voice quality, spectral centroid and formants.
 - [x] Require source span, measurement method and evidence reference for measurements marked measured.
 - [x] Add schema and Python/browser validator tests for text-only unknown context and measured provenance.
+## Exact-head execution closeout — 2026-11-26
+
+Verified branch head: d19c5686ef8031cdcbfc2be10e1a0fe0c30ee33e (PR #509; base main 97bb411df8b998b22cd58adda015fb941201950c).
+
+- [x] Run exact-head JSON/schema and Python/browser contract tests through the full Tests and Verify workflows.
+- [x] Verify Python 3.11/3.12/3.13, wheel installation, web tests, browser regression/build and Python data integrity.
+- [x] Verify Browser G2P and responsive rendered review.
+- [x] Run the multi-engine diagnostic and paired Standard-vs-Extended benchmark on identical UGTPHON/SIGMORPHON occurrences.
+- [x] Download and inspect paired diagnostic artifact 15153601014.
+- [ ] Exhaustively verify Python/browser phonemic parity over the frozen Hangul inventory and adversarial mixed-input/source-span fixtures.
+- [ ] Obtain independent Korean phonetic adjudication for phonemic/broad/narrow layer conventions and context-conditioned variants.
+- [ ] Establish rights-cleared acoustic annotation data and independent validation.
+- [ ] Complete independent Ukrainian target-layer review and approve a profile-specific adapter mapping before any Extended profile is allowlisted.
+- [ ] Complete manual keyboard, screen-reader and zoom acceptance.
+
+### Final status
+
+The implementation and exact-head software checks are verified, but the mode remains a research preview. The paired benchmark confirms that Extended broad is identical to Standard IPA by contract; phonemic and narrow scores are cross-layer agreement only, not accuracy. The Extended target adapter remains intentionally fail-closed because no profile is adjudicated target-compatible. No independent narrow gold, rights-cleared acoustic corpus pilot or Ukrainian target approval is present.
+
