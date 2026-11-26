@@ -7,13 +7,14 @@ import { buildExtendedIpaResult, validateExtendedIpaResult } from '../src/app/ex
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
 const engine = createEngine(canonical, lexical);
-const extended = source => buildExtendedIpaResult(source, engine.convert(source));
+const extended = source => buildExtendedIpaResult(source, engine.convert(source), engine.convert(source, { morphologyMode: 'super-soft' }));
 
 test('Extended IPA contract exposes separate layers without changing the default Ukrainian target', () => {
   const result = extended('시');
   assert.deepEqual(validateExtendedIpaResult(result), []);
-  assert.equal(result.layers.phonemic.ipa, null);
-  assert.equal(result.layers.phonemic.status, 'not-implemented-in-browser-runtime');
+  assert.equal(result.layers.phonemic.ipa, 'si');
+  assert.equal(result.layers.phonemic.status, 'underlying-grapheme-fallback-not-phonemic-gold');
+  assert.equal(result.layers.phonemic.profile_id, 'browser-super-soft-grapheme-ipa-v1');
   assert.equal(result.layers.broad.ipa, 'ɕi');
   assert.equal(result.layers.narrow.ipa, 'ɕʰi');
   assert.equal(result.layers.narrow.status, 'partial-research-only');

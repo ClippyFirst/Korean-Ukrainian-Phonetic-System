@@ -239,7 +239,8 @@ function renderExtendedIpa(source,result,useG2p){
   const enabled=Boolean(extendedIpaToggle?.checked&&!useG2p);
   if(extendedIpaPanel)extendedIpaPanel.hidden=!enabled;
   if(!enabled)return;
-  const view=buildExtendedIpaResult(source,result);
+  const phonemicResult=engine.convert(source,{morphologyMode:'super-soft'});
+  const view=buildExtendedIpaResult(source,result,phonemicResult);
   if(extendedIpaPhonemic)extendedIpaPhonemic.textContent=view.layers.phonemic.ipa||'Ще не реалізовано в браузерному рушії';
   if(extendedIpaBroad)extendedIpaBroad.textContent=view.layers.broad.ipa||'Немає повного результату';
   if(extendedIpaNarrow)extendedIpaNarrow.textContent=view.layers.narrow.ipa||'Невизначено: IPA не формується для цього фрагмента';

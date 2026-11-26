@@ -161,7 +161,7 @@ export function validateExtendedIpaResult(result) {
   return errors;
 }
 
-export function buildExtendedIpaResult(source, engineResult) {
+export function buildExtendedIpaResult(source, engineResult, phonemicResult = null) {
   if (typeof source !== 'string' || !engineResult || typeof engineResult !== 'object') throw new TypeError('source and engine result are required');
   const sourceTrace = Array.isArray(engineResult.trace) ? engineResult.trace : [];
   const variants = [], boundaries = [], trace = [], syllableSpans = [];
@@ -205,9 +205,14 @@ export function buildExtendedIpaResult(source, engineResult) {
     source: { text: source, offset_unit: 'unicode-code-points' },
     layers: {
       phonemic: {
-        ipa: null, profile_id: null, profile_version: null, level: 'phonemic',
-        status: 'not-implemented-in-browser-runtime',
-        evidence_status: 'underlying-layer-pending-cross-runtime-adapter',
+        ipa: typeof phonemicResult?.ipa === 'string' ? phonemicResult.ipa : null,
+        profile_id: phonemicResult?.ipa_profile || null,
+        profile_version: Number.isInteger(phonemicResult?.ipa_profile_version) ? phonemicResult.ipa_profile_version : null,
+        level: 'phonemic',
+        status: phonemicResult?.ipa_profile_level === 'underlying-grapheme-ipa'
+          ? 'underlying-grapheme-fallback-not-phonemic-gold'
+          : 'not-implemented-in-browser-runtime',
+        evidence_status: 'source-orthography-only-no-morphophonological-inference',
         target_compatible: false
       },
       broad: {
