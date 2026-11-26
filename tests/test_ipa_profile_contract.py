@@ -143,3 +143,7 @@ def test_extended_phonemic_layer_preserves_complex_coda_components():
         if item.get("layer") == "phonemic" and item["source"] == "값"
     )
     assert item["ipa"] == "paps"
+
+def test_extended_phonemic_layer_keeps_source_attested_vowel_length():
+    result = phoneticize_korean("유사성")["extended_ipa"]
+    assert result["layers"]["phonemic"]["ipa"] == "juː.sa.sʌŋ"
