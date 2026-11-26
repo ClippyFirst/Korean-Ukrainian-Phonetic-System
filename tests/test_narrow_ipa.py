@@ -14,8 +14,8 @@ def test_narrow_profile_aspirates_lenis_sibilant_without_changing_broad():
     narrow = _ipa("사", "narrow")
     assert narrow["ipa"] == "sʰa"
     assert narrow["level"] == "narrow"
-    assert narrow["transcription_profile"]["name"] == "korean-narrow-contextual-allophones-v5"
-    assert narrow["ipa_profile_version"] == 5
+    assert narrow["transcription_profile"]["name"] == "korean-narrow-contextual-allophones-v6"
+    assert narrow["ipa_profile_version"] == 6
     assert narrow["transcription_profile"]["target_compatible"] is False
     assert narrow["transcription_profile"]["limitations"]
 

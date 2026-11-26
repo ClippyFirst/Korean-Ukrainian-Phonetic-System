@@ -20,9 +20,10 @@ const EVIDENCE = {
     refs: ['https://doi.org/10.1017/S0025100300004758'],
     status: 'source-scoped-description'
   },
-  'narrow-h-voiced-allophone': {
-    refs: ['https://doi.org/10.17959/sppm.2014.20.3.357'],
-    status: 'source-scoped-research-hypothesis'
+  'narrow-h-sonorant-variation-unresolved': {
+    refs: ['https://doi.org/10.17290/jlsk.2019..84.175',
+      'https://doi.org/10.17959/sppm.2014.20.3.357'],
+    status: 'speaker-and-dialect-variable-no-single-IPA-selected'
   },
   'narrow-h-intervocalic-allophone': {
     refs: ['https://doi.org/10.1017/S0025100300004758'],
@@ -75,12 +76,9 @@ function narrowSyllable(current, previous, sameWord) {
     ipa = replaceInitial(ipa, ['ɕ͈'], 's͈');
   } else if (parsed.onset === 'ㅎ') {
     if (prior && SONORANT_CODAS.has(prior.coda)) {
-      ipa = replaceInitial(ipa, ['h'], 'ɦ');
-      if (ipa.startsWith('ɦ')) {
-        rules.push('narrow-h-voiced-allophone');
-        evidence.push(EVIDENCE['narrow-h-voiced-allophone']);
-        environment = 'same word: sonorant coda + onset ㅎ';
-      }
+      rules.push('narrow-h-sonorant-variation-unresolved');
+      evidence.push(EVIDENCE['narrow-h-sonorant-variation-unresolved']);
+      environment = 'same word: sonorant coda + onset ㅎ; weakening/deletion is variable, no single IPA selected';
     } else if (['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ'].includes(parsed.vowel)) {
       ipa = replaceInitial(ipa, ['h'], 'ç');
       if (ipa.startsWith('ç')) {
@@ -194,8 +192,8 @@ export function buildExtendedIpaResult(source, engineResult) {
       },
       narrow: {
         ipa: narrowIpa,
-        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v5',
-        profile_version: 5, level: 'narrow',
+        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v6',
+        profile_version: 6, level: 'narrow',
         status: engineResult.pronunciation_status === 'unresolved' ? 'diagnostic-only-unresolved-source' : 'partial-research-only',
         evidence_status: 'partial-source-scoped-hypotheses-not-independently-reviewed',
         target_compatible: false
