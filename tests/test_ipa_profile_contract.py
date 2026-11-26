@@ -137,12 +137,12 @@ def test_extended_phonemic_trace_is_distinct_from_surface_and_narrow_layers():
 
 def test_extended_phonemic_layer_preserves_complex_coda_components():
     result = phoneticize_korean("값")["extended_ipa"]
-    assert result["layers"]["phonemic"]["ipa"] == "paps"
+    assert result["layers"]["phonemic"]["ipa"] == "kaps"
     item = next(
         item for item in result["trace"]
         if item.get("layer") == "phonemic" and item["source"] == "값"
     )
-    assert item["ipa"] == "paps"
+    assert item["ipa"] == "kaps"
 
 def test_extended_phonemic_layer_keeps_source_attested_vowel_length():
     result = phoneticize_korean("유사성")["extended_ipa"]
