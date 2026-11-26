@@ -29,7 +29,7 @@ function loadRows(path) {
   return rows;
 }
 
-function summarize(report) {
+export function summarize(report) {
   return {
     eligible_tokens: report.eligible_tokens,
     scored_tokens: report.scored_tokens,
@@ -45,7 +45,7 @@ function summarize(report) {
   };
 }
 
-function scoreLayer(rows, engine, layer, datasetName) {
+export function scoreLayer(rows, engine, layer, datasetName) {
   const wrapped = {
     convert(source, options) {
       const base = engine.convert(source, options);
@@ -69,7 +69,7 @@ function scoreLayer(rows, engine, layer, datasetName) {
     'Pinned corpus input; identical occurrences for all IPA layers');
 }
 
-function compareRows(standard, extendedBroad) {
+export function compareRows(standard, extendedBroad) {
   const left = standard.records ?? [];
   const right = extendedBroad.records ?? [];
   const sameLength = left.length === right.length;
