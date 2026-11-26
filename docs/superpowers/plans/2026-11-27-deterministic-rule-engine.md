@@ -45,11 +45,11 @@
 - apply_ordered_rules(..., rule_ids=None) uses default_rule_ids() only when no explicit non-empty sequence is supplied.
 
 - [x] Step 1: Write failing tests for canonical preferred-order sorting, deterministic repeated loads, duplicate/missing/unknown rule IDs, duplicate/invalid order positions, runtime default execution order, and explicit override preservation.
-- [x] Step 2: Run python -m pytest -q tests/test_rule_execution_plan.py; expected initial failure is import/API absence, not fixture or syntax failure.
+- [x] Step 2: Observed the expected initial import/API RED state in PR-head GitHub Actions before implementation. Local targeted pytest could not run because the local clone failed DNS resolution.
 - [x] Step 3: Implement an immutable plan loader using only the standard library. Resolve source-checkout data first and installed sysconfig.get_path('data')/share/korean-ukrainian-phonetic-system second. Validate one-to-one rule/order coverage and sort by integer preferred_order.
 - [x] Step 4: Wire the default apply_ordered_rules sequence to the plan; preserve caller-provided ordering and all existing rule handler behavior.
 - [x] Step 5: Extend wheel smoke to import the installed plan and assert the complete canonical sequence is available without repository files.
-- [x] Step 6: Run python -m pytest -q tests/test_rule_execution_plan.py tests/test_rules.py tests/test_pipeline.py, then the complete Python suite and repository CI on the exact branch head.
+- [x] Step 6: Full repository Python suite in GitHub Actions exercised the targeted rule-plan, rule and pipeline tests on Python 3.11/3.12/3.13; wheel and web jobs also passed. Local pytest/npm were not run because the clone failed DNS resolution.
 - [x] Step 7: Commit coherent implementation changes on the existing dedicated PR branch; no force-push or merge.
 
 ### Task 2: Attribute offline teacher disagreements only to syllable-aligned contexts
