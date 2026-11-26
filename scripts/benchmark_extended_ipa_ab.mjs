@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Paired standard-IPA vs Extended-IPA layer diagnostic.
+ * Paired standard-IPA vs Extended-IPA layer diagnostic.\n * Run on pinned UGTPHON and SIGMORPHON test splits in CI.
  *
  * All modes run on the same ordered corpus occurrences and the same strict
  * browser engine. Extended broad is expected to equal standard broad because
