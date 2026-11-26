@@ -135,3 +135,6 @@ undefined
 
 
 **NIKL disclosure rule detail:** the official Modu Corpus FAQ (English page, checked 2026-11-26) states that corpus use is restricted to the approved purpose and period in the individual agreement; publication of results requires prior NIKL approval; the corpus and language material must not be included in the public result; and corpus data may not be transferred, rented, licensed or secured to a third party. The separate Corpus of Korean Short Stories Recited by Seoul People is explicitly non-commercial outside research/development. These restrictions are dataset-specific and must not be conflated with OpenSLR's separately listed Seoul Corpus.
+
+
+**Browser underlying candidate clarification:** the browser's phonemic panel now shows the existing super-soft underlying-grapheme IPA fallback. It is useful as a source-orthography candidate but is not equivalent to the Python phonemic layer and must not be treated as adjudicated phonemic gold. Full browser underlying phonological analysis and cross-runtime parity remain acceptance gates.

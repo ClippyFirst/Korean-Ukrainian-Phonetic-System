@@ -201,3 +201,8 @@ The first Extended IPA implementation increment is on branch feat/kozak-kim-exte
 The narrow profile was bumped to v6. The unsupported categorical post-sonorant [ɦ] output was removed: current evidence supports speaker-/dialect-conditioned /h/ weakening or deletion, not one deterministic [ɦ] realization. See the dated evidence review and source register additions.
 
 No benchmark uplift is claimed. Exact-head CI is pending; the PR remains Draft. Independent phonetic adjudication, complete browser phonemic layer, measured Python/browser parity and target review remain open.
+
+
+## Browser phonemic candidate clarification — 2026-11-26
+
+The browser phonemic panel currently exposes the existing super-soft underlying-grapheme IPA fallback, labelled as a candidate rather than phonemic gold. This is not a full underlying phonological analysis. Python/browser parity remains an explicit acceptance gate.

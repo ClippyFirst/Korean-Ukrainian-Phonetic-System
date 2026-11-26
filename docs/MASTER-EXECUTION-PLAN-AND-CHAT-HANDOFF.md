@@ -1606,3 +1606,30 @@ The earlier CI attempt on an older head failed on stale v5 profile assertions, e
 ### AI Hub rights clarification — 2026-11-26
 
 The official AI Hub FAQ [S036] clarifies that raw/original dataset files cannot be externally redistributed, while derived models/services/research outputs may be used commercially with attribution, subject to dataset-specific rights-holder terms. Download requires applicant verification, purpose disclosure and application; the platform policy is not a dataset-specific grant. KsponSpeech remains BLOCKED until its own dataset agreement and authorized access are documented.
+
+
+## 2026-11-26 — Extended IPA implementation checkpoint 3
+
+**Current head:** 918fc349c5c5fb997d7dff3929d2e23e652f3c7f  
+**PR:** #509 (Draft; open)  
+**Base:** main at 97bb411df8b998b22cd58adda015fb941201950c
+
+### Additional browser layer work
+
+- The browser panel now exposes the existing super-soft underlying-grapheme IPA fallback as a phonemic candidate. It is explicitly labelled as a grapheme-derived fallback, not adjudicated phonemic gold and not a full morphophonological analysis.
+- The UI shows the candidate profile and limitation status; the default broad result and Ukrainian adapter remain unchanged.
+- Tests cover a simple Hangul input and the distinct fallback profile identifier.
+
+### Current verification status
+
+- Exact-head Verify workflow 45860593460 for 918fc349c5c5fb997d7dff3929d2e23e652f3c7f is queued; Python and browser regression jobs have not started.
+- Earlier CI on an older head exposed stale v5/[ɦ]/source-count expectations and missing acoustic-context fields. Those were corrected, but the current head still needs a completed exact-head run.
+- The branch has no local worktree in this environment. No local tests are claimed.
+
+### Remaining blockers
+
+- Full browser phonemic analysis and Python/browser parity.
+- Independent phonetic adjudication of the narrow profile and speaker-/prosody-conditioned variants.
+- Rights-cleared acoustic corpus access and annotation pilot.
+- Separate Ukrainian target-layer review.
+- Completed exact-head CI, generated-artifact and rendered-review checks.

@@ -54,7 +54,8 @@
 - [x] Build typed browser result from the current engine trace.
 - [x] Preserve source spans, boundaries, narrow rule IDs, environments and evidence refs.
 - [x] Withhold the whole narrow IPA string when the engine marks the source unresolved.
-- [x] Mark the phonemic browser layer unavailable rather than inventing an underlying form.
+- [x] Expose the existing underlying-grapheme IPA fallback as an explicitly labelled candidate, not phonemic gold.
+- [ ] Implement and verify full browser underlying phonological analysis equivalent to Python.
 - [ ] Establish exact Python/browser parity and document intentional gaps.
 
 ### Task 4: Kozak Kim UI

@@ -1871,3 +1871,8 @@ These fields are not inferred from Hangul. Text-only conversion leaves speaker/p
 
 
 - **BLOCKED:** KsponSpeech/AI Hub integration until the dataset-specific rights-holder terms and user agreement are inspected and an authorized access record exists. General AI Hub policy permits commercial use of derivative outputs with attribution but prohibits redistribution of original data and simple modified copies; this does not override dataset-specific restrictions.
+
+
+## Browser phonemic candidate gate — 2026-11-26
+
+The browser panel now shows the existing super-soft underlying-grapheme IPA fallback, explicitly labelled as a candidate and not phonemic gold. Full underlying phonological analysis and Python/browser parity remain TODO; this fallback must not be used as benchmark gold or as an independently adjudicated phonemic layer.
