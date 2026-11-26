@@ -1917,3 +1917,9 @@ The first Python 3.13 test run after the shared broad-profile reconciliation fai
 
 - Failed historical run: tests `45880894598`, Python 3.13 job `140119675948`.
 - **TODO:** rerun tests, Verify and Browser G2P on the corrected exact head; the failed/cancelled matrix is not a pass.
+
+### Source-aligned optional [ɕ] variant — 2026-11-26
+
+The browser optional [ɕ] broad variant now carries `syllable_indices`, allowing the Extended IPA adapter to produce a source span rather than `null`. Regression coverage checks the exact source span for `시`. Python already emits the corresponding index. Implementation/test commits: `0ca374140606cd8fead7398ca957c5871aa57102`, `bd7fc7acfd4a9d17b8cc98da70e7a1bed49f2489`.
+
+The prior Python 3.13 test failure was a schema-field mismatch (`note` vs `environment`), corrected in `7a56963d7a2996066a15aa9baf594d13beaf0d09`. **TODO:** exact-head tests, Verify and Browser G2P must pass for the combined correction before this gate is marked DONE_VERIFIED.
