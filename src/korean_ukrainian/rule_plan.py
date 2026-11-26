@@ -69,6 +69,8 @@ def _read_rows(path: Path, required_fields: set[str]) -> list[dict[str, str]]:
 def _unique_by_rule_id(rows: Iterable[dict[str, str]], source_name: str) -> dict[str, dict[str, str]]:
     indexed: dict[str, dict[str, str]] = {}
     for line_number, row in enumerate(rows, start=2):
+        if not any((value or "").strip() for value in row.values()):
+            continue
         rule_id = (row.get("rule_id") or "").strip()
         if not rule_id:
             raise ValueError(f"{source_name}:{line_number} has an empty rule_id")
