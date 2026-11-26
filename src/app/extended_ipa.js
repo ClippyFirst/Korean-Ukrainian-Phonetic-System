@@ -251,7 +251,8 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
     },
     acoustic_annotations: [],
     variants: (Array.isArray(engineResult.variants) ? engineResult.variants : []).map((variant, index) => {
-      const indices = Array.isArray(variant.syllable_indices) ? variant.syllable_indices.filter(value => Number.isInteger(value) && syllableSpans[value]) : [];
+      // Generic browser variant indices are local to a token; only map them directly when the whole source is one Hangul eojeol.
+      const indices = /^[가-힣]+$/u.test(source) && Array.isArray(variant.syllable_indices) ? variant.syllable_indices.filter(value => Number.isInteger(value) && syllableSpans[value]) : [];
       const sourceSpan = indices.length ? {
         start: Math.min(...indices.map(value => syllableSpans[value].start)),
         end: Math.max(...indices.map(value => syllableSpans[value].end))
