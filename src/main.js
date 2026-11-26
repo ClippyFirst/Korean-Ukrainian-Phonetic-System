@@ -243,8 +243,8 @@ function renderExtendedIpa(source,result,useG2p){
   if(!enabled)return;
   const phonemicResult=phonemicIpaFromHangul(source);
   const view=buildExtendedIpaResult(source,result,phonemicResult);
-  if(extendedIpaPhonemic)extendedIpaPhonemic.textContent=view.layers.phonemic.ipa||'Ще не реалізовано в браузерному рушії';
-  if(extendedIpaPhonemicStatus)extendedIpaPhonemicStatus.textContent='Профіль: '+(view.layers.phonemic.profile_id||'недоступний')+' · '+view.layers.phonemic.status+'. Це детерміноване відображення underlying onset–nucleus–coda у фонеми; поверхневі чергування, лексичні винятки й акустична реалізація не моделюються. Результат не є незалежно adjudicated gold.';
+  if(extendedIpaPhonemic)extendedIpaPhonemic.textContent=view.layers.phonemic.ipa||'Немає повного фонемного аналізу для цього вводу';
+  if(extendedIpaPhonemicStatus)extendedIpaPhonemicStatus.textContent='Профіль: '+(view.layers.phonemic.profile_id||'недоступний')+' · '+view.layers.phonemic.status+'. Це детерміноване відображення фонемних складників (початковий приголосний — голосний — кінцевий приголосний); поверхневі чергування, лексичні винятки й акустична реалізація не моделюються. Це не незалежно вивірена еталонна транскрипція.';
   if(extendedIpaBroad)extendedIpaBroad.textContent=view.layers.broad.ipa||'Немає повного результату';
   if(extendedIpaNarrow)extendedIpaNarrow.textContent=view.layers.narrow.ipa||'Невизначено: IPA не формується для цього фрагмента';
   if(extendedIpaStatus)extendedIpaStatus.textContent='Вузький профіль: '+view.layers.narrow.profile_id+' · v'+view.layers.narrow.profile_version+' · '+view.layers.narrow.status+'. Український запис не перебудовується з цього часткового профілю; цільовий адаптер для нього не схвалений.';
