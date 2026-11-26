@@ -11,12 +11,10 @@
       },
       "browser": {
         "phonemic": "si",
-        "broad": "ɕi",
+        "broad": "si",
         "narrow": "ɕʰi"
       },
-      "known_differences": [
-        "broad"
-      ]
+      "known_differences": []
     },
     {
       "source": "감히",
