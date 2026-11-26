@@ -77,3 +77,10 @@ def test_narrow_seoul_h_and_liquid_allophones_are_contextual():
     assert _ipa("나라", "narrow")["ipa"] == "na.ɭa"
     assert _ipa("하", "narrow")["ipa"] == "ha"
     assert _ipa("가을", "narrow")["ipa"] == "ka.ɯl"
+
+def test_post_sonorant_h_is_not_forced_to_voiced_allophone_without_token_evidence():
+    result = _ipa("안하", "narrow")
+    assert result["ipa"] == "an.ha"
+    assert "ɦ" not in result["ipa"]
+    assert any("unresolved" in item.lower()
+               for item in result["transcription_profile"]["limitations"])
