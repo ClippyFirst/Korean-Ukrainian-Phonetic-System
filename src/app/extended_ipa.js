@@ -153,7 +153,7 @@ export function validateExtendedIpaResult(result) {
 export function buildExtendedIpaResult(source, engineResult) {
   if (typeof source !== 'string' || !engineResult || typeof engineResult !== 'object') throw new TypeError('source and engine result are required');
   const sourceTrace = Array.isArray(engineResult.trace) ? engineResult.trace : [];
-  const variants = [], boundaries = [], trace = [];
+  const variants = [], boundaries = [], trace = [], syllableSpans = [];
   let cursor = 0, previousHangul = null, boundarySincePrevious = true;
   let narrowIpa = '', previousWasHangul = false;
   for (const item of sourceTrace) {
@@ -176,18 +176,18 @@ export function buildExtendedIpaResult(source, engineResult) {
       narrowIpa += derived.ipa;
       previousWasHangul = true;
     } else previousWasHangul = false;
-    if (span) boundaries.push({ offset: span.end, kind: 'syllable' });
+    if (span) { boundaries.push({ offset: span.end, kind: 'syllable' }); syllableSpans.push(span); }
     trace.push({
       source_span: span, source: value, surface: item.surface || value, ipa: derived.ipa,
-      rule_ids: derived.rules, environment: derived.environment,
+      rule_ids: [...new Set([...(Array.isArray(item.rules) ? item.rules : []), ...derived.rules])], environment: derived.environment,
       evidence_refs: derived.refs,
-      evidence_status: derived.evidence.map(entry => entry.status).join(';') || 'no-narrow-rule-applied',
+      evidence_status: derived.evidence.map(entry => entry.status).join(';') || (item.rules?.length ? 'browser-runtime-rule-trace-requires-review' : 'no-narrow-rule-applied'),
       status: item.status || 'ungraded'
     });
     previousHangul = item;
     boundarySincePrevious = false;
   }
-  if (engineResult.pronunciation_status === 'unresolved') narrowIpa = '';
+  if (engineResult.pronunciation_status === 'unresolved' || sourceTrace.some(item => ['unresolved','unsupported-jamo'].includes(item.status))) narrowIpa = '';
   const result = {
     schema_version: '1.0',
     mode: 'extended-ipa',
@@ -222,13 +222,21 @@ export function buildExtendedIpaResult(source, engineResult) {
       prosodic_position: null, recording_conditions: null
     },
     acoustic_annotations: [],
-    variants: (Array.isArray(engineResult.variants) ? engineResult.variants : []).map((variant, index) => ({
-      id: 'broad-variant-' + (index + 1), layer: 'broad', ipa: String(variant.ipa ?? ''),
-      evidence_status: variant.note?.startsWith('Research-only') ? 'research-hypothesis' : 'source-or-rule-derived-variant',
-      evidence_refs: [], environment: variant.note || null,
-      uncertainty: 'Speaker-specific realization is not identified by this result.',
-      source_span: null, selected: false
-    })),
+    variants: (Array.isArray(engineResult.variants) ? engineResult.variants : []).map((variant, index) => {
+      const indices = Array.isArray(variant.syllable_indices) ? variant.syllable_indices.filter(value => Number.isInteger(value) && syllableSpans[value]) : [];
+      const sourceSpan = indices.length ? {
+        start: Math.min(...indices.map(value => syllableSpans[value].start)),
+        end: Math.max(...indices.map(value => syllableSpans[value].end))
+      } : null;
+      return {
+        id: 'broad-variant-' + (index + 1), layer: 'broad', ipa: String(variant.ipa ?? ''),
+        evidence_status: variant.note?.startsWith('Research-only') ? 'research-hypothesis' : 'source-or-rule-derived-variant',
+        evidence_refs: (String(variant.note || '').match(/https?:\\/\\/[^\\s)]+/gu) || []),
+        environment: variant.note || null,
+        uncertainty: 'Speaker-specific realization is not identified by this result.',
+        source_span: sourceSpan, selected: false
+      };
+    }),
     boundaries: [...new Map(boundaries.map(item => [item.offset + ':' + item.kind, item])).values()],
     trace,
     target_adapter: {

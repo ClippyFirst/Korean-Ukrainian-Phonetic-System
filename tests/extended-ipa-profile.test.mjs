@@ -57,6 +57,12 @@ test('unsupported or unresolved IPA remains empty rather than being fabricated',
   assert.equal(result.layers.narrow.ipa, '');
   assert.equal(result.pronunciation_status, 'unresolved');
 });
+test('mixed text with an unresolved source span withholds the incomplete narrow string', () => {
+  const result = extended('앞말 짧은소리의 뒷말.');
+  assert.equal(result.layers.narrow.ipa, '');
+  assert.equal(result.layers.narrow.status, 'diagnostic-only-unresolved-source');
+  assert.ok(result.trace.some(item => item.status === 'unresolved'));
+});
 
 test('narrow profile trace records rule IDs, environments and source evidence', () => {
   const result = extended('시');
