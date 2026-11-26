@@ -1899,3 +1899,14 @@ The failed runs are historical evidence for the preceding tip, not the corrected
 | Ukrainian target compatibility for Extended IPA | BLOCKED | Independent Ukrainian target-layer review on frozen IPA inputs |
 
 Overall status remains **research preview / partial prototype; not release-ready**.
+
+## Shared broad-IPA reconciliation — 2026-11-26
+
+**Evidence-based profile decision:** keep canonical broad /s/ in the shared broad profile and expose [ɕ] before the source-scoped /i, ye, ya/ environments as an optional, unselected research variant. Kang (2010), DOI `10.17959/sppm.2010.16.1.3`, reports acoustic coarticulation/palatalization before these high-front segments; a Seoul Korean sibilant study describes [ɕ] as a palatalized allophone of phonemic /s/ before /i/. Neither source justifies forcing [ɕ] as the only broad output for every speaker/token.
+
+The Extended IPA browser panel previously consumed the legacy browser-contextual renderer, which promoted [ɕ] to the broad output for `시`, unlike Python's shared broad profile. The panel now explicitly calls the existing strict `clippyfirst-korean-broad-v1` profile and retains the [ɕ] candidate in the variants list. This is independent of the selected Soft/Super-soft coverage mode; those modes and the ordinary main output path are unchanged. The partial narrow profile remains separately labelled and target-incompatible.
+
+- **PARTIAL — implementation committed, exact-head verification pending:** shared broad profile wiring, browser optional [ɕ] variant and updated parity fixture.
+- **Acceptance:** exact-head Browser G2P, Verify, and tests matrix must pass; then confirm Python/browser outputs and optional variant agree for the representative fixture. Broader exhaustive parity and independent Korean phonetic adjudication remain separate gates.
+- **Evidence:** https://doi.org/10.17959/sppm.2010.16.1.3; https://www.eksss.org/archive/view_article?pid=pss-13-1-37.
+- **No claim:** this change does not establish universal [ɕ], independent phonetic gold, benchmark uplift, or Ukrainian target compatibility.
