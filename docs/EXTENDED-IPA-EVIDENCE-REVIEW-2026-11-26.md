@@ -130,3 +130,5 @@ The current source review includes a 2021 spontaneous-speech study of ㄴ+ㄹ an
 - Ahn, M.-J. (2009). *Korean /n/-deletion: phonetic initial strengthening to denasalization*. Studies in Phonetics, Phonology, and Morphology 15(1), 53–72. https://doi.org/10.17959/sppm.2009.15.1.53
 - Kim, Y. S. (2011). *An acoustic, aerodynamic and perceptual investigation of word-initial denasalization in Korean*. University College London thesis. https://discovery.ucl.ac.uk/id/eprint/1324541/1/1324541.pdf
 undefined
+
+**AI Hub platform policy [S036]:** the official FAQ states that downloading AI data requires applicant verification, purpose disclosure and an application; where NIA is not the rights holder, the individual dataset provider's policy applies. The FAQ also says derivative AI models/services/research results may be used commercially with attribution, but original dataset files and simple modified copies may not be externally shared or redistributed. This is platform-level guidance, not a KsponSpeech-specific licence grant. KsponSpeech remains blocked until its own dataset page and user agreement are reviewed and an authorized access record exists.

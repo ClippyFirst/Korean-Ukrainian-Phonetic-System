@@ -1601,3 +1601,8 @@ Used the relevant brainstorming, planning, TDD, systematic-debugging and verific
 ### Verification state
 
 The earlier CI attempt on an older head failed on stale v5 profile assertions, expected post-sonorant [ɦ], source-register row counts, and the newly added missing acoustic-context contract. Those failures were traced to outdated expectations and missing contract fields. Corrections and tests are now committed. Current exact-head workflows for dbe608cdfb3dd42d279e3d410dcfa981561a58a8 are queued; no pass is claimed until completion.
+
+
+### AI Hub rights clarification — 2026-11-26
+
+The official AI Hub FAQ [S036] clarifies that raw/original dataset files cannot be externally redistributed, while derived models/services/research outputs may be used commercially with attribution, subject to dataset-specific rights-holder terms. Download requires applicant verification, purpose disclosure and application; the platform policy is not a dataset-specific grant. KsponSpeech remains BLOCKED until its own dataset agreement and authorized access are documented.

@@ -1868,3 +1868,6 @@ The browser research engine now distinguishes three levels by confidence/coverag
 The Extended IPA result contract now has nullable context fields for pseudonymous speaker ID, dialect, age group, speech style, speech rate, focus, prosodic position and recording conditions. It also has a separate acoustic_annotations array for measured/derived/unavailable/hypothesized values such as VOT, burst duration, closure duration/voicing, post-stop F0, H1*-H2*, H1*-A1*, CPP, spectral centroid and formants.
 
 These fields are not inferred from Hangul. Text-only conversion leaves speaker/prosody metadata null and the acoustic array empty. A measurement marked measured requires a source span, measurement method and evidence reference. The IPA segmental layers remain separate from these acoustic annotations.
+
+
+- **BLOCKED:** KsponSpeech/AI Hub integration until the dataset-specific rights-holder terms and user agreement are inspected and an authorized access record exists. General AI Hub policy permits commercial use of derivative outputs with attribution but prohibits redistribution of original data and simple modified copies; this does not override dataset-specific restrictions.
