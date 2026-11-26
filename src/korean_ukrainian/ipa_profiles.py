@@ -23,7 +23,7 @@ def validate_extended_ipa_result(result: dict[str, Any]) -> list[str]:
     if not isinstance(result, dict):
         return ["result must be an object"]
     required = {"schema_version", "mode", "source", "layers", "variants",
-                "boundaries", "trace", "target_adapter", "pronunciation_status"}
+                "boundaries", "trace", "target_adapter", "pronunciation_status", "context", "acoustic_annotations"}
     missing = sorted(required - result.keys())
     if missing:
         return ["missing required fields: " + ", ".join(missing)]
@@ -64,10 +64,13 @@ def validate_extended_ipa_result(result: dict[str, Any]) -> list[str]:
     if not isinstance(context, dict) or set(context) != context_fields:
         errors.append("context must contain all nullable speaker/prosody fields")
     else:
+        for field in context_fields - {"focus", "speech_rate_syllables_per_second"}:
+            if context[field] is not None and not isinstance(context[field], str):
+                errors.append(f"context.{field} must be a string or null")
         if context["focus"] is not None and not isinstance(context["focus"], bool):
             errors.append("context.focus must be boolean or null")
         rate = context["speech_rate_syllables_per_second"]
-        if rate is not None and (not isinstance(rate, (int, float)) or rate < 0):
+        if rate is not None and (not isinstance(rate, (int, float)) or isinstance(rate, bool) or rate < 0):
             errors.append("context speech rate must be a non-negative number or null")
     annotations = result["acoustic_annotations"]
     if not isinstance(annotations, list):
@@ -77,6 +80,18 @@ def validate_extended_ipa_result(result: dict[str, Any]) -> list[str]:
             if not isinstance(annotation, dict):
                 errors.append("acoustic annotation must be an object")
                 continue
+            required_annotation = {"feature", "value", "unit", "source_span", "measurement_method", "evidence_refs", "status"}
+            if not required_annotation.issubset(annotation):
+                errors.append("acoustic annotation is missing required fields")
+                continue
+            if annotation.get("status") not in {"measured", "derived", "unavailable", "hypothesis"}:
+                errors.append("acoustic annotation status is invalid")
+            if annotation.get("value") is not None and (
+                not isinstance(annotation.get("value"), (int, float)) or isinstance(annotation.get("value"), bool)
+            ):
+                errors.append("acoustic annotation value must be numeric or null")
+            if not isinstance(annotation.get("unit"), str) or not isinstance(annotation.get("evidence_refs"), list):
+                errors.append("acoustic annotation unit and evidence_refs have invalid types")
             if annotation.get("status") == "measured" and (
                 not annotation.get("measurement_method")
                 or not annotation.get("evidence_refs")

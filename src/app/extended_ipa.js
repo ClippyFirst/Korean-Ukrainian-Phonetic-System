@@ -129,8 +129,18 @@ export function validateExtendedIpaResult(result) {
   if (!Array.isArray(result.variants) || !Array.isArray(result.boundaries) || !Array.isArray(result.trace)) errors.push('variants, boundaries and trace must be arrays');
   const contextKeys = ['speaker_id','dialect','age_group','speech_style','speech_rate_syllables_per_second','focus','prosodic_position','recording_conditions'];
   if (!result.context || contextKeys.some(key => !(key in result.context))) errors.push('speaker and prosody context fields are required, even when unknown');
+  else {
+    for (const key of contextKeys.filter(key => !['focus','speech_rate_syllables_per_second'].includes(key))) {
+      if (result.context[key] !== null && typeof result.context[key] !== 'string') errors.push('context.' + key + ' must be a string or null');
+    }
+    if (result.context.focus !== null && typeof result.context.focus !== 'boolean') errors.push('context.focus must be boolean or null');
+    if (result.context.speech_rate_syllables_per_second !== null &&
+        (typeof result.context.speech_rate_syllables_per_second !== 'number' || result.context.speech_rate_syllables_per_second < 0)) errors.push('context speech rate must be non-negative or null');
+  }
   if (!Array.isArray(result.acoustic_annotations)) errors.push('acoustic_annotations must be an array');
   else for (const annotation of result.acoustic_annotations) {
+    const required = ['feature','value','unit','source_span','measurement_method','evidence_refs','status'];
+    if (!annotation || required.some(key => !(key in annotation))) errors.push('acoustic annotation is missing required fields');
     if (annotation?.status === 'measured' && (!annotation.measurement_method || !annotation.evidence_refs?.length || !annotation.source_span)) {
       errors.push('measured acoustic annotations require a method and evidence reference');
     }
