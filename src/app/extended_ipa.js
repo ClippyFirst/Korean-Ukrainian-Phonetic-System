@@ -8,9 +8,8 @@ const PALATAL_LIQUID_NUCLEI = new Set(['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ'
 const SONORANT_CODAS = new Set(['ㄴ','ㄹ','ㅁ','ㅇ','ㄵ','ㄶ','ㄻ','ㄼ','ㄽ','ㄾ','ㅀ']);
 const EVIDENCE = {
   'narrow-nasal-palatalization': {
-    refs: ['https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001340886',
-      'https://discovery.ucl.ac.uk/1324541/1/1324541.pdf'],
-    status: 'research-hypothesis'
+    refs: ['https://discovery.ucl.ac.uk/id/eprint/1324541/1/1324541.pdf'],
+    status: 'secondary-description-requires-primary-phonetic-review'
   },
   'narrow-lenis-sibilant-place': {
     refs: ['https://doi.org/10.17959/sppm.2010.16.1.3'],

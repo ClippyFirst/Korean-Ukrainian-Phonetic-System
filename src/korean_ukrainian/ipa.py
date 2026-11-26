@@ -314,7 +314,7 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
                 "Kim, Young Shin (2011), UCL PhD thesis, diphthong /ɥi/ and its [ɥi], [ø], [y] realizations: https://discovery.ucl.ac.uk/id/eprint/1324541/1/1324541.pdf",
                 "Cho, Jun & Ladefoged (2002), via High-toned [il] in Korean: https://www.sciencedirect.com/science/article/pii/S0095447015000339",
                 "Kang (2010), Coarticulation effects of Korean sibilant /s/ before a high front segment: https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001444770",
-                "Ahn (2009), Korean /n/-deletion: phonetic initial strengthening to denasalization: https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001340886",
+                "Ahn (2009), Korean /n/-deletion: phonetic initial strengthening to denasalization; related initial-deletion evidence, not direct support for generalized [ɲ]: https://doi.org/10.17959/sppm.2009.15.1.53",
                 "Lee (1996), Korean Phonetics, summarized in the UCL thesis: https://discovery.ucl.ac.uk/1324541/1/1324541.pdf",
                 "Kang & Lee (2019), The Realizations of /h/ in Seoul and Gwangju Koreans: speaker- and dialect-conditioned weakening/deletion; https://doi.org/10.17290/jlsk.2019..84.175",
                 "Eom (2014), Phonetic realizations of /h/ after a sonorant in Korean: residual effects and non-categorical realization; https://doi.org/10.17959/sppm.2014.20.3.357",
