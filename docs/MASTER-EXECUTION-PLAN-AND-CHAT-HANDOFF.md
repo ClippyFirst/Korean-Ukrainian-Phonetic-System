@@ -1854,3 +1854,11 @@ Added a reproducible A/B-style layer diagnostic on the existing benchmark branch
 **Interpretation guardrails:** Extended broad wraps the same strict broad renderer as standard IPA; therefore any identical scores are expected and are not a model improvement. Phonemic and narrow scores are cross-layer reference agreement unless the corpus gold layer is verified as compatible. Neither corpus is independently adjudicated narrow-IPA gold. This run does not score Ukrainian output and does not touch the second Korean engine.
 
 **Run status at handoff update:** workflow run `45893331177` was pending. No A/B scores or successful test claim are made until the run and artifact are inspected.
+
+
+#### Final paired-benchmark execution checkpoint
+
+- Code checkpoint: `f377f16048035918f0bd50a50d5394ac1737e408`.
+- Workflow run `45893480948`: pending at the last poll; no job records/artifact yet. Earlier attempts on intermediate commits were cancelled before jobs started.
+- The paired regression and A/B scores therefore remain **PENDING**, not passed. Inspect the run and the `standard-vs-extended-ipa-ab` artifact before reporting any numbers.
+- The code branch and docs are committed; the benchmark scope is still limited to Kozak Kim, and the second Korean engine remains untouched.
