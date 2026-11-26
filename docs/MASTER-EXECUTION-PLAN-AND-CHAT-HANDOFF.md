@@ -1671,3 +1671,11 @@ The official AI Hub FAQ [S036] clarifies that raw/original dataset files cannot 
 
 **Research preview / partial prototype; not release-ready.** The UI and typed IPA layers exist, and the browser phonemic layer is no longer the super-soft grapheme fallback. Do not claim benchmark uplift, full phonetic coverage, cross-runtime parity or independent linguistic validation until the outstanding gates above pass.
 
+### Follow-up after checkpoint 4 — documentation reconciliation
+
+- Reconciled README, acceptance gates and the Superpowers execution plan with the implemented browser phonemic adapter; removed the stale statement that the panel still uses the super-soft grapheme fallback.
+- The implementation code head for this work is `58419e61d6d3e4783355b66f00fec3fdd487ff8f`. Subsequent commits `59b422136a6feddffd478c0f88096998342b0258`, `6d96efecf4a39ce9934207af416ecc6a34b9e2be`, `5f0c0142229554bf10cbacff4eb0b131b8d91637` and `0343bf463baa206901b851f54a33a17486186bf4` reconcile the handoff, acceptance gates, plan and README.
+- Latest branch comparison before this addendum: 56 commits ahead of main, 0 behind.
+- Exact-head Verify run `45864970104` and pinned UGTPHON diagnostic `45864970001` were created for the handoff commit but remained queued when checked; no passing test result is claimed.
+- Remaining status is unchanged: research preview only, not release-ready; broad-runtime difference, independent phonetic adjudication, acoustic-corpus rights, target review and CI completion remain open.
+
