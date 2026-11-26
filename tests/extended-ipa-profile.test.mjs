@@ -3,18 +3,19 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine } from '../src/app/engine.js';
 import { buildExtendedIpaResult, validateExtendedIpaResult } from '../src/app/extended_ipa.js';
+import { phonemicIpaFromHangul } from '../src/app/phonemic_ipa.js';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
 const engine = createEngine(canonical, lexical);
-const extended = source => buildExtendedIpaResult(source, engine.convert(source), engine.convert(source, { morphologyMode: 'super-soft' }));
+const extended = source => buildExtendedIpaResult(source, engine.convert(source), phonemicIpaFromHangul(source));
 
 test('Extended IPA contract exposes separate layers without changing the default Ukrainian target', () => {
   const result = extended('시');
   assert.deepEqual(validateExtendedIpaResult(result), []);
   assert.equal(result.layers.phonemic.ipa, 'si');
-  assert.equal(result.layers.phonemic.status, 'underlying-grapheme-fallback-not-phonemic-gold');
-  assert.equal(result.layers.phonemic.profile_id, 'browser-super-soft-grapheme-ipa-v1');
+  assert.equal(result.layers.phonemic.status, 'underlying-phonemic-grapheme-derived');
+  assert.equal(result.layers.phonemic.profile_id, 'clippyfirst-korean-phonemic-v1');
   assert.equal(result.layers.broad.ipa, 'ɕi');
   assert.equal(result.layers.narrow.ipa, 'ɕʰi');
   assert.equal(result.layers.narrow.status, 'partial-research-only');
@@ -36,7 +37,7 @@ test('narrow /s/ and /n/ retain the currently source-scoped contextual restricti
 test('post-sonorant /h/ is unresolved variation while the default remains [h]', () => {
   const result = extended('안하');
   assert.equal(result.layers.narrow.ipa, 'an.ha');
-  const h = result.trace.find(item => item.source === '하');
+  const h = result.trace.find(item => item.source === '하' && item.layer === 'narrow');
   assert.ok(h.rule_ids.includes('narrow-h-sonorant-variation-unresolved'));
   assert.match(h.evidence_status, /speaker-and-dialect-variable/);
 });
@@ -44,7 +45,7 @@ test('post-sonorant /h/ is unresolved variation while the default remains [h]', 
 test('high-front [ç] realization retains the separate post-sonorant variation trace', () => {
   const result = extended('감히');
   assert.equal(result.layers.narrow.ipa, 'kam.çi');
-  const h = result.trace.find(item => item.source === '히');
+  const h = result.trace.find(item => item.source === '히' && item.layer === 'narrow');
   assert.ok(h.rule_ids.includes('narrow-h-palatal-allophone'));
   assert.ok(h.rule_ids.includes('narrow-h-sonorant-variation-unresolved'));
 });
@@ -75,7 +76,7 @@ test('mixed text with an unresolved source span withholds the incomplete narrow 
 
 test('narrow profile trace records rule IDs, environments and source evidence', () => {
   const result = extended('시');
-  const sibilant = result.trace.find(item => item.source === '시');
+  const sibilant = result.trace.find(item => item.source === '시' && item.layer === 'narrow');
   assert.ok(sibilant.rule_ids.includes('narrow-lenis-sibilant-place'));
   assert.match(sibilant.environment, /ㅣ/);
   assert.ok(sibilant.evidence_refs.some(ref => ref.includes('10.17959')));
@@ -99,17 +100,27 @@ test('measured acoustic annotations require method, source and source-span prove
   }];
   assert.deepEqual(validateExtendedIpaResult(result), []);
 });
-test('browser Extended IPA matches the shared cross-runtime smoke fixtures', () => {
+test('browser Extended IPA matches its side of the runtime comparison fixtures', () => {
   const fixture = JSON.parse(readFileSync(new URL('./fixtures/extended_ipa_parity.json', import.meta.url), 'utf8'));
   for (const item of fixture.cases) {
     const result = extended(item.source);
-    assert.equal(result.layers.phonemic.ipa, item.phonemic, item.source + ' phonemic');
-    assert.equal(result.layers.broad.ipa, item.broad, item.source + ' broad');
-    assert.equal(result.layers.narrow.ipa, item.narrow, item.source + ' narrow');
+    assert.equal(result.layers.phonemic.ipa, item.browser.phonemic, item.source + ' phonemic');
+    assert.equal(result.layers.broad.ipa, item.browser.broad, item.source + ' broad');
+    assert.equal(result.layers.narrow.ipa, item.browser.narrow, item.source + ' narrow');
+    const differences = ['phonemic','broad','narrow'].filter(layer => item.python[layer] !== item.browser[layer]);
+    assert.deepEqual(differences, item.known_differences, item.source + ' documented runtime differences');
   }
 });
-test('browser source spans count Unicode code points rather than UTF-16 units', () => {
-  const result = extended('😀시');
-  const span = result.trace.find(item => item.source === '시').source_span;
-  assert.deepEqual(span, { start: 1, end: 2 });
+test('browser phonemic adapter counts Unicode code points and abstains on unsupported characters', () => {
+  const result = phonemicIpaFromHangul('시😀');
+  assert.equal(result.ipa, null);
+  assert.deepEqual(result.trace[0].source_span, { start: 1, end: 2 });
+});
+
+test('browser phonemic adapter preserves underlying codas rather than neutralizing them', () => {
+  assert.equal(phonemicIpaFromHangul('시').ipa, 'si');
+  assert.equal(phonemicIpaFromHangul('값').ipa, 'paps');
+  assert.equal(phonemicIpaFromHangul('안하').ipa, 'an.ha');
+  assert.equal(phonemicIpaFromHangul('시 나').ipa, 'si na');
+  assert.equal(phonemicIpaFromHangul('시!').ipa, 'si!');
 });
