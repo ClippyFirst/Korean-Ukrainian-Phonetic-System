@@ -1,3 +1,90 @@
+## Final follow-up — 2026-11-27 — explicit rule-sequence semantics
+
+**Latest code head:** `a4aa821b1cc16b1fa755a34f3d2c89e624538401` on `feat/kozak-kim-extended-ipa-2026-11-26`; PR #509 remains Draft/Open/Unmerged.
+
+- Fixed a subtle API bug: `rule_ids=[]` previously fell through to the default canonical rule list because the implementation used truthiness. The runtime now defaults only when `rule_ids is None`; any explicit iterable is preserved as a tuple, including an empty sequence.
+- Added regression: `apply_ordered_rules(parse_syllables("낫"), [])` leaves the written coda unchanged and returns no rule traces.
+- Exact-head verification on documentation head `4d990e53adc0d3064d917885de626860a804bed5`: [Tests 45905500937](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45905500937) PASS (full Python suite on 3.11/3.12/3.13, wheel install, web tests); [System Verify 45905500843](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45905500843) PASS (Python regression/data integrity and browser regression/build); [Master/research artifacts 45905501058](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45905501058) PASS. Additional exact-head diagnostics: Browser G2P 45905500860 PASS; external UGTPHON 45905500854 PASS; morphology consensus 45905500841 PASS; test-register extraction 45905500831 PASS; teacher split audit 45905500993 PASS; optional g2pK 45905500952 PASS; research morphology smoke 45905500851 PASS; editorial review 45905500835 PASS. NIKL metadata-only inventory was SKIPPED by policy.
+- NIKL metadata-only inventory was SKIPPED by policy. This is not a source-validation pass.
+- Multi-engine benchmark [45905265901](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45905265901) was still executing on code head `a4aa821b`; the corresponding run on the documentation head was queued as [45905500866](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45905500866) at the time of this record. No multi-engine result is claimed until that workflow completes.
+- Python regression emits a diagnostic warning documenting two pre-existing Python/browser-port divergences: `넓죽하다` and `읽고`. The Python native engine agrees with g2pk and the recorded NIKL practical adapter on these cases; the raw browser JS port differs. IPA gold is not independently adjudicated. This remains a browser/Python parity TODO, not silently fixed here.
+- Paired native-vs-g2pk diagnostic [45905500815](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45905500815), run on code head `a4aa821b` (the same runtime code as the current docs head), used 275 UGTPHON Korean test sentences and 2,702 paired tokens: native 1,425/2,702 exact (52.7387%), CER 0.090130; g2pk 1,435/2,703 exact (53.0892%), CER 0.092328. On the paired subset, g2pk exact rate is +0.003701 but CER is +0.002207 (worse). Diagnostic only; no rule selection or accuracy claim follows.
+- Charsiu inference remained SKIPPED by the workflow condition: the workflow runs only on manual dispatch or when the PR has the `enhancement` label. No label was added and no model inference was claimed. Existing teacher candidate records remain hypotheses; no teacher-derived production rule was added.
+- No local pytest/npm/build was run: local clone had previously failed because this runtime could not resolve github.com. GitHub Actions provides the exact-head verification evidence.
+- No PR was merged, no branch deleted, no force-push, release or deployment occurred.
+
+**Disposition:** deterministic rule-plan and API semantics are software-verified; overall Korean phonology remains a research prototype. Open work: typed segment-level IPA IR; full browser/Python shared analysis/parity; independent layer-matched phonetic gold; independently reviewed Ukrainian target correspondences; source-adjudicated new rule candidates. The core runtime remains neural-free.
+
+
+
+**Benchmark status update — 2026-11-27 22:27Z:** the earlier pending multi-engine run 45904119230 was superseded/cancelled by the workflow's PR concurrency queue. The latest run for the docs checkpoint, [45904848908](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904848908), is still PENDING with no jobs started. It is not a pass and no new benchmark score is claimed.
+## Execution continuation — 2026-11-27 — deterministic model-free rule engine
+
+**Status: DONE_VERIFIED for the implemented software increments; overall engine remains a research prototype.**  
+**Main baseline:** `97bb411df8b998b22cd58adda015fb941201950c`.  
+**Working branch:** `feat/kozak-kim-extended-ipa-2026-11-26`, based on main and reused from the existing dedicated PR workstream.  
+**Starting branch head:** `0c1cd8ef2a36f4654a7722058254964e00a49303`.  
+**Verified code head:** `53a13c43954d700e3676c9c651bf0d6a7032d084`.  
+**PR:** [#509](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/509), still Draft/Open/Unmerged.
+
+### Owner-approved runtime contract
+
+- The shipped pronunciation engine contains no neural network, inference, weights, embeddings, model API, sampling, or probability-based runtime ranking.
+- The core package has no required runtime dependencies; an AST regression guard checks the main runtime modules for ML-inference imports.
+- Neural teacher outputs may be studied offline as research evidence only. Candidate patterns are not production rules until manually reviewed against primary linguistic evidence and independent controls.
+- No rule or IPA/UA mapping was promoted from neural-teacher outputs in this continuation.
+
+### Implemented work
+
+1. Added an immutable, standard-library-only rule execution plan that validates `rules.csv` against `rule_ordering.csv`. It rejects missing/unknown/duplicate IDs, duplicate or invalid preferred positions, and malformed required columns; blank CSV rows are ignored. There is no hard-coded fallback order.
+2. Replaced the duplicate Python default rule list with the validated canonical CSV order. Explicit diagnostic rule sequences retain caller-supplied order.
+3. Added wheel-install smoke coverage proving the canonical plan and runtime trace are available after package installation, not only from a source checkout.
+4. Added model-free runtime dependency/import regression tests.
+5. Improved the offline teacher-pattern miner: it attributes teacher/strict disagreements to context pairs only when explicit dot-delimited IPA syllables align one-to-one with Hangul syllables and word boundaries. Unaligned rows remain visible but are excluded from context-level candidate rates. The report schema is now 1.1. Candidate mining remains association-only and never auto-generates or promotes runtime rules.
+
+### Task ledger
+
+| Work item | Status | Evidence / acceptance |
+|---|---|---|
+| Canonical rule catalogue/order validation | DONE_VERIFIED | Full Python suite; invalid, missing, unknown, duplicate and order cases tested |
+| Runtime default order sourced from canonical CSV | DONE_VERIFIED | Runtime trace order test; explicit override order test |
+| Installed wheel carries and resolves rule data | DONE_VERIFIED | Wheel-install smoke PASS |
+| Core runtime has no ML inference dependency/import | DONE_VERIFIED | pyproject dependency guard and runtime AST import guard PASS |
+| Offline teacher pattern alignment | DONE_VERIFIED | RED test observed before implementation; aligned/unaligned/multi-eojeol tests PASS |
+| New teacher-derived production rules | DEFERRED | Charsiu workflow skipped by policy; no model outputs were available; source adjudication still required |
+| Typed segment-level IPA IR and Python/browser shared contract | TODO | Implement shared segment records and remove divergent browser-side phonemic adapter; preserve IPA-first target consumption |
+| Independent Narrow IPA gold and Ukrainian target validation | BLOCKED | Requires qualified independent adjudication and compatible licensed evidence |
+
+### Exact-head verification
+
+- Tests / Python 3.11, 3.12, 3.13 / wheel install / web tests and build: PASS — [run 45904119310](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119310).
+- System Verify: PASS — [run 45904119391](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119391).
+- Browser G2P integration: PASS — [run 45904119145](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119145).
+- Master/research artifacts: PASS — [run 45904119237](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119237).
+- Exhaustive test-case register: PASS — [run 45904119295](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119295).
+- External UGTPHON diagnostic: PASS — [run 45904119312](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119312).
+- Optional g2pK integration: PASS — [run 45904119357](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119357).
+- Paired native/g2pk diagnostic: PASS — [run 45904119438](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119438).
+- Korean morphology-consensus diagnostic: PASS — [run 45904119286](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119286).
+- Research morphology adapter smoke: PASS — [run 45904119195](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119195).
+- Teacher corpus split audit: PASS — [run 45904119233](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119233).
+- Editorial visual review (no UI files changed): PASS — [run 45904119692](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119692).
+- Charsiu train/dev model-inference rule-review workflow: SKIPPED by its existing policy gate — [run 45904119457](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119457); no teacher outputs were available or used.
+- Multi-engine IPA benchmark: PENDING with no jobs started at audit time — [run 45904119230](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119230). No benchmark improvement is claimed.
+- Local clone and local pytest/npm were unavailable: git clone failed because this runtime could not resolve github.com. GitHub Actions supplied the executable verification evidence.
+
+### Debugging record and scope
+
+- The first TDD run failed because the new module/API did not yet exist; this was the expected RED state.
+- An intermediate run exposed two test-contract issues: an empty ordering file was rejected before the missing-rule diagnostic, and an unknown-ID fixture simultaneously contained a missing rule. The loader was corrected to validate the intended incomplete-order case, and the fixture was isolated so each invariant is tested independently.
+- The pattern-miner tests then failed before implementation because syllable-alignment metadata did not exist; the implementation added conservative alignment and fail-closed exclusion.
+- No phonological rewrite semantics, rule contents, Ukrainian target correspondences, practical g2pK baseline, vendor files, UI or deployment settings were changed.
+- No PR was merged, no branch deleted, no force-push and no release/deployment were performed.
+- Other previously reviewed PRs #505, #506 and #507 remain untouched because their scopes overlap or are independent of this continuation.
+
+**Readiness:** software-verified deterministic rule-execution increment; not release-ready or independently research-certified. The next real blocker is the absence of reviewed teacher-pattern outputs and typed shared IPA analysis—not a need to embed a neural model in the runtime.
+
+---
 
 ## Execution continuation — 2026-11-12 — result/mode metadata visual cleanup
 
@@ -1515,3 +1602,416 @@ The visual-mode task is software-verified and ready for merge. The broader produ
 - Visual review passed 10 page/viewport combinations; the service UI was checked at 1440, 1024, 768, 390 and 320 CSS px. Geometry assertions confirm pronunciation provenance is inside the IPA panel and target status is inside the Ukrainian panel.
 - NIKL metadata-only inventory was skipped per repository policy.
 - PR #492 remains open and unmerged pending explicit merge instruction. No Pages deployment/publication is claimed.
+
+
+## 2026-11-26 — Kozak Kim Extended IPA implementation continuation
+
+**Starting main:** 97bb411df8b998b22cd58adda015fb941201950c  
+**Branch:** feat/kozak-kim-extended-ipa-2026-11-26  
+**Current branch head at this checkpoint:** a5a42b38520d57f9814cd047f769083b811c7ecf  
+**Draft PR:** #509 — feat(korean): add Extended IPA research preview to Kozak Kim  
+**Tracking issue:** #508  
+**Status:** PARTIAL; exact-head CI still running; no merge or deployment.
+
+### Completed implementation work (verification pending)
+
+- Added schemas/ipa-profile-result.schema.json and typed Python/browser contract validators.
+- Python phoneticize_korean now returns an additional extended_ipa object with phonemic output from untouched underlying syllables, broad and narrow outputs from the shared post-rule analysis, variants, code-point source spans, boundaries and rule trace. The legacy ipa field is retained.
+- Added a browser research adapter and a Kozak Kim opt-in Extended IPA panel. It displays phonemic (explicitly unavailable in browser), broad and partial narrow layers, variants and trace. The target output is unchanged; narrow profile is not target-compatible.
+- Bumped the narrow contextual profile to v6 and removed categorical [ɦ] after sonorants; weakening/deletion is retained as unresolved speaker-/dialect-conditioned variation.
+- Added first-pass literature synthesis and source-register records S028–S035 plus corpus-rights records for Seoul Corpus and NIKL Modu Spoken. No audio or corpus labels were downloaded or committed.
+- Added Python and browser regression tests, including unresolved-output abstention and word-boundary guards.
+
+### Verification and debugging record
+
+- First PR-head CI exposed two browser-test problems: an incorrect expectation for whitespace-separated IPA rendering and narrow output leaking from partially resolved syllables in an unresolved whole token. The expected space rendering was corrected; the browser adapter now withholds the complete narrow IPA string when the engine reports unresolved pronunciation.
+- A subsequent evidence review identified that the old narrow profile treated post-sonorant /h/ as categorical [ɦ]. The source evidence does not support that invariant, so v6 removes the [ɦ] substitution and records the unresolved optionality. This is a research correction with a regression test.
+- GitHub Actions for the latest head are running. No exact-head pass is claimed until the complete Python, browser, wheel, build, source-rights and rendered-review workflows conclude.
+- Local test execution is unavailable in this environment because a local repository/worktree runtime is not mounted. GitHub Actions is the available executable verification path.
+- The optional Charsiu review workflow and NIKL metadata-only inventory are conditionally skipped; a skip is not a pass.
+
+### Preserved work
+
+- Default broad IPA and browser-legacy IPA paths remain unchanged.
+- Practical g2pK mode remains unchanged.
+- Strict / Soft / Super-soft morphology coverage modes remain independent.
+- Existing IPA→Ukrainian adapter allowlists remain unchanged; no narrow profile is authorized as target input.
+- Open PRs #505, #506 and #507 remain untouched; their branches are diverged or cover separate lexical/benchmark/coverage tasks and were not mechanically ported.
+
+### Remaining task ledger
+
+| Work item | Status | Acceptance criterion / blocker |
+|---|---|---|
+| Typed result schema and validators | PARTIAL | Exact-head schema/contract tests and JSON Schema validation pass in CI |
+| Python three-layer result | PARTIAL | Python 3.11/3.12/3.13, wheel install and pipeline tests pass; verify all three layer semantics |
+| Browser Extended IPA preview | PARTIAL | Browser tests/build pass; responsive UI and accessibility review pass |
+| Python/browser parity | TODO | Same pinned fixtures, exact layer and trace parity or documented intentional differences |
+| Browser phonemic layer | TODO | Browser underlying representation matches Python phonemic output on pinned fixtures |
+| Narrow IPA evidence adjudication | BLOCKED | Independent Korean phonetic reviewer and source-aligned token evidence |
+| Prosodic/acoustic annotation | TODO | Typed speaker/prosody/acoustic annotation schema and annotation guide, with nullable unknown fields |
+| Corpus integration | BLOCKED | Authorized NIKL/AI Hub agreement; Seoul Corpus derivative redistribution scope reviewed |
+| Ukrainian target compatibility | BLOCKED | Independent IPA adjudication plus separate Ukrainian target-layer review |
+| Benchmark evaluation | TODO | Speaker/source-separated pinned split, independent gold, paired error analysis, coverage/abstention and latency |
+| Release/deployment | DEFERRED | All scientific, rights, parity, CI and target gates complete; explicit release decision |
+
+### Research findings that change implementation
+
+- Stop-category acoustic cues differ across IP/AP-initial and word-medial positions; keep prosody and acoustic cues separate from categorical segmental IPA.
+- Focus, age and gender condition VOT/F0/closure-voicing patterns; do not infer a universal voiced-stop output.
+- Sibilant palatalization is context- and speaker-sensitive; /yo/ and /yu/ differ from /i, ye, ya/ contexts.
+- Ultrasound evidence for lexical/post-lexical palatalization is nonuniform across four speakers and consonants.
+- Seoul/Gwangju /h/ realization differs in optionality; post-sonorant weakening/deletion must not be forced into [ɦ].
+- The current [ɲ] generalization is still a research hypothesis, not independent gold.
+- Seoul Corpus is listed by OpenSLR under CC BY-NC 2.0; NIKL Modu corpus use is agreement-limited and non-transferable. No corpus integration is authorized by this review.
+
+### Superpowers workflow
+
+Used the relevant brainstorming, planning, TDD, systematic-debugging and verification guidance. Work is inline on a dedicated GitHub branch because no local Git worktree is available; a fresh independent reviewer is still required before merge.
+
+
+## 2026-11-26 — Extended IPA implementation checkpoint 2
+
+**Current branch head:** dbe608cdfb3dd42d279e3d410dcfa981561a58a8  
+**Draft PR:** #509  
+**State:** PARTIAL; exact-head CI queued.
+
+### Additional work
+
+- Added explicit nullable speaker/prosody context and a separate acoustic annotation array to the typed contract. Text-only inputs do not invent dialect, age, speech rate, focus, prosodic position or measured F0/VOT/voice-quality values.
+- Measured acoustic annotations require a source span, method and source reference.
+- Added browser UI wiring and static regression tests for opt-in visibility, separate layers, context note and responsive layout.
+- Extended browser trace to retain engine rule IDs as well as narrow-profile rule IDs; variants retain source spans where the engine supplies syllable indices.
+- Withholds the entire narrow string if a whole input or any source trace is unresolved, avoiding a misleading partial string.
+- Reordered the ㅎ narrow conditions so [ç]/[x] before the relevant vowels are preserved while post-sonorant weakening/deletion remains unresolved; the profile still does not emit categorical [ɦ].
+- Tightened [ɲ] source attribution: Ahn (2009) is recorded as related initial /n/-deletion evidence, not direct proof of generalized [ɲ].
+
+### Verification state
+
+The earlier CI attempt on an older head failed on stale v5 profile assertions, expected post-sonorant [ɦ], source-register row counts, and the newly added missing acoustic-context contract. Those failures were traced to outdated expectations and missing contract fields. Corrections and tests are now committed. Current exact-head workflows for dbe608cdfb3dd42d279e3d410dcfa981561a58a8 are queued; no pass is claimed until completion.
+
+
+### AI Hub rights clarification — 2026-11-26
+
+The official AI Hub FAQ [S036] clarifies that raw/original dataset files cannot be externally redistributed, while derived models/services/research outputs may be used commercially with attribution, subject to dataset-specific rights-holder terms. Download requires applicant verification, purpose disclosure and application; the platform policy is not a dataset-specific grant. KsponSpeech remains BLOCKED until its own dataset agreement and authorized access are documented.
+
+
+## 2026-11-26 — Extended IPA implementation checkpoint 3
+
+**Current head:** 918fc349c5c5fb997d7dff3929d2e23e652f3c7f  
+**PR:** #509 (Draft; open)  
+**Base:** main at 97bb411df8b998b22cd58adda015fb941201950c
+
+### Additional browser layer work
+
+- The browser panel now exposes the existing super-soft underlying-grapheme IPA fallback as a phonemic candidate. It is explicitly labelled as a grapheme-derived fallback, not adjudicated phonemic gold and not a full morphophonological analysis.
+- The UI shows the candidate profile and limitation status; the default broad result and Ukrainian adapter remain unchanged.
+- Tests cover a simple Hangul input and the distinct fallback profile identifier.
+
+### Current verification status
+
+- Exact-head Verify workflow 45860593460 for 918fc349c5c5fb997d7dff3929d2e23e652f3c7f is queued; Python and browser regression jobs have not started.
+- Earlier CI on an older head exposed stale v5/[ɦ]/source-count expectations and missing acoustic-context fields. Those were corrected, but the current head still needs a completed exact-head run.
+- The branch has no local worktree in this environment. No local tests are claimed.
+
+### Remaining blockers
+
+- Full browser phonemic analysis and Python/browser parity.
+- Independent phonetic adjudication of the narrow profile and speaker-/prosody-conditioned variants.
+- Rights-cleared acoustic corpus access and annotation pilot.
+- Separate Ukrainian target-layer review.
+- Completed exact-head CI, generated-artifact and rendered-review checks.
+
+## 2026-11-26 — Extended IPA implementation checkpoint 4
+
+**Branch:** `feat/kozak-kim-extended-ipa-2026-11-26`  
+**PR:** [#509](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/509) — draft, open  
+**Base:** `main` at `97bb411df8b998b22cd58adda015fb941201950c`  
+**Head at this checkpoint:** `58419e61d6d3e4783355b66f00fec3fdd487ff8f`
+
+### Implemented in this continuation
+
+- Replaced the browser's super-soft grapheme fallback in the phonemic panel with a dedicated deterministic underlying Hangul onset–nucleus–coda adapter.
+- The browser adapter preserves the project's phonemic inventory, complex coda components, syllable/word/phrase boundaries, Unicode code-point spans, unsupported-character abstention and the exact source-attested long vowel in 유사성.
+- Python's existing IPA-first three-layer generation is retained. Its Extended IPA trace now separates phonemic, broad and narrow records and includes the underlying phonemic syllable values.
+- Extended IPA schema advanced to v1.1. Every trace row is typed as phonemic, broad or narrow; Python and browser validators enforce that layer tag.
+- Browser UI now displays the dedicated phonemic result and labels its limits. Extended IPA remains opt-in under Kozak Kim research mode; the normal IPA and Ukrainian output paths are not redirected through this panel.
+- Runtime comparison fixtures now state the known Python/browser difference for 시 explicitly: Python broad si vs browser broad ɕi. The fixture is a smoke comparison, not independent phonetic gold.
+- Added browser/Python tests for complex coda decomposition, source-attested vowel length, unsupported characters, layer-specific trace and source spans.
+
+### Status ledger
+
+- **PARTIAL:** browser phonemic adapter and cross-runtime trace contract are implemented, but latest-head CI has not yet verified them.
+- **PARTIAL:** broad IPA runtime parity; known difference for 시 remains explicit and must be reconciled using the project's IPA convention evidence, not by changing one runtime to fit a benchmark.
+- **PARTIAL:** narrow IPA remains a research-only profile with unresolved speaker-/dialect-conditioned cases and no independent phonetic adjudication.
+- **TODO:** execute the complete test suite, schema validation, source-rights audit, build, wheel/install checks and rendered browser review against the exact current head.
+- **BLOCKED:** no latest-head workflow run was returned for commit `58419e61d6d3e4783355b66f00fec3fdd487ff8f`. The workflow runs visible at commit `6143004ff525be29dc7d15d79590e988d1cfdf91` were still queued and are stale relative to this checkpoint.
+- **BLOCKED:** independent Korean phonetic review, rights-cleared acoustic corpus access and separate Ukrainian target-layer review remain external evidence gates.
+
+### Commands and verification
+
+- GitHub branch comparison: `main...feat/kozak-kim-extended-ipa-2026-11-26` — 52 commits ahead, 0 behind at the time of this checkpoint.
+- GitHub workflow lookup for current head `58419e61d6d3e4783355b66f00fec3fdd487ff8f` — no associated PR-triggered runs returned.
+- GitHub Actions jobs previously listed for `6143004ff525be29dc7d15d79590e988d1cfdf91` — queued; not evidence of passing tests on the current head.
+- No local worktree/runtime was available through this GitHub-only session; no local test command is claimed as executed.
+
+### Release assessment
+
+**Research preview / partial prototype; not release-ready.** The UI and typed IPA layers exist, and the browser phonemic layer is no longer the super-soft grapheme fallback. Do not claim benchmark uplift, full phonetic coverage, cross-runtime parity or independent linguistic validation until the outstanding gates above pass.
+
+### Follow-up after checkpoint 4 — documentation reconciliation
+
+- Reconciled README, acceptance gates and the Superpowers execution plan with the implemented browser phonemic adapter; removed the stale statement that the panel still uses the super-soft grapheme fallback.
+- The implementation code head for this work is `58419e61d6d3e4783355b66f00fec3fdd487ff8f`. Subsequent commits `59b422136a6feddffd478c0f88096998342b0258`, `6d96efecf4a39ce9934207af416ecc6a34b9e2be`, `5f0c0142229554bf10cbacff4eb0b131b8d91637` and `0343bf463baa206901b851f54a33a17486186bf4` reconcile the handoff, acceptance gates, plan and README.
+- Latest branch comparison before this addendum: 56 commits ahead of main, 0 behind.
+- Exact-head Verify run `45864970104` and pinned UGTPHON diagnostic `45864970001` were created for the handoff commit but remained queued when checked; no passing test result is claimed.
+- Remaining status is unchanged: research preview only, not release-ready; broad-runtime difference, independent phonetic adjudication, acoustic-corpus rights, target review and CI completion remain open.
+
+### Exact-head CI failure triage — 2026-11-26
+
+The workflows associated with the preceding branch checkpoint completed. Their results were not all green:
+
+- Verify `45865436205`: Python and browser test jobs failed; build and later steps were skipped.
+- Browser G2P `45865436196`: browser tests failed; build was skipped.
+- Test suite `45865436293`: web tests failed; Python 3.13 failed; Python 3.11/3.12 were cancelled after the matrix failure; wheel build/install passed; teacher-corpus audit passed.
+- Research/diagnostic workflows `45865436523` (master/research artifacts), `45865436478` (UGTPHON diagnostic), `45865436465` (optional g2pK integration), `45865436440` (morphology adapter smoke), `45865436301` (morphology-consensus diagnostic), `45865436141` (native-vs-g2pk diagnostic), `45865436367` (multi-engine diagnostic), `45865436446` (test-register extraction), and `45865436555` (editorial review) completed successfully. Charsiu rule-review queue `45865436297` was skipped by policy.
+
+**Failure causes inspected from job logs:**
+
+1. Python and browser Extended IPA tests incorrectly expected `값` to begin with `p`. The actual underlying onset is ㄱ, mapped to /k/; the complex coda ㅄ is decomposed as /ps/. Therefore the deterministic underlying inventory result is `kaps`, not `paps`. The implementation was correct; both assertions were corrected to `kaps`.
+2. The Extended IPA responsive-layout test assumed `grid-template-columns` was the first declaration in `.extended-ipa-layers`; the real CSS correctly places `display:grid` first. The test now allows preceding declarations while still requiring the three-column desktop grid.
+3. The source-register test expected 247 rows while the checked-in CSV and its other assertion contain 248. The stale CLI assertion was corrected to 248; no source record was removed or changed to silence the test.
+4. These were test-oracle drift/errors, not evidence that the runtime implementation itself failed. They do not establish full linguistic correctness.
+
+**Corrective test-only commits:** `b38a11dca4204dbfc5f22162be8d46c9212d4150`, `c4bae1fc64ebc6c5bdd4f8f0dbdb17525f3d8e5c`, `a64c9da07b8d0657a5fdbec341aaab32d403e76b`, `94de598c9e36a657b3ea20da0d678eafc4b3263d`.
+
+**Verification after corrections:** exact-head CI for the corrected branch tip is still pending; the failed workflow results above belong to the earlier tip and must not be presented as the outcome of the corrected tests. No local worktree/runtime was available, so no local test command is claimed. Continue with exact-head Verify, browser G2P, tests, schema/build and rendered review. Preserve the known Python/browser broad `시` difference (`si` vs `ɕi`) until reviewed; do not normalize it by assertion alone.
+
+**Status:** failure causes identified and test expectations corrected; verification of the corrected exact head remains **TODO/PENDING**. Extended IPA remains a research preview, not release-ready.
+
+### Shared broad-IPA reconciliation — 2026-11-26
+
+A source-backed runtime discrepancy was resolved in the Extended IPA path. The Python broad profile preserves canonical /s/ and exposes [ɕ] as an optional, unselected research variant before the narrowly specified high-front nuclei /i, ye, ya/. The browser's default legacy contextual renderer had instead promoted [ɕ] to its broad output for `시`, producing a misleading Python `si` versus browser `ɕi` difference.
+
+Evidence review: Kang (2010), *Coarticulation effects of Korean sibilant /s/ before a high front segment*, reports early spectral differences before /i, ye, ya/ and interprets them as palatalization/coarticulation, not a categorical requirement to replace canonical /s/. A later Seoul Korean sibilant study summarizes the conventional analysis as phonemic /s/ with palatalized [ɕ] before /i/. This supports keeping /s/ canonical and [ɕ] as a scoped variant; it does not establish one universal speaker realization. Sources: https://doi.org/10.17959/sppm.2010.16.1.3 and https://www.eksss.org/archive/view_article?pid=pss-13-1-37.
+
+**Implementation:** the Extended IPA panel now obtains its broad layer from the existing shared strict profile `clippyfirst-korean-broad-v1`, independently of the selected Soft/Super-soft coverage mode. That profile preserves broad `si` and exposes the source-scoped `[ɕi]` candidate as an unselected variant. Narrow v6 remains a separate partial research layer and can render `ɕʰi` under its selected environment. The legacy main IPA/Ukrainian output path is not changed. The browser Extended IPA helper and parity fixture now use the shared profile; the known `시` broad difference is removed from that fixture, while the fixture remains a smoke test rather than independent phonetic gold.
+
+The new code/test checkpoint is `2cbbe23597e5b9e9825c6cee2079ebd18635a144`. Exact-head CI for this new checkpoint is required before marking the reconciliation DONE_VERIFIED. This does not establish exhaustive runtime parity, independent phonetic gold, or benchmark uplift.
+
+### Shared broad-profile test correction — 2026-11-26
+
+The first CI run after switching the Extended IPA browser panel to the shared strict broad profile failed in Python 3.13 at `tests/test_ipa_profile_contract.py::test_phoneticize_exposes_all_three_extended_ipa_layers_without_changing_legacy_ipa`. The new assertion looked for `variant["note"]`, but the typed Extended IPA schema intentionally exposes that text as `variant["environment"]`. This was a test-field mismatch; the Python variant builder already emits the evidence note in `environment`. Corrected the assertion to read the schema field `environment` in commit `7a56963d7a2996066a15aa9baf594d13beaf0d09`.
+
+The failed run was tests matrix `45880894598`, Python 3.13 job `140119675948`; Python 3.11/3.12 were cancelled after the matrix failure. The browser, Verify and remaining matrix jobs were queued at last inspection. Exact-head CI must rerun on the corrected branch tip; do not claim the broad-profile change passed yet. This failure does not indicate a runtime IPA mismatch.
+
+### Source-aligned sibilant variant trace — 2026-11-26
+
+The shared browser broad profile already generated the optional [ɕ] variant, but its generic variant object did not carry `syllable_indices`, so the Extended IPA adapter could not attach a source span. Added the affected syllable index to the sibilant candidate and a browser regression asserting `{start: 0, end: 1}` for `시`. Python already emitted the corresponding index. The new source-span commits are `0ca374140606cd8fead7398ca957c5871aa57102` and `bd7fc7acfd4a9d17b8cc98da70e7a1bed49f2489`.
+
+The Python 3.13 failure from the prior checkpoint was separately corrected: Extended IPA variant provenance is stored in `environment`, not `note`, and the regression now reads the schema-defined `environment` field. That fix is commit `7a56963d7a2996066a15aa9baf594d13beaf0d09`. Exact-head verification of the combined source-span and schema-field corrections remains pending.
+
+### CI status reconciliation — 2026-11-26
+
+The earlier test-oracle corrections (`kaps`, CSS declaration order, source-register row count) are now **DONE_VERIFIED** on code checkpoint `b2f18a9c6f8f35dc24c4c7d5d1c4d5f01b5fa461`: Verify run `45880257988` passed Python regression/data integrity and browser regression/build; tests run `45880257939` passed Python 3.11, 3.12, 3.13, web, wheel install and teacher-corpus audit; Browser G2P run `45880258014` passed. The official NIKL metadata-only job was skipped by workflow condition, not passed.
+
+The subsequent shared broad-profile change exposed a test-schema assertion error (`note` vs schema field `environment`). Python 3.13 passed after that correction on code checkpoint `7a56963d7a2996066a15aa9baf594d13beaf0d09` (tests run `45881102718`); Browser G2P passed on that checkpoint (`45881102801`). Other jobs in those runs remained queued/in progress at last check. A further source-span correction was then added in code checkpoint `bd7fc7acfd4a9d17b8cc98da70e7a1bed49f2489`.
+
+**Latest code checkpoint verification is still pending:** tests `45881234764`, Verify `45881234504`, Browser G2P `45881234519`, rendered review `45881234502`; at last poll these primary jobs were queued. Test-register extraction `45881234564`, UGTPHON diagnostic `45881234545`, and paired Native/g2pK diagnostic `45881234749` were in progress. The documentation-only branch head after this checkpoint is `0bb220d159852654f425cfadeef8267190128145`. No pass is claimed for the final source-span change until the latest code checkpoint's tests complete.
+
+### Variant source-span safety for multiword inputs — 2026-11-26
+
+A further review found that generic browser variant indices are token-local. Mapping them directly against the whole phrase's Hangul-only span array could assign a later-word variant to the first word. The Extended IPA adapter now maps these indices only when the complete input is one Hangul eojeol; for multiword/mixed input it leaves the variant span null rather than fabricate a location. Tests cover both the single-word positive span and the multiword null/abstention case. Commits: `28fc58aa21a07cfbc8e8b03a0d468695e6c433c8`, `47e8162ca8557e269b6a337416a802a5048ba39a`. Exact-head CI is required.
+
+### Final handoff checkpoint — 2026-11-26
+
+- Latest code/test checkpoint before this handoff refresh: `47e8162ca8557e269b6a337416a802a5048ba39a`.
+- Branch head before this handoff refresh: `bc548c7e58d1d5eadf1a393cce4ed4e13078a3f9`; branch comparison against `main` is 81 commits ahead, 0 behind at the last comparison.
+- Latest exact-code-head runs: tests `45881751726`, Verify `45881752147`, Browser G2P `45881751645`, rendered review `45881751769`, master artifacts `45881751741`, test-register extraction `45881752107`, UGTPHON `45881751663`, morphology consensus `45881751961`, paired Native/g2pK `45881752091`, g2pK integration `45881751857`, morphology adapter smoke `45881751817`. At last poll all primary checks were queued; no final-code pass is claimed.
+- Intermediate verification evidence: the `kaps`/CSS/source-count corrections passed Verify/tests/Browser G2P on `b2f18a9c6f8f35dc24c4c7d5d1c4d5f01b5fa461`; the Python variant-field correction passed Python 3.13, Verify and Browser G2P on `7a56963d7a2996066a15aa9baf594d13beaf0d09`. Those runs predate the final source-span mapping guard and are not substituted for latest-head CI.
+- Test-oracle failures encountered and corrected: expected `paps` instead of `kaps`; CSS test assumed grid declaration order; source register expected 247 rather than 248; Python variant assertion used `note` instead of schema field `environment`. The latest source-span guard deliberately leaves multiword variant spans null rather than misattribute token-local indices.
+- Local verification: attempted public `git clone`, blocked by DNS/network resolution failure (`Could not resolve host: github.com`). No local test/build command is claimed.
+- External evidence blockers: independent Korean phonetic adjudication, rights-cleared audio annotation pilot/dataset terms, and independent Ukrainian target-layer review. Extended IPA remains a research preview and PR #509 remains draft/open.
+- Next genuine blocker: complete the latest exact-code-head CI runs above; fix any newly exposed failures and rerun. Do not merge or call this release-ready before those checks and the independent linguistic/rights gates.
+
+### Exact-head CI result — 2026-11-26 21:33 EET
+
+**Verified code head:** `a3fb2ec8a962ffd37d202eab95c99387d0d83638`  
+**Branch:** `feat/kozak-kim-extended-ipa-2026-11-26`
+
+The previously failing test-oracle issues were corrected on the branch. The next exact-head workflow matrix now reports:
+
+- **PASS** Verify Korean–Ukrainian system — run `45882049688`.
+- **PASS** Browser G2P integration — run `45882049461`.
+- **PASS** full tests — run `45882049481`: Node web suite 1,483/1,483 passed; Python 3.11, 3.12 and 3.13 passed; wheel-install passed; teacher-corpus audit passed.
+- **PASS** rendered desktop/tablet/mobile review — run `45882049653`.
+- **PASS** external UGTPHON diagnostic — run `45882049445`.
+- **PASS** master research artifacts — run `45882049697`.
+- **PASS** exhaustive test-register extraction — run `45882049680`.
+- **PASS** paired native Korean vs g2pk diagnostic — run `45882049571`.
+- **PASS** morphology consensus diagnostic — run `45882049560`.
+- **PASS** optional g2pK integration — run `45882049460`.
+- **PASS** research morphology adapter smoke — run `45882049520`.
+- **IN PROGRESS** multi-engine IPA comparison benchmark — run `45882049729`, Python 3.12 job `140131796752`.
+- **SKIPPED by workflow policy** Charsiu train/dev queue and optional ByT5/Charsiu inference jobs. These are not pass results and no third-party weights were redistributed.
+
+Historical failures on earlier commit `19e4d95bacb8f3f62e4344828bb7ed70c08cbf02` were test-oracle failures: the coda expectation used `paps` instead of `kaps`; the CSS assertion assumed a minified declaration order; the source-register assertion expected 247 rows instead of 248. The latest head's successful tests cover the corrected state. The source count is 248. Do not infer phonetic gold from the grapheme-derived `kaps` output.
+
+### Updated status ledger
+
+- **DONE_VERIFIED:** exact-head Node/browser regression, Python 3.11–3.13 regression, wheel install, Verify, Browser G2P, rendered review, source/teacher corpus audit, test-register extraction and the named diagnostic workflows above, all on `a3fb2ec8a962ffd37d202eab95c99387d0d83638`.
+- **PARTIAL:** broad IPA Python/browser reconciliation and exhaustive inventory parity. The known profile decision for `시` is represented as shared broad `si` with optional `ɕ` variant; independent phonetic adjudication remains necessary.
+- **PARTIAL:** narrow IPA and typed acoustic schema; actual rights-cleared acoustic annotation pipeline is not implemented/validated.
+- **BLOCKED:** independent Korean phonetic adjudication, rights-cleared audio/corpus access and independent Ukrainian target-layer review.
+- **TODO:** finish the running multi-engine benchmark and inspect its pinned splits, metrics and artifacts before interpreting any score.
+- **NOT RELEASE-READY:** despite green software CI, independent linguistic/rights/target gates remain open. PR #509 stays draft/open.
+
+No local test command is claimed; verification above is GitHub Actions evidence.
+
+
+### Multi-engine benchmark results — 2026-11-26
+
+**Completed run:** Multi-engine Korean IPA diagnostic, run `45882049729`, code head `a3fb2ec8a962ffd37d202eab95c99387d0d83638`. Main job `140131796752` completed successfully. Aggregate-only artifact `multi-engine-korean-ipa-diagnostic` (artifact ID `15150473046`, SHA-256 `92d1e2f48df10b4ab03d0efe31fa36f9c1d0dbc5e4451983cbccd948e61b1032`) contains aggregate metrics only; token-level text/IPA/mismatch rows are deliberately omitted. The run covered UGTPHON, SIGMORPHON, Seoul Corpus, K-SPAN modern/conservative, and IPA-Dict Korean.
+
+#### Strict scoring (selected native broad profile; exact match / character error rate)
+
+| Track | Kozak Kim Native | Best external in this run | Interpretation |
+|---|---:|---:|---|
+| UGTPHON (2,703 occurrences) | 52.74% / 9.01% | g2pk 53.09% / 9.23% | Essentially tied; g2pk has a 0.35 pp exact-match lead, Native slightly lower CER |
+| SIGMORPHON (999 lexical items) | 35.97% / 14.53% | g2pk 35.34% / 14.82% | Native leads by 0.63 pp exact match and has slightly lower CER |
+| IPA-Dict Korean (1,000 sampled lexical items) | 41.27% / 9.93% | g2pk 41.10% / 10.04% | Essentially tied; Native leads by 0.17 pp |
+| Seoul Corpus (1,000 occurrences) | 14.80% / 39.84% | KoG2P 21.20% / 32.02% | Native trails; reference is phonemic word-level IPA, not narrow phonetic gold |
+| K-SPAN Modern (1,000 sampled occurrences) | 10.87% / 27.78% | KoG2P 25.00% / 15.65% | Native trails substantially; see severe sample eligibility limitation below |
+| K-SPAN Conservative (1,000 sampled occurrences) | 7.55% / 27.45% | KoG2P 18.80% / 16.15% | Native trails substantially; see severe sample eligibility limitation below |
+
+The top-three systems' bootstrap 95% intervals overlap on UGTPHON, SIGMORPHON and IPA-Dict; these are diagnostic intervals, not a paired significance test. The native exact-match intervals are respectively 47.88–57.98%, 33.07–38.98%, and 38.15–44.28%. Therefore the small rank differences must not be described as a statistically established win.
+
+#### Research-only broad-candidate sensitivity scoring
+
+A separate `korean-broad-candidate-sensitivity-v1` normalization was run to estimate how much exact-match disagreement comes from predictable IPA/allophone convention differences. It is explicitly **research-only and unadjudicated**, not the production score and not a gold standard. It removes stress and syllable separators, selected quality diacritics, fricative aspiration after sibilants and several allophonic distinctions (including retroflex/palatal laterals, palatal nasal and multiple h-like realizations). It preserves stop aspiration, fortisness, vowel length, unreleased-coda marking and sibilant place contrasts.
+
+| Track | Kozak Kim Native after candidate normalization | g2pk after candidate normalization |
+|---|---:|---:|
+| UGTPHON | 86.23% exact, 2.14% CER | 85.72% exact, 2.37% CER |
+| SIGMORPHON | 69.84% exact, 6.15% CER | 68.67% exact, 6.46% CER |
+| IPA-Dict Korean | 86.14% exact, 1.61% CER | 85.70% exact, 1.69% CER |
+
+This is a useful indication that a large share of strict string mismatch is convention/realization normalization, and Native is marginally ahead under this particular candidate profile. It is **not** evidence that narrow IPA is 86% accurate: the normalization intentionally collapses several phonetic distinctions, and its policy has not been independently adjudicated. The profile's feature-loss counters are material (e.g. 5,206 selected segmental-quality diacritic losses, 858 fricative-aspiration losses, 549 retroflex-lateral collapses in the relevant reference sample).
+
+#### Browser Strict / Soft / Super-soft coverage trade-off
+
+- UGTPHON: Strict 52.74% exact at 99.96% coverage (2,702/2,703); Soft 56.19% at 82.83% coverage (2,239/2,703; 464 heuristic tokens); Super-soft 50.91% on only 55 scored tokens, with **2.03% coverage** and 2,648 heuristic tokens.
+- SIGMORPHON: Strict 35.87% at 99.90% coverage; Soft 35.77% at 94.29% coverage; Super-soft 46.67% on only 15 tokens, with **1.50% coverage** and 984 heuristic tokens.
+- K-SPAN Modern: Strict 10.87% at 99.4% coverage; Soft 10.49% at 91.5%; Super-soft scored 4/1,000 (0.4%).
+- K-SPAN Conservative: Strict 7.55% at 99.3%; Soft 6.31% at 91.9%; Super-soft scored 3/1,000 (0.3%).
+- IPA-Dict: Strict 41.27% at 99.6%; Soft 40.74% at 92.3%; Super-soft scored 4/1,000 (0.4%).
+
+Do not rank Super-soft by its conditional exact-match percentage: its coverage is so low that the percentage is not representative. Soft sometimes improves conditional exact match on noisy UGTPHON but does so by declining many inputs and introducing heuristic results; it is not an overall replacement for Strict.
+
+#### Critical dataset and interpretation caveats
+
+- **K-SPAN is not a representative result in this run.** After exact overlap exclusion against the baseline lexical sets, the manifest reports only **4 eligible word types** for each K-SPAN track, despite 1,000 sampled occurrences. The source's `key_worldbet` integrity cross-check also warns of 22,843 mismatches in 63,836 rows. The source phonetic fields were used directly, but these results are highly concentrated and cannot support generalization. Rebuild a valid, sufficiently broad K-SPAN holdout before drawing conclusions.
+- Seoul Corpus is phonemic word-level gold; it is not narrow phonetic gold. The current comparison output is broad surface IPA, so its low exact-match values mix model differences with a reference-layer mismatch.
+- IPA-Dict Korean is Wiktionary-derived and shares lineage with SIGMORPHON; exact orthographic overlap was excluded, but the sources are not fully independent.
+- UGTPHON is noisy user-generated text, not a balanced normative pronunciation test.
+- Several competitors (including g2pk and KoG2Padvanced) are converted through the project's IPA segment renderer, so their scores are not fully independent IPA encoders. Some engines share algorithmic lineage.
+- This benchmark evaluates Korean IPA only; it does not score Ukrainian orthographic adaptation.
+- Optional ByT5 and Charsiu inference jobs were skipped by workflow policy. They are not benchmark results.
+
+#### What this says about Extended IPA
+
+The benchmark provides a positive but limited signal for the current shared **broad** IPA profile: Native Kozak Kim is competitive with g2pk/g2p-ko on UGTPHON, SIGMORPHON and IPA-Dict, and marginally ahead on the candidate-normalized comparison. It does **not** yet demonstrate the accuracy of the full Extended IPA phonemic+broad+narrow research output. The aggregate artifact has no independently adjudicated narrow-IPA gold and does not separately score narrow segmental features, acoustic measurements, speaker-conditioned variants or Ukrainian target adaptation. No narrow-IPA uplift claim is permitted.
+
+**Updated ledger:**
+- **DONE_VERIFIED:** multi-engine benchmark workflow and aggregate artifact generated successfully; six tracks, ten engine outputs, three browser morphology modes reported.
+- **PARTIAL:** broad-profile competitive performance demonstrated on three lexical/noisy tracks, but close external comparisons, non-independent adapters and reference-convention uncertainty remain.
+- **PARTIAL:** browser Soft improves conditional UGTPHON exact match but reduces coverage; Super-soft is extremely low coverage and unsuitable for headline accuracy claims.
+- **BLOCKED / TODO:** valid K-SPAN holdout; layer-aligned Seoul evaluation; independently adjudicated broad/narrow IPA gold; speaker-/dialect-conditioned narrow IPA and acoustic validation; Ukrainian target-layer review.
+- **Release status:** research preview / partial prototype, **not release-ready**.
+
+No benchmark score is a scientific endorsement of the current profile. Treat these numbers as diagnostic evidence for prioritizing the next independent review and dataset work.
+
+
+### Paired standard-versus-Extended IPA benchmark — 2026-11-26
+
+Added a reproducible A/B-style layer diagnostic on the existing benchmark branch:
+- `scripts/benchmark_extended_ipa_ab.mjs` runs standard strict IPA and Extended phonemic/broad/narrow through the same Kozak Kim browser engine and identical corpus occurrences.
+- `tests/benchmark-extended-ipa-ab.test.mjs` asserts the paired standard-vs-Extended-broad output is identical by design and that phonemic/narrow layers are independently surfaced.
+- `.github/workflows/multi-engine-ipa-benchmark.yml` now runs the paired diagnostic on the pinned UGTPHON and SIGMORPHON inputs and uploads a per-occurrence artifact.
+
+**Interpretation guardrails:** Extended broad wraps the same strict broad renderer as standard IPA; therefore any identical scores are expected and are not a model improvement. Phonemic and narrow scores are cross-layer reference agreement unless the corpus gold layer is verified as compatible. Neither corpus is independently adjudicated narrow-IPA gold. This run does not score Ukrainian output and does not touch the second Korean engine.
+
+**Run status at handoff update:** workflow run `45893331177` was pending. No A/B scores or successful test claim are made until the run and artifact are inspected.
+
+
+#### Final paired-benchmark execution checkpoint
+
+- Code checkpoint: `f377f16048035918f0bd50a50d5394ac1737e408`.
+- Workflow run `45893480948`: pending at the last poll; no job records/artifact yet. Earlier attempts on intermediate commits were cancelled before jobs started.
+- The paired regression and A/B scores therefore remain **PENDING**, not passed. Inspect the run and the `standard-vs-extended-ipa-ab` artifact before reporting any numbers.
+- The code branch and docs are committed; the benchmark scope is still limited to Kozak Kim, and the second Korean engine remains untouched.
+### 2026-11-26 — final Extended IPA exact-head verification and paired diagnostic
+
+**Repository checkpoint**
+- Default branch: main; starting/base commit: 97bb411df8b998b22cd58adda015fb941201950c.
+- Reused the existing dedicated branch feat/kozak-kim-extended-ipa-2026-11-26 and open PR #509; no duplicate branch or implementation was created.
+- Exact implementation head inspected: d19c5686ef8031cdcbfc2be10e1a0fe0c30ee33e. PR base is the starting main commit; PR remains open and unmerged.
+- PR #509 contains 32 changed files (+2,736 / -30). The feature remains a research preview.
+
+**Exact-head software verification on d19c5686ef8031cdcbfc2be10e1a0fe0c30ee33e**
+- PASS Tests workflow 45893570996: wheel-install, Python 3.11, Python 3.12, Python 3.13, web suite and teacher-corpus audit.
+- PASS Verify workflow 45893570785: browser regression/build and Python regression/data integrity. NIKL metadata-only inventory was SKIPPED by policy, not passed.
+- PASS Browser G2P integration 45893570769.
+- PASS Editorial rendered review 45893570937.
+- PASS Master table/research artifacts 45893570751 and 45893567090.
+- PASS Exhaustive test-register extraction 45893570926.
+- PASS External UGTPHON diagnostic 45893570755.
+- PASS Paired native-vs-g2pk diagnostic 45893570887.
+- PASS Korean morphology-consensus diagnostic 45893570790 and research morphology adapter smoke 45893570788.
+- PASS Multi-engine Korean IPA diagnostic 45893570737. Its Python 3.12 job completed the pinned engine portfolio, Native/Browser diagnostics and paired standard-vs-Extended IPA step. Neural ByT5, CharsiuG2P and neural-pairing jobs were SKIPPED by workflow policy.
+- PASS Optional g2pK integration 45893571029.
+- Earlier paired run 45893480948 on intermediate head f377f16048035918f0bd50a50d5394ac1737e408 was cancelled; it is superseded by the successful exact-head run.
+
+**Paired standard-vs-Extended diagnostic artifact inspected**
+- Artifact 15153601014, standard-vs-extended-ipa-ab-45893570737, was downloaded and its JSON inspected.
+- UGTPHON: 2,703 eligible / 2,702 scored; standard IPA and Extended broad are identical on all 2,703 paired occurrences (0 prediction differences, 0 status differences); exact match 52.7387%, CER 9.013%.
+- SIGMORPHON: 999 eligible / 998 scored; standard IPA and Extended broad are identical on all 999 paired occurrences; exact match 35.8717%, CER 14.5598%.
+- Extended phonemic reference agreement: UGTPHON 20.2073% exact / 23.4737% CER; SIGMORPHON 12.9259% / 26.6742%.
+- Extended narrow reference agreement: UGTPHON 55.8845% exact / 7.2217% CER; SIGMORPHON 39.6794% / 12.6912%.
+- Interpretation: benchmark references are not independently adjudicated phonemic or narrow IPA gold. Phonemic/narrow values are cross-layer string-agreement diagnostics, not accuracy estimates. Extended broad is intentionally the same renderer as Standard IPA, so identical results are expected and are not an uplift. The benchmark does not score Ukrainian target adaptation.
+
+**Architecture findings**
+- Python exposes a typed schema-v1.1 extended_ipa object with phonemic, broad and narrow layers, source/boundary/trace/variant data, nullable speaker/prosody context and separate acoustic annotations. Text-only requests leave speaker/prosody fields null and acoustic annotations empty.
+- Python phonemic output is built from the underlying syllable parse; broad/narrow are built from shared surface analysis. Narrow profile v6 removed the unsupported categorical post-sonorant [ɦ] substitution and leaves weakening/deletion unresolved.
+- Browser output has a dedicated deterministic Hangul onset–nucleus–coda inventory adapter, not the old Super-soft fallback. It is not equivalent to Python underlying phonological analysis; exhaustive phonemic parity remains open. For 시, canonical broad /s/ and optional source-scoped [ɕ] are distinguished rather than forcing a universal categorical assertion.
+- IPA-to-Ukrainian boundary: the existing ordinary pipeline uses IPA as the source for Korean-specific IPA-to-Ukrainian correspondences. Extended IPA is deliberately not yet fed to that target adapter: all Extended profiles remain target_compatible=false, the compatibility allowlist is empty, and the Extended panel says Ukrainian output is unchanged. This is correct fail-closed behavior while independent Korean IPA adjudication and Ukrainian target review are absent. Do not claim that Extended IPA already produces a newly adapted Ukrainian result.
+- No independent Korean phonetic gold, speaker-conditioned acoustic measurements or approved Ukrainian target mapping was found.
+
+**Task ledger**
+- DONE_VERIFIED: exact-head Python 3.11/3.12/3.13, wheel install, web tests, Verify, Browser G2P, rendered review, research artifact generation, test-register extraction and named diagnostics.
+- DONE_VERIFIED: paired A/B benchmark executed and artifact inspected; results and limitations are recorded above.
+- PARTIAL: Python/browser Extended IPA contract exists, but browser phonemic analysis is inventory-derived and not parity-equivalent to Python; broad convention reconciliation remains source-/profile-scoped.
+- PARTIAL: narrow IPA v6 is an evidence-scoped research profile, not a validated narrow transcription model or independently adjudicated output.
+- PARTIAL: UI is wired and rendered review passed; manual assistive-technology/keyboard acceptance and broader accessibility/performance evidence are not established by rendered CI.
+- BLOCKED: independent Korean phonetic adjudication and layer-aligned speaker-/dialect-conditioned gold. Acceptance requires qualified reviewers, frozen annotation guidelines, two independent labels and adjudication with agreement reported by process/context.
+- BLOCKED: rights-cleared audio/label pilot. Acceptance requires dataset-specific terms or written agreement, approved purpose, and explicit permission for any redistributed derived annotations.
+- BLOCKED: Extended IPA Ukrainian target compatibility. Acceptance requires independent Korean IPA adjudication, frozen IPA test set, independent Ukrainian target review, reviewed correspondence inventory and parity/regression checks before allowlisting a profile.
+- TODO: exhaustive Python/browser phonemic parity over the frozen Hangul inventory and adversarial mixed-input/source-span fixtures; resolve mismatches with documented linguistic conventions, not relaxed tests.
+- TODO: benchmark split by source lineage and speaker, with layer-aligned independently adjudicated gold for phonemic, broad, narrow and Ukrainian adaptation.
+- DEFERRED / SKIPPED: optional neural inference jobs and NIKL metadata-only inventory; skips are not passes and no neural model is required for deterministic inference.
+
+**Local execution limitation**
+- Attempted git clone of the public repository; it failed before checkout because this environment could not resolve github.com (Could not resolve host: github.com). No local shell, pytest, npm, build or browser command is claimed. GitHub Actions is the executable verification evidence for the exact code SHA.
+- The Superpowers connector/tool was not available as an executable tool in this session; the repository's existing Superpowers spec and plan were inspected and updated in place.
+
+**Readiness:** research-preview software implementation with green exact-head CI and an inspected paired diagnostic. It is not beta-ready or production-ready and is not independently research-certified. The next genuine blockers are independent phonetic adjudication, rights-cleared acoustic data, full Python/browser parity, and independent Ukrainian target review.
+**Additional model-data gap identified during final schema inspection**
+- **PARTIAL:** schema v1.1 stores layer-level IPA strings, syllable/boundary records, variants and layer-typed rule traces, but it does not yet expose a complete per-segment typed IPA inventory with segment feature bundles, segment-local source spans, diacritics/length as structured fields and per-segment provenance. The present trace is not a substitute for this segment-level representation.
+- **TODO:** design and validate segment objects only after defining a Unicode-safe IPA tokenizer/segment contract for tie bars, combining diacritics, affricates and length marks; preserve raw IPA strings and backwards compatibility. Acceptance requires round-trip serialization and Python/Browser parity fixtures for each IPA segment/diacritic class.
+### Open PR / branch reconciliation
+
+- **PR #509 — reused and continued:** the active Extended IPA branch is based directly on the inspected current main checkpoint 97bb411df8b998b22cd58adda015fb941201950c. It remains open, Draft and unmerged. No competing Extended IPA branch was created.
+- **PR #507 — left untouched:** separate Strict/Soft/Super-soft coverage contract. Its base is older commit 0018e3ed292aab21bbac24d2eb702d362de5af90; compare with current main reports 19 commits ahead and 1 behind. It touches engine.js, main.js, the browser benchmark runner and coverage tests. It was not merged or ported because its branch is divergent and its scope is the separate three-mode coverage contract.
+- **PR #505 — left untouched:** its feature branch is 30 commits ahead and 8 behind current main and changes overlapping core runtime files including pipeline.py and ipa.py, as well as engine conversion/rule modules and lexical data. It is a divergent benchmark/phonetic-advancement branch, not a safe drop-in dependency for PR #509. No commits were cherry-picked and no conflicting core implementation was silently combined.
+- **PR #506 — left untouched:** baseline-only branch based on the pre-change benchmark anchor; its stated delta is a trailing comment in the benchmark runner. It is retained as historical baseline evidence and was not merged.
+- Recently merged PRs and current mainline implementation were preserved. No PR was merged, closed, rebased, force-pushed or deleted during this run.
+

@@ -328,6 +328,7 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status,
       const mapped=alternateIpa.map(value=>ipaSyllableToUkrainian(value,{allowProvisional:true}));
       variants.push({
         source:text,
+        syllable_indices:[i],
         surface:text,
         ukrainian:mapped.map(item=>item.text??'').join(''),
         ipa:renderStructured(units,alternateIpa,'.'),

@@ -105,6 +105,10 @@
           <input type="checkbox" id="super-soft-morphology" hidden>
         </div>
         <p class="soft-morphology-hint">Детальні правила й межі впевненості — <a href="./system.html#methodology-02c-kozak-kim">у методології</a>.</p>
+        <label class="extended-ipa-toggle" for="extended-ipa-enabled">
+          <input id="extended-ipa-enabled" type="checkbox">
+          <span><strong>Розширений IPA</strong><small>Окремі фонемний, широкий і частковий вузький рівні з поясненнями та джерельними позначками. Не змінює український результат.</small></span>
+        </label>
       </div>
     <div class="action-row">
 <div class="action-cell">
@@ -160,6 +164,19 @@
       </article>
     </div>
 
+    <section id="panel-extended-ipa" class="extended-ipa-panel result-card" aria-labelledby="extended-ipa-heading" hidden>
+      <h3 id="extended-ipa-heading">Розширений IPA · дослідницький перегляд</h3>
+      <p class="extended-ipa-caveat">Рівні не є взаємозамінними. Вузька транскрипція поки часткова й не пройшла незалежну фонетичну перевірку; вона не є автоматично точнішою.</p>
+      <div class="extended-ipa-layers">
+        <article><h4>Фонемний рівень · underlying inventory</h4><p id="extended-ipa-phonemic" class="result-body ipa"></p><p id="extended-ipa-phonemic-status" class="results-note"></p></article>
+        <article><h4>Широкий IPA</h4><p id="extended-ipa-broad" class="result-body ipa"></p></article>
+        <article><h4>Вузький IPA · частковий</h4><p id="extended-ipa-narrow" class="result-body ipa"></p></article>
+      </div>
+      <p id="extended-ipa-status" class="results-note"></p>
+      <details><summary>Варіанти</summary><div id="extended-ipa-variants"></div></details>
+      <details><summary>Правила, контексти й джерела</summary><div id="extended-ipa-trace"></div></details>
+      <details><summary>Акустичні вимірювання й контекст мовця</summary><p id="extended-ipa-context"></p></details>
+    </section>
     <p id="copy-feedback" class="copy-feedback" role="status" hidden></p>
     <div id="issue-state" class="issue-state" hidden><p id="issue-text"></p></div>
     <details id="variant-panel" class="trace-panel trace-disclosure variant-panel" hidden>

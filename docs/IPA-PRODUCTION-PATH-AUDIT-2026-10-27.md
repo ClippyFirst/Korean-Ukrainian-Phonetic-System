@@ -100,3 +100,10 @@ The test matrix passed wheel installation, Python 3.11/3.12/3.13, web tests/buil
 - **Scientific/data gates:** independent broad/narrow IPA adjudication and the `ㅆ` cross-runtime discrepancy remain `BLOCKED / EVIDENCE-LIMITED`; the compatible-profile allowlist intentionally remains empty; Ukrainian target-inventory acceptance is `BLOCKED` pending IPA adjudication; NIKL source inventory is `BLOCKED`; teacher/checkpoint rights remain `BLOCKED`.
 - **Local verification:** no local test run is claimed; outbound DNS to GitHub was unavailable in the working container. CI evidence above is from GitHub Actions.
 - **PR/readiness:** PR #339 remains open and Draft, unmerged. No release performed. Overall status remains **research-ready partial prototype, not release-ready**.
+
+
+## 2026-11-26 — Extended IPA implementation checkpoint
+
+Draft PR #509 adds a typed three-layer result contract, Python pipeline output, a browser research adapter and an opt-in Kozak Kim UI panel. The narrow profile is v6; the previous categorical post-sonorant [ɦ] substitution was removed after source review. A first-pass phonetics evidence review and corpus-rights register have been added. This is a research preview, not a release feature.
+
+The browser phonemic layer remains unavailable; Python/browser narrow parity has not yet been established. The Ukrainian target adapter is unchanged and narrow IPA remains target-incompatible. Exact-head CI was still running at the time of this checkpoint. Do not report benchmark gains or release readiness.

@@ -1,3 +1,88 @@
+## Final follow-up — 2026-11-27 — explicit rule-sequence semantics
+
+**Latest code head:** `a4aa821b1cc16b1fa755a34f3d2c89e624538401` on `feat/kozak-kim-extended-ipa-2026-11-26`; PR #509 remains Draft/Open/Unmerged.
+
+- Fixed a subtle API bug: `rule_ids=[]` previously fell through to the default canonical rule list because the implementation used truthiness. The runtime now defaults only when `rule_ids is None`; any explicit iterable is preserved as a tuple, including an empty sequence.
+- Added regression: `apply_ordered_rules(parse_syllables("낫"), [])` leaves the written coda unchanged and returns no rule traces.
+- Exact-head verification on documentation head `4d990e53adc0d3064d917885de626860a804bed5`: [Tests 45905500937](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45905500937) PASS (full Python suite on 3.11/3.12/3.13, wheel install, web tests); [System Verify 45905500843](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45905500843) PASS (Python regression/data integrity and browser regression/build); [Master/research artifacts 45905501058](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45905501058) PASS. Additional exact-head diagnostics: Browser G2P 45905500860 PASS; external UGTPHON 45905500854 PASS; morphology consensus 45905500841 PASS; test-register extraction 45905500831 PASS; teacher split audit 45905500993 PASS; optional g2pK 45905500952 PASS; research morphology smoke 45905500851 PASS; editorial review 45905500835 PASS. NIKL metadata-only inventory was SKIPPED by policy.
+- NIKL metadata-only inventory was SKIPPED by policy. This is not a source-validation pass.
+- Multi-engine benchmark [45905265901](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45905265901) was still executing on code head `a4aa821b`; the corresponding run on the documentation head was queued as [45905500866](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45905500866) at the time of this record. No multi-engine result is claimed until that workflow completes.
+- Python regression emits a diagnostic warning documenting two pre-existing Python/browser-port divergences: `넓죽하다` and `읽고`. The Python native engine agrees with g2pk and the recorded NIKL practical adapter on these cases; the raw browser JS port differs. IPA gold is not independently adjudicated. This remains a browser/Python parity TODO, not silently fixed here.
+- Paired native-vs-g2pk diagnostic [45905500815](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45905500815), run on code head `a4aa821b` (the same runtime code as the current docs head), used 275 UGTPHON Korean test sentences and 2,702 paired tokens: native 1,425/2,702 exact (52.7387%), CER 0.090130; g2pk 1,435/2,703 exact (53.0892%), CER 0.092328. On the paired subset, g2pk exact rate is +0.003701 but CER is +0.002207 (worse). Diagnostic only; no rule selection or accuracy claim follows.
+- Charsiu inference remained SKIPPED by the workflow condition: the workflow runs only on manual dispatch or when the PR has the `enhancement` label. No label was added and no model inference was claimed. Existing teacher candidate records remain hypotheses; no teacher-derived production rule was added.
+- No local pytest/npm/build was run: local clone had previously failed because this runtime could not resolve github.com. GitHub Actions provides the exact-head verification evidence.
+- No PR was merged, no branch deleted, no force-push, release or deployment occurred.
+
+**Disposition:** deterministic rule-plan and API semantics are software-verified; overall Korean phonology remains a research prototype. Open work: typed segment-level IPA IR; full browser/Python shared analysis/parity; independent layer-matched phonetic gold; independently reviewed Ukrainian target correspondences; source-adjudicated new rule candidates. The core runtime remains neural-free.
+
+## Execution continuation — 2026-11-27 — deterministic model-free rule engine
+
+**Status: DONE_VERIFIED for the implemented software increments; overall engine remains a research prototype.**  
+**Main baseline:** `97bb411df8b998b22cd58adda015fb941201950c`.  
+**Working branch:** `feat/kozak-kim-extended-ipa-2026-11-26`, based on main and reused from the existing dedicated PR workstream.  
+**Starting branch head:** `0c1cd8ef2a36f4654a7722058254964e00a49303`.  
+**Verified code head:** `53a13c43954d700e3676c9c651bf0d6a7032d084`.  
+**PR:** [#509](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/509), still Draft/Open/Unmerged.
+
+### Owner-approved runtime contract
+
+- The shipped pronunciation engine contains no neural network, inference, weights, embeddings, model API, sampling, or probability-based runtime ranking.
+- The core package has no required runtime dependencies; an AST regression guard checks the main runtime modules for ML-inference imports.
+- Neural teacher outputs may be studied offline as research evidence only. Candidate patterns are not production rules until manually reviewed against primary linguistic evidence and independent controls.
+- No rule or IPA/UA mapping was promoted from neural-teacher outputs in this continuation.
+
+### Implemented work
+
+1. Added an immutable, standard-library-only rule execution plan that validates `rules.csv` against `rule_ordering.csv`. It rejects missing/unknown/duplicate IDs, duplicate or invalid preferred positions, and malformed required columns; blank CSV rows are ignored. There is no hard-coded fallback order.
+2. Replaced the duplicate Python default rule list with the validated canonical CSV order. Explicit diagnostic rule sequences retain caller-supplied order.
+3. Added wheel-install smoke coverage proving the canonical plan and runtime trace are available after package installation, not only from a source checkout.
+4. Added model-free runtime dependency/import regression tests.
+5. Improved the offline teacher-pattern miner: it attributes teacher/strict disagreements to context pairs only when explicit dot-delimited IPA syllables align one-to-one with Hangul syllables and word boundaries. Unaligned rows remain visible but are excluded from context-level candidate rates. The report schema is now 1.1. Candidate mining remains association-only and never auto-generates or promotes runtime rules.
+
+### Task ledger
+
+| Work item | Status | Evidence / acceptance |
+|---|---|---|
+| Canonical rule catalogue/order validation | DONE_VERIFIED | Full Python suite; invalid, missing, unknown, duplicate and order cases tested |
+| Runtime default order sourced from canonical CSV | DONE_VERIFIED | Runtime trace order test; explicit override order test |
+| Installed wheel carries and resolves rule data | DONE_VERIFIED | Wheel-install smoke PASS |
+| Core runtime has no ML inference dependency/import | DONE_VERIFIED | pyproject dependency guard and runtime AST import guard PASS |
+| Offline teacher pattern alignment | DONE_VERIFIED | RED test observed before implementation; aligned/unaligned/multi-eojeol tests PASS |
+| New teacher-derived production rules | DEFERRED | Charsiu workflow skipped by policy; no model outputs were available; source adjudication still required |
+| Typed segment-level IPA IR and Python/browser shared contract | TODO | Implement shared segment records and remove divergent browser-side phonemic adapter; preserve IPA-first target consumption |
+| Independent Narrow IPA gold and Ukrainian target validation | BLOCKED | Requires qualified independent adjudication and compatible licensed evidence |
+
+### Exact-head verification
+
+- Tests / Python 3.11, 3.12, 3.13 / wheel install / web tests and build: PASS — [run 45904119310](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119310).
+- System Verify: PASS — [run 45904119391](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119391).
+- Browser G2P integration: PASS — [run 45904119145](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119145).
+- Master/research artifacts: PASS — [run 45904119237](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119237).
+- Exhaustive test-case register: PASS — [run 45904119295](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119295).
+- External UGTPHON diagnostic: PASS — [run 45904119312](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119312).
+- Optional g2pK integration: PASS — [run 45904119357](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119357).
+- Paired native/g2pk diagnostic: PASS — [run 45904119438](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119438).
+- Korean morphology-consensus diagnostic: PASS — [run 45904119286](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119286).
+- Research morphology adapter smoke: PASS — [run 45904119195](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119195).
+- Teacher corpus split audit: PASS — [run 45904119233](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119233).
+- Editorial visual review (no UI files changed): PASS — [run 45904119692](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119692).
+- Charsiu train/dev model-inference rule-review workflow: SKIPPED by its existing policy gate — [run 45904119457](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119457); no teacher outputs were available or used.
+- Multi-engine IPA benchmark: PENDING with no jobs started at audit time — [run 45904119230](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45904119230). No benchmark improvement is claimed.
+- Local clone and local pytest/npm were unavailable: git clone failed because this runtime could not resolve github.com. GitHub Actions supplied the executable verification evidence.
+
+### Debugging record and scope
+
+- The first TDD run failed because the new module/API did not yet exist; this was the expected RED state.
+- An intermediate run exposed two test-contract issues: an empty ordering file was rejected before the missing-rule diagnostic, and an unknown-ID fixture simultaneously contained a missing rule. The loader was corrected to validate the intended incomplete-order case, and the fixture was isolated so each invariant is tested independently.
+- The pattern-miner tests then failed before implementation because syllable-alignment metadata did not exist; the implementation added conservative alignment and fail-closed exclusion.
+- No phonological rewrite semantics, rule contents, Ukrainian target correspondences, practical g2pK baseline, vendor files, UI or deployment settings were changed.
+- No PR was merged, no branch deleted, no force-push and no release/deployment were performed.
+- Other previously reviewed PRs #505, #506 and #507 remain untouched because their scopes overlap or are independent of this continuation.
+
+**Readiness:** software-verified deterministic rule-execution increment; not release-ready or independently research-certified. The next real blocker is the absence of reviewed teacher-pattern outputs and typed shared IPA analysis—not a need to embed a neural model in the runtime.
+
+---
+
 ## 2026-11-08 closure — documentation and source-register reconciliation
 
 - Main before this matrix refresh: `54c50b819f0d18188626f1407373d5de21960ddf`; benchmark/runtime snapshot remains `668dbad14568e8472594937558500500102b3f95`.

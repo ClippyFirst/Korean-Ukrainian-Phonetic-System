@@ -2,6 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from .phonology import Syllable, split_coda
 from .soft_morphology import soft_formal_licenses, merge_licenses, mark_heuristic_trace
+from .rule_plan import default_rule_ids
 
 FINAL_REPRESENTATIVE={"ㄳ":"ㄱ","ㄵ":"ㄴ","ㄶ":"ㄴ","ㄺ":"ㄱ","ㄻ":"ㅁ","ㄼ":"ㄹ","ㄽ":"ㄹ","ㄾ":"ㄹ","ㄿ":"ㅂ","ㅀ":"ㄹ","ㅄ":"ㅂ","ㅅ":"ㄷ","ㅆ":"ㄷ","ㅈ":"ㄷ","ㅊ":"ㄷ","ㅌ":"ㄷ","ㅎ":"ㄷ","ㄲ":"ㄱ","ㅋ":"ㄱ","ㅍ":"ㅂ"}
 PLAIN_TO_FORTIS={"ㄱ":"ㄲ","ㄷ":"ㄸ","ㅂ":"ㅃ","ㅅ":"ㅆ","ㅈ":"ㅉ"}
@@ -930,10 +931,9 @@ def apply_ordered_rules(
     if boundary_mode not in {"unknown", "same_word", "morpheme", "word", "phrase"}:
         raise ValueError("invalid boundary_mode")
 
-    ids = rule_ids or [
-        "R009", "R003", "R002", "R004", "R006", "R005", "R007",
-        "R010", "R011", "R012", "R013", "R014", "R015", "R016", "R008", "R001",
-    ]
+    # The canonical CSV plan is the only default ordering source. Explicit
+    # diagnostic sequences remain caller-controlled and are never reordered.
+    ids = default_rule_ids() if rule_ids is None else tuple(rule_ids)
     exact = list(rule_licenses or ())
     # Use exact-form licenses for source-listed examples in NIKL §§25–30.
     # Other words still need an explicit caller license or verified morphology.

@@ -487,3 +487,17 @@ button { color: inherit; }
 
 .target-status-note{margin:9px 0 0;color:var(--muted);font-size:.76rem;line-height:1.45;text-align:left;overflow-wrap:anywhere}
 .target-status-note[hidden]{display:none}
+
+/* Extended IPA research view: separate layers, explicit limitations. */
+.extended-ipa-toggle{display:flex;align-items:flex-start;gap:12px;margin-top:16px;padding:14px;border:1px solid var(--line);background:var(--surface);cursor:pointer}
+.extended-ipa-toggle input{margin-top:5px;accent-color:var(--blue)}
+.extended-ipa-toggle span{display:grid;gap:3px}
+.extended-ipa-toggle small{color:var(--muted);line-height:1.5}
+.extended-ipa-panel{margin-top:18px}
+.extended-ipa-caveat{padding:10px 12px;border-left:3px solid var(--warning);background:var(--surface-soft);color:var(--muted)}
+.extended-ipa-layers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.extended-ipa-layers article{min-width:0;padding:14px;border:1px solid var(--line);background:var(--surface)}
+.extended-ipa-layers h4{margin:0 0 8px;font-size:.9rem}
+.extended-ipa-panel details{margin-top:12px;padding:10px;border-top:1px solid var(--line)}
+.extended-ipa-panel details p{overflow-wrap:anywhere;color:var(--muted);font-size:.86rem}
+@media(max-width:760px){.extended-ipa-layers{grid-template-columns:1fr}}

@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.1",
+  "description": "Runtime comparison smoke fixtures. Not independent phonetic gold; known runtime differences are explicit.",
+  "cases": [
+    {
+      "source": "시",
+      "python": {
+        "phonemic": "si",
+        "broad": "si",
+        "narrow": "ɕʰi"
+      },
+      "browser": {
+        "phonemic": "si",
+        "broad": "si",
+        "narrow": "ɕʰi"
+      },
+      "known_differences": []
+    },
+    {
+      "source": "감히",
+      "python": {
+        "phonemic": "kam.hi",
+        "broad": "kam.hi",
+        "narrow": "kam.çi"
+      },
+      "browser": {
+        "phonemic": "kam.hi",
+        "broad": "kam.hi",
+        "narrow": "kam.çi"
+      },
+      "known_differences": []
+    },
+    {
+      "source": "안하",
+      "python": {
+        "phonemic": "an.ha",
+        "broad": "an.ha",
+        "narrow": "an.ha"
+      },
+      "browser": {
+        "phonemic": "an.ha",
+        "broad": "an.ha",
+        "narrow": "an.ha"
+      },
+      "known_differences": []
+    }
+  ]
+}

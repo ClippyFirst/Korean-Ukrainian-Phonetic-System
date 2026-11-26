@@ -199,3 +199,10 @@ The closed Python and browser R016 inventories now also include `읽거든 → �
 
 Official normative source: [NIKL Standard Pronunciation Rules](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002); the source's §11 explanation explicitly contrasts the verbal-stem behavior in `읽고[일꼬]` and `읽거든[일꺼든]` with the ordinary ㄺ coda rule.
 
+
+
+## Extended IPA evidence correction — 2026-11-26
+
+The narrow profile has been versioned from v5 to v6. The previous implementation selected [ɦ] categorically after a same-word sonorant coda even though the cited /h/-after-sonorant studies report optional voicing/weakening/deletion and residual effects, not a universal [ɦ] output. Version 6 retains /h/ in the default narrow string for that context and records the variable weakening/deletion as unresolved. This is an evidence correction, not a claim that the alternative realizations do not occur.
+
+The [ɲ] mapping remains restricted to selected /j/-initial nuclei and excludes /i/; the UCL thesis is a secondary literature source and Ahn (2009) is an initial /n/-deletion study, not direct proof of a general [ɲ] rule. Kang (2010) supports context-dependent sibilant coarticulation but not a universal [ɕ] categorical mapping. Independent phonetic adjudication is still required.

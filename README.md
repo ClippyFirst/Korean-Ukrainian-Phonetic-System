@@ -908,3 +908,12 @@ The browser research engine now distinguishes three levels by confidence/coverag
 - **Super-soft:** grapheme-only decomposition of modern Hangul onset/vowel/coda Jamo → underlying IPA → Ukrainian adapter. No contextual assimilation, liaison, fortition, palatalization, morphology or lexical vowel-length inference is added by this fallback.
 
 PR #466 merged to `main` as `fa2998acaa0fdd154c9b4d3c1927778f77bac199`. Exact-head PR checks passed: Verify, tests, Browser G2P, UGTPHON diagnostic, exhaustive test register and master/research artifacts. Mainline Pages run [42858765455](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42858765455): Python 3.11/3.12/3.13 checks, browser regression/build, deployment and public-page smoke test **PASS**; live adversarial practical-mode browser smoke remains in progress. Fresh three-mode benchmark [42858765799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42858765799) is still running; do not attribute old benchmark scores to the new mode semantics. Neural inference jobs and NIKL metadata-only inventory are skipped by their configured policy, not passed.
+
+
+## Extended IPA research preview (Kozak Kim)
+
+A draft, opt-in Extended IPA research view is being developed under Kozak Kim's Research mode. It separates phonemic, broad and narrow IPA layers; exposes source-aligned rule traces, contextual variants and uncertainty; and provides separate nullable speaker/prosody context and acoustic-measurement annotations.
+
+Current limitations are explicit: the browser phonemic display is a deterministic underlying onset–nucleus–coda inventory adapter (not independently adjudicated phonemic gold); the broad layer now uses the shared versioned strict profile in both runtimes, with canonical /s/ and an optional source-scoped [ɕ] variant before /i, ye, ya/; the narrow contextual profile remains partial/research-only and is not approved as input to the Ukrainian target adapter. The Extended IPA panel uses its own strict broad profile and does not inherit Soft/Super-soft heuristics. Text-only input does not invent speaker or acoustic data. The existing Ukrainian output, practical g2pK mode and Strict / Soft / Super-soft coverage modes remain unchanged.
+
+The feature is under draft PR #509 and is not release-ready. See docs/EXTENDED-IPA-EVIDENCE-REVIEW-2026-11-26.md, docs/KOREAN-IPA-RUNTIME-PROFILE-CONTRACT-2026-10-27.md and schemas/ipa-profile-result.schema.json for scope, evidence, contract and acceptance gates.
