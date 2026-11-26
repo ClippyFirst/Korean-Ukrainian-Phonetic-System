@@ -116,4 +116,5 @@ Verified branch head: d19c5686ef8031cdcbfc2be10e1a0fe0c30ee33e (PR #509; base ma
 ### Final status
 
 The implementation and exact-head software checks are verified, but the mode remains a research preview. The paired benchmark confirms that Extended broad is identical to Standard IPA by contract; phonemic and narrow scores are cross-layer agreement only, not accuracy. The Extended target adapter remains intentionally fail-closed because no profile is adjudicated target-compatible. No independent narrow gold, rights-cleared acoustic corpus pilot or Ukrainian target approval is present.
+- [ ] Add a segment-level typed IPA model with Unicode-safe tokenization, feature bundles, segment-local source spans, structured length/diacritics and per-segment provenance; preserve raw layer strings and verify Python/Browser round-trip parity.
 
