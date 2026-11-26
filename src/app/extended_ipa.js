@@ -165,6 +165,10 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
   if (typeof source !== 'string' || !engineResult || typeof engineResult !== 'object') throw new TypeError('source and engine result are required');
   const sourceTrace = Array.isArray(engineResult.trace) ? engineResult.trace : [];
   const variants = [], boundaries = [], trace = [], syllableSpans = [];
+  for (const item of (phonemicResult?.trace || [])) {
+    trace.push({ layer: 'phonemic', source_span: item.source_span || null, source: item.source || '', surface: null, ipa: item.ipa ?? null, rule_ids: [], environment: 'underlying onset+nucleus+coda inventory; no surface rules', evidence_refs: [], evidence_status: phonemicResult.evidence_status || 'deterministic-underlying-phonemic-inventory', status: item.status || 'underlying-phonemic-grapheme-derived' });
+  }
+  for (const boundary of (phonemicResult?.boundaries || [])) boundaries.push(boundary);
   let cursor = 0, previousHangul = null, boundarySincePrevious = true;
   let narrowIpa = '', previousWasHangul = false;
   for (const item of sourceTrace) {
@@ -189,7 +193,7 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
     } else previousWasHangul = false;
     if (span) { boundaries.push({ offset: span.end, kind: 'syllable' }); syllableSpans.push(span); }
     trace.push({
-      source_span: span, source: value, surface: item.surface || value, ipa: derived.ipa,
+      layer: 'narrow', source_span: span, source: value, surface: item.surface || value, ipa: derived.ipa,
       rule_ids: [...new Set([...(Array.isArray(item.rules) ? item.rules : []), ...derived.rules])], environment: derived.environment,
       evidence_refs: derived.refs,
       evidence_status: derived.evidence.map(entry => entry.status).join(';') || (item.rules?.length ? 'browser-runtime-rule-trace-requires-review' : 'no-narrow-rule-applied'),
@@ -198,7 +202,14 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
     previousHangul = item;
     boundarySincePrevious = false;
   }
-  if (engineResult.pronunciation_status === 'unresolved' || sourceTrace.some(item => ['unresolved','unsupported-jamo'].includes(item.status))) narrowIpa = '';
+  const hasUnresolvedSource = engineResult.pronunciation_status === 'unresolved' || sourceTrace.some(item => ['unresolved','unsupported-jamo','unsupported'].includes(item.status));
+  if (hasUnresolvedSource) narrowIpa = '';
+  trace.sort((a, b) => {
+    const left = a.source_span?.start ?? Number.MAX_SAFE_INTEGER;
+    const right = b.source_span?.start ?? Number.MAX_SAFE_INTEGER;
+    const order = { phonemic: 0, broad: 1, narrow: 2 };
+    return left - right || (order[a.layer] ?? 3) - (order[b.layer] ?? 3);
+  });
   const result = {
     schema_version: '1.0',
     mode: 'extended-ipa',
@@ -229,7 +240,7 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
         ipa: narrowIpa,
         profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v6',
         profile_version: 6, level: 'narrow',
-        status: engineResult.pronunciation_status === 'unresolved' ? 'diagnostic-only-unresolved-source' : 'partial-research-only',
+        status: hasUnresolvedSource ? 'diagnostic-only-unresolved-source' : 'partial-research-only',
         evidence_status: 'partial-source-scoped-hypotheses-not-independently-reviewed',
         target_compatible: false
       }
