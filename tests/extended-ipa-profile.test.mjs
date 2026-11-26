@@ -20,6 +20,7 @@ test('Extended IPA contract exposes separate layers without changing the default
   const sibilantVariant = result.variants.find(item => item.ipa === 'ɕi');
   assert.ok(sibilantVariant, 'the source-scoped [ɕ] realization remains available as an optional variant');
   assert.equal(sibilantVariant.selected, false);
+  assert.deepEqual(sibilantVariant.source_span, { start: 0, end: 1 });
   assert.match(sibilantVariant.environment, /Kang 2010/);
   assert.equal(result.layers.narrow.ipa, 'ɕʰi');
   assert.equal(result.layers.narrow.status, 'partial-research-only');
