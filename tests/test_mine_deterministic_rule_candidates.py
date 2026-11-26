@@ -171,7 +171,7 @@ def test_cli_writes_reproducible_json_report(tmp_path, capsys):
     assert exit_code == 0
     assert output_path.exists()
     report = json.loads(output_path.read_text(encoding="utf-8"))
-    assert report["schema_version"] == "1.0"
+    assert report["schema_version"] == "1.1"
     assert report["summary"]["case_count"] == 3
     assert json.loads(capsys.readouterr().out)["case_count"] == 3
 
