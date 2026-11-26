@@ -1679,3 +1679,24 @@ The official AI Hub FAQ [S036] clarifies that raw/original dataset files cannot 
 - Exact-head Verify run `45864970104` and pinned UGTPHON diagnostic `45864970001` were created for the handoff commit but remained queued when checked; no passing test result is claimed.
 - Remaining status is unchanged: research preview only, not release-ready; broad-runtime difference, independent phonetic adjudication, acoustic-corpus rights, target review and CI completion remain open.
 
+### Exact-head CI failure triage — 2026-11-26
+
+The workflows associated with the preceding branch checkpoint completed. Their results were not all green:
+
+- Verify `45865436205`: Python and browser test jobs failed; build and later steps were skipped.
+- Browser G2P `45865436196`: browser tests failed; build was skipped.
+- Test suite `45865436293`: web tests failed; Python 3.13 failed; Python 3.11/3.12 were cancelled after the matrix failure; wheel build/install passed; teacher-corpus audit passed.
+- Research/diagnostic workflows `45865436523` (master/research artifacts), `45865436478` (UGTPHON diagnostic), `45865436465` (optional g2pK integration), `45865436440` (morphology adapter smoke), `45865436301` (morphology-consensus diagnostic), `45865436141` (native-vs-g2pk diagnostic), `45865436367` (multi-engine diagnostic), `45865436446` (test-register extraction), and `45865436555` (editorial review) completed successfully. Charsiu rule-review queue `45865436297` was skipped by policy.
+
+**Failure causes inspected from job logs:**
+
+1. Python and browser Extended IPA tests incorrectly expected `값` to begin with `p`. The actual underlying onset is ㄱ, mapped to /k/; the complex coda ㅄ is decomposed as /ps/. Therefore the deterministic underlying inventory result is `kaps`, not `paps`. The implementation was correct; both assertions were corrected to `kaps`.
+2. The Extended IPA responsive-layout test assumed `grid-template-columns` was the first declaration in `.extended-ipa-layers`; the real CSS correctly places `display:grid` first. The test now allows preceding declarations while still requiring the three-column desktop grid.
+3. The source-register test expected 247 rows while the checked-in CSV and its other assertion contain 248. The stale CLI assertion was corrected to 248; no source record was removed or changed to silence the test.
+4. These were test-oracle drift/errors, not evidence that the runtime implementation itself failed. They do not establish full linguistic correctness.
+
+**Corrective test-only commits:** `b38a11dca4204dbfc5f22162be8d46c9212d4150`, `c4bae1fc64ebc6c5bdd4f8f0dbdb17525f3d8e5c`, `a64c9da07b8d0657a5fdbec341aaab32d403e76b`, `94de598c9e36a657b3ea20da0d678eafc4b3263d`.
+
+**Verification after corrections:** exact-head CI for the corrected branch tip is still pending; the failed workflow results above belong to the earlier tip and must not be presented as the outcome of the corrected tests. No local worktree/runtime was available, so no local test command is claimed. Continue with exact-head Verify, browser G2P, tests, schema/build and rendered review. Preserve the known Python/browser broad `시` difference (`si` vs `ɕi`) until reviewed; do not normalize it by assertion alone.
+
+**Status:** failure causes identified and test expectations corrected; verification of the corrected exact head remains **TODO/PENDING**. Extended IPA remains a research preview, not release-ready.
