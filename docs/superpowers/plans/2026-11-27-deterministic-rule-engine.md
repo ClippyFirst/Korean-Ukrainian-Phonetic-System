@@ -86,4 +86,4 @@ These are genuine next tasks, not acceptance claims for Tasks 1–2:
 - [x] Step 3: Add a regression proving `rule_ids=[]` leaves `낫` unchanged and emits no traces.
 - [x] Step 4: Run exact-head full Python matrix, wheel, web, System Verify and browser build.
 
-**Evidence:** code commit `a4aa821b1cc16b1fa755a34f3d2c89e624538401`; Tests [45905259115](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45905259115) PASS; System Verify [45905259144](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45905259144) PASS.
+**Evidence:** code commit `a4aa821b1cc16b1fa755a34f3d2c89e624538401`; Tests [45905500937](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45905500937) PASS; System Verify [45905500843](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45905500843) PASS.
