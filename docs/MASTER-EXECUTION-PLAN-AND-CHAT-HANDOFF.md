@@ -1917,4 +1917,7 @@ Added a reproducible A/B-style layer diagnostic on the existing benchmark branch
 - The Superpowers connector/tool was not available as an executable tool in this session; the repository's existing Superpowers spec and plan were inspected and updated in place.
 
 **Readiness:** research-preview software implementation with green exact-head CI and an inspected paired diagnostic. It is not beta-ready or production-ready and is not independently research-certified. The next genuine blockers are independent phonetic adjudication, rights-cleared acoustic data, full Python/browser parity, and independent Ukrainian target review.
+**Additional model-data gap identified during final schema inspection**
+- **PARTIAL:** schema v1.1 stores layer-level IPA strings, syllable/boundary records, variants and layer-typed rule traces, but it does not yet expose a complete per-segment typed IPA inventory with segment feature bundles, segment-local source spans, diacritics/length as structured fields and per-segment provenance. The present trace is not a substitute for this segment-level representation.
+- **TODO:** design and validate segment objects only after defining a Unicode-safe IPA tokenizer/segment contract for tie bars, combining diacritics, affricates and length marks; preserve raw IPA strings and backwards compatibility. Acceptance requires round-trip serialization and Python/Browser parity fixtures for each IPA segment/diacritic class.
 
