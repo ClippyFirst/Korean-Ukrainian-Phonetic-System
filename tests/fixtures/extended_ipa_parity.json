@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "description": "Small, manually inspected cross-runtime smoke cases; not independent phonetic gold.",
+  "cases": [
+    {
+      "source": "시",
+      "phonemic": "si",
+      "broad": "sʰi",
+      "narrow": "ɕʰi"
+    },
+    {
+      "source": "감히",
+      "phonemic": "kam.hi",
+      "broad": "kam.hi",
+      "narrow": "kam.çi"
+    },
+    {
+      "source": "안하",
+      "phonemic": "an.ha",
+      "broad": "an.ha",
+      "narrow": "an.ha"
+    }
+  ]
+}

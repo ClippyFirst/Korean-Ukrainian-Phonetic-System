@@ -99,3 +99,12 @@ test('measured acoustic annotations require method, source and source-span prove
   }];
   assert.deepEqual(validateExtendedIpaResult(result), []);
 });
+test('browser Extended IPA matches the shared cross-runtime smoke fixtures', () => {
+  const fixture = JSON.parse(readFileSync(new URL('./fixtures/extended_ipa_parity.json', import.meta.url), 'utf8'));
+  for (const item of fixture.cases) {
+    const result = extended(item.source);
+    assert.equal(result.layers.phonemic.ipa, item.phonemic, item.source + ' phonemic');
+    assert.equal(result.layers.broad.ipa, item.broad, item.source + ' broad');
+    assert.equal(result.layers.narrow.ipa, item.narrow, item.source + ' narrow');
+  }
+});

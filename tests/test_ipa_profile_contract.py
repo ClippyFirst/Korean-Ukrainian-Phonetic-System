@@ -110,3 +110,15 @@ def test_extended_ipa_trace_marks_post_sonorant_h_as_unresolved_variation():
     assert item["status"] == "unresolved-variation"
     assert len(item["evidence_refs"]) == 2
     assert "speaker-/dialect-conditioned" in item["environment"]
+
+def test_extended_ipa_matches_shared_browser_conformance_smoke_cases():
+    import json
+    from pathlib import Path
+    fixture = json.loads(
+        (Path(__file__).resolve().parent / "fixtures" / "extended_ipa_parity.json").read_text(encoding="utf-8")
+    )
+    for case in fixture["cases"]:
+        result = phoneticize_korean(case["source"])["extended_ipa"]["layers"]
+        assert result["phonemic"]["ipa"] == case["phonemic"], case["source"]
+        assert result["broad"]["ipa"] == case["broad"], case["source"]
+        assert result["narrow"]["ipa"] == case["narrow"], case["source"]
