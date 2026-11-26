@@ -1862,3 +1862,59 @@ Added a reproducible A/B-style layer diagnostic on the existing benchmark branch
 - Workflow run `45893480948`: pending at the last poll; no job records/artifact yet. Earlier attempts on intermediate commits were cancelled before jobs started.
 - The paired regression and A/B scores therefore remain **PENDING**, not passed. Inspect the run and the `standard-vs-extended-ipa-ab` artifact before reporting any numbers.
 - The code branch and docs are committed; the benchmark scope is still limited to Kozak Kim, and the second Korean engine remains untouched.
+### 2026-11-26 — final Extended IPA exact-head verification and paired diagnostic
+
+**Repository checkpoint**
+- Default branch: main; starting/base commit: 97bb411df8b998b22cd58adda015fb941201950c.
+- Reused the existing dedicated branch feat/kozak-kim-extended-ipa-2026-11-26 and open PR #509; no duplicate branch or implementation was created.
+- Exact implementation head inspected: d19c5686ef8031cdcbfc2be10e1a0fe0c30ee33e. PR base is the starting main commit; PR remains open and unmerged.
+- PR #509 contains 32 changed files (+2,736 / -30). The feature remains a research preview.
+
+**Exact-head software verification on d19c5686ef8031cdcbfc2be10e1a0fe0c30ee33e**
+- PASS Tests workflow 45893570996: wheel-install, Python 3.11, Python 3.12, Python 3.13, web suite and teacher-corpus audit.
+- PASS Verify workflow 45893570785: browser regression/build and Python regression/data integrity. NIKL metadata-only inventory was SKIPPED by policy, not passed.
+- PASS Browser G2P integration 45893570769.
+- PASS Editorial rendered review 45893570937.
+- PASS Master table/research artifacts 45893570751 and 45893567090.
+- PASS Exhaustive test-register extraction 45893570926.
+- PASS External UGTPHON diagnostic 45893570755.
+- PASS Paired native-vs-g2pk diagnostic 45893570887.
+- PASS Korean morphology-consensus diagnostic 45893570790 and research morphology adapter smoke 45893570788.
+- PASS Multi-engine Korean IPA diagnostic 45893570737. Its Python 3.12 job completed the pinned engine portfolio, Native/Browser diagnostics and paired standard-vs-Extended IPA step. Neural ByT5, CharsiuG2P and neural-pairing jobs were SKIPPED by workflow policy.
+- PASS Optional g2pK integration 45893571029.
+- Earlier paired run 45893480948 on intermediate head f377f16048035918f0bd50a50d5394ac1737e408 was cancelled; it is superseded by the successful exact-head run.
+
+**Paired standard-vs-Extended diagnostic artifact inspected**
+- Artifact 15153601014, standard-vs-extended-ipa-ab-45893570737, was downloaded and its JSON inspected.
+- UGTPHON: 2,703 eligible / 2,702 scored; standard IPA and Extended broad are identical on all 2,703 paired occurrences (0 prediction differences, 0 status differences); exact match 52.7387%, CER 9.013%.
+- SIGMORPHON: 999 eligible / 998 scored; standard IPA and Extended broad are identical on all 999 paired occurrences; exact match 35.8717%, CER 14.5598%.
+- Extended phonemic reference agreement: UGTPHON 20.2073% exact / 23.4737% CER; SIGMORPHON 12.9259% / 26.6742%.
+- Extended narrow reference agreement: UGTPHON 55.8845% exact / 7.2217% CER; SIGMORPHON 39.6794% / 12.6912%.
+- Interpretation: benchmark references are not independently adjudicated phonemic or narrow IPA gold. Phonemic/narrow values are cross-layer string-agreement diagnostics, not accuracy estimates. Extended broad is intentionally the same renderer as Standard IPA, so identical results are expected and are not an uplift. The benchmark does not score Ukrainian target adaptation.
+
+**Architecture findings**
+- Python exposes a typed schema-v1.1 extended_ipa object with phonemic, broad and narrow layers, source/boundary/trace/variant data, nullable speaker/prosody context and separate acoustic annotations. Text-only requests leave speaker/prosody fields null and acoustic annotations empty.
+- Python phonemic output is built from the underlying syllable parse; broad/narrow are built from shared surface analysis. Narrow profile v6 removed the unsupported categorical post-sonorant [ɦ] substitution and leaves weakening/deletion unresolved.
+- Browser output has a dedicated deterministic Hangul onset–nucleus–coda inventory adapter, not the old Super-soft fallback. It is not equivalent to Python underlying phonological analysis; exhaustive phonemic parity remains open. For 시, canonical broad /s/ and optional source-scoped [ɕ] are distinguished rather than forcing a universal categorical assertion.
+- IPA-to-Ukrainian boundary: the existing ordinary pipeline uses IPA as the source for Korean-specific IPA-to-Ukrainian correspondences. Extended IPA is deliberately not yet fed to that target adapter: all Extended profiles remain target_compatible=false, the compatibility allowlist is empty, and the Extended panel says Ukrainian output is unchanged. This is correct fail-closed behavior while independent Korean IPA adjudication and Ukrainian target review are absent. Do not claim that Extended IPA already produces a newly adapted Ukrainian result.
+- No independent Korean phonetic gold, speaker-conditioned acoustic measurements or approved Ukrainian target mapping was found.
+
+**Task ledger**
+- DONE_VERIFIED: exact-head Python 3.11/3.12/3.13, wheel install, web tests, Verify, Browser G2P, rendered review, research artifact generation, test-register extraction and named diagnostics.
+- DONE_VERIFIED: paired A/B benchmark executed and artifact inspected; results and limitations are recorded above.
+- PARTIAL: Python/browser Extended IPA contract exists, but browser phonemic analysis is inventory-derived and not parity-equivalent to Python; broad convention reconciliation remains source-/profile-scoped.
+- PARTIAL: narrow IPA v6 is an evidence-scoped research profile, not a validated narrow transcription model or independently adjudicated output.
+- PARTIAL: UI is wired and rendered review passed; manual assistive-technology/keyboard acceptance and broader accessibility/performance evidence are not established by rendered CI.
+- BLOCKED: independent Korean phonetic adjudication and layer-aligned speaker-/dialect-conditioned gold. Acceptance requires qualified reviewers, frozen annotation guidelines, two independent labels and adjudication with agreement reported by process/context.
+- BLOCKED: rights-cleared audio/label pilot. Acceptance requires dataset-specific terms or written agreement, approved purpose, and explicit permission for any redistributed derived annotations.
+- BLOCKED: Extended IPA Ukrainian target compatibility. Acceptance requires independent Korean IPA adjudication, frozen IPA test set, independent Ukrainian target review, reviewed correspondence inventory and parity/regression checks before allowlisting a profile.
+- TODO: exhaustive Python/browser phonemic parity over the frozen Hangul inventory and adversarial mixed-input/source-span fixtures; resolve mismatches with documented linguistic conventions, not relaxed tests.
+- TODO: benchmark split by source lineage and speaker, with layer-aligned independently adjudicated gold for phonemic, broad, narrow and Ukrainian adaptation.
+- DEFERRED / SKIPPED: optional neural inference jobs and NIKL metadata-only inventory; skips are not passes and no neural model is required for deterministic inference.
+
+**Local execution limitation**
+- Attempted git clone of the public repository; it failed before checkout because this environment could not resolve github.com (Could not resolve host: github.com). No local shell, pytest, npm, build or browser command is claimed. GitHub Actions is the executable verification evidence for the exact code SHA.
+- The Superpowers connector/tool was not available as an executable tool in this session; the repository's existing Superpowers spec and plan were inspected and updated in place.
+
+**Readiness:** research-preview software implementation with green exact-head CI and an inspected paired diagnostic. It is not beta-ready or production-ready and is not independently research-certified. The next genuine blockers are independent phonetic adjudication, rights-cleared acoustic data, full Python/browser parity, and independent Ukrainian target review.
+
