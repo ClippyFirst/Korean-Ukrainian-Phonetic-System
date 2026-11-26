@@ -34,9 +34,9 @@
 
 **Files:** schemas/ipa-profile-result.schema.json; src/korean_ukrainian/ipa_profiles.py; src/app/extended_ipa.js; tests/test_ipa_profile_contract.py; tests/extended-ipa-profile.test.mjs.
 
-- [x] Define schema version 1.0 with phonemic/broad/narrow layers, variants, source spans, boundaries, rule traces, evidence and target-adapter state.
+- [x] Define schema version 1.1 with phonemic/broad/narrow layers, variants, source spans, boundaries, rule traces, evidence, nullable speaker/prosody context, acoustic annotations and target-adapter state.
 - [x] Add dependency-free Python and browser validators.
-- [ ] Run JSON Schema validation and cross-runtime fixture tests on the exact PR head.
+- [x] Run JSON Schema validation and Python/browser contract fixtures on exact head d19c5686ef8031cdcbfc2be10e1a0fe0c30ee33e (Tests 45893570996; Verify 45893570785).
 
 ### Task 2: Python three-layer result
 
@@ -45,7 +45,7 @@
 - [x] Preserve untouched underlying syllables before ordered surface rules.
 - [x] Add phonemic, broad and narrow layer payloads without changing the legacy ipa field.
 - [x] Version the narrow profile as v6 and remove unsupported categorical post-sonorant [ɦ].
-- [ ] Verify Python 3.11/3.12/3.13, wheel install and all pipeline/data tests on exact head.
+- [x] Verify Python 3.11/3.12/3.13, wheel install, web tests and pipeline/data integrity on exact head d19c5686ef8031cdcbfc2be10e1a0fe0c30ee33e (Tests 45893570996; Verify 45893570785).
 
 ### Task 3: Browser research adapter
 
@@ -65,7 +65,7 @@
 - [x] Add an opt-in Extended IPA toggle within Kozak Kim research mode.
 - [x] Display separate phonemic, broad and narrow panels, variants and trace details.
 - [x] State that the current Ukrainian output is unchanged and narrow IPA is not target-compatible.
-- [ ] Verify responsive browser rendering, accessibility, keyboard operation and toggle re-rendering.
+- [x] Verify opt-in UI rendering and responsive desktop/tablet/mobile review (Editorial review 45893570937).\n- [ ] Complete manual keyboard-only, screen-reader and zoom accessibility review.
 
 ### Task 5: Evidence and source rights
 
@@ -81,10 +81,10 @@
 
 **Files:** benchmark scripts, pinned fixtures, docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md, research/ACCEPTANCE-GATES.md.
 
-- [ ] Add same-occurrence, source-separated and speaker-separated evaluation for the Extended IPA profile.
-- [ ] Report profile-level coverage, abstention, exact match, CER/PER, per-condition errors and paired deltas.
+- [x] Add and execute same-occurrence Standard-vs-Extended diagnostic for UGTPHON and SIGMORPHON; inspect artifact 15153601014.\n- [ ] Add source-separated and speaker-separated evaluation against independently adjudicated, layer-aligned gold.
+- [x] Report coverage, abstention, exact match, CER and paired Standard-vs-Extended equality in the diagnostic artifact.\n- [ ] Report phonemic/narrow accuracy and per-condition errors only after independent layer-aligned gold exists.
 - [ ] Keep independent adjudicated gold separate from engine agreement and teacher outputs.
-- [ ] Run full exact-head CI, build, generated-artifact checks and rendered review.
+- [x] Run exact-head CI, build, generated-artifact checks and rendered review on d19c5686ef8031cdcbfc2be10e1a0fe0c30ee33e; see runs 45893570996, 45893570785, 45893570769, 45893570937, 45893570751 and 45893570737.
 - [ ] Keep the feature marked research preview until independent phonetic and target review gates pass.
 
 ## Execution notes
