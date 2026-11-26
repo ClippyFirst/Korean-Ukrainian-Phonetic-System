@@ -15,7 +15,8 @@ test('Extended IPA is opt-in inside Kozak Kim research mode and has separate out
   assert.match(html, /id="extended-ipa-narrow"/);
   assert.match(html, /id="extended-ipa-context"/);
   assert.match(main, /extendedIpaToggle\.addEventListener\('change',render\)/);
-  assert.match(main, /renderExtendedIpa\(value,r,useG2p\)/);
+  assert.match(main, /ipaProfile:'clippyfirst-korean-broad-v1'/);
+  assert.match(main, /renderExtendedIpa\(value,useG2p\)/);
 });
 
 test('Extended IPA responsive layout stacks layers on narrow screens', () => {
