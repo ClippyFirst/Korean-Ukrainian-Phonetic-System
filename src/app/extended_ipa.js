@@ -218,13 +218,11 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
     layers: {
       phonemic: {
         ipa: typeof phonemicResult?.ipa === 'string' ? phonemicResult.ipa : null,
-        profile_id: phonemicResult?.ipa_profile || null,
-        profile_version: Number.isInteger(phonemicResult?.ipa_profile_version) ? phonemicResult.ipa_profile_version : null,
+        profile_id: phonemicResult?.profile_id || null,
+        profile_version: Number.isInteger(phonemicResult?.profile_version) ? phonemicResult.profile_version : null,
         level: 'phonemic',
-        status: phonemicResult?.ipa_profile_level === 'underlying-grapheme-ipa'
-          ? 'underlying-grapheme-fallback-not-phonemic-gold'
-          : 'not-implemented-in-browser-runtime',
-        evidence_status: 'source-orthography-only-no-morphophonological-inference',
+        status: phonemicResult?.status || 'underlying-phonemic-layer-unavailable',
+        evidence_status: phonemicResult?.evidence_status || 'underlying-phonemic-layer-unavailable',
         target_compatible: false
       },
       broad: {
