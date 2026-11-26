@@ -19,6 +19,9 @@ test('Extended IPA contract exposes separate layers without changing the default
   assert.equal(result.layers.narrow.status, 'partial-research-only');
   assert.equal(result.layers.narrow.target_compatible, false);
   assert.equal(result.target_adapter.status, 'not-run-for-extended-profile');
+  assert.equal(result.context.speaker_id, null);
+  assert.equal(result.context.dialect, null);
+  assert.deepEqual(result.acoustic_annotations, []);
 });
 
 test('narrow /s/ and /n/ retain the currently source-scoped contextual restrictions', () => {
@@ -61,4 +64,12 @@ test('narrow profile trace records rule IDs, environments and source evidence', 
   assert.ok(sibilant.rule_ids.includes('narrow-lenis-sibilant-place'));
   assert.match(sibilant.environment, /ㅣ/);
   assert.ok(sibilant.evidence_refs.some(ref => ref.includes('10.17959')));
+});
+
+test('text-only browser results never invent speaker metadata or acoustic measurements', () => {
+  const result = extended('시');
+  assert.equal(result.context.speaker_id, null);
+  assert.equal(result.context.dialect, null);
+  assert.equal(result.context.prosodic_position, null);
+  assert.deepEqual(result.acoustic_annotations, []);
 });

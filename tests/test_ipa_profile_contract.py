@@ -46,3 +46,32 @@ def test_non_compatible_narrow_layer_cannot_be_marked_as_adapted():
         "profile_id": result["layers"]["narrow"]["profile_id"],
     }
     assert "non-compatible narrow IPA must not be marked as adapted" in validate_extended_ipa_result(result)
+
+
+def test_text_only_extended_result_keeps_speaker_and_acoustic_context_unknown():
+    result = phoneticize_korean("시")["extended_ipa"]
+    assert result["context"] == {
+        "speaker_id": None,
+        "dialect": None,
+        "age_group": None,
+        "speech_style": None,
+        "speech_rate_syllables_per_second": None,
+        "focus": None,
+        "prosodic_position": None,
+        "recording_conditions": None,
+    }
+    assert result["acoustic_annotations"] == []
+
+
+def test_acoustic_annotation_requires_measurement_provenance():
+    result = phoneticize_korean("시")["extended_ipa"]
+    result["acoustic_annotations"] = [{
+        "feature": "post_stop_f0",
+        "value": 185.0,
+        "unit": "Hz",
+        "source_span": {"start": 0, "end": 1},
+        "measurement_method": None,
+        "evidence_refs": [],
+        "status": "measured",
+    }]
+    assert "measured acoustic annotations require a method and evidence reference" in validate_extended_ipa_result(result)
