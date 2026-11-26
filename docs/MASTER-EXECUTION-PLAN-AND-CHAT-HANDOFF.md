@@ -1779,3 +1779,66 @@ Historical failures on earlier commit `19e4d95bacb8f3f62e4344828bb7ed70c08cbf02`
 - **NOT RELEASE-READY:** despite green software CI, independent linguistic/rights/target gates remain open. PR #509 stays draft/open.
 
 No local test command is claimed; verification above is GitHub Actions evidence.
+
+
+### Multi-engine benchmark results — 2026-11-26
+
+**Completed run:** Multi-engine Korean IPA diagnostic, run `45882049729`, code head `a3fb2ec8a962ffd37d202eab95c99387d0d83638`. Main job `140131796752` completed successfully. Aggregate-only artifact `multi-engine-korean-ipa-diagnostic` (artifact ID `15150473046`, SHA-256 `92d1e2f48df10b4ab03d0efe31fa36f9c1d0dbc5e4451983cbccd948e61b1032`) contains aggregate metrics only; token-level text/IPA/mismatch rows are deliberately omitted. The run covered UGTPHON, SIGMORPHON, Seoul Corpus, K-SPAN modern/conservative, and IPA-Dict Korean.
+
+#### Strict scoring (selected native broad profile; exact match / character error rate)
+
+| Track | Kozak Kim Native | Best external in this run | Interpretation |
+|---|---:|---:|---|
+| UGTPHON (2,703 occurrences) | 52.74% / 9.01% | g2pk 53.09% / 9.23% | Essentially tied; g2pk has a 0.35 pp exact-match lead, Native slightly lower CER |
+| SIGMORPHON (999 lexical items) | 35.97% / 14.53% | g2pk 35.34% / 14.82% | Native leads by 0.63 pp exact match and has slightly lower CER |
+| IPA-Dict Korean (1,000 sampled lexical items) | 41.27% / 9.93% | g2pk 41.10% / 10.04% | Essentially tied; Native leads by 0.17 pp |
+| Seoul Corpus (1,000 occurrences) | 14.80% / 39.84% | KoG2P 21.20% / 32.02% | Native trails; reference is phonemic word-level IPA, not narrow phonetic gold |
+| K-SPAN Modern (1,000 sampled occurrences) | 10.87% / 27.78% | KoG2P 25.00% / 15.65% | Native trails substantially; see severe sample eligibility limitation below |
+| K-SPAN Conservative (1,000 sampled occurrences) | 7.55% / 27.45% | KoG2P 18.80% / 16.15% | Native trails substantially; see severe sample eligibility limitation below |
+
+The top-three systems' bootstrap 95% intervals overlap on UGTPHON, SIGMORPHON and IPA-Dict; these are diagnostic intervals, not a paired significance test. The native exact-match intervals are respectively 47.88–57.98%, 33.07–38.98%, and 38.15–44.28%. Therefore the small rank differences must not be described as a statistically established win.
+
+#### Research-only broad-candidate sensitivity scoring
+
+A separate `korean-broad-candidate-sensitivity-v1` normalization was run to estimate how much exact-match disagreement comes from predictable IPA/allophone convention differences. It is explicitly **research-only and unadjudicated**, not the production score and not a gold standard. It removes stress and syllable separators, selected quality diacritics, fricative aspiration after sibilants and several allophonic distinctions (including retroflex/palatal laterals, palatal nasal and multiple h-like realizations). It preserves stop aspiration, fortisness, vowel length, unreleased-coda marking and sibilant place contrasts.
+
+| Track | Kozak Kim Native after candidate normalization | g2pk after candidate normalization |
+|---|---:|---:|
+| UGTPHON | 86.23% exact, 2.14% CER | 85.72% exact, 2.37% CER |
+| SIGMORPHON | 69.84% exact, 6.15% CER | 68.67% exact, 6.46% CER |
+| IPA-Dict Korean | 86.14% exact, 1.61% CER | 85.70% exact, 1.69% CER |
+
+This is a useful indication that a large share of strict string mismatch is convention/realization normalization, and Native is marginally ahead under this particular candidate profile. It is **not** evidence that narrow IPA is 86% accurate: the normalization intentionally collapses several phonetic distinctions, and its policy has not been independently adjudicated. The profile's feature-loss counters are material (e.g. 5,206 selected segmental-quality diacritic losses, 858 fricative-aspiration losses, 549 retroflex-lateral collapses in the relevant reference sample).
+
+#### Browser Strict / Soft / Super-soft coverage trade-off
+
+- UGTPHON: Strict 52.74% exact at 99.96% coverage (2,702/2,703); Soft 56.19% at 82.83% coverage (2,239/2,703; 464 heuristic tokens); Super-soft 50.91% on only 55 scored tokens, with **2.03% coverage** and 2,648 heuristic tokens.
+- SIGMORPHON: Strict 35.87% at 99.90% coverage; Soft 35.77% at 94.29% coverage; Super-soft 46.67% on only 15 tokens, with **1.50% coverage** and 984 heuristic tokens.
+- K-SPAN Modern: Strict 10.87% at 99.4% coverage; Soft 10.49% at 91.5%; Super-soft scored 4/1,000 (0.4%).
+- K-SPAN Conservative: Strict 7.55% at 99.3%; Soft 6.31% at 91.9%; Super-soft scored 3/1,000 (0.3%).
+- IPA-Dict: Strict 41.27% at 99.6%; Soft 40.74% at 92.3%; Super-soft scored 4/1,000 (0.4%).
+
+Do not rank Super-soft by its conditional exact-match percentage: its coverage is so low that the percentage is not representative. Soft sometimes improves conditional exact match on noisy UGTPHON but does so by declining many inputs and introducing heuristic results; it is not an overall replacement for Strict.
+
+#### Critical dataset and interpretation caveats
+
+- **K-SPAN is not a representative result in this run.** After exact overlap exclusion against the baseline lexical sets, the manifest reports only **4 eligible word types** for each K-SPAN track, despite 1,000 sampled occurrences. The source's `key_worldbet` integrity cross-check also warns of 22,843 mismatches in 63,836 rows. The source phonetic fields were used directly, but these results are highly concentrated and cannot support generalization. Rebuild a valid, sufficiently broad K-SPAN holdout before drawing conclusions.
+- Seoul Corpus is phonemic word-level gold; it is not narrow phonetic gold. The current comparison output is broad surface IPA, so its low exact-match values mix model differences with a reference-layer mismatch.
+- IPA-Dict Korean is Wiktionary-derived and shares lineage with SIGMORPHON; exact orthographic overlap was excluded, but the sources are not fully independent.
+- UGTPHON is noisy user-generated text, not a balanced normative pronunciation test.
+- Several competitors (including g2pk and KoG2Padvanced) are converted through the project's IPA segment renderer, so their scores are not fully independent IPA encoders. Some engines share algorithmic lineage.
+- This benchmark evaluates Korean IPA only; it does not score Ukrainian orthographic adaptation.
+- Optional ByT5 and Charsiu inference jobs were skipped by workflow policy. They are not benchmark results.
+
+#### What this says about Extended IPA
+
+The benchmark provides a positive but limited signal for the current shared **broad** IPA profile: Native Kozak Kim is competitive with g2pk/g2p-ko on UGTPHON, SIGMORPHON and IPA-Dict, and marginally ahead on the candidate-normalized comparison. It does **not** yet demonstrate the accuracy of the full Extended IPA phonemic+broad+narrow research output. The aggregate artifact has no independently adjudicated narrow-IPA gold and does not separately score narrow segmental features, acoustic measurements, speaker-conditioned variants or Ukrainian target adaptation. No narrow-IPA uplift claim is permitted.
+
+**Updated ledger:**
+- **DONE_VERIFIED:** multi-engine benchmark workflow and aggregate artifact generated successfully; six tracks, ten engine outputs, three browser morphology modes reported.
+- **PARTIAL:** broad-profile competitive performance demonstrated on three lexical/noisy tracks, but close external comparisons, non-independent adapters and reference-convention uncertainty remain.
+- **PARTIAL:** browser Soft improves conditional UGTPHON exact match but reduces coverage; Super-soft is extremely low coverage and unsuitable for headline accuracy claims.
+- **BLOCKED / TODO:** valid K-SPAN holdout; layer-aligned Seoul evaluation; independently adjudicated broad/narrow IPA gold; speaker-/dialect-conditioned narrow IPA and acoustic validation; Ukrainian target-layer review.
+- **Release status:** research preview / partial prototype, **not release-ready**.
+
+No benchmark score is a scientific endorsement of the current profile. Treat these numbers as diagnostic evidence for prioritizing the next independent review and dataset work.
