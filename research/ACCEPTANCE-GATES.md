@@ -1851,10 +1851,10 @@ The browser research engine now distinguishes three levels by confidence/coverag
 
 - **PARTIAL:** versioned typed result schema and Python/browser validators implemented; exact-head schema and contract verification pending.
 - **PARTIAL:** Python phonemic/broad/narrow layers are exposed without replacing the legacy ipa field; Python CI pending.
-- **PARTIAL:** browser panel exposes broad and partial narrow IPA, variants and trace; browser phonemic layer remains explicitly unavailable pending implementation.
+- **PARTIAL:** browser panel exposes phonemic, broad and partial narrow IPA, variants and layer-typed trace. The browser phonemic adapter now maps the underlying Hangul onset–nucleus–coda inventory, preserves complex coda components and an existing source-specific length exception, and abstains on unsupported characters; exhaustive Python/browser parity and independent adjudication remain pending.
 - **PARTIAL:** narrow profile v6 removes unsupported categorical post-sonorant [ɦ] and records /h/ weakening/deletion as unresolved variation.
 - **PARTIAL:** first-pass evidence review covers laryngeal/prosodic cues, sibilant coarticulation, ultrasound palatalization, /h/ variation and corpus rights.
-- **TODO:** JSON Schema validation and exact cross-runtime fixture parity.
+- **PARTIAL:** schema v1.1 and Python/browser trace-layer validators are implemented; representative runtime fixtures record the known broad-layer difference for 시 (Python si vs browser ɕi). **TODO:** exhaustive exact parity or explicitly justified and reviewed profile differences.
 - **TODO:** typed acoustic/prosodic annotations (speaker, dialect, focus, phrase position, speech rate, VOT, closure, F0, voice quality, spectral and formant measures), nullable when unknown.
 - **BLOCKED:** independent Korean narrow-IPA adjudication; no speaker-level IPA gold currently established.
 - **BLOCKED:** NIKL/AI Hub speech-corpus access pending a documented use agreement; Seoul Corpus redistribution/derived-label rights require review.
@@ -1875,4 +1875,4 @@ These fields are not inferred from Hangul. Text-only conversion leaves speaker/p
 
 ## Browser phonemic candidate gate — 2026-11-26
 
-The browser panel now shows the existing super-soft underlying-grapheme IPA fallback, explicitly labelled as a candidate and not phonemic gold. Full underlying phonological analysis and Python/browser parity remain TODO; this fallback must not be used as benchmark gold or as an independently adjudicated phonemic layer.
+The browser panel now uses a dedicated deterministic underlying Hangul phonemic adapter rather than the super-soft grapheme fallback. It maps onset–nucleus–coda inventory and does not apply surface phonology, productive morphology, speaker-conditioned realization or acoustic inference. It is not independently adjudicated phonemic gold. Representative cases are covered, but exhaustive Python/browser parity and independent phonetic review remain TODO; the result must not be used as benchmark gold.
