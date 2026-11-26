@@ -104,31 +104,70 @@ def _coda_class(coda: str) -> str:
     return "other"
 
 
-def context_buckets(source_text: str) -> list[str]:
-    """Return coarse, interpretable adjacent-syllable contexts, never inferred morphemes."""
-    contexts: list[str] = []
-    for word in HANGUL_WORD.findall(unicodedata.normalize("NFC", source_text)):
+def _context_records(source_text: str) -> list[dict[str, Any]]:
+    """Return coarse adjacent-syllable contexts with source syllable indices."""
+    normalized_source = unicodedata.normalize("NFC", source_text)
+    word_matches = list(HANGUL_WORD.finditer(normalized_source))
+    records: list[dict[str, Any]] = []
+
+    for word_index, match in enumerate(word_matches):
+        word = match.group(0)
         parts = [_hangul_parts(char) for char in word]
-        for left, right in zip(parts, parts[1:]):
+        for pair_index, (left, right) in enumerate(zip(parts, parts[1:])):
             if left is None or right is None:
                 continue
-            contexts.append(
-                f"within-eojeol:coda={_coda_class(left[2])}:next-onset={_onset_class(right[0])}"
-            )
-    # Word-boundary pairs are a separate context type; no punctuation/space
-    # is silently treated as a morpheme boundary.
-    word_matches = list(HANGUL_WORD.finditer(source_text))
-    for left_match, right_match in zip(word_matches, word_matches[1:]):
-        separator = source_text[left_match.end():right_match.start()]
+            records.append({
+                "context": (
+                    f"within-eojeol:coda={_coda_class(left[2])}:"
+                    f"next-onset={_onset_class(right[0])}"
+                ),
+                "scope": "within-eojeol",
+                "syllable_refs": [(word_index, pair_index), (word_index, pair_index + 1)],
+            })
+
+    # Whitespace-separated eojeols are a distinct context. Punctuation and
+    # adjacency are never silently reinterpreted as a word/morpheme boundary.
+    for word_index, (left_match, right_match) in enumerate(zip(word_matches, word_matches[1:])):
+        separator = normalized_source[left_match.end():right_match.start()]
         if not separator or not separator.isspace():
             continue
         left, right = left_match.group(0), right_match.group(0)
         a, b = _hangul_parts(left[-1]), _hangul_parts(right[0])
         if a and b:
-            contexts.append(
-                f"across-space:coda={_coda_class(a[2])}:next-onset={_onset_class(b[0])}"
-            )
-    return contexts
+            records.append({
+                "context": (
+                    f"across-space:coda={_coda_class(a[2])}:"
+                    f"next-onset={_onset_class(b[0])}"
+                ),
+                "scope": "across-space",
+                "syllable_refs": [(word_index, len(left) - 1), (word_index + 1, 0)],
+            })
+    return records
+
+
+def context_buckets(source_text: str) -> list[str]:
+    """Return coarse, interpretable adjacent-syllable contexts, never inferred morphemes."""
+    return [record["context"] for record in _context_records(source_text)]
+
+
+def align_ipa_syllables(source_text: str, ipa_text: str) -> list[list[str]] | None:
+    """Align IPA to Hangul syllables only when explicit dot/space boundaries agree.
+
+    This deliberately abstains on strings without a safe one-to-one syllable
+    map; it never guesses an alignment from character lengths or edit distance.
+    """
+    source_words = HANGUL_WORD.findall(unicodedata.normalize("NFC", source_text))
+    ipa_words = conservative_normalize(ipa_text).split()
+    if not source_words or len(source_words) != len(ipa_words):
+        return None
+
+    aligned: list[list[str]] = []
+    for source_word, ipa_word in zip(source_words, ipa_words):
+        ipa_syllables = ipa_word.split(".")
+        if len(source_word) != len(ipa_syllables) or any(not syllable for syllable in ipa_syllables):
+            return None
+        aligned.append(ipa_syllables)
+    return aligned
 
 
 def _require(condition: bool, message: str) -> None:
@@ -219,12 +258,41 @@ def build_report(input_path: Path, provenance_path: Path, min_context_support: i
         # Treat the teacher string as the explicit reference for this
         # pairwise diagnostic, so CER uses the reference length denominator.
         reference_length = max(len(teacher_norm), 1)
-        contexts = context_buckets(source)
-        for context in contexts:
-            bucket = context_stats[context]
-            bucket["occurrences"] += 1
-            bucket["disagreements"] += distance > 0
-            bucket["case_ids"].append(case_id)
+        context_records = _context_records(source)
+        contexts = [record["context"] for record in context_records]
+        teacher_alignment = align_ipa_syllables(source, teacher_norm)
+        strict_alignment = align_ipa_syllables(source, strict_norm)
+        aligned = (
+            teacher_alignment is not None
+            and strict_alignment is not None
+            and [len(word) for word in teacher_alignment] == [len(word) for word in strict_alignment]
+        )
+        context_disagreements: list[dict[str, Any]] = []
+        if aligned:
+            source_words = HANGUL_WORD.findall(unicodedata.normalize("NFC", source))
+            word_offsets: list[int] = []
+            offset = 0
+            for source_word in source_words:
+                word_offsets.append(offset)
+                offset += len(source_word)
+
+            for record in context_records:
+                changed_indices = sorted({
+                    word_offsets[word_index] + syllable_index
+                    for word_index, syllable_index in record["syllable_refs"]
+                    if teacher_alignment[word_index][syllable_index]
+                    != strict_alignment[word_index][syllable_index]
+                })
+                bucket = context_stats[record["context"]]
+                bucket["occurrences"] += 1
+                bucket["disagreements"] += bool(changed_indices)
+                bucket["case_ids"].append(case_id)
+                if changed_indices:
+                    context_disagreements.append({
+                        "context": record["context"],
+                        "scope": record["scope"],
+                        "changed_syllable_indices": changed_indices,
+                    })
 
         rows.append({
             "case_id": case_id,
@@ -238,6 +306,11 @@ def build_report(input_path: Path, provenance_path: Path, min_context_support: i
             "character_edit_distance": distance,
             "cer_teacher_vs_strict": distance / reference_length,
             "context_associations": contexts,
+            "context_alignment_status": (
+                "aligned-by-syllable-boundaries"
+                if aligned else "unaligned-no-safe-syllable-boundary-map"
+            ),
+            "context_disagreements": context_disagreements,
             "source_provenance": item.get("source_provenance", ""),
             "human_review_status": "not-reviewed",
         })
@@ -269,7 +342,11 @@ def build_report(input_path: Path, provenance_path: Path, min_context_support: i
             "forbidden_holdout_markers": list(FORBIDDEN_HOLDOUT_MARKERS),
             "benchmark_train_dev_policy": "benchmark datasets are permitted only when provenance pins an actual train/dev partition; test/holdout rows remain forbidden",
             "normalization": "Unicode NFC + whitespace collapse only; preserves length, tone, stress, syllable boundaries, and IPA segments",
-            "context_features": "coarse adjacent Hangul coda/onset classes; not morphological analysis",
+            "context_features": (
+                "coarse adjacent Hangul coda/onset classes; not morphological analysis; "
+                "context disagreement rates use only rows whose explicit dot-delimited IPA "
+                "syllables align one-to-one with source Hangul syllables"
+            ),
             "automatic_rule_generation": False,
             "test_data_used_for_tuning": False,
             "checkpoint_training_data_overlap": provenance["teacher_model_training_overlap_status"],
@@ -281,6 +358,12 @@ def build_report(input_path: Path, provenance_path: Path, min_context_support: i
             "teacher_strict_disagreements": disagreements,
             "teacher_strict_disagreement_rate": disagreements / n,
             "mean_character_error_rate_teacher_reference": sum(row["cer_teacher_vs_strict"] for row in rows) / n,
+            "aligned_case_count": sum(
+                row["context_alignment_status"] == "aligned-by-syllable-boundaries" for row in rows
+            ),
+            "unaligned_case_count": sum(
+                row["context_alignment_status"] != "aligned-by-syllable-boundaries" for row in rows
+            ),
             "context_candidate_count": len(candidates),
         },
         "cases": rows,
