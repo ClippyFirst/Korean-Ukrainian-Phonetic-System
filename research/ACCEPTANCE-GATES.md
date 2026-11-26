@@ -1948,3 +1948,33 @@ The previous TODO entries above refer to historical checkpoints and are supersed
 Historical exact-head test-oracle failures were corrected: `값` expected value is `kaps` (underlying grapheme-derived inventory, not phonetic gold); CSS test now accepts actual declaration formatting; source-register row count is 248. Current CI green does not close independent linguistic or licensing gates.
 
 **Release decision:** software verification is green on the named head; the feature remains a research preview and is not release-ready.
+
+
+## Completed multi-engine benchmark gate — 2026-11-26
+
+**DONE_VERIFIED (diagnostic workflow only):** run `45882049729`, exact code head `a3fb2ec8a962ffd37d202eab95c99387d0d83638`, main job `140131796752`, artifact `15150473046` (`multi-engine-korean-ipa-diagnostic`). UGTPHON, SIGMORPHON, Seoul, K-SPAN Modern/Conservative and IPA-Dict aggregate tracks completed, as did Native/Browser comparison and Strict/Soft/Super-soft browser mode scoring. Optional ByT5/Charsiu jobs were skipped, not passed.
+
+**Selected strict broad-profile Native results (exact match / CER):**
+- UGTPHON: 52.74% / 9.01%; g2pk 53.09% / 9.23%.
+- SIGMORPHON: 35.97% / 14.53%; g2pk 35.34% / 14.82%.
+- IPA-Dict Korean: 41.27% / 9.93%; g2pk 41.10% / 10.04%.
+These are close comparisons with overlapping bootstrap 95% intervals, not established statistical wins.
+
+**Research-only candidate normalization:** Native reaches 86.23% on UGTPHON, 69.84% on SIGMORPHON and 86.14% on IPA-Dict, narrowly above g2pk on these tracks. This normalization intentionally collapses several phonetic distinctions (stress, selected diacritics, fricative aspiration after sibilants, lateral/nasal place distinctions and multiple h-like realizations). It is unadjudicated sensitivity analysis, not narrow IPA accuracy or a replacement for strict scoring.
+
+**Browser mode coverage:** Soft reaches 56.19% conditional exact match on UGTPHON but covers 82.83% and uses 464 heuristic tokens. Super-soft covers only 2.03% on UGTPHON, 1.50% on SIGMORPHON and 0.3–0.4% on K-SPAN/IPA-Dict; its conditional exact-match percentages are not representative. Strict remains the high-coverage baseline.
+
+**Dataset caveats / acceptance consequences:**
+- K-SPAN: after overlap exclusion only 4 eligible word types remain per track, despite 1,000 sampled occurrences; source key/WorldBet cross-check has 22,843 mismatches among 63,836 rows. **BLOCKED for generalizable evaluation** until a broad, integrity-checked holdout is produced.
+- Seoul: phonemic word-level gold, not narrow phonetic gold; current broad surface IPA comparison is layer-mismatched. **PARTIAL** until scoring is aligned to a comparable phonemic output or independent layer-specific gold.
+- IPA-Dict is Wiktionary-derived and not independent of SIGMORPHON lineage.
+- Several competing outputs pass through the project IPA renderer; this is not a fully independent encoder comparison.
+- No Ukrainian adaptation scoring and no independently adjudicated narrow IPA/audio measurements are included.
+
+**Updated acceptance status:**
+- **DONE_VERIFIED:** benchmark workflow and aggregate-only artifact produced.
+- **PARTIAL:** current broad profile is competitive with g2pk on UGTPHON, SIGMORPHON and IPA-Dict; close confidence intervals and convention/adapter caveats remain.
+- **PARTIAL:** Soft/Strict coverage trade-off quantified; Super-soft unsuitable as a headline accuracy mode at current coverage.
+- **BLOCKED:** independent Korean broad/narrow IPA adjudication, rights-cleared acoustic validation and Ukrainian target-layer review.
+- **TODO:** repair K-SPAN eligibility/integrity, align Seoul scoring layer, add feature-level independently adjudicated narrow-IPA evaluation.
+- **NOT RELEASE-READY:** benchmark success is diagnostic software/research evidence, not a release gate for scientific validity.
