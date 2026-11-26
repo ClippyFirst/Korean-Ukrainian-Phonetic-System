@@ -8,7 +8,7 @@ import { phonemicIpaFromHangul } from '../src/app/phonemic_ipa.js';
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
 const engine = createEngine(canonical, lexical);
-const extended = source => buildExtendedIpaResult(source, engine.convert(source), phonemicIpaFromHangul(source));
+const extended = source => buildExtendedIpaResult(source, engine.convert(source, { morphologyMode: 'strict', ipaProfile: 'clippyfirst-korean-broad-v1' }), phonemicIpaFromHangul(source));
 
 test('Extended IPA contract exposes separate layers without changing the default Ukrainian target', () => {
   const result = extended('시');
@@ -16,7 +16,11 @@ test('Extended IPA contract exposes separate layers without changing the default
   assert.equal(result.layers.phonemic.ipa, 'si');
   assert.equal(result.layers.phonemic.status, 'underlying-phonemic-grapheme-derived');
   assert.equal(result.layers.phonemic.profile_id, 'clippyfirst-korean-phonemic-v1');
-  assert.equal(result.layers.broad.ipa, 'ɕi');
+  assert.equal(result.layers.broad.ipa, 'si');
+  const sibilantVariant = result.variants.find(item => item.ipa === 'ɕi');
+  assert.ok(sibilantVariant, 'the source-scoped [ɕ] realization remains available as an optional variant');
+  assert.equal(sibilantVariant.selected, false);
+  assert.match(sibilantVariant.environment, /Kang 2010/);
   assert.equal(result.layers.narrow.ipa, 'ɕʰi');
   assert.equal(result.layers.narrow.status, 'partial-research-only');
   assert.equal(result.layers.narrow.target_compatible, false);
