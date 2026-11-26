@@ -1930,3 +1930,7 @@ The prior Python 3.13 test failure was a schema-field mismatch (`note` vs `envir
 - **PARTIAL:** shared broad-profile reconciliation; Python 3.13 and Browser G2P passed on intermediate code checkpoint `7a56963d7a2996066a15aa9baf594d13beaf0d09` after correcting the schema assertion to `environment`, but other jobs were still queued.
 - **TODO:** final source-span change checkpoint `bd7fc7acfd4a9d17b8cc98da70e7a1bed49f2489` needs tests `45881234764`, Verify `45881234504`, Browser G2P `45881234519` and rendered review `45881234502` to complete successfully. At last poll these primary jobs were queued; register extraction, UGTPHON diagnostic and paired Native/g2pK diagnostic were in progress.
 - Final docs branch head at this reconciliation: `0bb220d159852654f425cfadeef8267190128145`; no final-head CI pass is claimed.
+
+### Variant source-span safety — 2026-11-26
+
+Browser variant syllable indices are token-local. Extended IPA now emits a source span only for a single Hangul eojeol where direct mapping is valid; multiword/mixed inputs retain `null` rather than an incorrect span. Single-word and multiword regression controls were added. Commits: `28fc58aa21a07cfbc8e8b03a0d468695e6c433c8`, `47e8162ca8557e269b6a337416a802a5048ba39a`. **TODO:** verify on exact latest head.
