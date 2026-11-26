@@ -334,7 +334,7 @@ def build_report(input_path: Path, provenance_path: Path, min_context_support: i
         })
     candidates.sort(key=lambda item: (-item["disagreement_rate"], -item["occurrences"], item["context"]))
     return {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "purpose": "teacher-guided deterministic-rule discovery; diagnostic only",
         "provenance": provenance,
         "protocol": {
