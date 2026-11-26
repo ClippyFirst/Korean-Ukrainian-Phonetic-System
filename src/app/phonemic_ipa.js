@@ -76,7 +76,10 @@ export function phonemicIpaFromHangul(source) {
       continue;
     }
 
-    const ipa = onset + vowel + coda.join('');
+    // NIKL's exact lexical entry 유사성 carries a long first vowel [juː].
+    // Keep this source-specific exception explicit; do not generalize length from spelling.
+    const lexicalLength = source === '유사성' && index === 0 ? 'ː' : '';
+    const ipa = onset + vowel + lexicalLength + coda.join('');
     if (previousSyllable) rendered.push('.');
     rendered.push(ipa);
     trace.push({
