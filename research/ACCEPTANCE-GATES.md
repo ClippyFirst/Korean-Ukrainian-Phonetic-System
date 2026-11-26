@@ -1855,7 +1855,7 @@ The browser research engine now distinguishes three levels by confidence/coverag
 - **PARTIAL:** narrow profile v6 removes unsupported categorical post-sonorant [ɦ] and records /h/ weakening/deletion as unresolved variation.
 - **PARTIAL:** first-pass evidence review covers laryngeal/prosodic cues, sibilant coarticulation, ultrasound palatalization, /h/ variation and corpus rights.
 - **PARTIAL:** schema v1.1 and Python/browser trace-layer validators are implemented; representative runtime fixtures record the known broad-layer difference for 시 (Python si vs browser ɕi). **TODO:** exhaustive exact parity or explicitly justified and reviewed profile differences.
-- **TODO:** typed acoustic/prosodic annotations (speaker, dialect, focus, phrase position, speech rate, VOT, closure, F0, voice quality, spectral and formant measures), nullable when unknown.
+- **PARTIAL:** typed nullable speaker/prosody context and provenance-gated acoustic annotation records are in schema v1.1; text-only mode correctly leaves them empty. **TODO:** implement and independently validate audio measurement/annotation workflow on rights-cleared recordings.
 - **BLOCKED:** independent Korean narrow-IPA adjudication; no speaker-level IPA gold currently established.
 - **BLOCKED:** NIKL/AI Hub speech-corpus access pending a documented use agreement; Seoul Corpus redistribution/derived-label rights require review.
 - **BLOCKED:** narrow IPA target compatibility pending independent phonetic adjudication and Ukrainian target review.
