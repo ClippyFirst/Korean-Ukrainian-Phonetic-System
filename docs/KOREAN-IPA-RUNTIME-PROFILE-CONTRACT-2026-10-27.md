@@ -192,3 +192,12 @@ The benchmark report must also explain whether an observed error originates in s
 7. Update source/rule registers, acceptance gates, benchmark register and handoff with actual evidence and exact-head CI results.
 
 **Acceptance remains PARTIAL/BLOCKED** until the typed profile contract, cross-runtime implementation and tests, independently reviewed phonetic evidence, target-layer review, source-rights checks and exact-head CI are complete. No benchmark uplift, linguistic certification or release readiness is implied by this scope decision.
+
+
+## Implementation continuation — 2026-11-26
+
+The first Extended IPA implementation increment is on branch feat/kozak-kim-extended-ipa-2026-11-26 and draft PR #509. It introduces a versioned result contract, a Python phonemic/broad/narrow result, and an opt-in Kozak Kim browser research panel. The browser phonemic layer is explicitly unavailable pending parity work; its narrow layer is partial/research-only and not target-compatible. The default Ukrainian result, g2pK path and morphology coverage modes are unchanged.
+
+The narrow profile was bumped to v6. The unsupported categorical post-sonorant [ɦ] output was removed: current evidence supports speaker-/dialect-conditioned /h/ weakening or deletion, not one deterministic [ɦ] realization. See the dated evidence review and source register additions.
+
+No benchmark uplift is claimed. Exact-head CI is pending; the PR remains Draft. Independent phonetic adjudication, complete browser phonemic layer, measured Python/browser parity and target review remain open.

@@ -1515,3 +1515,68 @@ The visual-mode task is software-verified and ready for merge. The broader produ
 - Visual review passed 10 page/viewport combinations; the service UI was checked at 1440, 1024, 768, 390 and 320 CSS px. Geometry assertions confirm pronunciation provenance is inside the IPA panel and target status is inside the Ukrainian panel.
 - NIKL metadata-only inventory was skipped per repository policy.
 - PR #492 remains open and unmerged pending explicit merge instruction. No Pages deployment/publication is claimed.
+
+
+## 2026-11-26 — Kozak Kim Extended IPA implementation continuation
+
+**Starting main:** 97bb411df8b998b22cd58adda015fb941201950c  
+**Branch:** feat/kozak-kim-extended-ipa-2026-11-26  
+**Current branch head at this checkpoint:** a5a42b38520d57f9814cd047f769083b811c7ecf  
+**Draft PR:** #509 — feat(korean): add Extended IPA research preview to Kozak Kim  
+**Tracking issue:** #508  
+**Status:** PARTIAL; exact-head CI still running; no merge or deployment.
+
+### Completed implementation work (verification pending)
+
+- Added schemas/ipa-profile-result.schema.json and typed Python/browser contract validators.
+- Python phoneticize_korean now returns an additional extended_ipa object with phonemic output from untouched underlying syllables, broad and narrow outputs from the shared post-rule analysis, variants, code-point source spans, boundaries and rule trace. The legacy ipa field is retained.
+- Added a browser research adapter and a Kozak Kim opt-in Extended IPA panel. It displays phonemic (explicitly unavailable in browser), broad and partial narrow layers, variants and trace. The target output is unchanged; narrow profile is not target-compatible.
+- Bumped the narrow contextual profile to v6 and removed categorical [ɦ] after sonorants; weakening/deletion is retained as unresolved speaker-/dialect-conditioned variation.
+- Added first-pass literature synthesis and source-register records S028–S035 plus corpus-rights records for Seoul Corpus and NIKL Modu Spoken. No audio or corpus labels were downloaded or committed.
+- Added Python and browser regression tests, including unresolved-output abstention and word-boundary guards.
+
+### Verification and debugging record
+
+- First PR-head CI exposed two browser-test problems: an incorrect expectation for whitespace-separated IPA rendering and narrow output leaking from partially resolved syllables in an unresolved whole token. The expected space rendering was corrected; the browser adapter now withholds the complete narrow IPA string when the engine reports unresolved pronunciation.
+- A subsequent evidence review identified that the old narrow profile treated post-sonorant /h/ as categorical [ɦ]. The source evidence does not support that invariant, so v6 removes the [ɦ] substitution and records the unresolved optionality. This is a research correction with a regression test.
+- GitHub Actions for the latest head are running. No exact-head pass is claimed until the complete Python, browser, wheel, build, source-rights and rendered-review workflows conclude.
+- Local test execution is unavailable in this environment because a local repository/worktree runtime is not mounted. GitHub Actions is the available executable verification path.
+- The optional Charsiu review workflow and NIKL metadata-only inventory are conditionally skipped; a skip is not a pass.
+
+### Preserved work
+
+- Default broad IPA and browser-legacy IPA paths remain unchanged.
+- Practical g2pK mode remains unchanged.
+- Strict / Soft / Super-soft morphology coverage modes remain independent.
+- Existing IPA→Ukrainian adapter allowlists remain unchanged; no narrow profile is authorized as target input.
+- Open PRs #505, #506 and #507 remain untouched; their branches are diverged or cover separate lexical/benchmark/coverage tasks and were not mechanically ported.
+
+### Remaining task ledger
+
+| Work item | Status | Acceptance criterion / blocker |
+|---|---|---|
+| Typed result schema and validators | PARTIAL | Exact-head schema/contract tests and JSON Schema validation pass in CI |
+| Python three-layer result | PARTIAL | Python 3.11/3.12/3.13, wheel install and pipeline tests pass; verify all three layer semantics |
+| Browser Extended IPA preview | PARTIAL | Browser tests/build pass; responsive UI and accessibility review pass |
+| Python/browser parity | TODO | Same pinned fixtures, exact layer and trace parity or documented intentional differences |
+| Browser phonemic layer | TODO | Browser underlying representation matches Python phonemic output on pinned fixtures |
+| Narrow IPA evidence adjudication | BLOCKED | Independent Korean phonetic reviewer and source-aligned token evidence |
+| Prosodic/acoustic annotation | TODO | Typed speaker/prosody/acoustic annotation schema and annotation guide, with nullable unknown fields |
+| Corpus integration | BLOCKED | Authorized NIKL/AI Hub agreement; Seoul Corpus derivative redistribution scope reviewed |
+| Ukrainian target compatibility | BLOCKED | Independent IPA adjudication plus separate Ukrainian target-layer review |
+| Benchmark evaluation | TODO | Speaker/source-separated pinned split, independent gold, paired error analysis, coverage/abstention and latency |
+| Release/deployment | DEFERRED | All scientific, rights, parity, CI and target gates complete; explicit release decision |
+
+### Research findings that change implementation
+
+- Stop-category acoustic cues differ across IP/AP-initial and word-medial positions; keep prosody and acoustic cues separate from categorical segmental IPA.
+- Focus, age and gender condition VOT/F0/closure-voicing patterns; do not infer a universal voiced-stop output.
+- Sibilant palatalization is context- and speaker-sensitive; /yo/ and /yu/ differ from /i, ye, ya/ contexts.
+- Ultrasound evidence for lexical/post-lexical palatalization is nonuniform across four speakers and consonants.
+- Seoul/Gwangju /h/ realization differs in optionality; post-sonorant weakening/deletion must not be forced into [ɦ].
+- The current [ɲ] generalization is still a research hypothesis, not independent gold.
+- Seoul Corpus is listed by OpenSLR under CC BY-NC 2.0; NIKL Modu corpus use is agreement-limited and non-transferable. No corpus integration is authorized by this review.
+
+### Superpowers workflow
+
+Used the relevant brainstorming, planning, TDD, systematic-debugging and verification guidance. Work is inline on a dedicated GitHub branch because no local Git worktree is available; a fresh independent reviewer is still required before merge.

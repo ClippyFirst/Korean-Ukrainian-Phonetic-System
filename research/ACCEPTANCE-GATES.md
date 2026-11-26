@@ -1840,3 +1840,24 @@ The browser research engine now distinguishes three levels by confidence/coverag
 - **Mainline Pages run [42858765455](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42858765455):** Python 3.11/3.12/3.13, browser regression/build, deployment and public-page smoke test **PASS**. The final live adversarial practical-mode browser smoke is still running; do not claim the whole Pages workflow complete until it finishes.
 - **Fresh three-mode benchmark [42858765799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/42858765799):** still running at this checkpoint. Historical Soft/Super-soft figures must not be presented as results for the new definitions. Reconcile benchmark outputs and generated artifacts after completion.
 - **Source/documentation note:** benchmark scores are not updated by this documentation checkpoint. No local npm/pytest execution is claimed; results above are GitHub Actions evidence.
+
+
+## Extended IPA acceptance gates — 2026-11-26
+
+**Feature:** Kozak Kim Extended IPA research mode  
+**Issue:** #508  
+**Draft PR:** #509  
+**Branch:** feat/kozak-kim-extended-ipa-2026-11-26
+
+- **PARTIAL:** versioned typed result schema and Python/browser validators implemented; exact-head schema and contract verification pending.
+- **PARTIAL:** Python phonemic/broad/narrow layers are exposed without replacing the legacy ipa field; Python CI pending.
+- **PARTIAL:** browser panel exposes broad and partial narrow IPA, variants and trace; browser phonemic layer remains explicitly unavailable pending implementation.
+- **PARTIAL:** narrow profile v6 removes unsupported categorical post-sonorant [ɦ] and records /h/ weakening/deletion as unresolved variation.
+- **PARTIAL:** first-pass evidence review covers laryngeal/prosodic cues, sibilant coarticulation, ultrasound palatalization, /h/ variation and corpus rights.
+- **TODO:** JSON Schema validation and exact cross-runtime fixture parity.
+- **TODO:** typed acoustic/prosodic annotations (speaker, dialect, focus, phrase position, speech rate, VOT, closure, F0, voice quality, spectral and formant measures), nullable when unknown.
+- **BLOCKED:** independent Korean narrow-IPA adjudication; no speaker-level IPA gold currently established.
+- **BLOCKED:** NIKL/AI Hub speech-corpus access pending a documented use agreement; Seoul Corpus redistribution/derived-label rights require review.
+- **BLOCKED:** narrow IPA target compatibility pending independent phonetic adjudication and Ukrainian target review.
+- **TODO:** same-split speaker/source-separated benchmark diagnostics; benchmark scores cannot define profile semantics.
+- **NOT RELEASE-READY:** do not merge, publish or describe the Extended IPA mode as complete until all scientific, rights, parity and CI gates pass.

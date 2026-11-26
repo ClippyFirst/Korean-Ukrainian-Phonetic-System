@@ -307,3 +307,10 @@ Research use does not itself waive copyright. A citation-only source is differen
 ## Current benchmark execution contract
 
 The canonical mode-coverage matrix, denominator definitions, Super-soft 100% candidate-availability requirement and exact-main verification status live in [methodology — mode coverage and output availability](methodology.md#mode-coverage-and-output-availability-contract-2026-11-08). Keep benchmark navigation here; do not duplicate the scoring rules in a second register.
+
+
+## Extended IPA research mode
+
+- [Extended IPA evidence review (2026-11-26)](EXTENDED-IPA-EVIDENCE-REVIEW-2026-11-26.md) — current source-grounded phonetic evidence, variation, limitations and corpus-rights status.
+- [Extended IPA design](superpowers/specs/2026-11-26-extended-ipa-design.md) and [implementation plan](superpowers/plans/2026-11-26-extended-ipa.md) — approved scope, architecture and task gates.
+- Runtime contract: schemas/ipa-profile-result.schema.json; Python src/korean_ukrainian/ipa_profiles.py; browser src/app/extended_ipa.js.
