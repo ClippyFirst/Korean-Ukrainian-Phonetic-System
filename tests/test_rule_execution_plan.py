@@ -132,3 +132,27 @@ def test_core_runtime_has_no_neural_inference_dependency_or_import():
             elif isinstance(node, ast.ImportFrom) and node.module:
                 imported.add(node.module.split(".", 1)[0])
         assert not (imported & forbidden), f"{filename} imports an ML inference package"
+
+def test_rule_plan_rejects_duplicate_rule_ids_in_catalogue(tmp_path: Path):
+    row = {"rule_id": "R001", "name": "first", "source_id": "S1", "status": "established"}
+    _write_catalogue(
+        tmp_path,
+        [row, dict(row, name="duplicate")],
+        [{"rule_id": "R001", "preferred_order": "1", "analysis_status": "primary"}],
+    )
+    with pytest.raises(ValueError, match="rules.csv contains duplicate rule_id"):
+        load_rule_execution_plan(tmp_path)
+
+
+def test_rule_plan_rejects_duplicate_rule_ids_in_ordering(tmp_path: Path):
+    row = {"rule_id": "R001", "name": "first", "source_id": "S1", "status": "established"}
+    _write_catalogue(
+        tmp_path,
+        [row],
+        [
+            {"rule_id": "R001", "preferred_order": "1", "analysis_status": "primary"},
+            {"rule_id": "R001", "preferred_order": "2", "analysis_status": "primary"},
+        ],
+    )
+    with pytest.raises(ValueError, match="rule_ordering.csv contains duplicate rule_id"):
+        load_rule_execution_plan(tmp_path)
