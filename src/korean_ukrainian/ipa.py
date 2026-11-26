@@ -12,8 +12,9 @@ _NARROW_HIGH_FRONT_SIBILANT_NUCLEI={"ㅣ","ㅖ","ㅑ"}
 # The research-only narrow profile models onset /n/ palatalization before
 # glide-initial nuclei. Keep /i/ out: the dev counterfactual regressed when /i/
 # was included, so the observed /j/ correspondence must not be generalized.
-# Sources: Ahn (2009) on palatalized /n/ before [j]; Lee (1996), summarized in
-# the UCL Korean phonetics thesis, describes [nʲ]/[ɲ] before /j/.
+# Evidence status: the UCL thesis summarizes earlier descriptions of [nʲ]/[ɲ]
+# before /j/; Ahn (2009) is an initial /n/-deletion study, not direct evidence
+# for a generalized [ɲ] allophone. Primary-source adjudication is still pending.
 _NARROW_PALATALIZED_NASAL_GLIDE_NUCLEI={"ㅑ","ㅒ","ㅕ","ㅖ","ㅛ","ㅠ"}
 CODA={"ㄱ":"k̚","ㄲ":"k̚","ㄳ":"k̚","ㄴ":"n","ㄵ":"n","ㄶ":"n","ㄷ":"t̚","ㄹ":"l","ㄺ":"k̚","ㄻ":"m","ㄼ":"l","ㄽ":"l","ㄾ":"l","ㄿ":"p̚","ㅀ":"l","ㅁ":"m","ㅂ":"p̚","ㅄ":"p̚","ㅅ":"t̚","ㅆ":"t̚","ㅇ":"ŋ","ㅈ":"t̚","ㅊ":"t̚","ㅋ":"k̚","ㅌ":"t̚","ㅍ":"p̚","ㅎ":"t̚"}
 
