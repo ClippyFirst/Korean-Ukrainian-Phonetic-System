@@ -178,3 +178,18 @@ Record consequential linguistic, data, architecture, testing, licensing, and rel
 - **Consequences:** no productive general-purpose rule or automatic Ukrainian output is licensed by this decision. The /ɰi/ → Ukrainian target choice remains provisional/candidate-only. All 40 residual occurrences remain unresolved as speaker-specific IPA gold.
 - **Validation:** exact-head Python/browser regressions, Python 3.11–3.13 tests, browser tests/build, wheel install, source-rights gate and research artifact checks passed on PR #456 head. The long multi-engine run 42414467825 was still running at the last check.
 - **Revisit when:** independent speaker-level IPA evidence or qualified review becomes available, or the official NIKL rule/FAQ is superseded.
+
+
+## DEC-2026-009 — deterministic model-free runtime; neural patterns are offline research only
+
+- **Date:** 2026-11-27
+- **Status:** accepted owner instruction; implemented and software-verified on PR #509, not merged.
+- **Context/problem:** neural G2P can reveal useful context patterns, but embedding a model, model weights or inference runtime would violate the desired deterministic execution contract and make outputs less inspectable.
+- **Evidence:** existing Korean G2P rule catalogue/order data; prior literature review of morphology-aware and multistage rule systems; current rule-plan tests and exact-head CI. The Charsiu model-inference workflow was skipped by its existing policy gate, so no new teacher outputs or model-derived production rules are claimed.
+- **Options considered:** embed a neural G2P model; use a hybrid runtime with model ranking; use neural outputs only as offline research evidence and compile reviewed patterns into explicit deterministic rules. The third option was selected.
+- **Decision:** the core runtime must not execute neural networks or depend on inference packages, weights, embeddings, remote model APIs, sampling or probabilistic ranking. Neural teacher outputs may be consumed offline by research scripts only. A discovered pattern is not a rule until primary linguistic evidence, scope, positive/negative controls and held-out development evaluation are reviewed.
+- **Implementation:** default rule order is compiled from validated rules.csv + rule_ordering.csv. The offline teacher-pattern miner now requires explicit dot-delimited IPA syllable alignment with Hangul syllable counts before attributing disagreement to context pairs; unaligned rows remain in the report but do not contribute to context candidate rates. No automatic rule promotion is permitted.
+- **Consequences and trade-offs:** runtime behavior is reproducible and explainable; potential statistical gains from neural teachers are not available until their outputs are reviewed and translated into deterministic rules. Current changes do not claim improved benchmark accuracy.
+- **Affected files/rule IDs/runtimes:** src/korean_ukrainian/rule_plan.py; src/korean_ukrainian/rules.py; data/korean/rules.csv; data/korean/rule_ordering.csv; scripts/mine_deterministic_rule_candidates.py; tests/test_rule_execution_plan.py; tests/test_mine_deterministic_rule_candidates.py; .github/workflows/test.yml.
+- **Validation/tests:** Tests/Python 3.11–3.13, wheel and web PASS (run 45904119310); System Verify PASS (45904119391); Browser G2P PASS (45904119145); relevant diagnostics and research smoke PASS as recorded in the 2026-11-27 master handoff. Charsiu train/dev inference SKIPPED by policy (45904119457); multi-engine benchmark remained pending at the last check (45904119230).
+- **Revisit when:** a rights-cleared and convention-reviewed teacher output set is available, or the owner changes the runtime contract.

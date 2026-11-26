@@ -32,7 +32,7 @@ Build the Korean pronunciation engine as a deterministic, inspectable rule syste
 
 ## Architecture
 
-The runtime compiles data/korean/rules.csv and data/korean/rule_ordering.csv into an immutable ordered rule plan. apply_ordered_rules consumes that plan unless an explicit rule sequence is supplied for diagnostics. The existing rule handlers remain deterministic transformations over structured Syllable state. No inference or probability is introduced.
+The runtime compiles data/korean/rules.csv and data/korean/rule_ordering.csv into an immutable ordered rule plan. apply_ordered_rules consumes that plan unless an explicit rule sequence is supplied for diagnostics. The existing rule handlers remain deterministic transformations over structured Syllable state. No inference or probability is introduced. The offline teacher-pattern miner accepts precomputed model outputs only as research data; it attributes context disagreements only when explicit dot-delimited IPA syllables align with Hangul syllable counts. Unaligned cases are retained but excluded from context-level candidate rates. No automatic rule promotion is allowed.
 
 The next architectural increments are a typed per-segment IPA intermediate representation, explicit candidate/abstention semantics for genuinely variable cases, and a Python/browser shared contract. These must be implemented as separate testable increments; they are not silently claimed by this first slice.
 
@@ -44,3 +44,7 @@ The next architectural increments are a typed per-segment IPA intermediate repre
 - Missing or malformed canonical rule data is a hard error; never fall back to a second hard-coded ordering.
 - Wheel installation must include the rule catalogue and ordering data.
 - Teacher/model outputs are offline research evidence only; a candidate rule still needs primary linguistic evidence, convention review, negative controls and held-out development evaluation before manual acceptance.
+
+## Offline neural-pattern research boundary
+
+A teacher model may be run in a separate, explicitly enabled research workflow to generate train/dev-only outputs, but the production package must not import or execute it. Such outputs are evidence for candidate discovery, not a phonological authority. Each candidate must be reviewed against primary sources, exact rule environments, positive and negative examples, and held-out development evidence before manual addition to canonical rule data. The current Charsiu workflow was skipped by policy in this continuation; no new teacher patterns or production rules are claimed.

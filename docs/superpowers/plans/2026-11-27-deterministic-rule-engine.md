@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (- [ ]) syntax for tracking.
 
-**Goal:** Make the Korean phonological runtime execute the single canonical, validated rule ordering from repository data while remaining fully deterministic and model-free at runtime.
+**Goal:** Make the Korean phonological runtime execute the single canonical, validated rule ordering from repository data, and make offline teacher-pattern mining conservative without introducing model inference into runtime.
 
 **Architecture:** Add a small standard-library-only rule-plan loader that validates rules.csv against rule_ordering.csv. The existing rule handlers remain authoritative for transformation semantics; the default pipeline obtains their execution sequence from the validated data plan.
 
@@ -44,17 +44,31 @@
 - RuleExecutionPlan.rule_ids -> tuple[str, ...]
 - apply_ordered_rules(..., rule_ids=None) uses default_rule_ids() only when no explicit non-empty sequence is supplied.
 
-- [ ] Step 1: Write failing tests for canonical preferred-order sorting, deterministic repeated loads, duplicate/missing/unknown rule IDs, duplicate/invalid order positions, runtime default execution order, and explicit override preservation.
-- [ ] Step 2: Run python -m pytest -q tests/test_rule_execution_plan.py; expected initial failure is import/API absence, not fixture or syntax failure.
-- [ ] Step 3: Implement an immutable plan loader using only the standard library. Resolve source-checkout data first and installed sysconfig.get_path('data')/share/korean-ukrainian-phonetic-system second. Validate one-to-one rule/order coverage and sort by integer preferred_order.
-- [ ] Step 4: Wire the default apply_ordered_rules sequence to the plan; preserve caller-provided ordering and all existing rule handler behavior.
-- [ ] Step 5: Extend wheel smoke to import the installed plan and assert the complete canonical sequence is available without repository files.
-- [ ] Step 6: Run python -m pytest -q tests/test_rule_execution_plan.py tests/test_rules.py tests/test_pipeline.py, then the complete Python suite and repository CI on the exact branch head.
-- [ ] Step 7: Commit as refactor(korean): load deterministic rule order from canonical data.
+- [x] Step 1: Write failing tests for canonical preferred-order sorting, deterministic repeated loads, duplicate/missing/unknown rule IDs, duplicate/invalid order positions, runtime default execution order, and explicit override preservation.
+- [x] Step 2: Run python -m pytest -q tests/test_rule_execution_plan.py; expected initial failure is import/API absence, not fixture or syntax failure.
+- [x] Step 3: Implement an immutable plan loader using only the standard library. Resolve source-checkout data first and installed sysconfig.get_path('data')/share/korean-ukrainian-phonetic-system second. Validate one-to-one rule/order coverage and sort by integer preferred_order.
+- [x] Step 4: Wire the default apply_ordered_rules sequence to the plan; preserve caller-provided ordering and all existing rule handler behavior.
+- [x] Step 5: Extend wheel smoke to import the installed plan and assert the complete canonical sequence is available without repository files.
+- [x] Step 6: Run python -m pytest -q tests/test_rule_execution_plan.py tests/test_rules.py tests/test_pipeline.py, then the complete Python suite and repository CI on the exact branch head.
+- [x] Step 7: Commit coherent implementation changes on the existing dedicated PR branch; no force-push or merge.
+
+### Task 2: Attribute offline teacher disagreements only to syllable-aligned contexts
+
+**Files:**
+- Modify: scripts/mine_deterministic_rule_candidates.py
+- Modify: tests/test_mine_deterministic_rule_candidates.py
+
+- [x] Step 1: Add failing tests for aligned same-word cases, unaligned IPA, and multiple eojeols; observed RED on PR-head CI before implementation.
+- [x] Step 2: Align only when each Hangul eojeol has the same number of explicit dot-delimited IPA syllables and the word counts match.
+- [x] Step 3: Record changed source-syllable indices for each adjacent context pair; unaligned rows remain in case output but are excluded from context candidate denominators.
+- [x] Step 4: Keep candidate interpretation association-only, retain no automatic rule promotion, and bump the report schema to 1.1.
+- [x] Step 5: Run complete Python 3.11/3.12/3.13, web, wheel and repository diagnostics on the exact code head.
+
+**Evidence:** tests, Python matrix, web and wheel PASS in run 45904119310; teacher corpus audit PASS in the same run. The Charsiu inference workflow was SKIPPED by policy, so no new teacher output corpus was consumed.
 
 ## Deferred architecture increments
 
-These are genuine next tasks, not acceptance claims for Task 1:
+These are genuine next tasks, not acceptance claims for Tasks 1–2:
 - Typed segment-level IPA IR with base symbol, features, diacritics, length, syllable/morpheme association, source span and rule provenance.
 - Ensure the Ukrainian adapter consumes typed IPA segments rather than independently reparsing an untyped IPA string.
 - Replace browser-side divergent phonemic adapters with the same serialized deterministic analysis contract.
