@@ -1923,3 +1923,10 @@ The first Python 3.13 test run after the shared broad-profile reconciliation fai
 The browser optional [ɕ] broad variant now carries `syllable_indices`, allowing the Extended IPA adapter to produce a source span rather than `null`. Regression coverage checks the exact source span for `시`. Python already emits the corresponding index. Implementation/test commits: `0ca374140606cd8fead7398ca957c5871aa57102`, `bd7fc7acfd4a9d17b8cc98da70e7a1bed49f2489`.
 
 The prior Python 3.13 test failure was a schema-field mismatch (`note` vs `environment`), corrected in `7a56963d7a2996066a15aa9baf594d13beaf0d09`. **TODO:** exact-head tests, Verify and Browser G2P must pass for the combined correction before this gate is marked DONE_VERIFIED.
+
+### CI status reconciliation — 2026-11-26
+
+- **DONE_VERIFIED:** the initial test-oracle fixes (`kaps`, responsive CSS assertion, 248-row source register) passed exact checkpoint `b2f18a9c6f8f35dc24c4c7d5d1c4d5f01b5fa461`: Verify `45880257988`, tests `45880257939` (Python 3.11/3.12/3.13, web, wheel install, teacher audit), Browser G2P `45880258014`. NIKL metadata-only inventory was skipped by condition.
+- **PARTIAL:** shared broad-profile reconciliation; Python 3.13 and Browser G2P passed on intermediate code checkpoint `7a56963d7a2996066a15aa9baf594d13beaf0d09` after correcting the schema assertion to `environment`, but other jobs were still queued.
+- **TODO:** final source-span change checkpoint `bd7fc7acfd4a9d17b8cc98da70e7a1bed49f2489` needs tests `45881234764`, Verify `45881234504`, Browser G2P `45881234519` and rendered review `45881234502` to complete successfully. At last poll these primary jobs were queued; register extraction, UGTPHON diagnostic and paired Native/g2pK diagnostic were in progress.
+- Final docs branch head at this reconciliation: `0bb220d159852654f425cfadeef8267190128145`; no final-head CI pass is claimed.
