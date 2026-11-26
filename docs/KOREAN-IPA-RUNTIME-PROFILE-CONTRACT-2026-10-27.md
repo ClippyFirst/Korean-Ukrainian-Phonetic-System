@@ -123,3 +123,72 @@ Coverage/abstentions were unchanged (SIGMORPHON 999/1,000; UGTPHON 1,800/1,834).
 - Broad and phonemic `감히` remain `kam.hi`; target output remains blocked for the narrow profile.
 - Exact-head Python/system/browser tests and a fresh same-input Charsiu dev run are pending. Do not mark this change `DONE_VERIFIED` until those results are inspected.
 - Profile v3 does not become an approved target input. Further work must model optionality/uncertainty or preserve alternate realizations before any general production claim.
+
+
+## Extended IPA research mode — owner-approved continuation (2026-11-26)
+
+**Decision:** extend the existing IPA profile architecture into a first-class research mode for Kozak Kim. This is not a benchmark-tuning mode, not a replacement for the broad production default, and not a synonym for the existing Strict / Soft / Super-soft morphology-coverage settings.
+
+### Scientific purpose
+
+The mode must support inspectable analysis of how Korean source forms are structurally and morphophonologically analysed, how phonological rules apply in their exact environments, how those forms are realized phonetically, and which parts of the resulting IPA are supported, variable, provisional or unresolved. It must preserve the distinction between:
+
+- phonemic representation (contrastive underlying form);
+- broad phonetic transcription (source/rule-supported surface form);
+- narrow phonetic realization (contextual detail, only where evidence warrants it);
+- optional variants (separate readings with their own environments, evidence and confidence);
+- Ukrainian target adaptation (a downstream orthographic decision, never evidence for choosing IPA).
+
+### Research scope (not reducible to benchmark cases)
+
+The research inventory must cover, where applicable and source-supported:
+
+1. Hangul/Jamo segmentation, syllable structure, complex codas, resyllabification and alignment to source spans.
+2. Ordered interactions among coda neutralization, liaison, nasalization, liquid assimilation, fortition, aspiration, palatalization, ㅎ weakening/voicing/deletion, ㄴ insertion and 사이시옷.
+3. Morphology-sensitive alternations, endings/particles, compounds, lexicalized forms, spacing and word/phrase boundaries.
+4. Vowel quality and glide realization, including ㅢ, ㅚ, ㅟ, ㅐ/ㅔ and context-sensitive /j,w/ sequences, without treating group-level tendencies as universal categorical rules.
+5. Phonetic dimensions only when supported by relevant evidence: aspiration, voicing, fortisness, place/manner, release, nasalization, palatalization, lateral/nasal allophones, vowel quality/length, syllable boundaries and prosodic/boundary effects.
+6. Variation only when the source identifies it: dialect/region, speaker cohort, age/generation, style/register, speech rate, and recording/task conditions. Unknown speaker-specific facts remain unknown.
+7. Mixed input, names, loanwords, numerals, punctuation, whitespace and unsupported spans, preserving original source alignment and explicit abstentions.
+
+This is an investigation inventory, not a claim that every process applies to every word or that each has one canonical output. Every implemented rule must specify its triggering environment, ordering dependencies, exclusions, provenance, evidence class, counterexamples and runtime tests. A paper's existence or a model's prediction is not sufficient to promote a categorical rule.
+
+### Evidence model
+
+Each phonetic claim/variant must be typed as one of: official norm/rule derivation; exact dictionary attestation; primary instrumental phonetic study; licensed corpus annotation; independent expert adjudication; project hypothesis; model/cross-engine prediction; or unresolved. Retain source URL/identifier, bibliographic identity, population and sample scope, dialect, elicitation/recording method, environment, limitations, access date and rights status where applicable.
+
+Do not generalize a small speaker sample to all Seoul speakers or all Korean. Do not turn corpus conventions into normative gold without convention review. Do not use the engine under evaluation, a teacher model, or majority agreement among engines to create its own expected IPA. If evidence cannot distinguish alternatives, preserve a variant set or abstain.
+
+### Output and trace contract
+
+A complete Extended IPA result should expose:
+- original input and source-span alignment;
+- structural and (where supported) morphological analysis;
+- intermediate surface-form representation;
+- phonemic, broad and narrow IPA as separate typed layers;
+- syllable, word and phrase boundaries;
+- applied rule IDs, exact environments, ordering and source/evidence links;
+- profile ID/version, runtime and normalization version;
+- optional alternatives with local span, provenance and evidence status;
+- uncertainty, unresolved spans and abstention reasons;
+- separate IPA-to-Ukrainian mapping status, including unmapped features and provisional/unavailable target results.
+
+The data model should preserve segment identity and attached features/diacritics instead of relying only on lossy string replacement. IPA serialization is a view of the typed analysis, not the entire internal representation. The same versioned profile contract must be consumed by Python and browser JavaScript.
+
+### Benchmark relationship
+
+Benchmarks validate a profile; they do not define its phonetic content. Keep benchmark splits pinned and source-separated, report same-occurrence paired comparisons, exact match, CER/PER with explicit normalization and denominators, coverage, abstentions, unresolved cases, per-case regressions, latency and profile version. Keep external engine outputs as comparators rather than gold. Do not tune rules against public test/holdout labels, and do not claim Extended IPA is more accurate until independently adjudicated same-split evidence supports that conclusion.
+
+The benchmark report must also explain whether an observed error originates in structural analysis, phonological rule application, phonetic realization/profile convention, IPA serialization, target adaptation, or evaluation normalization. Aggregate scores alone are insufficient.
+
+### Implementation sequence and gates
+
+1. Audit and inventory the existing Python narrow profile and its cited evidence; retain its partial/research-only status until adjudicated.
+2. Define the shared typed segment/feature/boundary/variant/result schema and versioned profile registry; avoid a second parallel rule engine.
+3. Implement browser consumption of the same rule/profile contract, with parity fixtures for supported cases and explicit expected differences for unresolved/unadjudicated cases.
+4. Expand positive, negative, boundary, morphology, phrase, interaction, variation and abstention tests. Synthetic stress inputs test robustness and trace consistency, not invented gold IPA.
+5. Keep IPA as the sole input to Ukrainian adaptation. Do not add extended symbols to target mappings or allowlists without separate IPA adjudication and Ukrainian target review.
+6. Run identical frozen cases through Python and browser; run benchmark diagnostics only after profile semantics and split provenance are pinned.
+7. Update source/rule registers, acceptance gates, benchmark register and handoff with actual evidence and exact-head CI results.
+
+**Acceptance remains PARTIAL/BLOCKED** until the typed profile contract, cross-runtime implementation and tests, independently reviewed phonetic evidence, target-layer review, source-rights checks and exact-head CI are complete. No benchmark uplift, linguistic certification or release readiness is implied by this scope decision.
