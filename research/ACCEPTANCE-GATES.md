@@ -1876,3 +1876,26 @@ These fields are not inferred from Hangul. Text-only conversion leaves speaker/p
 ## Browser phonemic candidate gate — 2026-11-26
 
 The browser panel now uses a dedicated deterministic underlying Hangul phonemic adapter rather than the super-soft grapheme fallback. It maps onset–nucleus–coda inventory and does not apply surface phonology, productive morphology, speaker-conditioned realization or acoustic inference. It is not independently adjudicated phonemic gold. Representative cases are covered, but exhaustive Python/browser parity and independent phonetic review remain TODO; the result must not be used as benchmark gold.
+
+## Exact-head CI failure triage — 2026-11-26
+
+The initial Extended IPA branch verification completed with failures on the preceding tip. Log review identified incorrect test expectations rather than a demonstrated runtime defect:
+
+- `값` is ㄱ + ㅏ + ㅄ; the current underlying inventory decomposition is /k/ + /a/ + /p/ + /s/, i.e. `kaps`. Python and browser tests incorrectly asserted `paps`; corrected to `kaps`.
+- The responsive-layout test expected `grid-template-columns` immediately after the CSS block opener, but the valid stylesheet places `display:grid` first. The assertion now permits preceding declarations and still checks the three-column layout.
+- The CLI source-register test expected 247 records, while the pinned CSV and a separate assertion establish 248. The stale expected count was corrected to 248.
+
+Correction commits: `b38a11dca4204dbfc5f22162be8d46c9212d4150`, `c4bae1fc64ebc6c5bdd4f8f0dbdb17525f3d8e5c`, `a64c9da07b8d0657a5fdbec341aaab32d403e76b`, `94de598c9e36a657b3ea20da0d678eafc4b3263d`.
+
+The failed runs are historical evidence for the preceding tip, not the corrected tip. Exact-head CI must be rerun and inspected before marking the implementation/test gate DONE_VERIFIED. No local test/build command was run. The known Python/browser broad-layer difference for 시 remains open; these test-oracle corrections do not constitute phonetic adjudication.
+
+| Gate | Current state | Acceptance evidence |
+|---|---|---|
+| Test-oracle corrections for 값, CSS declaration order and source-register count | DONE implementation / pending exact-head verification | Corrected test assertions; exact-head CI still required |
+| Extended IPA exact-head tests and build | TODO / PENDING | Verify, Browser G2P and tests must pass on the same final SHA |
+| Python/browser broad IPA parity for 시 | PARTIAL | Resolve with documented phonetic convention/source review, not a benchmark-driven assertion |
+| Independent Korean phonetic adjudication and narrow IPA gold | BLOCKED | Qualified independent review and speaker-/dialect-conditioned evidence |
+| Rights-cleared acoustic annotation pilot | BLOCKED | Authorized corpus/audio access plus reproducible measurement protocol and independent validation |
+| Ukrainian target compatibility for Extended IPA | BLOCKED | Independent Ukrainian target-layer review on frozen IPA inputs |
+
+Overall status remains **research preview / partial prototype; not release-ready**.
