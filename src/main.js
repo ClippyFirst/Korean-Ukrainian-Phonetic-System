@@ -274,6 +274,7 @@ targetStatusValue.textContent=r.candidate_status==='provisional'?(selectedUaView
 if(morphologyLevel)morphologyLevel.addEventListener('input',()=>{syncMorphologyLevel();render();});
 if(modePractical)modePractical.addEventListener('change',()=>{syncModeUi();render();});
 if(modeResearch)modeResearch.addEventListener('change',()=>{syncModeUi();render();});
+if(extendedIpaToggle)extendedIpaToggle.addEventListener('change',render);
 syncModeUi();
 input.addEventListener('input',render);
 document.querySelector('#clear-button').addEventListener('click',()=>{input.value='';render();input.focus();});

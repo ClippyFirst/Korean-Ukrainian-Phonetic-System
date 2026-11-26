@@ -36,8 +36,14 @@ const EVIDENCE = {
 
 function findSpan(source, value, cursor) {
   if (!value) return null;
-  const start = source.indexOf(value, cursor);
-  return start < 0 ? null : { start, end: start + [...value].length };
+  const sourcePoints = [...source];
+  const valuePoints = [...value];
+  for (let start = cursor; start <= sourcePoints.length - valuePoints.length; start++) {
+    if (valuePoints.every((point, index) => sourcePoints[start + index] === point)) {
+      return { start, end: start + valuePoints.length };
+    }
+  }
+  return null;
 }
 function replaceInitial(ipa, oldValues, replacement) {
   for (const old of oldValues) if (ipa.startsWith(old)) return replacement + ipa.slice(old.length);
