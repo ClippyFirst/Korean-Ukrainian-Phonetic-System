@@ -104,3 +104,28 @@ def test_runtime_default_execution_uses_canonical_rule_order():
 def test_explicit_rule_sequence_keeps_caller_order():
     _, traces = apply_ordered_rules(parse_syllables("낫"), ["R001", "R009"])
     assert tuple(trace.rule_id for trace in traces) == ("R001", "R009")
+
+def test_core_runtime_has_no_neural_inference_dependency_or_import():
+    import ast
+    import tomllib
+
+    repository = Path(__file__).resolve().parents[1]
+    project = tomllib.loads((repository / "pyproject.toml").read_text(encoding="utf-8"))["project"]
+    assert project.get("dependencies", []) == []
+
+    forbidden = {"torch", "tensorflow", "transformers", "onnxruntime", "keras", "jax"}
+    runtime_modules = (
+        "pipeline.py", "rules.py", "rule_plan.py", "phonology.py", "ipa.py",
+        "ipa_profiles.py",
+    )
+    for filename in runtime_modules:
+        tree = ast.parse((
+            repository / "src" / "korean_ukrainian" / filename
+        ).read_text(encoding="utf-8"))
+        imported = set()
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Import):
+                imported.update(alias.name.split(".", 1)[0] for alias in node.names)
+            elif isinstance(node, ast.ImportFrom) and node.module:
+                imported.add(node.module.split(".", 1)[0])
+        assert not (imported & forbidden), f"{filename} imports an ML inference package"
