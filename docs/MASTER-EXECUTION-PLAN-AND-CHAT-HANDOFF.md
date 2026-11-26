@@ -1633,3 +1633,41 @@ The official AI Hub FAQ [S036] clarifies that raw/original dataset files cannot 
 - Rights-cleared acoustic corpus access and annotation pilot.
 - Separate Ukrainian target-layer review.
 - Completed exact-head CI, generated-artifact and rendered-review checks.
+
+## 2026-11-26 — Extended IPA implementation checkpoint 4
+
+**Branch:** `feat/kozak-kim-extended-ipa-2026-11-26`  
+**PR:** [#509](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/509) — draft, open  
+**Base:** `main` at `97bb411df8b998b22cd58adda015fb941201950c`  
+**Head at this checkpoint:** `58419e61d6d3e4783355b66f00fec3fdd487ff8f`
+
+### Implemented in this continuation
+
+- Replaced the browser's super-soft grapheme fallback in the phonemic panel with a dedicated deterministic underlying Hangul onset–nucleus–coda adapter.
+- The browser adapter preserves the project's phonemic inventory, complex coda components, syllable/word/phrase boundaries, Unicode code-point spans, unsupported-character abstention and the exact source-attested long vowel in 유사성.
+- Python's existing IPA-first three-layer generation is retained. Its Extended IPA trace now separates phonemic, broad and narrow records and includes the underlying phonemic syllable values.
+- Extended IPA schema advanced to v1.1. Every trace row is typed as phonemic, broad or narrow; Python and browser validators enforce that layer tag.
+- Browser UI now displays the dedicated phonemic result and labels its limits. Extended IPA remains opt-in under Kozak Kim research mode; the normal IPA and Ukrainian output paths are not redirected through this panel.
+- Runtime comparison fixtures now state the known Python/browser difference for 시 explicitly: Python broad si vs browser broad ɕi. The fixture is a smoke comparison, not independent phonetic gold.
+- Added browser/Python tests for complex coda decomposition, source-attested vowel length, unsupported characters, layer-specific trace and source spans.
+
+### Status ledger
+
+- **PARTIAL:** browser phonemic adapter and cross-runtime trace contract are implemented, but latest-head CI has not yet verified them.
+- **PARTIAL:** broad IPA runtime parity; known difference for 시 remains explicit and must be reconciled using the project's IPA convention evidence, not by changing one runtime to fit a benchmark.
+- **PARTIAL:** narrow IPA remains a research-only profile with unresolved speaker-/dialect-conditioned cases and no independent phonetic adjudication.
+- **TODO:** execute the complete test suite, schema validation, source-rights audit, build, wheel/install checks and rendered browser review against the exact current head.
+- **BLOCKED:** no latest-head workflow run was returned for commit `58419e61d6d3e4783355b66f00fec3fdd487ff8f`. The workflow runs visible at commit `6143004ff525be29dc7d15d79590e988d1cfdf91` were still queued and are stale relative to this checkpoint.
+- **BLOCKED:** independent Korean phonetic review, rights-cleared acoustic corpus access and separate Ukrainian target-layer review remain external evidence gates.
+
+### Commands and verification
+
+- GitHub branch comparison: `main...feat/kozak-kim-extended-ipa-2026-11-26` — 52 commits ahead, 0 behind at the time of this checkpoint.
+- GitHub workflow lookup for current head `58419e61d6d3e4783355b66f00fec3fdd487ff8f` — no associated PR-triggered runs returned.
+- GitHub Actions jobs previously listed for `6143004ff525be29dc7d15d79590e988d1cfdf91` — queued; not evidence of passing tests on the current head.
+- No local worktree/runtime was available through this GitHub-only session; no local test command is claimed as executed.
+
+### Release assessment
+
+**Research preview / partial prototype; not release-ready.** The UI and typed IPA layers exist, and the browser phonemic layer is no longer the super-soft grapheme fallback. Do not claim benchmark uplift, full phonetic coverage, cross-runtime parity or independent linguistic validation until the outstanding gates above pass.
+
