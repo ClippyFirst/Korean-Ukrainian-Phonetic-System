@@ -1988,3 +1988,10 @@ These are close comparisons with overlapping bootstrap 95% intervals, not establ
 - **Acceptance:** exact-head workflow must pass the new Node regression and produce the `standard-vs-extended-ipa-ab` artifact. Inspect coverage, exact match and CER separately for each layer; compare broad directly and label phonemic/narrow cross-layer scores cautiously.
 - **Current workflow:** `45893331177` was pending at documentation update; no A/B benchmark result is claimed yet.
 - **Scope:** Kozak Kim only. No second Korean engine or repository is changed.
+
+
+### Paired benchmark run reconciliation — 2026-11-26
+
+- Final benchmark code checkpoint: `f377f16048035918f0bd50a50d5394ac1737e408`.
+- Run `45893480948` was created for this checkpoint and remained **PENDING** at the last poll; it had no job records yet. Earlier runs on intermediate rapid-update commits were cancelled before jobs started and are not evidence.
+- The regression test and benchmark script have been committed, but **no pass/fail or A/B metric is claimed** until run `45893480948` completes and its artifact is inspected.
