@@ -11,7 +11,7 @@ export { decompose, parseCsv } from './engine_shared.js';
 export { ipaSyllableToUkrainian, ipaSyllablesToUkrainian, ipaTargetForSource };
 
 
-function attachSuperSoftCoverage(source,result){
+function attachSuperSoftCoverage(source,result,mode='strict'){
   const text=String(source??'');
   const codepoints=[...text];
   const spans=[];
@@ -66,6 +66,7 @@ function attachSuperSoftCoverage(source,result){
   const missingIpaUnits=hangulItems.filter(item=>!item||!String(item.ipa||'').trim()).length;
   const ratio=(part,total)=>total?part/total:1;
   result.coverage={
+    morphology_mode:mode,
     scope:'modern-hangul-syllable-blocks',
     input_total:hangul.length,
     input_covered:covered.length,
@@ -130,7 +131,7 @@ export function createEngine(csv, lexiconCsv=''){
   const map=createMap(csv);
   const lexicon=new Map(parseCsv(lexiconCsv).map(r=>[r.input,r]));
   return{
-    convert:function(text,options={}){const mode=options.morphologyMode==='super-soft'?'super-soft':options.morphologyMode==='soft'?'soft':options.morphologyMode;const result=convertText(text,map,lexicon,false,{...options,morphologyMode:mode,preserveUnresolvedSource:options.preserveUnresolvedSource??(['soft','super-soft'].includes(mode)||(/[가-힣]/u.test(text)&&/[^가-힣]/u.test(text)))});const gated=applyProfileGate(text,result,options);const adjudicated=attachSourceAdjudications(text,gated);return ['soft','super-soft'].includes(mode)?attachSuperSoftCoverage(text,adjudicated):adjudicated},
+    convert:function(text,options={}){const mode=options.morphologyMode==='super-soft'?'super-soft':options.morphologyMode==='soft'?'soft':options.morphologyMode;const result=convertText(text,map,lexicon,false,{...options,morphologyMode:mode,preserveUnresolvedSource:options.preserveUnresolvedSource??(['soft','super-soft'].includes(mode)||(/[가-힣]/u.test(text)&&/[^가-힣]/u.test(text)))});const gated=applyProfileGate(text,result,options);const adjudicated=attachSourceAdjudications(text,gated);return attachSuperSoftCoverage(text,adjudicated,mode)},
     // G2P surface text is already normalized; derive IPA/target without
     // re-running coda, liaison, assimilation, or fortition rules.
     convertSurface:function(text,options={}){const result=convertText(text,map,new Map(),true,{...options,morphologyMode:'strict',surfaceMode:true,preserveUnresolvedSource:/[가-힣]/u.test(text)&&/[^가-힣]/u.test(text)});return applyProfileGate(text,result,options)},

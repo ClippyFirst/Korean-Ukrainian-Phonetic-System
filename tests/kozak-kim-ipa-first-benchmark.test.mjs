@@ -651,3 +651,46 @@ test('browser benchmark labels non-UGTPHON datasets and reports candidate availa
   assert.equal(report.output_availability_rate, 1);
   assert.equal(report.heuristic_tokens, 1);
 });
+
+
+test('benchmark scores candidate IPA for every mode while keeping heuristic accuracy separate',()=>{
+  const rows=[{
+    id:'three-mode-order',
+    lang:'ko',
+    split:'test',
+    tokens:[{canonical:'가',phoneme:'ka'},{canonical:'나',phoneme:'na'}]
+  }];
+  const engine={
+    convert:(input,options={})=>{
+      const strict=options.morphologyMode==='strict';
+      const soft=options.morphologyMode==='soft';
+      const ipa=strict?(input==='가'?'ka':'na'):soft?(input==='가'?'kha':'na'):(input==='가'?'ga':'ma');
+      const softResolved=input==='나'&&soft;
+      return {
+        ipa,
+        pronunciation_status:strict||softResolved?'resolved':'heuristic',
+        target_status:'model-selected',
+        ukrainian:strict?'кандидат':'',
+        candidate_ukrainian:strict?null:'кандидат',
+        candidate_status:strict?null:'low-confidence',
+        phonetic_result_type:strict?'surface-ipa':'typed-fallback'
+      };
+    }
+  };
+  const strict=evaluateRows(rows,engine,'strict');
+  const soft=evaluateRows(rows,engine,'soft');
+  const superSoft=evaluateRows(rows,engine,'super-soft');
+  assert.equal(strict.candidate_scored_tokens,2);
+  assert.equal(soft.candidate_scored_tokens,2);
+  assert.equal(superSoft.candidate_scored_tokens,2);
+  assert.equal(strict.candidate_exact_match_rate,1);
+  assert.equal(soft.candidate_exact_match_rate,0.5);
+  assert.equal(superSoft.candidate_exact_match_rate,0);
+  assert.ok(strict.candidate_exact_match_rate>soft.candidate_exact_match_rate);
+  assert.ok(soft.candidate_exact_match_rate>superSoft.candidate_exact_match_rate);
+  assert.equal(strict.coverage_adjusted_exact_match_rate,1);
+  assert.equal(soft.coverage_adjusted_exact_match_rate,0.5);
+  assert.equal(superSoft.coverage_adjusted_exact_match_rate,0);
+  assert.equal(soft.scored_tokens,1,'only the non-heuristic Soft result counts as source-resolved accuracy');
+  assert.equal(superSoft.scored_tokens,0,'grapheme fallback must not be promoted to source-resolved IPA accuracy');
+});

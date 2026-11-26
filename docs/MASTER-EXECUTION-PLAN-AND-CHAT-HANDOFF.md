@@ -1515,3 +1515,30 @@ The visual-mode task is software-verified and ready for merge. The broader produ
 - Visual review passed 10 page/viewport combinations; the service UI was checked at 1440, 1024, 768, 390 and 320 CSS px. Geometry assertions confirm pronunciation provenance is inside the IPA panel and target status is inside the Ukrainian panel.
 - NIKL metadata-only inventory was skipped per repository policy.
 - PR #492 remains open and unmerged pending explicit merge instruction. No Pages deployment/publication is claimed.
+
+
+## Execution continuation — 2026-11-25 — three-mode coverage and verified accuracy contract
+
+**Status: IN PROGRESS on draft PR #507.** User requirement: Soft output coverage must exceed Strict; Super-soft must cover 100%; verified accuracy ordering must be Strict > Soft > Super-soft. No phonological rule, IPA normalization, lexical source, or Ukrainian target mapping was changed.
+
+- **Default branch at start:** `main` at `0018e3ed292aab21bbac24d2eb702d362de5af90`.
+- **Implementation branch:** `fix/three-mode-coverage-accuracy-order-2026-11-25`, based on current `main`.
+- **PR:** [#507](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/507), draft; do not merge.
+- **Initial test commits:** `d2fedd46b41d30bd8be2391ef7acdaa7d987cd0b` and `8663d56a6d2d5db9ba86ed2f6f8140d8fa6b2541`. These were added before production changes.
+- **Test-first RED evidence:** runs [45499672117](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45499672117) and [45499666023](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45499666023) failed the new assertions for the expected reasons: Strict did not expose coverage; the benchmark did not score heuristic candidate IPA separately. Python regression/data-integrity jobs succeeded.
+- **Implementation batches:** shared coverage now attaches to all modes; the UI displays coverage for Strict too; benchmark emits source-resolved metrics and separate candidate metrics; workflow runs all three modes on the same pinned UGTPHON split and gates coverage plus verified-accuracy ordering; mode descriptions now distinguish evidence-backed accuracy from heuristic coverage.
+- **Measured run:** [45500416565](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45500416565) successfully fetched and verified pinned UGTPHON data and ran all three modes. Its first matrix gate intentionally exposed a metric-selection problem: candidate exact was Strict 52.7387%, Soft 52.8302%, Super-soft 22.0496%. This is not a verified-accuracy ordering because candidate metrics include 464 Soft heuristics and the runtime IPA profiles differ.
+- **Corrected metric:** source-resolved exact matches / all eligible tokens. Measured: Strict 52.7192% (1,425/2,703), Soft 46.5409% (1,258/2,703), Super-soft 1.0359% (28/2,703). Output coverage: 99.9630%, 100%, 100% respectively. The CI gate now uses this source-resolved metric and reports candidate scores separately.
+- **Previous feature branches preserved:** `feature/kozak-kim-phonetic-accuracy-advancement` remains untouched (30 commits ahead / 7 behind main at inspection); PR #505/#506 remain benchmark-only and untouched. The old `feature/three-tier-phonetic-modes-2026-11-10` is 246 commits behind main and has no unique commits ahead; not reused.
+- **Current verification pending:** latest branch head and workflow run IDs are recorded in GitHub Actions; wait for exact-head browser regression/build, Python 3.11/3.12/3.13, source-rights gate, external mode matrix, Browser G2P, editorial review, master artifacts, and release verification. Official NIKL metadata-only job is skipped by workflow policy.
+- **Next acceptance:** all exact-head checks green; three-mode matrix must print Soft coverage > Strict, Super-soft = 100%, and source-resolved adjusted exact Strict > Soft > Super-soft. No merge or deployment requested.
+
+
+### Final verification update — 2026-11-25
+
+- **Verified implementation head:** `f701834f064f192165ccaa1a8e468aa133fc04e3` (the subsequent handoff/spec commit is documentation-only).
+- **Exact-head verify:** [45501926297](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45501926297) — success. Browser suite: **1,469 passed, 0 failed**; source redistribution rights gate passed; public pages build passed; generated pages verification passed; Python regression and data-integrity job passed. Official NIKL metadata-only job skipped by workflow configuration.
+- **Pinned three-mode benchmark:** [45501847669](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/45501847669) — success. Soft coverage 100.0000% > Strict 99.9630%; Super-soft 100.0000%; source-resolved coverage-adjusted exact Strict 52.7192% > Soft 46.5409% > Super-soft 1.0359%. Candidate-only exact is separate and not used as verified accuracy.
+- **Supporting CI:** Browser G2P [45501847935] success; editorial visual review [45501847733] success; master table/research artifacts [45501847983] success; exhaustive test-case register extraction [45501847690] success. Python 3.11/3.12/3.13, wheel install, and teacher-corpus audit passed in run [45501847654]; its separate web job was still in progress when recorded, but exact-head verify above supersedes it for browser/build evidence.
+- **Final branch head after docs update:** to be recorded by the final doc commit response. PR #507 remains open, draft, mergeable, and unmerged. No deployment, publication, or release was performed.
+- **Remaining evidence limit:** UGTPHON is a dataset-specific diagnostic, not independently adjudicated normative pronunciation gold. Independent pronunciation and Ukrainian target review remain outside this change. Do not claim absolute accuracy or release readiness.

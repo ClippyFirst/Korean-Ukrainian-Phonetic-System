@@ -207,7 +207,7 @@ test('service exposes the opt-in control only inside research mode and labels it
   const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
   const main=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
   assert.match(html,/id="super-soft-morphology"/u);
-  assert.match(main,/description:'Розкладає склади хангиля на графеми, формує IPA й передає його до українського адаптера\. Контекстні правила не вгадуються; це найширше графемне покриття з найнижчою впевненістю\.'/u);
+  assert.match(main,/description:'Графемний IPA-резерв забезпечує 100% покриття сучасних складів Hangul\. Контекстні правила не вгадуються; найнижча частка підтверджених точних збігів і найменша впевненість\.'/u);
   assert.match(main,/morphologyDescriptions\[Number\(morphologyLevel\?\.value\)\|\|0\]\?\.mode/u);
   assert.match(main,/super-soft-low-confidence/u);
   assert.match(html,/id="morphology-level-guidance"/u);
@@ -299,7 +299,27 @@ test('new Super-soft covers all modern Hangul blocks through the IPA adapter',()
   assert.equal(result.coverage.input_total,11172);
   assert.equal(result.coverage.input_covered,11172);
   assert.equal(result.coverage.input_coverage,1);
+  assert.equal(result.coverage.trace_coverage,1);
   assert.equal(result.coverage.complete,true);
+  assert.ok(result.ipa.length>0);
   assert.ok(result.candidate_ukrainian);
   assert.equal(result.trace.filter(item=>/^[가-힣]$/u.test(item.source)&&item.ipa).length,11172);
+});
+
+
+test('Strict, Soft, and Super-soft expose comparable coverage with monotonic fallback guarantees',()=>{
+  const gaps=['짧은소리의','수많이는','없으니를','없애다에서는','값에서는','밟으니와','싫어도에서는','외곬에를','값있는에서는','히읗을의','벼훑이를','밭이와','붙임'];
+  const source=gaps.join(' ');
+  const strict=engine.convert(source,STRICT);
+  const soft=engine.convert(source,SOFT);
+  const superSoft=engine.convert(source,{morphologyMode:'super-soft'});
+  for(const [mode,result] of [['Strict',strict],['Soft',soft],['Super-soft',superSoft]]){
+    assert.equal(result.coverage?.scope,'modern-hangul-syllable-blocks',mode+' must report the same coverage metric');
+    assert.equal(result.coverage?.input_total,[...source].filter(char=>/[가-힣]/u.test(char)).length,mode);
+    assert.equal(result.coverage?.trace_coverage,1,mode+' must account for every source span');
+  }
+  assert.ok(soft.coverage.input_coverage>strict.coverage.input_coverage,
+    'Soft must produce more Korean-syllable candidates than Strict on registered strict-mode gaps');
+  assert.equal(superSoft.coverage.input_coverage,1,'Super-soft must cover every modern Hangul syllable');
+  assert.equal(superSoft.coverage.complete,true);
 });

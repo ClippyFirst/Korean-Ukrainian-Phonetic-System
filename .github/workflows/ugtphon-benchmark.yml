@@ -15,7 +15,10 @@ on:
       - "tests/test_ugtphon_surface_benchmark.py"
       - ".github/workflows/ugtphon-benchmark.yml"
       - "src/korean_ukrainian/**"
+      - "src/app/engine.js"
+      - "src/main.js"
       - "src/app/engine_convert.js"
+      - "tests/super-soft-coverage.test.mjs"
       - "src/app/engine_rules_ctx.js"
       - "src/app/engine_rules_phrase.js"
       - "src/app/engine_shared.js"
@@ -108,6 +111,54 @@ jobs:
               print(f"{key}: {report.get(key)}")
           print("Direct browser-side Kozak Kim diagnostic; IPA is scored independently of Ukrainian target availability.")
           PY
+      - name: Run three-tier Kozak Kim coverage and candidate-accuracy matrix
+        run: |
+          set -euo pipefail
+          node scripts/benchmark_kozak_kim_browser.mjs --corpus "$RUNNER_TEMP/ko-test.json" --split test --mode soft --output "$RUNNER_TEMP/kozak-kim-soft-report.json"
+          node scripts/benchmark_kozak_kim_browser.mjs --corpus "$RUNNER_TEMP/ko-test.json" --split test --mode super-soft --output "$RUNNER_TEMP/kozak-kim-super-soft-report.json"
+          python - "$RUNNER_TEMP/kozak-kim-browser-test-report.json" "$RUNNER_TEMP/kozak-kim-soft-report.json" "$RUNNER_TEMP/kozak-kim-super-soft-report.json" <<'PY'
+          import json, sys
+          from pathlib import Path
+          modes = ("strict", "soft", "super-soft")
+          reports = {
+              mode: json.loads(Path(path).read_text(encoding="utf-8"))
+              for mode, path in zip(modes, sys.argv[1:])
+          }
+          eligible = {report["eligible_tokens"] for report in reports.values()}
+          assert len(eligible) == 1, f"mode denominators differ: {eligible}"
+          for mode, report in reports.items():
+              print(
+                  f"{mode}: output_coverage={report['output_availability_rate']:.6%} "
+                  f"verified_adjusted_exact={report['source_resolved_coverage_adjusted_exact_match_rate']:.6%} "
+                  f"candidate_exact={report['candidate_exact_match_rate']:.6%} "
+                  f"candidate_adjusted_exact={report['candidate_coverage_adjusted_exact_match_rate']:.6%} "
+                  f"candidate_CER={report['candidate_character_error_rate']:.6%} "
+                  f"source_resolved_exact={report['exact_match_rate']}"
+              )
+          strict, soft, super_soft = (reports[mode] for mode in modes)
+          assert soft["output_availability_rate"] > strict["output_availability_rate"], (
+              "Soft output coverage must exceed Strict on the pinned UGTPHON split"
+          )
+          assert super_soft["output_availability_rate"] == 1.0, (
+              "Super-soft must provide IPA output for 100% of eligible modern Hangul tokens"
+          )
+          rates = [reports[mode]["source_resolved_coverage_adjusted_exact_match_rate"] for mode in modes]
+          assert rates[0] is not None and rates[1] is not None and rates[2] is not None
+          assert rates[0] > rates[1] > rates[2], (
+              "source-resolved, coverage-adjusted IPA accuracy must be Strict > Soft > Super-soft; "
+              f"observed {rates}"
+          )
+          print("Three-tier acceptance passed: coverage Strict < Soft <= Super-soft; verified accuracy Strict > Soft > Super-soft.")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kozak-kim-three-tier-mode-matrix
+          path: |
+            ${{ runner.temp }}/kozak-kim-browser-test-report.json
+            ${{ runner.temp }}/kozak-kim-soft-report.json
+            ${{ runner.temp }}/kozak-kim-super-soft-report.json
+          if-no-files-found: warn
       - uses: actions/upload-artifact@v4
         if: always()
         with:

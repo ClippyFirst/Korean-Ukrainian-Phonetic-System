@@ -179,6 +179,7 @@ export function evaluateRows(rows, engine, morphologyMode = 'strict', benchmarkN
     throw new TypeError('morphologyMode must be strict, soft, or super-soft');
   }
   const records = [];
+  const candidateScoredRecords = [];
   const unresolvedExamples = [];
   const errorExamples = [];
   let eligibleTokens = 0;
@@ -223,6 +224,31 @@ export function evaluateRows(rows, engine, morphologyMode = 'strict', benchmarkN
         const hasTypedFallback = result.phonetic_result_type === 'mixed-surface-ipa-and-orthographic-fallback' ||
           trace.some(item => item?.status === 'super-soft-orthographic-fallback' || item?.phoneticResultType === 'orthographic-phonemic-fallback');
         const pronunciationStatus = result.pronunciation_status ?? (result.ipa ? 'resolved' : 'unresolved');
+        // Score candidate IPA on the same gold variants for all modes. Heuristic
+        // predictions remain separate from source-resolved accuracy below.
+        let candidateScore = null;
+        if (['resolved', 'heuristic'].includes(pronunciationStatus) && result.ipa) {
+          const candidatePredicted = normalizeIpa(result.ipa);
+          const candidateDistances = goldVariants.map(gold => ({
+            gold, distance: editDistance(candidatePredicted, gold)
+          })).sort((a, b) => a.distance - b.distance);
+          const closestCandidate = candidateDistances[0];
+          candidateScore = {
+            predicted: result.ipa,
+            normalized_predicted: candidatePredicted,
+            closest_normalized_gold: closestCandidate.gold,
+            distance: closestCandidate.distance,
+            exact: closestCandidate.distance === 0
+          };
+          candidateScoredRecords.push({
+            occurrence_id: occurrenceId,
+            id: row.id,
+            token: canonical,
+            gold: goldRaw,
+            ...candidateScore,
+            pronunciation_status: pronunciationStatus
+          });
+        }
         // Candidate availability includes explicit heuristic/typed-fallback outputs,
         // but never unresolved passthrough or an empty IPA result.
         if (pronunciationStatus !== 'unresolved' && result.ipa) outputAvailableTokens += 1;
@@ -277,7 +303,11 @@ export function evaluateRows(rows, engine, morphologyMode = 'strict', benchmarkN
             target_status: result.target_status ?? null,
             phonetic_result_type: result.phonetic_result_type ?? null,
             typed_fallback: hasTypedFallback,
-            predicted: null
+            predicted: null,
+            candidate_predicted: candidateScore?.predicted ?? null,
+            candidate_normalized_predicted: candidateScore?.normalized_predicted ?? null,
+            candidate_distance: candidateScore?.distance ?? null,
+            candidate_exact: candidateScore?.exact ?? null
           });
           continue;
         }
@@ -319,7 +349,11 @@ export function evaluateRows(rows, engine, morphologyMode = 'strict', benchmarkN
           target_status: result.target_status ?? null,
           phonetic_result_type: result.phonetic_result_type ?? null,
           typed_fallback: hasTypedFallback,
-          overall_status: result.status ?? null
+          overall_status: result.status ?? null,
+          candidate_predicted: candidateScore?.predicted ?? predictedRaw,
+          candidate_normalized_predicted: candidateScore?.normalized_predicted ?? predicted,
+          candidate_distance: candidateScore?.distance ?? closest.distance,
+          candidate_exact: candidateScore?.exact ?? (closest.distance === 0)
         });
       } catch (error) {
         engineErrors += 1;
@@ -342,6 +376,11 @@ export function evaluateRows(rows, engine, morphologyMode = 'strict', benchmarkN
   const broadExactMatches = broadComparable.filter(item => item.broad_candidate_exact).length;
   const broadTotalDistance = broadComparable.reduce((sum, item) => sum + item.broad_candidate_distance, 0);
   const broadTotalGoldCharacters = broadComparable.reduce((sum, item) => sum + [...item.broad_candidate_gold].length, 0);
+  const candidateExactMatches = candidateScoredRecords.filter(item => item.exact).length;
+  const candidateTotalDistance = candidateScoredRecords.reduce((sum, item) => sum + item.distance, 0);
+  const candidateTotalGoldCharacters = candidateScoredRecords.reduce(
+    (sum, item) => sum + [...item.closest_normalized_gold].length, 0
+  );
   const relativeError = item => item.distance / Math.max(
     [...item.normalized_predicted].length,
     [...item.closest_normalized_gold].length,
@@ -376,6 +415,18 @@ export function evaluateRows(rows, engine, morphologyMode = 'strict', benchmarkN
     exact_matches: exactMatches,
     exact_match_rate: scoredTokens ? Number((exactMatches / scoredTokens).toFixed(6)) : null,
     coverage_adjusted_exact_match_rate: eligibleTokens ? Number((exactMatches / eligibleTokens).toFixed(6)) : null,
+    source_resolved_coverage_adjusted_exact_match_rate: eligibleTokens ? Number((exactMatches / eligibleTokens).toFixed(6)) : null,
+    candidate_scored_tokens: candidateScoredRecords.length,
+    candidate_exact_matches: candidateExactMatches,
+    candidate_exact_match_rate: candidateScoredRecords.length
+      ? Number((candidateExactMatches / candidateScoredRecords.length).toFixed(6)) : null,
+    candidate_coverage_adjusted_exact_match_rate: eligibleTokens
+      ? Number((candidateExactMatches / eligibleTokens).toFixed(6)) : null,
+    candidate_character_error_rate: candidateTotalGoldCharacters
+      ? Number((candidateTotalDistance / candidateTotalGoldCharacters).toFixed(6)) : null,
+    candidate_unscored_tokens: eligibleTokens - candidateScoredRecords.length,
+    candidate_worst_mismatches: candidateScoredRecords.filter(item => !item.exact)
+      .sort((a, b) => b.distance - a.distance || a.token.localeCompare(b.token)).slice(0, 50),
     character_error_rate: totalGoldCharacters ? Number((totalDistance / totalGoldCharacters).toFixed(6)) : null,
     broad_candidate_profile: BROAD_CANDIDATE_PROFILE,
     broad_candidate_prediction_feature_loss_counts: Object.fromEntries(
@@ -424,7 +475,7 @@ export function evaluateRows(rows, engine, morphologyMode = 'strict', benchmarkN
       'The report exposes prediction and selected-reference feature-loss counts. The profile collapses lateral place/retroflexion, palatal nasality, several h-like realizations, fricative aspiration, stress and selected quality diacritics.',
       'Stop aspiration, fortisness, vowel length, unreleased codas and the s/ɕ/ʃ place distinctions are retained. Sibilant-profile disagreements therefore remain visible and require independent adjudication.',
       'This is a dataset-specific diagnostic; verify split provenance and training overlap before describing it as an untouched independent holdout.',
-      'Only resolved pronunciation records are scored. Partial, heuristic, unresolved, typed fallback, and engine-error records are counted separately.',
+      'Source-resolved metrics exclude heuristic and fallback outputs. candidate_* metrics separately score resolved and heuristic IPA predictions against the same gold variants; they are diagnostic, not independently verified accuracy.',
       'Super-soft orthographic-phonemic fallback and low-confidence heuristic outputs are coverage only; they are never counted as source-resolved IPA accuracy.'
     ]
   };
@@ -473,7 +524,7 @@ function main() {
       const summary = Object.fromEntries([
         'engine', 'split', 'morphology_mode', 'ipa_profile', 'ipa_profile_status', 'eligible_tokens',
         'scored_tokens', 'coverage_rate', 'source_resolved_coverage_rate', 'output_available_tokens', 'output_availability_rate', 'candidate_output_availability_rate', 'exact_matches', 'exact_match_rate',
-        'coverage_adjusted_exact_match_rate', 'character_error_rate',
+        'coverage_adjusted_exact_match_rate', 'candidate_scored_tokens', 'candidate_exact_match_rate', 'candidate_coverage_adjusted_exact_match_rate', 'candidate_character_error_rate', 'character_error_rate',
         'unresolved_tokens', 'partial_tokens', 'heuristic_tokens', 'typed_fallback_tokens', 'source_resolved_scored_tokens',
         'target_unavailable_tokens', 'target_provisional_tokens', 'engine_errors'
       ].map(key => [key, report[key]]));
