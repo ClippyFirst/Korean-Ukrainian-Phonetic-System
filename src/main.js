@@ -3,6 +3,7 @@ import lexicalCsv from '../data/korean/lexical_pronunciations.csv?raw';
 import lexicalAdditionsCsv from '../data/korean/lexical_additions_2026-10-15.csv?raw';
 import ipaAdjudicationCsv from '../data/korean/lexical_additions_ipa-adjudication-2026-10-24.csv?raw';
 import {createEngine} from './app/engine.js';
+import {buildExtendedIpaResult} from './app/extended_ipa.js';
 import {createG2pWebAdapter} from './app/g2pk_web.js';
 import {traceIpaMappingDetailed} from './app/engine_ipa.js';
 import {romanizeRevised} from './app/romanization.js';
@@ -96,6 +97,14 @@ const ukrainianCleanCopyButton=document.querySelector('#ukrainian-clean-copy-but
 const surfaceReading=document.querySelector('#surface-reading');
 const surfaceOutput=document.querySelector('#result-surface');
 const ipa=document.querySelector('#result-ipa');
+const extendedIpaToggle=document.querySelector('#extended-ipa-enabled');
+const extendedIpaPanel=document.querySelector('#panel-extended-ipa');
+const extendedIpaPhonemic=document.querySelector('#extended-ipa-phonemic');
+const extendedIpaBroad=document.querySelector('#extended-ipa-broad');
+const extendedIpaNarrow=document.querySelector('#extended-ipa-narrow');
+const extendedIpaStatus=document.querySelector('#extended-ipa-status');
+const extendedIpaVariants=document.querySelector('#extended-ipa-variants');
+const extendedIpaTrace=document.querySelector('#extended-ipa-trace');
 const romanization=document.querySelector('#result-romanization');
 const hanjaOutput=document.querySelector('#result-hanja');
 const hanjaEngineStatus=document.querySelector('#hanja-engine-status');
@@ -225,7 +234,34 @@ const RULE_LABELS={
 function describeRule(rule){return RULE_LABELS[rule]||rule.replaceAll('-',' ');}
 const STATUS_LABELS={'canonical':'Нормативна базова форма','contextual':'Контекстне правило застосовано','lexical':'Словникова вимова','lexical-review':'Потребує перевірки','practical-transliteration':'Практична евристика','heuristic-low-confidence':'Низька впевненість','super-soft-grapheme-fallback':'Суперм’який графемний IPA-резерв · низька впевненість','super-soft-orthographic-fallback':'М’який резервний запис · низька впевненість','super-soft-practical-heuristic':'М’яка практична евристика · низька впевненість','super-soft-morphology-heuristic':'М’яка морфологічна гіпотеза · низька впевненість','super-soft-heuristic-coverage':'М’який режим · евристичне покриття','super-soft-maximum-coverage':'М’який режим · широке покриття','literal-preserved':'Збережено як буквальний запис','unresolved':'Не визначено'};
 function describeStatus(status){return STATUS_LABELS[status]||status;}
-function render(){const value=input.value;copyFeedback.hidden=true;count.textContent=`${[...value].length} символів`;if(!value){results.hidden=true;empty.hidden=false;issue.hidden=true;return;}const morphologyMode=currentMorphologyMode();const useG2p=!(modeResearch&&modeResearch.checked);const r=useG2p?webEngine.convert(value):engine.convert(value,{morphologyMode});empty.hidden=true;results.hidden=false;const candidateText=r.candidate_ukrainian??r.candidate_orthography??'';const candidateDisplayText=['soft','super-soft'].includes(morphologyMode)?renderSuperSoftCandidate(r.trace,candidateText):candidateText;const hasCandidate=Boolean(candidateText||r.target_status==='provisional');const targetUnconfirmed=hasCandidate||r.target_status==='unavailable'||r.target_status==='provisional';currentTargetUnconfirmed=targetUnconfirmed;currentCandidateStatus=r.candidate_status||'';currentConfirmedOutput=r.ukrainian||'';if(candidateValue)candidateValue.textContent=candidateDisplayText;if(candidateNote)candidateNote.textContent=['soft','super-soft'].includes(morphologyMode)?'Попередній кандидат — не підтверджений результат. У квадратних дужках [фрагмент] позначено ділянки з низькою впевненістю. Перед використанням перевірте IPA та українську адаптацію.':'Попередній кандидат — не підтверджений результат. Перед використанням перевірте IPA та українську адаптацію.';if(uaCandidateButton)uaCandidateButton.disabled=!hasCandidate;if(!hasCandidate&&selectedUaView==='candidate')selectedUaView='unconfirmed';selectUaView(selectedUaView);surfaceOutput.textContent=r.surfaceHangul||'';surfaceReading.hidden=!r.surfaceHangul;ipa.textContent=r.ipa;romanization.textContent=r.surfaceHangul?romanizeRevised(r.surfaceHangul):'—';analysis.textContent=r.analysis;renderHanja(value);const coverageLabel=['soft','super-soft'].includes(morphologyMode)&&r.coverage&&r.coverage.input_total?`покриття складів Hangul: ${Math.round(r.coverage.input_coverage*100)}% (${r.coverage.input_covered}/${r.coverage.input_total}) · облік фрагментів: ${Math.round(r.coverage.trace_coverage*100)}% · низька впевненість: ${Math.round((r.coverage.low_confidence_share??0)*100)}% (${r.coverage.low_confidence_units??0}/${r.coverage.input_total})`:'';
+function renderExtendedIpa(source,result,useG2p){
+  const enabled=Boolean(extendedIpaToggle?.checked&&!useG2p);
+  if(extendedIpaPanel)extendedIpaPanel.hidden=!enabled;
+  if(!enabled)return;
+  const view=buildExtendedIpaResult(source,result);
+  if(extendedIpaPhonemic)extendedIpaPhonemic.textContent=view.layers.phonemic.ipa||'Ще не реалізовано в браузерному рушії';
+  if(extendedIpaBroad)extendedIpaBroad.textContent=view.layers.broad.ipa||'Немає повного результату';
+  if(extendedIpaNarrow)extendedIpaNarrow.textContent=view.layers.narrow.ipa||'Невизначено: IPA не формується для цього фрагмента';
+  if(extendedIpaStatus)extendedIpaStatus.textContent='Вузький профіль: '+view.layers.narrow.profile_id+' · v'+view.layers.narrow.profile_version+' · '+view.layers.narrow.status+'. Український запис не перебудовується з цього часткового профілю; цільовий адаптер для нього не схвалений.';
+  if(extendedIpaVariants){
+    extendedIpaVariants.textContent='';
+    for(const variant of view.variants){
+      const item=document.createElement('p');
+      item.textContent='Варіант '+variant.id+': '+variant.ipa+' · '+(variant.environment||variant.evidence_status);
+      extendedIpaVariants.append(item);
+    }
+    if(!view.variants.length)extendedIpaVariants.textContent='Для цього фрагмента немає окремо зареєстрованих варіантів.';
+  }
+  if(extendedIpaTrace){
+    extendedIpaTrace.textContent='';
+    for(const item of view.trace){
+      const row=document.createElement('p');
+      row.textContent=item.source+' → '+(item.ipa||'—')+' · '+(item.rule_ids.join(', ')||'без вузької зміни')+' · '+(item.environment||item.evidence_status);
+      extendedIpaTrace.append(row);
+    }
+  }
+}
+function render(){const value=input.value;copyFeedback.hidden=true;count.textContent=`${[...value].length} символів`;if(!value){results.hidden=true;empty.hidden=false;issue.hidden=true;return;}const morphologyMode=currentMorphologyMode();const useG2p=!(modeResearch&&modeResearch.checked);const r=useG2p?webEngine.convert(value):engine.convert(value,{morphologyMode});empty.hidden=true;results.hidden=false;const candidateText=r.candidate_ukrainian??r.candidate_orthography??'';const candidateDisplayText=['soft','super-soft'].includes(morphologyMode)?renderSuperSoftCandidate(r.trace,candidateText):candidateText;const hasCandidate=Boolean(candidateText||r.target_status==='provisional');const targetUnconfirmed=hasCandidate||r.target_status==='unavailable'||r.target_status==='provisional';currentTargetUnconfirmed=targetUnconfirmed;currentCandidateStatus=r.candidate_status||'';currentConfirmedOutput=r.ukrainian||'';if(candidateValue)candidateValue.textContent=candidateDisplayText;if(candidateNote)candidateNote.textContent=['soft','super-soft'].includes(morphologyMode)?'Попередній кандидат — не підтверджений результат. У квадратних дужках [фрагмент] позначено ділянки з низькою впевненістю. Перед використанням перевірте IPA та українську адаптацію.':'Попередній кандидат — не підтверджений результат. Перед використанням перевірте IPA та українську адаптацію.';if(uaCandidateButton)uaCandidateButton.disabled=!hasCandidate;if(!hasCandidate&&selectedUaView==='candidate')selectedUaView='unconfirmed';selectUaView(selectedUaView);surfaceOutput.textContent=r.surfaceHangul||'';surfaceReading.hidden=!r.surfaceHangul;ipa.textContent=r.ipa;renderExtendedIpa(value,r,useG2p);romanization.textContent=r.surfaceHangul?romanizeRevised(r.surfaceHangul):'—';analysis.textContent=r.analysis;renderHanja(value);const coverageLabel=['soft','super-soft'].includes(morphologyMode)&&r.coverage&&r.coverage.input_total?`покриття складів Hangul: ${Math.round(r.coverage.input_coverage*100)}% (${r.coverage.input_covered}/${r.coverage.input_total}) · облік фрагментів: ${Math.round(r.coverage.trace_coverage*100)}% · низька впевненість: ${Math.round((r.coverage.low_confidence_share??0)*100)}% (${r.coverage.low_confidence_units??0}/${r.coverage.input_total})`:'';
 const modeLabel=useG2p?'Звичайний режим':`Дослідницький режим · ${morphologyDescriptions.find(item=>item.mode===morphologyMode)?.name||'Строгий'} рівень`;
 const pronunciationLabel=r.status==='super-soft-grapheme-fallback'?'графемний IPA-кандидат':r.status==='super-soft-orthographic-fallback'?'резервна вимова низької впевненості':r.status==='super-soft-heuristic-coverage'?'евристичний результат низької впевненості':r.status==='super-soft-maximum-coverage'?'широке покриття':r.status==='canonical'?'канонічна форма':r.status==='contextual'?'контекстну вимову застосовано':r.status==='lexical'?'словникову вимову застосовано':r.status==='lexical-review'?'словникову вимову; український запис попередній':r.status==='practical-transliteration'?'практична транслітерація (нижча точність)':r.status==='heuristic-low-confidence'?'евристична вимова (низька впевненість)':'є невизначені ділянки';
 phonologyStatusValue.textContent=`${modeLabel} · ${useG2p?'g2pK':'Козак Кім'} · ${pronunciationLabel}${r.candidate_status==='super-soft-low-confidence'?' · є резервні читання низької впевненості':''}`;

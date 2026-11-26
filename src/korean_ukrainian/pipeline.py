@@ -6,6 +6,7 @@ from .hangul import decompose_hangul, compose_hangul
 from .phonology import parse_syllables, L_JAMO, V_JAMO, T_JAMO
 from .rules import apply_ordered_rules
 from .ipa import generate_vowel_variants, realize_syllables
+from .ipa_profiles import PROFILE_REGISTRY, build_extended_ipa_result
 from .ukrainian_adapter import UkrainianTargetAdapter
 from .orthography import render_sequence
 from .ipa_target_renderer import render_ipa_sequence_to_ukrainian, render_profiled_ipa_to_ukrainian
@@ -295,6 +296,7 @@ def _unlicensed_ambiguous_pronunciation_contexts(traces, final_items, *, lexicon
 
 def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad",n_insertion_licensed=False,rule_licenses=None,morphology_mode="strict",include_research_lexical=True):
     _validate_korean_input(text)
+    underlying_items=parse_syllables(text)
     items=parse_syllables(text)
     items,traces=apply_ordered_rules(items,rule_ids,boundary_mode=boundary_mode,n_insertion_licensed=n_insertion_licensed,rule_licenses=rule_licenses,morphology_mode=morphology_mode)
     active_lexicon = LEXICAL_PRONUNCIATIONS if include_research_lexical else {
@@ -325,6 +327,119 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
                 "status":"unresolved-ipa-adjudication",
             })
         i=j
+    # Build all three inspectable IPA layers from the same structural analysis.
+    # The phonemic layer uses untouched underlying syllables; broad/narrow use
+    # rule-derived surface items. The existing ipa payload remains unchanged.
+    phonemic_layer = realize_syllables(underlying_items, level="phonemic")
+    broad_layer = _apply_lexical_ipa(
+        items, realize_syllables(items, level="broad"), lexicon=active_lexicon
+    )
+    narrow_layer = realize_syllables(items, level="narrow")
+    layer_payloads = {}
+    for level, layer_result in (
+        ("phonemic", phonemic_layer), ("broad", broad_layer), ("narrow", narrow_layer)
+    ):
+        profile = PROFILE_REGISTRY[level]
+        layer_payloads[level] = {
+            "ipa": layer_result.get("ipa"),
+            "profile_id": layer_result.get("ipa_profile", profile["profile_id"]),
+            "profile_version": layer_result.get("ipa_profile_version", profile["profile_version"]),
+            "level": level,
+            "status": (
+                "diagnostic-only-unresolved-source" if unresolved_contexts
+                else layer_result.get("status", profile["status"])
+            ),
+            "evidence_status": profile["evidence_status"],
+            "target_compatible": False,
+        }
+
+    source_spans = []
+    source_cursor = 0
+    for item in items:
+        start = text.find(item.text, source_cursor)
+        if start < 0:
+            source_spans.append(None)
+            continue
+        end = start + len(item.text)
+        source_spans.append({"start": start, "end": end})
+        source_cursor = end
+    boundaries = []
+    for item, span in zip(items, source_spans):
+        if span:
+            boundaries.append({
+                "offset": span["end"],
+                "kind": "word" if item.boundary_after == "word" else "syllable",
+            })
+
+    extended_variants = []
+    import re as _re
+    for index, variant in enumerate(broad_layer.get("variants", []), start=1):
+        note = str(variant.get("note") or "")
+        refs = _re.findall(r"https?://[^\s)]+", note)
+        indices = variant.get("syllable_indices") or []
+        span = None
+        valid_indices = [value for value in indices if isinstance(value, int) and 0 <= value < len(source_spans)]
+        if valid_indices and all(source_spans[value] for value in valid_indices):
+            span = {
+                "start": min(source_spans[value]["start"] for value in valid_indices),
+                "end": max(source_spans[value]["end"] for value in valid_indices),
+            }
+        extended_variants.append({
+            "id": f"broad-variant-{index}",
+            "layer": "broad",
+            "ipa": str(variant.get("ipa") or ""),
+            "evidence_status": "research-hypothesis" if "Research-only" in note or "research-only" in note else "source-or-rule-derived-variant",
+            "evidence_refs": refs,
+            "environment": note or None,
+            "uncertainty": "Speaker-specific realization is not identified by this result.",
+            "source_span": span,
+            "selected": False,
+        })
+
+    extended_trace = []
+    for item, span in zip(items, source_spans):
+        extended_trace.append({
+            "source_span": span,
+            "source": item.text,
+            "surface": item.text,
+            "ipa": None,
+            "rule_ids": [],
+            "environment": None,
+            "evidence_refs": [],
+            "evidence_status": "structural-syllable-alignment",
+            "status": "aligned" if span else "source-span-unavailable",
+        })
+    for rule in all_traces:
+        rule_id = str(rule.get("rule_id") or rule.get("name") or "unclassified-rule")
+        source_value = str(rule.get("input_span") or rule.get("source") or text)
+        source_ref = rule.get("source")
+        refs = [source_ref] if isinstance(source_ref, str) and source_ref.startswith(("http://", "https://")) else []
+        extended_trace.append({
+            "source_span": None,
+            "source": source_value,
+            "surface": None,
+            "ipa": None,
+            "rule_ids": [rule_id],
+            "environment": rule.get("environment"),
+            "evidence_refs": refs,
+            "evidence_status": str(rule.get("status") or "ungraded"),
+            "status": str(rule.get("status") or "ungraded"),
+        })
+
+    extended_ipa = build_extended_ipa_result(
+        text,
+        layer_payloads,
+        variants=extended_variants,
+        boundaries=boundaries,
+        trace=extended_trace,
+        pronunciation_status="unresolved" if unresolved_contexts else "provisional",
+        target_adapter={
+            "status": "not-run-by-phoneticizer",
+            "input_layer": "none",
+            "profile_id": None,
+        },
+    )
+
     ipa_status="diagnostic_only_unresolved_pronunciation" if unresolved_contexts else "provisional"
     ipa_is_diagnostic_only=bool(unresolved_contexts)
     ipa_status_reason=(
@@ -348,6 +463,7 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
         "surface_syllables":[x.to_dict() for x in items],
         "rules":all_traces,
         "ipa":ipa,
+        "extended_ipa":extended_ipa,
         "morphology_mode":morphology_mode,
         "lexical_policy":"research-overlays-included" if include_research_lexical else "research-overlays-excluded",
         "surface_status":"rule-and-lexicon-derived-research-analysis",

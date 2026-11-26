@@ -1,0 +1,90 @@
+"""Versioned typed result contract for Korean Extended IPA profiles."""
+from __future__ import annotations
+from typing import Any
+
+SCHEMA_VERSION = "1.0"
+
+PROFILE_REGISTRY = {
+    "phonemic": {"profile_id": "clippyfirst-korean-phonemic-v1", "profile_version": 1,
+                 "status": "available-research-representation",
+                 "evidence_status": "underlying-contrast-representation", "target_compatible": False},
+    "broad": {"profile_id": "clippyfirst-korean-broad-v1", "profile_version": 1,
+              "status": "rule-supported-broad",
+              "evidence_status": "mixed-normative-and-project-derived", "target_compatible": False},
+    "narrow": {"profile_id": "clippyfirst-korean-narrow-contextual-allophones-v5", "profile_version": 5,
+               "status": "partial-research-only",
+               "evidence_status": "source-scoped-hypotheses-require-independent-review", "target_compatible": False},
+}
+
+
+def validate_extended_ipa_result(result: dict[str, Any]) -> list[str]:
+    """Return contract violations without requiring a runtime schema package."""
+    errors: list[str] = []
+    if not isinstance(result, dict):
+        return ["result must be an object"]
+    required = {"schema_version", "mode", "source", "layers", "variants",
+                "boundaries", "trace", "target_adapter", "pronunciation_status"}
+    missing = sorted(required - result.keys())
+    if missing:
+        return ["missing required fields: " + ", ".join(missing)]
+    if result["schema_version"] != SCHEMA_VERSION:
+        errors.append("unsupported schema_version")
+    if result["mode"] != "extended-ipa":
+        errors.append("mode must be extended-ipa")
+    source = result["source"]
+    if not isinstance(source, dict) or not isinstance(source.get("text"), str):
+        errors.append("source.text must be a string")
+    elif source.get("offset_unit") != "unicode-code-points":
+        errors.append("source.offset_unit must be unicode-code-points")
+    layers = result["layers"]
+    if not isinstance(layers, dict) or set(layers) != {"phonemic", "broad", "narrow"}:
+        errors.append("layers must contain exactly phonemic, broad and narrow")
+    else:
+        for level, layer in layers.items():
+            if not isinstance(layer, dict):
+                errors.append(f"layers.{level} must be an object")
+                continue
+            if layer.get("level") != level:
+                errors.append(f"layers.{level}.level mismatch")
+            if layer.get("ipa") is not None and not isinstance(layer.get("ipa"), str):
+                errors.append(f"layers.{level}.ipa must be a string or null")
+            if not isinstance(layer.get("status"), str):
+                errors.append(f"layers.{level}.status must be a string")
+            if not isinstance(layer.get("target_compatible"), bool):
+                errors.append(f"layers.{level}.target_compatible must be boolean")
+    for name in ("variants", "boundaries", "trace"):
+        if not isinstance(result[name], list):
+            errors.append(f"{name} must be an array")
+    target = result["target_adapter"]
+    if not isinstance(target, dict) or target.get("input_layer") not in {"phonemic", "broad", "narrow", "none"}:
+        errors.append("target_adapter.input_layer is invalid")
+    if isinstance(target, dict) and target.get("input_layer") == "narrow":
+        narrow = layers.get("narrow", {}) if isinstance(layers, dict) else {}
+        if narrow.get("target_compatible") is not True and target.get("status") not in {
+            "unavailable", "not-run-for-extended-profile", "blocked"
+        }:
+            errors.append("non-compatible narrow IPA must not be marked as adapted")
+    return errors
+
+
+def build_extended_ipa_result(source: str, layers: dict[str, dict[str, Any]], *,
+                              variants: list[dict[str, Any]] | None = None,
+                              boundaries: list[dict[str, Any]] | None = None,
+                              trace: list[dict[str, Any]] | None = None,
+                              pronunciation_status: str = "unadjudicated",
+                              target_adapter: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Build and validate a JSON-compatible Extended IPA result."""
+    result = {
+        "schema_version": SCHEMA_VERSION, "mode": "extended-ipa",
+        "source": {"text": source, "offset_unit": "unicode-code-points"},
+        "layers": layers, "variants": variants or [], "boundaries": boundaries or [],
+        "trace": trace or [],
+        "target_adapter": target_adapter or {
+            "status": "not-run-by-phoneticizer", "input_layer": "none", "profile_id": None
+        },
+        "pronunciation_status": pronunciation_status,
+    }
+    errors = validate_extended_ipa_result(result)
+    if errors:
+        raise ValueError("invalid Extended IPA result: " + "; ".join(errors))
+    return result
