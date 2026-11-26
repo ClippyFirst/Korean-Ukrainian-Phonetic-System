@@ -1934,3 +1934,17 @@ The prior Python 3.13 test failure was a schema-field mismatch (`note` vs `envir
 ### Variant source-span safety — 2026-11-26
 
 Browser variant syllable indices are token-local. Extended IPA now emits a source span only for a single Hangul eojeol where direct mapping is valid; multiword/mixed inputs retain `null` rather than an incorrect span. Single-word and multiword regression controls were added. Commits: `28fc58aa21a07cfbc8e8b03a0d468695e6c433c8`, `47e8162ca8557e269b6a337416a802a5048ba39a`. **TODO:** verify on exact latest head.
+
+### Exact-head CI reconciliation — 2026-11-26
+
+The previous TODO entries above refer to historical checkpoints and are superseded for software CI by the successful exact-head matrix on `a3fb2ec8a962ffd37d202eab95c99387d0d83638`:
+
+- **DONE_VERIFIED:** Node/browser suite 1,483/1,483; Python 3.11, 3.12, 3.13; wheel-install; teacher-corpus audit; Verify; Browser G2P; rendered desktop/tablet/mobile review; UGTPHON; morphology consensus; paired native/g2pk; g2pK integration; research morphology smoke; test-register extraction; master research artifacts.
+- **IN PROGRESS:** multi-engine IPA comparison benchmark run `45882049729`; its Python 3.12 job is still running. No benchmark uplift is claimed.
+- **SKIPPED:** optional Charsiu train/dev review queue and optional ByT5/Charsiu inference, by workflow policy. These are not successful model comparisons.
+- **PARTIAL:** broad cross-runtime parity and phonetic adjudication; narrow IPA adjudication; acoustic annotation workflow; target compatibility.
+- **BLOCKED:** rights-cleared audio/corpus access, independent Korean phonetic reviewers and independent Ukrainian target-layer review.
+
+Historical exact-head test-oracle failures were corrected: `값` expected value is `kaps` (underlying grapheme-derived inventory, not phonetic gold); CSS test now accepts actual declaration formatting; source-register row count is 248. Current CI green does not close independent linguistic or licensing gates.
+
+**Release decision:** software verification is green on the named head; the feature remains a research preview and is not release-ready.
