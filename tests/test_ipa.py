@@ -278,7 +278,7 @@ def test_narrow_h_after_sonorant_retains_uncertainty_instead_of_forcing_voiced_a
     # The partial profile therefore keeps [h] in its default string and does
     # not invent [ɦ] without token-specific speaker/acoustic evidence.
     expected = {
-        "감히": "kam.hi",
+        "감히": "kam.çi",
         "간호원": "kan.ho.wʌn",
         "영화": "jʌŋ.hwa",
     }

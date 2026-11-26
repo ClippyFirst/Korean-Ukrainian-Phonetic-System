@@ -74,11 +74,7 @@ function narrowSyllable(current, previous, sameWord) {
   } else if (parsed.onset === 'ㅆ') {
     ipa = replaceInitial(ipa, ['ɕ͈'], 's͈');
   } else if (parsed.onset === 'ㅎ') {
-    if (prior && SONORANT_CODAS.has(prior.coda)) {
-      rules.push('narrow-h-sonorant-variation-unresolved');
-      evidence.push(EVIDENCE['narrow-h-sonorant-variation-unresolved']);
-      environment = 'same word: sonorant coda + onset ㅎ; weakening/deletion is variable, no single IPA selected';
-    } else if (['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ'].includes(parsed.vowel)) {
+    if (['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ'].includes(parsed.vowel)) {
       ipa = replaceInitial(ipa, ['h'], 'ç');
       if (ipa.startsWith('ç')) {
         rules.push('narrow-h-palatal-allophone');
@@ -92,6 +88,10 @@ function narrowSyllable(current, previous, sameWord) {
         evidence.push(EVIDENCE['narrow-h-palatal-allophone']);
         environment = 'onset ㅎ before ㅜ';
       }
+    } else if (prior && SONORANT_CODAS.has(prior.coda)) {
+      rules.push('narrow-h-sonorant-variation-unresolved');
+      evidence.push(EVIDENCE['narrow-h-sonorant-variation-unresolved']);
+      environment = 'same word: sonorant coda + onset ㅎ; weakening/deletion is variable, no single IPA selected';
     } else if (prior && prior.coda === '') {
       ipa = replaceInitial(ipa, ['h'], 'ɸ');
       if (ipa.startsWith('ɸ')) {
