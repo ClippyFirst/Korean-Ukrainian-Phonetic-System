@@ -1978,3 +1978,13 @@ These are close comparisons with overlapping bootstrap 95% intervals, not establ
 - **BLOCKED:** independent Korean broad/narrow IPA adjudication, rights-cleared acoustic validation and Ukrainian target-layer review.
 - **TODO:** repair K-SPAN eligibility/integrity, align Seoul scoring layer, add feature-level independently adjudicated narrow-IPA evaluation.
 - **NOT RELEASE-READY:** benchmark success is diagnostic software/research evidence, not a release gate for scientific validity.
+
+
+## Paired standard-vs-Extended IPA benchmark — 2026-11-26
+
+- **DONE implementation / PENDING execution:** added `scripts/benchmark_extended_ipa_ab.mjs` and `tests/benchmark-extended-ipa-ab.test.mjs`. The workflow runs the same pinned UGTPHON and SIGMORPHON rows through standard strict IPA and Extended phonemic, broad and narrow layers, then uploads a separate per-occurrence artifact.
+- **Critical design fact:** Extended broad is constructed from the same strict broad engine result as standard IPA. The benchmark asserts occurrence-by-occurrence identity; it is not an independent algorithm and must not be reported as an accuracy uplift.
+- **Layer interpretation:** phonemic and narrow metrics are reported as reference-string agreement diagnostics. They are not valid accuracy claims unless the reference layer is independently confirmed to match the tested layer. UGTPHON/SIGMORPHON references are not certified narrow-IPA gold.
+- **Acceptance:** exact-head workflow must pass the new Node regression and produce the `standard-vs-extended-ipa-ab` artifact. Inspect coverage, exact match and CER separately for each layer; compare broad directly and label phonemic/narrow cross-layer scores cautiously.
+- **Current workflow:** `45893331177` was pending at documentation update; no A/B benchmark result is claimed yet.
+- **Scope:** Kozak Kim only. No second Korean engine or repository is changed.
