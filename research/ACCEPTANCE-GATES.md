@@ -1995,3 +1995,31 @@ These are close comparisons with overlapping bootstrap 95% intervals, not establ
 - Final benchmark code checkpoint: `f377f16048035918f0bd50a50d5394ac1737e408`.
 - Run `45893480948` was created for this checkpoint and remained **PENDING** at the last poll; it had no job records yet. Earlier runs on intermediate rapid-update commits were cancelled before jobs started and are not evidence.
 - The regression test and benchmark script have been committed, but **no pass/fail or A/B metric is claimed** until run `45893480948` completes and its artifact is inspected.
+## 2026-11-26 — Extended IPA exact-head verification closeout
+
+Exact code head: d19c5686ef8031cdcbfc2be10e1a0fe0c30ee33e on feat/kozak-kim-extended-ipa-2026-11-26, PR #509, based on main 97bb411df8b998b22cd58adda015fb941201950c.
+
+| Gate | Status | Evidence / acceptance |
+|---|---|---|
+| Python 3.11/3.12/3.13, wheel install, web tests and teacher audit | DONE_VERIFIED | Tests run 45893570996; all six jobs successful |
+| Browser regression/build and Python regression/data integrity | DONE_VERIFIED | Verify 45893570785; NIKL metadata-only job skipped by policy |
+| Browser G2P, rendered review, research artifacts, test-register extraction | DONE_VERIFIED | Runs 45893570769, 45893570937, 45893570751, 45893567090, 45893570926 |
+| External UGTPHON, paired native-vs-g2pk, morphology consensus and adapter smoke | DONE_VERIFIED | Runs 45893570755, 45893570887, 45893570790, 45893570788 |
+| Multi-engine benchmark and paired standard-vs-Extended layer diagnostic | DONE_VERIFIED | Run 45893570737; artifact 15153601014 downloaded and inspected |
+| Standard IPA vs Extended broad equality | DONE_VERIFIED (equality only) | UGTPHON: 2,703 paired rows, zero output/status differences; SIGMORPHON: 999 paired rows, zero output/status differences. Equality is by design, not improvement |
+| Phonemic/narrow accuracy against independent gold | BLOCKED | Existing benchmark gold is not independently layer-adjudicated phonemic/narrow gold; requires separate frozen layer-specific gold and human adjudication |
+| Browser/Python phonemic parity | PARTIAL | Browser adapter deterministically maps Hangul onset–nucleus–coda inventory; Python uses underlying syllable parse. Requires exhaustive frozen-inventory and mixed-input/source-span parity |
+| Independent Korean phonetic adjudication | BLOCKED | Qualified independent reviewers, two blind labels, adjudication and per-process/context agreement |
+| Rights-cleared acoustic annotation | BLOCKED | Dataset-specific terms or written agreement, permitted purpose, annotation protocol and derived-label redistribution rights |
+| Extended IPA → Ukrainian target adapter | BLOCKED (correctly fail-closed) | Extended profiles remain target-incompatible; allowlist is empty. Requires independent IPA adjudication plus Ukrainian target review and profile-specific correspondence map. No Extended target output is currently claimed |
+| Manual accessibility / assistive-technology review | TODO | Keyboard-only, screen-reader and zoom review beyond CI rendered screenshot checks |
+| Speaker/source-separated layer-aligned benchmark | TODO | Pinned splits with speaker/source lineage, layer-matched gold, coverage/abstention, exact match, CER/PER and per-condition error reporting |
+
+**Paired diagnostic results (not accuracy claims):**
+- UGTPHON: Standard/Extended broad 52.7387% exact, 9.013% CER; phonemic cross-layer agreement 20.2073% exact; narrow cross-layer agreement 55.8845% exact.
+- SIGMORPHON: Standard/Extended broad 35.8717% exact, 14.5598% CER; phonemic cross-layer agreement 12.9259% exact; narrow cross-layer agreement 39.6794% exact.
+- References are not independently adjudicated phonemic or narrow gold. These numbers are reference-string agreement diagnostics only; no Ukrainian adaptation metric was run.
+- Neural ByT5/Charsiu jobs and NIKL metadata-only inventory were skipped by workflow policy, not passed.
+
+Disposition: PR #509 remains open/unmerged. Extended IPA remains a research preview, not beta-/production-ready. Green software CI verifies the implementation contract and regressions; it does not certify Korean phonetic accuracy, dataset rights, browser/Python parity or Ukrainian target suitability.
+
