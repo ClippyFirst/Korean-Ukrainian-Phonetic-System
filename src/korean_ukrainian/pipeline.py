@@ -420,7 +420,7 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
             "surface": None,
             "ipa": None,
             "rule_ids": [rule_id],
-            "environment": rule.get("environment"),
+            "environment": rule.get("environment") if isinstance(rule.get("environment"), str) else None,
             "evidence_refs": refs,
             "evidence_status": str(rule.get("status") or "ungraded"),
             "status": str(rule.get("status") or "ungraded"),

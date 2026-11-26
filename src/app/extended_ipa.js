@@ -203,7 +203,9 @@ export function buildExtendedIpaResult(source, engineResult) {
         ipa: typeof engineResult.ipa === 'string' ? engineResult.ipa : '',
         profile_id: engineResult.ipa_profile || null,
         profile_version: Number.isInteger(engineResult.ipa_profile_version) ? engineResult.ipa_profile_version : null,
-        level: 'broad', status: engineResult.ipa_profile_status || 'unadjudicated-cross-runtime',
+        level: 'broad', status: engineResult.pronunciation_status === 'unresolved'
+          ? 'diagnostic-only-unresolved-source'
+          : engineResult.ipa_profile_status || 'unadjudicated-cross-runtime',
         evidence_status: 'existing-browser-surface-IPA',
         target_compatible: false
       },
