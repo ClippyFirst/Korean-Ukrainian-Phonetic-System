@@ -90,7 +90,7 @@ The current source review includes a 2021 spontaneous-speech study of ㄴ+ㄹ an
 ## 3. Speech-corpus rights and data availability
 
 - **Seoul Corpus / OpenSLR SLR113 [SRC-SEOUL-CORPUS-OPENSLR]:** OpenSLR declares CC BY-NC 2.0 and lists TextGrid labels plus FLAC audio. This is a non-commercial licence; the original upstream terms and permissions for derived annotation redistribution still require verification. No corpus files were downloaded or committed in this work.
-- **NIKL Modu Spoken [SRC-NIKL-MODU-SPOKEN]:** the official NIKL FAQ says corpus data may only be used for the approved purpose and period and may not be transferred, rented, licensed or secured to third parties outside that agreement. No access or agreement is evidenced here; treat as blocked until an authorized agreement is supplied.
+- **NIKL Modu Spoken [SRC-NIKL-MODU-SPOKEN]:** the official NIKL FAQ says corpus data may only be used for the approved purpose and period under an individual agreement; public disclosure of results requires prior NIKL approval, and the corpus/language material must not be included in the public result. The corpus cannot be transferred, rented, licensed or secured to a third party. No access or agreement is evidenced here; treat as blocked until an authorized agreement is supplied.
 - **KsponSpeech / AI Hub:** registration/permission and dataset-specific terms apply. A public mirror or re-upload is not proof of redistribution rights. No audio or labels are imported.
 - **Zeroth-Korean / OpenSLR SLR40:** catalogue declares CC BY 4.0 and provides a potentially more permissive corpus path. It remains a candidate pending package/version, speaker metadata, transcript convention and phone-inventory audit.
 
@@ -132,3 +132,6 @@ The current source review includes a 2021 spontaneous-speech study of ㄴ+ㄹ an
 undefined
 
 **AI Hub platform policy [S036]:** the official FAQ states that downloading AI data requires applicant verification, purpose disclosure and an application; where NIA is not the rights holder, the individual dataset provider's policy applies. The FAQ also says derivative AI models/services/research results may be used commercially with attribution, but original dataset files and simple modified copies may not be externally shared or redistributed. This is platform-level guidance, not a KsponSpeech-specific licence grant. KsponSpeech remains blocked until its own dataset page and user agreement are reviewed and an authorized access record exists.
+
+
+**NIKL disclosure rule detail:** the official Modu Corpus FAQ (English page, checked 2026-11-26) states that corpus use is restricted to the approved purpose and period in the individual agreement; publication of results requires prior NIKL approval; the corpus and language material must not be included in the public result; and corpus data may not be transferred, rented, licensed or secured to a third party. The separate Corpus of Korean Short Stories Recited by Seoul People is explicitly non-commercial outside research/development. These restrictions are dataset-specific and must not be conflated with OpenSLR's separately listed Seoul Corpus.
