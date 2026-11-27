@@ -2292,3 +2292,10 @@ Browser strict/soft policy: strict mode has 100% UGTPHON coverage, 99.9% SIGMORP
 Data/evaluation caveats: UGTPHON is user-generated/noisy; SIGMORPHON and IPA-Dict conventions are not identical; IPA-Dict shares Wiktionary lineage; Seoul Corpus labels are phonemic; K-SPAN key-vs-WorldBet integrity reports 22,843 mismatches across 41,174 matched rows, chiefly systematic vowel-symbol differences, and its source WorldBet fields are used without overriding them from the key. No result measures Ukrainian adaptation quality.
 
 The current v7 benchmark run 45983709835 is in progress. Its paired standard-vs-Extended IPA artifact is still required to evaluate the corrected primary [ɾ] plus optional [ɭ] variant. Do not carry forward the pre-correction v6 narrow metrics as v7 evidence.
+
+
+### Feature-level comparison from the pre-correction A/B artifact
+
+On the same reference split, the narrow layer's exact-match gains were concentrated in aspirated /s/ [sʰ] (243 UGTPHON and 67 SIGMORPHON gains), palatalized [ɕ] (82 and 14), palatal nasal [ɲ] (44 and 13), and [ç] (28 and 0). Examples include 가슴 (broad ka.sɯm → narrow ka.sʰɯm against gold ka̠sʰɯm), 그냥 (kɯ.njaŋ → kɯ.ɲjaŋ against kɯɲja̠ŋ), and 고시엔 (ko.si.en → ko.ɕʰi.en against ko̞ɕʰie̞n). These are useful signs that the allophonic rules can move outputs toward the corpus conventions, but they remain corpus-string diagnostics, not independently adjudicated narrow-IPA accuracy.
+
+The dominant losses were not spread evenly across the profile: [ɭ] co-occurred with 284/288 UGTPHON and 67/67 SIGMORPHON exact losses, and with 382/388 and 116/117 distance-worsening cases. Example: 다리 had gold ta̠ɾi, standard ta.ɾi, but pre-correction narrow ta.ɭi. This motivated v7's [ɾ] primary + optional [ɭ] variant policy. The hypothesis is that v7 preserves the aspiration/palatalization gains while avoiding the overgeneralized [ɭ] losses; only the new v7 A/B artifact can confirm or reject that hypothesis.
