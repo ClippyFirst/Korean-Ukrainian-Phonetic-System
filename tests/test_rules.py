@@ -1,5 +1,6 @@
 from korean_ukrainian import phoneticize_korean
 from korean_ukrainian.phonology import parse_syllables
+from korean_ukrainian.ipa import realize_syllables
 from korean_ukrainian.rules import apply_ordered_rules, apply_rule
 
 def test_final_neutralization():
@@ -43,6 +44,25 @@ def test_dh_suffix_palatalization_is_sequential_r004_then_r007():
 
 def test_tensification():
     items,_=apply_ordered_rules(parse_syllables("국밥"),["R008"]); assert items[1].onset=="ㅃ"
+
+
+def test_nikl_water_fish_compound_fortition_interacts_with_narrow_coda_variant():
+    # NIKL Q&A 335858 licenses 물>고 as a §28 compound; the separate [ɭ]
+    # coda candidate remains unselected because speaker/dialect evidence is absent.
+    items, traces = apply_ordered_rules(parse_syllables("물고기"))
+    assert items[0].coda == "ㄹ" and items[1].onset == "ㄲ"
+    assert any(trace.rule_id == "R014" and trace.changed for trace in traces)
+
+    narrow = realize_syllables(items, level="narrow")
+    assert narrow["ipa"] == "mul.k͈o.ɡi"
+    retroflex = next(item for item in narrow["variants"] if item["ipa"] == "muɭ.k͈o.ɡi")
+    assert retroflex["selected"] is False
+    assert retroflex["evidence_status"] == "speaker-conditioned-sociophonetic-variant-only"
+
+    # Exact-form licensing must not leak to a verb-form/lookalike sequence.
+    control, control_traces = apply_ordered_rules(parse_syllables("물고"))
+    assert control[0].coda == "ㄹ" and control[1].onset == "ㄱ"
+    assert not any(trace.rule_id == "R014" and trace.changed for trace in control_traces)
 
 def test_aspiration():
     items,_=apply_ordered_rules(parse_syllables("각하"),["R004"]); assert items[1].onset=="ㅋ"

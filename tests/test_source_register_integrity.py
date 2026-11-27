@@ -94,6 +94,16 @@ def test_source_register_has_unique_nonblank_ids_and_stable_shape():
     assert len(source_ids) == len(set(source_ids)), "source_id values must be unique"
 
 
+def test_nikl_qna_335858_is_exact_compound_fortition_evidence_only():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-NIKL-QNA-335858"]
+    assert "qna_seq=335858" in source["url"]
+    assert "물고기" in source["coverage"] and "물꼬기" in source["coverage"]
+    assert "exact eojeol pair 물>고" in source["contribution_expected"]
+    assert "does not license tensing after every ㄹ coda" in source["limitations_or_next_action"]
+    assert "item-level KOGL marking remains unverified" in source["limitations_or_next_action"]
+
+
 def test_nikl_pronunciation_source_keeps_live_access_and_item_license_uncertainty_explicit():
     rows = {row["source_id"]: row for row in load_source_register()}
     source = rows["SRC-NIKL-PRON"]

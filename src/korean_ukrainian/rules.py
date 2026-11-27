@@ -284,9 +284,12 @@ _NIKL_R014_WORD_LICENSES = {
     "물가": "물>가", "물가로": "물>가", "봄비": "봄>비",
     # NIKL Basic Dictionary 정신병자[정신뼝자]; exact corpus form with -네 only.
     "정신병자네": "신>병",
+    # NIKL Q&A 335858 explicitly identifies 물고기[물꼬기] as a §28 compound-fortition case.
+    # Exact eojeol only; do not generalize tensing to every ㄹ+ㄱ sequence.
+    "물고기": "물>고",
     # Korean Basic Dictionary directly lists 닭갈비[닥깔비] (ParaWordNo=56047).
     # Exact-form only: the dictionary attests the surface, not IPA or Ukrainian output.
-    "닭갈비": "닭>갈",
+    "닭갈비": "닭>갈"
 }
 
 # Exact examples explicitly listed in NIKL §30. Each form is licensed only

@@ -2,9 +2,14 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine } from '../src/app/engine.js';
+import { buildExtendedIpaResult } from '../src/app/extended_ipa.js';
+import { phonemicIpaFromHangul } from '../src/app/phonemic_ipa.js';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const genericEngine = createEngine(canonical, '');
+const buildNarrowForInteraction = result => buildExtendedIpaResult(
+  '물고기', result, phonemicIpaFromHangul('물고기')
+).layers.narrow;
 const fortisIpa = { 'ㄱ':'k͈', 'ㄷ':'t͈', 'ㅂ':'p͈', 'ㅅ':'s͈', 'ㅈ':'tɕ͈' };
 const onsetSyllable = { 'ㄱ':'가', 'ㄷ':'다', 'ㅂ':'바', 'ㅅ':'사', 'ㅈ':'자' };
 const codaBaseIpa = { 'ㄱ':'kak̚', 'ㄷ':'kat̚', 'ㅂ':'kap̚' };
@@ -21,6 +26,25 @@ test('§23 exhaustive fortition matrix: each obstruent representative fortifies 
       assert.ok(!result.trace.some((item) => item.rules.includes('lexical-pronunciation')), input + ': generic engine only');
     }
   }
+});
+
+test('NIKL Q&A 335858 composes §28 compound fortition with the Narrow coda-variant site', () => {
+  const result = genericEngine.convert('물고기');
+  assert.equal(result.surfaceHangul, '물꼬기');
+  assert.equal(result.ipa, 'mul.k͈o.ɡi');
+  assert.ok(result.trace.some(item => item.rules.includes('compound-fortition-§28-exact-form')));
+
+  const extended = buildExtendedIpaResult('물고기', result, phonemicIpaFromHangul('물고기'));
+  const narrow = extended.layers.narrow;
+  assert.equal(narrow.ipa, 'mul.k͈o.ɡi');
+  const retroflex = extended.variants.find(item => item.ipa === 'muɭ.k͈o.ɡi');
+  assert.ok(retroflex);
+  assert.equal(retroflex.selected, false);
+
+  const negative = genericEngine.convert('물고');
+  assert.equal(negative.surfaceHangul, '물고');
+  assert.equal(negative.ipa, 'mul.ɡo');
+  assert.ok(!negative.trace.some(item => item.rules.includes('compound-fortition-§28-exact-form')));
 });
 
 test('§23 does not generalize obstruent-coda fortition to sonorant codas', () => {
