@@ -78,6 +78,15 @@ test('word-medial /h/ uses vowel-conditioned voiced allophones while word-initia
   assert.ok(h.evidence_refs.some(ref => ref.includes('CBO9781139342858.006')));
 });
 
+test('post-sonorant /h/ retains place coarticulation but does not force voicing', () => {
+  const result = extended('감히');
+  assert.equal(result.layers.narrow.ipa, 'kam.çi');
+  const h = result.trace.find(item => item.source === '히' && item.layer === 'narrow');
+  assert.ok(h.rule_ids.includes('narrow-h-palatal-allophone'));
+  assert.ok(h.rule_ids.includes('narrow-h-sonorant-variation-unresolved'));
+  assert.match(h.environment, /weakening\/voicing\/deletion remains variable/);
+});
+
 test('narrow /h/ and liquid assimilation remain explicitly context-bound', () => {
   assert.equal(extended('아하').layers.narrow.ipa, 'a.ɦa');
   assert.equal(extended('나라').layers.narrow.ipa, 'na.ɾa');
