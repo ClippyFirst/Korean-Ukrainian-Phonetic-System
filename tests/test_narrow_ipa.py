@@ -16,8 +16,8 @@ def test_narrow_profile_aspirates_lenis_sibilant_without_changing_broad():
     narrow = _ipa("사", "narrow")
     assert narrow["ipa"] == "sʰa"
     assert narrow["level"] == "narrow"
-    assert narrow["transcription_profile"]["name"] == "korean-narrow-contextual-allophones-v13"
-    assert narrow["ipa_profile_version"] == 13
+    assert narrow["transcription_profile"]["name"] == "korean-narrow-contextual-allophones-v14"
+    assert narrow["ipa_profile_version"] == 14
     assert narrow["transcription_profile"]["target_compatible"] is False
     assert narrow["transcription_profile"]["limitations"]
 
@@ -160,3 +160,19 @@ def test_coda_nasal_palatalization_before_affricates_is_optional_only():
         assert variant["evidence_status"] == "secondary-description-candidate-only"
         assert "same-word coda ㄴ before alveopalatal affricate" in variant["environment"]
         assert any("1324541" in ref for ref in variant["evidence_refs"])
+
+
+def test_word_final_coda_stops_expose_unreleased_candidates_without_selecting_them():
+    for word, primary, candidate in (("낫", "nat", "nat̚"), ("밖", "pak", "pak̚"), ("밥", "pap", "pap̚")):
+        result = realize_syllables(parse_syllables(word), level="narrow")
+        assert result["ipa"] == primary
+        variant = next(item for item in result["variants"] if item["ipa"] == candidate)
+        assert variant["selected"] is False
+        assert variant["evidence_status"] == "source-scoped-release-variant-only"
+        assert "word-final coda" in variant["environment"]
+        assert any("10.1006/JPHO.1996.0016" in ref for ref in variant["evidence_refs"])
+        assert any("10.13064/ksss.2026.18.1.021" in ref for ref in variant["evidence_refs"])
+
+    nonfinal = realize_syllables(parse_syllables("낫다"), level="narrow")
+    assert not any(item["evidence_status"] == "source-scoped-release-variant-only"
+                   for item in nonfinal["variants"])
