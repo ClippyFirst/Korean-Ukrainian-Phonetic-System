@@ -210,3 +210,18 @@ test('browser exposes an unselected coarticulatory palatalization candidate for 
   assert.equal(variant.evidence_status, 'gradient-coarticulation-candidate-variant-only');
   assert.ok(variant.evidence_refs.some(ref => ref.includes('10.3765/plsa.v6i1.5002')));
 });
+
+
+test('coda /n/ before alveopalatal affricates exposes optional palatal candidates without changing primary IPA', () => {
+  const result = extended('군주');
+  assert.equal(result.layers.narrow.ipa, 'kun.dʑu');
+  const palatal = result.variants.find(item => item.layer === 'narrow' && item.ipa === 'kuɲ.dʑu');
+  const palatalized = result.variants.find(item => item.layer === 'narrow' && item.ipa === 'kunʲ.dʑu');
+  assert.ok(palatal);
+  assert.ok(palatalized);
+  assert.equal(palatal.selected, false);
+  assert.equal(palatalized.selected, false);
+  assert.equal(palatal.evidence_status, 'secondary-description-candidate-only');
+  assert.equal(palatalized.evidence_status, 'secondary-description-candidate-only');
+  assert.ok(palatal.evidence_refs.some(ref => ref.includes('1324541')));
+});
