@@ -45,6 +45,7 @@ test('segment IR preserves syllable source spans and rule provenance explicitly'
 test('browser Extended IPA attaches segment IR and source spans to every layer', () => {
   const source = '녀';
   const result = buildExtendedIpaResult(source, engine.convert(source, { morphologyMode: 'strict', ipaProfile: 'clippyfirst-korean-broad-v1' }), phonemicIpaFromHangul(source));
+  assert.equal(result.schema_version, '1.2');
   assert.ok(result.layers.phonemic.segments.length > 0);
   assert.ok(result.layers.broad.segments.length > 0);
   assert.ok(result.layers.narrow.segments.length > 0);
