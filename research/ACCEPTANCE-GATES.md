@@ -2708,3 +2708,26 @@ Standard and Extended Broad are identical by contract (zero paired prediction di
 - The exact-head v17 multi-engine/A-B workflow run `46078282099` is **PENDING** behind older long-running run `46076417414`, whose multi-engine comparison step remains in progress. The concurrency policy does not cancel long jobs automatically. No v17 benchmark uplift is claimed until the exact-head artifact is produced and inspected.
 
 **Acceptance:** Python/browser profile identity v17; same primary Broad/Narrow strings as before; [ʎ.ʎ] candidate only for same-word R006 liquid-assimilated geminate before /i,j/; combined source span; NIKL and acoustic-literature provenance; no default selection; Python/browser/build/generated-page/rights gates; exact-head paired A/B and candidate-oracle separately reported.
+
+
+## Narrow v17 exact-head benchmark result and supplemental CI blocker handling — 2026-11-28
+
+### Paired A/B result (run 46078477552; artifact 15237510607; head eac0cca48dad06ee0971d6c7972c7be2670bb1fd)
+
+| Dataset | Standard / Extended Broad exact | Extended Narrow exact | Narrow CER | Candidate-oracle exact | Candidate rescues |
+|---|---:|---:|---:|---:|---:|
+| UGTPHON (2,702 scored) | 52.7387% | 72.2058% | 4.5519% | 86.7135% | 392 |
+| SIGMORPHON (998 scored) | 35.8717% | 51.3026% | 9.8821% | 66.3327% | 150 |
+
+- Primary Narrow metrics are unchanged from v16: this v17 change adds only an unselected candidate for the R006 liquid-assimilation × geminate-palatalization interaction. No primary-score uplift is claimed.
+- Compared with the v16 artifact (run 46076417414), v17 increases candidate count by 33 on UGTPHON (1,532→1,565) and 22 on SIGMORPHON (665→687). The candidate oracle is unchanged on UGTPHON (86.7135%, 392 rescues) and improves on SIGMORPHON from 64.3287% / 130 rescues to 66.3327% / 150 rescues (+20 corpus-label rescues). This is an offline candidate-coverage diagnostic, not accuracy and not a runtime selection rule.
+- Standard and Extended Broad remain identical by contract. Candidate selection remains zero. These exact rates are corpus-label agreement only; neither corpus is independently adjudicated narrow-IPA gold.
+
+### Why the v17 workflow showed failure, and correction
+
+- Run 46078477552 completed all preceding steps successfully: engine comparison, mismatch ledger, Browser UGTPHON, paired Standard/Extended A/B, mode-availability checks, Native/Browser parity, SIGMORPHON engine portfolio, Browser three-mode suite (33/33 tests). The only failed step was the supplemental open Korean matrix, before corpus processing, because Dataverse returned HTTP 403 for its K-SPAN metadata landing page after three attempts. Consequently Seoul/K-SPAN/IPA-Dict scores were not produced; no result should be inferred for those tracks.
+- The 403 is an external host-access restriction, not a code/test or IPA-engine failure. The previous script treated this optional supplemental matrix outage as fatal to the entire workflow despite the already-uploaded core A/B artifact.
+- Follow-up commits b63967aec77d70a4efefcdd83b58b1fa50381334, b29d0269be58d4e18f223f1ebdf351fa31f93b29, c690b308830ab9ebb7957e02b0b565de2e8b7b8a, and 874f3353c944cc91197673a28113b0fde2066ceb classify public-source HTTP 403/429/5xx as ExternalSourceUnavailable, write an explicit open-korean-benchmark-status.json with BLOCKED_EXTERNAL_SOURCE, and allow the core workflow to complete without fabricating supplemental scores. The workflow prints and uploads the blocker status; it does not call the optional matrix passed.
+- A focused regression test covers HTTP 403 classification and confirms no destination file is written. Exact-head CI for the final correction is pending; do not mark the correction DONE_VERIFIED until the new workflow run and Python test pass.
+
+**Current classification:** v17 implementation and paired A/B evidence = DONE_VERIFIED for the candidate-only behavior; optional Seoul/K-SPAN/IPA-Dict matrix = BLOCKED_EXTERNAL_SOURCE (no scores); final blocker-handling patch = PARTIAL pending exact-head CI. Project remains a research prototype, not Narrow-IPA-certified or release-ready.
