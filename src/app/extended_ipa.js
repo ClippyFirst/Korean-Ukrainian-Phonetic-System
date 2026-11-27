@@ -295,7 +295,7 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
     trace.push({ layer: 'phonemic', source_span: item.source_span || null, source: item.source || '', surface: null, ipa: item.ipa ?? null, rule_ids: [], environment: 'underlying onset+nucleus+coda inventory; no surface rules', evidence_refs: [], evidence_status: phonemicResult.evidence_status || 'deterministic-underlying-phonemic-inventory', status: item.status || 'underlying-phonemic-grapheme-derived' });
   }
   for (const boundary of (phonemicResult?.boundaries || [])) boundaries.push(boundary);
-  let cursor = 0, previousHangul = null, boundarySincePrevious = true;
+  let cursor = 0, previousHangul = null, previousHangulSpan = null, boundarySincePrevious = true;
   let narrowIpa = '', previousWasHangul = false;
   const narrowVariantSites = [];
   for (let sourceIndex = 0; sourceIndex < sourceTrace.length; sourceIndex++) {
@@ -309,6 +309,7 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       }
       if (/^[\s\p{P}]+$/u.test(value)) narrowIpa += value;
       previousHangul = null;
+      previousHangulSpan = null;
       boundarySincePrevious = true;
       previousWasHangul = false;
       continue;
@@ -362,7 +363,7 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
         narrowVariantSites.push({ ipaStart, sourceSpan: span, from: 'l', to: 'ʎ',
           evidence: 'narrow-palatal-lateral-candidate',
           environment: 'geminate lateral before /i,j/; cited [ʎ] description, not categorical acoustic adjudication' });
-        const previousSpan = sourceTrace[sourceIndex - 1]?.source_span ?? sourceTrace[sourceIndex - 1]?.sourceSpan ?? null;
+        const previousSpan = previousHangulSpan ?? sourceTrace[sourceIndex - 1]?.source_span ?? sourceTrace[sourceIndex - 1]?.sourceSpan ?? null;
         const combinedSpan = previousSpan && span ? { start: previousSpan.start, end: span.end } : span;
         if (ipaStart >= 2 && narrowIpa[ipaStart - 2] === 'l' && narrowIpa[ipaStart - 1] === '.') {
           narrowVariantSites.push({ ipaStart: ipaStart - 2, sourceSpan: combinedSpan, from: 'l.l', to: 'ɭ.ʎ',
@@ -428,6 +429,7 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       status: item.status || 'ungraded'
     });
     previousHangul = item;
+    previousHangulSpan = span;
     boundarySincePrevious = false;
   }
   const hasUnresolvedSource = engineResult.pronunciation_status === 'unresolved' || sourceTrace.some(item => ['unresolved','unsupported-jamo','unsupported'].includes(item.status));
