@@ -169,7 +169,7 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
                     "selected":False,
                 })
             # Lee (1996), summarized in Kim (2011, p.23), describes
-            # /n/ as [nʲ]/[ɲ] before alveopalatal affricates. Expose the
+            # /n/ as [nj]/[ɲ] before alveopalatal affricates. Expose the
             # coda-before-affricate context as optional candidates only:
             # the thesis is a secondary description, not direct evidence
             # that every speaker categorically realizes [ɲ] here.
@@ -182,7 +182,7 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
                     variants.append({
                         "layer":"narrow", "syllable_indices":[i],
                         "ipa":render_syllable_sequence(items,alternate),
-                        "note":("Secondary description in Lee (1996), summarized by Kim (2011, p.23), lists [nʲ]/[ɲ] before /tɕ, tɕ͈, tɕʰ/. This project exposes optional coda-before-affricate candidates only; no categorical primary output is inferred. " + nasal_ref),
+                        "note":("Secondary description in Lee (1996), summarized by Kim (2011, p.23), lists [nj]/[ɲ] before /tɕ, tɕ͈, tɕʰ/. This project exposes optional coda-before-affricate candidates only; no categorical primary output is inferred. " + nasal_ref),
                         "vowels":["coda ㄴ ["+alternate_nasal+"] before affricate"],
                         "evidence_status":"secondary-description-candidate-only",
                         "evidence_refs":[nasal_ref],
