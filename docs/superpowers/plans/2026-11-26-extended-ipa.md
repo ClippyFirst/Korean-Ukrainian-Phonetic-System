@@ -385,3 +385,31 @@ The current v7 benchmark run 45983709835 is in progress. Its paired standard-vs-
 On the same reference split, the narrow layer's exact-match gains were concentrated in aspirated /s/ [sʰ] (243 UGTPHON and 67 SIGMORPHON gains), palatalized [ɕ] (82 and 14), palatal nasal [ɲ] (44 and 13), and [ç] (28 and 0). Examples include 가슴 (broad ka.sɯm → narrow ka.sʰɯm against gold ka̠sʰɯm), 그냥 (kɯ.njaŋ → kɯ.ɲjaŋ against kɯɲja̠ŋ), and 고시엔 (ko.si.en → ko.ɕʰi.en against ko̞ɕʰie̞n). These are useful signs that the allophonic rules can move outputs toward the corpus conventions, but they remain corpus-string diagnostics, not independently adjudicated narrow-IPA accuracy.
 
 The dominant losses were not spread evenly across the profile: [ɭ] co-occurred with 284/288 UGTPHON and 67/67 SIGMORPHON exact losses, and with 382/388 and 116/117 distance-worsening cases. Example: 다리 had gold ta̠ɾi, standard ta.ɾi, but pre-correction narrow ta.ɭi. This motivated v7's [ɾ] primary + optional [ɭ] variant policy. The hypothesis is that v7 preserves the aspiration/palatalization gains while avoiding the overgeneralized [ɭ] losses; only the new v7 A/B artifact can confirm or reject that hypothesis.
+
+
+## Standard vs Extended IPA paired benchmark — artifact inspection, 2026-11-27
+
+Inspected the uploaded `standard-vs-extended-ipa-ab` artifact (workflow run `45973857624`, artifact `15188603961`; benchmark script `scripts/benchmark_extended_ipa_ab.mjs`; engine `Kozak Kim deterministic browser engine`; strict morphology). The benchmark uses the same source rows, token order, eligibility and gold strings for standard and Extended IPA passes. Reference layers are explicitly `reference-layer-not-independently-adjudicated-here`.
+
+| Dataset | Layer | Exact match | CER | Coverage |
+|---|---|---:|---:|---:|
+| UGTPHON (2,703 occurrences; 2,702 scored) | Standard strict broad | 52.7387% | 9.0130% | 99.963% |
+| UGTPHON | Extended broad | 52.7387% | 9.0130% | 99.963% |
+| UGTPHON | Extended phonemic | 20.2073% | 23.4737% | 99.963% |
+| UGTPHON | Extended narrow | 55.8845% | 7.2217% | 99.963% |
+| SIGMORPHON (999 occurrences; 998 scored) | Standard strict broad | 35.8717% | 14.5598% | 99.900% |
+| SIGMORPHON | Extended broad | 35.8717% | 14.5598% | 99.900% |
+| SIGMORPHON | Extended phonemic | 12.9259% | 26.6742% | 99.900% |
+| SIGMORPHON | Extended narrow | 39.6794% | 12.6912% | 99.900% |
+
+### Interpretation and limits
+
+- Standard broad and Extended broad are identical by contract: zero prediction differences and zero status differences on all 2,703 UGTPHON and 999 SIGMORPHON occurrences. This is expected because Extended broad wraps the existing strict broad output; the segment IR is a structured representation boundary, not a new G2P predictor. There is no measured broad accuracy uplift.
+- Extended narrow has numerically higher exact match and lower CER against these stored references (+3.1458 pp exact / -1.7913 pp CER on UGTPHON; +3.8077 pp / -1.8686 pp on SIGMORPHON). However, neither corpus reference layer was independently adjudicated as narrow IPA in this benchmark. The report explicitly says narrow scores are cross-layer string agreement only, not narrow-IPA accuracy. Do not present these deltas as verified phonetic improvement.
+- Extended phonemic scores poorly against these same broad/mixed references (UGTPHON 20.2073% exact, 23.4737% CER; SIGMORPHON 12.9259%, 26.6742%). The report says this comparison is meaningful only if the gold is phonemic and uses compatible inventory/segmentation. It is not a fair phonemic accuracy score.
+- No benchmark here measures Ukrainian target transcription accuracy, rule accuracy, or the quality of an IPA-to-Ukrainian adapter.
+- Therefore: technical Extended IPA IR is implemented and verified; standard-vs-Extended broad prediction accuracy is unchanged; narrow accuracy remains unproven pending layer-aligned independent gold.
+
+The separate multi-engine artifact from the same run is aggregate-only and is not an A/B of Extended IPA. Its strict native results are UGTPHON 52.7387% exact / 9.0130% CER (2,702 scored of 2,703), SIGMORPHON 35.9719% / 14.5347% (998/999), and Seoul phoneme-tier 14.8033% / 39.8430% (966/1,000). The separate paired UGTPHON engine comparison reports native 52.7387% / 9.0130% vs g2pk 53.0892% / 9.2328% on 2,702 paired occurrences; g2pk gains +0.3701 pp exact but worsens CER by +0.2207 pp. These are diagnostic comparisons across engines, not Extended-IPA gains or adjudicated gold accuracy.
+
+The A/B artifact was produced on implementation commit `08feed20a54187ebc1c35f211801e9c7e5c85632`; the subsequent `a7116388` change only corrected a test fixture (no production parser/IPA output change), and documentation-only commits followed. The current-head benchmark workflow was cancelled before producing its own artifact; this prior artifact remains the inspected diagnostic evidence, not an exact-current-head rerun.
