@@ -78,3 +78,11 @@ test('segment IR handles tied affricates and combining vowel diacritics', () => 
   assert.equal(segments[1].features.nasalization, 'nasalized');
   assert.equal(segments[1].features.length, 'long');
 });
+
+test('vowel feature bundles mark consonant-only features not applicable', () => {
+  const vowel = parseIpaSegments('iː').find(item => item.kind === 'segment');
+  assert.equal(vowel.features.major_class, 'vowel');
+  assert.equal(vowel.features.aspiration, 'not-applicable');
+  assert.equal(vowel.features.fortisness, 'not-applicable');
+  assert.equal(vowel.features.release, 'not-applicable');
+});
