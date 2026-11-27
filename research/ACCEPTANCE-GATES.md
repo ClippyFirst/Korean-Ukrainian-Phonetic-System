@@ -2145,3 +2145,24 @@ Disposition: PR #509 remains open/unmerged. Extended IPA remains a research prev
 - [ ] Complete human keyboard-only, screen-reader and zoom acceptance.
 - [ ] Establish rights-cleared acoustic annotation data.
 - Extended IPA target adaptation remains deferred and fail-closed.
+
+
+## Current segment IR gate reconciliation — 2026-11-27
+
+This is the authoritative current status for the segment-IR increment; earlier v1.1 TODO notes are historical and describe the pre-PR #510 state.
+
+| Gate | Status | Acceptance / blocker |
+|---|---|---|
+| Python and browser segment parsers | PARTIAL | Implemented on PR #510; exact-head Tests and Verify pending |
+| Three IPA layer segment arrays | PARTIAL | Implemented; Verify and Browser G2P pending |
+| Schema v1.2 and Python/browser validators | PARTIAL | Implemented; exact-head schema/contract checks pending |
+| Unicode offsets, affricates, modifiers, boundaries and unknown retention | PARTIAL | Fixtures authored; exact-head tests pending |
+| Exhaustive 11,172 modern Hangul phonemic parity | PARTIAL | Test/exporter added; exact-head execution pending |
+| Independent broad/narrow Korean phonetic gold | BLOCKED | Qualified independent adjudication and layer-matched reference set required |
+| Rights-cleared acoustic corpus and labels | BLOCKED | Dataset-specific permission and derived-label rights not established |
+| Human keyboard/screen-reader/zoom review | TODO | Manual accessibility acceptance required |
+| Extended IPA Ukrainian target mapping | DEFERRED | Outside current scope; adapter remains fail-closed |
+
+Exact-head runs currently queued: Tests `45972689269`, Verify `45972689301`, Browser G2P `45972689642`, master/research artifacts `45972689334`. A queued or skipped workflow is not a successful acceptance result. Charsiu review was skipped by policy. Local test/build execution was unavailable because github.com DNS resolution failed.
+
+PR #510 is correctly stacked on PR #509 (65 commits ahead, 0 behind, 16 changed files). The result schema on the segment-IR branch is v1.2; v1.1 refers to the earlier PR #509 contract. No benchmark uplift or phonetic certification is claimed.
