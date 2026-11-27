@@ -69,6 +69,66 @@ export function scoreLayer(rows, engine, layer, datasetName) {
     'Pinned corpus input; identical occurrences for all IPA layers');
 }
 
+
+export function summarizeNarrowVariants(rows, engine) {
+  let eligibleTokens = 0;
+  let tokensWithVariants = 0;
+  let totalVariants = 0;
+  let selectedVariants = 0;
+  let primaryIpaChangedTokens = 0;
+  const byEnvironment = {};
+  const byEvidenceStatus = {};
+  const examples = [];
+  for (const row of rows) {
+    for (const token of row.tokens ?? []) {
+      const canonical = token.canonical;
+      if (typeof canonical !== 'string' || !HANGUL_TOKEN.test(canonical) ||
+          typeof token.phoneme !== 'string' || !token.phoneme.trim()) continue;
+      eligibleTokens += 1;
+      const base = engine.convert(canonical, {
+        morphologyMode: 'strict',
+        ipaProfile: 'clippyfirst-korean-broad-v1'
+      });
+      const extended = buildExtendedIpaResult(
+        canonical, base, phonemicIpaFromHangul(canonical)
+      );
+      const primaryNarrow = extended.layers.narrow.ipa;
+      if (primaryNarrow && primaryNarrow !== base.ipa) primaryIpaChangedTokens += 1;
+      const variants = (Array.isArray(extended.variants) ? extended.variants : [])
+        .filter(variant => variant.layer === 'narrow');
+      if (!variants.length) continue;
+      tokensWithVariants += 1;
+      totalVariants += variants.length;
+      for (const variant of variants) {
+        if (variant.selected) selectedVariants += 1;
+        const environment = variant.environment || 'unspecified';
+        const evidence = variant.evidence_status || 'unspecified';
+        byEnvironment[environment] = (byEnvironment[environment] ?? 0) + 1;
+        byEvidenceStatus[evidence] = (byEvidenceStatus[evidence] ?? 0) + 1;
+        if (examples.length < 30) examples.push({
+          token: canonical, primary_ipa: primaryNarrow,
+          variant_ipa: variant.ipa, environment,
+          evidence_status: evidence, selected: variant.selected === true,
+          evidence_refs: variant.evidence_refs || []
+        });
+      }
+    }
+  }
+  return {
+    interpretation: 'Candidate coverage only; variants are unselected and are not scored as correct/incorrect without layer-matched narrow gold.',
+    eligible_tokens: eligibleTokens,
+    tokens_with_variants: tokensWithVariants,
+    variant_token_coverage_rate: eligibleTokens ? Number((tokensWithVariants / eligibleTokens).toFixed(6)) : null,
+    total_variant_candidates: totalVariants,
+    mean_variants_per_eligible_token: eligibleTokens ? Number((totalVariants / eligibleTokens).toFixed(6)) : null,
+    selected_variant_candidates: selectedVariants,
+    primary_ipa_changed_tokens: primaryIpaChangedTokens,
+    by_environment: Object.fromEntries(Object.entries(byEnvironment).sort(([a],[b]) => a.localeCompare(b))),
+    by_evidence_status: Object.fromEntries(Object.entries(byEvidenceStatus).sort(([a],[b]) => a.localeCompare(b))),
+    examples
+  };
+}
+
 export function compareRows(standard, extendedBroad) {
   const left = standard.records ?? [];
   const right = extendedBroad.records ?? [];
@@ -111,6 +171,7 @@ function main() {
       const broad = scoreLayer(rows, engine, 'broad', name);
       const phonemic = scoreLayer(rows, engine, 'phonemic', name);
       const narrow = scoreLayer(rows, engine, 'narrow', name);
+      const narrowVariants = summarizeNarrowVariants(rows, engine);
       datasets[name] = {
         occurrence_policy: 'same source rows, token order, eligibility and gold strings across all four passes',
         reference_layer_status: name === 'Seoul Corpus' ? 'phonemic-word-level-reference' : 'reference-layer-not-independently-adjudicated-here',
@@ -121,6 +182,7 @@ function main() {
           narrow: summarize(narrow)
         },
         standard_vs_extended_broad: compareRows(standard, broad),
+        narrow_variant_diagnostics: narrowVariants,
         records: {
           standard_ipa: standard.records,
           extended_broad: broad.records,
@@ -143,6 +205,7 @@ function main() {
         'Extended phonemic is a deterministic underlying Hangul inventory. Its agreement with a corpus reference is meaningful only if that reference is phonemic and uses a compatible inventory/segmentation convention.',
         'Extended narrow is a partial research allophone profile. No independently adjudicated narrow-IPA gold is supplied by these corpora; its score is cross-layer string agreement only and must not be described as narrow IPA accuracy.',
         'Exact match, CER and coverage are reported separately; no permissive normalization is used for headline metrics.',
+        'Unselected Narrow variant candidates are summarized separately by environment/evidence; candidate coverage is not accuracy and does not change the primary IPA score.',
         'This report does not measure Ukrainian target transcription accuracy.'
       ]
     };
@@ -154,6 +217,7 @@ function main() {
         extended_broad: data.extended_ipa.broad,
         extended_phonemic: data.extended_ipa.phonemic,
         extended_narrow: data.extended_ipa.narrow,
+        narrow_variant_diagnostics: data.narrow_variant_diagnostics,
         standard_vs_extended_broad: data.standard_vs_extended_broad
       }, null, 2) + '\n');
     }
