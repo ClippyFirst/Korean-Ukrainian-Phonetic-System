@@ -2499,3 +2499,18 @@ The replay changes 94 scored UGTPHON tokens and 50 scored SIGMORPHON tokens. The
 - Counterfactual replay over the saved v10 paired artifact estimates UGTPHON coverage-adjusted exact 69.5523% → 71.8831%, CER 5.0063% → 4.6471%; SIGMORPHON coverage-adjusted exact 48.6486% → 50.2503%, CER 10.7349% → 10.2207%. This is a saved-artifact simulation, not a fresh A/B run.
 - The open K-SPAN matrix remains BLOCKED: Dataverse v2.1 bundle and pinned file endpoints both returned HTTP 403 after retries. Other independent UGTPHON/SIGMORPHON diagnostics completed; no K-SPAN result is claimed.
 - Independent layer-matched Narrow IPA gold, rights-cleared audio and expert speaker/dialect adjudication remain BLOCKED. **Readiness remains research prototype, not release-ready or phonetic-certified.**
+
+## Current-head verification refresh — 2026-11-27 13:13 UTC
+
+**Current head:** `c068aa338b24fe338f1f8c2ae34c1a849bfd7161`.
+
+- Python regression/data-integrity job `140525476954`: **success**.
+- Browser test/build job `140525477259`: **success**, 1,503 tests passed, 0 failed; Vite production build completed and generated `dist/index.html` and `dist/system.html`.
+- UGTPHON pinned test split job `140525477215`: **success**, pinned 275-row test split and 1,976-row train split validated.
+- Paired native-vs-g2pk job `140525476998`: **success**; UGTPHON test 2,702 paired tokens: native exact 52.7387%, CER 9.0130%; g2pk exact 53.0892%, CER 9.2328%. Diagnostic only, not Narrow score.
+- Morphology-consensus job `140525476956`: **success**; strict exact 52.7387%, CER 9.0130%; consensus coverage 100%, exact 52.7192%, CER 9.0296%. One unique unresolved word resolved, three unique words changed; paired exact delta 0.0000, CER delta +0.000173 (worse). Keep consensus diagnostic-only; do not promote it into production.
+- Test-case register extraction job `140525482452`: **success**.
+- External UGTPHON Narrow A/B workflow `46004893594`: still pending with no job assigned as of 13:13 UTC. No v11 Narrow A/B result is available yet.
+- K-SPAN v2.1 Dataverse 403 blocker and absence of layer-matched independently adjudicated Narrow IPA/audio gold remain unchanged.
+
+The earlier verification attempt `46003159398` failed on stale test expectations and test-loader errors; the current-head verification supersedes it and is green. The source-register test now reflects 252 actual rows. Do not count the skipped official NIKL metadata inventory or Charsiu train-dev review as passes.
