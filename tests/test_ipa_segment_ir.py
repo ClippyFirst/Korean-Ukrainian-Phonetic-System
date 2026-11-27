@@ -9,7 +9,7 @@ def test_segment_ir_preserves_extended_korean_ipa_symbols_and_features():
     assert segments[1]["features"]["place"] == "velar"
     assert segments[2]["features"]["voicing"] == "voiced"
     assert segments[3]["features"]["place"] == "palatal"
-    assert segments[4]["features"]["place"] == "alveolar"
+    assert segments[4]["features"]["place"] == "retroflex"
     assert segments[5]["features"]["manner"] == "fricative"
 
 
@@ -36,3 +36,13 @@ def test_segment_ir_preserves_boundaries_unknowns_and_provenance_without_guessin
     assert result[1]["kind"] == "boundary"
     assert result[-1]["kind"] == "unknown"
     assert result[-1]["ipa"] == "?"
+
+
+def test_extended_ipa_result_exposes_segment_ir_with_source_and_rule_provenance():
+    from korean_ukrainian.pipeline import phoneticize_korean
+    result = phoneticize_korean("녀")["extended_ipa"]
+    segments = result["layers"]["narrow"]["segments"]
+    assert [item["ipa"] for item in segments if item["kind"] == "segment"] == ["ɲ", "j", "ʌ"]
+    assert all(item["source_span"] == {"start": 0, "end": 1} for item in segments if item["kind"] == "segment")
+    assert all(item["source_alignment"] == "syllable-span" for item in segments if item["kind"] == "segment")
+    assert segments[0]["provenance"]["rule_ids"] == ["narrow-nasal-palatalization"]
