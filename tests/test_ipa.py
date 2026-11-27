@@ -320,7 +320,9 @@ def test_narrow_h_has_context_conditioned_palatal_and_velar_allophones():
     from korean_ukrainian.pipeline import phoneticize_korean
 
     assert phoneticize_korean("히", ipa_level="narrow")["ipa"]["ipa"] == "çi"
-    assert phoneticize_korean("후", ipa_level="narrow")["ipa"]["ipa"] == "xu"
+    assert phoneticize_korean("후", ipa_level="narrow")["ipa"]["ipa"] == "ɸʷu"
+    assert phoneticize_korean("호", ipa_level="narrow")["ipa"]["ipa"] == "ɸʷo"
+    assert phoneticize_korean("흐", ipa_level="narrow")["ipa"]["ipa"] == "xɯ"
     assert phoneticize_korean("하", ipa_level="narrow")["ipa"]["ipa"] == "ha"
 
 
