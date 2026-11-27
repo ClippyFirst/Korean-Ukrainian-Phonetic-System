@@ -352,8 +352,8 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
         }
       }
       const codaStopPlace = {
-        'ㄱ':'k','ㄲ':'k','ㅋ':'k','ㄷ':'t','ㅅ':'t','ㅆ':'t',
-        'ㅈ':'t','ㅉ':'t','ㅊ':'t','ㅌ':'t','ㅂ':'p','ㅍ':'p'
+        'ㄱ':'k','ㄲ':'k','ㅋ':'k','ㄳ':'k','ㄺ':'k','ㄷ':'t','ㅅ':'t','ㅆ':'t',
+        'ㅈ':'t','ㅉ':'t','ㅊ':'t','ㅌ':'t','ㅂ':'p','ㅍ':'p','ㄿ':'p','ㅄ':'p'
       }[currentParsed?.coda];
       const nextItem = sourceTrace[sourceIndex + 1];
       const nextValue = String(nextItem?.source ?? '');
