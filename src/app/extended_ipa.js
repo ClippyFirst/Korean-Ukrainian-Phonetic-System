@@ -169,12 +169,57 @@ function segmentsForLayer(ipa, trace, layer) {
   return parseIpaSegments(ipa);
 }
 
+
+function validateSegmentTokens(segments, ipa, sourceText, path) {
+  const errors = [];
+  if (!Array.isArray(segments)) return [path + '.segments must be an array'];
+  const ipaPoints = typeof ipa === 'string' ? [...ipa] : [];
+  const sourceLength = [...sourceText].length;
+  const ids = new Set(); let previousEnd = 0;
+  for (let index = 0; index < segments.length; index++) {
+    const item = segments[index], itemPath = path + '.segments[' + index + ']';
+    if (!item || typeof item !== 'object' || Array.isArray(item)) { errors.push(itemPath + ' must be an object'); continue; }
+    if (typeof item.id !== 'string' || !item.id) errors.push(itemPath + '.id must be a non-empty string');
+    else if (ids.has(item.id)) errors.push(path + '.segments IDs must be unique');
+    else ids.add(item.id);
+    if (!['segment','boundary','unknown'].includes(item.kind)) errors.push(itemPath + '.kind is invalid');
+    if (typeof item.ipa !== 'string' || !item.ipa) { errors.push(itemPath + '.ipa must be a non-empty string'); continue; }
+    const span = item.ipa_span;
+    if (!span || typeof span !== 'object' || Array.isArray(span) ||
+        Object.keys(span).sort().join(',') !== 'end,start' || !Number.isInteger(span.start) ||
+        !Number.isInteger(span.end) || span.start < 0 || span.end <= span.start) {
+      errors.push(itemPath + '.ipa_span is invalid'); continue;
+    }
+    if (span.end > ipaPoints.length || ipaPoints.slice(span.start, span.end).join('') !== item.ipa) errors.push(itemPath + '.ipa_span does not select its IPA text');
+    if (span.start < previousEnd) errors.push(itemPath + '.ipa_span overlaps or is out of order');
+    previousEnd = Math.max(previousEnd, span.end);
+    if (item.kind === 'segment') {
+      if (typeof item.base !== 'string' || !Array.isArray(item.modifiers) || !item.modifiers.every(mark => typeof mark === 'string')) errors.push(itemPath + ' requires base and string modifiers');
+      if (!item.features || typeof item.features !== 'object' || typeof item.features.major_class !== 'string') errors.push(itemPath + '.features is invalid');
+      const sourceSpan = item.source_span;
+      if (sourceSpan !== null && (!sourceSpan || typeof sourceSpan !== 'object' || Array.isArray(sourceSpan) ||
+          Object.keys(sourceSpan).sort().join(',') !== 'end,start' || !Number.isInteger(sourceSpan.start) ||
+          !Number.isInteger(sourceSpan.end) || sourceSpan.start < 0 || sourceSpan.end <= sourceSpan.start || sourceSpan.end > sourceLength)) errors.push(itemPath + '.source_span is invalid');
+      const expectedAlignment = sourceSpan === null ? 'unavailable' : 'syllable-span';
+      if (item.source_alignment !== expectedAlignment) errors.push(itemPath + '.source_alignment does not match source_span');
+      const provenance = item.provenance;
+      if (!provenance || typeof provenance !== 'object' || !Array.isArray(provenance.rule_ids) ||
+          !provenance.rule_ids.every(value => typeof value === 'string') || !Array.isArray(provenance.evidence_refs) ||
+          !provenance.evidence_refs.every(value => typeof value === 'string') || typeof provenance.evidence_status !== 'string' ||
+          (provenance.environment !== null && typeof provenance.environment !== 'string')) errors.push(itemPath + '.provenance is invalid');
+    } else if (item.kind === 'boundary' && !['word','syllable','separator'].includes(item.boundary)) errors.push(itemPath + '.boundary is invalid');
+    else if (item.kind === 'unknown' && typeof item.reason !== 'string') errors.push(itemPath + '.reason is required');
+  }
+  return errors;
+}
+
 export function validateExtendedIpaResult(result) {
   const errors = [];
   if (!result || typeof result !== 'object' || Array.isArray(result)) return ['result must be an object'];
   if (result.schema_version !== '1.2' || result.mode !== 'extended-ipa') errors.push('unsupported schema or mode');
   if (!result.source || typeof result.source.text !== 'string' || result.source.offset_unit !== 'unicode-code-points') errors.push('invalid source metadata');
-  if (!result.layers || !['phonemic','broad','narrow'].every(level => result.layers[level]?.level === level && Array.isArray(result.layers[level]?.segments))) errors.push('all three IPA layers with segment arrays are required');
+  if (!result.layers || !['phonemic','broad','narrow'].every(level => result.layers[level]?.level === level)) errors.push('all three IPA layers are required');
+  else for (const level of ['phonemic','broad','narrow']) errors.push(...validateSegmentTokens(result.layers[level].segments, result.layers[level].ipa, result.source.text, 'layers.' + level));
   if (!Array.isArray(result.variants) || !Array.isArray(result.boundaries) || !Array.isArray(result.trace)) errors.push('variants, boundaries and trace must be arrays');
   else for (const item of result.trace) if (!item || !['phonemic','broad','narrow'].includes(item.layer)) errors.push('every trace item requires a valid IPA layer');
   const contextKeys = ['speaker_id','dialect','age_group','speech_style','speech_rate_syllables_per_second','focus','prosodic_position','recording_conditions'];
