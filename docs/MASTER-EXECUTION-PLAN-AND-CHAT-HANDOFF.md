@@ -2563,3 +2563,37 @@ The paired A/B step and artifact upload succeeded in run `46052610441`; the over
 - Exact v13 paired multi-engine/A-B workflow `46055641802` is active at the multi-engine comparison stage (UGTPHON/SIGMORPHON engine portfolio, then paired Standard-vs-Extended IPA, then open matrix and aggregate report). It runs Narrow v13 code at head `61bfaee9443b4639ceceb525354f1f8087ea50b8`; later commits up to `58fd712` changed only the CSV quoting and tests, not runtime or benchmark logic. **No v13 A/B scores are available yet.** Candidate-oracle metrics, when produced, are an offline upper bound against corpus labels, not accuracy and not a runtime selection mechanism.
 - The earlier v12 paired result remains the latest measured primary Narrow result until v13 A/B completes: UGTPHON 72.2058% exact / 4.5519% CER (2,702 scored); SIGMORPHON 51.3026% exact / 9.9824% CER (998 scored). v13's candidate-only change should not alter those primary scores.
 - K-SPAN v2.1 Dataverse 403 access blocker and lack of independent layer-matched Narrow IPA/audio gold and expert speaker/dialect adjudication remain BLOCKED. Status remains research prototype; not release-ready or phonetic-certified.
+
+## v13 paired benchmark completed; v14 release-variation candidate — 2026-11-27
+
+### v13 exact-head paired A/B evidence
+
+Run `46055641802` completed the paired Standard-vs-Extended IPA report and uploaded artifact `standard-vs-extended-ipa-ab-46055641802` (artifact ID `15226349068`). The overall workflow concluded **failure** only at the later open Korean benchmark matrix (K-SPAN Dataverse HTTP 403); do not label the entire workflow successful.
+
+| Dataset | Standard/Broad exact | Extended Narrow exact | Narrow CER | Coverage |
+|---|---:|---:|---:|---:|
+| UGTPHON | 52.7387% | 72.2058% | 4.5519% | 2,702 / 2,703 |
+| SIGMORPHON | 35.8717% | 51.3026% | 9.9824% | 998 / 999 |
+
+Extended Broad equals Standard by design and was asserted. Extended Narrow is still **cross-layer agreement**, not measured narrow-IPA accuracy: neither corpus supplies independent layer-matched narrow gold.
+
+Unselected candidate diagnostics:
+- UGTPHON: 996/2,703 tokens (36.85%) with candidates; 1,309 candidates; candidate-oracle exact 84.715% versus primary 72.2058%, 338 tokens rescued.
+- SIGMORPHON: 362/999 (36.24%) with candidates; 476 candidates; candidate-oracle exact 63.0261% versus primary 51.3026%, 117 rescued.
+- Zero candidates were selected. The oracle is only an offline upper bound against corpus IPA labels, not accuracy and not a runtime selection policy.
+- UGTPHON oracle rescues were coda ㄹ before same-word consonants (130) and word-final coda ㄹ (208). SIGMORPHON rescues were coda ㄹ before consonants (45), word-final coda ㄹ (47), and coda ㄴ before alveopalatal affricates (25). The latter candidate had no UGTPHON oracle rescues, reinforcing corpus/convention dependence.
+- Top normalized codepoint mismatches included `l → ɭ` (543 UGTPHON; 189 SIGMORPHON), `h → ɦ` (96; 33), `s → ɕ` (62; 12), and SIGMORPHON `n → ɲ` (41). These are edit diagnostics, not phonological-feature adjudications. The source-backed coda [ɭ] alternatives remain unselected because speaker/dialect/style are unknown.
+
+### v13 workflow acceptance and blocker
+
+- Multi-engine comparison, per-fragment mismatch ledger, Browser Kozak Kim UGTPHON, paired Standard-vs-Extended IPA report, mode availability, native/browser parity, SIGMORPHON engine portfolio, SIGMORPHON Browser three-mode benchmark and regression suite: **PASS**.
+- Open matrix step `Run open Korean benchmark matrix (Seoul, K-SPAN, IPA-Dict)` failed before processing the matrix because Dataverse returned HTTP 403 for K-SPAN metadata after retries. Seoul/K-SPAN/IPA-Dict scores were therefore not produced; aggregate summary was skipped. Artifact upload of the already-completed A/B report succeeded.
+- No external engine was promoted into runtime; comparisons remain diagnostics.
+
+### Narrow v14 implementation — optional coda release alternatives
+
+- v13 mismatch attribution showed recurring deletion of the unreleased diacritic `̚`, but inspected examples were mainly preconsonantal. We deliberately did **not** generalize release alternatives to those contexts.
+- v14 adds optional, unselected released [p,t,k] alternatives only for word-final codas whose primary broad-derived output is [p̚,t̚,k̚]. This preserves the existing primary output and does not claim every token is released.
+- Evidence: Lee (1993, p.31) illustrates unreleased coda stops; Kim & Jongman (1996) found a brief burst after 83% of word-final stops in a four-speaker sample; Cha (2026) reports task/place-dependent production traces but no burst frequency. Thus the candidate is deliberately limited and never selected from spelling alone.
+- The source register now includes Kim & Jongman (1996) and Cha (2026), and tests cover ㄱ/ㄲ/ㅋ, ㄷ/ㅅ and ㅂ codas plus complex ㄺ/ㅄ codas, with a nonfinal negative control.
+- Current runtime profile is `clippyfirst-korean-narrow-contextual-allophones-v14`. Current code head when this note was prepared: `7f1a77c7f25961df28c61a3eb70d8cb7f1e75b96`. v14 Python/browser verification and the v14 paired benchmark are queued; no v14 pass or score is claimed yet.
