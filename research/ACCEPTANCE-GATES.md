@@ -2221,3 +2221,20 @@ Current PR #510 head: `a7116388d9c6ed592f4a1a94ea77436b16994737` on `feat/korean
 2. Update the task ledger again with exact benchmark outcome and any genuine failure.
 3. Once all exact-head evidence is inspected, retarget PR #510 from `main` to PR #509's branch to restore the intended stack. Do not merge or release.
 4. Keep scientific adjudication, audio rights, and human accessibility as explicit external blockers.
+
+
+## UGTPHON paired comparison update — 2026-11-27 10:16 UTC
+
+The exact-branch external UGTPHON comparison job `45980290133` completed successfully. It compares the deterministic browser Kozak-Kim engine with the untouched vendored g2pK JavaScript port on 2,702 paired Hangul tokens (275 rows; 264 sentence/utterance clusters; 2,000 cluster-bootstrap resamples).
+
+- Kozak-Kim: 1,436 exact matches; exact-match rate 53.1458%; CER 8.0222%.
+- g2pK: 1,444 exact matches; exact-match rate 53.4419%; CER 8.2125%.
+- Paired exact-match delta (Kozak-Kim minus g2pK): −0.2961 percentage points; 95% cluster-bootstrap CI [−1.1473, +0.2369] pp, which crosses zero.
+- Paired CER delta (Kozak-Kim minus g2pK): −0.1904 percentage points; 95% cluster-bootstrap CI [−0.3320, −0.0430] pp, favoring Kozak-Kim on this metric.
+- 2,487/2,702 surfaces were identical; 215 differed. Both paths had zero engine errors.
+
+Interpretation: exact-match rate slightly favors g2pK but the confidence interval includes no difference; CER favors Kozak-Kim on this particular test split. This is a diagnostic comparison against UGTPHON's references, not independent phonetic adjudication, not a Ukrainian target benchmark, and not proof of universal superiority. Do not collapse the two metrics into a single winner.
+
+The paired native-engine/g2pK job `45980290331` also passed. It reports native exact-match 52.7387%, CER 9.0130%; g2pK exact-match 53.0892%, CER 9.2328%; paired exact delta +0.3701 pp for g2pK and CER delta +0.2207 pp against g2pK. This is a different native-vs-vendored comparison from the browser Kozak-Kim comparison above; keep the two protocols separate.
+
+Current-head full multi-engine benchmark `45980290275` remains pending behind an earlier long-running benchmark `45973857624`. The current-head benchmark has not produced the paired standard-versus-Extended IPA report yet. The Charsiu inference queue remains skipped by workflow policy.
