@@ -360,8 +360,8 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       const wordFinalCoda = !nextItem || nextItem.status === 'literal' && /^[\s\p{P}]+$/u.test(nextValue);
       if (codaStopPlace && derived.ipa.endsWith(codaStopPlace + '̚') && wordFinalCoda) {
         narrowVariantSites.push({
-          ipaStart: ipaStart + [...derived.ipa].length - 2, sourceSpan: span,
-          from: codaStopPlace + '̚', to: codaStopPlace,
+          ipaStart: ipaStart + [...derived.ipa].length - 1, sourceSpan: span,
+          from: '̚', to: '',
           evidence: 'narrow-coda-stop-release-candidate',
           environment: 'word-final coda ' + currentParsed.coda + '; optional released [' + codaStopPlace + '] candidate'
         });
