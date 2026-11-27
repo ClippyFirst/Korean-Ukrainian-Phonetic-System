@@ -118,3 +118,19 @@ def test_incomplete_layer_trace_falls_back_without_dropping_ipa_segments():
     assert "".join(item["ipa"] for item in tokens if item["kind"] in {"segment", "unknown"}) == "kana"
     assert any(item["kind"] == "boundary" and item["ipa"] == "." for item in tokens)
     assert all(item.get("source_span") is None for item in tokens if item["kind"] == "segment")
+
+
+def test_dependency_free_python_validator_checks_segment_spans_and_unique_ids():
+    from copy import deepcopy
+    from korean_ukrainian.pipeline import phoneticize_korean
+    from korean_ukrainian.ipa_profiles import validate_extended_ipa_result
+    result = phoneticize_korean("나라")["extended_ipa"]
+    assert validate_extended_ipa_result(result) == []
+    broken_span = deepcopy(result)
+    segment = next(item for item in broken_span["layers"]["narrow"]["segments"] if item["kind"] == "segment")
+    segment["ipa_span"]["end"] += 1
+    assert any("ipa_span" in error for error in validate_extended_ipa_result(broken_span))
+    duplicate = deepcopy(result)
+    tokens = duplicate["layers"]["narrow"]["segments"]
+    tokens[1]["id"] = tokens[0]["id"]
+    assert any("unique" in error for error in validate_extended_ipa_result(duplicate))
