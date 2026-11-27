@@ -2122,3 +2122,14 @@ Disposition: PR #509 remains open/unmerged. Extended IPA remains a research prev
 - [ ] Independently adjudicate narrow allophones before promoting any source-scoped candidate to a categorical default.
 - [ ] Do not emit [ɦ] as a universal post-sonorant /h/ realization: available Um (2014) evidence describes residual effects on the preceding sonorant even when /h/ is not acoustically manifested.
 - Ukrainian target adaptation remains outside this phase and the Extended IPA target profile remains fail-closed.
+
+
+## Extended IPA segment IR and cross-runtime parity — 2026-11-27
+
+- [ ] Exact-head Python parser, browser parser, schema v1.2, wheel-install and browser build checks must pass before the segment IR is DONE_VERIFIED.
+- [ ] Exact-head 11,172-entry modern Hangul phonemic parity test must pass; any mismatches require a source-backed correction, not fixture suppression.
+- [ ] Verify Unicode code-point IPA offsets, tied affricates, combining marks, aspiration, length, fortisness, unreleased codas, unknown-symbol retention, source syllable spans, trace provenance and unique token IDs.
+- [ ] Independently adjudicate broad/narrow IPA and context-conditioned variants before claiming phonetic accuracy.
+- [ ] Human keyboard-only, screen-reader and zoom acceptance remains required.
+- [ ] Rights-cleared acoustic data remains a separate gate.
+- Extended IPA target adaptation remains deferred and fail-closed.

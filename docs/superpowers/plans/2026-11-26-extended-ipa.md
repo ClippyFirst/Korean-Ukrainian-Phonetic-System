@@ -139,7 +139,7 @@ The implementation and exact-head software checks are verified, but the mode rem
 | Python Unicode-safe IPA segment parser | PARTIAL | Source added; exact-head pytest pending |
 | Browser Unicode-safe IPA segment parser | PARTIAL | Source added; exact-head node tests pending |
 | Three-layer result integration and syllable spans | PARTIAL | Integration tests authored; Python/browser CI pending |
-| Schema and runtime validation | PARTIAL | Schema v1.1 extended; schema/contract CI pending |
+| Schema and runtime validation | PARTIAL | Schema v1.2 extended; schema/contract CI pending |
 | Independent narrow IPA adjudication | BLOCKED | Requires independent Korean phonetic review and layer-aligned gold |
 | Speaker/acoustic-conditioned [ɦ] selection | BLOCKED | Available Um (2014) abstract supports residual /h/ effects but not categorical [ɦ]; exact token-level evidence required |
 | Ukrainian adapter changes | DEFERRED | Explicitly outside this phase; existing fail-closed profile boundary preserved |
@@ -148,3 +148,38 @@ Do not mark this increment DONE_VERIFIED until all exact-head Python, browser, s
 
 
 **Schema compatibility note — 2026-11-27:** the new required per-layer segment arrays change the public result contract, so the Extended IPA schema is versioned to 1.2 in Python, browser JS and JSON Schema. This is not a phonetic profile-version bump; phonetic output semantics remain governed by the existing layer profile versions.
+
+
+## Final continuation checkpoint — 2026-11-27
+
+**Code checkpoint:** `d4b180209846d516a4aa402af0173e7ed1b9b55c` on `feat/korean-extended-ipa-segment-ir-2026-11-27`. Draft stacked implementation PR: #510. PR #509 remains open and unmodified; PR #510 reuses its exact head as an ancestor. Starting default-branch SHA: `97bb411df8b998b22cd58adda015fb941201950c`.
+
+### Current task ledger
+
+| Work item | Status | Evidence / acceptance |
+|---|---|---|
+| Existing three-layer phonemic/broad/narrow implementation | DONE_VERIFIED (prior PR #509) | Prior exact-head checks and diagnostics recorded above; do not infer phonetic accuracy from benchmark agreement |
+| Python segment IR and feature inventory | PARTIAL | Implemented; exact-head tests queued |
+| Browser segment IR and feature inventory | PARTIAL | Implemented; exact-head tests queued |
+| Three-layer integration, source syllable alignment, provenance and separators | PARTIAL | Implemented; integration tests queued |
+| Schema v1.2 and validators | PARTIAL | Python, JS and JSON Schema updated; exact-head contract checks queued |
+| Full modern Hangul phonemic parity | PARTIAL | New 11,172-syllable cross-runtime test and Python exporter added; exact-head browser CI queued |
+| Broad/narrow layer parity and independent narrow accuracy | BLOCKED | Requires layer-aligned independent Korean phonetic gold and expert adjudication; engine agreement is not gold |
+| Manual keyboard/screen-reader/zoom acceptance | BLOCKED | Requires a human accessibility review; rendered layout review is not equivalent |
+| Rights-cleared audio/acoustic annotation pilot | BLOCKED | No approved rights path and no licensed acoustic annotation dataset established |
+| Ukrainian target adapter for Extended IPA | DEFERRED | Explicitly outside this implementation phase; fail-closed behavior remains |
+
+### Exact-head verification state
+
+At code checkpoint `d4b180209846d516a4aa402af0173e7ed1b9b55c`, GitHub Actions runs are queued: Tests `45971760971`, Verify `45971760717`, Browser G2P `45971760736`, Master/research artifacts `45971760731`. None is recorded as passed here. Earlier queued runs on superseded commits are not acceptance evidence.
+
+A local clone was attempted and failed with DNS resolution for `github.com`; therefore no local pytest, Node, schema, wheel or build command was executed. The test-first files were committed before the implementation files, but the pre-implementation GitHub run was superseded while queued, so a RED failure was not observed. Do not describe this as a verified RED→GREEN cycle.
+
+### Implementation detail / rulings
+
+- Segment source alignment is deliberately marked `syllable-span`, not phone-level. We do not invent phone-to-grapheme alignment without a separately adjudicated alignment.
+- Unknown IPA code points are retained as typed unknown tokens, with source/provenance when available; incomplete trace coverage falls back to parsing the complete IPA string rather than silently dropping phones.
+- Segment identifiers are unique within each layer. Word/syllable separators are retained as boundary tokens and in the existing source-boundary list.
+- `ɦ` is supported by the feature inventory but is not emitted as a universal post-sonorant /h/ realization. Current evidence does not establish a categorical [ɦ] mapping; keep that context unresolved.
+- Schema version is 1.2 because required segment arrays change the result contract. Phonetic profile versions are unchanged.
+- No Ukrainian adapter changes were made.
