@@ -174,5 +174,5 @@ def test_word_final_coda_stops_expose_unreleased_candidates_without_selecting_th
         assert any("10.13064/ksss.2026.18.1.021" in ref for ref in variant["evidence_refs"])
 
     nonfinal = realize_syllables(parse_syllables("낫다"), level="narrow")
-    assert not any(item["evidence_status"] == "source-scoped-release-variant-only"
+    assert not any(item["evidence_status"] == "source-scoped-release-variation-candidate-only"
                    for item in nonfinal["variants"])
