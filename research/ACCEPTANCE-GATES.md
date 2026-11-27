@@ -2648,3 +2648,49 @@ Unselected candidate diagnostics:
 - The exact A/B run for v15 is still queued behind the previous open-corpus matrix run. v16 system verification and A/B are pending; no v16 benchmark uplift is claimed.
 
 **Acceptance:** Python/browser profile identity v16; parity for primary and candidate variants including combined source spans; exact R012 forms and negative control; 259-row source-register/rights gate; Python regression, browser regression, production build, generated pages; same-split A/B with candidate-oracle reported separately from selected-output accuracy.
+
+
+
+## Cross-dataset and morphology findings — verified snapshot 2026-11-28
+
+**Important version boundary:** the six-track multi-engine aggregate below was produced by run `46073769132` at code SHA `743b61243149b866359dd6598d4e347c3d03488c`, before Narrow v15/v16. It is an engine-family baseline, not a v16 benchmark.
+
+| Dataset / reference layer | Native exact | g2pk exact | Native CER | g2pk CER |
+|---|---:|---:|---:|---:|
+| UGTPHON, noisy user-generated | 52.74% | 53.11% | 9.01% | 9.23% |
+| SIGMORPHON 2021, lexical | 35.97% | 35.34% | 14.51% | 14.82% |
+| Seoul Corpus, phonemic | 14.80% | 15.70% | 39.84% | 39.58% |
+| K-SPAN Modern, surface phonetic | 10.87% | 10.90% | 27.78% | 27.73% |
+| K-SPAN Conservative, surface phonetic | 7.55% | 7.50% | 27.45% | 27.49% |
+| IPA-Dict residual lexical | 41.27% | 41.10% | 9.93% | 10.04% |
+
+The native engine is close to g2pk on the two lexical/noisy tracks: on UGTPHON it has slightly lower CER but slightly lower exact match; on SIGMORPHON it is slightly ahead on both. These deltas are small and require paired confidence intervals before calling one engine superior. The low Seoul/K-SPAN exact scores are cross-layer comparisons, not evidence of poor Narrow IPA: Seoul is phonemic; K-SPAN is surface-phonetic and its annotation conventions differ substantially from the engine's broad output.
+
+K-SPAN integrity audit: 22,843 rows differ between the independent key field and WorldBet field (Modern 13,078; Conservative 9,765). Scoring uses the source-designated ModernPhon/ConservativePhon WorldBet fields; key fields are retained only as a warning/cross-check and never override source labels. This integrity warning must accompany any use of K-SPAN scores.
+
+### Morphology ablation (same UGTPHON occurrences)
+
+Kiwi + MeCab-Ko consensus changed only 3 unique words among 1,907 and did not improve exact match; CER worsened by 0.000173 on the paired subset. Soft mode also yielded no exact uplift. Therefore analyzer consensus remains diagnostic-only. Do not enable analyzer-driven rules globally; a morphology adapter must require shared analyzer boundaries, formal POS evidence, exact licensed forms, and per-rule positive/negative tests. The tiny sample of changes is insufficient to support broad productive morphology claims.
+
+### Narrow A/B baseline (same earlier code snapshot, no independent Narrow gold)
+
+| Dataset | Standard / Extended Broad exact | Extended Narrow exact | Narrow CER | Candidate-oracle exact |
+|---|---:|---:|---:|---:|
+| UGTPHON (2,702 scored) | 52.74% | 72.21% | 4.55% | 84.72% |
+| SIGMORPHON (998 scored) | 35.87% | 51.30% | 9.96% | 63.13% |
+
+Standard and Extended Broad are identical by contract (zero paired prediction differences). The Narrow column is cross-layer agreement against corpus IPA labels, not validated Narrow accuracy. Candidate-oracle is an offline upper bound using unselected candidates and corpus labels that are not layer-matched Narrow gold; it is neither an engine prediction nor a target to optimize blindly. Selected optional variants remained zero. Earlier candidate coverage was 1,094/2,703 UGTPHON and 451/999 SIGMORPHON tokens.
+
+### Error-pattern implications and priorities
+
+- The earlier mismatch attribution repeatedly found `l→ɭ`, then `h→ɦ`, `s→ɕ`, `y→i`, `l→ʎ`; SIGMORPHON also showed many length/quality differences (`ʌ→ː`, `ø→e`, insertions of `ː` and `ɘ`). These are transcription-style/cross-layer signals as well as possible phonetic differences; they must not be blindly converted into deterministic rules.
+- Geminate lateral interactions are now represented in v16 by optional [ʎ] and composed [ɭ.ʎ] candidates, but their exact-head A/B has not completed. No uplift is claimed.
+- The next high-value work is an error ledger stratified by process and reference layer: (1) lexical Rule 26/28 and exact morphology; (2) ㅟ glide/sibilant interactions; (3) coda lateral and geminate-lateral interactions; (4) nasal palatalization before affricates; (5) /h/ allophony and labialization; (6) vowel quality/length. For each, report primary-output change, candidate-only oracle rescue, paired CER/exact deltas, confidence intervals, and negative controls separately.
+- Do not optimize length, stress, [β]/[ɸ]/[ʝ], or other corpus-specific narrow symbols until an independent, layer-matched reference or acoustic/speaker metadata establishes their target scope. Keep source-backed alternatives unselected where speaker/dialect/style are unknown.
+
+### Exact-head v16 verification status
+
+- Head `371c6225d4b1ab71c4db5c42dc4ce0395bf61ef0`: Python regression/data integrity **PASS**; browser regression/build **PASS**; source-register/rights tests are included in Python PASS. NIKL metadata-only inventory **SKIPPED by policy**, not passed.
+- The one initial Python failure was an assertion wording mismatch (test expected “unrelated homographs”; source record said “unrelated readings”); corrected in commit `371c6225d4b1ab71c4db5c42dc4ce0395bf61ef0`, then full Python/browser verification passed.
+- Exact-head v16 A/B run `46076643385` is queued behind multi-engine run `46076417414`. The latter has completed external fetches and is currently at the multi-engine comparison step; no exact-head v16 Narrow uplift is available yet.
+- CharsiuG2P and ByT5 inference were skipped by workflow conditions. No neural inference results exist and they must not be reported as passing.
