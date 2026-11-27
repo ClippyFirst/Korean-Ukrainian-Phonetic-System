@@ -173,7 +173,7 @@ def validate_extended_ipa_result(result: dict[str, Any]) -> list[str]:
                 errors.append(f"layers.{level}.status must be a string")
             if not isinstance(layer.get("target_compatible"), bool):
                 errors.append(f"layers.{level}.target_compatible must be boolean")
-            source_text = source.get("text", "") if isinstance(source, dict) else ""
+            source_text = source.get("text", "") if isinstance(source, dict) and isinstance(source.get("text"), str) else ""
             errors.extend(_validate_segment_tokens(layer.get("segments"), layer.get("ipa"), source_text, f"layers.{level}"))
     if isinstance(layers, dict):
         for level, layer in layers.items():
