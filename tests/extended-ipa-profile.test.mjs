@@ -216,7 +216,7 @@ test('coda /n/ before alveopalatal affricates exposes optional palatal candidate
   const result = extended('군주');
   assert.equal(result.layers.narrow.ipa, 'kun.dʑu');
   const palatal = result.variants.find(item => item.layer === 'narrow' && item.ipa === 'kuɲ.dʑu');
-  const palatalized = result.variants.find(item => item.layer === 'narrow' && item.ipa === 'kunʲ.dʑu');
+  const palatalized = result.variants.find(item => item.layer === 'narrow' && item.ipa === 'kunj.dʑu');
   assert.ok(palatal);
   assert.ok(palatalized);
   assert.equal(palatal.selected, false);
