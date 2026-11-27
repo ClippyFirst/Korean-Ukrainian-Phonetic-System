@@ -53,3 +53,18 @@ test('browser Extended IPA attaches segment IR and source spans to every layer',
   assert.equal(nasal.source_alignment, 'syllable-span');
   assert.ok(nasal.provenance.rule_ids.includes('narrow-nasal-palatalization'));
 });
+
+test('engine emits expanded aspiration and contextual allophones in the correct layer', () => {
+  const layer = (source, level) => {
+    const result = buildExtendedIpaResult(source, engine.convert(source, { morphologyMode: 'strict', ipaProfile: 'clippyfirst-korean-broad-v1' }), phonemicIpaFromHangul(source));
+    return result.layers[level].ipa;
+  };
+  assert.equal(layer('코','broad'),'kʰo');
+  assert.equal(layer('사','narrow'),'sʰa');
+  assert.equal(layer('녀','narrow'),'ɲjʌ');
+  assert.equal(layer('나라','narrow'),'na.ɭa');
+  assert.equal(layer('아하','narrow'),'a.ɸa');
+  assert.equal(layer('히','narrow'),'çi');
+  assert.equal(layer('후','narrow'),'xu');
+  assert.ok(!layer('안하','narrow').includes('ɦ'));
+});
