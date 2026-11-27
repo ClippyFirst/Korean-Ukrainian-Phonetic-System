@@ -600,3 +600,18 @@ The earlier verification attempt `46003159398` failed on stale test expectations
 - A/B workflow filter review found that Narrow runtime/report/test paths had been added to the push filter but were missing from the pull-request filter. Added them to the PR filter and deduplicated the push list. Latest workflow-only head is `a5b0834ce709f9a8545c1bed9333dbea7387ca59`; new verification run `46052926139` is in progress and replacement benchmark `46052932943` is pending.
 - Prior head `fa43efed0fd7e822d2616fc3b5cd189f55fd3a28` failed verification due to an unmatched brace/syntax error in the browser Narrow /h/ branch and a brittle source-register row-count constant. The browser branch was rebuilt to match the Python context logic; the row-count test now derives the count from the canonical CSV rather than hard-coding it. Do not cite the failed run `46007932275` as an engine failure or successful verification.
 - K-SPAN v2.1 Dataverse HTTP 403 and absence of independent layer-matched Narrow IPA gold/audio/expert speaker annotation remain BLOCKED. Research-prototype status unchanged.
+
+## V10 artifact error review and candidate-oracle diagnostic — 2026-11-27 19:00 UTC
+
+Inspected the saved v10 A/B JSON artifact `standard-vs-extended-ipa-ab-45996355780` directly (2,703 UGTPHON occurrences; 999 SIGMORPHON occurrences). A Unicode-codepoint Levenshtein replay over the scored records surfaced the following largest symbol mismatches:
+
+- **UGTPHON:** `l → ɭ` 543 edits; `h → ɦ` 96; `ɸ → ɦ` 71; `s → ɕ` 62; then `l → ʎ` 33, `ʰ → x` 24, `ʰ → ç` 21, `ç → ʝ` 19.
+- **SIGMORPHON:** `l → ɭ` 189; length-mark insertion `∅ → ː` 131; `l → ʎ` 53; `n → ɲ` 41; `h → ɦ` 33; `ʌ → ː` 39 and `∅ → ɘ` 39; `ɸ → ɦ` 31.
+
+These are cross-layer string mismatches, **not** adjudicated phonetic errors. They show the biggest areas for investigation: coda lateral realization/IPA convention, word-medial /h/ voicing, vowel length/transcription conventions, and high-front lateral/nasal symbols. Do not select [ɭ], lengthen vowels, or alter /n,s/ based only on these held-out labels.
+
+V10 candidate diagnostics already had unselected [ɭ]/[lʲ] candidates on 901/2,703 UGTPHON tokens (33.33%; 1,073 candidates) and 332/999 SIGMORPHON tokens (33.23%; 390 candidates); zero candidates were selected. The high `l → ɭ` counts therefore motivate measuring candidate coverage rather than automatically promoting a speaker-/dialect-conditioned variant.
+
+Added `candidate_oracle_*` fields to the Narrow variant diagnostic. It counts how many scored tokens have an unselected candidate that exactly matches one corpus IPA variant, and reports the rescue count by environment. This is an **offline oracle upper bound only**, not accuracy or a runtime selection mechanism. A regression fixture verifies the oracle stays diagnostic-only. The current active multi-engine job predates this report extension; exact-head A/B run `46053424508` is queued to include it after the prior long benchmark finishes.
+
+Also aligned word-initial ㅎ rounded-vowel mapping with Shin, Kiaer & Cha (2012), Table 4.6: [ɸʷ] before /o,u/ (e.g. 후, 호), [x] before /ɯ/, [ç] before /i,j/, and [h] elsewhere; word-medial voiced counterparts remain separately mapped. These initial/medial branches have positive and negative Python/browser regression tests.
