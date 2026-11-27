@@ -298,7 +298,7 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
           && ['ㅣ', ...GLIDE_NUCLEI].includes(currentParsed.vowel) && derived.ipa.startsWith('l')) {
         narrowVariantSites.push({ ipaStart, sourceSpan: span, from: 'l', to: 'lʲ',
           evidence: 'narrow-lateral-palatalization-candidate',
-          environment: 'geminate lateral before high-front vocoid /i,j/; gradient F2 evidence, not categorical [ʎ]' });
+          environment: 'geminate lateral before high-front vocoid /i,j/' });
       }
       if (currentParsed?.coda === 'ㄹ' && derived.ipa.endsWith('l')) {
         const nextItem = sourceTrace[sourceIndex + 1];
