@@ -149,7 +149,15 @@ function segmentsForLayer(ipa, trace, layer) {
     }));
     cursor = start + value.length;
   }
-  return output.length ? output : parseIpaSegments(ipa);
+  if (output.length) {
+    const counters = { segment: 0, boundary: 0, unknown: 0 };
+    for (const token of output) {
+      counters[token.kind] += 1;
+      token.id = token.kind + '-' + String(counters[token.kind]).padStart(4, '0');
+    }
+    return output;
+  }
+  return parseIpaSegments(ipa);
 }
 
 export function validateExtendedIpaResult(result) {
