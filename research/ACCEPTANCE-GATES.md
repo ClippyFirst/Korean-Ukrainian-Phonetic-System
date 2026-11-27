@@ -2166,3 +2166,8 @@ This is the authoritative current status for the segment-IR increment; earlier v
 Exact-head runs currently queued: Tests `45972689269`, Verify `45972689301`, Browser G2P `45972689642`, master/research artifacts `45972689334`. A queued or skipped workflow is not a successful acceptance result. Charsiu review was skipped by policy. Local test/build execution was unavailable because github.com DNS resolution failed.
 
 PR #510 is correctly stacked on PR #509 (65 commits ahead, 0 behind, 16 changed files). The result schema on the segment-IR branch is v1.2; v1.1 refers to the earlier PR #509 contract. No benchmark uplift or phonetic certification is claimed.
+
+
+### Test-oracle correction — 2026-11-27
+
+A source-level review found two new parser tests treating ASCII `?` as an unknown phone even though both runtimes intentionally classify Unicode punctuation as boundary tokens. Corrected the fixtures to use the non-punctuation unknown code point `😀`, preserving the separate punctuation-boundary tests. This is a test-only correction; no production parser behavior changed. The corrected tests have not yet been executed locally (GitHub DNS failure) or confirmed by CI; keep the gate PARTIAL until exact-head workflows pass.
