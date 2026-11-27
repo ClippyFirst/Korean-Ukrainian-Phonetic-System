@@ -132,7 +132,7 @@ def test_nikl_dictionary_72394_licenses_only_exact_ilje_pronunciation():
     assert "ParaWordNo=72394" in source["url"]
     assert "일제" in source["coverage"] and "[일쩨]" in source["coverage"]
     assert "exact eojeol license 일>제" in source["contribution_expected"].lower()
-    assert "unrelated homographs" in source["limitations_or_next_action"]
+    assert "unrelated readings" in source["limitations_or_next_action"]
     assert "Item-level KOGL marking remains unverified" in source["limitations_or_next_action"]
 
 def test_nikl_pronunciation_source_keeps_live_access_and_item_license_uncertainty_explicit():
