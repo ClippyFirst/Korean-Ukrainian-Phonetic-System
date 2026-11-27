@@ -162,4 +162,11 @@ test('browser exposes an unselected preconsonantal coda retroflex variant', () =
   assert.equal(variant.selected, false);
   assert.equal(variant.evidence_status, 'speaker-conditioned-sociophonetic-variant-only');
   assert.match(variant.environment, /before same-word consonant/);
+
+  const preH = extended('말하');
+  assert.equal(preH.layers.narrow.ipa, 'mal.ha');
+  const preHVariant = preH.variants.find(item => item.layer === 'narrow' && item.ipa === 'maɭ.ha');
+  assert.ok(preHVariant);
+  assert.equal(preHVariant.selected, false);
+  assert.match(preHVariant.environment, /before same-word onset ㅎ/);
 });
