@@ -135,7 +135,7 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
         nasal_ref="https://discovery.ucl.ac.uk/id/eprint/1324541/1/1324541.pdf"
         kim_coda_ref="https://doi.org/10.1006/JPHO.1996.0016"
         cha_coda_ref="https://doi.org/10.13064/ksss.2026.18.1.021"
-        coda_stop_place={"ㄱ":"k","ㄲ":"k","ㅋ":"k","ㄷ":"t","ㅅ":"t","ㅆ":"t","ㅈ":"t","ㅉ":"t","ㅊ":"t","ㅌ":"t","ㅂ":"p","ㅍ":"p"}
+        coda_stop_place={"ㄱ":"k","ㄲ":"k","ㅋ":"k","ㄳ":"k","ㄺ":"k","ㄷ":"t","ㅅ":"t","ㅆ":"t","ㅈ":"t","ㅉ":"t","ㅊ":"t","ㅌ":"t","ㅂ":"p","ㅍ":"p","ㄿ":"p","ㅄ":"p"}
         for i,syllable in enumerate(items):
             if i>0 and syllable.onset=="ㄹ" and rendered[i].startswith("ɾ"):
                 previous=items[i-1]
