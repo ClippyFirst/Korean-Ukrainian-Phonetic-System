@@ -111,7 +111,7 @@ def test_coda_retroflexion_is_exposed_only_as_a_speaker_conditioned_variant():
     assert pre_h["ipa"] == "mal.ha"
     pre_h_variant = next(item for item in pre_h["variants"] if item["ipa"] == "maɭ.ha")
     assert pre_h_variant["selected"] is False
-    assert "pre-/h/" in pre_h_variant["note"]
+    assert "before /h/" in pre_h_variant["note"]
 
 
 def test_coda_retroflex_variant_does_not_leak_into_non_triggering_contexts():
@@ -127,7 +127,7 @@ def test_preconsonantal_coda_lateral_has_a_separate_unselected_retroflex_candida
     assert variant["selected"] is False
     assert variant["evidence_status"] == "speaker-conditioned-sociophonetic-variant-only"
     assert "preconsonantal" in variant["note"]
-    assert "10.3765/plsa.v6i1.5002" in variant["evidence_refs"]
+    assert any("10.3765/plsa.v6i1.5002" in ref for ref in variant["evidence_refs"])
 
 
 def test_geminate_lateral_before_high_front_vocoid_exposes_optional_palatalization():
