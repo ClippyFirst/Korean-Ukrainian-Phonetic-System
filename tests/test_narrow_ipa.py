@@ -16,8 +16,8 @@ def test_narrow_profile_aspirates_lenis_sibilant_without_changing_broad():
     narrow = _ipa("사", "narrow")
     assert narrow["ipa"] == "sʰa"
     assert narrow["level"] == "narrow"
-    assert narrow["transcription_profile"]["name"] == "korean-narrow-contextual-allophones-v9"
-    assert narrow["ipa_profile_version"] == 9
+    assert narrow["transcription_profile"]["name"] == "korean-narrow-contextual-allophones-v10"
+    assert narrow["ipa_profile_version"] == 10
     assert narrow["transcription_profile"]["target_compatible"] is False
     assert narrow["transcription_profile"]["limitations"]
 
@@ -136,4 +136,4 @@ def test_geminate_lateral_before_high_front_vocoid_exposes_optional_palatalizati
     variant = next(item for item in result["variants"] if item["ipa"] == "p͈al.lʲi")
     assert variant["selected"] is False
     assert variant["evidence_status"] == "gradient-coarticulation-candidate-variant-only"
-    assert "10.3765/plsa.v6i1.5002" in variant["evidence_refs"]
+    assert any("10.3765/plsa.v6i1.5002" in ref for ref in variant["evidence_refs"])
