@@ -44,7 +44,7 @@ export function parseIpaSegments(ipa, options={}) {
   const base=raw?AFFRICATES.get(raw):BASES.find(v=>points.slice(i,i+[...v].length).join('')===v);
   if(!base){
    if(MODIFIERS.has(ch)&&tokens.at(-1)?.kind==='segment'){const t=tokens.at(-1);t.modifiers.push(ch);t.ipa+=ch;t.ipa_span.end=ipaOffset+i+1;t.features=featuresFor(t.base,t.modifiers);i++;continue;}
-   unknown++;tokens.push({id:'unknown-'+String(unknown).padStart(4,'0'),kind:'unknown',ipa:ch,ipa_span:{start:ipaOffset+i,end:ipaOffset+i+1},source_span:sourceSpan?{...sourceSpan}:null,source_alignment:sourceSpan?'syllable-span':'unavailable',reason:'unrecognized_ipa_code_point',provenance:{rule_ids:[...ruleIds],evidence_refs:[...evidenceRefs],evidence_status:evidenceStatus,environment}}});i++;continue;
+   unknown++;tokens.push({id:'unknown-'+String(unknown).padStart(4,'0'),kind:'unknown',ipa:ch,ipa_span:{start:ipaOffset+i,end:ipaOffset+i+1},source_span:sourceSpan?{...sourceSpan}:null,source_alignment:sourceSpan?'syllable-span':'unavailable',reason:'unrecognized_ipa_code_point',provenance:{rule_ids:[...ruleIds],evidence_refs:[...evidenceRefs],evidence_status:evidenceStatus,environment}});i++;continue;
   }
   const start=i;i+=raw?[...raw].length:[...base].length;const modifiers=[];
   while(i<points.length&&MODIFIERS.has(points[i]))modifiers.push(points[i++]);
