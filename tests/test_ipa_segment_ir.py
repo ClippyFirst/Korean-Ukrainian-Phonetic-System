@@ -25,7 +25,7 @@ def test_segment_ir_keeps_affricates_as_single_segments_and_length_as_feature():
 
 def test_segment_ir_preserves_boundaries_unknowns_and_provenance_without_guessing_spans():
     result = parse_ipa_segments(
-        "ɲ.a ?",
+        "ɲ.a 😀",
         source_span={"start": 4, "end": 5},
         provenance={"rule_ids": ["narrow-nasal-palatalization"], "evidence_refs": ["SRC-1"]},
     )
@@ -35,7 +35,7 @@ def test_segment_ir_preserves_boundaries_unknowns_and_provenance_without_guessin
     assert nasal["provenance"]["rule_ids"] == ["narrow-nasal-palatalization"]
     assert result[1]["kind"] == "boundary"
     assert result[-1]["kind"] == "unknown"
-    assert result[-1]["ipa"] == "?"
+    assert result[-1]["ipa"] == "😀"
 
 
 def test_extended_ipa_result_exposes_segment_ir_with_source_and_rule_provenance():
