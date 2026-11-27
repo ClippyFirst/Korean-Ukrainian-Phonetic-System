@@ -441,7 +441,7 @@ def main() -> int:
             "retry_required": True,
         }
         status_path.parent.mkdir(parents=True, exist_ok=True)
-        status_path.write_text(json.dumps(status, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+        status_path.write_text(json.dumps(status, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(json.dumps(status, ensure_ascii=False, indent=2), flush=True)
     return 0
 
