@@ -2529,3 +2529,10 @@ V10 candidate diagnostics already had unselected [ɭ]/[lʲ] candidates on 901/2,
 Added `candidate_oracle_*` fields to the Narrow variant diagnostic. It counts how many scored tokens have an unselected candidate that exactly matches one corpus IPA variant, and reports the rescue count by environment. This is an **offline oracle upper bound only**, not accuracy or a runtime selection mechanism. A regression fixture verifies the oracle stays diagnostic-only. The current active multi-engine job predates this report extension; exact-head A/B run `46053424508` is queued to include it after the prior long benchmark finishes.
 
 Also aligned word-initial ㅎ rounded-vowel mapping with Shin, Kiaer & Cha (2012), Table 4.6: [ɸʷ] before /o,u/ (e.g. 후, 호), [x] before /ɯ/, [ç] before /i,j/, and [h] elsewhere; word-medial voiced counterparts remain separately mapped. These initial/medial branches have positive and negative Python/browser regression tests.
+
+## Candidate-oracle implementation verification and queued A/B correction — 2026-11-27 19:01 UTC
+
+- The new candidate-oracle diagnostic and regression test are present on code head `4acbec41a527f119eff9c9d19bd851504b0f52a2`.
+- Verification run `46053432498`: Python regression/data integrity **PASS**; browser **1,505 passed / 0 failed**; Vite production build **PASS**; `dist/index.html` and `dist/system.html` verified. NIKL metadata-only job skipped by policy.
+- The earlier replacement benchmark `46053424508` was cancelled before job assignment as a newer revision arrived. The currently active long multi-engine comparison `46052610441` runs the v11 runtime but predates the candidate-oracle report extension. Exact-head benchmark `46053548883` is pending and will include the candidate-oracle report once the active run releases the workflow concurrency slot.
+- Do not infer an A/B uplift from the v10 error replay or candidate-oracle metric. Wait for a completed paired v11 A/B artifact and inspect both datasets and per-symbol errors.
