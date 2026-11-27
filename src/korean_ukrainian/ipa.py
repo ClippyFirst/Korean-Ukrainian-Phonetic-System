@@ -305,12 +305,12 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     profile_ids={
         "phonemic":"clippyfirst-korean-phonemic-v1",
         "broad":"clippyfirst-korean-broad-v1",
-        "narrow":"clippyfirst-korean-narrow-contextual-allophones-v7",
+        "narrow":"clippyfirst-korean-narrow-contextual-allophones-v8",
     }
     result={
         "level":level,
         "ipa_profile":profile_ids[level],
-        "ipa_profile_version":7 if level=="narrow" else 1,
+        "ipa_profile_version":8 if level=="narrow" else 1,
         "ipa_profile_level":level,
         "ipa_profile_status":(
             "partial-research-only" if level=="narrow"
@@ -324,7 +324,7 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     }
     if level=="narrow":
         result["transcription_profile"]={
-            "name":"korean-narrow-contextual-allophones-v7",
+            "name":"korean-narrow-contextual-allophones-v8",
             "scope":["aspiration of lenis ㅅ as [sʰ]","palatalized [ɕʰ] candidate before ㅣ, ㅖ, ㅑ (Kang 2010; partial narrow profile)","palatalized [ɲ] for onset ㄴ before glide nuclei ㅑ, ㅒ, ㅕ, ㅖ, ㅛ, ㅠ; not generalized to ㅣ","ㅎ is [ç] before selected high-front/glide nuclei and [x] before ㅜ, following the cited Seoul description","after a same-word sonorant coda, /h/ may weaken or delete variably; no categorical [ɦ] is assigned without token-specific evidence","same-word intervocalic ㅎ may be [ɸ]; intervocalic onset ㄹ remains [ɾ] as primary, with an unselected [ɭ] variant retained because Lee (1993) and Crosby & Dalola (2021) differ in their descriptions","tense ㅆ remains [s͈]; its palatalization is not assumed because evidence is mixed"],
             "sources":[
                 "Lee, Hyun Bok (1993), Korean, Illustrations of the IPA: /h/ [ç] before /i,j/ and [x] before /u/; /s/ is classified as fortis in this description: https://doi.org/10.1017/S0025100300004758",
