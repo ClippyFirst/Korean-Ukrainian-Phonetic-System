@@ -149,7 +149,12 @@ function segmentsForLayer(ipa, trace, layer) {
     }));
     cursor = start + value.length;
   }
-  if (output.length) {
+  const expected = parseIpaSegments(ipa).filter(token => token.kind === 'segment' || token.kind === 'unknown');
+  const actual = output.filter(token => token.kind === 'segment' || token.kind === 'unknown');
+  const covered = actual.length === expected.length && actual.every((token, index) =>
+    token.kind === expected[index].kind && token.ipa === expected[index].ipa
+  );
+  if (output.length && covered) {
     const counters = { segment: 0, boundary: 0, unknown: 0 };
     for (const token of output) {
       counters[token.kind] += 1;
