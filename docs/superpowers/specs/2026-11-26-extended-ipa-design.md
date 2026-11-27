@@ -62,3 +62,8 @@ A passing benchmark is necessary diagnostic evidence but is not sufficient for c
 ## Additional research annotation contract
 
 The result contract also carries nullable speaker/prosody context (pseudonymous speaker ID, dialect, age group, style, speech rate, focus, prosodic position and recording conditions) and a separate acoustic_annotations array. Text-only conversion must leave these context fields null and acoustic_annotations empty. A measured acoustic annotation is valid only with a source span, measurement method and evidence reference. Acoustic values are not guessed from orthography and do not automatically rewrite segmental IPA.
+
+
+## Segment-level contract extension — schema 1.2
+
+Each phonemic, broad and narrow layer includes a `segments` array alongside its unchanged IPA rendering. Segment tokens retain Unicode code-point IPA spans, base segment, modifiers, feature bundle, syllable-level source alignment where available, and rule/evidence provenance. Boundary tokens preserve word/syllable separators; unknown tokens preserve unrecognized code points. The source alignment is explicitly syllable-level until phone-level alignment can be supported by acoustic or independently adjudicated alignment evidence. This changes the result contract and therefore requires schema version 1.2. It does not change the Ukrainian adapter or make any IPA profile target-compatible.
