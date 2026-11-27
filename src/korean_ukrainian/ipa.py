@@ -133,19 +133,26 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
             # speaker or audio evidence. Keep the canonical [l] untouched.
             if syllable.coda=="ㄹ" and rendered[i].endswith("l"):
                 next_same_word = i+1<len(items) and syllable.boundary_after!="word"
-                pre_h = next_same_word and items[i+1].onset=="ㅎ"
+                next_onset = items[i+1].onset if next_same_word else None
+                pre_h = next_same_word and next_onset=="ㅎ"
+                pre_consonantal = next_same_word and next_onset not in {None,"","ㅇ"}
                 word_final = i+1==len(items) or syllable.boundary_after=="word"
-                if pre_h or word_final:
+                if pre_h or pre_consonantal or word_final:
                     alternate=list(rendered)
                     alternate[i]=alternate[i][:-1]+"ɭ"
-                    environment="coda ㄹ before same-word ㅎ" if pre_h else "word-final coda ㄹ (orthographic word boundary or end of input)"
+                    if pre_h:
+                        environment="coda ㄹ before same-word ㅎ"
+                    elif pre_consonantal:
+                        environment="coda ㄹ before same-word consonant"
+                    else:
+                        environment="word-final coda ㄹ (orthographic word boundary or end of input)"
                     variants.append({
                         "layer":"narrow", "syllable_indices":[i],
                         "ipa":render_syllable_sequence(items,alternate),
-                        "note":("Optional sociophonetic [ɭ] coda variant. Crosby (2024) found higher odds word-finally (OR 2.516) and pre-/h/ (OR 3.056), with substantial dialect, gender, age and style effects; the study classified only lateral tokens, not taps. " + crosby_ref + " " + socioling_ref),
+                        "note":("Optional sociophonetic [ɭ] coda variant. Crosby & Dalola (2021) found retroflex laterals 3.204 times more likely preconsonantally and 6.972 times more likely before /h/ than in the word-initial reference; Crosby (2024) found higher odds word-finally (OR 2.516). Strong speaker/dialect/style effects; both studies classify lateral tokens, not taps. " + crosby_ref + " " + socioling_ref),
                         "vowels":["coda ㄹ [ɭ]"], "evidence_status":"speaker-conditioned-sociophonetic-variant-only",
                         "evidence_refs":[crosby_ref,socioling_ref], "environment":environment,
-                        "uncertainty":"Variant frequency depends on dialect, speaker, style and whether /l/ is realized as a lateral; text-only input cannot select it.",
+                        "uncertainty":"Variant frequency depends on dialect, speaker, style, preceding vowel and whether /l/ is realized as a lateral; text-only input cannot select it.",
                         "selected":False,
                     })
         return variants
@@ -305,12 +312,12 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     profile_ids={
         "phonemic":"clippyfirst-korean-phonemic-v1",
         "broad":"clippyfirst-korean-broad-v1",
-        "narrow":"clippyfirst-korean-narrow-contextual-allophones-v8",
+        "narrow":"clippyfirst-korean-narrow-contextual-allophones-v9",
     }
     result={
         "level":level,
         "ipa_profile":profile_ids[level],
-        "ipa_profile_version":8 if level=="narrow" else 1,
+        "ipa_profile_version":9 if level=="narrow" else 1,
         "ipa_profile_level":level,
         "ipa_profile_status":(
             "partial-research-only" if level=="narrow"
@@ -324,7 +331,7 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     }
     if level=="narrow":
         result["transcription_profile"]={
-            "name":"korean-narrow-contextual-allophones-v8",
+            "name":"korean-narrow-contextual-allophones-v9",
             "scope":["aspiration of lenis ㅅ as [sʰ]","palatalized [ɕʰ] candidate before ㅣ, ㅖ, ㅑ (Kang 2010; partial narrow profile)","palatalized [ɲ] for onset ㄴ before glide nuclei ㅑ, ㅒ, ㅕ, ㅖ, ㅛ, ㅠ; not generalized to ㅣ","ㅎ is [ç] before selected high-front/glide nuclei and [x] before ㅜ, following the cited Seoul description","after a same-word sonorant coda, /h/ may weaken or delete variably; no categorical [ɦ] is assigned without token-specific evidence","same-word intervocalic ㅎ may be [ɸ]; intervocalic onset ㄹ remains [ɾ] as primary, with an unselected [ɭ] variant retained because Lee (1993) and Crosby & Dalola (2021) differ in their descriptions","tense ㅆ remains [s͈]; its palatalization is not assumed because evidence is mixed","coda ㄹ exposes optional [ɭ] variants word-finally and before same-word ㅎ; never selected without speaker/dialect/audio evidence (Crosby 2024)"],
             "sources":[
                 "Lee, Hyun Bok (1993), Korean, Illustrations of the IPA: /h/ [ç] before /i,j/ and [x] before /u/; /s/ is classified as fortis in this description: https://doi.org/10.1017/S0025100300004758",
