@@ -517,3 +517,35 @@ The review also flags: variable /h/-deletion with residual effects on the preced
 - Added `tests/benchmark_extended_ipa_ab.test.mjs` for candidate coverage, environment counts and zero selected candidates.
 - Current code verification: Python regression/data integrity passed; browser suite **1,501 passed / 0 failed**; Vite build passed. Verify run 45995863825 (and duplicate PR event run 45995851384) succeeded. Test-case register extraction 45995864170, external UGTPHON diagnostic 45995863818, paired native-vs-g2pk 45995864068, morphology-consensus 45995863822 and master artifacts 45995851438 succeeded.
 - Exact-head Standard-vs-Extended A/B workflow run **45995864350** remains pending with no jobs assigned as of 2026-11-27 12:07 UTC. Earlier queued A/B runs were cancelled by newer PR revisions. No v10 A/B scores are claimed. The latest code head tested is `a352dc1c64b60e245de0efe9e5cf7e50cc1e20a0`; subsequent handoff-only edits do not alter runtime code.
+
+## Narrow v11 — benchmark-driven /h/ correction — 2026-11-27
+
+**Code head at implementation:** `65e29f65574f4d8aaf09f9e7998f7c46831047fb`. **Profile:** `clippyfirst-korean-narrow-contextual-allophones-v11`. **Scope:** Narrow only; Broad/Standard and Ukrainian target adaptation remain unchanged.
+
+### Error analysis and correction
+
+- Inspected the paired Standard/Extended IPA artifact from run `45996355780` rather than treating the overall score as an opaque number. On the prior v10 output, UGTPHON Narrow was 69.5781% exact / 5.0063% CER (2,702 scored of 2,703); SIGMORPHON was 48.6974% exact / 10.7349% CER (998/999). These are cross-layer agreement diagnostics, not adjudicated Narrow accuracy.
+- Mismatch analysis exposed a high-impact systematic error: same-word intervocalic onset ㅎ was emitted as [ɸ] nearly regardless of the following vowel; medial ㅎ before /i,j/ was also left voiceless [ç]. The implementation conflated word-initial and word-medial allophones.
+- Corrected both Python and browser implementations: after a same-word open syllable, medial /h/ now uses [ʝ] before /i,j/, [ɣ] before /ɯ/, [β] before /o,u/, and [ɦ] before other vowels, following the page-77 contextual description in Shin, Kiaer & Cha (2012). Word-initial [ç]/[x] remains a separate branch. Post-sonorant weakening/deletion remains variable and is not collapsed to a single selected phone.
+- Added source-register row `SRC-SHIN-KIAER-CHA-2012`, Python and browser positive/negative tests, and bumped the Narrow profile to v11. Broad/Standard code paths are untouched.
+
+### Counterfactual replay (not yet CI acceptance evidence)
+
+Replayed the v11 contextual mapping against the saved v10 paired artifact, preserving all other predictions and corpus rows. This is a deterministic counterfactual over the existing report, not a fresh run and not independent gold adjudication:
+
+| Dataset | v10 exact (coverage-adjusted) | Simulated v11 exact (coverage-adjusted) | v10 CER | Simulated v11 CER |
+|---|---:|---:|---:|---:|
+| UGTPHON | 69.5523% | 71.8831% | 5.0063% | 4.6471% |
+| SIGMORPHON | 48.6486% | 50.2503% | 10.7349% | 10.2207% |
+
+The replay changes 94 scored UGTPHON tokens and 50 scored SIGMORPHON tokens. The exact-head v11 benchmark must reproduce the direction and actual metrics before this uplift is accepted. Corpus IPA conventions differ, so the result remains cross-layer agreement rather than proof of narrow phonetic truth.
+
+### Verification and blockers
+
+- v11 multi-engine benchmark run `46002146555` is pending/queued; no v11 CI scores claimed yet.
+- v11 verification run `46002146570` is queued; Python/browser tests and build remain pending.
+- Prior open Korean benchmark matrix run `45996355780` failed only when downloading K-SPAN v2.1 from Dataverse: both versioned bundle and pinned file endpoints returned HTTP 403 after retries. Earlier UGTPHON and SIGMORPHON benchmark tracks completed successfully. This is an external data-host access blocker, not an engine test failure.
+- Independent layer-matched Narrow IPA gold, rights-cleared audio and qualified speaker/dialect annotation remain BLOCKED. Do not tune on the held-out test references or claim linguistic certification.
+- PR #511 remains draft/open/stacked; no merge or release.
+
+**Next acceptance:** v11 Python/browser parity and regression pass; exact-head paired A/B artifact confirms actual scores; Broad unchanged; no regressions on existing negative controls. Then continue by ranking per-rule errors and validating candidate fixes on non-test/dev evidence before changing primary outputs.
