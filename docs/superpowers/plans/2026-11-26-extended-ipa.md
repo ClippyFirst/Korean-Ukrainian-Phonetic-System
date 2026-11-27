@@ -34,7 +34,7 @@
 
 **Files:** schemas/ipa-profile-result.schema.json; src/korean_ukrainian/ipa_profiles.py; src/app/extended_ipa.js; tests/test_ipa_profile_contract.py; tests/extended-ipa-profile.test.mjs.
 
-- [x] Define schema version 1.1 with phonemic/broad/narrow layers, variants, source spans, boundaries, rule traces, evidence, nullable speaker/prosody context, acoustic annotations and target-adapter state.
+- [x] Define schema version 1.2 with phonemic/broad/narrow layers, variants, source spans, boundaries, rule traces, evidence, nullable speaker/prosody context, acoustic annotations and target-adapter state.
 - [x] Add dependency-free Python and browser validators.
 - [x] Run JSON Schema validation and Python/browser contract fixtures on exact head d19c5686ef8031cdcbfc2be10e1a0fe0c30ee33e (Tests 45893570996; Verify 45893570785).
 
@@ -145,3 +145,6 @@ The implementation and exact-head software checks are verified, but the mode rem
 | Ukrainian adapter changes | DEFERRED | Explicitly outside this phase; existing fail-closed profile boundary preserved |
 
 Do not mark this increment DONE_VERIFIED until all exact-head Python, browser, schema, wheel and build checks have completed and their output has been inspected.
+
+
+**Schema compatibility note — 2026-11-27:** the new required per-layer segment arrays change the public result contract, so the Extended IPA schema is versioned to 1.2 in Python, browser JS and JSON Schema. This is not a phonetic profile-version bump; phonetic output semantics remain governed by the existing layer profile versions.
