@@ -299,14 +299,14 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
     });
     const derived = narrowSyllable(item, previousHangul, !boundarySincePrevious);
     if (derived.ipa) {
-      if (previousWasHangul) narrowIpa += '.';
-      const ipaStart = [...narrowIpa].length;
-      narrowIpa += derived.ipa;
-      const currentParsed = decompose(item.surface || item.source);
       const previousParsed = !boundarySincePrevious && previousHangul
         ? decompose(previousHangul.surface || previousHangul.source) : null;
       const previousCodaNPosition = previousParsed?.coda === 'ㄴ' && previousWasHangul
         && narrowIpa.endsWith('n') ? [...narrowIpa].length - 1 : null;
+      if (previousWasHangul) narrowIpa += '.';
+      const ipaStart = [...narrowIpa].length;
+      narrowIpa += derived.ipa;
+      const currentParsed = decompose(item.surface || item.source);
       if (currentParsed?.onset === 'ㄹ' && previousParsed?.coda === '' && derived.ipa.startsWith('ɾ')) {
         narrowVariantSites.push({ ipaStart, sourceSpan: span, from: 'ɾ', to: 'ɭ',
           evidence: 'narrow-retroflex-lateral-candidate',
