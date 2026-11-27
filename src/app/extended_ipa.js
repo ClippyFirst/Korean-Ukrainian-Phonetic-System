@@ -326,7 +326,7 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
           environment: 'same-word coda ㄴ before alveopalatal affricate ㅈ/ㅉ/ㅊ'
         });
         narrowVariantSites.push({
-          ipaStart: previousCodaNPosition, sourceSpan, from: 'n', to: 'nʲ',
+          ipaStart: previousCodaNPosition, sourceSpan, from: 'n', to: 'nj',
           evidence: 'narrow-coda-n-palatalization-candidate',
           environment: 'same-word coda ㄴ before alveopalatal affricate ㅈ/ㅉ/ㅊ'
         });
