@@ -104,7 +104,7 @@ def test_coda_retroflexion_is_exposed_only_as_a_speaker_conditioned_variant():
     assert variant["layer"] == "narrow"
     assert variant["selected"] is False
     assert variant["evidence_status"] == "speaker-conditioned-sociophonetic-variant-only"
-    assert "10.20405/kl.2024.02.102.63" in variant["evidence_refs"]
+    assert "https://doi.org/10.20405/kl.2024.02.102.63" in variant["evidence_refs"]
     assert "word-final" in variant["environment"]
 
     pre_h = realize_syllables(parse_syllables("말하"), level="narrow")
@@ -116,5 +116,5 @@ def test_coda_retroflexion_is_exposed_only_as_a_speaker_conditioned_variant():
 
 def test_coda_retroflex_variant_does_not_leak_into_non_triggering_contexts():
     result = realize_syllables(parse_syllables("팔이"), level="narrow")
-    assert result["ipa"] == "pal.i"
+    assert result["ipa"] == "pʰal.i"
     assert not any("coda ㄹ" in item.get("vowels", [""])[0] for item in result["variants"])
