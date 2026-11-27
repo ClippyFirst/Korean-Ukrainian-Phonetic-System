@@ -147,3 +147,16 @@ def test_geminate_lateral_before_high_front_vocoid_exposes_optional_palatalizati
     assert variant["selected"] is False
     assert variant["evidence_status"] == "gradient-coarticulation-candidate-variant-only"
     assert any("10.3765/plsa.v6i1.5002" in ref for ref in variant["evidence_refs"])
+
+
+def test_coda_nasal_palatalization_before_affricates_is_optional_only():
+    result = realize_syllables(parse_syllables("군주"), level="narrow")
+    assert result["ipa"] == "kun.dʑu"
+    by_ipa = {item["ipa"]: item for item in result["variants"]}
+    assert "kuɲ.dʑu" in by_ipa
+    assert "kunʲ.dʑu" in by_ipa
+    for variant in (by_ipa["kuɲ.dʑu"], by_ipa["kunʲ.dʑu"]):
+        assert variant["selected"] is False
+        assert variant["evidence_status"] == "secondary-description-candidate-only"
+        assert "same-word coda ㄴ before alveopalatal affricate" in variant["environment"]
+        assert any("1324541" in ref for ref in variant["evidence_refs"])
