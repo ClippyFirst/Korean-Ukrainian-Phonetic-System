@@ -47,7 +47,14 @@ def _segments_for_layer(ipa: str | None, trace: list[dict[str, Any]], level: str
         )
         output.extend(tokens)
         cursor = start + len(value_points)
-    return output if output else parse_ipa_segments(ipa)
+    if output:
+        counters = {"segment": 0, "boundary": 0, "unknown": 0}
+        for token in output:
+            kind = token["kind"]
+            counters[kind] += 1
+            token["id"] = f"{kind}-{counters[kind]:04d}"
+        return output
+    return parse_ipa_segments(ipa)
 
 
 def validate_extended_ipa_result(result: dict[str, Any]) -> list[str]:
