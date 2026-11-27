@@ -294,7 +294,7 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
         const nextItem = sourceTrace[sourceIndex + 1];
         const nextValue = String(nextItem?.source ?? '');
         const nextParsed = /^[가-힣]$/u.test(nextValue) ? decompose(nextItem.surface || nextValue) : null;
-        const sameWordH = !boundarySincePrevious && nextParsed?.onset === 'ㅎ';
+        const sameWordH = nextParsed?.onset === 'ㅎ';
         const wordFinal = !nextItem || nextItem.status === 'literal' && /^[\s\p{P}]+$/u.test(nextValue);
         if (sameWordH || wordFinal) {
           narrowVariantSites.push({
@@ -371,8 +371,8 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       },
       narrow: {
         ipa: narrowIpa,
-        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v7',
-        profile_version: 7, level: 'narrow',
+        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v8',
+        profile_version: 8, level: 'narrow',
         status: hasUnresolvedSource ? 'diagnostic-only-unresolved-source' : 'partial-research-only',
         evidence_status: 'partial-source-scoped-hypotheses-not-independently-reviewed',
         target_compatible: false
