@@ -101,7 +101,7 @@ def test_nikl_qna_335858_is_exact_compound_fortition_evidence_only():
     assert "물고기" in source["coverage"] and "물꼬기" in source["coverage"]
     assert "exact eojeol pair 물>고" in source["contribution_expected"]
     assert "does not license tensing after every ㄹ coda" in source["limitations_or_next_action"]
-    assert "item-level KOGL marking remains unverified" in source["limitations_or_next_action"].lower()
+    assert "item-level kogl marking remains unverified" in source["limitations_or_next_action"].lower()
 
 
 
