@@ -224,3 +224,17 @@ A local clone was attempted and failed because this environment could not resolv
 ### Next genuine blocker
 
 Read the exact-head CI results, fix any failures and rerun. After checks pass, retarget PR #510 to PR #509's branch for a clean stacked diff. Independent narrow adjudication, licensed acoustic data and human accessibility review remain external/evidence-limited gates; do not manufacture phonetic rules or benchmark gold to clear them.
+
+
+## Current continuation status — 2026-11-27 — PR #510
+
+This section supersedes earlier segment-IR TODO statements below it. Historical notes above remain as an audit trail.
+
+- **PARTIAL — implementation committed, exact-head verification pending:** Python and browser segment parsers, three-layer segment integration, schema v1.2, runtime validators, parser/integration tests, and exhaustive 11,172-Hangul phonemic parity test are present on `ca00add3aee5ffa46bf2eff9201b94c996aaef11`.
+- **PARTIAL — CI not yet executed:** exact-head Tests run `45972689269`, Verify `45972689301`, Browser G2P `45972689642`, and master/research artifacts `45972689334` remain queued. A queued job is not a pass. Local clone/test execution remains unavailable because the runtime could not resolve github.com.
+- **DONE implementation / pending verification:** schema contract is v1.2 on this branch. Earlier references to v1.1 describe PR #509's prior contract and are not the current schema version.
+- **DONE implementation / evidence boundary:** IPA offsets are Unicode code-point offsets; source alignment is explicitly syllable-level, not phone-level. Unknown code points are retained. [ɦ] is representable in the inventory but is not a categorical Korean post-sonorant /h/ output.
+- **PR topology:** PR #510 is now correctly stacked on PR #509's branch. Compare reports 65 commits ahead, 0 behind, 16 changed files. PR #509 remains open and untouched.
+- **Still BLOCKED:** independent Korean phonetic adjudication and layer-aligned narrow gold; rights-cleared acoustic corpus/labels; human keyboard/screen-reader/zoom acceptance; independent Ukrainian target review. Ukrainian adapter remains deferred and fail-closed.
+
+Acceptance before marking segment IR DONE_VERIFIED: all exact-head Tests, Verify, Browser G2P and artifact-generation workflows pass; inspect their logs/artifacts; confirm all 11,172 phonemic parity cases and parser/integration fixtures pass. Do not infer linguistic validity from software CI.
