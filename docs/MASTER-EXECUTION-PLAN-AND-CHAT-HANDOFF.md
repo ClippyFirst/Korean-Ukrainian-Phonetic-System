@@ -2152,3 +2152,8 @@ A local clone was unavailable because DNS resolution for github.com failed. Ther
 - `ɦ` remains an inventory symbol only. No universal post-sonorant /h/ → [ɦ] rule is asserted.
 - Source alignment is syllable-level where available; the implementation does not claim phone-level Hangul-to-IPA alignment.
 - PR #509 remains open and unmodified. PR #510 is a stacked draft. No merge, release or Ukrainian adapter change has occurred.
+
+
+### Test-oracle correction — 2026-11-27
+
+A source-level review found two new parser tests treating ASCII `?` as an unknown phone even though both runtimes intentionally classify Unicode punctuation as boundary tokens. Corrected the fixtures to use the non-punctuation unknown code point `😀`, preserving the separate punctuation-boundary tests. This is a test-only correction; no production parser behavior changed. The corrected tests have not yet been executed locally (GitHub DNS failure) or confirmed by CI; keep the gate PARTIAL until exact-head workflows pass.
