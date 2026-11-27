@@ -224,7 +224,7 @@ def test_python_ipa_results_expose_a_versioned_profile_contract():
     expected = {
         "phonemic": ("clippyfirst-korean-phonemic-v1", "phonemic"),
         "broad": ("clippyfirst-korean-broad-v1", "broad"),
-        "narrow": ("clippyfirst-korean-narrow-contextual-allophones-v7", "narrow"),
+        "narrow": ("clippyfirst-korean-narrow-contextual-allophones-v8", "narrow"),
     }
     for level, (profile_id, profile_level) in expected.items():
         result = phoneticize_korean("씨", ipa_level=level)["ipa"]
