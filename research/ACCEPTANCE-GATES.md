@@ -2341,3 +2341,40 @@ Inspected the uploaded `standard-vs-extended-ipa-ab` artifact (workflow run `459
 The separate multi-engine artifact from the same run is aggregate-only and is not an A/B of Extended IPA. Its strict native results are UGTPHON 52.7387% exact / 9.0130% CER (2,702 scored of 2,703), SIGMORPHON 35.9719% / 14.5347% (998/999), and Seoul phoneme-tier 14.8033% / 39.8430% (966/1,000). The separate paired UGTPHON engine comparison reports native 52.7387% / 9.0130% vs g2pk 53.0892% / 9.2328% on 2,702 paired occurrences; g2pk gains +0.3701 pp exact but worsens CER by +0.2207 pp. These are diagnostic comparisons across engines, not Extended-IPA gains or adjudicated gold accuracy.
 
 The A/B artifact was produced on implementation commit `08feed20a54187ebc1c35f211801e9c7e5c85632`; the subsequent `a7116388` change only corrected a test fixture (no production parser/IPA output change), and documentation-only commits followed. The current-head benchmark workflow was cancelled before producing its own artifact; this prior artifact remains the inspected diagnostic evidence, not an exact-current-head rerun.
+
+
+## Extended Narrow coverage continuation — 2026-11-27 — profile v8
+
+**Branch:** `feat/korean-narrow-phonetics-coverage-2026-11-27` (stacked on PR #510). **Base:** PR #510 head `e5d70f373c3603a9c573080eee0df7e19199f067`. **Scope:** research-grounded Narrow allophony; Standard/Broad and Ukrainian adaptation remain unchanged.
+
+### Literature-to-runtime coverage map
+
+| Phenomenon | Existing implementation | Narrow status / boundary |
+|---|---|---|
+| Three-way lenis/aspirated/fortis stop contrast | Underlying inventory and broad IPA; broad inter-sonorant voicing | No invented VOT/F0/voice-quality diacritics. 2020/2026 studies show prosodic-position, focus, age and vowel-conditioned cue reweighting; acoustic values require audio. |
+| Lenis /s/ and sibilant coarticulation | Narrow [sʰ], restricted [ɕʰ] before ㅣ/ㅖ/ㅑ | Partial, context-scoped; no blanket palatalization of all /j/ vowels or fortis /s͈/. |
+| Nasal palatalization | [ɲ] before selected /j/-initial nuclei | Research-only generalization; /i/ excluded; primary-source review still required. |
+| /h/ allophony | [ç] before selected high-front/glide nuclei, [x] before ㅜ, [ɸ] in same-word intervocalic position | Source-scoped descriptions; post-sonorant weakening/deletion remains unresolved, not forced to [ɦ]. |
+| Lenis stop voicing | Broad [b d ɡ dʑ] in the supported inter-sonorant contexts | Already represented; further phonetic gradience is not inferred without measurements. |
+| Liquid tap/lateral and assimilation | [ɾ] singleton onset; [l] coda/geminate; normative ㄹ+ㄹ assimilation | Intervocalic [ɾ] remains primary; conflicting onset [ɭ] is unselected. |
+| Coda lateral retroflexion | **New v8:** optional [ɭ] variants for word-final coda ㄹ and coda ㄹ before same-word ㅎ | Unselected sociophonetic alternatives based on Crosby (2024), with dialect/gender/age/style caveats; canonical [l] is unchanged. |
+| Palatal lateral [ʎ], nasalized lateral, gradient liquid assimilation | Literature signals variation | TODO: primary-source and speaker-conditioned evidence review; no deterministic rule added. |
+| Coda neutralization/release, nasalization, palatalization, aspiration, fortition, n-insertion, liaison, morphology and boundary interactions | Existing Standard/NIKL rule engine and adversarial cases | Broad phonological rules remain separate from Narrow phonetic detail; gradient rates are not collapsed into categorical outputs. |
+| Vowel quality, ㅢ, diphthongs/glides and hiatus | Existing broad realizations and optional ㅢ/ㅚ/ㅟ/ㅖ/ㅐ variants | Narrow formant/coarticulation/reduction is incomplete; no speaker-specific vowel quality inferred from text. |
+| Prosody, focus, phrase boundaries, speech rate | Nullable context fields and separate acoustic annotation contract | Text-only context stays null. F0, VOT, closure voicing, H1*-H2*, H1*-A1*, CPP and formants require measured audio and method provenance. |
+
+### v8 implementation
+
+- Added a source-backed, **unselected** coda [ɭ] variant when ㄹ is word-final or precedes same-word ㅎ. Evidence: Crosby (2024), 23 speakers across Central, Gyeongsangdo and Jeollado; word-final position OR 2.516 and pre-/h/ OR 3.056 versus geminate reference; substantial dialect/gender/age/style effects. The article only analyzes tokens classified as lateral, so it does not imply that every written coda ㄹ is realized as a lateral.
+- Kept primary coda [l] and all Broad/Standard outputs unchanged. No speakerless probability or dialect guessing was added.
+- Added source S038 to `data/korean/sources.csv` and `SRC-KOREAN-LIQUID-RETROFLEX-2024` to `research/SOURCE-REGISTER.csv`; no audio or corpus annotations were imported.
+- Python and browser Extended IPA now use narrow profile v8; added tests for word-final and pre-/h/ candidates and a negative control for a non-triggering vowel-following context.
+
+### Benchmark interpretation and open gates
+
+- Historical paired A/B artifact run 45973857624: Standard Broad = Extended Broad by contract; Narrow cross-layer string agreement was 55.8845% exact / 7.2217% CER on UGTPHON and 39.6794% / 12.6912% on SIGMORPHON. These are **not narrow accuracy scores**: the stored references were not independently adjudicated as narrow IPA, and the artifact predates the v7 [ɾ]-primary correction and v8 coda variants.
+- The 2024 coda [ɭ] variants do not alter primary IPA and are not expected to change Exact Match/CER. Their acceptance criterion is correct variant eligibility, provenance, and cross-runtime parity, not score uplift.
+- TODO: exact-head CI and rerun paired v8 A/B; inspect per-feature additions/omissions and paired wins/losses. BLOCKED: independent layer-matched narrow IPA gold, rights-cleared audio, and qualified phonetic adjudication. A high score against Broad or mixed references cannot clear this gate.
+- No F0/VOT/voice-quality realization, dialect choice, speaker choice, or phrase structure is guessed from text. No Ukrainian target adapter change.
+
+**Readiness:** research prototype. Software verification is pending on this branch; no linguistic certification or narrow accuracy gain is claimed.
