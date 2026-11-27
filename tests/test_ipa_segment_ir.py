@@ -46,3 +46,17 @@ def test_extended_ipa_result_exposes_segment_ir_with_source_and_rule_provenance(
     assert all(item["source_span"] == {"start": 0, "end": 1} for item in segments if item["kind"] == "segment")
     assert all(item["source_alignment"] == "syllable-span" for item in segments if item["kind"] == "segment")
     assert segments[0]["provenance"]["rule_ids"] == ["narrow-nasal-palatalization"]
+
+
+def test_engine_generates_existing_expanded_korean_ipa_realizations_by_layer():
+    from korean_ukrainian.pipeline import phoneticize_korean
+    def layer(source, level):
+        return phoneticize_korean(source)["extended_ipa"]["layers"][level]["ipa"]
+    assert layer("코", "broad") == "kʰo"
+    assert layer("사", "narrow") == "sʰa"
+    assert layer("녀", "narrow") == "ɲjʌ"
+    assert layer("나라", "narrow") == "na.ɭa"
+    assert layer("아하", "narrow") == "a.ɸa"
+    assert layer("히", "narrow") == "çi"
+    assert layer("후", "narrow") == "xu"
+    assert "ɦ" not in layer("안하", "narrow")
