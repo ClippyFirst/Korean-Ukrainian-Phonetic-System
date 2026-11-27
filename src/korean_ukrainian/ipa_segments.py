@@ -1,6 +1,8 @@
 """Unicode-safe, inspectable segment IR for Korean Extended IPA output."""
 from __future__ import annotations
 
+import unicodedata
+
 # Longest-match inventory. Affricates are single segments, with or without tie bars.
 _AFFRICATES = {"t͡ɕ": "tɕ", "d͡ʑ": "dʑ", "t͡s": "ts", "d͡z": "dz"}
 _BASES = (
@@ -104,7 +106,7 @@ def parse_ipa_segments(ipa: str, *, source_span: dict | None = None,
     bases = sorted(_BASES, key=len, reverse=True)
     while i < len(points):
         char = points[i]
-        if char.isspace() or char in ".#/|":
+        if char.isspace() or char in ".#/|" or unicodedata.category(char).startswith("P"):
             boundary_number += 1
             kind = "word" if char.isspace() else "syllable" if char == "." else "separator"
             tokens.append({"id": f"boundary-{boundary_number:04d}", "kind": "boundary",
