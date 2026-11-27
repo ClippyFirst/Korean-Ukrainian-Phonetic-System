@@ -39,6 +39,10 @@ const EVIDENCE = {
   'narrow-coda-retroflex-lateral-candidate': {
     refs: ['https://doi.org/10.3765/plsa.v6i1.5002', 'https://doi.org/10.20405/kl.2024.02.102.63'],
     status: 'speaker-conditioned-sociophonetic-variant-only'
+  },
+  'narrow-lateral-palatalization-candidate': {
+    refs: ['https://doi.org/10.3765/plsa.v6i1.5002'],
+    status: 'gradient-coarticulation-candidate-variant-only'
   }
 };
 
@@ -290,6 +294,12 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
           evidence: 'narrow-retroflex-lateral-candidate',
           environment: 'same-word intervocalic onset ㄹ; Lee (1993) [ɭ] vs Crosby & Dalola (2021) predominantly [ɾ]' });
       }
+      if (currentParsed?.onset === 'ㄹ' && previousParsed?.coda === 'ㄹ'
+          && ['ㅣ', ...GLIDE_NUCLEI].includes(currentParsed.vowel) && derived.ipa.startsWith('l')) {
+        narrowVariantSites.push({ ipaStart, sourceSpan: span, from: 'l', to: 'lʲ',
+          evidence: 'narrow-lateral-palatalization-candidate',
+          environment: 'geminate lateral before high-front vocoid /i,j/; gradient F2 evidence, not categorical [ʎ]' });
+      }
       if (currentParsed?.coda === 'ㄹ' && derived.ipa.endsWith('l')) {
         const nextItem = sourceTrace[sourceIndex + 1];
         const nextValue = String(nextItem?.source ?? '');
@@ -334,9 +344,11 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
         evidence_status: evidence.status,
         evidence_refs: evidence.refs,
         environment: site.environment,
-        uncertainty: site.from === 'l'
+        uncertainty: site.evidence === 'narrow-coda-retroflex-lateral-candidate'
           ? 'Coda retroflexion is sociophonetic and depends on speaker, dialect, style, preceding vowel and whether the token is realized as a lateral; text-only input cannot select it.'
-          : 'Conflicting descriptions; speaker, dialect and prosodic context are unknown; optional [ɭ] is not selected over primary [ɾ].',
+          : site.evidence === 'narrow-lateral-palatalization-candidate'
+            ? 'F2 elevation is a gradient acoustic correlate; [lʲ] is an optional project candidate, not an independently adjudicated phone or selected output.'
+            : 'Conflicting descriptions; speaker, dialect and prosodic context are unknown; optional [ɭ] is not selected over primary [ɾ].',
         source_span: site.sourceSpan, selected: false
       });
     }
@@ -373,8 +385,8 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       },
       narrow: {
         ipa: narrowIpa,
-        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v9',
-        profile_version: 9, level: 'narrow',
+        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v10',
+        profile_version: 10, level: 'narrow',
         status: hasUnresolvedSource ? 'diagnostic-only-unresolved-source' : 'partial-research-only',
         evidence_status: 'partial-source-scoped-hypotheses-not-independently-reviewed',
         target_compatible: false
