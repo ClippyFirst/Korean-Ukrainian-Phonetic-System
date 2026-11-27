@@ -26,7 +26,7 @@ test('Narrow variant diagnostics count candidate coverage without scoring candid
   assert.ok(report.by_environment['coda ㄹ before same-word consonant'] >= 1);
   assert.equal(report.by_environment['word-final coda ㄹ'], 1);
   assert.equal(report.by_environment['coda ㄹ before same-word onset ㅎ'], 1);
-  assert.match(report.interpretation, /not scored as correct\/incorrect/);
+  assert.match(report.interpretation, /not production predictions/);
   assert.match(report.candidate_oracle_interpretation, /must never select runtime output/);
   assert.ok(report.examples.every(item => item.selected === false));
 });
