@@ -243,3 +243,6 @@ Acceptance before marking segment IR DONE_VERIFIED: all exact-head Tests, Verify
 ### Test-oracle correction — 2026-11-27
 
 A source-level review found two new parser tests treating ASCII `?` as an unknown phone even though both runtimes intentionally classify Unicode punctuation as boundary tokens. Corrected the fixtures to use the non-punctuation unknown code point `😀`, preserving the separate punctuation-boundary tests. This is a test-only correction; no production parser behavior changed. The corrected tests have not yet been executed locally (GitHub DNS failure) or confirmed by CI; keep the gate PARTIAL until exact-head workflows pass.
+
+
+A second test-oracle defect was found during review: the browser test destructured the third token as the unknown token even though the fixture contains a later segment and word boundary before the unknown emoji. It now selects tokens by their explicit `kind`. This correction is test-only and awaits exact-head CI.
