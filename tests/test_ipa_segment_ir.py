@@ -60,3 +60,12 @@ def test_engine_generates_existing_expanded_korean_ipa_realizations_by_layer():
     assert layer("히", "narrow") == "çi"
     assert layer("후", "narrow") == "xu"
     assert "ɦ" not in layer("안하", "narrow")
+
+
+def test_segment_ir_handles_tie_bar_affricates_and_combining_vowel_diacritics():
+    segments = [item for item in parse_ipa_segments("t͡ɕʰ ãː") if item["kind"] == "segment"]
+    assert [item["ipa"] for item in segments] == ["t͡ɕʰ", "ãː"]
+    assert segments[0]["base"] == "tɕ"
+    assert segments[0]["features"]["aspiration"] == "aspirated"
+    assert segments[1]["features"]["nasalization"] == "nasalized"
+    assert segments[1]["features"]["length"] == "long"
