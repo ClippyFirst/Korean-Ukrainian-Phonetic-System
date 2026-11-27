@@ -80,6 +80,8 @@ def test_narrow_seoul_h_and_intervocalic_liquid_tap_are_contextual():
     assert _ipa("으흐", "narrow")["ipa"] == "ɯ.ɣɯ"
     assert _ipa("오호", "narrow")["ipa"] == "o.βo"
     assert _ipa("하", "narrow")["ipa"] == "ha"
+    assert _ipa("히", "narrow")["ipa"] == "çi"
+    assert _ipa("후", "narrow")["ipa"] == "xu"
     # Crosby & Dalola (2021): 99.3% of intervocalic liquids in their
     # 12-speaker Standard Korean sample were taps; do not emit [ɭ] here.
     assert _ipa("나라", "narrow")["ipa"] == "na.ɾa"
