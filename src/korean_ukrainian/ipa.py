@@ -18,6 +18,8 @@ _NARROW_HIGH_FRONT_SIBILANT_NUCLEI={"ㅣ","ㅖ","ㅑ"}
 _NARROW_PALATALIZED_NASAL_GLIDE_NUCLEI={"ㅑ","ㅒ","ㅕ","ㅖ","ㅛ","ㅠ"}
 # High-front vocoids for a research-only lateral coarticulation candidate.
 _NARROW_HIGH_FRONT_VOCOID_NUCLEI={"ㅣ","ㅑ","ㅒ","ㅕ","ㅖ","ㅛ","ㅠ"}
+_NARROW_H_GLIDE_NUCLEI={"ㅑ","ㅒ","ㅕ","ㅖ","ㅛ","ㅠ"}
+_NARROW_H_ROUNDED_NUCLEI={"ㅗ","ㅜ"}
 CODA={"ㄱ":"k̚","ㄲ":"k̚","ㄳ":"k̚","ㄴ":"n","ㄵ":"n","ㄶ":"n","ㄷ":"t̚","ㄹ":"l","ㄺ":"k̚","ㄻ":"m","ㄼ":"l","ㄽ":"l","ㄾ":"l","ㄿ":"p̚","ㅀ":"l","ㅁ":"m","ㅂ":"p̚","ㅄ":"p̚","ㅅ":"t̚","ㅆ":"t̚","ㅇ":"ŋ","ㅈ":"t̚","ㅊ":"t̚","ㅋ":"k̚","ㅌ":"t̚","ㅍ":"p̚","ㅎ":"t̚"}
 
 def onset_ipa(s:Syllable,index:int,items:list[Syllable],*,phonemic=False,level="broad")->list[str]:
@@ -42,16 +44,16 @@ def onset_ipa(s:Syllable,index:int,items:list[Syllable],*,phonemic=False,level="
             if index>0:
                 previous=items[index-1]
                 if previous.boundary_after!="word" and previous.coda=="":
-                    if s.nucleus in {"ㅣ","ㅑ","ㅒ","ㅕ","ㅖ","ㅛ","ㅠ"}:
+                    if s.nucleus=="ㅣ" or s.nucleus in _NARROW_H_GLIDE_NUCLEI:
                         return ["ʝ"]
                     if s.nucleus=="ㅡ":
                         return ["ɣ"]
-                    if s.nucleus in {"ㅗ","ㅜ"}:
+                    if s.nucleus in _NARROW_H_ROUNDED_NUCLEI:
                         return ["β"]
                     return ["ɦ"]
             # Word-initial Seoul allophones remain distinct from medial voiced
             # allophones. Post-sonorant weakening/deletion remains variable.
-            if s.nucleus in {"ㅣ","ㅑ","ㅒ","ㅕ","ㅖ","ㅛ","ㅠ"}:
+            if s.nucleus=="ㅣ" or s.nucleus in _NARROW_H_GLIDE_NUCLEI:
                 return ["ç"]
             if s.nucleus=="ㅜ":
                 return ["x"]
