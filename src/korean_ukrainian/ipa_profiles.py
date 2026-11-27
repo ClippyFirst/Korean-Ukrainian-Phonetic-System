@@ -67,6 +67,77 @@ def _segments_for_layer(ipa: str | None, trace: list[dict[str, Any]], level: str
     return parse_ipa_segments(ipa)
 
 
+
+def _validate_segment_tokens(segments: Any, ipa: Any, source_text: str, path: str) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(segments, list):
+        return [f"{path}.segments must be an array"]
+    ipa_points = list(ipa) if isinstance(ipa, str) else []
+    source_length = len(source_text)
+    seen_ids: set[str] = set()
+    previous_end = 0
+    for index, token in enumerate(segments):
+        item_path = f"{path}.segments[{index}]"
+        if not isinstance(token, dict):
+            errors.append(f"{item_path} must be an object")
+            continue
+        token_id, kind, value = token.get("id"), token.get("kind"), token.get("ipa")
+        if not isinstance(token_id, str) or not token_id:
+            errors.append(f"{item_path}.id must be a non-empty string")
+        elif token_id in seen_ids:
+            errors.append(f"{path}.segments IDs must be unique")
+        else:
+            seen_ids.add(token_id)
+        if kind not in {"segment", "boundary", "unknown"}:
+            errors.append(f"{item_path}.kind is invalid")
+        if not isinstance(value, str) or not value:
+            errors.append(f"{item_path}.ipa must be a non-empty string")
+            continue
+        span = token.get("ipa_span")
+        if (not isinstance(span, dict) or set(span) != {"start", "end"}
+                or not isinstance(span.get("start"), int) or isinstance(span.get("start"), bool)
+                or not isinstance(span.get("end"), int) or isinstance(span.get("end"), bool)
+                or span["start"] < 0 or span["end"] <= span["start"]):
+            errors.append(f"{item_path}.ipa_span is invalid")
+            continue
+        if span["end"] > len(ipa_points) or ipa_points[span["start"]:span["end"]] != list(value):
+            errors.append(f"{item_path}.ipa_span does not select its IPA text")
+        if span["start"] < previous_end:
+            errors.append(f"{item_path}.ipa_span overlaps or is out of order")
+        previous_end = max(previous_end, span["end"])
+        if kind == "segment":
+            if not isinstance(token.get("base"), str) or not isinstance(token.get("modifiers"), list) or not all(isinstance(mark, str) for mark in token["modifiers"]):
+                errors.append(f"{item_path} requires base and string modifiers")
+            if not isinstance(token.get("features"), dict) or not isinstance(token["features"].get("major_class"), str):
+                errors.append(f"{item_path}.features is invalid")
+            source_span = token.get("source_span")
+            if source_span is not None and (
+                not isinstance(source_span, dict) or set(source_span) != {"start", "end"}
+                or not isinstance(source_span.get("start"), int) or isinstance(source_span.get("start"), bool)
+                or not isinstance(source_span.get("end"), int) or isinstance(source_span.get("end"), bool)
+                or source_span["start"] < 0 or source_span["end"] <= source_span["start"]
+                or source_span["end"] > source_length
+            ):
+                errors.append(f"{item_path}.source_span is invalid")
+            expected_alignment = "syllable-span" if source_span is not None else "unavailable"
+            if token.get("source_alignment") != expected_alignment:
+                errors.append(f"{item_path}.source_alignment does not match source_span")
+            provenance = token.get("provenance")
+            if (not isinstance(provenance, dict)
+                    or not isinstance(provenance.get("rule_ids"), list)
+                    or not all(isinstance(value, str) for value in provenance.get("rule_ids", []))
+                    or not isinstance(provenance.get("evidence_refs"), list)
+                    or not all(isinstance(value, str) for value in provenance.get("evidence_refs", []))
+                    or not isinstance(provenance.get("evidence_status"), str)
+                    or (provenance.get("environment") is not None and not isinstance(provenance.get("environment"), str))):
+                errors.append(f"{item_path}.provenance is invalid")
+        elif kind == "boundary" and token.get("boundary") not in {"word", "syllable", "separator"}:
+            errors.append(f"{item_path}.boundary is invalid")
+        elif kind == "unknown" and not isinstance(token.get("reason"), str):
+            errors.append(f"{item_path}.reason is required")
+    return errors
+
+
 def validate_extended_ipa_result(result: dict[str, Any]) -> list[str]:
     """Return contract violations without requiring a runtime schema package."""
     errors: list[str] = []
@@ -102,6 +173,8 @@ def validate_extended_ipa_result(result: dict[str, Any]) -> list[str]:
                 errors.append(f"layers.{level}.status must be a string")
             if not isinstance(layer.get("target_compatible"), bool):
                 errors.append(f"layers.{level}.target_compatible must be boolean")
+            source_text = source.get("text", "") if isinstance(source, dict) else ""
+            errors.extend(_validate_segment_tokens(layer.get("segments"), layer.get("ipa"), source_text, f"layers.{level}"))
     if isinstance(layers, dict):
         for level, layer in layers.items():
             if isinstance(layer, dict) and not isinstance(layer.get("segments"), list):
