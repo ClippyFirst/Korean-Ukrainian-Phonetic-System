@@ -16,6 +16,8 @@ _NARROW_HIGH_FRONT_SIBILANT_NUCLEI={"ㅣ","ㅖ","ㅑ"}
 # before /j/; Ahn (2009) is an initial /n/-deletion study, not direct evidence
 # for a generalized [ɲ] allophone. Primary-source adjudication is still pending.
 _NARROW_PALATALIZED_NASAL_GLIDE_NUCLEI={"ㅑ","ㅒ","ㅕ","ㅖ","ㅛ","ㅠ"}
+# High-front vocoids for a research-only lateral coarticulation candidate.
+_NARROW_HIGH_FRONT_VOCOID_NUCLEI={"ㅣ","ㅑ","ㅒ","ㅕ","ㅖ","ㅛ","ㅠ"}
 CODA={"ㄱ":"k̚","ㄲ":"k̚","ㄳ":"k̚","ㄴ":"n","ㄵ":"n","ㄶ":"n","ㄷ":"t̚","ㄹ":"l","ㄺ":"k̚","ㄻ":"m","ㄼ":"l","ㄽ":"l","ㄾ":"l","ㄿ":"p̚","ㅀ":"l","ㅁ":"m","ㅂ":"p̚","ㅄ":"p̚","ㅅ":"t̚","ㅆ":"t̚","ㅇ":"ŋ","ㅈ":"t̚","ㅊ":"t̚","ㅋ":"k̚","ㅌ":"t̚","ㅍ":"p̚","ㅎ":"t̚"}
 
 def onset_ipa(s:Syllable,index:int,items:list[Syllable],*,phonemic=False,level="broad")->list[str]:
@@ -127,6 +129,26 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
                         "evidence_refs":[lee_ref,crosby_ref], "environment":"same-word intervocalic onset ㄹ",
                         "uncertainty":"Conflicting descriptions; speaker and dialect are unknown.", "selected":False,
                     })
+            # A geminate lateral before /i,j/ may show coarticulatory palatalization.
+            # Crosby & Dalola (2021) measured mean F2 about 254.49 Hz higher
+            # before high-front vocoids; this is gradient acoustic evidence,
+            # not proof of categorical [ʎ]. Expose [lʲ] only as an unselected
+            # candidate and keep the primary [l] unchanged.
+            if (i>0 and syllable.onset=="ㄹ" and items[i-1].coda=="ㄹ"
+                    and items[i-1].boundary_after!="word"
+                    and syllable.nucleus in _NARROW_HIGH_FRONT_VOCOID_NUCLEI
+                    and rendered[i].startswith("l")):
+                alternate=list(rendered)
+                alternate[i]="lʲ"+alternate[i][1:]
+                variants.append({
+                    "layer":"narrow", "syllable_indices":[i],
+                    "ipa":render_syllable_sequence(items,alternate),
+                    "note":("Gradient coarticulatory palatalization candidate [lʲ]. Crosby & Dalola (2021) measured F2 about 254.49 Hz higher for laterals before high-front vocoids and discuss prior [ʎ] descriptions; the study does not establish categorical [ʎ]. " + crosby_ref),
+                    "vowels":["geminate ㄹ [lʲ]"], "evidence_status":"gradient-coarticulation-candidate-variant-only",
+                    "evidence_refs":[crosby_ref], "environment":"geminate lateral before high-front vocoid /i,j/",
+                    "uncertainty":"F2 is a gradient acoustic correlate; [lʲ] is a conservative project candidate, not an independently adjudicated phone or selected output.",
+                    "selected":False,
+                })
             # Coda /l/ has a separate, sociophonetic retroflex variant. The
             # 2024 study finds higher rates word-finally and before /h/, with
             # strong dialect/gender/style effects; do not select [ɭ] without
@@ -312,12 +334,12 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     profile_ids={
         "phonemic":"clippyfirst-korean-phonemic-v1",
         "broad":"clippyfirst-korean-broad-v1",
-        "narrow":"clippyfirst-korean-narrow-contextual-allophones-v9",
+        "narrow":"clippyfirst-korean-narrow-contextual-allophones-v10",
     }
     result={
         "level":level,
         "ipa_profile":profile_ids[level],
-        "ipa_profile_version":9 if level=="narrow" else 1,
+        "ipa_profile_version":10 if level=="narrow" else 1,
         "ipa_profile_level":level,
         "ipa_profile_status":(
             "partial-research-only" if level=="narrow"
@@ -331,7 +353,7 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     }
     if level=="narrow":
         result["transcription_profile"]={
-            "name":"korean-narrow-contextual-allophones-v9",
+            "name":"korean-narrow-contextual-allophones-v10",
             "scope":["aspiration of lenis ㅅ as [sʰ]","palatalized [ɕʰ] candidate before ㅣ, ㅖ, ㅑ (Kang 2010; partial narrow profile)","palatalized [ɲ] for onset ㄴ before glide nuclei ㅑ, ㅒ, ㅕ, ㅖ, ㅛ, ㅠ; not generalized to ㅣ","ㅎ is [ç] before selected high-front/glide nuclei and [x] before ㅜ, following the cited Seoul description","after a same-word sonorant coda, /h/ may weaken or delete variably; no categorical [ɦ] is assigned without token-specific evidence","same-word intervocalic ㅎ may be [ɸ]; intervocalic onset ㄹ remains [ɾ] as primary, with an unselected [ɭ] variant retained because Lee (1993) and Crosby & Dalola (2021) differ in their descriptions","tense ㅆ remains [s͈]; its palatalization is not assumed because evidence is mixed","coda ㄹ exposes optional [ɭ] variants word-finally and before same-word ㅎ; never selected without speaker/dialect/audio evidence (Crosby 2024)"],
             "sources":[
                 "Lee, Hyun Bok (1993), Korean, Illustrations of the IPA: /h/ [ç] before /i,j/ and [x] before /u/; /s/ is classified as fortis in this description: https://doi.org/10.1017/S0025100300004758",
