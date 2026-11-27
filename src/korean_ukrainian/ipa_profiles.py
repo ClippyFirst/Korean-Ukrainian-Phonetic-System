@@ -12,7 +12,7 @@ PROFILE_REGISTRY = {
     "broad": {"profile_id": "clippyfirst-korean-broad-v1", "profile_version": 1,
               "status": "rule-supported-broad",
               "evidence_status": "mixed-normative-and-project-derived", "target_compatible": False},
-    "narrow": {"profile_id": "clippyfirst-korean-narrow-contextual-allophones-v11", "profile_version": 11,
+    "narrow": {"profile_id": "clippyfirst-korean-narrow-contextual-allophones-v12", "profile_version": 12,
                "status": "partial-research-only",
                "evidence_status": "source-scoped-hypotheses-require-independent-review", "target_compatible": False},
 }
