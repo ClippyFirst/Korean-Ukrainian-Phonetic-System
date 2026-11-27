@@ -46,6 +46,13 @@ test('NIKL Q&A 335858 composes §28 compound fortition with the Narrow coda-vari
   assert.ok(!negative.trace.some(item => item.rules.includes('compound-fortition-§28-exact-form')));
 });
 
+test('NIKL §26 exact Sino-Korean forms 솔직 and 일제 fortify without a productive ㄹ+ㅈ rule', () => {
+  for (const [word, surface] of [['솔직', '솔찍'], ['일제', '일쩨']]) {
+    const result = genericEngine.convert(word);
+    assert.equal(result.surfaceHangul, surface);
+  }
+});
+
 test('§23 does not generalize obstruent-coda fortition to sonorant codas', () => {
   for (const input of ['간가','갈가','감가','강가']) {
     const result = genericEngine.convert(input);

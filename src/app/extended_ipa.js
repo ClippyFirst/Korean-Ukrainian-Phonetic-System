@@ -67,6 +67,14 @@ const EVIDENCE = {
   'narrow-sibilant-rounded-glide-interaction': {
     refs: ['https://doi.org/10.1017/9781108292351'],
     status: 'source-scoped-iterative-palatalization-candidate-only'
+  },
+  'narrow-palatal-lateral-candidate': {
+    refs: ['https://doi.org/10.3765/plsa.v6i1.5002'],
+    status: 'source-cited-palatal-lateral-variant-only'
+  },
+  'narrow-geminate-lateral-interaction-hypothesis': {
+    refs: ['https://doi.org/10.3765/plsa.v6i1.5002', 'https://doi.org/10.20405/kl.2024.02.102.63'],
+    status: 'source-scoped-interaction-hypothesis-only'
   }
 };
 
@@ -346,7 +354,17 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
           && ['ㅣ', ...GLIDE_NUCLEI].includes(currentParsed.vowel) && derived.ipa.startsWith('l')) {
         narrowVariantSites.push({ ipaStart, sourceSpan: span, from: 'l', to: 'lʲ',
           evidence: 'narrow-lateral-palatalization-candidate',
-          environment: 'geminate lateral before high-front vocoid /i,j/' });
+          environment: 'geminate lateral before high-front vocoid /i,j/; gradient [lʲ] candidate' });
+        narrowVariantSites.push({ ipaStart, sourceSpan: span, from: 'l', to: 'ʎ',
+          evidence: 'narrow-palatal-lateral-candidate',
+          environment: 'geminate lateral before /i,j/; cited [ʎ] description, not categorical acoustic adjudication' });
+        const previousSpan = sourceTrace[sourceIndex - 1]?.source_span ?? sourceTrace[sourceIndex - 1]?.sourceSpan ?? null;
+        const combinedSpan = previousSpan && span ? { start: previousSpan.start, end: span.end } : span;
+        if (ipaStart >= 2 && narrowIpa[ipaStart - 2] === 'l' && narrowIpa[ipaStart - 1] === '.') {
+          narrowVariantSites.push({ ipaStart: ipaStart - 2, sourceSpan: combinedSpan, from: 'l.l', to: 'ɭ.ʎ',
+            evidence: 'narrow-geminate-lateral-interaction-hypothesis',
+            environment: 'same-word coda ㄹ + onset ㄹ before /i,j/; composed [ɭ]+[ʎ] candidate' });
+        }
       }
       if (previousCodaNPosition !== null && ['ㅈ','ㅉ','ㅊ'].includes(currentParsed?.onset)) {
         const sourceSpan = trace.at(-1)?.source_span ?? span;
@@ -434,7 +452,11 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
               ? 'Kim-Renaud (2022) synthesizes position-conditioned [wi]/[ɥi] and monophthongal [y] variation; the token speaker, dialect, age and style are unknown, so no variant is selected.'
               : site.evidence === 'narrow-sibilant-rounded-glide-interaction'
                 ? 'Kim-Renaud (2022) describes iterative /s/ palatalization with /wi/→[ɥi]. The [ʰ] element is inherited from the existing partial profile, not newly established by this source; candidate remains unselected.'
-                : 'Conflicting descriptions; speaker, dialect and prosodic context are unknown; optional [ɭ] is not selected over primary [ɾ].',
+                : site.evidence === 'narrow-palatal-lateral-candidate'
+                  ? 'Kang (2017), as summarized by Crosby & Dalola (2021), describes [ʎ] before /i,j/; the 2021 study independently supports gradient F2 palatalization, not categorical [ʎ]. Candidate only.'
+                  : site.evidence === 'narrow-geminate-lateral-interaction-hypothesis'
+                    ? 'This composes separately described preconsonantal retroflex [ɭ] and pre-/i,j/ palatal lateral [ʎ] tendencies; the sources do not directly adjudicate this combined token, so it remains an unselected hypothesis.'
+                    : 'Conflicting descriptions; speaker, dialect and prosodic context are unknown; optional [ɭ] is not selected over primary [ɾ].',
         source_span: site.sourceSpan, selected: false
       });
     }
@@ -471,8 +493,8 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       },
       narrow: {
         ipa: narrowIpa,
-        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v15',
-        profile_version: 15,
+        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v16',
+        profile_version: 16,
         level: 'narrow',
         status: hasUnresolvedSource ? 'diagnostic-only-unresolved-source' : 'partial-research-only',
         evidence_status: 'partial-source-scoped-hypotheses-not-independently-reviewed',

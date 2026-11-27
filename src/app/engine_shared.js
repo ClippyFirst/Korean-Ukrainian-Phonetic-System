@@ -186,6 +186,8 @@ const NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS=new Map([
   ['저출산','출>산'], // NIKL Basic Dictionary directly lists 저출산[저ː출싼].
   ['실시간','실>시'], // NIKL §26 + NIKL lexical source records 實時間; exact Sino-Korean 실>시간 boundary.
   ['팔자걸음','팔>자'], // NIKL Basic Dictionary 팔자[팔짜]; exact corpus compound only.
+  ['솔직','솔>직'], // NIKL Q&A 327592: bare 솔직 can be read [솔찍], derived from 솔직하다.
+  ['일제','일>제'], // NIKL Basic Dictionary directly lists 일제[일쩨], ParaWordNo=72394.
 ]);
 
 // Exact lexical fortition entries outside a productive rule environment.

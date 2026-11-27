@@ -228,6 +228,8 @@ _NIKL_R012_WORD_LICENSES = {
     "실시간": "실>시",  # NIKL lexical source records 실시간(實時間); §26 licenses this exact Sino-Korean boundary.
     "팔자걸음": "팔>자",  # NIKL Basic Dictionary 팔자[팔짜]; exact corpus compound only.
     "출시미정에": "출>시",  # Exact 출시[출씨] + NIKL §26; SRC-KPEDIA-CHULSI and SRC-NIKL-QNA-330766.
+    "솔직": "솔>직",  # NIKL Q&A 327592: exact bare form [솔찍], inferred from 솔직하다[솔찍하다].
+    "일제": "일>제",  # NIKL Basic Dictionary directly lists 일제[일쩨], ParaWordNo=72394.
 }
 
 # Exact examples explicitly listed in NIKL §28 (fortition in compounds

@@ -116,6 +116,25 @@ def test_kim_renaud_2022_supports_only_unselected_position_conditioned_rounded_g
     assert "no variant selected" in source["limitations_or_next_action"]
     assert "[ʰ] is inherited from project profile" in source["limitations_or_next_action"]
 
+
+def test_nikl_qna_327592_licenses_only_exact_sol직_rule26_form():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-NIKL-QNA-327592"]
+    assert "qna_seq=327592" in source["url"]
+    assert "솔직" in source["coverage"] and "[솔찍]" in source["coverage"]
+    assert "exact eojeol license 솔>직" in source["contribution_expected"]
+    assert "do not generalize" in source["limitations_or_next_action"]
+    assert "Item-level KOGL marking remains unverified" in source["limitations_or_next_action"]
+
+def test_nikl_dictionary_72394_licenses_only_exact_ilje_pronunciation():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-NIKL-KRDICT-72394"]
+    assert "ParaWordNo=72394" in source["url"]
+    assert "일제" in source["coverage"] and "[일쩨]" in source["coverage"]
+    assert "exact eojeol license 일>제" in source["contribution_expected"]
+    assert "unrelated homographs" in source["limitations_or_next_action"]
+    assert "Item-level KOGL marking remains unverified" in source["limitations_or_next_action"]
+
 def test_nikl_pronunciation_source_keeps_live_access_and_item_license_uncertainty_explicit():
     rows = {row["source_id"]: row for row in load_source_register()}
     source = rows["SRC-NIKL-PRON"]

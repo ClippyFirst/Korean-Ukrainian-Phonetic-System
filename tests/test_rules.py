@@ -64,6 +64,17 @@ def test_nikl_water_fish_compound_fortition_interacts_with_narrow_coda_variant()
     assert control[0].coda == "ㄹ" and control[1].onset == "ㄱ"
     assert not any(trace.rule_id == "R014" and trace.changed for trace in control_traces)
 
+def test_nikl_rule26_exact_lexical_fortition_forms_are_not_generalized():
+    for word in ("솔직", "일제"):
+        items, traces = apply_ordered_rules(parse_syllables(word))
+        assert items[1].onset == "ㅉ"
+        assert any(trace.rule_id == "R012" and trace.changed for trace in traces)
+
+    control, traces = apply_ordered_rules(parse_syllables("말자"))
+    assert control[1].onset == "ㅈ"
+    assert not any(trace.rule_id == "R012" and trace.changed for trace in traces)
+
+
 def test_aspiration():
     items,_=apply_ordered_rules(parse_syllables("각하"),["R004"]); assert items[1].onset=="ㅋ"
 

@@ -66,6 +66,20 @@ test('ㅟ exposes position-conditioned glide variants and ㅅ+ㅟ iterative pala
   assert.ok(combined.evidence_refs.includes('https://doi.org/10.1017/9781108292351'));
 });
 
+
+test('geminate lateral exposes cited [ʎ] and a combined [ɭ.ʎ] interaction hypothesis', () => {
+  const result = extended('올린');
+  assert.equal(result.layers.narrow.ipa, 'ol.lin');
+  const palatal = result.variants.find(item => item.layer === 'narrow' && item.ipa === 'ol.ʎin');
+  assert.ok(palatal);
+  assert.equal(palatal.selected, false);
+  assert.equal(palatal.evidence_status, 'source-cited-palatal-lateral-variant-only');
+  const combined = result.variants.find(item => item.layer === 'narrow' && item.ipa === 'oɭ.ʎin');
+  assert.ok(combined);
+  assert.equal(combined.selected, false);
+  assert.equal(combined.evidence_status, 'source-scoped-interaction-hypothesis-only');
+});
+
 test('post-sonorant /h/ is unresolved variation while the default remains [h]', () => {
   const result = extended('안하');
   assert.equal(result.layers.narrow.ipa, 'an.ha');
