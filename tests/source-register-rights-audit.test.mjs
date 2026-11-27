@@ -130,7 +130,7 @@ test('CLI reports structure by default and strict rights gate checks redistribut
   assert.equal(normal.status, 0, normal.stderr);
   const report = JSON.parse(normal.stdout);
   const sourceRows = parseCsv(readFileSync(new URL('../research/SOURCE-REGISTER.csv', import.meta.url), 'utf8'));
-  assert.equal(report.sourceRegisterRows, 253);
+  assert.equal(report.sourceRegisterRows, 255);
   assert.equal(report.structuralErrorCount, 0);
   assert.ok(report.itemLevelRightsNotClosed.length > 0);
   assert.equal(report.redistributionRightsNotClosed.length, 0);
