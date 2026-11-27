@@ -94,81 +94,45 @@ function narrowSyllable(current, previous, sameWord) {
   } else if (parsed.onset === 'ㅆ') {
     ipa = replaceInitial(ipa, ['ɕ͈'], 's͈');
   } else if (parsed.onset === 'ㅎ') {
-    if (prior && prior.boundaryAfter !== 'word' && prior.coda === '') {
-      // Word-medial /h/ is voiced; place follows the next vowel
-      // (Shin, Kiaer & Cha 2012, Table 4.6, p.77).
-      const medial = ['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ'].includes(parsed.vowel) ? 'ʝ'
+    const medialOpenSyllable = prior && prior.boundaryAfter !== 'word' && prior.coda === '';
+    if (medialOpenSyllable) {
+      // Shin, Kiaer & Cha (2012), Table 4.6 p.77: voiced word-medial
+      // counterparts conditioned by the following vowel.
+      const medial = parsed.vowel === 'ㅣ' || ['ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ'].includes(parsed.vowel) ? 'ʝ'
         : parsed.vowel === 'ㅡ' ? 'ɣ'
           : ['ㅗ','ㅜ'].includes(parsed.vowel) ? 'β' : 'ɦ';
       ipa = replaceInitial(ipa, ['h','ç','x','ɸ','ɸʷ'], medial);
       if (ipa.startsWith(medial)) {
         rules.push('narrow-h-intervocalic-allophone');
         evidence.push(EVIDENCE['narrow-h-intervocalic-allophone']);
-        environment = 'same-word intervocalic onset ㅎ; vowel-conditioned voiced allophone [' + medial + ']';
+        environment = 'same word: intervocalic onset ㅎ; vowel-conditioned voiced allophone [' + medial + ']';
       }
-    } else if (!prior || prior.boundaryAfter === 'word') {
-      if (['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ'].includes(parsed.vowel)) {
-        ipa = replaceInitial(ipa, ['h'], 'ç');
-        if (ipa.startsWith('ç')) {
-          rules.push('narrow-h-palatal-allophone');
-          evidence.push(EVIDENCE['narrow-h-palatal-allophone']);
-          environment = 'word-initial onset ㅎ before /i,j/';
+    } else {
+      const wordInitial = !prior || prior.boundaryAfter === 'word';
+      if (wordInitial) {
+        const initial = parsed.vowel === 'ㅣ' || ['ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ'].includes(parsed.vowel) ? 'ç'
+          : parsed.vowel === 'ㅡ' ? 'x'
+            : ['ㅗ','ㅜ'].includes(parsed.vowel) ? 'ɸʷ' : 'h';
+        ipa = replaceInitial(ipa, ['h','ç','x','ɸ','ɸʷ'], initial);
+        if (ipa.startsWith(initial) && initial !== 'h') {
+          rules.push(initial === 'ç' ? 'narrow-h-palatal-allophone'
+            : initial === 'x' ? 'narrow-h-velar-allophone' : 'narrow-h-rounded-allophone');
+          evidence.push(EVIDENCE[initial === 'ç' ? 'narrow-h-palatal-allophone'
+            : initial === 'x' ? 'narrow-h-velar-allophone' : 'narrow-h-rounded-allophone']);
+          environment = 'word-initial onset ㅎ; vowel-conditioned allophone [' + initial + ']';
         }
-      } else if (parsed.vowel === 'ㅡ') {
-        ipa = replaceInitial(ipa, ['h'], 'x');
-        if (ipa.startsWith('x')) {
-          rules.push('narrow-h-velar-allophone');
-          evidence.push(EVIDENCE['narrow-h-velar-allophone']);
-          environment = 'word-initial onset ㅎ before /ɯ/';
+      } else if (prior && SONORANT_CODAS.has(prior.coda)) {
+        if (parsed.vowel === 'ㅣ' || ['ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ'].includes(parsed.vowel)) {
+          ipa = replaceInitial(ipa, ['h','ç'], 'ç');
+          if (ipa.startsWith('ç')) {
+            rules.push('narrow-h-palatal-allophone');
+            evidence.push(EVIDENCE['narrow-h-palatal-allophone']);
+          }
         }
-      } else if (['ㅗ','ㅜ'].includes(parsed.vowel)) {
-        ipa = replaceInitial(ipa, ['h'], 'ɸʷ');
-        if (ipa.startsWith('ɸʷ')) {
-          rules.push('narrow-h-rounded-allophone');
-          evidence.push(EVIDENCE['narrow-h-rounded-allophone']);
-          environment = 'word-initial onset ㅎ before /o,u/';
-        }
+        rules.push('narrow-h-sonorant-variation-unresolved');
+        evidence.push(EVIDENCE['narrow-h-sonorant-variation-unresolved']);
+        environment = 'same word: sonorant coda + onset ㅎ; weakening/voicing/deletion remains variable, no single voiced phone selected';
       }
-    } else if (prior && SONORANT_CODAS.has(prior.coda)) {
-      if (['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ'].includes(parsed.vowel)) {
-        ipa = replaceInitial(ipa, ['h'], 'ç');
-        if (ipa.startsWith('ç')) {
-          rules.push('narrow-h-palatal-allophone');
-          evidence.push(EVIDENCE['narrow-h-palatal-allophone']);
-          environment = 'same-word sonorant coda + onset ㅎ before /i,j/; place coarticulation retained';
-        }
-      }
-      rules.push('narrow-h-sonorant-variation-unresolved');
-      evidence.push(EVIDENCE['narrow-h-sonorant-variation-unresolved']);
-      environment = (environment ? environment + '; ' : '') + 'weakening/voicing/deletion remains variable; no single voiced phone selected';
-    }
-      ipa = replaceInitial(ipa, ['h'], 'ç');
-      if (ipa.startsWith('ç')) {
-        rules.push('narrow-h-palatal-allophone');
-        evidence.push(EVIDENCE['narrow-h-palatal-allophone']);
-        environment = 'onset ㅎ before selected high-front/glide nuclei';
-        if (prior && SONORANT_CODAS.has(prior.coda)) {
-          rules.push('narrow-h-sonorant-variation-unresolved');
-          evidence.push(EVIDENCE['narrow-h-sonorant-variation-unresolved']);
-          environment += '; preceding sonorant: optional weakening/deletion remains unresolved';
-        }
-      }
-    } else if (parsed.vowel === 'ㅜ') {
-      ipa = replaceInitial(ipa, ['h'], 'x');
-      if (ipa.startsWith('x')) {
-        rules.push('narrow-h-palatal-allophone');
-        evidence.push(EVIDENCE['narrow-h-palatal-allophone']);
-        environment = 'onset ㅎ before ㅜ';
-        if (prior && SONORANT_CODAS.has(prior.coda)) {
-          rules.push('narrow-h-sonorant-variation-unresolved');
-          evidence.push(EVIDENCE['narrow-h-sonorant-variation-unresolved']);
-          environment += '; preceding sonorant: optional weakening/deletion remains unresolved';
-        }
-      }
-    } else if (prior && SONORANT_CODAS.has(prior.coda)) {
-      rules.push('narrow-h-sonorant-variation-unresolved');
-      evidence.push(EVIDENCE['narrow-h-sonorant-variation-unresolved']);
-      environment = 'same word: sonorant coda + onset ㅎ; weakening/deletion is variable, no single IPA selected';
     }
   } else if (parsed.onset === 'ㄹ' && prior && prior.coda === 'ㄹ') {
     ipa = replaceInitial(ipa, ['ɾ','l'], 'l');
