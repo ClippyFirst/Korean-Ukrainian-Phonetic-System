@@ -473,6 +473,7 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
         ipa: narrowIpa,
         profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v15',
         profile_version: 15,
+        level: 'narrow',
         status: hasUnresolvedSource ? 'diagnostic-only-unresolved-source' : 'partial-research-only',
         evidence_status: 'partial-source-scoped-hypotheses-not-independently-reviewed',
         target_compatible: false
