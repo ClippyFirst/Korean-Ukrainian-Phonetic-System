@@ -2477,3 +2477,12 @@ The replay changes 94 scored UGTPHON tokens and 50 scored SIGMORPHON tokens. The
 - PR #511 remains draft/open/stacked; no merge or release.
 
 **Next acceptance:** v11 Python/browser parity and regression pass; exact-head paired A/B artifact confirms actual scores; Broad unchanged; no regressions on existing negative controls. Then continue by ranking per-rule errors and validating candidate fixes on non-test/dev evidence before changing primary outputs.
+
+## Benchmark diagnostics and CI trigger correction — 2026-11-27
+
+- Added `summarizeNarrowErrorPatterns` to `scripts/benchmark_extended_ipa_ab.mjs`. The report now emits top normalized Unicode-codepoint substitutions, insertions and deletions, with token-level examples, separately from exact/CER and candidate-coverage summaries.
+- This is intentionally codepoint Levenshtein attribution, **not** a phonological-feature classifier. Combining marks and source-specific IPA conventions can create multiple codepoint edits; use the output to locate hypotheses for review, not as linguistic adjudication.
+- Added regression coverage for recurrent lateral [l]→[ɭ], medial [ɸ]→[ɦ], and length-mark insertion patterns.
+- Corrected the multi-engine workflow path filters so PR changes to `src/app/extended_ipa.js`, `scripts/benchmark_extended_ipa_ab.mjs`, and their dedicated Narrow tests trigger the paired A/B benchmark. Previously these browser-only Narrow and report changes could be missed by the PR path filter.
+- The first v11 run `46002146555` was cancelled before jobs were assigned; it is superseded by exact-head run `46002598778` (pending as of 2026-11-27 12:55 UTC). Verification run `46002598827` is queued. No v11 CI scores are claimed yet.
+- Current PR head: `da56c8c928cdcd40f1cddd3cf3e0c5e7c2ba8132`.
