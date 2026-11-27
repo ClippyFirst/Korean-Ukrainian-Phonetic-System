@@ -151,7 +151,7 @@ def test_extended_phonemic_layer_keeps_source_attested_vowel_length():
 
 
 def test_extended_result_layers_include_typed_segments():
-    extended = phoneticize_korean("с") if False else phoneticize_korean("시")["extended_ipa"]
+    extended = phoneticize_korean("시")["extended_ipa"]
     for level in ("phonemic", "broad", "narrow"):
         assert isinstance(extended["layers"][level]["segments"], list)
         assert extended["layers"][level]["segments"]
