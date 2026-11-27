@@ -97,3 +97,11 @@ def test_layer_segment_ids_are_unique_across_syllables():
     tokens = phoneticize_korean("나라")["extended_ipa"]["layers"]["narrow"]["segments"]
     ids = [item["id"] for item in tokens]
     assert len(ids) == len(set(ids))
+
+
+def test_segment_parser_rejects_invalid_offsets_and_provenance():
+    import pytest
+    with pytest.raises(ValueError, match="ipa_offset"):
+        parse_ipa_segments("a", ipa_offset=-1)
+    with pytest.raises(ValueError, match="arrays of strings"):
+        parse_ipa_segments("a", provenance={"rule_ids": [1]})
