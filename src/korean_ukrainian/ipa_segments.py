@@ -76,16 +76,27 @@ def parse_ipa_segments(ipa: str, *, source_span: dict | None = None,
     """
     if not isinstance(ipa, str):
         raise TypeError("IPA input must be a string")
+    if not isinstance(ipa_offset, int) or isinstance(ipa_offset, bool) or ipa_offset < 0:
+        raise ValueError("ipa_offset must be a non-negative code-point offset")
     if source_span is not None:
         if (not isinstance(source_span, dict) or set(source_span) != {"start", "end"}
-                or not isinstance(source_span["start"], int) or not isinstance(source_span["end"], int)
+                or not isinstance(source_span["start"], int) or isinstance(source_span["start"], bool)
+                or not isinstance(source_span["end"], int) or isinstance(source_span["end"], bool)
                 or source_span["start"] < 0 or source_span["end"] <= source_span["start"]):
             raise ValueError("source_span must be a non-empty code-point span or None")
-    provenance = provenance if isinstance(provenance, dict) else {}
+    if provenance is None:
+        provenance = {}
+    if not isinstance(provenance, dict):
+        raise TypeError("provenance must be an object")
     rule_ids = provenance.get("rule_ids", [])
     evidence_refs = provenance.get("evidence_refs", [])
-    if not isinstance(rule_ids, list) or not isinstance(evidence_refs, list):
-        raise ValueError("provenance rule_ids and evidence_refs must be arrays")
+    if (not isinstance(rule_ids, list) or not all(isinstance(value, str) for value in rule_ids)
+            or not isinstance(evidence_refs, list) or not all(isinstance(value, str) for value in evidence_refs)):
+        raise ValueError("provenance rule_ids and evidence_refs must be arrays of strings")
+    evidence_status = provenance.get("evidence_status", "not-attributed")
+    environment = provenance.get("environment")
+    if not isinstance(evidence_status, str) or (environment is not None and not isinstance(environment, str)):
+        raise ValueError("provenance evidence_status must be a string and environment a string or None")
     points = list(ipa)
     tokens: list[dict] = []
     i = 0
@@ -117,7 +128,11 @@ def parse_ipa_segments(ipa: str, *, source_span: dict | None = None,
             unknown_number += 1
             tokens.append({"id": f"unknown-{unknown_number:04d}", "kind": "unknown", "ipa": char,
                            "ipa_span": {"start": ipa_offset+i, "end": ipa_offset+i+1},
-                           "source_span": None, "reason": "unrecognized_ipa_code_point"})
+                           "source_span": dict(source_span) if source_span is not None else None,
+                           "source_alignment": "syllable-span" if source_span is not None else "unavailable",
+                           "reason": "unrecognized_ipa_code_point",
+                           "provenance": {"rule_ids": list(rule_ids), "evidence_refs": list(evidence_refs),
+                                          "evidence_status": evidence_status, "environment": environment}})
             i += 1
             continue
         start = i
@@ -136,8 +151,8 @@ def parse_ipa_segments(ipa: str, *, source_span: dict | None = None,
             "source_alignment": "syllable-span" if source_span is not None else "unavailable",
             "provenance": {
                 "rule_ids": list(rule_ids), "evidence_refs": list(evidence_refs),
-                "evidence_status": provenance.get("evidence_status", "not-attributed"),
-                "environment": provenance.get("environment"),
+                "evidence_status": evidence_status,
+                "environment": environment,
             },
         })
     return tokens
