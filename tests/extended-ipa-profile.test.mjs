@@ -213,7 +213,7 @@ test('browser exposes an unselected coarticulatory palatalization candidate for 
 
 
 test('word-final coda stops expose optional unreleased candidates without changing primary IPA', () => {
-  for (const [word, primary, candidate] of [['낫', 'nat̚', 'nat'], ['밖', 'pak̚', 'pak'], ['밥', 'pap̚', 'pap']]) {
+  for (const [word, primary, candidate] of [['낫', 'nat̚', 'nat'], ['밖', 'pak̚', 'pak'], ['밥', 'pap̚', 'pap'], ['닭', 'tak̚', 'tak'], ['값', 'kap̚', 'kap']]) {
     const result = extended(word);
     assert.equal(result.layers.narrow.ipa, primary);
     const variant = result.variants.find(item => item.layer === 'narrow' && item.ipa === candidate);
