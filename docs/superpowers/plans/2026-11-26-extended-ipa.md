@@ -246,3 +246,8 @@ A source-level review found two new parser tests treating ASCII `?` as an unknow
 
 
 A second test-oracle defect was found during review: the browser test destructured the third token as the unknown token even though the fixture contains a later segment and word boundary before the unknown emoji. It now selects tokens by their explicit `kind`. This correction is test-only and awaits exact-head CI.
+
+
+### PR/CI topology update — 2026-11-27
+
+PR #510 currently targets `main` temporarily so the repository's mainline pull-request verification workflows can run. The incremental implementation itself remains a clean stack on PR #509: comparing #509's head `6b473a18e3f4e7f971398272ff0ef0e7f1be6abe` to this branch gives 73 commits ahead, 0 behind, and 16 changed files. Once exact-head CI has completed and its logs/artifacts have been inspected, retarget PR #510 to PR #509's branch to restore the compact stacked diff. Current branch head at this note: `a0498f51a0d185be6a9d4271e352b187712ecba9`.
