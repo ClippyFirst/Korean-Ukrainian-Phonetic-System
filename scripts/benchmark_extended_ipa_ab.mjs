@@ -136,7 +136,7 @@ export function summarizeNarrowVariants(rows, engine) {
     }
   }
   return {
-    interpretation: 'Candidate coverage only; variants are unselected and are not scored as correct/incorrect without layer-matched narrow gold.',
+    interpretation: 'Candidate coverage is reported separately from primary IPA scores; unselected variants are not production predictions. The separately labeled oracle upper bound compares them to corpus IPA labels, which are not layer-matched narrow gold.',
     eligible_tokens: eligibleTokens,
     tokens_with_variants: tokensWithVariants,
     variant_token_coverage_rate: eligibleTokens ? Number((tokensWithVariants / eligibleTokens).toFixed(6)) : null,
