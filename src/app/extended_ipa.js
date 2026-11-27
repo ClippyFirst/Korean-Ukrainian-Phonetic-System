@@ -15,6 +15,10 @@ const EVIDENCE = {
     refs: ['https://discovery.ucl.ac.uk/id/eprint/1324541/1/1324541.pdf'],
     status: 'secondary-description-candidate-only'
   },
+  'narrow-coda-stop-unreleased-candidate': {
+    refs: ['https://doi.org/10.1017/S0025100300004758', 'https://doi.org/10.1006/JPHO.1996.0016', 'https://doi.org/10.13064/ksss.2026.18.1.021'],
+    status: 'source-scoped-release-variant-only'
+  },
   'narrow-lenis-sibilant-place': {
     refs: ['https://doi.org/10.17959/sppm.2010.16.1.3'],
     status: 'source-scoped-acoustic-coarticulation'
@@ -347,6 +351,21 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
           });
         }
       }
+      const codaStopPlace = {
+        'ㄱ':'k','ㄲ':'k','ㅋ':'k','ㄷ':'t','ㅅ':'t','ㅆ':'t',
+        'ㅈ':'t','ㅉ':'t','ㅊ':'t','ㅌ':'t','ㅂ':'p','ㅍ':'p'
+      }[currentParsed?.coda];
+      const nextItem = sourceTrace[sourceIndex + 1];
+      const nextValue = String(nextItem?.source ?? '');
+      const wordFinalCoda = !nextItem || nextItem.status === 'literal' && /^[\s\p{P}]+$/u.test(nextValue);
+      if (codaStopPlace && derived.ipa.endsWith(codaStopPlace) && wordFinalCoda) {
+        narrowVariantSites.push({
+          ipaStart: ipaStart + [...derived.ipa].length - 1, sourceSpan: span,
+          from: codaStopPlace, to: codaStopPlace + '̚',
+          evidence: 'narrow-coda-stop-unreleased-candidate',
+          environment: 'word-final coda ' + currentParsed.coda + '; release realization unobserved'
+        });
+      }
       previousWasHangul = true;
     } else previousWasHangul = false;
     if (span) { boundaries.push({ offset: span.end, kind: 'syllable' }); syllableSpans.push(span); }
@@ -375,7 +394,9 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
         evidence_status: evidence.status,
         evidence_refs: evidence.refs,
         environment: site.environment,
-        uncertainty: site.evidence === 'narrow-coda-n-palatalization-candidate'
+        uncertainty: site.evidence === 'narrow-coda-stop-unreleased-candidate'
+          ? 'Lee (1993) illustrates unreleased coda stops; Kim & Jongman (1996) observed bursts after 83% of word-final stops in a four-speaker sample; Cha (2026) did not quantify burst frequency. Release is not inferable from text, so the candidate remains unselected.'
+          : site.evidence === 'narrow-coda-n-palatalization-candidate'
           ? 'Secondary description in Lee (1996), summarized by Kim (2011, p.23); not direct acoustic evidence for this specific coda context, so candidates remain unselected.'
           : site.evidence === 'narrow-coda-retroflex-lateral-candidate'
           ? 'Coda retroflexion is sociophonetic and depends on speaker, dialect, style, preceding vowel and whether the token is realized as a lateral; text-only input cannot select it.'
@@ -418,8 +439,8 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       },
       narrow: {
         ipa: narrowIpa,
-        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v13',
-        profile_version: 13, level: 'narrow',
+        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v14',
+        profile_version: 14, level: 'narrow',
         status: hasUnresolvedSource ? 'diagnostic-only-unresolved-source' : 'partial-research-only',
         evidence_status: 'partial-source-scoped-hypotheses-not-independently-reviewed',
         target_compatible: false
