@@ -1,6 +1,7 @@
 """Versioned typed result contract for Korean Extended IPA profiles."""
 from __future__ import annotations
 from typing import Any
+from .ipa_segments import parse_ipa_segments
 
 SCHEMA_VERSION = "1.1"
 
@@ -15,6 +16,38 @@ PROFILE_REGISTRY = {
                "status": "partial-research-only",
                "evidence_status": "source-scoped-hypotheses-require-independent-review", "target_compatible": False},
 }
+
+
+
+def _segments_for_layer(ipa: str | None, trace: list[dict[str, Any]], level: str) -> list[dict[str, Any]]:
+    if not isinstance(ipa, str) or not ipa:
+        return []
+    output: list[dict[str, Any]] = []
+    cursor = 0
+    for item in trace:
+        if not isinstance(item, dict) or item.get("layer") != level or not isinstance(item.get("ipa"), str) or not item["ipa"]:
+            continue
+        value = item["ipa"]
+        points = list(ipa)
+        value_points = list(value)
+        start = next((i for i in range(cursor, len(points) - len(value_points) + 1)
+                      if points[i:i + len(value_points)] == value_points), None)
+        if start is None:
+            continue
+        tokens = parse_ipa_segments(
+            value,
+            source_span=item.get("source_span"),
+            provenance={
+                "rule_ids": item.get("rule_ids", []),
+                "evidence_refs": item.get("evidence_refs", []),
+                "evidence_status": item.get("evidence_status", "not-attributed"),
+                "environment": item.get("environment"),
+            },
+            ipa_offset=start,
+        )
+        output.extend(tokens)
+        cursor = start + len(value_points)
+    return output if output else parse_ipa_segments(ipa)
 
 
 def validate_extended_ipa_result(result: dict[str, Any]) -> list[str]:
@@ -52,6 +85,10 @@ def validate_extended_ipa_result(result: dict[str, Any]) -> list[str]:
                 errors.append(f"layers.{level}.status must be a string")
             if not isinstance(layer.get("target_compatible"), bool):
                 errors.append(f"layers.{level}.target_compatible must be boolean")
+    if isinstance(layers, dict):
+        for level, layer in layers.items():
+            if isinstance(layer, dict) and not isinstance(layer.get("segments"), list):
+                errors.append(f"layers.{level}.segments must be an array")
     for name in ("variants", "boundaries", "trace"):
         if not isinstance(result[name], list):
             errors.append(f"{name} must be an array")
@@ -137,6 +174,8 @@ def build_extended_ipa_result(source: str, layers: dict[str, dict[str, Any]], *,
         },
         "acoustic_annotations": [],
     }
+    for level, layer in result["layers"].items():
+        layer["segments"] = _segments_for_layer(layer.get("ipa"), result["trace"], level)
     errors = validate_extended_ipa_result(result)
     if errors:
         raise ValueError("invalid Extended IPA result: " + "; ".join(errors))
