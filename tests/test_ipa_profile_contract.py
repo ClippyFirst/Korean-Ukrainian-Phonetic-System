@@ -25,7 +25,7 @@ def test_extended_ipa_retains_existing_narrow_contextual_realizations():
     assert phoneticize_korean("녀")["extended_ipa"]["layers"]["narrow"]["ipa"] == "ɲjʌ"
     assert phoneticize_korean("니")["extended_ipa"]["layers"]["narrow"]["ipa"] == "ni"
     assert phoneticize_korean("아하")["extended_ipa"]["layers"]["narrow"]["ipa"] == "a.ɸa"
-    assert phoneticize_korean("나라")["extended_ipa"]["layers"]["narrow"]["ipa"] == "na.ɭa"
+    assert phoneticize_korean("나라")["extended_ipa"]["layers"]["narrow"]["ipa"] == "na.ɾa"
 
 
 def test_extended_ipa_keeps_variants_and_unicode_source_alignment():
