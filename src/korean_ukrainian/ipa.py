@@ -268,8 +268,12 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
                     evidence_status = "source-scoped-position-conditioned-variant-only"
                     note = ("Kim-Renaud (2022, pp. 25-26, 38-39) describes postconsonantal ㅟ with a high-front rounded glide [ɥ] plus [i], alongside monophthongal [y] variation. Keep [y] primary; expose [ɥi] only as an unselected candidate. " + rounded_glide_ref)
                     labels = ["ㅟ [ɥi]"]
-                if rendered[i].startswith(from_form):
+                if from_form == "y" and "y" in rendered[i]:
+                    alternate[i] = rendered[i].replace(from_form, to_form, 1)
+                elif rendered[i].startswith(from_form):
                     alternate[i] = to_form + rendered[i][len(from_form):]
+                else:
+                    continue
                     variants.append({
                         "layer": "narrow", "syllable_indices": [i],
                         "ipa": render_syllable_sequence(items, alternate),
