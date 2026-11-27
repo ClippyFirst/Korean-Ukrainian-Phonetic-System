@@ -97,6 +97,7 @@ def test_layer_segment_ids_are_unique_across_syllables():
     tokens = phoneticize_korean("나라")["extended_ipa"]["layers"]["narrow"]["segments"]
     ids = [item["id"] for item in tokens]
     assert len(ids) == len(set(ids))
+    assert any(item["kind"] == "boundary" and item["ipa"] == "." for item in tokens)
 
 
 def test_segment_parser_rejects_invalid_offsets_and_provenance():
