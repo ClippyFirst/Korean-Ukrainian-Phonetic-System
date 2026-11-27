@@ -2611,3 +2611,16 @@ Unselected candidate diagnostics:
 - Evidence: Lee (1993, p.31) illustrates unreleased coda stops; Kim & Jongman (1996) found a brief burst after 83% of word-final stops in a four-speaker sample; Cha (2026) reports task/place-dependent production traces but no burst frequency. Thus the candidate is deliberately limited and never selected from spelling alone.
 - The source register now includes Kim & Jongman (1996) and Cha (2026), and tests cover ㄱ/ㄲ/ㅋ, ㄷ/ㅅ and ㅂ codas plus complex ㄺ/ㅄ codas, with a nonfinal negative control.
 - Current runtime profile is `clippyfirst-korean-narrow-contextual-allophones-v14`. Current code head when this note was prepared: `53ae4a48a2893f944e320bb08a1d3e625cfb1ca6`. v14 verification run `46058419570` completed: Python regression/data integrity **PASS**, browser suite **1,507/1,507 PASS**, source redistribution-rights gate **PASS**, production build and generated-page verification **PASS**. Source register has 255 structurally valid rows. Exact v14 paired multi-engine/A-B run `46058419641` remains pending; no v14 score is claimed yet.
+
+
+## Benchmark-led interaction correction — 2026-11-27
+
+**Scope:** exact, evidence-backed Korean phonological interaction discovered in the v14 UGTPHON/SIGMORPHON mismatch review. This is a core surface-phonology correction; it does not select any speaker-conditioned Narrow variant.
+
+- The paired mismatch ledger contains the token 물고기 with the current output lacking both the corpus-labelled coda-lateral detail and the fortis onset: the reference form includes [ɭ] and [k͈]. The codepoint edits are diagnostic, not a declaration that the corpus label is Narrow IPA gold.
+- NIKL Online Q&A qna_seq=335858 (answer 2026-09-16) explicitly explains 물고기[물꼬기] as a §28 compound-fortition case. Added only the exact 물>고 license to Python R014 and browser NIKL_28_COMPOUND_FORTITION_FORMS; no productive ㄹ+ㄱ rule was added.
+- Added cross-engine interaction regressions: §28 changes 물고기 to 물꼬기 / mul.k͈o.ɡi; the separate [ɭ] coda remains an unselected speaker-conditioned Narrow candidate (muɭ.k͈o.ɡi). The lookalike/verb-form control 물고 remains untensed.
+- Registered the exact NIKL Q&A in data/korean/sources.csv and research/SOURCE-REGISTER.csv. It is citation-only; item-level KOGL marking is not verified and no source text/data was copied.
+- **Verification status at commit creation:** tests and paired A/B are queued for exact-head GitHub Actions. No benchmark uplift is claimed until the same pinned UGTPHON/SIGMORPHON occurrences complete and the artifact is inspected. The independent Narrow-gold limitation remains unchanged.
+
+**Acceptance:** Python/browser rule parity; positive and negative exact-form controls; Narrow candidate remains unselected; source-register integrity; full Python/browser/build checks; same-split paired A/B with per-occurrence changes and no regressions outside the licensed context.
