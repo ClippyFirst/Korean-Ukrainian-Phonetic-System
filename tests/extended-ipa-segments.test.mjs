@@ -20,6 +20,13 @@ test('segment IR recognizes extended Korean IPA consonants and feature bundles',
   assert.equal(segments[5].features.manner, 'fricative');
 });
 
+test('segment IR preserves labialized voiceless /h/ as a modifier feature', () => {
+  const segment = parseIpaSegments('ɸʷ').find(item => item.kind === 'segment');
+  assert.equal(segment.base, 'ɸ');
+  assert.deepEqual(segment.modifiers, ['ʷ']);
+  assert.deepEqual(segment.features.secondary_articulation, ['labialized']);
+});
+
 test('segment IR treats affricates atomically and retains vowel length', () => {
   const segments = parseIpaSegments('tɕʰiː').filter(item => item.kind === 'segment');
   assert.deepEqual(segments.map(item => item.ipa), ['tɕʰ','iː']);
@@ -74,7 +81,9 @@ test('engine emits expanded aspiration and contextual allophones in the correct 
   assert.ok(liquidVariantResult.variants.some(item => item.layer === 'narrow' && item.ipa === 'na.ɭa' && item.selected === false));
   assert.equal(layer('아하','narrow'),'a.ɦa');
   assert.equal(layer('히','narrow'),'çi');
-  assert.equal(layer('후','narrow'),'xu');
+  assert.equal(layer('후','narrow'),'ɸʷu');
+  assert.equal(layer('호','narrow'),'ɸʷo');
+  assert.equal(layer('흐','narrow'),'xɯ');
   assert.ok(!layer('안하','narrow').includes('ɦ'));
 });
 
