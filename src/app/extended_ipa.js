@@ -354,7 +354,7 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
           && ['ㅣ', ...GLIDE_NUCLEI].includes(currentParsed.vowel) && derived.ipa.startsWith('l')) {
         narrowVariantSites.push({ ipaStart, sourceSpan: span, from: 'l', to: 'lʲ',
           evidence: 'narrow-lateral-palatalization-candidate',
-          environment: 'geminate lateral before high-front vocoid /i,j/; gradient [lʲ] candidate' });
+          environment: 'geminate lateral before high-front vocoid /i,j/' });
         narrowVariantSites.push({ ipaStart, sourceSpan: span, from: 'l', to: 'ʎ',
           evidence: 'narrow-palatal-lateral-candidate',
           environment: 'geminate lateral before /i,j/; cited [ʎ] description, not categorical acoustic adjudication' });
