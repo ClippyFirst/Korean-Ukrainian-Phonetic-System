@@ -58,8 +58,8 @@ test('ㅟ exposes position-conditioned glide variants and ㅅ+ㅟ iterative pala
   assert.equal(glideVariant.selected, false);
 
   const interaction = extended('쉽다');
-  assert.equal(interaction.layers.narrow.ipa, 'sʰy.p̚.t͈a');
-  const combined = interaction.variants.find(item => item.layer === 'narrow' && item.ipa === 'ɕʰɥi.p̚.t͈a');
+  assert.equal(interaction.layers.narrow.ipa, 'sʰyp̚.t͈a');
+  const combined = interaction.variants.find(item => item.layer === 'narrow' && item.ipa === 'ɕʰɥip̚.t͈a');
   assert.ok(combined);
   assert.equal(combined.selected, false);
   assert.equal(combined.evidence_status, 'source-scoped-iterative-palatalization-candidate-only');
