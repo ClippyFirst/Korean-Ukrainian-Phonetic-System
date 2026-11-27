@@ -11,7 +11,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createBrowserKozakKimEngine, evaluateRows } from './benchmark_kozak_kim_browser.mjs';
+import { createBrowserKozakKimEngine, evaluateRows, normalizeIpa } from './benchmark_kozak_kim_browser.mjs';
 import { buildExtendedIpaResult } from '../src/app/extended_ipa.js';
 import { phonemicIpaFromHangul } from '../src/app/phonemic_ipa.js';
 
@@ -76,6 +76,11 @@ export function summarizeNarrowVariants(rows, engine) {
   let totalVariants = 0;
   let selectedVariants = 0;
   let primaryIpaChangedTokens = 0;
+  let scoredGoldTokens = 0;
+  let primaryExactMatches = 0;
+  let candidateOracleExactMatches = 0;
+  let candidateOracleRescuedTokens = 0;
+  const oracleRescuedByEnvironment = {};
   const byEnvironment = {};
   const byEvidenceStatus = {};
   const examples = [];
@@ -94,8 +99,24 @@ export function summarizeNarrowVariants(rows, engine) {
       );
       const primaryNarrow = extended.layers.narrow.ipa;
       if (primaryNarrow && primaryNarrow !== base.ipa) primaryIpaChangedTokens += 1;
+      const goldVariants = String(token.phoneme).split(',').map(normalizeIpa).filter(Boolean);
+      const primaryNormalized = normalizeIpa(primaryNarrow);
+      const primaryExact = goldVariants.includes(primaryNormalized);
+      if (goldVariants.length && primaryNormalized) {
+        scoredGoldTokens += 1;
+        if (primaryExact) primaryExactMatches += 1;
+      }
       const variants = (Array.isArray(extended.variants) ? extended.variants : [])
         .filter(variant => variant.layer === 'narrow');
+      const oracleMatch = variants.find(variant => goldVariants.includes(normalizeIpa(variant.ipa)));
+      if (primaryNormalized && goldVariants.length && (primaryExact || oracleMatch)) {
+        candidateOracleExactMatches += 1;
+        if (!primaryExact && oracleMatch) {
+          candidateOracleRescuedTokens += 1;
+          const environment = oracleMatch.environment || 'unspecified';
+          oracleRescuedByEnvironment[environment] = (oracleRescuedByEnvironment[environment] ?? 0) + 1;
+        }
+      }
       if (!variants.length) continue;
       tokensWithVariants += 1;
       totalVariants += variants.length;
@@ -123,6 +144,13 @@ export function summarizeNarrowVariants(rows, engine) {
     mean_variants_per_eligible_token: eligibleTokens ? Number((totalVariants / eligibleTokens).toFixed(6)) : null,
     selected_variant_candidates: selectedVariants,
     primary_ipa_changed_tokens: primaryIpaChangedTokens,
+    candidate_oracle_interpretation: 'Offline upper-bound diagnostic only: an unselected candidate exactly matches at least one corpus IPA variant. It is not accuracy, not independent narrow gold, and must never select runtime output.',
+    candidate_oracle_scored_tokens: scoredGoldTokens,
+    primary_exact_matches: primaryExactMatches,
+    candidate_oracle_exact_matches: candidateOracleExactMatches,
+    candidate_oracle_exact_rate: scoredGoldTokens ? Number((candidateOracleExactMatches / scoredGoldTokens).toFixed(6)) : null,
+    candidate_oracle_rescued_tokens: candidateOracleRescuedTokens,
+    candidate_oracle_rescued_by_environment: Object.fromEntries(Object.entries(oracleRescuedByEnvironment).sort(([a],[b]) => a.localeCompare(b))),
     by_environment: Object.fromEntries(Object.entries(byEnvironment).sort(([a],[b]) => a.localeCompare(b))),
     by_evidence_status: Object.fromEntries(Object.entries(byEvidenceStatus).sort(([a],[b]) => a.localeCompare(b))),
     examples
