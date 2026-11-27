@@ -95,3 +95,15 @@ test('layer segment identifiers are unique across syllables', () => {
   const ids = result.layers.narrow.segments.map(item => item.id);
   assert.equal(new Set(ids).size, ids.length);
 });
+
+test('unknown code points retain source alignment and provenance; invalid offsets are rejected', () => {
+  const [unknown] = parseIpaSegments('?', {
+    sourceSpan: { start: 2, end: 3 },
+    provenance: { ruleIds: ['r1'], evidenceRefs: ['SRC-1'] }
+  });
+  assert.equal(unknown.kind, 'unknown');
+  assert.deepEqual(unknown.source_span, { start: 2, end: 3 });
+  assert.deepEqual(unknown.provenance.rule_ids, ['r1']);
+  assert.throws(() => parseIpaSegments('a', { ipaOffset: -1 }), /ipaOffset/);
+  assert.throws(() => parseIpaSegments('a', { provenance: { ruleIds: [1] } }), /arrays of strings/);
+});
