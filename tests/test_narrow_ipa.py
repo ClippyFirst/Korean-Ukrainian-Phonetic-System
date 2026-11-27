@@ -59,8 +59,8 @@ def test_rounded_front_vowel_exposes_position_conditioned_glides_and_sibilant_in
     assert "postconsonantal" in glide_variant["environment"]
 
     interaction = _ipa("쉽다", "narrow")
-    assert interaction["ipa"] == "sʰy.p̚.t͈a"
-    combined = next(item for item in interaction["variants"] if item["ipa"] == "ɕʰɥi.p̚.t͈a")
+    assert interaction["ipa"] == "sʰyp̚.t͈a"
+    combined = next(item for item in interaction["variants"] if item["ipa"] == "ɕʰɥip̚.t͈a")
     assert combined["selected"] is False
     assert combined["evidence_status"] == "source-scoped-iterative-palatalization-candidate-only"
     assert "iterative s-palatalization" in combined["environment"]
