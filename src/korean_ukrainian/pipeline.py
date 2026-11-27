@@ -426,7 +426,7 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
             "source_span": span,
             "source": item.text,
             "surface": item.text,
-            "ipa": None,
+            "ipa": broad_layer.get("syllables", [None] * len(items))[len([entry for entry in extended_trace if entry.get("layer") == "broad" and entry.get("evidence_status") == "structural-syllable-alignment"])],
             "rule_ids": [],
             "environment": None,
             "evidence_refs": [],
@@ -434,25 +434,33 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
             "status": "aligned" if span else "source-span-unavailable",
         })
     for index, item in enumerate(items):
-        if index == 0 or item.onset != "ㅎ":
-            continue
-        previous = items[index - 1]
-        if previous.boundary_after == "word" or previous.coda not in {"ㄴ", "ㄹ", "ㅁ", "ㅇ", "ㄵ", "ㄶ", "ㄻ", "ㄼ", "ㄽ", "ㄾ", "ㅀ"}:
-            continue
+        rule_ids = []
+        environment = None
+        evidence_refs = []
+        evidence_status = "no-narrow-rule-applied"
+        status = "aligned" if source_spans[index] else "source-span-unavailable"
+        if index > 0 and item.onset == "ㅎ":
+            previous = items[index - 1]
+            if previous.boundary_after != "word" and previous.coda in {"ㄴ", "ㄹ", "ㅁ", "ㅇ", "ㄵ", "ㄶ", "ㄻ", "ㄼ", "ㄽ", "ㄾ", "ㅀ"}:
+                rule_ids = ["narrow-h-sonorant-variation-unresolved"]
+                environment = "same-word sonorant coda + onset ㅎ; weakening/deletion is speaker-/dialect-conditioned"
+                evidence_refs = [
+                    "https://doi.org/10.17290/jlsk.2019..84.175",
+                    "https://doi.org/10.17959/sppm.2014.20.3.357",
+                ]
+                evidence_status = "speaker-and-dialect-variable-no-single-IPA-selected"
+                status = "unresolved-variation"
         extended_trace.append({
             "layer": "narrow",
             "source_span": source_spans[index],
             "source": item.text,
             "surface": item.text,
             "ipa": narrow_layer.get("syllables", [None] * len(items))[index],
-            "rule_ids": ["narrow-h-sonorant-variation-unresolved"],
-            "environment": "same-word sonorant coda + onset ㅎ; weakening/deletion is speaker-/dialect-conditioned",
-            "evidence_refs": [
-                "https://doi.org/10.17290/jlsk.2019..84.175",
-                "https://doi.org/10.17959/sppm.2014.20.3.357",
-            ],
-            "evidence_status": "speaker-and-dialect-variable-no-single-IPA-selected",
-            "status": "unresolved-variation",
+            "rule_ids": rule_ids,
+            "environment": environment,
+            "evidence_refs": evidence_refs,
+            "evidence_status": evidence_status,
+            "status": status,
         })
 
     for rule in all_traces:
