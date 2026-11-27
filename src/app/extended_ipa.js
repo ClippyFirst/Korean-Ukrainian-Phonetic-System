@@ -2,6 +2,7 @@
  * Narrow output is a partial research preview, not target-compatible.
  */
 import { decompose } from './engine_shared.js';
+import { parseIpaSegments } from './ipa_segments.js';
 
 const GLIDE_NUCLEI = new Set(['ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ']);
 const PALATAL_LIQUID_NUCLEI = new Set(['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ']);
@@ -131,12 +132,32 @@ function narrowSyllable(current, previous, sameWord) {
   return { ipa, rules, environment, refs, evidence };
 }
 
+function segmentsForLayer(ipa, trace, layer) {
+  if (typeof ipa !== 'string' || !ipa) return [];
+  const points = [...ipa]; let cursor = 0; const output = [];
+  for (const item of trace) {
+    if (item?.layer !== layer || typeof item.ipa !== 'string' || !item.ipa) continue;
+    const value = [...item.ipa]; let start = -1;
+    for (let i = cursor; i <= points.length - value.length; i++) {
+      if (value.every((point, index) => points[i + index] === point)) { start = i; break; }
+    }
+    if (start < 0) continue;
+    output.push(...parseIpaSegments(item.ipa, {
+      sourceSpan: item.source_span || null, ipaOffset: start,
+      provenance: { ruleIds: item.rule_ids || [], evidenceRefs: item.evidence_refs || [],
+        evidenceStatus: item.evidence_status || 'not-attributed', environment: item.environment || null }
+    }));
+    cursor = start + value.length;
+  }
+  return output.length ? output : parseIpaSegments(ipa);
+}
+
 export function validateExtendedIpaResult(result) {
   const errors = [];
   if (!result || typeof result !== 'object' || Array.isArray(result)) return ['result must be an object'];
   if (result.schema_version !== '1.1' || result.mode !== 'extended-ipa') errors.push('unsupported schema or mode');
   if (!result.source || typeof result.source.text !== 'string' || result.source.offset_unit !== 'unicode-code-points') errors.push('invalid source metadata');
-  if (!result.layers || !['phonemic','broad','narrow'].every(level => result.layers[level]?.level === level)) errors.push('all three IPA layers are required');
+  if (!result.layers || !['phonemic','broad','narrow'].every(level => result.layers[level]?.level === level && Array.isArray(result.layers[level]?.segments))) errors.push('all three IPA layers with segment arrays are required');
   if (!Array.isArray(result.variants) || !Array.isArray(result.boundaries) || !Array.isArray(result.trace)) errors.push('variants, boundaries and trace must be arrays');
   else for (const item of result.trace) if (!item || !['phonemic','broad','narrow'].includes(item.layer)) errors.push('every trace item requires a valid IPA layer');
   const contextKeys = ['speaker_id','dialect','age_group','speech_style','speech_rate_syllables_per_second','focus','prosodic_position','recording_conditions'];
@@ -274,6 +295,9 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
     },
     pronunciation_status: engineResult.pronunciation_status || 'ungraded'
   };
+  for (const level of ['phonemic','broad','narrow']) {
+    result.layers[level].segments = segmentsForLayer(result.layers[level].ipa, trace, level);
+  }
   const errors = validateExtendedIpaResult(result);
   if (errors.length) throw new TypeError('invalid Extended IPA result: ' + errors.join('; '));
   return result;
