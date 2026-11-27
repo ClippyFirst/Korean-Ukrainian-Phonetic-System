@@ -1,6 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { parseIpaSegments } from '../src/app/ipa_segments.js';
+import { createEngine } from '../src/app/engine.js';
+import { buildExtendedIpaResult } from '../src/app/extended_ipa.js';
+import { phonemicIpaFromHangul } from '../src/app/phonemic_ipa.js';
+import { readFileSync } from 'node:fs';
+const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
+const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
+const engine = createEngine(canonical, lexical);
 
 test('segment IR recognizes extended Korean IPA consonants and feature bundles', () => {
   const result = parseIpaSegments('sʰ.kʰ ɦ ɲ ɭ ɸ ç x');
@@ -33,4 +40,16 @@ test('segment IR preserves syllable source spans and rule provenance explicitly'
   assert.equal(boundary.kind, 'boundary');
   assert.equal(unknown.kind, 'unknown');
   assert.equal(unknown.ipa, '?');
+});
+
+test('browser Extended IPA attaches segment IR and source spans to every layer', () => {
+  const source = '녀';
+  const result = buildExtendedIpaResult(source, engine.convert(source, { morphologyMode: 'strict', ipaProfile: 'clippyfirst-korean-broad-v1' }), phonemicIpaFromHangul(source));
+  assert.ok(result.layers.phonemic.segments.length > 0);
+  assert.ok(result.layers.broad.segments.length > 0);
+  assert.ok(result.layers.narrow.segments.length > 0);
+  const nasal = result.layers.narrow.segments.find(item => item.ipa === 'ɲ');
+  assert.deepEqual(nasal.source_span, { start: 0, end: 1 });
+  assert.equal(nasal.source_alignment, 'syllable-span');
+  assert.ok(nasal.provenance.rule_ids.includes('narrow-nasal-palatalization'));
 });
