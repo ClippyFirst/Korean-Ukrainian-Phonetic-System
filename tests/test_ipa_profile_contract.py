@@ -25,7 +25,11 @@ def test_extended_ipa_retains_existing_narrow_contextual_realizations():
     assert phoneticize_korean("녀")["extended_ipa"]["layers"]["narrow"]["ipa"] == "ɲjʌ"
     assert phoneticize_korean("니")["extended_ipa"]["layers"]["narrow"]["ipa"] == "ni"
     assert phoneticize_korean("아하")["extended_ipa"]["layers"]["narrow"]["ipa"] == "a.ɸa"
-    assert phoneticize_korean("나라")["extended_ipa"]["layers"]["narrow"]["ipa"] == "na.ɾa"
+    result = phoneticize_korean("나라")["extended_ipa"]
+    assert result["layers"]["narrow"]["ipa"] == "na.ɾa"
+    variant = next(item for item in result["variants"] if item["layer"] == "narrow" and item["ipa"] == "na.ɭa")
+    assert variant["selected"] is False
+    assert variant["evidence_status"] == "conflicting-source-descriptions-variant-only"
 
 
 def test_extended_ipa_keeps_variants_and_unicode_source_alignment():
