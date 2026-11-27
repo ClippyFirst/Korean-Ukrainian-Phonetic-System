@@ -1,4 +1,6 @@
 from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
+from korean_ukrainian.ipa import realize_syllables
+from korean_ukrainian.phonology import parse_syllables
 
 
 def _ipa(word: str, level: str) -> dict:
@@ -14,8 +16,8 @@ def test_narrow_profile_aspirates_lenis_sibilant_without_changing_broad():
     narrow = _ipa("사", "narrow")
     assert narrow["ipa"] == "sʰa"
     assert narrow["level"] == "narrow"
-    assert narrow["transcription_profile"]["name"] == "korean-narrow-contextual-allophones-v7"
-    assert narrow["ipa_profile_version"] == 7
+    assert narrow["transcription_profile"]["name"] == "korean-narrow-contextual-allophones-v8"
+    assert narrow["ipa_profile_version"] == 8
     assert narrow["transcription_profile"]["target_compatible"] is False
     assert narrow["transcription_profile"]["limitations"]
 
@@ -93,3 +95,26 @@ def test_post_sonorant_h_is_not_forced_to_voiced_allophone_without_token_evidenc
     assert "ɦ" not in result["ipa"]
     assert any("unresolved" in item.lower()
                for item in result["transcription_profile"]["limitations"])
+
+
+def test_coda_retroflexion_is_exposed_only_as_a_speaker_conditioned_variant():
+    final = _ipa("팔", "narrow")
+    assert final["ipa"] == "pʰal"
+    variant = next(item for item in final["variants"] if item["ipa"] == "pʰaɭ")
+    assert variant["layer"] == "narrow"
+    assert variant["selected"] is False
+    assert variant["evidence_status"] == "speaker-conditioned-sociophonetic-variant-only"
+    assert "10.20405/kl.2024.02.102.63" in variant["evidence_refs"]
+    assert "word-final" in variant["environment"]
+
+    pre_h = realize_syllables(parse_syllables("말하"), level="narrow")
+    assert pre_h["ipa"] == "mal.ha"
+    pre_h_variant = next(item for item in pre_h["variants"] if item["ipa"] == "maɭ.ha")
+    assert pre_h_variant["selected"] is False
+    assert "pre-h" in pre_h_variant["note"] or "before /h/" in pre_h_variant["note"]
+
+
+def test_coda_retroflex_variant_does_not_leak_into_non_triggering_contexts():
+    result = realize_syllables(parse_syllables("팔이"), level="narrow")
+    assert result["ipa"] == "pal.i"
+    assert not any("coda ㄹ" in item.get("vowels", [""])[0] for item in result["variants"])
