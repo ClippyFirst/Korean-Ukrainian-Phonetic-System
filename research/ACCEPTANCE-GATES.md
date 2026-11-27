@@ -2636,3 +2636,15 @@ Unselected candidate diagnostics:
 - First exact-head verification surfaced two test-only defects: the browser negative control assumed an unsupported input would return `surfaceHangul`, and the Python source assertion was case-sensitive. The browser control now checks that 물고 remains untensed in IPA/trace; the source assertion normalizes case. Rerun is pending on the updated head.
 
 **Acceptance:** profile v15 identity matches in Python/browser; identical primary Narrow strings; identical candidate IPA/evidence/source spans; all candidates remain unselected; positive/negative compound fortition interaction; source-register count and rights gate; full Python/browser/build checks; same-split benchmark with candidate-only diagnostics.
+
+
+## Narrow v16: lateral interaction and exact Rule 26 licenses — 2026-11-27
+
+- Benchmark occurrence review shows a recurring interaction in forms such as `올린`, `달린`, and `관리자`: the reference can encode coda retroflexion and a palatal lateral in the following geminate sequence. Existing independent candidates were not enough for the candidate oracle to represent the combined form.
+- Narrow v16 retains the primary lateral output and adds an optional cited [ʎ] candidate for geminate /l/ before /i,j/, plus a combined `[ɭ.ʎ]` candidate when same-word coda ㄹ + onset ㄹ precedes /i,j/. The combined form is explicitly `source-scoped-interaction-hypothesis-only`: Crosby & Dalola (2021) and Crosby (2024) describe the component tendencies, but do not directly adjudicate this exact combined sequence. It is not selected.
+- The source-backed Rule 26 exact-form map now includes `솔직 → 솔찍` (NIKL Q&A 327592, which infers the bare form from `솔직하다[솔찍하다]`) and `일제 → 일쩨` (NIKL Basic Dictionary entry ParaWordNo=72394). Both are exact lexical licenses only; no productive ㄹ+ㅈ generalization was introduced.
+- Added source IDs S046/S047 and registry records SRC-NIKL-QNA-327592 / SRC-NIKL-KRDICT-72394. Rights remain citation-only; no source text or data copied and item-level KOGL markings remain unverified.
+- Profile identity is now `clippyfirst-korean-narrow-contextual-allophones-v16` in Python and browser. Existing [y], [wi]/[ɥi], [ɕʰɥi], [lʲ], [ɭ], and [ʎ] alternatives remain unselected; no speaker/audio adjudication is implied.
+- The exact A/B run for v15 is still queued behind the previous open-corpus matrix run. v16 system verification and A/B are pending; no v16 benchmark uplift is claimed.
+
+**Acceptance:** Python/browser profile identity v16; parity for primary and candidate variants including combined source spans; exact R012 forms and negative control; 259-row source-register/rights gate; Python regression, browser regression, production build, generated pages; same-split A/B with candidate-oracle reported separately from selected-output accuracy.
