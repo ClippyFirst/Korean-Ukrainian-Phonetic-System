@@ -183,3 +183,44 @@ A local clone was attempted and failed with DNS resolution for `github.com`; the
 - `ɦ` is supported by the feature inventory but is not emitted as a universal post-sonorant /h/ realization. Current evidence does not establish a categorical [ɦ] mapping; keep that context unresolved.
 - Schema version is 1.2 because required segment arrays change the result contract. Phonetic profile versions are unchanged.
 - No Ukrainian adapter changes were made.
+
+
+## 2026-11-27 implementation checkpoint (updated)
+
+**Code checkpoint:** `a65c2857496051b077dc09b0427c479b31a11f09` on `feat/korean-extended-ipa-segment-ir-2026-11-27`; draft PR #510 currently targets `main` to run the repository's pull-request CI. PR #509 remains open and untouched; its head is an ancestor of this branch. PRs #505, #506 and #507 remain untouched. Starting default-branch SHA: `97bb411df8b998b22cd58adda015fb941201950c`.
+
+### Implemented in this continuation
+
+- Python and browser segment parsers now share a Unicode-code-point contract: longest-match affricates (with/without tie bar), consonant/vowel core feature bundles, aspiration, length, fortisness, unreleased release, secondary articulation and nasalization.
+- Consonant-only features are explicitly `not-applicable` on vowels.
+- Each segment carries a base, modifiers, feature bundle, IPA span, honest syllable-level source span/alignment, and rule/evidence provenance. Phone-level source alignment is not claimed.
+- Word/syllable/punctuation boundaries are retained as tokens. Unrecognized code points are retained as `unknown` with source/provenance when available.
+- Layer token IDs are unique. Segment trace coverage is checked against the complete layer string; if trace coverage is incomplete, the implementation falls back to full-string parsing rather than dropping tokens or misattributing spans.
+- Python and browser builders expose segment arrays for phonemic, broad and narrow layers; existing IPA strings remain unchanged. Schema and dependency-free validators are version 1.2 and check token structure, offsets, source spans, ordering and unique IDs.
+- Narrow output tests exercise actual generated `kʰ`, `sʰ`, `ɲ`, `ɭ`, `ɸ`, `ç`, and `x`. `ɦ` is represented in the segment inventory but is not emitted categorically after sonorants; the cited Korean evidence does not justify a universal [ɦ] output.
+- Added exhaustive cross-runtime phonemic parity test across all 11,172 modern precomposed Hangul syllables. This compares implementation parity only, not phonetic accuracy.
+
+### Task ledger
+
+| Work item | Status | Acceptance criterion |
+|---|---|---|
+| Existing phonemic/broad/narrow result contract and narrow v6 profile | DONE_VERIFIED (PR #509) | Prior exact-head checks/diagnostics recorded above; benchmark agreement is not phonetic gold |
+| Python segment IR/parser and validator | PARTIAL | Exact-head pytest and schema tests pass |
+| Browser segment IR/parser and validator | PARTIAL | Exact-head Node tests and build pass |
+| Segment arrays for all three layers, boundaries, spans and provenance | PARTIAL | Python/browser integration tests and parity checks pass |
+| Schema v1.2 contract | PARTIAL | JSON Schema and dependency-free validators pass |
+| 11,172-syllable Python/browser phonemic parity | PARTIAL | New full-inventory Node test passes without mismatches |
+| Broad/narrow phonetic accuracy and independent adjudication | BLOCKED | Requires independent Korean phonetic gold and qualified review |
+| Manual keyboard/screen-reader/zoom acceptance | BLOCKED | Human accessibility review required |
+| Rights-cleared audio/acoustic annotation pilot | BLOCKED | No approved rights path or licensed acoustic labels |
+| Extended IPA → Ukrainian adapter | DEFERRED | Explicitly out of scope; existing fail-closed behavior preserved |
+
+### Verification state
+
+For exact code head `a65c2857496051b077dc09b0427c479b31a11f09`, GitHub Actions are queued: Tests `45972473238`, Verify `45972473054`, Browser G2P `45972473135`, Master/research artifacts `45972472985`. The workflow jobs have not started; none is recorded as passed. Earlier runs on superseded commits are not acceptance evidence.
+
+A local clone was attempted and failed because this environment could not resolve `github.com`. No local pytest, Node, JSON Schema, wheel or build command was executed. Test-first files were committed before their implementation, but the pre-implementation workflow was superseded while queued; a RED failure was not observed. Do not claim a completed RED→GREEN cycle.
+
+### Next genuine blocker
+
+Read the exact-head CI results, fix any failures and rerun. After checks pass, retarget PR #510 to PR #509's branch for a clean stacked diff. Independent narrow adjudication, licensed acoustic data and human accessibility review remain external/evidence-limited gates; do not manufacture phonetic rules or benchmark gold to clear them.

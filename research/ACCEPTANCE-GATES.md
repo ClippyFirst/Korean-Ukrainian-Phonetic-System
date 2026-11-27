@@ -2133,3 +2133,15 @@ Disposition: PR #509 remains open/unmerged. Extended IPA remains a research prev
 - [ ] Human keyboard-only, screen-reader and zoom acceptance remains required.
 - [ ] Rights-cleared acoustic data remains a separate gate.
 - Extended IPA target adaptation remains deferred and fail-closed.
+
+
+## Segment IR v1.2 and phonemic runtime parity — 2026-11-27
+
+- [ ] Exact-head Python segment parser/validator, schema, wheel-install and Python 3.11/3.12/3.13 tests pass.
+- [ ] Exact-head browser segment parser/validator, all Node tests, browser G2P and production build pass.
+- [ ] Full 11,172-entry modern Hangul phonemic parity test passes across Python and browser runtimes.
+- [ ] IPA code-point offsets, tied affricates, combining marks, aspiration, length, fortisness, unreleased codas, unknown-symbol preservation, boundary tokens, source spans, provenance and unique IDs pass.
+- [ ] Independently adjudicate broad/narrow phonetic rules before claiming phonetic accuracy.
+- [ ] Complete human keyboard-only, screen-reader and zoom acceptance.
+- [ ] Establish rights-cleared acoustic annotation data.
+- Extended IPA target adaptation remains deferred and fail-closed.
