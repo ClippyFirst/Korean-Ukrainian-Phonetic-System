@@ -207,6 +207,14 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       previousWasHangul = false;
       continue;
     }
+    trace.push({
+      layer: 'broad', source_span: span, source: value, surface: item.surface || value,
+      ipa: item.ipa ?? null,
+      rule_ids: Array.isArray(item.rules) ? item.rules.filter(rule => typeof rule === 'string') : [],
+      environment: null, evidence_refs: [],
+      evidence_status: 'browser-broad-surface-trace',
+      status: item.status || 'ungraded'
+    });
     const derived = narrowSyllable(item, previousHangul, !boundarySincePrevious);
     if (derived.ipa) {
       if (previousWasHangul) narrowIpa += '.';
