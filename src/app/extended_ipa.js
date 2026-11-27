@@ -35,6 +35,10 @@ const EVIDENCE = {
   'narrow-retroflex-lateral-candidate': {
     refs: ['https://doi.org/10.1017/S0025100300004758', 'https://doi.org/10.3765/plsa.v6i1.5002'],
     status: 'conflicting-source-descriptions-variant-only'
+  },
+  'narrow-coda-retroflex-lateral-candidate': {
+    refs: ['https://doi.org/10.3765/plsa.v6i1.5002', 'https://doi.org/10.20405/kl.2024.02.102.63'],
+    status: 'speaker-conditioned-sociophonetic-variant-only'
   }
 };
 
@@ -250,7 +254,8 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
   let cursor = 0, previousHangul = null, boundarySincePrevious = true;
   let narrowIpa = '', previousWasHangul = false;
   const narrowVariantSites = [];
-  for (const item of sourceTrace) {
+  for (let sourceIndex = 0; sourceIndex < sourceTrace.length; sourceIndex++) {
+    const item = sourceTrace[sourceIndex];
     const value = String(item.source ?? '');
     const span = findSpan(source, value, cursor);
     if (span) cursor = span.end;
@@ -281,8 +286,23 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       const previousParsed = !boundarySincePrevious && previousHangul
         ? decompose(previousHangul.surface || previousHangul.source) : null;
       if (currentParsed?.onset === 'ㄹ' && previousParsed?.coda === '' && derived.ipa.startsWith('ɾ')) {
-        narrowVariantSites.push({ ipaStart, sourceSpan: span,
+        narrowVariantSites.push({ ipaStart, sourceSpan: span, from: 'ɾ', to: 'ɭ',
+          evidence: 'narrow-retroflex-lateral-candidate',
           environment: 'same-word intervocalic onset ㄹ; Lee (1993) [ɭ] vs Crosby & Dalola (2021) predominantly [ɾ]' });
+      }
+      if (currentParsed?.coda === 'ㄹ' && derived.ipa.endsWith('l')) {
+        const nextItem = sourceTrace[sourceIndex + 1];
+        const nextValue = String(nextItem?.source ?? '');
+        const nextParsed = /^[가-힣]$/u.test(nextValue) ? decompose(nextItem.surface || nextValue) : null;
+        const sameWordH = !boundarySincePrevious && nextParsed?.onset === 'ㅎ';
+        const wordFinal = !nextItem || nextItem.status === 'literal' && /^[\s\p{P}]+$/u.test(nextValue);
+        if (sameWordH || wordFinal) {
+          narrowVariantSites.push({
+            ipaStart: ipaStart + [...derived.ipa].length - 1, sourceSpan: span, from: 'l', to: 'ɭ',
+            evidence: 'narrow-coda-retroflex-lateral-candidate',
+            environment: sameWordH ? 'coda ㄹ before same-word onset ㅎ' : 'word-final coda ㄹ'
+          });
+        }
       }
       previousWasHangul = true;
     } else previousWasHangul = false;
@@ -304,14 +324,17 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
     for (let index = 0; index < narrowVariantSites.length; index++) {
       const site = narrowVariantSites[index];
       const points = [...narrowIpa];
-      if (points[site.ipaStart] !== 'ɾ') continue;
-      points[site.ipaStart] = 'ɭ';
+      if (points[site.ipaStart] !== site.from) continue;
+      points[site.ipaStart] = site.to;
+      const evidence = EVIDENCE[site.evidence];
       narrowVariants.push({
         id: 'narrow-variant-' + (index + 1), layer: 'narrow', ipa: points.join(''),
-        evidence_status: EVIDENCE['narrow-retroflex-lateral-candidate'].status,
-        evidence_refs: EVIDENCE['narrow-retroflex-lateral-candidate'].refs,
+        evidence_status: evidence.status,
+        evidence_refs: evidence.refs,
         environment: site.environment,
-        uncertainty: 'Speaker, dialect and prosodic context are unknown; optional [ɭ] is not selected over primary [ɾ].',
+        uncertainty: site.from === 'l'
+          ? 'Coda retroflexion is sociophonetic and depends on speaker, dialect, style, preceding vowel and whether the token is realized as a lateral; text-only input cannot select it.'
+          : 'Conflicting descriptions; speaker, dialect and prosodic context are unknown; optional [ɭ] is not selected over primary [ɾ].',
         source_span: site.sourceSpan, selected: false
       });
     }
