@@ -2624,3 +2624,15 @@ Unselected candidate diagnostics:
 - **Verification status at commit creation:** tests and paired A/B are queued for exact-head GitHub Actions. No benchmark uplift is claimed until the same pinned UGTPHON/SIGMORPHON occurrences complete and the artifact is inspected. The independent Narrow-gold limitation remains unchanged.
 
 **Acceptance:** Python/browser rule parity; positive and negative exact-form controls; Narrow candidate remains unselected; source-register integrity; full Python/browser/build checks; same-split paired A/B with per-occurrence changes and no regressions outside the licensed context.
+
+
+## Narrow v15: position-conditioned ㅟ and /swi/ interaction — 2026-11-27
+
+- The exact-head v14 mismatch ledger shows repeated `ㅟ` disagreements (`y` vs `ɥi`) across UGTPHON and SIGMORPHON, including 귀엽냐, 분위기, 뒤로, 취조, 위도, and 따위. The compound example 아쉽네유 also changes both the onset sibilant and the ㅟ nucleus: corpus label [ɕʰɥi] vs primary [sʰy]. These are diagnostic corpus labels, not adjudicated Narrow gold.
+- Kim-Renaud (2022), *The Cambridge Handbook of Korean Linguistics*, chapter 2, describes position-conditioned [wi]/[ɥi] realizations for ㅟ and iterative palatalization in /swi/ before /i/. Added source S045 / SRC-KIM-RENAUD-2022-ROUNDED-GLIDE-INTERACTION as citation-only; no chapter text or data copied.
+- Python and browser Narrow v15 now retain [y] as the primary output and expose only unselected variants: [wi] for word-initial onsetless ㅟ, [ɥi] for non-initial/postconsonantal ㅟ, and a combined [ɕʰɥi] candidate for onset ㅅ+ㅟ. The [ʰ] portion is inherited from the existing partial profile; the new source supports the palatalization/glide interaction, not aspiration.
+- Browser variant replacement now supports multi-code-point edits, so the combined `sʰy` → `ɕʰɥi` candidate is represented as one inspectable interaction rather than two unrelated single-character edits. Python and browser regressions cover 위, 귀 and 쉽다.
+- Narrow primary IPA is unchanged by these candidate-only additions. Therefore no primary Exact/CER uplift is claimed; the next pinned A/B artifact must report candidate diagnostics separately from selected-output accuracy.
+- First exact-head verification surfaced two test-only defects: the browser negative control assumed an unsupported input would return `surfaceHangul`, and the Python source assertion was case-sensitive. The browser control now checks that 물고 remains untensed in IPA/trace; the source assertion normalizes case. Rerun is pending on the updated head.
+
+**Acceptance:** profile v15 identity matches in Python/browser; identical primary Narrow strings; identical candidate IPA/evidence/source spans; all candidates remain unselected; positive/negative compound fortition interaction; source-register count and rights gate; full Python/browser/build checks; same-split benchmark with candidate-only diagnostics.
