@@ -65,10 +65,17 @@ test('word-medial /h/ uses vowel-conditioned voiced allophones while word-initia
   assert.equal(extended('오호').layers.narrow.ipa, 'o.βo');
   assert.equal(extended('하').layers.narrow.ipa, 'ha');
   assert.equal(extended('히').layers.narrow.ipa, 'çi');
-  assert.equal(extended('후').layers.narrow.ipa, 'xu');
+  assert.equal(extended('후').layers.narrow.ipa, 'ɸʷu');
+  const initialRounded = extended('후').trace.find(item => item.source === '후' && item.layer === 'narrow');
+  assert.ok(initialRounded.rule_ids.includes('narrow-h-rounded-allophone'));
+  assert.ok(initialRounded.evidence_refs.some(ref => ref.includes('CBO9781139342858.006')));
+  assert.equal(extended('호').layers.narrow.ipa, 'ɸʷo');
+  assert.equal(extended('흐').layers.narrow.ipa, 'xɯ');
+  assert.equal(extended('아후').layers.narrow.ipa, 'a.βu');
+  assert.equal(extended('아 후').layers.narrow.ipa, 'a ɸʷu');
   const h = extended('아히').trace.find(item => item.source === '히' && item.layer === 'narrow');
   assert.ok(h.rule_ids.includes('narrow-h-intervocalic-allophone'));
-  assert.ok(h.evidence_refs.some(ref => ref.includes('CBO9781139342858')));
+  assert.ok(h.evidence_refs.some(ref => ref.includes('CBO9781139342858.006')));
 });
 
 test('narrow /h/ and liquid assimilation remain explicitly context-bound', () => {
