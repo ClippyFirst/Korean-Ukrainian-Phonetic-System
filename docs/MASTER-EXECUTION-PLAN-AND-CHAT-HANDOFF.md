@@ -2118,3 +2118,37 @@ A local clone was attempted and failed because this environment could not resolv
 ### Next genuine blocker
 
 Read the exact-head CI results, fix any failures and rerun. After checks pass, retarget PR #510 to PR #509's branch for a clean stacked diff. Independent narrow adjudication, licensed acoustic data and human accessibility review remain external/evidence-limited gates; do not manufacture phonetic rules or benchmark gold to clear them.
+
+
+## Extended IPA segment IR follow-up — 2026-11-27 (current status)
+
+Current branch: `feat/korean-extended-ipa-segment-ir-2026-11-27`; PR #510 stacked on PR #509; head `ca00add3aee5ffa46bf2eff9201b94c996aaef11`. PR #510's base is `feat/kozak-kim-extended-ipa-2026-11-26`, and the branch comparison is 65 commits ahead / 0 behind / 16 changed files.
+
+### Implementation ledger
+
+| Item | Status | Evidence / next acceptance |
+|---|---|---|
+| Python Unicode-aware segment parser | PARTIAL | Implemented; exact-head Python suite pending |
+| Browser JavaScript segment parser | PARTIAL | Implemented; exact-head Node/browser suite pending |
+| Phonemic, broad and narrow layer segment arrays | PARTIAL | Integrated; Verify and Browser G2P pending |
+| IPA code-point offsets, syllable source spans, provenance, boundaries, unknown retention | PARTIAL | Regression fixtures authored; exact-head execution pending |
+| Result schema v1.2 and runtime validators | PARTIAL | Schema and validators updated; schema/contract CI pending |
+| Exhaustive 11,172-Hangul Python/browser phonemic parity | PARTIAL | Exporter and parity test added; not yet executed on exact head |
+| Independent narrow/broad phonetic adjudication | BLOCKED | Requires qualified independent reviewers and layer-aligned gold |
+| Rights-cleared acoustic annotation pilot | BLOCKED | Requires approved corpus/audio rights and measurement/redistribution terms |
+| Human accessibility acceptance | TODO | Keyboard-only, screen-reader and zoom review still required |
+| Extended IPA → Ukrainian target adapter | DEFERRED | Explicitly outside this phase; remains fail-closed |
+
+### Exact-head verification
+
+The following exact-head runs are queued, not passed: Tests `45972689269`; Verify `45972689301`; Browser G2P `45972689642`; master/research artifacts `45972689334`. Teacher split audit, editorial review, morphology smoke/consensus, external UGTPHON, native-vs-g2pk, optional g2pK, and test-register extraction are also queued. Charsiu review queue was skipped by workflow policy; this is not a pass. No new benchmark score is claimed.
+
+A local clone was unavailable because DNS resolution for github.com failed. Therefore no local pytest, Node, schema, wheel, build or benchmark command was run. The GitHub Actions runs above are the only executable verification path currently available; do not mark implementation gates DONE_VERIFIED until exact-head jobs finish and logs/artifacts are inspected.
+
+### Evidence boundaries
+
+- Extended IPA means structured segmental representations and their phonetic distinctions, not lossy candidate normalization.
+- The segment inventory can represent `sʰ`, `kʰ`, `ɲ`, `ɦ`, `ɭ`, `ɸ`, `ç`, `x`, etc.; representability does not mean every symbol is a justified categorical Korean output.
+- `ɦ` remains an inventory symbol only. No universal post-sonorant /h/ → [ɦ] rule is asserted.
+- Source alignment is syllable-level where available; the implementation does not claim phone-level Hangul-to-IPA alignment.
+- PR #509 remains open and unmodified. PR #510 is a stacked draft. No merge, release or Ukrainian adapter change has occurred.
