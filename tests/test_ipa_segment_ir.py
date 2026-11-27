@@ -55,7 +55,7 @@ def test_engine_generates_existing_expanded_korean_ipa_realizations_by_layer():
     assert layer("코", "broad") == "kʰo"
     assert layer("사", "narrow") == "sʰa"
     assert layer("녀", "narrow") == "ɲjʌ"
-    assert layer("나라", "narrow") == "na.ɭa"
+    assert layer("나라", "narrow") == "na.ɾa"
     assert layer("아하", "narrow") == "a.ɸa"
     assert layer("히", "narrow") == "çi"
     assert layer("후", "narrow") == "xu"

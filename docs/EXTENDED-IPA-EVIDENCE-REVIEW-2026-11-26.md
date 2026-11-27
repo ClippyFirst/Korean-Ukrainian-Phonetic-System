@@ -73,9 +73,9 @@ The existing Python profile uses [ɲ] before selected /j/-initial nuclei and del
 
 **Um (2014), [S033].** The abstract reports that underlying /h/ can affect the duration of a preceding sonorant even when /h/ is not acoustically manifested. This is evidence against treating deletion as always leaving no phonetic trace; it does not license a deterministic [ɦ] realization for every post-sonorant token.
 
-**Lee (1993), [S018].** The Illustrations of the IPA description documents [ç] before /i,j/, [x] before /u/, and descriptions of Seoul Korean [ɸ] and [ɭ] contexts. These are useful descriptive references, but do not establish speaker-independent probabilities.
+**Lee (1993), [S018].** The Illustrations of the IPA source supports the cited Seoul descriptions for /h/ used above, but its consonant chart lists alveolar [l] and [ɾ]; it does not establish [ɭ] as an intervocalic-onset allophone. The earlier attribution of an intervocalic [ɭ] rule to S018 was too broad and is withdrawn.
 
-**Implementation correction:** narrow profile v6 no longer forces [ɦ] after every same-word sonorant coda. The browser and Python outputs retain /h/ in that context and expose the reported weakening/deletion as an unresolved, speaker-/dialect-conditioned alternative. This is a deliberate evidence-gated correction, not a regression in coverage.
+**Implementation correction:** narrow profile v7 no longer forces [ɦ] after every same-word sonorant coda and no longer converts intervocalic onset ㄹ to [ɭ]. The browser and Python outputs retain /h/ in that context and expose the reported weakening/deletion as an unresolved, speaker-/dialect-conditioned alternative. This is a deliberate evidence-gated correction, not a regression in coverage.
 
 ### 2.7 Vowel and glide variation: ㅢ
 
@@ -138,3 +138,12 @@ undefined
 
 
 **Browser underlying candidate clarification:** the browser's phonemic panel now shows the existing super-soft underlying-grapheme IPA fallback. It is useful as a source-orthography candidate but is not equivalent to the Python phonemic layer and must not be treated as adjudicated phonemic gold. Full browser underlying phonological analysis and cross-runtime parity remain acceptance gates.
+
+
+### 2.9 Korean liquid allophones and retroflexion
+
+**Crosby & Dalola (2021), [S037].** The open-access study analyzed 12 Standard Korean speakers. In its sample, intervocalic liquids were taps [ɾ] in 422/425 cases (99.3%). Retroflex lateral realizations were strongly associated with pre-pausal contexts (odds ratio 54.839) and were also more likely preconsonantally (odds ratio 3.204). The study found only two retroflex tokens before front vowels among the target-word cases and explicitly notes speaker variation and limits in its prosodic controls. The source is published under CC BY 4.0; no audio or annotations are redistributed here.
+
+**Implementation correction — narrow profile v7.** Removed the text-only rule that changed onset ㄹ to [ɭ] intervocalically or before selected front/glide nuclei. Intervocalic onset ㄹ remains [ɾ]. The segment inventory continues to recognize [ɭ], but the text-only profile does not assign it categorically without the position-/prosody-specific evidence needed to distinguish a lateral from an intervocalic tap. Normative ㄹ-coda + ㄹ-onset assimilation remains separate and source-backed.
+
+**Benchmark consequence.** The paired Standard-vs-Extended artifact from the pre-correction browser code shows that [ɭ] appeared in 489 UGTPHON and 152 SIGMORPHON narrow predictions. It co-occurred with 284/288 UGTPHON exact-match losses and all 67 SIGMORPHON exact-match losses; it also co-occurred with 382/388 and 116/117 distance-worsening cases respectively. These are diagnostics against references not independently adjudicated as narrow gold, but the concentration of losses exposes the overgeneralized environment. Re-run the benchmark after v7; do not retain the pre-correction narrow metrics as current evidence.

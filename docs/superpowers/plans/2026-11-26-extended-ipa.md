@@ -333,3 +333,19 @@ The previous PARTIAL labels for the technical segment-IR acceptance gates are su
 | IPA-to-Ukrainian adapter changes | DEFERRED | Out of scope; current fail-closed adapter unchanged |
 
 Core implementation acceptance is therefore technically verified, but the overall Extended IPA research workstream is not release-ready. The benchmark comparison is still pending, and linguistic/audio/accessibility evidence remains open. Do not infer accuracy improvement from parser coverage or cross-runtime parity.
+
+
+## Paired Extended IPA artifact inspection and liquid-rule correction — 2026-11-27
+
+Artifact `standard-vs-extended-ipa-ab-45973857624` (artifact 15188603961; code head `08feed20`) was downloaded and inspected directly. It is a pre-correction browser-engine diagnostic, and its dataset metadata explicitly says the references are not independently adjudicated for phonemic/narrow IPA.
+
+- UGTPHON: standard/broad 52.7387% exact, CER 9.0130%; narrow 55.8845% exact, CER 7.2217%; phonemic 20.2073% exact, CER 23.4737%.
+- SIGMORPHON: standard/broad 35.8717% exact, CER 14.5598%; narrow 39.6794% exact, CER 12.6912%; phonemic 12.9259% exact, CER 26.6742%.
+- Standard IPA and Extended broad were identical by contract for all 2,703 UGTPHON and 999 SIGMORPHON occurrences. No broad-layer uplift exists.
+- Narrow is a different layer, so its higher cross-layer string agreement is not a narrow-IPA accuracy result. The corpora do not provide independently adjudicated narrow-IPA gold.
+
+The artifact exposed a concentrated error: [ɭ] occurred in 489 UGTPHON and 152 SIGMORPHON narrow predictions; it co-occurred with 284/288 UGTPHON exact-match losses and all 67 SIGMORPHON exact-match losses. Crosby & Dalola (2021), a 12-speaker Standard Korean study (CC BY 4.0; DOI 10.3765/plsa.v6i1.5002), found 99.3% intervocalic taps [ɾ] and associated retroflex lateral realizations primarily with pre-pausal and preconsonantal contexts. The old text-only onset rule was therefore overgeneralized and misattributed to Lee (1993).
+
+**Correction committed in this increment:** narrow profile v7 removes automatic [ɭ] from intervocalic and front-vowel onset ㄹ; [ɾ] is retained in those contexts. The parser still represents [ɭ]. Normative ㄹ-coda + ㄹ-onset assimilation is preserved and now cites the NIKL standard rule separately. Source/evidence registries and narrow-profile version IDs are updated. Re-run the A/B benchmark on the corrected code before interpreting narrow metrics.
+
+The artifact's narrow/phonemic figures are retained only as historical pre-correction cross-layer diagnostics. They are not current-head metrics and do not establish accuracy. The exact-head multi-engine workflow remains the next executable benchmark gate; independent layer-matched phonetic gold and audio review remain blocked by missing adjudication/rights.

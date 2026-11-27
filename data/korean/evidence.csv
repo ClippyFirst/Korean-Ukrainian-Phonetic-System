@@ -13,3 +13,4 @@ E010,S001,Fortition after stem-final ㄼ or ㄾ is morphologically conditioned,p
 E011,S001,Sino-Korean ㄹ fortition and adnominal -(으)ㄹ fortition have lexical/morphological conditioning,phonology,established,high,§§26-27,Implemented as explicit-license R012/R013.
 E012,S001,Compound fortition is not exception-free and depends on lexical/semantic relation,phonology,established,high,§28,Implemented as explicit-license R014.
 E013,S001,Saisiot pronunciation has alternative standard paths depending on following material,phonology,established,high,§30,Implemented as conditional R015 without collapsing alternatives.
+E014,S037,Intervocalic Korean liquid is realized as [ɾ] in 99.3% of sampled tokens; retroflex lateral [ɭ] is concentrated before pauses and preconsonantally,phonetics,established,medium,pp. 705–710 Tables 1 and 5,12-speaker Standard Korean study; retroflexion is variable and should not be generalized to intervocalic onset ㄹ or before front vowels

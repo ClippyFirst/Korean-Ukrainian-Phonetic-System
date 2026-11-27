@@ -69,7 +69,7 @@ test('engine emits expanded aspiration and contextual allophones in the correct 
   assert.equal(layer('코','broad'),'kʰo');
   assert.equal(layer('사','narrow'),'sʰa');
   assert.equal(layer('녀','narrow'),'ɲjʌ');
-  assert.equal(layer('나라','narrow'),'na.ɭa');
+  assert.equal(layer('나라','narrow'),'na.ɾa');
   assert.equal(layer('아하','narrow'),'a.ɸa');
   assert.equal(layer('히','narrow'),'çi');
   assert.equal(layer('후','narrow'),'xu');

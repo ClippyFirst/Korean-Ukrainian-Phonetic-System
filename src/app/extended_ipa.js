@@ -5,7 +5,6 @@ import { decompose } from './engine_shared.js';
 import { parseIpaSegments } from './ipa_segments.js';
 
 const GLIDE_NUCLEI = new Set(['ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ']);
-const PALATAL_LIQUID_NUCLEI = new Set(['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ']);
 const SONORANT_CODAS = new Set(['ㄴ','ㄹ','ㅁ','ㅇ','ㄵ','ㄶ','ㄻ','ㄼ','ㄽ','ㄾ','ㅀ']);
 const EVIDENCE = {
   'narrow-nasal-palatalization': {
@@ -29,9 +28,13 @@ const EVIDENCE = {
     refs: ['https://doi.org/10.1017/S0025100300004758'],
     status: 'source-scoped-description'
   },
-  'narrow-liquid-allophone': {
-    refs: ['https://doi.org/10.1017/S0025100300004758'],
-    status: 'source-scoped-description'
+  'liquid-assimilation': {
+    refs: ['https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002'],
+    status: 'normative-standard-pronunciation'
+  },
+  'narrow-retroflex-lateral-candidate': {
+    refs: ['https://doi.org/10.3765/plsa.v6i1.5002'],
+    status: 'position-conditioned-acoustic-variation-not-deterministically-realized'
   }
 };
 
@@ -111,21 +114,12 @@ function narrowSyllable(current, previous, sameWord) {
         environment = 'same word: intervocalic onset ㅎ after open syllable';
       }
     }
-  } else if (parsed.onset === 'ㄹ' && prior) {
-    if (prior.coda === 'ㄹ') {
-      ipa = replaceInitial(ipa, ['ɾ','ɭ'], 'l');
-      if (ipa.startsWith('l')) {
-        rules.push('liquid-assimilation');
-        evidence.push(EVIDENCE['narrow-liquid-allophone']);
-        environment = 'same word: ㄹ coda + ㄹ onset';
-      }
-    } else if (prior.coda === '' || PALATAL_LIQUID_NUCLEI.has(parsed.vowel)) {
-      ipa = replaceInitial(ipa, ['ɾ','l'], 'ɭ');
-      if (ipa.startsWith('ɭ')) {
-        rules.push('narrow-liquid-allophone');
-        evidence.push(EVIDENCE['narrow-liquid-allophone']);
-        environment = 'same word: intervocalic ㄹ or ㄹ before /i,j/-initial nucleus';
-      }
+  } else if (parsed.onset === 'ㄹ' && prior && prior.coda === 'ㄹ') {
+    ipa = replaceInitial(ipa, ['ɾ','l'], 'l');
+    if (ipa.startsWith('l')) {
+      rules.push('liquid-assimilation');
+      evidence.push(EVIDENCE['liquid-assimilation']);
+      environment = 'same word: ㄹ coda + ㄹ onset';
     }
   }
   for (const item of evidence) refs.push(...item.refs);
@@ -328,8 +322,8 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       },
       narrow: {
         ipa: narrowIpa,
-        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v6',
-        profile_version: 6, level: 'narrow',
+        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v7',
+        profile_version: 7, level: 'narrow',
         status: hasUnresolvedSource ? 'diagnostic-only-unresolved-source' : 'partial-research-only',
         evidence_status: 'partial-source-scoped-hypotheses-not-independently-reviewed',
         target_compatible: false

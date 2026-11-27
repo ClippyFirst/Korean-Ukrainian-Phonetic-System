@@ -14,8 +14,8 @@ def test_narrow_profile_aspirates_lenis_sibilant_without_changing_broad():
     narrow = _ipa("사", "narrow")
     assert narrow["ipa"] == "sʰa"
     assert narrow["level"] == "narrow"
-    assert narrow["transcription_profile"]["name"] == "korean-narrow-contextual-allophones-v6"
-    assert narrow["ipa_profile_version"] == 6
+    assert narrow["transcription_profile"]["name"] == "korean-narrow-contextual-allophones-v7"
+    assert narrow["ipa_profile_version"] == 7
     assert narrow["transcription_profile"]["target_compatible"] is False
     assert narrow["transcription_profile"]["limitations"]
 
@@ -72,9 +72,13 @@ def test_python_broad_fortis_sibilant_baseline_is_not_browser_profile_gold():
     assert _ipa("씨", "broad")["ipa"] == "s͈i"
     assert _ipa("싸", "broad")["ipa"] == "s͈a"
 
-def test_narrow_seoul_h_and_liquid_allophones_are_contextual():
+def test_narrow_seoul_h_and_intervocalic_liquid_tap_are_contextual():
     assert _ipa("아하", "narrow")["ipa"] == "a.ɸa"
-    assert _ipa("나라", "narrow")["ipa"] == "na.ɭa"
+    # Crosby & Dalola (2021): 99.3% of intervocalic liquids in their
+    # 12-speaker Standard Korean sample were taps; do not emit [ɭ] here.
+    assert _ipa("나라", "narrow")["ipa"] == "na.ɾa"
+    assert _ipa("다리", "narrow")["ipa"] == "ta.ɾi"
+    assert _ipa("물론", "narrow")["ipa"] == "mul.lon"
     assert _ipa("하", "narrow")["ipa"] == "ha"
     assert _ipa("가을", "narrow")["ipa"] == "ka.ɯl"
 

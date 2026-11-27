@@ -456,10 +456,10 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
             evidence_refs = ["https://doi.org/10.1017/S0025100300004758"]
             evidence_status = "source-scoped-description"
         elif narrow_value.startswith("ɭ"):
-            rule_ids = ["narrow-liquid-allophone"]
-            environment = "same-word liquid context or selected vowel context"
-            evidence_refs = ["https://doi.org/10.1017/S0025100300004758"]
-            evidence_status = "source-scoped-description"
+            rule_ids = ["narrow-retroflex-lateral-candidate"]
+            environment = "position-conditioned lateral token; not assigned by the text-only narrow profile"
+            evidence_refs = ["https://doi.org/10.3765/plsa.v6i1.5002"]
+            evidence_status = "position-conditioned-acoustic-variation-not-deterministically-realized"
         if index > 0 and item.onset == "ㅎ":
             previous = items[index - 1]
             if previous.boundary_after != "word" and previous.coda in {"ㄴ", "ㄹ", "ㅁ", "ㅇ", "ㄵ", "ㄶ", "ㄻ", "ㄼ", "ㄽ", "ㄾ", "ㅀ"}:
