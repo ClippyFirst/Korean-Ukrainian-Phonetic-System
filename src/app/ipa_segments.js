@@ -39,7 +39,7 @@ export function parseIpaSegments(ipa, options={}) {
  const points=[...ipa], tokens=[];let i=0,segment=0,boundary=0,unknown=0;
  while(i<points.length){
   const ch=points[i];
-  if(/\s/u.test(ch)||'.#/|'.includes(ch)){boundary++;tokens.push({id:'boundary-'+String(boundary).padStart(4,'0'),kind:'boundary',boundary:/\s/u.test(ch)?'word':ch==='.'?'syllable':'separator',ipa:ch,ipa_span:{start:ipaOffset+i,end:ipaOffset+i+1}});i++;continue;}
+  if(/\s/u.test(ch)||/\p{P}/u.test(ch)||'.#/|'.includes(ch)){boundary++;tokens.push({id:'boundary-'+String(boundary).padStart(4,'0'),kind:'boundary',boundary:/\s/u.test(ch)?'word':ch==='.'?'syllable':'separator',ipa:ch,ipa_span:{start:ipaOffset+i,end:ipaOffset+i+1}});i++;continue;}
   const raw=[...AFFRICATES.keys()].sort((a,b)=>b.length-a.length).find(v=>points.slice(i,i+[...v].length).join('')===v);
   const base=raw?AFFRICATES.get(raw):BASES.find(v=>points.slice(i,i+[...v].length).join('')===v);
   if(!base){
