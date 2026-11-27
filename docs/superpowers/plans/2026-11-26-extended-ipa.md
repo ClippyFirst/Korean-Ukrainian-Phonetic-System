@@ -450,3 +450,23 @@ The A/B artifact was produced on implementation commit `08feed20a54187ebc1c35f21
 - No F0/VOT/voice-quality realization, dialect choice, speaker choice, or phrase structure is guessed from text. No Ukrainian target adapter change.
 
 **Readiness:** research prototype. Software verification is pending on this branch; no linguistic certification or narrow accuracy gain is claimed.
+
+
+### Additional literature synthesis — 2026-11-27
+
+The completed Undermind review returned 177 relevant papers (summary is abstract/metadata-level unless individually opened). Its central implementation recommendation is to separate normative categorical phonology from narrow phonetic realization and only emit narrow detail when supported by audio or a declared, validated speaker/prosody profile. Research workspace: [Korean phonetic phenomena review](https://app.undermind.ai/projects/de353992-202a-4b09-bf19-47932f80e426?path=%2Frepository-continuation%2FKorean%20phonetic%20phenomena%20implementation%20coverage%20and%20benchmark%20design%202026-11-27).
+
+Newly registered sources:
+- Schweizer, Ahn & Kwon (2026), DOI 10.1017/S002510032510087X: Seoul lenis/aspirated/fortis stop cues differ between IP-initial, AP-initial and word-medial positions. IP/AP-initial distinction uses burst duration and post-stop F0, with H1*-H2* also separating tense from non-tense; word-medial cues include closure duration and voicing during closure. This supports a prosody-aware acoustic annotation layer, not deterministic IPA changes from orthography.
+- Jun (2021), DOI 10.5334/GJGL.1401: n-insertion is gradient, with morphology, etymology, component length, segmental environment and dialect interacting. Do not make a binary rule universal or select it from spelling alone.
+- Lee (2023), DOI 10.17959/sppm.2023.29.2.193, and Chung (2022), DOI 10.18855/lisoko.2022.47.4.009: the /e–ɛ/ merger is age-, gender- and position-sensitive; phonemic identity and measured vowel target are not the same thing.
+- Kang & Kong (2016), DOI 10.13064/KSSS.2016.8.4.039: /o/-raising and /u, ɨ/ fronting vary across speaker cohorts; do not substitute one assumed narrow vowel target for all Seoul speakers.
+
+The review also flags: variable /h/-deletion with residual effects on the preceding sonorant; optional/gradient aspiration merger; lenition and inter-sonorant voicing; compound tensification; coronal place assimilation; liquid assimilation and non-categorical nasal–liquid outcomes; initial denasalization; vowel nasalization/coarticulation; /ɨi/ monophthongization and glide/hiatus behavior; reduction and speech-rate effects; focus and prosodic-boundary strengthening. These require separate rule/variant/acoustic evidence rather than a single global narrow transcription rule.
+
+### Benchmark and corpus design corrections
+
+- Seoul Corpus contains phrasal-word/utterance boundaries and phonemic labels; it is useful for prosody-aware segmentation and phonemic G2P checks, **not** a narrow-phone gold set. OpenSLR SLR113 declares CC BY-NC 2.0, but original upstream rights and derived-label redistribution still require review.
+- KsponSpeech pronunciation transcripts are not equivalent to time-aligned narrow IPA. Do not relabel orthographic or pronunciation text as acoustic IPA gold.
+- Separate four acceptance dimensions: (1) categorical standard-rule correctness on NIKL cases, (2) optional-variant coverage/provenance and abstention, (3) narrow acoustic accuracy on rights-cleared, independently annotated audio with inter-annotator agreement, and (4) runtime determinism/parity. Keep exact match, CER/PER, feature-weighted distance, coverage-adjusted score, and per-rule false-addition/omission counts separate.
+- For stop contrast, evaluate IP/AP/word-medial separately and retain F0/VOT/closure/voice-quality measurements with Praat method, time window, source span and speaker metadata. For vowel and liquid allophones, stratify by dialect, age, gender, style, prosodic position and relevant preceding/following segments. A broad reference cannot certify a narrow output.
