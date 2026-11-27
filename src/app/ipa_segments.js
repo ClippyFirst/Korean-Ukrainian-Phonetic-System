@@ -18,10 +18,10 @@ function featuresFor(base, modifiers) {
  if(CONSONANTS[base]){const [place,manner,voicing]=CONSONANTS[base];f={major_class:'consonant',place,manner,voicing};}
  else if(VOWELS[base]){const [height,backness,roundedness]=VOWELS[base];f={major_class:'vowel',height,backness,roundedness};}
  else f={major_class:'unknown'};
- f.aspiration=modifiers.includes('ʰ')?'aspirated':'unaspirated';
+ f.aspiration=f.major_class==='consonant'?(modifiers.includes('ʰ')?'aspirated':'unaspirated'):'not-applicable';
  f.length=modifiers.includes('ː')?'long':modifiers.includes('ˑ')?'half-long':'unspecified';
- f.fortisness=modifiers.includes('͈')?'fortis':'unspecified';
- f.release=modifiers.includes('̚')?'unreleased':'unspecified';
+ f.fortisness=f.major_class==='consonant'?(modifiers.includes('͈')?'fortis':'unspecified'):'not-applicable';
+ f.release=f.major_class==='consonant'?(modifiers.includes('̚')?'unreleased':'unspecified'):'not-applicable';
  f.secondary_articulation=[...(modifiers.includes('ʲ')?['palatalized']:[]),...(modifiers.includes('ʷ')?['labialized']:[])];
  f.nasalization=modifiers.includes('̃')?'nasalized':'unspecified';
  return f;
