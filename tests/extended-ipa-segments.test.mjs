@@ -30,10 +30,13 @@ test('segment IR treats affricates atomically and retains vowel length', () => {
 });
 
 test('segment IR preserves syllable source spans and rule provenance explicitly', () => {
-  const [segment, boundary, unknown] = parseIpaSegments('ɲ.a 😀', {
+  const tokens = parseIpaSegments('ɲ.a 😀', {
     sourceSpan: { start: 4, end: 5 },
     provenance: { ruleIds: ['narrow-nasal-palatalization'], evidenceRefs: ['SRC-1'] }
   });
+  const segment = tokens.find(item => item.kind === 'segment');
+  const boundary = tokens.find(item => item.kind === 'boundary');
+  const unknown = tokens.find(item => item.kind === 'unknown');
   assert.deepEqual(segment.source_span, { start: 4, end: 5 });
   assert.equal(segment.source_alignment, 'syllable-span');
   assert.deepEqual(segment.provenance.rule_ids, ['narrow-nasal-palatalization']);
