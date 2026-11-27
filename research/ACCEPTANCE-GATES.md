@@ -2550,3 +2550,15 @@ Also aligned word-initial ㅎ rounded-vowel mapping with Shin, Kiaer & Cha (2012
 - Verification run `46053432498`: Python regression/data integrity **PASS**; browser **1,505 passed / 0 failed**; Vite production build **PASS**; `dist/index.html` and `dist/system.html` verified. NIKL metadata-only job skipped by policy.
 - The earlier replacement benchmark `46053424508` was cancelled before job assignment as a newer revision arrived. The currently active long multi-engine comparison `46052610441` runs the v11 runtime but predates the candidate-oracle report extension. Exact-head benchmark `46053548883` is pending and will include the candidate-oracle report once the active run releases the workflow concurrency slot.
 - Do not infer an A/B uplift from the v10 error replay or candidate-oracle metric. Wait for a completed paired v11 A/B artifact and inspect both datasets and per-symbol errors.
+
+## Version label correction and measured Narrow v12 benchmark — 2026-11-27 19:05 UTC
+
+Correction to earlier handoff/PR wording: the runtime code exercised by paired A/B run `46052610441` is **Narrow profile v12**, not v11. The Python registry and browser result both declare `clippyfirst-korean-narrow-contextual-allophones-v12`, `profile_version: 12`. Earlier messages called it v11 because the /h/ correction was first discussed under that working label; use the repository's actual v12 registry as canonical.
+
+Measured v12 paired result (same frozen rows as v10):
+- UGTPHON: 2,702 scored; Standard/Broad exact 52.7387%; Extended Narrow exact 72.2058%; Narrow CER 4.5519%. Relative to v10 Narrow exact 69.5781%: **+2.6277 pp**; CER 5.0063% → 4.5519% (**−0.4544 pp**).
+- SIGMORPHON: 998 scored; Standard/Broad exact 35.8717%; Extended Narrow exact 51.3026%; Narrow CER 9.9824%. Relative to v10 Narrow exact 48.6974%: **+2.6052 pp**; CER 10.7349% → 9.9824% (**−0.7525 pp**).
+- Paired exact outcomes: UGTPHON 71 improved / 0 regressed; SIGMORPHON 26 improved / 0 regressed. Per-token edit distance improved on 96 and 51 tokens respectively; no edit-distance regressions.
+- Standard/Broad vs Extended/Broad had zero prediction/status differences by contract. These metrics remain cross-layer corpus agreement, not independently adjudicated narrow phonetic accuracy.
+
+The paired A/B step and artifact upload succeeded in run `46052610441`; the overall long multi-engine workflow was still completing SIGMORPHON/open-matrix tracks at last check. Exact-head candidate-oracle A/B run `46053826131` is pending; it includes the new candidate-oracle diagnostic. Do not claim its output until it completes.
