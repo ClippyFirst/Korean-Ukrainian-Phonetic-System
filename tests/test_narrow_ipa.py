@@ -155,7 +155,7 @@ def test_coda_nasal_palatalization_before_affricates_is_optional_only():
     by_ipa = {item["ipa"]: item for item in result["variants"]}
     assert "kuɲ.dʑu" in by_ipa
     assert "kunj.dʑu" in by_ipa
-    for variant in (by_ipa["kuɲ.dʑu"], by_ipa["kunʲ.dʑu"]):
+    for variant in (by_ipa["kuɲ.dʑu"], by_ipa["kunj.dʑu"]):
         assert variant["selected"] is False
         assert variant["evidence_status"] == "secondary-description-candidate-only"
         assert "same-word coda ㄴ before alveopalatal affricate" in variant["environment"]
