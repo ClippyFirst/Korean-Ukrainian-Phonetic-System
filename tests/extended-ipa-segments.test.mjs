@@ -30,7 +30,7 @@ test('segment IR treats affricates atomically and retains vowel length', () => {
 });
 
 test('segment IR preserves syllable source spans and rule provenance explicitly', () => {
-  const [segment, boundary, unknown] = parseIpaSegments('ɲ.a ?', {
+  const [segment, boundary, unknown] = parseIpaSegments('ɲ.a 😀', {
     sourceSpan: { start: 4, end: 5 },
     provenance: { ruleIds: ['narrow-nasal-palatalization'], evidenceRefs: ['SRC-1'] }
   });
@@ -119,4 +119,9 @@ test('dependency-free browser validator checks segment spans and unique IDs', ()
   const duplicate = structuredClone(result);
   duplicate.layers.narrow.segments[1].id = duplicate.layers.narrow.segments[0].id;
   assert.ok(validateExtendedIpaResult(duplicate).some(error => error.includes('unique')));
+});
+
+test('punctuation is represented as a boundary token, not an unknown phone', () => {
+  const tokens = parseIpaSegments('ka,na!');
+  assert.deepEqual(tokens.map(item => item.kind), ['segment','segment','boundary','segment','segment','boundary']);
 });
