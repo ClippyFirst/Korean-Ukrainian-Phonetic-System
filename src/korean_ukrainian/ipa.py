@@ -111,28 +111,43 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
         variants=[]
         lee_ref="https://doi.org/10.1017/S0025100300004758"
         crosby_ref="https://doi.org/10.3765/plsa.v6i1.5002"
+        socioling_ref="https://doi.org/10.20405/kl.2024.02.102.63"
         for i,syllable in enumerate(items):
-            if i==0 or syllable.onset!="ㄹ" or not rendered[i].startswith("ɾ"):
-                continue
-            previous=items[i-1]
-            if previous.boundary_after=="word" or previous.coda!="":
-                continue
-            alternate=list(rendered)
-            alternate[i]="ɭ"+alternate[i][1:]
-            variants.append({
-                "layer":"narrow",
-                "syllable_indices":[i],
-                "ipa":render_syllable_sequence(items,alternate),
-                "note":("Conflicting source descriptions: Lee (1993, p.31) describes Seoul /l/ as [ɭ] intervocalically and before /i,j/; "
-                        "Crosby & Dalola (2021) found 99.3% intervocalic taps in their 12-speaker sample. "
-                        "Optional unselected variant only; [ɾ] remains primary. " + lee_ref + " " + crosby_ref),
-                "vowels":["ㄹ [ɭ]"],
-                "evidence_status":"conflicting-source-descriptions-variant-only",
-                "evidence_refs":[lee_ref,crosby_ref],
-                "environment":"same-word intervocalic onset ㄹ",
-                "uncertainty":"Speaker, dialect and prosodic context are unknown; variant is not selected.",
-                "selected":False,
-            })
+            if i>0 and syllable.onset=="ㄹ" and rendered[i].startswith("ɾ"):
+                previous=items[i-1]
+                if previous.boundary_after!="word" and previous.coda=="":
+                    alternate=list(rendered)
+                    alternate[i]="ɭ"+alternate[i][1:]
+                    variants.append({
+                        "layer":"narrow", "syllable_indices":[i],
+                        "ipa":render_syllable_sequence(items,alternate),
+                        "note":("Conflicting descriptions for intervocalic onset /l/: Lee (1993, p.31) describes [ɭ], while Crosby & Dalola (2021) found 422/425 intervocalic liquids as [ɾ]. "
+                                "Optional unselected variant; [ɾ] remains primary. " + lee_ref + " " + crosby_ref),
+                        "vowels":["ㄹ [ɭ]"], "evidence_status":"conflicting-source-descriptions-variant-only",
+                        "evidence_refs":[lee_ref,crosby_ref], "environment":"same-word intervocalic onset ㄹ",
+                        "uncertainty":"Conflicting descriptions; speaker and dialect are unknown.", "selected":False,
+                    })
+            # Coda /l/ has a separate, sociophonetic retroflex variant. The
+            # 2024 study finds higher rates word-finally and before /h/, with
+            # strong dialect/gender/style effects; do not select [ɭ] without
+            # speaker or audio evidence. Keep the canonical [l] untouched.
+            if syllable.coda=="ㄹ" and rendered[i].endswith("l"):
+                next_same_word = i+1<len(items) and syllable.boundary_after!="word"
+                pre_h = next_same_word and items[i+1].onset=="ㅎ"
+                word_final = i+1==len(items) or syllable.boundary_after=="word"
+                if pre_h or word_final:
+                    alternate=list(rendered)
+                    alternate[i]=alternate[i][:-1]+"ɭ"
+                    environment="coda ㄹ before same-word ㅎ" if pre_h else "word-final coda ㄹ (orthographic word boundary or end of input)"
+                    variants.append({
+                        "layer":"narrow", "syllable_indices":[i],
+                        "ipa":render_syllable_sequence(items,alternate),
+                        "note":("Optional sociophonetic [ɭ] coda variant. Crosby (2024) found higher odds word-finally (OR 2.516) and pre-/h/ (OR 3.056), with substantial dialect, gender, age and style effects; the study classified only lateral tokens, not taps. " + crosby_ref + " " + socioling_ref),
+                        "vowels":["coda ㄹ [ɭ]"], "evidence_status":"speaker-conditioned-sociophonetic-variant-only",
+                        "evidence_refs":[crosby_ref,socioling_ref], "environment":environment,
+                        "uncertainty":"Variant frequency depends on dialect, speaker, style and whether /l/ is realized as a lateral; text-only input cannot select it.",
+                        "selected":False,
+                    })
         return variants
     if level!="broad":
         return []
