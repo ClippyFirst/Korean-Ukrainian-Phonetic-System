@@ -2277,3 +2277,12 @@ The artifact exposed a concentrated error: [ɭ] occurred in 489 UGTPHON and 152 
 **Correction committed in this increment:** narrow profile v7 removes automatic [ɭ] from intervocalic and front-vowel onset ㄹ; [ɾ] is retained in those contexts. The parser still represents [ɭ]. Normative ㄹ-coda + ㄹ-onset assimilation is preserved and now cites the NIKL standard rule separately. Source/evidence registries and narrow-profile version IDs are updated. Re-run the A/B benchmark on the corrected code before interpreting narrow metrics.
 
 The artifact's narrow/phonemic figures are retained only as historical pre-correction cross-layer diagnostics. They are not current-head metrics and do not establish accuracy. The exact-head multi-engine workflow remains the next executable benchmark gate; independent layer-matched phonetic gold and audio review remain blocked by missing adjudication/rights.
+
+
+## Evidence reconciliation — Korean liquid [ɾ] / [ɭ] — 2026-11-27
+
+A primary-source recheck corrects the previous note that Lee (1993) did not support intervocalic [ɭ]. Lee (1993, p.31; DOI 10.1017/S0025100300004758) explicitly describes Seoul /l/ as [ɭ] intervocalically and before /i,j/. Crosby & Dalola (2021; DOI 10.3765/plsa.v6i1.5002), in a 12-speaker Standard Korean sample, found 422/425 intervocalic liquids were taps (99.3%) and retroflex laterals were strongly associated with pre-pausal and preconsonantal contexts. These are conflicting source descriptions, not grounds for a universal rule.
+
+Narrow profile v7 now keeps [ɾ] as the primary intervocalic onset ㄹ result and exposes [ɭ] only as a separate unselected narrow-layer variant, with both citations and evidence status conflicting-source-descriptions-variant-only. The segment parser continues to recognize [ɭ]. The variant is not selected for a speaker without speaker/dialect/prosodic/audio context and is not passed to Ukrainian adaptation.
+
+The pre-correction A/B artifact measured [ɭ] as primary; its [ɭ]-associated losses motivated this correction but its narrow metrics are not v7 metrics. A fresh v7 benchmark is required. Do not report the historical narrow score as a current uplift.
