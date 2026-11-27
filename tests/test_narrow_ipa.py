@@ -16,8 +16,8 @@ def test_narrow_profile_aspirates_lenis_sibilant_without_changing_broad():
     narrow = _ipa("사", "narrow")
     assert narrow["ipa"] == "sʰa"
     assert narrow["level"] == "narrow"
-    assert narrow["transcription_profile"]["name"] == "korean-narrow-contextual-allophones-v11"
-    assert narrow["ipa_profile_version"] == 11
+    assert narrow["transcription_profile"]["name"] == "korean-narrow-contextual-allophones-v12"
+    assert narrow["ipa_profile_version"] == 12
     assert narrow["transcription_profile"]["target_compatible"] is False
     assert narrow["transcription_profile"]["limitations"]
 
@@ -81,7 +81,11 @@ def test_narrow_seoul_h_and_intervocalic_liquid_tap_are_contextual():
     assert _ipa("오호", "narrow")["ipa"] == "o.βo"
     assert _ipa("하", "narrow")["ipa"] == "ha"
     assert _ipa("히", "narrow")["ipa"] == "çi"
-    assert _ipa("후", "narrow")["ipa"] == "xu"
+    assert _ipa("후", "narrow")["ipa"] == "ɸʷu"
+    assert _ipa("호", "narrow")["ipa"] == "ɸʷo"
+    assert _ipa("흐", "narrow")["ipa"] == "xɯ"
+    assert _ipa("아후", "narrow")["ipa"] == "a.βu"
+    assert _ipa("아 후", "narrow")["ipa"] == "a ɸʷu"
     # Crosby & Dalola (2021): 99.3% of intervocalic liquids in their
     # 12-speaker Standard Korean sample were taps; do not emit [ɭ] here.
     assert _ipa("나라", "narrow")["ipa"] == "na.ɾa"
