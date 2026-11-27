@@ -130,9 +130,17 @@ function narrowSyllable(current, previous, sameWord) {
         }
       }
     } else if (prior && SONORANT_CODAS.has(prior.coda)) {
+      if (['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ'].includes(parsed.vowel)) {
+        ipa = replaceInitial(ipa, ['h'], 'ç');
+        if (ipa.startsWith('ç')) {
+          rules.push('narrow-h-palatal-allophone');
+          evidence.push(EVIDENCE['narrow-h-palatal-allophone']);
+          environment = 'same-word sonorant coda + onset ㅎ before /i,j/; place coarticulation retained';
+        }
+      }
       rules.push('narrow-h-sonorant-variation-unresolved');
       evidence.push(EVIDENCE['narrow-h-sonorant-variation-unresolved']);
-      environment = 'same word: sonorant coda + onset ㅎ; weakening/deletion remains variable';
+      environment = (environment ? environment + '; ' : '') + 'weakening/voicing/deletion remains variable; no single voiced phone selected';
     }
       ipa = replaceInitial(ipa, ['h'], 'ç');
       if (ipa.startsWith('ç')) {
