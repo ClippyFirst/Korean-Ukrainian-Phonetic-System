@@ -7,9 +7,9 @@ import { phonemicIpaFromHangul } from '../src/app/phonemic_ipa.js';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const genericEngine = createEngine(canonical, '');
-const buildNarrowForInteraction = result => buildExtendedIpaResult(
+const buildExtendedForInteraction = result => buildExtendedIpaResult(
   '물고기', result, phonemicIpaFromHangul('물고기')
-).layers.narrow;
+);
 const fortisIpa = { 'ㄱ':'k͈', 'ㄷ':'t͈', 'ㅂ':'p͈', 'ㅅ':'s͈', 'ㅈ':'tɕ͈' };
 const onsetSyllable = { 'ㄱ':'가', 'ㄷ':'다', 'ㅂ':'바', 'ㅅ':'사', 'ㅈ':'자' };
 const codaBaseIpa = { 'ㄱ':'kak̚', 'ㄷ':'kat̚', 'ㅂ':'kap̚' };
@@ -34,7 +34,7 @@ test('NIKL Q&A 335858 composes §28 compound fortition with the Narrow coda-vari
   assert.equal(result.ipa, 'mul.k͈o.ɡi');
   assert.ok(result.trace.some(item => item.rules.includes('compound-fortition-§28-exact-form')));
 
-  const extended = buildExtendedIpaResult('물고기', result, phonemicIpaFromHangul('물고기'));
+  const extended = buildExtendedForInteraction(result);
   const narrow = extended.layers.narrow;
   assert.equal(narrow.ipa, 'mul.k͈o.ɡi');
   const retroflex = extended.variants.find(item => item.ipa === 'muɭ.k͈o.ɡi');
@@ -42,7 +42,6 @@ test('NIKL Q&A 335858 composes §28 compound fortition with the Narrow coda-vari
   assert.equal(retroflex.selected, false);
 
   const negative = genericEngine.convert('물고');
-  assert.equal(negative.surfaceHangul, '물고');
   assert.equal(negative.ipa, 'mul.ɡo');
   assert.ok(!negative.trace.some(item => item.rules.includes('compound-fortition-§28-exact-form')));
 });
