@@ -295,12 +295,14 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
         const nextValue = String(nextItem?.source ?? '');
         const nextParsed = /^[가-힣]$/u.test(nextValue) ? decompose(nextItem.surface || nextValue) : null;
         const sameWordH = nextParsed?.onset === 'ㅎ';
+        const preConsonantal = !!nextParsed?.onset && nextParsed.onset !== 'ㅇ';
         const wordFinal = !nextItem || nextItem.status === 'literal' && /^[\s\p{P}]+$/u.test(nextValue);
-        if (sameWordH || wordFinal) {
+        if (sameWordH || preConsonantal || wordFinal) {
           narrowVariantSites.push({
             ipaStart: ipaStart + [...derived.ipa].length - 1, sourceSpan: span, from: 'l', to: 'ɭ',
             evidence: 'narrow-coda-retroflex-lateral-candidate',
-            environment: sameWordH ? 'coda ㄹ before same-word onset ㅎ' : 'word-final coda ㄹ'
+            environment: sameWordH ? 'coda ㄹ before same-word onset ㅎ'
+              : preConsonantal ? 'coda ㄹ before same-word consonant' : 'word-final coda ㄹ'
           });
         }
       }
@@ -371,8 +373,8 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       },
       narrow: {
         ipa: narrowIpa,
-        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v8',
-        profile_version: 8, level: 'narrow',
+        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v9',
+        profile_version: 9, level: 'narrow',
         status: hasUnresolvedSource ? 'diagnostic-only-unresolved-source' : 'partial-research-only',
         evidence_status: 'partial-source-scoped-hypotheses-not-independently-reviewed',
         target_compatible: false
