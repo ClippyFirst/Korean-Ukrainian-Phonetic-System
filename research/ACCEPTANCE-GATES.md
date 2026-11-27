@@ -2514,3 +2514,17 @@ The replay changes 94 scored UGTPHON tokens and 50 scored SIGMORPHON tokens. The
 - K-SPAN v2.1 Dataverse 403 blocker and absence of layer-matched independently adjudicated Narrow IPA/audio gold remain unchanged.
 
 The earlier verification attempt `46003159398` failed on stale test expectations and test-loader errors; the current-head verification supersedes it and is green. The source-register test now reflects 252 actual rows. Do not count the skipped official NIKL metadata inventory or Charsiu train-dev review as passes.
+
+## Current benchmark/verification refresh — 2026-11-27 18:55 UTC
+
+**Runtime + benchmark code head:** `9c03fd3b37834f5b347b4ff9f4ec4403548b32fd`. **Workflow path-filter follow-up:** `a5b0834ce709f9a8545c1bed9333dbea7387ca59`. PR #511 remains draft/open.
+
+- Exact-head verification run `46052641603`: Python regression/data integrity **PASS**; browser **1,505 passed / 0 failed**; Vite production build **PASS**; generated `dist/index.html` and `dist/system.html` checked. Official NIKL metadata-only job skipped by policy.
+- UGTPHON test split run `46052641446`: **PASS**, 275 test rows and 1,976 train rows validated.
+- Native-vs-g2pk paired diagnostic `46052641464`: **PASS**, 2,702 paired tokens. Native exact 52.7387%, CER 9.0130%; g2pk exact 53.0892%, CER 9.2328%. Exact +0.3701 pp for g2pk, but CER worsens +0.2207 pp. This is broad/native diagnostic, not Narrow accuracy.
+- Morphology-consensus diagnostic `46052641488`: **PASS**, strict and analyzer consensus coverage-adjusted exact both 52.7192%; strict CER 9.0130%, consensus CER 9.0303% on paired rows (delta +0.0173 pp, worse). One unresolved word resolved, three changed; zero exact wins, two higher-edit-distance outcomes. Keep diagnostic-only; do not promote.
+- Test-case register extraction `46052641452`: **PASS**.
+- The paired v11 Narrow A/B workflow `46052642003` was cancelled when a new branch revision arrived before jobs were assigned; it produced no score. The replacement exact-head run `46052932943` is pending, with no job assigned yet. No v11 score uplift is claimed.
+- A/B workflow filter review found that Narrow runtime/report/test paths had been added to the push filter but were missing from the pull-request filter. Added them to the PR filter and deduplicated the push list. Latest workflow-only head is `a5b0834ce709f9a8545c1bed9333dbea7387ca59`; new verification run `46052926139` is in progress and replacement benchmark `46052932943` is pending.
+- Prior head `fa43efed0fd7e822d2616fc3b5cd189f55fd3a28` failed verification due to an unmatched brace/syntax error in the browser Narrow /h/ branch and a brittle source-register row-count constant. The browser branch was rebuilt to match the Python context logic; the row-count test now derives the count from the canonical CSV rather than hard-coding it. Do not cite the failed run `46007932275` as an engine failure or successful verification.
+- K-SPAN v2.1 Dataverse HTTP 403 and absence of independent layer-matched Narrow IPA gold/audio/expert speaker annotation remain BLOCKED. Research-prototype status unchanged.
