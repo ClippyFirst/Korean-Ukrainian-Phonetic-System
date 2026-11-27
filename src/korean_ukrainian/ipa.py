@@ -132,6 +132,7 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
         lee_ref="https://doi.org/10.1017/S0025100300004758"
         crosby_ref="https://doi.org/10.3765/plsa.v6i1.5002"
         socioling_ref="https://doi.org/10.20405/kl.2024.02.102.63"
+        liquid_ref="https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002"
         nasal_ref="https://discovery.ucl.ac.uk/id/eprint/1324541/1/1324541.pdf"
         kim_coda_ref="https://doi.org/10.1006/JPHO.1996.0016"
         cha_coda_ref="https://doi.org/10.13064/ksss.2026.18.1.021"
@@ -214,7 +215,7 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
                     "note":("Compositional interaction hypothesis only: NIKL §§19–20 license /n+l/ liquid assimilation to a geminate lateral; Kang (2017), as summarized by Crosby & Dalola (2021), describes [ʎ] before /i,j/, while their acoustic study supports gradient palatalization rather than categorical [ʎ]. Applying [ʎ] to both members of the geminate is not directly adjudicated by these sources. " + crosby_ref + " " + socioling_ref),
                     "vowels":["geminate lateral [ʎ.ʎ] after liquid assimilation"],
                     "evidence_status":"source-scoped-geminate-palatalization-interaction-hypothesis-only",
-                    "evidence_refs":[crosby_ref,socioling_ref],
+                    "evidence_refs":[liquid_ref,crosby_ref,socioling_ref],
                     "environment":"same-word coda ㄴ/ㄹ + onset ㄹ after R006 liquid assimilation, before /i,j/; composed [ʎ.ʎ] candidate",
                     "uncertainty":"This combines a normative surface liquid-assimilation step with a gradient/secondary palatal-lateral description; categorical palatalization of both geminate members is unverified. Candidate only; audio and speaker/dialect evidence are required.",
                     "selected":False,
