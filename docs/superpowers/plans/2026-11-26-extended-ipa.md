@@ -358,3 +358,23 @@ A primary-source recheck corrects the previous note that Lee (1993) did not supp
 Narrow profile v7 now keeps [ɾ] as the primary intervocalic onset ㄹ result and exposes [ɭ] only as a separate unselected narrow-layer variant, with both citations and evidence status conflicting-source-descriptions-variant-only. The segment parser continues to recognize [ɭ]. The variant is not selected for a speaker without speaker/dialect/prosodic/audio context and is not passed to Ukrainian adaptation.
 
 The pre-correction A/B artifact measured [ɭ] as primary; its [ɭ]-associated losses motivated this correction but its narrow metrics are not v7 metrics. A fresh v7 benchmark is required. Do not report the historical narrow score as a current uplift.
+
+
+## Multi-engine benchmark results inspected — 2026-11-27
+
+The prior multi-engine run 45973857624 completed successfully and its aggregate artifact 15190546061 was downloaded and inspected. It ran 1,000-item samples per track (eligible counts vary after exclusions). The broad engine code is unchanged by narrow-profile v7, so these are historical broad-profile diagnostics, not v7 narrow results.
+
+Raw strict IPA comparison (exact match / CER):
+- UGTPHON, 2,702 scored: ClippyFirst 52.7387% / 9.0130%; g2pk 53.0892% / 9.2328%; g2p-ko 52.4602% / 9.3928%. Native CER is lower than g2pk, while exact match is 0.35 pp lower; cluster-bootstrap intervals overlap.
+- SIGMORPHON, 998 scored: ClippyFirst 35.9719% / 14.5347%; g2pk 35.3353% / 14.8222%; g2p-ko 35.6356% / 14.6970%. Native is modestly ahead on both metrics; intervals overlap.
+- IPA-Dict Korean, 996 scored: ClippyFirst 41.2651% / 9.9335%; g2pk 41.1000% / 10.0412%; g2p-ko 40.9409% / 10.0154%. Small differences; this source is Wiktionary-derived and not independent of SIGMORPHON lineage.
+- Seoul Corpus phonemic gold: ClippyFirst 14.8033% / 39.8430%; g2pk 15.7000% / 39.5789%. This is an underlying phonemic reference, not broad surface gold, so do not use it as a direct surface-G2P ranking.
+- K-SPAN modern: ClippyFirst 10.8652% / 27.7790%; g2pk 10.9000% / 27.7325%. K-SPAN conservative: ClippyFirst 7.5529% / 27.4537%; g2pk 7.5000% / 27.4913%. These are effectively tied and the K-SPAN mapping carries a substantial independent-key/WorldBet integrity warning.
+
+A lossy broad-candidate sensitivity normalization yields higher agreement (ClippyFirst vs g2pk: UGTPHON 86.23% vs 85.72%, SIGMORPHON 69.84% vs 68.67%, IPA-Dict 86.14% vs 85.70%). It collapses or removes meaningful contrasts (including [ɭ]→[l], [ɲ]→[n], h-like allophones, separators, selected diacritics and stress). These are sensitivity scores, not the engine's actual output or evidence of narrow accuracy.
+
+Browser strict/soft policy: strict mode has 100% UGTPHON coverage, 99.9% SIGMORPHON, 99.4% K-SPAN modern, 99.3% K-SPAN conservative, and 99.6% IPA-Dict; it has zero engine errors and no heuristic or typed-fallback tokens. Soft mode raises conditional exact match on UGTPHON to 56.19% but drops coverage to 82.8%, reducing coverage-adjusted exact match to 46.54% (below strict 52.72%). Soft also lowers coverage-adjusted exact match on SIGMORPHON, K-SPAN and IPA-Dict. Super-soft coverage is only 0.3–2.0%, with negligible coverage-adjusted scores. Strict remains the preferred deterministic default; soft is not a net gain when abstentions are counted.
+
+Data/evaluation caveats: UGTPHON is user-generated/noisy; SIGMORPHON and IPA-Dict conventions are not identical; IPA-Dict shares Wiktionary lineage; Seoul Corpus labels are phonemic; K-SPAN key-vs-WorldBet integrity reports 22,843 mismatches across 41,174 matched rows, chiefly systematic vowel-symbol differences, and its source WorldBet fields are used without overriding them from the key. No result measures Ukrainian adaptation quality.
+
+The current v7 benchmark run 45983709835 is in progress. Its paired standard-vs-Extended IPA artifact is still required to evaluate the corrected primary [ɾ] plus optional [ɭ] variant. Do not carry forward the pre-correction v6 narrow metrics as v7 evidence.
