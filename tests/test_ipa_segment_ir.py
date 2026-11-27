@@ -69,3 +69,16 @@ def test_segment_ir_handles_tie_bar_affricates_and_combining_vowel_diacritics():
     assert segments[0]["features"]["aspiration"] == "aspirated"
     assert segments[1]["features"]["nasalization"] == "nasalized"
     assert segments[1]["features"]["length"] == "long"
+
+
+def test_segment_ir_schema_is_versioned_and_requires_typed_layer_tokens():
+    import json
+    from pathlib import Path
+    schema = json.loads((Path(__file__).resolve().parents[1] / "schemas" / "ipa-profile-result.schema.json").read_text(encoding="utf-8"))
+    assert schema["properties"]["schema_version"]["const"] == "1.2"
+    assert "segments" in schema["$defs"]["layer"]["required"]
+    token = schema["$defs"]["segment_token"]
+    assert len(token["allOf"]) == 3
+    assert "features" in token["allOf"][0]["then"]["required"]
+    assert "boundary" in token["allOf"][1]["then"]["required"]
+    assert "reason" in token["allOf"][2]["then"]["required"]
