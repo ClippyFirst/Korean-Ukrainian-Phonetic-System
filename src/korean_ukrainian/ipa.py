@@ -53,10 +53,14 @@ def onset_ipa(s:Syllable,index:int,items:list[Syllable],*,phonemic=False,level="
                     return ["ɦ"]
             # Word-initial Seoul allophones remain distinct from medial voiced
             # allophones. Post-sonorant weakening/deletion remains variable.
-            if s.nucleus=="ㅣ" or s.nucleus in _NARROW_H_GLIDE_NUCLEI:
-                return ["ç"]
-            if s.nucleus=="ㅜ":
-                return ["x"]
+            word_initial=index==0 or items[index-1].boundary_after=="word"
+            if word_initial:
+                if s.nucleus=="ㅣ" or s.nucleus in _NARROW_H_GLIDE_NUCLEI:
+                    return ["ç"]
+                if s.nucleus=="ㅡ":
+                    return ["x"]
+                if s.nucleus in _NARROW_H_ROUNDED_NUCLEI:
+                    return ["ɸʷ"]
         return ["h"]
     if c in LENIS:
         if phonemic: return [CONSONANT_PHONEMES[c].strip("/")]
