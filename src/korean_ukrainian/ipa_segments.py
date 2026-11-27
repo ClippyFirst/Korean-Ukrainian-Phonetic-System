@@ -54,10 +54,15 @@ def _features(base: str, modifiers: list[str]) -> dict:
         features = {"major_class": "vowel", "height": height, "backness": backness, "roundedness": roundedness}
     else:
         features = {"major_class": "unknown"}
-    features["aspiration"] = "aspirated" if "ʰ" in modifiers else "unaspirated"
+    if features["major_class"] == "consonant":
+        features["aspiration"] = "aspirated" if "ʰ" in modifiers else "unaspirated"
+        features["fortisness"] = "fortis" if "͈" in modifiers else "unspecified"
+        features["release"] = "unreleased" if "̚" in modifiers else "unspecified"
+    else:
+        features["aspiration"] = "not-applicable"
+        features["fortisness"] = "not-applicable"
+        features["release"] = "not-applicable"
     features["length"] = "long" if "ː" in modifiers else "half-long" if "ˑ" in modifiers else "unspecified"
-    features["fortisness"] = "fortis" if "͈" in modifiers else "unspecified"
-    features["release"] = "unreleased" if "̚" in modifiers else "unspecified"
     features["secondary_articulation"] = [name for mark, name in (("ʲ", "palatalized"), ("ʷ", "labialized")) if mark in modifiers]
     features["nasalization"] = "nasalized" if "̃" in modifiers else "unspecified"
     return features
