@@ -2112,3 +2112,13 @@ Exact code head: d19c5686ef8031cdcbfc2be10e1a0fe0c30ee33e on feat/kozak-kim-exte
 Disposition: PR #509 remains open/unmerged. Extended IPA remains a research preview, not beta-/production-ready. Green software CI verifies the implementation contract and regressions; it does not certify Korean phonetic accuracy, dataset rights, browser/Python parity or Ukrainian target suitability.
 | Segment-level typed IPA representation | PARTIAL | Current schema stores IPA strings plus syllable/rule traces; requires explicit segment objects, feature bundles, segment-local spans, diacritic/length fields and per-segment provenance. Acceptance requires Unicode-safe tokenization and Python/Browser round-trip parity fixtures |
 
+
+
+## Extended IPA segment IR — 2026-11-27
+
+- [ ] Verify Python and browser segment tokenization parity for affricates, Unicode combining marks, modifiers, boundaries and unknown code points on exact PR #510 head.
+- [ ] Verify per-layer segment arrays carry IPA offsets, honest syllable-level source spans and trace-derived rule/evidence provenance.
+- [ ] Verify schema v1.1 segment token definitions, Python/browser validators, wheel installation, full tests and build.
+- [ ] Independently adjudicate narrow allophones before promoting any source-scoped candidate to a categorical default.
+- [ ] Do not emit [ɦ] as a universal post-sonorant /h/ realization: available Um (2014) evidence describes residual effects on the preceding sonorant even when /h/ is not acoustically manifested.
+- Ukrainian target adaptation remains outside this phase and the Extended IPA target profile remains fail-closed.
