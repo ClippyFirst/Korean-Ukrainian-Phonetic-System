@@ -2015,3 +2015,30 @@ Added a reproducible A/B-style layer diagnostic on the existing benchmark branch
 - **PR #506 — left untouched:** baseline-only branch based on the pre-change benchmark anchor; its stated delta is a trailing comment in the benchmark runner. It is retained as historical baseline evidence and was not merged.
 - Recently merged PRs and current mainline implementation were preserved. No PR was merged, closed, rebased, force-pushed or deleted during this run.
 
+
+
+## Execution continuation — 2026-11-27 — typed segment-level Extended IPA
+
+**Status: PARTIAL pending exact-head CI.** Branch: `feat/korean-extended-ipa-segment-ir-2026-11-27`; draft PR #510; base `main` at `97bb411df8b998b22cd58adda015fb941201950c`. The branch fast-forward-reuses PR #509's 131 commits without modifying PR #509.
+
+- Added parallel standard-library Python and browser JavaScript segment parsers. They use Unicode code-point offsets, longest-match affricate inventory, base-segment feature bundles, attached aspiration/length/fortis/release/secondary-articulation/nasalization modifiers, and explicit boundary/unknown tokens. Unknown IPA code points are retained, never silently discarded.
+- Each segment stores its IPA span, a source syllable span when a safe alignment exists, explicit `source_alignment: syllable-span` (not falsely precise phone alignment), and rule/evidence provenance from its layer trace.
+- Python and browser Extended IPA layer payloads now include `segments` arrays while retaining the existing phonemic/broad/narrow IPA strings. Python pipeline now emits syllable-level broad and narrow trace entries so the segment parser can preserve provenance.
+- Schema updated to require segment arrays and define segment, boundary and unknown token shapes.
+- Narrow IPA symbols remain evidence-gated. In particular, `ɦ` is recognized by the segment inventory but is not emitted as a universal post-sonorant /h/ realization: Um (2014) reports shortening effects on the preceding sonorant even when /h/ is not acoustically manifested; this does not establish a categorical [ɦ] output.
+- New Python/browser parser tests cover `sʰ`, `kʰ`, `ɦ`, `ɲ`, `ɭ`, `ɸ`, `ç`, `x`, atomic affricates, length, boundaries, unknown preservation, source alignment and provenance. Integration tests exercise the actual Extended IPA result builders.
+- Verification is queued on exact head `d616be9ac2f4e016b386ca892d6a1e09b543a70d` (Tests run 45969848230; Verify run 45969848131; Browser G2P run 45969848170). These runs had not completed at the time of this entry. The test-only pre-implementation workflow attempt was superseded by PR concurrency before execution, so a local RED run was not observed; this environment has no local Git worktree/runtime.
+
+### Task ledger
+
+| Item | Status | Acceptance evidence |
+|---|---|---|
+| Python Unicode-safe IPA segment parser | PARTIAL | Source added; exact-head pytest pending |
+| Browser Unicode-safe IPA segment parser | PARTIAL | Source added; exact-head node tests pending |
+| Three-layer result integration and syllable spans | PARTIAL | Integration tests authored; Python/browser CI pending |
+| Schema and runtime validation | PARTIAL | Schema v1.1 extended; schema/contract CI pending |
+| Independent narrow IPA adjudication | BLOCKED | Requires independent Korean phonetic review and layer-aligned gold |
+| Speaker/acoustic-conditioned [ɦ] selection | BLOCKED | Available Um (2014) abstract supports residual /h/ effects but not categorical [ɦ]; exact token-level evidence required |
+| Ukrainian adapter changes | DEFERRED | Explicitly outside this phase; existing fail-closed profile boundary preserved |
+
+Do not mark this increment DONE_VERIFIED until all exact-head Python, browser, schema, wheel and build checks have completed and their output has been inspected.
