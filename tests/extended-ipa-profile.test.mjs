@@ -216,6 +216,7 @@ test('word-final coda stops expose optional unreleased candidates without changi
   for (const [word, primary, candidate] of [['낫', 'nat̚', 'nat'], ['밖', 'pak̚', 'pak'], ['밥', 'pap̚', 'pap'], ['닭', 'tak̚', 'tak'], ['값', 'kap̚', 'kap']]) {
     const result = extended(word);
     assert.equal(result.layers.narrow.ipa, primary);
+    assert.equal(result.layers.broad.ipa, primary);
     const variant = result.variants.find(item => item.layer === 'narrow' && item.ipa === candidate);
     assert.ok(variant, word + ' should expose ' + candidate);
     assert.equal(variant.selected, false);
