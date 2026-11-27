@@ -419,7 +419,7 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     }
     if level=="narrow":
         result["transcription_profile"]={
-            "name":"korean-narrow-contextual-allophones-v13",
+            "name":"korean-narrow-contextual-allophones-v14",
             "scope":["aspiration of lenis ㅅ as [sʰ]","palatalized [ɕʰ] candidate before ㅣ, ㅖ, ㅑ (Kang 2010; partial narrow profile)","palatalized [ɲ] for onset ㄴ before glide nuclei ㅑ, ㅒ, ㅕ, ㅖ, ㅛ, ㅠ; not generalized to ㅣ","ㅎ is [ç] before selected high-front/glide nuclei and [x] before ㅜ, following the cited Seoul description","after a same-word sonorant coda, /h/ may weaken or delete variably; no categorical [ɦ] is assigned without token-specific evidence","same-word intervocalic ㅎ is vowel-conditioned: [ʝ] before /i,j/, [ɣ] before /ɯ/, [β] before /o,u/, and [ɦ] elsewhere (Shin, Kiaer & Cha 2012); word-initial [ç]/[x] remain separate","tense ㅆ remains [s͈]; its palatalization is not assumed because evidence is mixed","coda ㄹ exposes optional [ɭ] variants word-finally, before same-word consonants and before ㅎ; never selected without speaker/dialect/audio evidence (Crosby & Dalola 2021; Crosby 2024)","geminate ㄹ before high-front vocoids exposes optional [lʲ] coarticulation candidate; primary [l] remains unchanged and categorical [ʎ] is not inferred (Crosby & Dalola 2021)"],
             "sources":[
                 "Lee, Hyun Bok (1993), Korean, Illustrations of the IPA: /h/ [ç] before /i,j/ and [x] before /u/; /s/ is classified as fortis in this description: https://doi.org/10.1017/S0025100300004758",
