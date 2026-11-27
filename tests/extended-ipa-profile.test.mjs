@@ -64,6 +64,8 @@ test('word-medial /h/ uses vowel-conditioned voiced allophones while word-initia
   assert.equal(extended('으흐').layers.narrow.ipa, 'ɯ.ɣɯ');
   assert.equal(extended('오호').layers.narrow.ipa, 'o.βo');
   assert.equal(extended('하').layers.narrow.ipa, 'ha');
+  assert.equal(extended('히').layers.narrow.ipa, 'çi');
+  assert.equal(extended('후').layers.narrow.ipa, 'xu');
   const h = extended('아히').trace.find(item => item.source === '히' && item.layer === 'narrow');
   assert.ok(h.rule_ids.includes('narrow-h-intervocalic-allophone'));
   assert.ok(h.evidence_refs.some(ref => ref.includes('CBO9781139342858')));
