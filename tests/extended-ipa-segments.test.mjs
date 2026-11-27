@@ -72,7 +72,7 @@ test('engine emits expanded aspiration and contextual allophones in the correct 
   assert.equal(layer('나라','narrow'),'na.ɾa');
   const liquidVariantResult = buildExtendedIpaResult('나라', engine.convert('나라', { morphologyMode: 'strict', ipaProfile: 'clippyfirst-korean-broad-v1' }), phonemicIpaFromHangul('나라'));
   assert.ok(liquidVariantResult.variants.some(item => item.layer === 'narrow' && item.ipa === 'na.ɭa' && item.selected === false));
-  assert.equal(layer('아하','narrow'),'a.ɸa');
+  assert.equal(layer('아하','narrow'),'a.ɦa');
   assert.equal(layer('히','narrow'),'çi');
   assert.equal(layer('후','narrow'),'xu');
   assert.ok(!layer('안하','narrow').includes('ɦ'));
