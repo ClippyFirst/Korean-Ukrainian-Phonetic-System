@@ -134,3 +134,8 @@ def test_dependency_free_python_validator_checks_segment_spans_and_unique_ids():
     tokens = duplicate["layers"]["narrow"]["segments"]
     tokens[1]["id"] = tokens[0]["id"]
     assert any("unique" in error for error in validate_extended_ipa_result(duplicate))
+
+
+def test_punctuation_is_a_boundary_not_an_unknown_phone():
+    tokens = parse_ipa_segments("ka,na!")
+    assert [item["kind"] for item in tokens] == ["segment", "segment", "boundary", "segment", "segment", "boundary"]
