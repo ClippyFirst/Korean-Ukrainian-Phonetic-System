@@ -206,7 +206,7 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
                 # with the source-described pre-/i,j/ palatal-lateral tendency;
                 # no cited source directly adjudicates categorical [ʎʎ].
                 palatal_pair=list(rendered)
-                palatal_pair[i-1]="ʎ"
+                palatal_pair[i-1]=palatal_pair[i-1][:-1]+"ʎ"
                 palatal_pair[i]="ʎ"+palatal_pair[i][1:]
                 variants.append({
                     "layer":"narrow", "syllable_indices":[i-1,i],
