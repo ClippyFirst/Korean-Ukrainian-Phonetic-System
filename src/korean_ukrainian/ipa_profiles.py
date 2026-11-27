@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any
 from .ipa_segments import parse_ipa_segments
 
-SCHEMA_VERSION = "1.1"
+SCHEMA_VERSION = "1.2"
 
 PROFILE_REGISTRY = {
     "phonemic": {"profile_id": "clippyfirst-korean-phonemic-v1", "profile_version": 1,
