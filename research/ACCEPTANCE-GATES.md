@@ -2358,7 +2358,7 @@ The A/B artifact was produced on implementation commit `08feed20a54187ebc1c35f21
 | Lenis stop voicing | Broad [b d ɡ dʑ] in the supported inter-sonorant contexts | Already represented; further phonetic gradience is not inferred without measurements. |
 | Liquid tap/lateral and assimilation | [ɾ] singleton onset; [l] coda/geminate; normative ㄹ+ㄹ assimilation | Intervocalic [ɾ] remains primary; conflicting onset [ɭ] is unselected. |
 | Coda lateral retroflexion | **New v8:** optional [ɭ] variants for word-final coda ㄹ and coda ㄹ before same-word ㅎ | Unselected sociophonetic alternatives based on Crosby (2024), with dialect/gender/age/style caveats; canonical [l] is unchanged. |
-| Palatal lateral [ʎ], nasalized lateral, gradient liquid assimilation | Literature signals variation | TODO: primary-source and speaker-conditioned evidence review; no deterministic rule added. |
+| Geminate liquid before high-front vocoids | **New v10:** optional unselected [lʲ] candidate, primary [l] unchanged; Crosby & Dalola (2021) measured F2 elevation (~254.49 Hz) | Gradient coarticulation only; categorical [ʎ] is not inferred. Nasalized/intermediate laterals and speaker-conditioned tap/lateral probabilities remain TODO. |
 | Coda neutralization/release, nasalization, palatalization, aspiration, fortition, n-insertion, liaison, morphology and boundary interactions | Existing Standard/NIKL rule engine and adversarial cases | Broad phonological rules remain separate from Narrow phonetic detail; gradient rates are not collapsed into categorical outputs. |
 | Vowel quality, ㅢ, diphthongs/glides and hiatus | Existing broad realizations and optional ㅢ/ㅚ/ㅟ/ㅖ/ㅐ variants | Narrow formant/coarticulation/reduction is incomplete; no speaker-specific vowel quality inferred from text. |
 | Prosody, focus, phrase boundaries, speech rate | Nullable context fields and separate acoustic annotation contract | Text-only context stays null. F0, VOT, closure voicing, H1*-H2*, H1*-A1*, CPP and formants require measured audio and method provenance. |
@@ -2407,3 +2407,11 @@ The review also flags: variable /h/-deletion with residual effects on the preced
 - The same study found coarticulatory palatalization before high-front vocoids (mean F2 about 255 Hz higher), but this is a gradient acoustic effect; no categorical [ʎ] substitution is added without a more precise validated environment/profile. This remains an evidence-gated TODO.
 - Explicit pre-pausal selection remains unimplemented in the Python text-only path because orthographic punctuation/word boundaries are not reliable measurements of actual pause or prosodic boundary. A future audio/prosody input may support it; text-only output must not assume it.
 - Tests added for preconsonantal `물론` → primary `mul.lon` plus unselected `muɭ.lon`; browser/Python parity required. v9 remains research-only and not target-compatible.
+
+
+## Narrow profile v10 — geminate liquid coarticulation — 2026-11-27
+
+- Added an unselected [lʲ] candidate for a geminate ㄹㄹ lateral before high-front vocoids /i,j/ (e.g. the /ll/ sequence in `빨리`). Crosby & Dalola (2021) measured mean F2 approximately 254.49 Hz higher for laterals before high-front vocoids and interpret this as coarticulatory palatalization; they also cite Kang (2017) for a palatal-lateral description before /i,j/.
+- The runtime does **not** replace the primary [l] and does not emit categorical [ʎ]. [lʲ] is a project-level candidate notation for gradient coarticulation, not a phone directly labeled in the study.
+- Python/browser implementations and tests are aligned; Narrow profile id/version is now `clippyfirst-korean-narrow-contextual-allophones-v10` / 10.
+- Remaining liquid TODOs: independent evidence for [ʎ] versus [lʲ] in specific lexical/morphological environments; nasalized/intermediate laterals; speaker-conditioned tap/lateral probability; actual pause/prosodic-boundary detection. The current text-only path must not infer these from spaces or spelling.
