@@ -8,6 +8,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from scripts.run_open_korean_benchmark_ci import (
+    ExternalSourceUnavailable,
     KSPAN_EXPECTED_MD5,
     KSPAN_FILE_URLS,
     _download_kspan_sources,
@@ -24,6 +25,19 @@ from scripts.prepare_korean_open_benchmarks import (
 
 
 class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
+    def test_transient_public_source_http_403_is_classified_as_external_blocker(self):
+        import urllib.error
+        from scripts.run_open_korean_benchmark_ci import _download
+
+        with tempfile.TemporaryDirectory() as directory:
+            destination = Path(directory) / "source.html"
+            denied = urllib.error.HTTPError("https://example.test/source", 403, "Forbidden", {}, None)
+            with patch("scripts.run_open_korean_benchmark_ci.urllib.request.urlopen", side_effect=denied):
+                with patch("scripts.run_open_korean_benchmark_ci.time.sleep"):
+                    with self.assertRaises(ExternalSourceUnavailable):
+                        _download("https://example.test/source", destination)
+            self.assertFalse(destination.exists())
+
     def test_kspan_v2_1_md5_pins_match_published_dataverse_metadata(self):
         self.assertEqual(
             KSPAN_EXPECTED_MD5,
