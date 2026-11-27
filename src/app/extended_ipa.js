@@ -11,6 +11,10 @@ const EVIDENCE = {
     refs: ['https://discovery.ucl.ac.uk/id/eprint/1324541/1/1324541.pdf'],
     status: 'secondary-description-requires-primary-phonetic-review'
   },
+  'narrow-coda-n-palatalization-candidate': {
+    refs: ['https://discovery.ucl.ac.uk/id/eprint/1324541/1/1324541.pdf'],
+    status: 'secondary-description-candidate-only-requires-primary-review'
+  },
   'narrow-lenis-sibilant-place': {
     refs: ['https://doi.org/10.17959/sppm.2010.16.1.3'],
     status: 'source-scoped-acoustic-coarticulation'
@@ -301,6 +305,8 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       const currentParsed = decompose(item.surface || item.source);
       const previousParsed = !boundarySincePrevious && previousHangul
         ? decompose(previousHangul.surface || previousHangul.source) : null;
+      const previousCodaNPosition = previousParsed?.coda === 'ㄴ' && previousWasHangul
+        && narrowIpa.endsWith('n') ? [...narrowIpa].length - 1 : null;
       if (currentParsed?.onset === 'ㄹ' && previousParsed?.coda === '' && derived.ipa.startsWith('ɾ')) {
         narrowVariantSites.push({ ipaStart, sourceSpan: span, from: 'ɾ', to: 'ɭ',
           evidence: 'narrow-retroflex-lateral-candidate',
@@ -311,6 +317,19 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
         narrowVariantSites.push({ ipaStart, sourceSpan: span, from: 'l', to: 'lʲ',
           evidence: 'narrow-lateral-palatalization-candidate',
           environment: 'geminate lateral before high-front vocoid /i,j/' });
+      }
+      if (previousCodaNPosition !== null && ['ㅈ','ㅉ','ㅊ'].includes(currentParsed?.onset)) {
+        const sourceSpan = trace.at(-1)?.source_span ?? span;
+        narrowVariantSites.push({
+          ipaStart: previousCodaNPosition, sourceSpan, from: 'n', to: 'ɲ',
+          evidence: 'narrow-coda-n-palatalization-candidate',
+          environment: 'same-word coda ㄴ before alveopalatal affricate ㅈ/ㅉ/ㅊ'
+        });
+        narrowVariantSites.push({
+          ipaStart: previousCodaNPosition, sourceSpan, from: 'n', to: 'nʲ',
+          evidence: 'narrow-coda-n-palatalization-candidate',
+          environment: 'same-word coda ㄴ before alveopalatal affricate ㅈ/ㅉ/ㅊ'
+        });
       }
       if (currentParsed?.coda === 'ㄹ' && derived.ipa.endsWith('l')) {
         const nextItem = sourceTrace[sourceIndex + 1];
@@ -356,7 +375,9 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
         evidence_status: evidence.status,
         evidence_refs: evidence.refs,
         environment: site.environment,
-        uncertainty: site.evidence === 'narrow-coda-retroflex-lateral-candidate'
+        uncertainty: site.evidence === 'narrow-coda-n-palatalization-candidate'
+          ? 'Secondary description in Lee (1996), summarized by Kim (2011, p.23); not direct acoustic evidence for this specific coda context, so candidates remain unselected.'
+          : site.evidence === 'narrow-coda-retroflex-lateral-candidate'
           ? 'Coda retroflexion is sociophonetic and depends on speaker, dialect, style, preceding vowel and whether the token is realized as a lateral; text-only input cannot select it.'
           : site.evidence === 'narrow-lateral-palatalization-candidate'
             ? 'F2 elevation is a gradient acoustic correlate; [lʲ] is an optional project candidate, not an independently adjudicated phone or selected output.'
