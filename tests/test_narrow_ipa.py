@@ -16,8 +16,8 @@ def test_narrow_profile_aspirates_lenis_sibilant_without_changing_broad():
     narrow = _ipa("사", "narrow")
     assert narrow["ipa"] == "sʰa"
     assert narrow["level"] == "narrow"
-    assert narrow["transcription_profile"]["name"] == "korean-narrow-contextual-allophones-v14"
-    assert narrow["ipa_profile_version"] == 14
+    assert narrow["transcription_profile"]["name"] == "korean-narrow-contextual-allophones-v15"
+    assert narrow["ipa_profile_version"] == 15
     assert narrow["transcription_profile"]["target_compatible"] is False
     assert narrow["transcription_profile"]["limitations"]
 
@@ -43,6 +43,28 @@ def test_narrow_profile_palatalizes_n_before_glide_nuclei_but_not_before_i():
     # Broad IPA and the production-default profile remain unchanged.
     assert _ipa("녀", "broad")["ipa"] == "njʌ"
 
+
+
+def test_rounded_front_vowel_exposes_position_conditioned_glides_and_sibilant_interaction():
+    initial = _ipa("위", "narrow")
+    assert initial["ipa"] == "y"
+    initial_variant = next(item for item in initial["variants"] if item["ipa"] == "wi")
+    assert initial_variant["selected"] is False
+    assert initial_variant["evidence_status"] == "source-scoped-position-conditioned-variant-only"
+
+    postconsonantal = _ipa("귀", "narrow")
+    assert postconsonantal["ipa"] == "ky"
+    glide_variant = next(item for item in postconsonantal["variants"] if item["ipa"] == "kɥi")
+    assert glide_variant["selected"] is False
+    assert "postconsonantal" in glide_variant["environment"]
+
+    interaction = _ipa("쉽다", "narrow")
+    assert interaction["ipa"] == "sʰy.p̚.t͈a"
+    combined = next(item for item in interaction["variants"] if item["ipa"] == "ɕʰɥi.p̚.t͈a")
+    assert combined["selected"] is False
+    assert combined["evidence_status"] == "source-scoped-iterative-palatalization-candidate-only"
+    assert "iterative s-palatalization" in combined["environment"]
+    assert any("10.1017/9781108292351" in ref for ref in combined["evidence_refs"])
 
 def test_tense_sibilant_is_not_aspirated_and_palatalization_is_not_assumed():
     assert _ipa("싸", "narrow")["ipa"] == "s͈a"

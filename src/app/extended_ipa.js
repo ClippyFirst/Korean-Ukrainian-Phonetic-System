@@ -59,6 +59,14 @@ const EVIDENCE = {
   'narrow-lateral-palatalization-candidate': {
     refs: ['https://doi.org/10.3765/plsa.v6i1.5002'],
     status: 'gradient-coarticulation-candidate-variant-only'
+  },
+  'narrow-front-rounded-vowel-glide-variation': {
+    refs: ['https://doi.org/10.1017/9781108292351'],
+    status: 'source-scoped-position-conditioned-variant-only'
+  },
+  'narrow-sibilant-rounded-glide-interaction': {
+    refs: ['https://doi.org/10.1017/9781108292351'],
+    status: 'source-scoped-iterative-palatalization-candidate-only'
   }
 };
 
@@ -311,6 +319,24 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       const ipaStart = [...narrowIpa].length;
       narrowIpa += derived.ipa;
       const currentParsed = decompose(item.surface || item.source);
+      if (currentParsed?.vowel === 'ㅟ') {
+        const yOffset = [...derived.ipa].indexOf('y');
+        if (yOffset >= 0) {
+          if (currentParsed.onset === 'ㅅ' && derived.ipa.startsWith('sʰy')) {
+            narrowVariantSites.push({ ipaStart, sourceSpan: span, from: 'sʰy', to: 'ɕʰɥi',
+              evidence: 'narrow-sibilant-rounded-glide-interaction',
+              environment: 'same syllable onset ㅅ + ㅟ; iterative s-palatalization and /wi/→[ɥi] glide realization' });
+          } else if (currentParsed.onset === 'ㅇ' && boundarySincePrevious) {
+            narrowVariantSites.push({ ipaStart: ipaStart + yOffset, sourceSpan: span, from: 'y', to: 'wi',
+              evidence: 'narrow-front-rounded-vowel-glide-variation',
+              environment: 'word-initial onsetless ㅟ; source-described strong-position [wi] alternative' });
+          } else {
+            narrowVariantSites.push({ ipaStart: ipaStart + yOffset, sourceSpan: span, from: 'y', to: 'ɥi',
+              evidence: 'narrow-front-rounded-vowel-glide-variation',
+              environment: 'non-initial/postconsonantal ㅟ; source-described high-front rounded glide [ɥ] plus [i]' });
+          }
+        }
+      }
       if (currentParsed?.onset === 'ㄹ' && previousParsed?.coda === '' && derived.ipa.startsWith('ɾ')) {
         narrowVariantSites.push({ ipaStart, sourceSpan: span, from: 'ɾ', to: 'ɭ',
           evidence: 'narrow-retroflex-lateral-candidate',
@@ -386,8 +412,10 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
     for (let index = 0; index < narrowVariantSites.length; index++) {
       const site = narrowVariantSites[index];
       const points = [...narrowIpa];
-      if (points[site.ipaStart] !== site.from) continue;
-      points[site.ipaStart] = site.to;
+      const fromPoints = [...site.from];
+      const toPoints = [...site.to];
+      if (points.slice(site.ipaStart, site.ipaStart + fromPoints.length).join('') !== site.from) continue;
+      points.splice(site.ipaStart, fromPoints.length, ...toPoints);
       const evidence = EVIDENCE[site.evidence];
       narrowVariants.push({
         id: 'narrow-variant-' + (index + 1), layer: 'narrow', ipa: points.join(''),
@@ -402,7 +430,11 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
           ? 'Coda retroflexion is sociophonetic and depends on speaker, dialect, style, preceding vowel and whether the token is realized as a lateral; text-only input cannot select it.'
           : site.evidence === 'narrow-lateral-palatalization-candidate'
             ? 'F2 elevation is a gradient acoustic correlate; [lʲ] is an optional project candidate, not an independently adjudicated phone or selected output.'
-            : 'Conflicting descriptions; speaker, dialect and prosodic context are unknown; optional [ɭ] is not selected over primary [ɾ].',
+            : site.evidence === 'narrow-front-rounded-vowel-glide-variation'
+              ? 'Kim-Renaud (2022) synthesizes position-conditioned [wi]/[ɥi] and monophthongal [y] variation; the token speaker, dialect, age and style are unknown, so no variant is selected.'
+              : site.evidence === 'narrow-sibilant-rounded-glide-interaction'
+                ? 'Kim-Renaud (2022) describes iterative /s/ palatalization with /wi/→[ɥi]. The [ʰ] element is inherited from the existing partial profile, not newly established by this source; candidate remains unselected.'
+                : 'Conflicting descriptions; speaker, dialect and prosodic context are unknown; optional [ɭ] is not selected over primary [ɾ].',
         source_span: site.sourceSpan, selected: false
       });
     }
@@ -439,8 +471,8 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       },
       narrow: {
         ipa: narrowIpa,
-        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v14',
-        profile_version: 14, level: 'narrow',
+        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v15',
+        profile_version: 15,
         status: hasUnresolvedSource ? 'diagnostic-only-unresolved-source' : 'partial-research-only',
         evidence_status: 'partial-source-scoped-hypotheses-not-independently-reviewed',
         target_compatible: false

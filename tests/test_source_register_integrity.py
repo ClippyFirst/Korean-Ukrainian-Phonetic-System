@@ -101,8 +101,20 @@ def test_nikl_qna_335858_is_exact_compound_fortition_evidence_only():
     assert "물고기" in source["coverage"] and "물꼬기" in source["coverage"]
     assert "exact eojeol pair 물>고" in source["contribution_expected"]
     assert "does not license tensing after every ㄹ coda" in source["limitations_or_next_action"]
-    assert "item-level KOGL marking remains unverified" in source["limitations_or_next_action"]
+    assert "item-level KOGL marking remains unverified" in source["limitations_or_next_action"].lower()
 
+
+
+def test_kim_renaud_2022_supports_only_unselected_position_conditioned_rounded_glide_variants():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-KIM-RENAUD-2022-ROUNDED-GLIDE-INTERACTION"]
+    assert source["url"] == "https://doi.org/10.1017/9781108292351"
+    assert "[wi]" in source["coverage"] and "[ɥi]" in source["coverage"]
+    assert "/swi/ iterative palatalization" in source["coverage"]
+    assert "combined ㅅ+ㅟ [ɕʰɥi] candidate" in source["contribution_expected"]
+    assert "keep primary [y]" in source["contribution_expected"]
+    assert "no variant selected" in source["limitations_or_next_action"]
+    assert "[ʰ] is inherited from project profile" in source["limitations_or_next_action"]
 
 def test_nikl_pronunciation_source_keeps_live_access_and_item_license_uncertainty_explicit():
     rows = {row["source_id"]: row for row in load_source_register()}

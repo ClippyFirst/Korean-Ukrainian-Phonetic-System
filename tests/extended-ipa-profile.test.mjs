@@ -42,6 +42,30 @@ test('narrow /s/ and /n/ retain the currently source-scoped contextual restricti
   assert.equal(extended('니').layers.narrow.ipa, 'ni');
 });
 
+
+test('ㅟ exposes position-conditioned glide variants and ㅅ+ㅟ iterative palatalization', () => {
+  const initial = extended('위');
+  assert.equal(initial.layers.narrow.ipa, 'y');
+  const initialVariant = initial.variants.find(item => item.layer === 'narrow' && item.ipa === 'wi');
+  assert.ok(initialVariant);
+  assert.equal(initialVariant.selected, false);
+  assert.equal(initialVariant.evidence_status, 'source-scoped-position-conditioned-variant-only');
+
+  const postconsonantal = extended('귀');
+  assert.equal(postconsonantal.layers.narrow.ipa, 'ky');
+  const glideVariant = postconsonantal.variants.find(item => item.layer === 'narrow' && item.ipa === 'kɥi');
+  assert.ok(glideVariant);
+  assert.equal(glideVariant.selected, false);
+
+  const interaction = extended('쉽다');
+  assert.equal(interaction.layers.narrow.ipa, 'sʰy.p̚.t͈a');
+  const combined = interaction.variants.find(item => item.layer === 'narrow' && item.ipa === 'ɕʰɥi.p̚.t͈a');
+  assert.ok(combined);
+  assert.equal(combined.selected, false);
+  assert.equal(combined.evidence_status, 'source-scoped-iterative-palatalization-candidate-only');
+  assert.ok(combined.evidence_refs.includes('https://doi.org/10.1017/9781108292351'));
+});
+
 test('post-sonorant /h/ is unresolved variation while the default remains [h]', () => {
   const result = extended('안하');
   assert.equal(result.layers.narrow.ipa, 'an.ha');
