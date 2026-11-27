@@ -47,7 +47,12 @@ def _segments_for_layer(ipa: str | None, trace: list[dict[str, Any]], level: str
         )
         output.extend(tokens)
         cursor = start + len(value_points)
-    if output:
+    expected = [token for token in parse_ipa_segments(ipa) if token["kind"] in {"segment", "unknown"}]
+    actual = [token for token in output if token["kind"] in {"segment", "unknown"}]
+    covered = [(token["kind"], token["ipa"]) for token in actual] == [
+        (token["kind"], token["ipa"]) for token in expected
+    ]
+    if output and covered:
         counters = {"segment": 0, "boundary": 0, "unknown": 0}
         for token in output:
             kind = token["kind"]
