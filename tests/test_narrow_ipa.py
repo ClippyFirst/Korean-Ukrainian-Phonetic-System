@@ -111,7 +111,7 @@ def test_coda_retroflexion_is_exposed_only_as_a_speaker_conditioned_variant():
     assert pre_h["ipa"] == "mal.ha"
     pre_h_variant = next(item for item in pre_h["variants"] if item["ipa"] == "maɭ.ha")
     assert pre_h_variant["selected"] is False
-    assert "pre-h" in pre_h_variant["note"] or "before /h/" in pre_h_variant["note"]
+    assert "pre-/h/" in pre_h_variant["note"]
 
 
 def test_coda_retroflex_variant_does_not_leak_into_non_triggering_contexts():
