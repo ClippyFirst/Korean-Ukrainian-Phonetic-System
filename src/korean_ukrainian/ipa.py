@@ -221,26 +221,26 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
                         "uncertainty":"Variant frequency depends on dialect, speaker, style, preceding vowel and whether /l/ is realized as a lateral; text-only input cannot select it.",
                         "selected":False,
                     })
-            # Word-final coda stops are conventionally described as unreleased,
-            # but release is not categorical: Kim & Jongman (1996) observed a
-            # brief burst after 83% of word-final stops in their four-speaker
-            # sample; Cha (2026) found small task/place-conditioned production
-            # traces but did not report burst frequency. Expose only an
-            # unselected unreleased candidate; never infer release from text.
+            # The broad baseline marks coda stops unreleased, following Lee
+            # (1993), but release is not categorical: Kim & Jongman (1996)
+            # observed a brief burst after 83% of word-final stops in their
+            # four-speaker sample; Cha (2026) found small task/place-conditioned
+            # production traces but did not report burst frequency. Expose a
+            # released [p,t,k] alternative only; never select it from text.
             final_place=coda_stop_place.get(syllable.coda)
             word_final=(i+1==len(items) or syllable.boundary_after=="word")
-            if final_place and rendered[i].endswith(final_place) and word_final:
+            if final_place and rendered[i].endswith(final_place+"̚") and word_final:
                 alternate=list(rendered)
-                alternate[i]=alternate[i]+"̚"
+                alternate[i]=alternate[i][:-1]
                 variants.append({
                     "layer":"narrow", "syllable_indices":[i],
                     "ipa":render_syllable_sequence(items,alternate),
-                    "note":("Lee (1993, p.31) illustrates unreleased syllable-final [p̚,t̚,k̚]. Kim & Jongman (1996) report a brief burst after 83% of word-final stops in a four-speaker sample; Cha (2026) reports task/place-conditioned production traces but no burst rate. Optional unselected [̚] candidate only; release cannot be inferred from spelling. " + lee_ref + " " + kim_coda_ref + " " + cha_coda_ref),
-                    "vowels":["word-final coda stop ["+final_place+"̚]"],
-                    "evidence_status":"source-scoped-release-variant-only",
+                    "note":("Lee (1993, p.31) illustrates unreleased syllable-final [p̚,t̚,k̚]. Kim & Jongman (1996) report a brief burst after 83% of word-final stops in a four-speaker sample; Cha (2026) reports task/place-conditioned production traces but no burst rate. Optional unselected released [p,t,k] alternative only; release cannot be inferred from spelling. " + lee_ref + " " + kim_coda_ref + " " + cha_coda_ref),
+                    "vowels":["word-final coda stop ["+final_place+"] released alternative"],
+                    "evidence_status":"source-scoped-release-variation-candidate-only",
                     "evidence_refs":[lee_ref,kim_coda_ref,cha_coda_ref],
-                    "environment":"word-final coda "+syllable.coda+"; release realization unobserved",
-                    "uncertainty":"The unreleased form is a source-described candidate, not a universal realization. Kim & Jongman found bursts in 83% of their four-speaker sample; Cha (2026) did not quantify burst frequency. Audio and prosodic context are required to select release.",
+                    "environment":"word-final coda "+syllable.coda+"; optional released ["+final_place+"] candidate",
+                    "uncertainty":"Lee (1993) illustrates unreleased forms, while Kim & Jongman found bursts after 83% of stops in a four-speaker sample; Cha (2026) did not quantify burst frequency. Release depends on token and prosodic context; audio is required to select.",
                     "selected":False,
                 })
         return variants
