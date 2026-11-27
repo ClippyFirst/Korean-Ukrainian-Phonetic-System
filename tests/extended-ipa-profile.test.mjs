@@ -212,6 +212,21 @@ test('browser exposes an unselected coarticulatory palatalization candidate for 
 });
 
 
+test('word-final coda stops expose optional unreleased candidates without changing primary IPA', () => {
+  for (const [word, primary, candidate] of [['낫', 'nat', 'nat̚'], ['밖', 'pak', 'pak̚'], ['밥', 'pap', 'pap̚']]) {
+    const result = extended(word);
+    assert.equal(result.layers.narrow.ipa, primary);
+    const variant = result.variants.find(item => item.layer === 'narrow' && item.ipa === candidate);
+    assert.ok(variant, word + ' should expose ' + candidate);
+    assert.equal(variant.selected, false);
+    assert.equal(variant.evidence_status, 'source-scoped-release-variant-only');
+    assert.ok(variant.evidence_refs.some(ref => ref.includes('10.1006/JPHO.1996.0016')));
+    assert.ok(variant.evidence_refs.some(ref => ref.includes('10.13064/ksss.2026.18.1.021')));
+  }
+  const nonfinal = extended('낫다');
+  assert.ok(!nonfinal.variants.some(item => item.evidence_status === 'source-scoped-release-variant-only'));
+});
+
 test('coda /n/ before alveopalatal affricates exposes optional palatal candidates without changing primary IPA', () => {
   const result = extended('군주');
   assert.equal(result.layers.narrow.ipa, 'kun.dʑu');
