@@ -2224,3 +2224,26 @@ Interpretation: exact-match rate slightly favors g2pK but the confidence interva
 The paired native-engine/g2pK job `45980290331` also passed. It reports native exact-match 52.7387%, CER 9.0130%; g2pK exact-match 53.0892%, CER 9.2328%; paired exact delta +0.3701 pp for g2pK and CER delta +0.2207 pp against g2pK. This is a different native-vs-vendored comparison from the browser Kozak-Kim comparison above; keep the two protocols separate.
 
 Current-head full multi-engine benchmark `45980290275` remains pending behind an earlier long-running benchmark `45973857624`. The current-head benchmark has not produced the paired standard-versus-Extended IPA report yet. The Charsiu inference queue remains skipped by workflow policy.
+
+
+## Task-ledger reconciliation after exact code CI — 2026-11-27 10:18 UTC
+
+Current PR #510 head is `61b8161fc5535eeab5d0bdd282be2e752e946874`. The implementation code and test fixture were verified on `a7116388d9c6ed592f4a1a94ea77436b16994737`; subsequent commits changed only the three status/handoff documents and PR metadata.
+
+The previous PARTIAL labels for the technical segment-IR acceptance gates are superseded by this reconciliation:
+
+| Work item | Reconciled status | Evidence |
+|---|---|---|
+| Python Unicode-aware segment parser and validator | DONE_VERIFIED | Python 3.11/3.12/3.13 test jobs passed; Verify Python regression/data-integrity passed |
+| Browser JavaScript segment parser and validator | DONE_VERIFIED | Node 1,497/1,497 passed; Browser G2P 1,497/1,497 passed |
+| Phonemic/broad/narrow segment arrays, spans, provenance, boundaries and unknown retention | DONE_VERIFIED | Node tests #150–158 and Python segment-IR tests passed |
+| Schema v1.2 and runtime contract checks | DONE_VERIFIED | Python regression/data-integrity, browser regression and schema tests passed |
+| Exhaustive 11,172-Hangul Python/browser phonemic parity | DONE_VERIFIED | Node test #135 passed; zero mismatches |
+| Clean wheel install and production build | DONE_VERIFIED | wheel-install job and Vite production build successful |
+| Current multi-engine benchmark and paired standard-vs-Extended IPA comparison | PARTIAL | Latest benchmark workflows pending/queued behind an older long-running job; no uplift claim |
+| Independent broad/narrow phonetic validation | BLOCKED | No independent layer-aligned Korean phonetic gold/adjudication |
+| Rights-cleared acoustic review | BLOCKED | No approved audio/data rights path |
+| Human accessibility acceptance | TODO | Automated viewport checks passed; keyboard/screen-reader/zoom review remains |
+| IPA-to-Ukrainian adapter changes | DEFERRED | Out of scope; current fail-closed adapter unchanged |
+
+Core implementation acceptance is therefore technically verified, but the overall Extended IPA research workstream is not release-ready. The benchmark comparison is still pending, and linguistic/audio/accessibility evidence remains open. Do not infer accuracy improvement from parser coverage or cross-runtime parity.
