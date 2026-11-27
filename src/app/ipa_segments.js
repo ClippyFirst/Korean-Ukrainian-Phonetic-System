@@ -28,23 +28,27 @@ function featuresFor(base, modifiers) {
 }
 export function parseIpaSegments(ipa, options={}) {
  if(typeof ipa!=='string')throw new TypeError('IPA input must be a string');
- const sourceSpan=options.sourceSpan??null, provenance=options.provenance??{};
- if(sourceSpan!==null&&(!Number.isInteger(sourceSpan.start)||!Number.isInteger(sourceSpan.end)||sourceSpan.start<0||sourceSpan.end<=sourceSpan.start))throw new TypeError('sourceSpan must be a non-empty code-point span or null');
+ const sourceSpan=options.sourceSpan??null, provenance=options.provenance??{}, ipaOffset=options.ipaOffset??0;
+ if(!Number.isInteger(ipaOffset)||ipaOffset<0)throw new TypeError('ipaOffset must be a non-negative code-point offset');
+ if(sourceSpan!==null&&(typeof sourceSpan!=='object'||Array.isArray(sourceSpan)||Object.keys(sourceSpan).sort().join(',')!=='end,start'||!Number.isInteger(sourceSpan.start)||!Number.isInteger(sourceSpan.end)||sourceSpan.start<0||sourceSpan.end<=sourceSpan.start))throw new TypeError('sourceSpan must be a non-empty code-point span or null');
+ if(typeof provenance!=='object'||Array.isArray(provenance))throw new TypeError('provenance must be an object');
  const ruleIds=provenance.ruleIds??[], evidenceRefs=provenance.evidenceRefs??[];
- if(!Array.isArray(ruleIds)||!Array.isArray(evidenceRefs))throw new TypeError('provenance ruleIds and evidenceRefs must be arrays');
+ if(!Array.isArray(ruleIds)||!ruleIds.every(value=>typeof value==='string')||!Array.isArray(evidenceRefs)||!evidenceRefs.every(value=>typeof value==='string'))throw new TypeError('provenance ruleIds and evidenceRefs must be arrays of strings');
+ const evidenceStatus=provenance.evidenceStatus??'not-attributed', environment=provenance.environment??null;
+ if(typeof evidenceStatus!=='string'||(environment!==null&&typeof environment!=='string'))throw new TypeError('provenance evidenceStatus must be a string and environment a string or null');
  const points=[...ipa], tokens=[];let i=0,segment=0,boundary=0,unknown=0;
  while(i<points.length){
   const ch=points[i];
-  if(/\s/u.test(ch)||'.#/|'.includes(ch)){boundary++;tokens.push({id:'boundary-'+String(boundary).padStart(4,'0'),kind:'boundary',boundary:/\s/u.test(ch)?'word':ch==='.'?'syllable':'separator',ipa:ch,ipa_span:{start:(options.ipaOffset??0)+i,end:(options.ipaOffset??0)+i+1}});i++;continue;}
+  if(/\s/u.test(ch)||'.#/|'.includes(ch)){boundary++;tokens.push({id:'boundary-'+String(boundary).padStart(4,'0'),kind:'boundary',boundary:/\s/u.test(ch)?'word':ch==='.'?'syllable':'separator',ipa:ch,ipa_span:{start:ipaOffset+i,end:ipaOffset+i+1}});i++;continue;}
   const raw=[...AFFRICATES.keys()].sort((a,b)=>b.length-a.length).find(v=>points.slice(i,i+[...v].length).join('')===v);
   const base=raw?AFFRICATES.get(raw):BASES.find(v=>points.slice(i,i+[...v].length).join('')===v);
   if(!base){
-   if(MODIFIERS.has(ch)&&tokens.at(-1)?.kind==='segment'){const t=tokens.at(-1);t.modifiers.push(ch);t.ipa+=ch;t.ipa_span.end=(options.ipaOffset??0)+i+1;t.features=featuresFor(t.base,t.modifiers);i++;continue;}
-   unknown++;tokens.push({id:'unknown-'+String(unknown).padStart(4,'0'),kind:'unknown',ipa:ch,ipa_span:{start:(options.ipaOffset??0)+i,end:(options.ipaOffset??0)+i+1},source_span:null,reason:'unrecognized_ipa_code_point'});i++;continue;
+   if(MODIFIERS.has(ch)&&tokens.at(-1)?.kind==='segment'){const t=tokens.at(-1);t.modifiers.push(ch);t.ipa+=ch;t.ipa_span.end=ipaOffset+i+1;t.features=featuresFor(t.base,t.modifiers);i++;continue;}
+   unknown++;tokens.push({id:'unknown-'+String(unknown).padStart(4,'0'),kind:'unknown',ipa:ch,ipa_span:{start:ipaOffset+i,end:ipaOffset+i+1},source_span:sourceSpan?{...sourceSpan}:null,source_alignment:sourceSpan?'syllable-span':'unavailable',reason:'unrecognized_ipa_code_point',provenance:{rule_ids:[...ruleIds],evidence_refs:[...evidenceRefs],evidence_status:evidenceStatus,environment}}});i++;continue;
   }
   const start=i;i+=raw?[...raw].length:[...base].length;const modifiers=[];
   while(i<points.length&&MODIFIERS.has(points[i]))modifiers.push(points[i++]);
-  segment++;tokens.push({id:'segment-'+String(segment).padStart(4,'0'),kind:'segment',ipa:points.slice(start,i).join(''),base,modifiers,features:featuresFor(base,modifiers),ipa_span:{start:(options.ipaOffset??0)+start,end:(options.ipaOffset??0)+i},source_span:sourceSpan?{...sourceSpan}:null,source_alignment:sourceSpan?'syllable-span':'unavailable',provenance:{rule_ids:[...ruleIds],evidence_refs:[...evidenceRefs],evidence_status:provenance.evidenceStatus??'not-attributed',environment:provenance.environment??null}});
+  segment++;tokens.push({id:'segment-'+String(segment).padStart(4,'0'),kind:'segment',ipa:points.slice(start,i).join(''),base,modifiers,features:featuresFor(base,modifiers),ipa_span:{start:ipaOffset+start,end:ipaOffset+i},source_span:sourceSpan?{...sourceSpan}:null,source_alignment:sourceSpan?'syllable-span':'unavailable',provenance:{rule_ids:[...ruleIds],evidence_refs:[...evidenceRefs],evidence_status:evidenceStatus,environment}});
  }
  return tokens;
 }
