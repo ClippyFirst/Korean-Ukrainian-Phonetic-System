@@ -119,7 +119,7 @@ def test_core_runtime_has_no_neural_inference_dependency_or_import():
     forbidden = {"torch", "tensorflow", "transformers", "onnxruntime", "keras", "jax"}
     runtime_modules = (
         "pipeline.py", "rules.py", "rule_plan.py", "phonology.py", "ipa.py",
-        "ipa_profiles.py",
+        "ipa_profiles.py", "ipa_segments.py",
     )
     for filename in runtime_modules:
         tree = ast.parse((

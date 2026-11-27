@@ -1,0 +1,132 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { parseIpaSegments } from '../src/app/ipa_segments.js';
+import { createEngine } from '../src/app/engine.js';
+import { buildExtendedIpaResult, validateExtendedIpaResult } from '../src/app/extended_ipa.js';
+import { phonemicIpaFromHangul } from '../src/app/phonemic_ipa.js';
+import { readFileSync } from 'node:fs';
+const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
+const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
+const engine = createEngine(canonical, lexical);
+
+test('segment IR recognizes extended Korean IPA consonants and feature bundles', () => {
+  const result = parseIpaSegments('sʰ.kʰ ɦ ɲ ɭ ɸ ç x');
+  const segments = result.filter(item => item.kind === 'segment');
+  assert.deepEqual(segments.map(item => item.ipa), ['sʰ','kʰ','ɦ','ɲ','ɭ','ɸ','ç','x']);
+  assert.equal(segments[0].features.aspiration, 'aspirated');
+  assert.equal(segments[1].features.place, 'velar');
+  assert.equal(segments[2].features.voicing, 'voiced');
+  assert.equal(segments[3].features.place, 'palatal');
+  assert.equal(segments[5].features.manner, 'fricative');
+});
+
+test('segment IR treats affricates atomically and retains vowel length', () => {
+  const segments = parseIpaSegments('tɕʰiː').filter(item => item.kind === 'segment');
+  assert.deepEqual(segments.map(item => item.ipa), ['tɕʰ','iː']);
+  assert.equal(segments[0].base, 'tɕ');
+  assert.equal(segments[0].features.manner, 'affricate');
+  assert.equal(segments[0].features.aspiration, 'aspirated');
+  assert.equal(segments[1].features.length, 'long');
+});
+
+test('segment IR preserves syllable source spans and rule provenance explicitly', () => {
+  const tokens = parseIpaSegments('ɲ.a 😀', {
+    sourceSpan: { start: 4, end: 5 },
+    provenance: { ruleIds: ['narrow-nasal-palatalization'], evidenceRefs: ['SRC-1'] }
+  });
+  const segment = tokens.find(item => item.kind === 'segment');
+  const boundary = tokens.find(item => item.kind === 'boundary');
+  const unknown = tokens.find(item => item.kind === 'unknown');
+  assert.deepEqual(segment.source_span, { start: 4, end: 5 });
+  assert.equal(segment.source_alignment, 'syllable-span');
+  assert.deepEqual(segment.provenance.rule_ids, ['narrow-nasal-palatalization']);
+  assert.equal(boundary.kind, 'boundary');
+  assert.equal(unknown.kind, 'unknown');
+  assert.equal(unknown.ipa, '😀');
+});
+
+test('browser Extended IPA attaches segment IR and source spans to every layer', () => {
+  const source = '녀';
+  const result = buildExtendedIpaResult(source, engine.convert(source, { morphologyMode: 'strict', ipaProfile: 'clippyfirst-korean-broad-v1' }), phonemicIpaFromHangul(source));
+  assert.equal(result.schema_version, '1.2');
+  assert.ok(result.layers.phonemic.segments.length > 0);
+  assert.ok(result.layers.broad.segments.length > 0);
+  assert.ok(result.layers.narrow.segments.length > 0);
+  const broad = result.layers.broad.segments.find(item => item.kind === 'segment');
+  assert.deepEqual(broad.source_span, { start: 0, end: 1 });
+  assert.equal(broad.source_alignment, 'syllable-span');
+  const nasal = result.layers.narrow.segments.find(item => item.ipa === 'ɲ');
+  assert.deepEqual(nasal.source_span, { start: 0, end: 1 });
+  assert.equal(nasal.source_alignment, 'syllable-span');
+  assert.ok(nasal.provenance.rule_ids.includes('narrow-nasal-palatalization'));
+});
+
+test('engine emits expanded aspiration and contextual allophones in the correct layer', () => {
+  const layer = (source, level) => {
+    const result = buildExtendedIpaResult(source, engine.convert(source, { morphologyMode: 'strict', ipaProfile: 'clippyfirst-korean-broad-v1' }), phonemicIpaFromHangul(source));
+    return result.layers[level].ipa;
+  };
+  assert.equal(layer('코','broad'),'kʰo');
+  assert.equal(layer('사','narrow'),'sʰa');
+  assert.equal(layer('녀','narrow'),'ɲjʌ');
+  assert.equal(layer('나라','narrow'),'na.ɾa');
+  const liquidVariantResult = buildExtendedIpaResult('나라', engine.convert('나라', { morphologyMode: 'strict', ipaProfile: 'clippyfirst-korean-broad-v1' }), phonemicIpaFromHangul('나라'));
+  assert.ok(liquidVariantResult.variants.some(item => item.layer === 'narrow' && item.ipa === 'na.ɭa' && item.selected === false));
+  assert.equal(layer('아하','narrow'),'a.ɸa');
+  assert.equal(layer('히','narrow'),'çi');
+  assert.equal(layer('후','narrow'),'xu');
+  assert.ok(!layer('안하','narrow').includes('ɦ'));
+});
+
+test('segment IR handles tied affricates and combining vowel diacritics', () => {
+  const segments = parseIpaSegments('t͡ɕʰ ãː').filter(item => item.kind === 'segment');
+  assert.deepEqual(segments.map(item => item.ipa), ['t͡ɕʰ','ãː']);
+  assert.equal(segments[0].base, 'tɕ');
+  assert.equal(segments[0].features.aspiration, 'aspirated');
+  assert.equal(segments[1].features.nasalization, 'nasalized');
+  assert.equal(segments[1].features.length, 'long');
+});
+
+test('vowel feature bundles mark consonant-only features not applicable', () => {
+  const vowel = parseIpaSegments('iː').find(item => item.kind === 'segment');
+  assert.equal(vowel.features.major_class, 'vowel');
+  assert.equal(vowel.features.aspiration, 'not-applicable');
+  assert.equal(vowel.features.fortisness, 'not-applicable');
+  assert.equal(vowel.features.release, 'not-applicable');
+});
+
+test('layer segment identifiers are unique across syllables', () => {
+  const result = buildExtendedIpaResult('나라', engine.convert('나라', { morphologyMode: 'strict', ipaProfile: 'clippyfirst-korean-broad-v1' }), phonemicIpaFromHangul('나라'));
+  const ids = result.layers.narrow.segments.map(item => item.id);
+  assert.equal(new Set(ids).size, ids.length);
+  assert.ok(result.layers.narrow.segments.some(item => item.kind === 'boundary' && item.ipa === '.'));
+});
+
+test('unknown code points retain source alignment and provenance; invalid offsets are rejected', () => {
+  const [unknown] = parseIpaSegments('😀', {
+    sourceSpan: { start: 2, end: 3 },
+    provenance: { ruleIds: ['r1'], evidenceRefs: ['SRC-1'] }
+  });
+  assert.equal(unknown.kind, 'unknown');
+  assert.deepEqual(unknown.source_span, { start: 2, end: 3 });
+  assert.deepEqual(unknown.provenance.rule_ids, ['r1']);
+  assert.throws(() => parseIpaSegments('a', { ipaOffset: -1 }), /ipaOffset/);
+  assert.throws(() => parseIpaSegments('a', { provenance: { ruleIds: [1] } }), /arrays of strings/);
+});
+
+test('dependency-free browser validator checks segment spans and unique IDs', () => {
+  const result = buildExtendedIpaResult('나라', engine.convert('나라', { morphologyMode: 'strict', ipaProfile: 'clippyfirst-korean-broad-v1' }), phonemicIpaFromHangul('나라'));
+  assert.deepEqual(validateExtendedIpaResult(result), []);
+  const broken = structuredClone(result);
+  const segment = broken.layers.narrow.segments.find(item => item.kind === 'segment');
+  segment.ipa_span.end += 1;
+  assert.ok(validateExtendedIpaResult(broken).some(error => error.includes('ipa_span')));
+  const duplicate = structuredClone(result);
+  duplicate.layers.narrow.segments[1].id = duplicate.layers.narrow.segments[0].id;
+  assert.ok(validateExtendedIpaResult(duplicate).some(error => error.includes('unique')));
+});
+
+test('punctuation is represented as a boundary token, not an unknown phone', () => {
+  const tokens = parseIpaSegments('ka,na!');
+  assert.deepEqual(tokens.map(item => item.kind), ['segment','segment','boundary','segment','segment','boundary']);
+});

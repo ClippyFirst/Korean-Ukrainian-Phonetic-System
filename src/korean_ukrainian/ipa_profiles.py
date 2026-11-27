@@ -1,8 +1,9 @@
 """Versioned typed result contract for Korean Extended IPA profiles."""
 from __future__ import annotations
 from typing import Any
+from .ipa_segments import parse_ipa_segments
 
-SCHEMA_VERSION = "1.1"
+SCHEMA_VERSION = "1.2"
 
 PROFILE_REGISTRY = {
     "phonemic": {"profile_id": "clippyfirst-korean-phonemic-v1", "profile_version": 1,
@@ -11,10 +12,130 @@ PROFILE_REGISTRY = {
     "broad": {"profile_id": "clippyfirst-korean-broad-v1", "profile_version": 1,
               "status": "rule-supported-broad",
               "evidence_status": "mixed-normative-and-project-derived", "target_compatible": False},
-    "narrow": {"profile_id": "clippyfirst-korean-narrow-contextual-allophones-v6", "profile_version": 6,
+    "narrow": {"profile_id": "clippyfirst-korean-narrow-contextual-allophones-v7", "profile_version": 7,
                "status": "partial-research-only",
                "evidence_status": "source-scoped-hypotheses-require-independent-review", "target_compatible": False},
 }
+
+
+
+def _segments_for_layer(ipa: str | None, trace: list[dict[str, Any]], level: str) -> list[dict[str, Any]]:
+    if not isinstance(ipa, str) or not ipa:
+        return []
+    output: list[dict[str, Any]] = []
+    cursor = 0
+    for item in trace:
+        if not isinstance(item, dict) or item.get("layer") != level or not isinstance(item.get("ipa"), str) or not item["ipa"]:
+            continue
+        value = item["ipa"]
+        points = list(ipa)
+        value_points = list(value)
+        start = next((i for i in range(cursor, len(points) - len(value_points) + 1)
+                      if points[i:i + len(value_points)] == value_points), None)
+        if start is None:
+            continue
+        tokens = parse_ipa_segments(
+            value,
+            source_span=item.get("source_span"),
+            provenance={
+                "rule_ids": item.get("rule_ids", []),
+                "evidence_refs": item.get("evidence_refs", []),
+                "evidence_status": item.get("evidence_status", "not-attributed"),
+                "environment": item.get("environment"),
+            },
+            ipa_offset=start,
+        )
+        output.extend(tokens)
+        cursor = start + len(value_points)
+    full_tokens = parse_ipa_segments(ipa)
+    expected = [token for token in full_tokens if token["kind"] in {"segment", "unknown"}]
+    actual = [token for token in output if token["kind"] in {"segment", "unknown"}]
+    covered = [(token["kind"], token["ipa"]) for token in actual] == [
+        (token["kind"], token["ipa"]) for token in expected
+    ]
+    if output and covered:
+        existing_boundaries = {token["ipa_span"]["start"] for token in output if token["kind"] == "boundary"}
+        output.extend(token for token in full_tokens
+                      if token["kind"] == "boundary" and token["ipa_span"]["start"] not in existing_boundaries)
+        output.sort(key=lambda token: token["ipa_span"]["start"])
+        counters = {"segment": 0, "boundary": 0, "unknown": 0}
+        for token in output:
+            kind = token["kind"]
+            counters[kind] += 1
+            token["id"] = f"{kind}-{counters[kind]:04d}"
+        return output
+    return parse_ipa_segments(ipa)
+
+
+
+def _validate_segment_tokens(segments: Any, ipa: Any, source_text: str, path: str) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(segments, list):
+        return [f"{path}.segments must be an array"]
+    ipa_points = list(ipa) if isinstance(ipa, str) else []
+    source_length = len(source_text)
+    seen_ids: set[str] = set()
+    previous_end = 0
+    for index, token in enumerate(segments):
+        item_path = f"{path}.segments[{index}]"
+        if not isinstance(token, dict):
+            errors.append(f"{item_path} must be an object")
+            continue
+        token_id, kind, value = token.get("id"), token.get("kind"), token.get("ipa")
+        if not isinstance(token_id, str) or not token_id:
+            errors.append(f"{item_path}.id must be a non-empty string")
+        elif token_id in seen_ids:
+            errors.append(f"{path}.segments IDs must be unique")
+        else:
+            seen_ids.add(token_id)
+        if kind not in {"segment", "boundary", "unknown"}:
+            errors.append(f"{item_path}.kind is invalid")
+        if not isinstance(value, str) or not value:
+            errors.append(f"{item_path}.ipa must be a non-empty string")
+            continue
+        span = token.get("ipa_span")
+        if (not isinstance(span, dict) or set(span) != {"start", "end"}
+                or not isinstance(span.get("start"), int) or isinstance(span.get("start"), bool)
+                or not isinstance(span.get("end"), int) or isinstance(span.get("end"), bool)
+                or span["start"] < 0 or span["end"] <= span["start"]):
+            errors.append(f"{item_path}.ipa_span is invalid")
+            continue
+        if span["end"] > len(ipa_points) or ipa_points[span["start"]:span["end"]] != list(value):
+            errors.append(f"{item_path}.ipa_span does not select its IPA text")
+        if span["start"] < previous_end:
+            errors.append(f"{item_path}.ipa_span overlaps or is out of order")
+        previous_end = max(previous_end, span["end"])
+        if kind == "segment":
+            if not isinstance(token.get("base"), str) or not isinstance(token.get("modifiers"), list) or not all(isinstance(mark, str) for mark in token["modifiers"]):
+                errors.append(f"{item_path} requires base and string modifiers")
+            if not isinstance(token.get("features"), dict) or not isinstance(token["features"].get("major_class"), str):
+                errors.append(f"{item_path}.features is invalid")
+            source_span = token.get("source_span")
+            if source_span is not None and (
+                not isinstance(source_span, dict) or set(source_span) != {"start", "end"}
+                or not isinstance(source_span.get("start"), int) or isinstance(source_span.get("start"), bool)
+                or not isinstance(source_span.get("end"), int) or isinstance(source_span.get("end"), bool)
+                or source_span["start"] < 0 or source_span["end"] <= source_span["start"]
+                or source_span["end"] > source_length
+            ):
+                errors.append(f"{item_path}.source_span is invalid")
+            expected_alignment = "syllable-span" if source_span is not None else "unavailable"
+            if token.get("source_alignment") != expected_alignment:
+                errors.append(f"{item_path}.source_alignment does not match source_span")
+            provenance = token.get("provenance")
+            if (not isinstance(provenance, dict)
+                    or not isinstance(provenance.get("rule_ids"), list)
+                    or not all(isinstance(value, str) for value in provenance.get("rule_ids", []))
+                    or not isinstance(provenance.get("evidence_refs"), list)
+                    or not all(isinstance(value, str) for value in provenance.get("evidence_refs", []))
+                    or not isinstance(provenance.get("evidence_status"), str)
+                    or (provenance.get("environment") is not None and not isinstance(provenance.get("environment"), str))):
+                errors.append(f"{item_path}.provenance is invalid")
+        elif kind == "boundary" and token.get("boundary") not in {"word", "syllable", "separator"}:
+            errors.append(f"{item_path}.boundary is invalid")
+        elif kind == "unknown" and not isinstance(token.get("reason"), str):
+            errors.append(f"{item_path}.reason is required")
+    return errors
 
 
 def validate_extended_ipa_result(result: dict[str, Any]) -> list[str]:
@@ -52,6 +173,12 @@ def validate_extended_ipa_result(result: dict[str, Any]) -> list[str]:
                 errors.append(f"layers.{level}.status must be a string")
             if not isinstance(layer.get("target_compatible"), bool):
                 errors.append(f"layers.{level}.target_compatible must be boolean")
+            source_text = source.get("text", "") if isinstance(source, dict) and isinstance(source.get("text"), str) else ""
+            errors.extend(_validate_segment_tokens(layer.get("segments"), layer.get("ipa"), source_text, f"layers.{level}"))
+    if isinstance(layers, dict):
+        for level, layer in layers.items():
+            if isinstance(layer, dict) and not isinstance(layer.get("segments"), list):
+                errors.append(f"layers.{level}.segments must be an array")
     for name in ("variants", "boundaries", "trace"):
         if not isinstance(result[name], list):
             errors.append(f"{name} must be an array")
@@ -137,6 +264,8 @@ def build_extended_ipa_result(source: str, layers: dict[str, dict[str, Any]], *,
         },
         "acoustic_annotations": [],
     }
+    for level, layer in result["layers"].items():
+        layer["segments"] = _segments_for_layer(layer.get("ipa"), result["trace"], level)
     errors = validate_extended_ipa_result(result)
     if errors:
         raise ValueError("invalid Extended IPA result: " + "; ".join(errors))

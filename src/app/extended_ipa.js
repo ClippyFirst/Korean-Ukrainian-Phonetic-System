@@ -2,9 +2,9 @@
  * Narrow output is a partial research preview, not target-compatible.
  */
 import { decompose } from './engine_shared.js';
+import { parseIpaSegments } from './ipa_segments.js';
 
 const GLIDE_NUCLEI = new Set(['ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ']);
-const PALATAL_LIQUID_NUCLEI = new Set(['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ']);
 const SONORANT_CODAS = new Set(['ㄴ','ㄹ','ㅁ','ㅇ','ㄵ','ㄶ','ㄻ','ㄼ','ㄽ','ㄾ','ㅀ']);
 const EVIDENCE = {
   'narrow-nasal-palatalization': {
@@ -28,9 +28,13 @@ const EVIDENCE = {
     refs: ['https://doi.org/10.1017/S0025100300004758'],
     status: 'source-scoped-description'
   },
-  'narrow-liquid-allophone': {
-    refs: ['https://doi.org/10.1017/S0025100300004758'],
-    status: 'source-scoped-description'
+  'liquid-assimilation': {
+    refs: ['https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002'],
+    status: 'normative-standard-pronunciation'
+  },
+  'narrow-retroflex-lateral-candidate': {
+    refs: ['https://doi.org/10.1017/S0025100300004758', 'https://doi.org/10.3765/plsa.v6i1.5002'],
+    status: 'conflicting-source-descriptions-variant-only'
   }
 };
 
@@ -110,33 +114,106 @@ function narrowSyllable(current, previous, sameWord) {
         environment = 'same word: intervocalic onset ㅎ after open syllable';
       }
     }
-  } else if (parsed.onset === 'ㄹ' && prior) {
-    if (prior.coda === 'ㄹ') {
-      ipa = replaceInitial(ipa, ['ɾ','ɭ'], 'l');
-      if (ipa.startsWith('l')) {
-        rules.push('liquid-assimilation');
-        evidence.push(EVIDENCE['narrow-liquid-allophone']);
-        environment = 'same word: ㄹ coda + ㄹ onset';
-      }
-    } else if (prior.coda === '' || PALATAL_LIQUID_NUCLEI.has(parsed.vowel)) {
-      ipa = replaceInitial(ipa, ['ɾ','l'], 'ɭ');
-      if (ipa.startsWith('ɭ')) {
-        rules.push('narrow-liquid-allophone');
-        evidence.push(EVIDENCE['narrow-liquid-allophone']);
-        environment = 'same word: intervocalic ㄹ or ㄹ before /i,j/-initial nucleus';
-      }
+  } else if (parsed.onset === 'ㄹ' && prior && prior.coda === 'ㄹ') {
+    ipa = replaceInitial(ipa, ['ɾ','l'], 'l');
+    if (ipa.startsWith('l')) {
+      rules.push('liquid-assimilation');
+      evidence.push(EVIDENCE['liquid-assimilation']);
+      environment = 'same word: ㄹ coda + ㄹ onset';
     }
   }
   for (const item of evidence) refs.push(...item.refs);
   return { ipa, rules, environment, refs, evidence };
 }
 
+function segmentsForLayer(ipa, trace, layer) {
+  if (typeof ipa !== 'string' || !ipa) return [];
+  const points = [...ipa]; let cursor = 0; const output = [];
+  for (const item of trace) {
+    if (item?.layer !== layer || typeof item.ipa !== 'string' || !item.ipa) continue;
+    const value = [...item.ipa]; let start = -1;
+    for (let i = cursor; i <= points.length - value.length; i++) {
+      if (value.every((point, index) => points[i + index] === point)) { start = i; break; }
+    }
+    if (start < 0) continue;
+    output.push(...parseIpaSegments(item.ipa, {
+      sourceSpan: item.source_span || null, ipaOffset: start,
+      provenance: { ruleIds: item.rule_ids || [], evidenceRefs: item.evidence_refs || [],
+        evidenceStatus: item.evidence_status || 'not-attributed', environment: item.environment || null }
+    }));
+    cursor = start + value.length;
+  }
+  const fullTokens = parseIpaSegments(ipa);
+  const expected = fullTokens.filter(token => token.kind === 'segment' || token.kind === 'unknown');
+  const actual = output.filter(token => token.kind === 'segment' || token.kind === 'unknown');
+  const covered = actual.length === expected.length && actual.every((token, index) =>
+    token.kind === expected[index].kind && token.ipa === expected[index].ipa
+  );
+  if (output.length && covered) {
+    const existingBoundaries = new Set(output.filter(token => token.kind === 'boundary').map(token => token.ipa_span.start));
+    output.push(...fullTokens.filter(token => token.kind === 'boundary' && !existingBoundaries.has(token.ipa_span.start)));
+    output.sort((left, right) => left.ipa_span.start - right.ipa_span.start);
+    const counters = { segment: 0, boundary: 0, unknown: 0 };
+    for (const token of output) {
+      counters[token.kind] += 1;
+      token.id = token.kind + '-' + String(counters[token.kind]).padStart(4, '0');
+    }
+    return output;
+  }
+  return parseIpaSegments(ipa);
+}
+
+
+function validateSegmentTokens(segments, ipa, sourceText, path) {
+  const errors = [];
+  if (!Array.isArray(segments)) return [path + '.segments must be an array'];
+  const ipaPoints = typeof ipa === 'string' ? [...ipa] : [];
+  const sourceLength = [...sourceText].length;
+  const ids = new Set(); let previousEnd = 0;
+  for (let index = 0; index < segments.length; index++) {
+    const item = segments[index], itemPath = path + '.segments[' + index + ']';
+    if (!item || typeof item !== 'object' || Array.isArray(item)) { errors.push(itemPath + ' must be an object'); continue; }
+    if (typeof item.id !== 'string' || !item.id) errors.push(itemPath + '.id must be a non-empty string');
+    else if (ids.has(item.id)) errors.push(path + '.segments IDs must be unique');
+    else ids.add(item.id);
+    if (!['segment','boundary','unknown'].includes(item.kind)) errors.push(itemPath + '.kind is invalid');
+    if (typeof item.ipa !== 'string' || !item.ipa) { errors.push(itemPath + '.ipa must be a non-empty string'); continue; }
+    const span = item.ipa_span;
+    if (!span || typeof span !== 'object' || Array.isArray(span) ||
+        Object.keys(span).sort().join(',') !== 'end,start' || !Number.isInteger(span.start) ||
+        !Number.isInteger(span.end) || span.start < 0 || span.end <= span.start) {
+      errors.push(itemPath + '.ipa_span is invalid'); continue;
+    }
+    if (span.end > ipaPoints.length || ipaPoints.slice(span.start, span.end).join('') !== item.ipa) errors.push(itemPath + '.ipa_span does not select its IPA text');
+    if (span.start < previousEnd) errors.push(itemPath + '.ipa_span overlaps or is out of order');
+    previousEnd = Math.max(previousEnd, span.end);
+    if (item.kind === 'segment') {
+      if (typeof item.base !== 'string' || !Array.isArray(item.modifiers) || !item.modifiers.every(mark => typeof mark === 'string')) errors.push(itemPath + ' requires base and string modifiers');
+      if (!item.features || typeof item.features !== 'object' || typeof item.features.major_class !== 'string') errors.push(itemPath + '.features is invalid');
+      const sourceSpan = item.source_span;
+      if (sourceSpan !== null && (!sourceSpan || typeof sourceSpan !== 'object' || Array.isArray(sourceSpan) ||
+          Object.keys(sourceSpan).sort().join(',') !== 'end,start' || !Number.isInteger(sourceSpan.start) ||
+          !Number.isInteger(sourceSpan.end) || sourceSpan.start < 0 || sourceSpan.end <= sourceSpan.start || sourceSpan.end > sourceLength)) errors.push(itemPath + '.source_span is invalid');
+      const expectedAlignment = sourceSpan === null ? 'unavailable' : 'syllable-span';
+      if (item.source_alignment !== expectedAlignment) errors.push(itemPath + '.source_alignment does not match source_span');
+      const provenance = item.provenance;
+      if (!provenance || typeof provenance !== 'object' || !Array.isArray(provenance.rule_ids) ||
+          !provenance.rule_ids.every(value => typeof value === 'string') || !Array.isArray(provenance.evidence_refs) ||
+          !provenance.evidence_refs.every(value => typeof value === 'string') || typeof provenance.evidence_status !== 'string' ||
+          (provenance.environment !== null && typeof provenance.environment !== 'string')) errors.push(itemPath + '.provenance is invalid');
+    } else if (item.kind === 'boundary' && !['word','syllable','separator'].includes(item.boundary)) errors.push(itemPath + '.boundary is invalid');
+    else if (item.kind === 'unknown' && typeof item.reason !== 'string') errors.push(itemPath + '.reason is required');
+  }
+  return errors;
+}
+
 export function validateExtendedIpaResult(result) {
   const errors = [];
   if (!result || typeof result !== 'object' || Array.isArray(result)) return ['result must be an object'];
-  if (result.schema_version !== '1.1' || result.mode !== 'extended-ipa') errors.push('unsupported schema or mode');
+  if (result.schema_version !== '1.2' || result.mode !== 'extended-ipa') errors.push('unsupported schema or mode');
   if (!result.source || typeof result.source.text !== 'string' || result.source.offset_unit !== 'unicode-code-points') errors.push('invalid source metadata');
   if (!result.layers || !['phonemic','broad','narrow'].every(level => result.layers[level]?.level === level)) errors.push('all three IPA layers are required');
+  else for (const level of ['phonemic','broad','narrow']) errors.push(...validateSegmentTokens(result.layers[level].segments, result.layers[level].ipa, typeof result.source?.text === 'string' ? result.source.text : '', 'layers.' + level));
   if (!Array.isArray(result.variants) || !Array.isArray(result.boundaries) || !Array.isArray(result.trace)) errors.push('variants, boundaries and trace must be arrays');
   else for (const item of result.trace) if (!item || !['phonemic','broad','narrow'].includes(item.layer)) errors.push('every trace item requires a valid IPA layer');
   const contextKeys = ['speaker_id','dialect','age_group','speech_style','speech_rate_syllables_per_second','focus','prosodic_position','recording_conditions'];
@@ -172,6 +249,7 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
   for (const boundary of (phonemicResult?.boundaries || [])) boundaries.push(boundary);
   let cursor = 0, previousHangul = null, boundarySincePrevious = true;
   let narrowIpa = '', previousWasHangul = false;
+  const narrowVariantSites = [];
   for (const item of sourceTrace) {
     const value = String(item.source ?? '');
     const span = findSpan(source, value, cursor);
@@ -186,10 +264,26 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       previousWasHangul = false;
       continue;
     }
+    trace.push({
+      layer: 'broad', source_span: span, source: value, surface: item.surface || value,
+      ipa: item.ipa ?? null,
+      rule_ids: Array.isArray(item.rules) ? item.rules.filter(rule => typeof rule === 'string') : [],
+      environment: null, evidence_refs: [],
+      evidence_status: 'browser-broad-surface-trace',
+      status: item.status || 'ungraded'
+    });
     const derived = narrowSyllable(item, previousHangul, !boundarySincePrevious);
     if (derived.ipa) {
       if (previousWasHangul) narrowIpa += '.';
+      const ipaStart = [...narrowIpa].length;
       narrowIpa += derived.ipa;
+      const currentParsed = decompose(item.surface || item.source);
+      const previousParsed = !boundarySincePrevious && previousHangul
+        ? decompose(previousHangul.surface || previousHangul.source) : null;
+      if (currentParsed?.onset === 'ㄹ' && previousParsed?.coda === '' && derived.ipa.startsWith('ɾ')) {
+        narrowVariantSites.push({ ipaStart, sourceSpan: span,
+          environment: 'same-word intervocalic onset ㄹ; Lee (1993) [ɭ] vs Crosby & Dalola (2021) predominantly [ɾ]' });
+      }
       previousWasHangul = true;
     } else previousWasHangul = false;
     if (span) { boundaries.push({ offset: span.end, kind: 'syllable' }); syllableSpans.push(span); }
@@ -205,6 +299,23 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
   }
   const hasUnresolvedSource = engineResult.pronunciation_status === 'unresolved' || sourceTrace.some(item => ['unresolved','unsupported-jamo','unsupported'].includes(item.status));
   if (hasUnresolvedSource) narrowIpa = '';
+  const narrowVariants = [];
+  if (!hasUnresolvedSource && narrowIpa) {
+    for (let index = 0; index < narrowVariantSites.length; index++) {
+      const site = narrowVariantSites[index];
+      const points = [...narrowIpa];
+      if (points[site.ipaStart] !== 'ɾ') continue;
+      points[site.ipaStart] = 'ɭ';
+      narrowVariants.push({
+        id: 'narrow-variant-' + (index + 1), layer: 'narrow', ipa: points.join(''),
+        evidence_status: EVIDENCE['narrow-retroflex-lateral-candidate'].status,
+        evidence_refs: EVIDENCE['narrow-retroflex-lateral-candidate'].refs,
+        environment: site.environment,
+        uncertainty: 'Speaker, dialect and prosodic context are unknown; optional [ɭ] is not selected over primary [ɾ].',
+        source_span: site.sourceSpan, selected: false
+      });
+    }
+  }
   trace.sort((a, b) => {
     const left = a.source_span?.start ?? Number.MAX_SAFE_INTEGER;
     const right = b.source_span?.start ?? Number.MAX_SAFE_INTEGER;
@@ -212,7 +323,7 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
     return left - right || (order[a.layer] ?? 3) - (order[b.layer] ?? 3);
   });
   const result = {
-    schema_version: '1.1',
+    schema_version: '1.2',
     mode: 'extended-ipa',
     source: { text: source, offset_unit: 'unicode-code-points' },
     layers: {
@@ -237,8 +348,8 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       },
       narrow: {
         ipa: narrowIpa,
-        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v6',
-        profile_version: 6, level: 'narrow',
+        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v7',
+        profile_version: 7, level: 'narrow',
         status: hasUnresolvedSource ? 'diagnostic-only-unresolved-source' : 'partial-research-only',
         evidence_status: 'partial-source-scoped-hypotheses-not-independently-reviewed',
         target_compatible: false
@@ -257,15 +368,17 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
         start: Math.min(...indices.map(value => syllableSpans[value].start)),
         end: Math.max(...indices.map(value => syllableSpans[value].end))
       } : null;
+      const layer = variant.layer || 'broad';
+      const note = String(variant.note || '');
       return {
-        id: 'broad-variant-' + (index + 1), layer: 'broad', ipa: String(variant.ipa ?? ''),
-        evidence_status: variant.note?.startsWith('Research-only') ? 'research-hypothesis' : 'source-or-rule-derived-variant',
-        evidence_refs: String(variant.note || '').split(' ').filter(ref => ref.startsWith('http://') || ref.startsWith('https://')),
-        environment: variant.note || null,
-        uncertainty: 'Speaker-specific realization is not identified by this result.',
-        source_span: sourceSpan, selected: false
+        id: layer + '-variant-' + (index + 1), layer, ipa: String(variant.ipa ?? ''),
+        evidence_status: variant.evidence_status || (note.startsWith('Research-only') ? 'research-hypothesis' : 'source-or-rule-derived-variant'),
+        evidence_refs: Array.isArray(variant.evidence_refs) ? variant.evidence_refs : note.split(' ').filter(ref => ref.startsWith('http://') || ref.startsWith('https://')),
+        environment: variant.environment || note || null,
+        uncertainty: variant.uncertainty || 'Speaker-specific realization is not identified by this result.',
+        source_span: sourceSpan, selected: variant.selected === true
       };
-    }),
+    }).concat(narrowVariants),
     boundaries: [...new Map(boundaries.map(item => [item.offset + ':' + item.kind, item])).values()],
     trace,
     target_adapter: {
@@ -274,6 +387,9 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
     },
     pronunciation_status: engineResult.pronunciation_status || 'ungraded'
   };
+  for (const level of ['phonemic','broad','narrow']) {
+    result.layers[level].segments = segmentsForLayer(result.layers[level].ipa, trace, level);
+  }
   const errors = validateExtendedIpaResult(result);
   if (errors.length) throw new TypeError('invalid Extended IPA result: ' + errors.join('; '));
   return result;

@@ -30,11 +30,6 @@ def onset_ipa(s:Syllable,index:int,items:list[Syllable],*,phonemic=False,level="
     if c=="ㄹ":
         # Surface ㄹ is [l] after a realized liquid coda (e.g. 신라, 칼날).
         if index>0 and items[index-1].coda=="ㄹ": return ["l"]
-        if not phonemic and level=="narrow" and index>0:
-            previous=items[index-1]
-            same_word=previous.boundary_after!="word"
-            if same_word and (previous.coda=="" or s.nucleus in {"ㅣ","ㅑ","ㅒ","ㅕ","ㅖ","ㅛ","ㅠ"}):
-                return ["ɭ"]
         return ["ɾ"]
     if c=="ㅎ":
         if not phonemic and level=="narrow":
@@ -112,6 +107,33 @@ def _word_form_at(items:list[Syllable],index:int)->str:
     return "".join(item.text for item in items[start:end+1])
 
 def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="broad")->list[dict]:
+    if level=="narrow":
+        variants=[]
+        lee_ref="https://doi.org/10.1017/S0025100300004758"
+        crosby_ref="https://doi.org/10.3765/plsa.v6i1.5002"
+        for i,syllable in enumerate(items):
+            if i==0 or syllable.onset!="ㄹ" or not rendered[i].startswith("ɾ"):
+                continue
+            previous=items[i-1]
+            if previous.boundary_after=="word" or previous.coda!="":
+                continue
+            alternate=list(rendered)
+            alternate[i]="ɭ"+alternate[i][1:]
+            variants.append({
+                "layer":"narrow",
+                "syllable_indices":[i],
+                "ipa":render_syllable_sequence(items,alternate),
+                "note":("Conflicting source descriptions: Lee (1993, p.31) describes Seoul /l/ as [ɭ] intervocalically and before /i,j/; "
+                        "Crosby & Dalola (2021) found 99.3% intervocalic taps in their 12-speaker sample. "
+                        "Optional unselected variant only; [ɾ] remains primary. " + lee_ref + " " + crosby_ref),
+                "vowels":["ㄹ [ɭ]"],
+                "evidence_status":"conflicting-source-descriptions-variant-only",
+                "evidence_refs":[lee_ref,crosby_ref],
+                "environment":"same-word intervocalic onset ㄹ",
+                "uncertainty":"Speaker, dialect and prosodic context are unknown; variant is not selected.",
+                "selected":False,
+            })
+        return variants
     if level!="broad":
         return []
     sites=[]
@@ -249,26 +271,6 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
                     "vowels":["ㅎ [ɸ] intervocalic"],
                 })
 
-    # S018 describes Seoul /l/ as [ɭ] intervocalically and before /i,j/.
-    # Keep the broad /ɾ/ or /l/ realization canonical; expose a local variant.
-    palatal_liquid_nuclei={"ㅣ","ㅑ","ㅒ","ㅕ","ㅖ","ㅛ","ㅠ"}
-    for i,syllable in enumerate(items):
-        if syllable.onset!="ㄹ" or not rendered[i].startswith(("ɾ","l")):
-            continue
-        same_word_predecessor=i>0 and items[i-1].boundary_after!="word"
-        after_liquid_coda=same_word_predecessor and items[i-1].coda=="ㄹ"
-        intervocalic=same_word_predecessor and items[i-1].coda==""
-        before_front_glide=same_word_predecessor and syllable.nucleus in palatal_liquid_nuclei
-        if after_liquid_coda or not (intervocalic or before_front_glide):
-            continue
-        alternate=list(rendered)
-        alternate[i]="ɭ"+alternate[i][1:]
-        variants.append({
-            "syllable_indices":[i],
-            "ipa":render_syllable_sequence(items,alternate),
-            "note":"Optional Seoul Korean [ɭ] for /l/ intervocalically or before /i,j/ (S018); broad canonical liquid is preserved.",
-            "vowels":["ㄹ [ɭ]"],
-        })
 
     return variants
 
@@ -288,12 +290,12 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     profile_ids={
         "phonemic":"clippyfirst-korean-phonemic-v1",
         "broad":"clippyfirst-korean-broad-v1",
-        "narrow":"clippyfirst-korean-narrow-contextual-allophones-v6",
+        "narrow":"clippyfirst-korean-narrow-contextual-allophones-v7",
     }
     result={
         "level":level,
         "ipa_profile":profile_ids[level],
-        "ipa_profile_version":6 if level=="narrow" else 1,
+        "ipa_profile_version":7 if level=="narrow" else 1,
         "ipa_profile_level":level,
         "ipa_profile_status":(
             "partial-research-only" if level=="narrow"
@@ -307,8 +309,8 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     }
     if level=="narrow":
         result["transcription_profile"]={
-            "name":"korean-narrow-contextual-allophones-v6",
-            "scope":["aspiration of lenis ㅅ as [sʰ]","palatalized [ɕʰ] candidate before ㅣ, ㅖ, ㅑ (Kang 2010; partial narrow profile)","palatalized [ɲ] for onset ㄴ before glide nuclei ㅑ, ㅒ, ㅕ, ㅖ, ㅛ, ㅠ; not generalized to ㅣ","ㅎ is [ç] before selected high-front/glide nuclei and [x] before ㅜ, following the cited Seoul description","after a same-word sonorant coda, /h/ may weaken or delete variably; no categorical [ɦ] is assigned without token-specific evidence","same-word intervocalic ㅎ may be [ɸ] and ㄹ may be [ɭ] intervocalically or before /i,j/ (S018)","tense ㅆ remains [s͈]; its palatalization is not assumed because evidence is mixed"],
+            "name":"korean-narrow-contextual-allophones-v7",
+            "scope":["aspiration of lenis ㅅ as [sʰ]","palatalized [ɕʰ] candidate before ㅣ, ㅖ, ㅑ (Kang 2010; partial narrow profile)","palatalized [ɲ] for onset ㄴ before glide nuclei ㅑ, ㅒ, ㅕ, ㅖ, ㅛ, ㅠ; not generalized to ㅣ","ㅎ is [ç] before selected high-front/glide nuclei and [x] before ㅜ, following the cited Seoul description","after a same-word sonorant coda, /h/ may weaken or delete variably; no categorical [ɦ] is assigned without token-specific evidence","same-word intervocalic ㅎ may be [ɸ]; intervocalic onset ㄹ remains [ɾ] as primary, with an unselected [ɭ] variant retained because Lee (1993) and Crosby & Dalola (2021) differ in their descriptions","tense ㅆ remains [s͈]; its palatalization is not assumed because evidence is mixed"],
             "sources":[
                 "Lee, Hyun Bok (1993), Korean, Illustrations of the IPA: /h/ [ç] before /i,j/ and [x] before /u/; /s/ is classified as fortis in this description: https://doi.org/10.1017/S0025100300004758",
                 "Kang, Hyunsook (2010), Coarticulation effects of Korean sibilant /s/ before a high front segment: https://doi.org/10.17959/sppm.2010.16.1.3",
@@ -319,8 +321,9 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
                 "Lee (1996), Korean Phonetics, summarized in the UCL thesis: https://discovery.ucl.ac.uk/1324541/1/1324541.pdf",
                 "Kang & Lee (2019), The Realizations of /h/ in Seoul and Gwangju Koreans: speaker- and dialect-conditioned weakening/deletion; https://doi.org/10.17290/jlsk.2019..84.175",
                 "Eom (2014), Phonetic realizations of /h/ after a sonorant in Korean: residual effects and non-categorical realization; https://doi.org/10.17959/sppm.2014.20.3.357",
+                "Crosby, Drew & Dalola, Amanda (2021), Phonetic variation in the Korean liquid phoneme; intervocalic [ɾ] is near-categorical and retroflex laterals are position-/pause-conditioned; https://doi.org/10.3765/plsa.v6i1.5002",
             ],
-            "limitations":["partial profile, not a complete narrow transcription","models [ç], [x], [ɸ], and [ɭ] in cited Seoul contexts; post-sonorant /h/ weakening/deletion remains unresolved and is not collapsed into [ɦ]; does not model dialectal probabilities, the full lateral allophone inventory, or prosody","the [ɲ] choice before /j/-initial nuclei is a research-profile generalization; do not treat it as universal speaker-independent output","does not force palatalization of tense /s͈/ because the available literature reports variation and disagreement","research-only profile; do not treat as approved Ukrainian target input without target-inventory review"],
+            "limitations":["partial profile, not a complete narrow transcription","models [ç], [x], and [ɸ] in cited Seoul contexts; [ɭ] is exposed only as an unselected narrow variant with conflicting source descriptions and no speaker/prosodic selection; post-sonorant /h/ weakening/deletion remains unresolved and is not collapsed into [ɦ]","the [ɲ] choice before /j/-initial nuclei is a research-profile generalization; do not treat it as universal speaker-independent output","does not force palatalization of tense /s͈/ because the available literature reports variation and disagreement","research-only profile; do not treat as approved Ukrainian target input without target-inventory review"],
             "target_compatible":False,
         }
     return result

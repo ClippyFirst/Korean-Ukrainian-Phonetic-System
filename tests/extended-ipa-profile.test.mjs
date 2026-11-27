@@ -58,9 +58,16 @@ test('high-front [ç] realization retains the separate post-sonorant variation t
   assert.ok(h.rule_ids.includes('narrow-h-sonorant-variation-unresolved'));
 });
 
-test('narrow /h/ and lateral realizations remain explicitly context-bound', () => {
+test('narrow /h/ and liquid assimilation remain explicitly context-bound', () => {
   assert.equal(extended('아하').layers.narrow.ipa, 'a.ɸa');
-  assert.equal(extended('나라').layers.narrow.ipa, 'na.ɭa');
+  assert.equal(extended('나라').layers.narrow.ipa, 'na.ɾa');
+  assert.equal(extended('다리').layers.narrow.ipa, 'ta.ɾi');
+  assert.equal(extended('물론').layers.narrow.ipa, 'mul.lon');
+  const liquidVariant = extended('나라').variants.find(item => item.layer === 'narrow' && item.ipa === 'na.ɭa');
+  assert.ok(liquidVariant);
+  assert.equal(liquidVariant.selected, false);
+  assert.equal(liquidVariant.evidence_status, 'conflicting-source-descriptions-variant-only');
+  assert.equal(liquidVariant.evidence_refs.length, 2);
   assert.equal(extended('하').layers.narrow.ipa, 'ha');
 });
 

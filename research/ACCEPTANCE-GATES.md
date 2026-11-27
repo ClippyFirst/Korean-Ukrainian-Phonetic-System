@@ -2112,3 +2112,232 @@ Exact code head: d19c5686ef8031cdcbfc2be10e1a0fe0c30ee33e on feat/kozak-kim-exte
 Disposition: PR #509 remains open/unmerged. Extended IPA remains a research preview, not beta-/production-ready. Green software CI verifies the implementation contract and regressions; it does not certify Korean phonetic accuracy, dataset rights, browser/Python parity or Ukrainian target suitability.
 | Segment-level typed IPA representation | PARTIAL | Current schema stores IPA strings plus syllable/rule traces; requires explicit segment objects, feature bundles, segment-local spans, diacritic/length fields and per-segment provenance. Acceptance requires Unicode-safe tokenization and Python/Browser round-trip parity fixtures |
 
+
+
+## Extended IPA segment IR — 2026-11-27
+
+- [ ] Verify Python and browser segment tokenization parity for affricates, Unicode combining marks, modifiers, boundaries and unknown code points on exact PR #510 head.
+- [ ] Verify per-layer segment arrays carry IPA offsets, honest syllable-level source spans and trace-derived rule/evidence provenance.
+- [ ] Verify schema v1.1 segment token definitions, Python/browser validators, wheel installation, full tests and build.
+- [ ] Independently adjudicate narrow allophones before promoting any source-scoped candidate to a categorical default.
+- [ ] Do not emit [ɦ] as a universal post-sonorant /h/ realization: available Um (2014) evidence describes residual effects on the preceding sonorant even when /h/ is not acoustically manifested.
+- Ukrainian target adaptation remains outside this phase and the Extended IPA target profile remains fail-closed.
+
+
+## Extended IPA segment IR and cross-runtime parity — 2026-11-27
+
+- [ ] Exact-head Python parser, browser parser, schema v1.2, wheel-install and browser build checks must pass before the segment IR is DONE_VERIFIED.
+- [ ] Exact-head 11,172-entry modern Hangul phonemic parity test must pass; any mismatches require a source-backed correction, not fixture suppression.
+- [ ] Verify Unicode code-point IPA offsets, tied affricates, combining marks, aspiration, length, fortisness, unreleased codas, unknown-symbol retention, source syllable spans, trace provenance and unique token IDs.
+- [ ] Independently adjudicate broad/narrow IPA and context-conditioned variants before claiming phonetic accuracy.
+- [ ] Human keyboard-only, screen-reader and zoom acceptance remains required.
+- [ ] Rights-cleared acoustic data remains a separate gate.
+- Extended IPA target adaptation remains deferred and fail-closed.
+
+
+## Segment IR v1.2 and phonemic runtime parity — 2026-11-27
+
+- [ ] Exact-head Python segment parser/validator, schema, wheel-install and Python 3.11/3.12/3.13 tests pass.
+- [ ] Exact-head browser segment parser/validator, all Node tests, browser G2P and production build pass.
+- [ ] Full 11,172-entry modern Hangul phonemic parity test passes across Python and browser runtimes.
+- [ ] IPA code-point offsets, tied affricates, combining marks, aspiration, length, fortisness, unreleased codas, unknown-symbol preservation, boundary tokens, source spans, provenance and unique IDs pass.
+- [ ] Independently adjudicate broad/narrow phonetic rules before claiming phonetic accuracy.
+- [ ] Complete human keyboard-only, screen-reader and zoom acceptance.
+- [ ] Establish rights-cleared acoustic annotation data.
+- Extended IPA target adaptation remains deferred and fail-closed.
+
+
+## Current segment IR gate reconciliation — 2026-11-27
+
+This is the authoritative current status for the segment-IR increment; earlier v1.1 TODO notes are historical and describe the pre-PR #510 state.
+
+| Gate | Status | Acceptance / blocker |
+|---|---|---|
+| Python and browser segment parsers | PARTIAL | Implemented on PR #510; exact-head Tests and Verify pending |
+| Three IPA layer segment arrays | PARTIAL | Implemented; Verify and Browser G2P pending |
+| Schema v1.2 and Python/browser validators | PARTIAL | Implemented; exact-head schema/contract checks pending |
+| Unicode offsets, affricates, modifiers, boundaries and unknown retention | PARTIAL | Fixtures authored; exact-head tests pending |
+| Exhaustive 11,172 modern Hangul phonemic parity | PARTIAL | Test/exporter added; exact-head execution pending |
+| Independent broad/narrow Korean phonetic gold | BLOCKED | Qualified independent adjudication and layer-matched reference set required |
+| Rights-cleared acoustic corpus and labels | BLOCKED | Dataset-specific permission and derived-label rights not established |
+| Human keyboard/screen-reader/zoom review | TODO | Manual accessibility acceptance required |
+| Extended IPA Ukrainian target mapping | DEFERRED | Outside current scope; adapter remains fail-closed |
+
+Exact-head runs currently queued: Tests `45972689269`, Verify `45972689301`, Browser G2P `45972689642`, master/research artifacts `45972689334`. A queued or skipped workflow is not a successful acceptance result. Charsiu review was skipped by policy. Local test/build execution was unavailable because github.com DNS resolution failed.
+
+PR #510 is correctly stacked on PR #509 (65 commits ahead, 0 behind, 16 changed files). The result schema on the segment-IR branch is v1.2; v1.1 refers to the earlier PR #509 contract. No benchmark uplift or phonetic certification is claimed.
+
+
+### Test-oracle correction — 2026-11-27
+
+A source-level review found two new parser tests treating ASCII `?` as an unknown phone even though both runtimes intentionally classify Unicode punctuation as boundary tokens. Corrected the fixtures to use the non-punctuation unknown code point `😀`, preserving the separate punctuation-boundary tests. This is a test-only correction; no production parser behavior changed. The corrected tests have not yet been executed locally (GitHub DNS failure) or confirmed by CI; keep the gate PARTIAL until exact-head workflows pass.
+
+
+A second test-oracle defect was found during review: the browser test destructured the third token as the unknown token even though the fixture contains a later segment and word boundary before the unknown emoji. It now selects tokens by their explicit `kind`. This correction is test-only and awaits exact-head CI.
+
+
+### PR/CI topology update — 2026-11-27
+
+PR #510 currently targets `main` temporarily so the repository's mainline pull-request verification workflows can run. The incremental implementation itself remains a clean stack on PR #509: comparing #509's head `6b473a18e3f4e7f971398272ff0ef0e7f1be6abe` to this branch gives 73 commits ahead, 0 behind, and 16 changed files. Once exact-head CI has completed and its logs/artifacts have been inspected, retarget PR #510 to PR #509's branch to restore the compact stacked diff. Current branch head at this note: `a0498f51a0d185be6a9d4271e352b187712ecba9`.
+
+
+## Exact-head verification update — 2026-11-27 10:12 UTC
+
+Current PR #510 head: `a7116388d9c6ed592f4a1a94ea77436b16994737` on `feat/korean-extended-ipa-segment-ir-2026-11-27`. The preceding head `08feed20a54187ebc1c35f211801e9c7e5c85632` had one failing browser fixture: ASCII `?` was expected to be `unknown`, but punctuation is correctly tokenized as `boundary`. Replaced that fixture with `😀`; production code was not changed.
+
+### Exact-head results
+
+| Gate | Status | Evidence |
+|---|---|---|
+| Python tests, Python 3.11 / 3.12 / 3.13 | DONE_VERIFIED | Tests workflow `45979820107`, all three matrix jobs successful |
+| Python regression and data integrity | DONE_VERIFIED | Verify workflow `45979820187`, Python job successful |
+| JavaScript suite | DONE_VERIFIED | Tests workflow web job: 1,497 passed, 0 failed |
+| Browser G2P suite | DONE_VERIFIED | Browser G2P workflow `45979819931`: 1,497 passed, 0 failed |
+| Browser regression and production build | DONE_VERIFIED | Verify workflow `45979820187`: 1,497 passed, 0 failed; Vite build completed |
+| Python/browser phonemic parity over 11,172 modern Hangul syllables | DONE_VERIFIED | Node test #135 passed; exporter and browser adapter matched every item |
+| Segment IR fixtures, provenance, offsets and layer integration | DONE_VERIFIED | Node tests #150–158 passed, including the corrected unknown-codepoint fixture |
+| Clean wheel install | DONE_VERIFIED | Tests workflow wheel-install job successful |
+| Teacher corpus split audit | DONE_VERIFIED | Tests workflow and dedicated audit successful |
+| Browser visual review | DONE_VERIFIED | Desktop/tablet/mobile editorial review successful |
+| Morphology adapter smoke (Kiwi and MeCab-Ko) | DONE_VERIFIED | All real-engine and native strict/soft jobs successful |
+| Rule-license consensus, external UGTPHON comparison, corpus artifacts and test-register extraction | DONE_VERIFIED | Runs `45979819855`, `45979819908`, `45979820161`, `45979819995`, `45979820101` successful |
+| Multi-engine IPA benchmark | PARTIAL | Current-head run `45979819893` pending behind earlier run `45973857624`; do not infer a current-head benchmark result |
+| CharsiuG2P and ByT5 inference | DEFERRED / SKIPPED | Optional jobs skipped by workflow policy; not a pass |
+| Independent narrow/broad phonetic adjudication and rights-cleared audio review | BLOCKED | Requires qualified independent reviewers and approved audio/data rights |
+| Human keyboard/screen-reader/zoom acceptance | TODO | Automated viewport review is not a substitute for human accessibility acceptance |
+| Extended IPA → Ukrainian adapter | DEFERRED | Outside this implementation increment; existing fail-closed adapter preserved |
+
+### Diagnostic findings (not normative accuracy)
+
+- Previous pinned diagnostic on superseded code head `08feed20`: native engine scored 2,702/2,703 UGTPHON occurrences, exact match 52.7387%, CER 9.0130%; g2pk scored 2,703, exact match 53.0892%, CER 9.2328%. On paired cases, g2pk exact-match delta was +0.3701 percentage points but CER worsened by 0.2207 percentage points. This is a trade-off, not a winner or a release accuracy claim.
+- Morphology-consensus diagnostic on the same superseded head: exact-match remained 52.7192%; CER worsened from 9.0130% to 9.0303%. It did not demonstrate a gain.
+- UGTPHON normalization diagnostic: 2,627 paired tokens; exact match 51.2752% vs raw baseline 51.0468%, CER 9.8637% vs 9.9689%; 15 tokens rescued, 0 lost. Small diagnostic improvement only.
+- Python g2pk differential warning: 18/20 surface forms equal. Two JS-port mismatches remain: `넓죽하다` (raw JS `널쭈카다` vs Python/practical adapter `넙쭈카다`) and `읽고` (raw JS `익꼬` vs Python/practical adapter `일꼬`). IPA gold is not independently adjudicated; track these as a separate browser-port discrepancy, not as evidence of IPA accuracy.
+- The full adversarial NIKL passage audit still reports 13 morphology-sensitive unresolved forms. Strict whole-text rendering remains fail-closed; do not fill these gaps with guessed outputs.
+
+### Next actions
+
+1. Let the current-head multi-engine benchmark finish and inspect its artifacts, especially the paired standard-vs-Extended IPA report.
+2. Update the task ledger again with exact benchmark outcome and any genuine failure.
+3. Once all exact-head evidence is inspected, retarget PR #510 from `main` to PR #509's branch to restore the intended stack. Do not merge or release.
+4. Keep scientific adjudication, audio rights, and human accessibility as explicit external blockers.
+
+
+## UGTPHON paired comparison update — 2026-11-27 10:16 UTC
+
+The exact-branch external UGTPHON comparison job `45980290133` completed successfully. It compares the deterministic browser Kozak-Kim engine with the untouched vendored g2pK JavaScript port on 2,702 paired Hangul tokens (275 rows; 264 sentence/utterance clusters; 2,000 cluster-bootstrap resamples).
+
+- Kozak-Kim: 1,436 exact matches; exact-match rate 53.1458%; CER 8.0222%.
+- g2pK: 1,444 exact matches; exact-match rate 53.4419%; CER 8.2125%.
+- Paired exact-match delta (Kozak-Kim minus g2pK): −0.2961 percentage points; 95% cluster-bootstrap CI [−1.1473, +0.2369] pp, which crosses zero.
+- Paired CER delta (Kozak-Kim minus g2pK): −0.1904 percentage points; 95% cluster-bootstrap CI [−0.3320, −0.0430] pp, favoring Kozak-Kim on this metric.
+- 2,487/2,702 surfaces were identical; 215 differed. Both paths had zero engine errors.
+
+Interpretation: exact-match rate slightly favors g2pK but the confidence interval includes no difference; CER favors Kozak-Kim on this particular test split. This is a diagnostic comparison against UGTPHON's references, not independent phonetic adjudication, not a Ukrainian target benchmark, and not proof of universal superiority. Do not collapse the two metrics into a single winner.
+
+The paired native-engine/g2pK job `45980290331` also passed. It reports native exact-match 52.7387%, CER 9.0130%; g2pK exact-match 53.0892%, CER 9.2328%; paired exact delta +0.3701 pp for g2pK and CER delta +0.2207 pp against g2pK. This is a different native-vs-vendored comparison from the browser Kozak-Kim comparison above; keep the two protocols separate.
+
+Current-head full multi-engine benchmark `45980290275` remains pending behind an earlier long-running benchmark `45973857624`. The current-head benchmark has not produced the paired standard-versus-Extended IPA report yet. The Charsiu inference queue remains skipped by workflow policy.
+
+
+## Task-ledger reconciliation after exact code CI — 2026-11-27 10:18 UTC
+
+Current PR #510 head is `61b8161fc5535eeab5d0bdd282be2e752e946874`. The implementation code and test fixture were verified on `a7116388d9c6ed592f4a1a94ea77436b16994737`; subsequent commits changed only the three status/handoff documents and PR metadata.
+
+The previous PARTIAL labels for the technical segment-IR acceptance gates are superseded by this reconciliation:
+
+| Work item | Reconciled status | Evidence |
+|---|---|---|
+| Python Unicode-aware segment parser and validator | DONE_VERIFIED | Python 3.11/3.12/3.13 test jobs passed; Verify Python regression/data-integrity passed |
+| Browser JavaScript segment parser and validator | DONE_VERIFIED | Node 1,497/1,497 passed; Browser G2P 1,497/1,497 passed |
+| Phonemic/broad/narrow segment arrays, spans, provenance, boundaries and unknown retention | DONE_VERIFIED | Node tests #150–158 and Python segment-IR tests passed |
+| Schema v1.2 and runtime contract checks | DONE_VERIFIED | Python regression/data-integrity, browser regression and schema tests passed |
+| Exhaustive 11,172-Hangul Python/browser phonemic parity | DONE_VERIFIED | Node test #135 passed; zero mismatches |
+| Clean wheel install and production build | DONE_VERIFIED | wheel-install job and Vite production build successful |
+| Current multi-engine benchmark and paired standard-vs-Extended IPA comparison | PARTIAL | Latest benchmark workflows pending/queued behind an older long-running job; no uplift claim |
+| Independent broad/narrow phonetic validation | BLOCKED | No independent layer-aligned Korean phonetic gold/adjudication |
+| Rights-cleared acoustic review | BLOCKED | No approved audio/data rights path |
+| Human accessibility acceptance | TODO | Automated viewport checks passed; keyboard/screen-reader/zoom review remains |
+| IPA-to-Ukrainian adapter changes | DEFERRED | Out of scope; current fail-closed adapter unchanged |
+
+Core implementation acceptance is therefore technically verified, but the overall Extended IPA research workstream is not release-ready. The benchmark comparison is still pending, and linguistic/audio/accessibility evidence remains open. Do not infer accuracy improvement from parser coverage or cross-runtime parity.
+
+
+## Paired Extended IPA artifact inspection and liquid-rule correction — 2026-11-27
+
+Artifact `standard-vs-extended-ipa-ab-45973857624` (artifact 15188603961; code head `08feed20`) was downloaded and inspected directly. It is a pre-correction browser-engine diagnostic, and its dataset metadata explicitly says the references are not independently adjudicated for phonemic/narrow IPA.
+
+- UGTPHON: standard/broad 52.7387% exact, CER 9.0130%; narrow 55.8845% exact, CER 7.2217%; phonemic 20.2073% exact, CER 23.4737%.
+- SIGMORPHON: standard/broad 35.8717% exact, CER 14.5598%; narrow 39.6794% exact, CER 12.6912%; phonemic 12.9259% exact, CER 26.6742%.
+- Standard IPA and Extended broad were identical by contract for all 2,703 UGTPHON and 999 SIGMORPHON occurrences. No broad-layer uplift exists.
+- Narrow is a different layer, so its higher cross-layer string agreement is not a narrow-IPA accuracy result. The corpora do not provide independently adjudicated narrow-IPA gold.
+
+The artifact exposed a concentrated error: [ɭ] occurred in 489 UGTPHON and 152 SIGMORPHON narrow predictions; it co-occurred with 284/288 UGTPHON exact-match losses and all 67 SIGMORPHON exact-match losses. Crosby & Dalola (2021), a 12-speaker Standard Korean study (CC BY 4.0; DOI 10.3765/plsa.v6i1.5002), found 99.3% intervocalic taps [ɾ] and associated retroflex lateral realizations primarily with pre-pausal and preconsonantal contexts. The old text-only onset rule was therefore overgeneralized and misattributed to Lee (1993).
+
+**Correction committed in this increment:** narrow profile v7 removes automatic [ɭ] from intervocalic and front-vowel onset ㄹ; [ɾ] is retained in those contexts. The parser still represents [ɭ]. Normative ㄹ-coda + ㄹ-onset assimilation is preserved and now cites the NIKL standard rule separately. Source/evidence registries and narrow-profile version IDs are updated. Re-run the A/B benchmark on the corrected code before interpreting narrow metrics.
+
+The artifact's narrow/phonemic figures are retained only as historical pre-correction cross-layer diagnostics. They are not current-head metrics and do not establish accuracy. The exact-head multi-engine workflow remains the next executable benchmark gate; independent layer-matched phonetic gold and audio review remain blocked by missing adjudication/rights.
+
+
+## Evidence reconciliation — Korean liquid [ɾ] / [ɭ] — 2026-11-27
+
+A primary-source recheck corrects the previous note that Lee (1993) did not support intervocalic [ɭ]. Lee (1993, p.31; DOI 10.1017/S0025100300004758) explicitly describes Seoul /l/ as [ɭ] intervocalically and before /i,j/. Crosby & Dalola (2021; DOI 10.3765/plsa.v6i1.5002), in a 12-speaker Standard Korean sample, found 422/425 intervocalic liquids were taps (99.3%) and retroflex laterals were strongly associated with pre-pausal and preconsonantal contexts. These are conflicting source descriptions, not grounds for a universal rule.
+
+Narrow profile v7 now keeps [ɾ] as the primary intervocalic onset ㄹ result and exposes [ɭ] only as a separate unselected narrow-layer variant, with both citations and evidence status conflicting-source-descriptions-variant-only. The segment parser continues to recognize [ɭ]. The variant is not selected for a speaker without speaker/dialect/prosodic/audio context and is not passed to Ukrainian adaptation.
+
+The pre-correction A/B artifact measured [ɭ] as primary; its [ɭ]-associated losses motivated this correction but its narrow metrics are not v7 metrics. A fresh v7 benchmark is required. Do not report the historical narrow score as a current uplift.
+
+
+## Multi-engine benchmark results inspected — 2026-11-27
+
+The prior multi-engine run 45973857624 completed successfully and its aggregate artifact 15190546061 was downloaded and inspected. It ran 1,000-item samples per track (eligible counts vary after exclusions). The broad engine code is unchanged by narrow-profile v7, so these are historical broad-profile diagnostics, not v7 narrow results.
+
+Raw strict IPA comparison (exact match / CER):
+- UGTPHON, 2,702 scored: ClippyFirst 52.7387% / 9.0130%; g2pk 53.0892% / 9.2328%; g2p-ko 52.4602% / 9.3928%. Native CER is lower than g2pk, while exact match is 0.35 pp lower; cluster-bootstrap intervals overlap.
+- SIGMORPHON, 998 scored: ClippyFirst 35.9719% / 14.5347%; g2pk 35.3353% / 14.8222%; g2p-ko 35.6356% / 14.6970%. Native is modestly ahead on both metrics; intervals overlap.
+- IPA-Dict Korean, 996 scored: ClippyFirst 41.2651% / 9.9335%; g2pk 41.1000% / 10.0412%; g2p-ko 40.9409% / 10.0154%. Small differences; this source is Wiktionary-derived and not independent of SIGMORPHON lineage.
+- Seoul Corpus phonemic gold: ClippyFirst 14.8033% / 39.8430%; g2pk 15.7000% / 39.5789%. This is an underlying phonemic reference, not broad surface gold, so do not use it as a direct surface-G2P ranking.
+- K-SPAN modern: ClippyFirst 10.8652% / 27.7790%; g2pk 10.9000% / 27.7325%. K-SPAN conservative: ClippyFirst 7.5529% / 27.4537%; g2pk 7.5000% / 27.4913%. These are effectively tied and the K-SPAN mapping carries a substantial independent-key/WorldBet integrity warning.
+
+A lossy broad-candidate sensitivity normalization yields higher agreement (ClippyFirst vs g2pk: UGTPHON 86.23% vs 85.72%, SIGMORPHON 69.84% vs 68.67%, IPA-Dict 86.14% vs 85.70%). It collapses or removes meaningful contrasts (including [ɭ]→[l], [ɲ]→[n], h-like allophones, separators, selected diacritics and stress). These are sensitivity scores, not the engine's actual output or evidence of narrow accuracy.
+
+Browser strict/soft policy: strict mode has 100% UGTPHON coverage, 99.9% SIGMORPHON, 99.4% K-SPAN modern, 99.3% K-SPAN conservative, and 99.6% IPA-Dict; it has zero engine errors and no heuristic or typed-fallback tokens. Soft mode raises conditional exact match on UGTPHON to 56.19% but drops coverage to 82.8%, reducing coverage-adjusted exact match to 46.54% (below strict 52.72%). Soft also lowers coverage-adjusted exact match on SIGMORPHON, K-SPAN and IPA-Dict. Super-soft coverage is only 0.3–2.0%, with negligible coverage-adjusted scores. Strict remains the preferred deterministic default; soft is not a net gain when abstentions are counted.
+
+Data/evaluation caveats: UGTPHON is user-generated/noisy; SIGMORPHON and IPA-Dict conventions are not identical; IPA-Dict shares Wiktionary lineage; Seoul Corpus labels are phonemic; K-SPAN key-vs-WorldBet integrity reports 22,843 mismatches across 41,174 matched rows, chiefly systematic vowel-symbol differences, and its source WorldBet fields are used without overriding them from the key. No result measures Ukrainian adaptation quality.
+
+The current v7 benchmark run 45983709835 is in progress. Its paired standard-vs-Extended IPA artifact is still required to evaluate the corrected primary [ɾ] plus optional [ɭ] variant. Do not carry forward the pre-correction v6 narrow metrics as v7 evidence.
+
+
+### Feature-level comparison from the pre-correction A/B artifact
+
+On the same reference split, the narrow layer's exact-match gains were concentrated in aspirated /s/ [sʰ] (243 UGTPHON and 67 SIGMORPHON gains), palatalized [ɕ] (82 and 14), palatal nasal [ɲ] (44 and 13), and [ç] (28 and 0). Examples include 가슴 (broad ka.sɯm → narrow ka.sʰɯm against gold ka̠sʰɯm), 그냥 (kɯ.njaŋ → kɯ.ɲjaŋ against kɯɲja̠ŋ), and 고시엔 (ko.si.en → ko.ɕʰi.en against ko̞ɕʰie̞n). These are useful signs that the allophonic rules can move outputs toward the corpus conventions, but they remain corpus-string diagnostics, not independently adjudicated narrow-IPA accuracy.
+
+The dominant losses were not spread evenly across the profile: [ɭ] co-occurred with 284/288 UGTPHON and 67/67 SIGMORPHON exact losses, and with 382/388 and 116/117 distance-worsening cases. Example: 다리 had gold ta̠ɾi, standard ta.ɾi, but pre-correction narrow ta.ɭi. This motivated v7's [ɾ] primary + optional [ɭ] variant policy. The hypothesis is that v7 preserves the aspiration/palatalization gains while avoiding the overgeneralized [ɭ] losses; only the new v7 A/B artifact can confirm or reject that hypothesis.
+
+
+## Standard vs Extended IPA paired benchmark — artifact inspection, 2026-11-27
+
+Inspected the uploaded `standard-vs-extended-ipa-ab` artifact (workflow run `45973857624`, artifact `15188603961`; benchmark script `scripts/benchmark_extended_ipa_ab.mjs`; engine `Kozak Kim deterministic browser engine`; strict morphology). The benchmark uses the same source rows, token order, eligibility and gold strings for standard and Extended IPA passes. Reference layers are explicitly `reference-layer-not-independently-adjudicated-here`.
+
+| Dataset | Layer | Exact match | CER | Coverage |
+|---|---|---:|---:|---:|
+| UGTPHON (2,703 occurrences; 2,702 scored) | Standard strict broad | 52.7387% | 9.0130% | 99.963% |
+| UGTPHON | Extended broad | 52.7387% | 9.0130% | 99.963% |
+| UGTPHON | Extended phonemic | 20.2073% | 23.4737% | 99.963% |
+| UGTPHON | Extended narrow | 55.8845% | 7.2217% | 99.963% |
+| SIGMORPHON (999 occurrences; 998 scored) | Standard strict broad | 35.8717% | 14.5598% | 99.900% |
+| SIGMORPHON | Extended broad | 35.8717% | 14.5598% | 99.900% |
+| SIGMORPHON | Extended phonemic | 12.9259% | 26.6742% | 99.900% |
+| SIGMORPHON | Extended narrow | 39.6794% | 12.6912% | 99.900% |
+
+### Interpretation and limits
+
+- Standard broad and Extended broad are identical by contract: zero prediction differences and zero status differences on all 2,703 UGTPHON and 999 SIGMORPHON occurrences. This is expected because Extended broad wraps the existing strict broad output; the segment IR is a structured representation boundary, not a new G2P predictor. There is no measured broad accuracy uplift.
+- Extended narrow has numerically higher exact match and lower CER against these stored references (+3.1458 pp exact / -1.7913 pp CER on UGTPHON; +3.8077 pp / -1.8686 pp on SIGMORPHON). However, neither corpus reference layer was independently adjudicated as narrow IPA in this benchmark. The report explicitly says narrow scores are cross-layer string agreement only, not narrow-IPA accuracy. Do not present these deltas as verified phonetic improvement.
+- Extended phonemic scores poorly against these same broad/mixed references (UGTPHON 20.2073% exact, 23.4737% CER; SIGMORPHON 12.9259%, 26.6742%). The report says this comparison is meaningful only if the gold is phonemic and uses compatible inventory/segmentation. It is not a fair phonemic accuracy score.
+- No benchmark here measures Ukrainian target transcription accuracy, rule accuracy, or the quality of an IPA-to-Ukrainian adapter.
+- Therefore: technical Extended IPA IR is implemented and verified; standard-vs-Extended broad prediction accuracy is unchanged; narrow accuracy remains unproven pending layer-aligned independent gold.
+
+The separate multi-engine artifact from the same run is aggregate-only and is not an A/B of Extended IPA. Its strict native results are UGTPHON 52.7387% exact / 9.0130% CER (2,702 scored of 2,703), SIGMORPHON 35.9719% / 14.5347% (998/999), and Seoul phoneme-tier 14.8033% / 39.8430% (966/1,000). The separate paired UGTPHON engine comparison reports native 52.7387% / 9.0130% vs g2pk 53.0892% / 9.2328% on 2,702 paired occurrences; g2pk gains +0.3701 pp exact but worsens CER by +0.2207 pp. These are diagnostic comparisons across engines, not Extended-IPA gains or adjudicated gold accuracy.
+
+The A/B artifact was produced on implementation commit `08feed20a54187ebc1c35f211801e9c7e5c85632`; the subsequent `a7116388` change only corrected a test fixture (no production parser/IPA output change), and documentation-only commits followed. The current-head benchmark workflow was cancelled before producing its own artifact; this prior artifact remains the inspected diagnostic evidence, not an exact-current-head rerun.

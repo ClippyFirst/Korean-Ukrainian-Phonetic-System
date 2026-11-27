@@ -73,9 +73,9 @@ The existing Python profile uses [ɲ] before selected /j/-initial nuclei and del
 
 **Um (2014), [S033].** The abstract reports that underlying /h/ can affect the duration of a preceding sonorant even when /h/ is not acoustically manifested. This is evidence against treating deletion as always leaving no phonetic trace; it does not license a deterministic [ɦ] realization for every post-sonorant token.
 
-**Lee (1993), [S018].** The Illustrations of the IPA description documents [ç] before /i,j/, [x] before /u/, and descriptions of Seoul Korean [ɸ] and [ɭ] contexts. These are useful descriptive references, but do not establish speaker-independent probabilities.
+**Lee (1993), [S018], p.31.** The article explicitly describes Seoul /l/ as [ɭ] intervocalically and before /i,j/; this is direct descriptive evidence for an optional variant. It is a descriptive claim, not a frequency estimate or a speaker-independent rule. The consonant chart on p.28 lists [l] as the lateral approximant; the prose later specifies the [ɭ] realization in those contexts.
 
-**Implementation correction:** narrow profile v6 no longer forces [ɦ] after every same-word sonorant coda. The browser and Python outputs retain /h/ in that context and expose the reported weakening/deletion as an unresolved, speaker-/dialect-conditioned alternative. This is a deliberate evidence-gated correction, not a regression in coverage.
+**Implementation correction:** narrow profile v7 no longer forces [ɦ] after every same-word sonorant coda and no longer converts intervocalic onset ㄹ to [ɭ]. The browser and Python outputs retain /h/ in that context and expose the reported weakening/deletion as an unresolved, speaker-/dialect-conditioned alternative. This is a deliberate evidence-gated correction, not a regression in coverage.
 
 ### 2.7 Vowel and glide variation: ㅢ
 
@@ -138,3 +138,19 @@ undefined
 
 
 **Browser underlying candidate clarification:** the browser's phonemic panel now shows the existing super-soft underlying-grapheme IPA fallback. It is useful as a source-orthography candidate but is not equivalent to the Python phonemic layer and must not be treated as adjudicated phonemic gold. Full browser underlying phonological analysis and cross-runtime parity remain acceptance gates.
+
+
+### 2.9 Korean liquid allophones and retroflexion
+
+**Crosby & Dalola (2021), [S037].** The open-access study analyzed 12 Standard Korean speakers. In its sample, intervocalic liquids were taps [ɾ] in 422/425 cases (99.3%). Retroflex lateral realizations were strongly associated with pre-pausal contexts (odds ratio 54.839) and were also more likely preconsonantally (odds ratio 3.204). The study found only two retroflex tokens before front vowels among the target-word cases and explicitly notes speaker variation and limits in its prosodic controls. The source is published under CC BY 4.0; no audio or annotations are redistributed here.
+
+**Implementation decision — narrow profile v7.** Intervocalic onset ㄹ remains [ɾ] in the primary text-only output, reflecting Crosby & Dalola's 2021 sample (99.3% intervocalic taps). Lee (1993, p.31) explicitly documents [ɭ] in this environment, so v7 retains [ɭ] as an unselected optional narrow variant with both source references and an explicit conflict status. No speaker-specific selection is made without speaker, dialect, prosodic and acoustic context. Normative ㄹ-coda + ㄹ-onset assimilation remains separate and source-backed.
+
+**Benchmark consequence.** The paired Standard-vs-Extended artifact from the pre-correction browser code shows that [ɭ] appeared in 489 UGTPHON and 152 SIGMORPHON narrow predictions. It co-occurred with 284/288 UGTPHON exact-match losses and all 67 SIGMORPHON exact-match losses; it also co-occurred with 382/388 and 116/117 distance-worsening cases respectively. These are diagnostics against references not independently adjudicated as narrow gold. The v7 primary layer now uses [ɾ] and retains [ɭ] only as an unselected narrow variant; rerun the benchmark before interpreting the corrected profile.
+
+
+### Evidence reconciliation — Lee (1993) versus Crosby & Dalola (2021)
+
+The previous continuation note overstated the case when it said Lee (1993) did not support intervocalic [ɭ]. The full primary source was re-opened: p.31 explicitly says /l/ is [ɭ] intervocalically and before /i,j/ (DOI 10.1017/S0025100300004758). Crosby & Dalola (2021), by contrast, found 422/425 intervocalic liquids were taps in their 12-speaker Standard Korean sample (99.3%) and found retroflex lateral realizations strongly associated with pre-pausal and preconsonantal positions (DOI 10.3765/plsa.v6i1.5002). These findings are not identical and should not be collapsed into a universal categorical rule.
+
+The v7 policy is therefore: primary deterministic onset ㄹ = [ɾ] intervocalically; optional [ɭ] is exposed as a separate, unselected narrow-layer variant with both citations and status conflicting-source-descriptions-variant-only. The variant is not a claim about a particular speaker and is not fed into Ukrainian adaptation. The pre-correction benchmark measured [ɭ] as the primary output; it must not be reused as the v7 benchmark.

@@ -373,28 +373,33 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
 
     extended_variants = []
     import re as _re
-    for index, variant in enumerate(broad_layer.get("variants", []), start=1):
-        note = str(variant.get("note") or "")
-        refs = _re.findall(r"https?://[^\s)]+", note)
-        indices = variant.get("syllable_indices") or []
-        span = None
-        valid_indices = [value for value in indices if isinstance(value, int) and 0 <= value < len(source_spans)]
-        if valid_indices and all(source_spans[value] for value in valid_indices):
-            span = {
-                "start": min(source_spans[value]["start"] for value in valid_indices),
-                "end": max(source_spans[value]["end"] for value in valid_indices),
-            }
-        extended_variants.append({
-            "id": f"broad-variant-{index}",
-            "layer": "broad",
-            "ipa": str(variant.get("ipa") or ""),
-            "evidence_status": "research-hypothesis" if "Research-only" in note or "research-only" in note else "source-or-rule-derived-variant",
-            "evidence_refs": refs,
-            "environment": note or None,
-            "uncertainty": "Speaker-specific realization is not identified by this result.",
-            "source_span": span,
-            "selected": False,
-        })
+    for variant_layer, layer_result in (("broad", broad_layer), ("narrow", narrow_layer)):
+        for index, variant in enumerate(layer_result.get("variants", []), start=1):
+            note = str(variant.get("note") or "")
+            refs = _re.findall(r"https?://[^\s)]+", note)
+            supplied_refs = variant.get("evidence_refs")
+            if isinstance(supplied_refs, list):
+                refs = [value for value in supplied_refs if isinstance(value, str)]
+            indices = variant.get("syllable_indices") or []
+            span = None
+            valid_indices = [value for value in indices if isinstance(value, int) and 0 <= value < len(source_spans)]
+            if valid_indices and all(source_spans[value] for value in valid_indices):
+                span = {
+                    "start": min(source_spans[value]["start"] for value in valid_indices),
+                    "end": max(source_spans[value]["end"] for value in valid_indices),
+                }
+            layer_name = variant.get("layer") or variant_layer
+            extended_variants.append({
+                "id": f"{layer_name}-variant-{index}",
+                "layer": layer_name,
+                "ipa": str(variant.get("ipa") or ""),
+                "evidence_status": variant.get("evidence_status") or ("research-hypothesis" if "Research-only" in note or "research-only" in note else "source-or-rule-derived-variant"),
+                "evidence_refs": refs,
+                "environment": variant.get("environment") or note or None,
+                "uncertainty": variant.get("uncertainty") or "Speaker-specific realization is not identified by this result.",
+                "source_span": span,
+                "selected": variant.get("selected") is True,
+            })
 
     extended_trace = []
     underlying_source_spans = []
@@ -420,13 +425,13 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
             "evidence_status": "deterministic-underlying-phonemic-inventory",
             "status": "underlying-phonemic-grapheme-derived",
         })
-    for item, span in zip(items, source_spans):
+    for index, (item, span) in enumerate(zip(items, source_spans)):
         extended_trace.append({
             "layer": "broad",
             "source_span": span,
             "source": item.text,
             "surface": item.text,
-            "ipa": None,
+            "ipa": broad_layer.get("syllables", [None] * len(items))[index],
             "rule_ids": [],
             "environment": None,
             "evidence_refs": [],
@@ -434,25 +439,54 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
             "status": "aligned" if span else "source-span-unavailable",
         })
     for index, item in enumerate(items):
-        if index == 0 or item.onset != "ㅎ":
-            continue
-        previous = items[index - 1]
-        if previous.boundary_after == "word" or previous.coda not in {"ㄴ", "ㄹ", "ㅁ", "ㅇ", "ㄵ", "ㄶ", "ㄻ", "ㄼ", "ㄽ", "ㄾ", "ㅀ"}:
-            continue
+        rule_ids = []
+        environment = None
+        evidence_refs = []
+        evidence_status = "no-narrow-rule-applied"
+        status = "aligned" if source_spans[index] else "source-span-unavailable"
+        narrow_value = narrow_layer.get("syllables", [None] * len(items))[index] or ""
+        if narrow_value.startswith("ɲ"):
+            rule_ids = ["narrow-nasal-palatalization"]
+            environment = "onset ㄴ before glide-initial nucleus"
+            evidence_refs = ["https://discovery.ucl.ac.uk/id/eprint/1324541/1/1324541.pdf"]
+            evidence_status = "secondary-description-requires-primary-phonetic-review"
+        elif narrow_value.startswith(("sʰ", "ɕʰ")):
+            rule_ids = ["narrow-lenis-sibilant-place"]
+            environment = "onset ㅅ; narrow aspiration/place realization in the source-scoped profile"
+            evidence_refs = ["https://doi.org/10.17959/sppm.2010.16.1.3"]
+            evidence_status = "source-scoped-acoustic-coarticulation"
+        elif narrow_value.startswith(("ç", "x", "ɸ")):
+            rule_ids = ["narrow-h-contextual-allophone"]
+            environment = "onset ㅎ in the documented vowel/intervocalic context"
+            evidence_refs = ["https://doi.org/10.1017/S0025100300004758"]
+            evidence_status = "source-scoped-description"
+        elif narrow_value.startswith("ɭ"):
+            rule_ids = ["narrow-retroflex-lateral-candidate"]
+            environment = "position-conditioned lateral token; not assigned by the text-only narrow profile"
+            evidence_refs = ["https://doi.org/10.1017/S0025100300004758", "https://doi.org/10.3765/plsa.v6i1.5002"]
+            evidence_status = "conflicting-source-descriptions-variant-only"
+        if index > 0 and item.onset == "ㅎ":
+            previous = items[index - 1]
+            if previous.boundary_after != "word" and previous.coda in {"ㄴ", "ㄹ", "ㅁ", "ㅇ", "ㄵ", "ㄶ", "ㄻ", "ㄼ", "ㄽ", "ㄾ", "ㅀ"}:
+                rule_ids = ["narrow-h-sonorant-variation-unresolved"]
+                environment = "same-word sonorant coda + onset ㅎ; weakening/deletion is speaker-/dialect-conditioned"
+                evidence_refs = [
+                    "https://doi.org/10.17290/jlsk.2019..84.175",
+                    "https://doi.org/10.17959/sppm.2014.20.3.357",
+                ]
+                evidence_status = "speaker-and-dialect-variable-no-single-IPA-selected"
+                status = "unresolved-variation"
         extended_trace.append({
             "layer": "narrow",
             "source_span": source_spans[index],
             "source": item.text,
             "surface": item.text,
             "ipa": narrow_layer.get("syllables", [None] * len(items))[index],
-            "rule_ids": ["narrow-h-sonorant-variation-unresolved"],
-            "environment": "same-word sonorant coda + onset ㅎ; weakening/deletion is speaker-/dialect-conditioned",
-            "evidence_refs": [
-                "https://doi.org/10.17290/jlsk.2019..84.175",
-                "https://doi.org/10.17959/sppm.2014.20.3.357",
-            ],
-            "evidence_status": "speaker-and-dialect-variable-no-single-IPA-selected",
-            "status": "unresolved-variation",
+            "rule_ids": rule_ids,
+            "environment": environment,
+            "evidence_refs": evidence_refs,
+            "evidence_status": evidence_status,
+            "status": status,
         })
 
     for rule in all_traces:

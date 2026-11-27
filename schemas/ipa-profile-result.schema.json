@@ -18,7 +18,7 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "1.1"
+      "const": "1.2"
     },
     "mode": {
       "const": "extended-ipa"
@@ -439,7 +439,8 @@
         "level",
         "status",
         "evidence_status",
-        "target_compatible"
+        "target_compatible",
+        "segments"
       ],
       "properties": {
         "ipa": {
@@ -476,6 +477,182 @@
         },
         "target_compatible": {
           "type": "boolean"
+        },
+        "segments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/segment_token"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "segment_token": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "ipa",
+        "ipa_span"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "segment",
+            "boundary",
+            "unknown"
+          ]
+        },
+        "ipa": {
+          "type": "string"
+        },
+        "base": {
+          "type": "string"
+        },
+        "modifiers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "features": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "ipa_span": {
+          "$ref": "#/$defs/non_null_span"
+        },
+        "source_span": {
+          "$ref": "#/$defs/span"
+        },
+        "source_alignment": {
+          "enum": [
+            "syllable-span",
+            "unavailable"
+          ]
+        },
+        "provenance": {
+          "type": "object",
+          "properties": {
+            "rule_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "evidence_refs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "evidence_status": {
+              "type": "string"
+            },
+            "environment": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "rule_ids",
+            "evidence_refs",
+            "evidence_status",
+            "environment"
+          ],
+          "additionalProperties": false
+        },
+        "boundary": {
+          "enum": [
+            "word",
+            "syllable",
+            "separator"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "segment"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "base",
+              "modifiers",
+              "features",
+              "source_span",
+              "source_alignment",
+              "provenance"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "boundary"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "boundary"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "unknown"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "reason",
+              "source_span"
+            ]
+          }
+        }
+      ]
+    },
+    "non_null_span": {
+      "type": "object",
+      "required": [
+        "start",
+        "end"
+      ],
+      "properties": {
+        "start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 1
         }
       },
       "additionalProperties": false
