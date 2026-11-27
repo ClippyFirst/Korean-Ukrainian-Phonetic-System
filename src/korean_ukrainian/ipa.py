@@ -274,15 +274,15 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
                     alternate[i] = to_form + rendered[i][len(from_form):]
                 else:
                     continue
-                    variants.append({
-                        "layer": "narrow", "syllable_indices": [i],
-                        "ipa": render_syllable_sequence(items, alternate),
-                        "note": note, "vowels": labels,
-                        "evidence_status": evidence_status, "evidence_refs": [rounded_glide_ref],
-                        "environment": environment,
-                        "uncertainty": "The source synthesizes earlier work and does not identify this token's speaker, dialect, age or style. Audio or speaker metadata is required to select a realization.",
-                        "selected": False,
-                    })
+                variants.append({
+                    "layer": "narrow", "syllable_indices": [i],
+                    "ipa": render_syllable_sequence(items, alternate),
+                    "note": note, "vowels": labels,
+                    "evidence_status": evidence_status, "evidence_refs": [rounded_glide_ref],
+                    "environment": environment,
+                    "uncertainty": "The source synthesizes earlier work and does not identify this token's speaker, dialect, age or style. Audio or speaker metadata is required to select a realization.",
+                    "selected": False,
+                })
         return variants
     if level!="broad":
         return []
