@@ -2472,3 +2472,16 @@ The replay changes 94 scored UGTPHON tokens and 50 scored SIGMORPHON tokens. The
 - Corrected the multi-engine workflow path filters so PR changes to `src/app/extended_ipa.js`, `scripts/benchmark_extended_ipa_ab.mjs`, and their dedicated Narrow tests trigger the paired A/B benchmark. Previously these browser-only Narrow and report changes could be missed by the PR path filter.
 - The first v11 run `46002146555` was cancelled before jobs were assigned; it is superseded by exact-head run `46002598778` (pending as of 2026-11-27 12:55 UTC). Verification run `46002598827` is queued. No v11 CI scores are claimed yet.
 - Current PR head: `da56c8c928cdcd40f1cddd3cf3e0c5e7c2ba8132`.
+
+## Current verification checkpoint — Narrow v11 — 2026-11-27
+
+**Latest code head:** `a6e9f3a8feace70566688a08ab3f14ba26095b0d`. **PR:** [#511](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/511), draft/open, stacked on #510.
+
+- Narrow profile v11 is implemented in both Python and browser runtime. The medial /h/ mapping derives the word-medial voiced counterparts in Shin, Kiaer & Cha (2012, Table 4.6, p.77) by pairing them with the word-initial vowel contexts in that table; this is an evidence-scoped deterministic mapping, not token-level acoustic measurement. Word-initial [ç]/[x] remains distinct; post-sonorant weakening remains unresolved.
+- Benchmark runner now emits top codepoint-level Levenshtein substitutions/insertions/deletions with examples. These are symbol-confusion diagnostics, not phonological-feature judgments.
+- Workflow path filters now include the browser Narrow runtime and paired Narrow A/B script/tests, so changes to those paths trigger the benchmark.
+- **Exact-head verification run 46003794829: Python regression/data integrity PASS; browser regression 1,503 passed / 0 failed; Vite production build PASS.** The NIKL metadata-only job was skipped by policy, not passed.
+- Exact-head v11 A/B run **46003794854** is still pending with no jobs assigned. Do not promote the counterfactual preview to a measured benchmark result.
+- Counterfactual replay over the saved v10 paired artifact estimates UGTPHON coverage-adjusted exact 69.5523% → 71.8831%, CER 5.0063% → 4.6471%; SIGMORPHON coverage-adjusted exact 48.6486% → 50.2503%, CER 10.7349% → 10.2207%. This is a saved-artifact simulation, not a fresh A/B run.
+- The open K-SPAN matrix remains BLOCKED: Dataverse v2.1 bundle and pinned file endpoints both returned HTTP 403 after retries. Other independent UGTPHON/SIGMORPHON diagnostics completed; no K-SPAN result is claimed.
+- Independent layer-matched Narrow IPA gold, rights-cleared audio and expert speaker/dialect adjudication remain BLOCKED. **Readiness remains research prototype, not release-ready or phonetic-certified.**
