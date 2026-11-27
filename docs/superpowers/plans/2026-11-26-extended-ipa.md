@@ -238,3 +238,8 @@ This section supersedes earlier segment-IR TODO statements below it. Historical 
 - **Still BLOCKED:** independent Korean phonetic adjudication and layer-aligned narrow gold; rights-cleared acoustic corpus/labels; human keyboard/screen-reader/zoom acceptance; independent Ukrainian target review. Ukrainian adapter remains deferred and fail-closed.
 
 Acceptance before marking segment IR DONE_VERIFIED: all exact-head Tests, Verify, Browser G2P and artifact-generation workflows pass; inspect their logs/artifacts; confirm all 11,172 phonemic parity cases and parser/integration fixtures pass. Do not infer linguistic validity from software CI.
+
+
+### Test-oracle correction — 2026-11-27
+
+A source-level review found two new parser tests treating ASCII `?` as an unknown phone even though both runtimes intentionally classify Unicode punctuation as boundary tokens. Corrected the fixtures to use the non-punctuation unknown code point `😀`, preserving the separate punctuation-boundary tests. This is a test-only correction; no production parser behavior changed. The corrected tests have not yet been executed locally (GitHub DNS failure) or confirmed by CI; keep the gate PARTIAL until exact-head workflows pass.
