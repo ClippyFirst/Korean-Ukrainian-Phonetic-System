@@ -15,9 +15,9 @@ const EVIDENCE = {
     refs: ['https://discovery.ucl.ac.uk/id/eprint/1324541/1/1324541.pdf'],
     status: 'secondary-description-candidate-only'
   },
-  'narrow-coda-stop-unreleased-candidate': {
+  'narrow-coda-stop-release-candidate': {
     refs: ['https://doi.org/10.1017/S0025100300004758', 'https://doi.org/10.1006/JPHO.1996.0016', 'https://doi.org/10.13064/ksss.2026.18.1.021'],
-    status: 'source-scoped-release-variant-only'
+    status: 'source-scoped-release-variation-candidate-only'
   },
   'narrow-lenis-sibilant-place': {
     refs: ['https://doi.org/10.17959/sppm.2010.16.1.3'],
@@ -358,12 +358,12 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       const nextItem = sourceTrace[sourceIndex + 1];
       const nextValue = String(nextItem?.source ?? '');
       const wordFinalCoda = !nextItem || nextItem.status === 'literal' && /^[\s\p{P}]+$/u.test(nextValue);
-      if (codaStopPlace && derived.ipa.endsWith(codaStopPlace) && wordFinalCoda) {
+      if (codaStopPlace && derived.ipa.endsWith(codaStopPlace + '̚') && wordFinalCoda) {
         narrowVariantSites.push({
-          ipaStart: ipaStart + [...derived.ipa].length - 1, sourceSpan: span,
-          from: codaStopPlace, to: codaStopPlace + '̚',
-          evidence: 'narrow-coda-stop-unreleased-candidate',
-          environment: 'word-final coda ' + currentParsed.coda + '; release realization unobserved'
+          ipaStart: ipaStart + [...derived.ipa].length - 2, sourceSpan: span,
+          from: codaStopPlace + '̚', to: codaStopPlace,
+          evidence: 'narrow-coda-stop-release-candidate',
+          environment: 'word-final coda ' + currentParsed.coda + '; optional released [' + codaStopPlace + '] candidate'
         });
       }
       previousWasHangul = true;
@@ -394,8 +394,8 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
         evidence_status: evidence.status,
         evidence_refs: evidence.refs,
         environment: site.environment,
-        uncertainty: site.evidence === 'narrow-coda-stop-unreleased-candidate'
-          ? 'Lee (1993) illustrates unreleased coda stops; Kim & Jongman (1996) observed bursts after 83% of word-final stops in a four-speaker sample; Cha (2026) did not quantify burst frequency. Release is not inferable from text, so the candidate remains unselected.'
+        uncertainty: site.evidence === 'narrow-coda-stop-release-candidate'
+          ? 'Lee (1993) illustrates unreleased coda stops, while Kim & Jongman (1996) observed bursts after 83% of word-final stops in a four-speaker sample; Cha (2026) did not quantify burst frequency. Optional released [p,t,k] candidate only; release cannot be inferred from text.'
           : site.evidence === 'narrow-coda-n-palatalization-candidate'
           ? 'Secondary description in Lee (1996), summarized by Kim (2011, p.23); not direct acoustic evidence for this specific coda context, so candidates remain unselected.'
           : site.evidence === 'narrow-coda-retroflex-lateral-candidate'
