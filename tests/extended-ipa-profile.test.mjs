@@ -152,3 +152,14 @@ test('browser exposes coda retroflexion as an unselected speaker-conditioned var
   assert.ok(variant.evidence_refs.some(ref => ref.includes('10.20405/kl.2024.02.102.63')));
   assert.match(variant.environment, /word-final coda ㄹ/);
 });
+
+
+test('browser exposes an unselected preconsonantal coda retroflex variant', () => {
+  const result = extended('물론');
+  assert.equal(result.layers.narrow.ipa, 'mul.lon');
+  const variant = result.variants.find(item => item.layer === 'narrow' && item.ipa === 'muɭ.lon');
+  assert.ok(variant);
+  assert.equal(variant.selected, false);
+  assert.equal(variant.evidence_status, 'speaker-conditioned-sociophonetic-variant-only');
+  assert.match(variant.environment, /before same-word consonant/);
+});
