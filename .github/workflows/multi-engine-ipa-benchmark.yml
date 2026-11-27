@@ -647,7 +647,12 @@ jobs:
       - name: Build one aggregate-only summary for all benchmark tracks
         run: |
           set -euo pipefail
-          python scripts/build_full_korean_benchmark_summary.py --runner-temp "$RUNNER_TEMP"
+          if [ -f "$RUNNER_TEMP/open-korean-benchmark-status.json" ]; then
+            echo "Supplemental open-corpus matrix is explicitly BLOCKED; retaining the successful core benchmark outputs."
+            cat "$RUNNER_TEMP/open-korean-benchmark-status.json"
+          else
+            python scripts/build_full_korean_benchmark_summary.py --runner-temp "$RUNNER_TEMP"
+          fi
 
       - uses: actions/upload-artifact@v4
         if: always()
@@ -658,6 +663,7 @@ jobs:
           path: |
             ${{ runner.temp }}/korean-benchmark-aggregate-summary.json
             ${{ runner.temp }}/open-korean-benchmarks-work/prepared/source-sha256.txt
+            ${{ runner.temp }}/open-korean-benchmark-status.json
           if-no-files-found: warn
           retention-days: 30
 
