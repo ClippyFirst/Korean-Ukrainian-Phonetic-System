@@ -140,3 +140,15 @@ test('browser phonemic adapter preserves underlying codas rather than neutralizi
   assert.equal(phonemicIpaFromHangul('시!').ipa, 'si!');
   assert.equal(phonemicIpaFromHangul('유사성').ipa, 'juː.sa.sʌŋ');
 });
+
+
+test('browser exposes coda retroflexion as an unselected speaker-conditioned variant', () => {
+  const result = extended('팔');
+  assert.equal(result.layers.narrow.ipa, 'pʰal');
+  const variant = result.variants.find(item => item.layer === 'narrow' && item.ipa === 'pʰaɭ');
+  assert.ok(variant);
+  assert.equal(variant.selected, false);
+  assert.equal(variant.evidence_status, 'speaker-conditioned-sociophonetic-variant-only');
+  assert.ok(variant.evidence_refs.some(ref => ref.includes('10.20405/kl.2024.02.102.63')));
+  assert.match(variant.environment, /word-final coda ㄹ/);
+});
