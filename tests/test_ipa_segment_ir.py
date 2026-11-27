@@ -82,3 +82,11 @@ def test_segment_ir_schema_is_versioned_and_requires_typed_layer_tokens():
     assert "features" in token["allOf"][0]["then"]["required"]
     assert "boundary" in token["allOf"][1]["then"]["required"]
     assert "reason" in token["allOf"][2]["then"]["required"]
+
+
+def test_vowel_segment_does_not_receive_consonant_only_features():
+    vowel = next(item for item in parse_ipa_segments("iː") if item["kind"] == "segment")
+    assert vowel["features"]["major_class"] == "vowel"
+    assert vowel["features"]["aspiration"] == "not-applicable"
+    assert vowel["features"]["fortisness"] == "not-applicable"
+    assert vowel["features"]["release"] == "not-applicable"
