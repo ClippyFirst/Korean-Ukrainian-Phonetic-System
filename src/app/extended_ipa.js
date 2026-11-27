@@ -13,7 +13,7 @@ const EVIDENCE = {
   },
   'narrow-coda-n-palatalization-candidate': {
     refs: ['https://discovery.ucl.ac.uk/id/eprint/1324541/1/1324541.pdf'],
-    status: 'secondary-description-candidate-only-requires-primary-review'
+    status: 'secondary-description-candidate-only'
   },
   'narrow-lenis-sibilant-place': {
     refs: ['https://doi.org/10.17959/sppm.2010.16.1.3'],
