@@ -244,6 +244,7 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
                     "selected":False,
                 })
         rounded_glide_ref="https://doi.org/10.1017/9781108292351"
+        for i,syllable in enumerate(items):
             # Kim-Renaud (2022, pp. 25-26, 38-39) describes positional ㅟ
             # realizations and iterative palatalization in /swi/. Keep [y]
             # primary; expose [wi]/[ɥi] and the combined ㅅ+ㅟ path only.
