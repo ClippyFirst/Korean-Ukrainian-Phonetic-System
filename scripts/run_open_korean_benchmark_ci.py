@@ -10,6 +10,7 @@ import subprocess
 import sys
 import tarfile
 import time
+import urllib.error
 import urllib.request
 import zipfile
 from pathlib import Path
@@ -48,6 +49,10 @@ SEOUL_URLS = (
 SEOUL_SHA256 = "63c3f8ffa6976307a732689d6c5be7b2db4ec20f14bf276faf98c886add0d24b"
 
 
+class ExternalSourceUnavailable(RuntimeError):
+    """A public source is temporarily inaccessible; core benchmarks can still run."""
+
+
 def _download(url: str, destination: Path, timeout: int = 180) -> None:
     destination.parent.mkdir(parents=True, exist_ok=True)
     last_error: Exception | None = None
@@ -67,6 +72,11 @@ def _download(url: str, destination: Path, timeout: int = 180) -> None:
             last_error = exc
             if attempt < 2:
                 time.sleep(2 * (attempt + 1))
+    if isinstance(last_error, urllib.error.HTTPError) and last_error.code in {403, 429, 500, 502, 503, 504}:
+        raise ExternalSourceUnavailable(
+            f"public source unavailable after 3 attempts: HTTP {last_error.code} "
+            f"{last_error.reason}: {url}"
+        ) from last_error
     raise RuntimeError(f"download failed after 3 attempts: {url}: {last_error}") from last_error
 
 
@@ -417,7 +427,22 @@ def main() -> int:
     parser.add_argument("--sample-size", type=int, default=1000)
     parser.add_argument("--seed", type=int, default=20261108)
     args = parser.parse_args()
-    run(args.workdir, args.sample_size, args.seed)
+    try:
+        run(args.workdir, args.sample_size, args.seed)
+    except ExternalSourceUnavailable as exc:
+        status_path = args.workdir.parent / "open-korean-benchmark-status.json"
+        status = {
+            "schema_version": 1,
+            "status": "BLOCKED_EXTERNAL_SOURCE",
+            "scope": "supplemental Seoul / K-SPAN / IPA-Dict matrix only",
+            "reason": str(exc),
+            "benchmark_scores_produced": False,
+            "core_ugtphon_sigmorphon_and_standard_vs_extended_reports": "completed in preceding workflow steps",
+            "retry_required": True,
+        }
+        status_path.parent.mkdir(parents=True, exist_ok=True)
+        status_path.write_text(json.dumps(status, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+        print(json.dumps(status, ensure_ascii=False, indent=2), flush=True)
     return 0
 
 
