@@ -12,7 +12,7 @@ _NARROW_HIGH_FRONT_SIBILANT_NUCLEI={"ㅣ","ㅖ","ㅑ"}
 # The research-only narrow profile models onset /n/ palatalization before
 # glide-initial nuclei. Keep /i/ out: the dev counterfactual regressed when /i/
 # was included, so the observed /j/ correspondence must not be generalized.
-# Evidence status: the UCL thesis summarizes earlier descriptions of [nʲ]/[ɲ]
+# Evidence status: the UCL thesis summarizes earlier descriptions of [nj]/[ɲ]
 # before /j/; Ahn (2009) is an initial /n/-deletion study, not direct evidence
 # for a generalized [ɲ] allophone. Primary-source adjudication is still pending.
 _NARROW_PALATALIZED_NASAL_GLIDE_NUCLEI={"ㅑ","ㅒ","ㅕ","ㅖ","ㅛ","ㅠ"}
@@ -176,7 +176,7 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
             if (syllable.coda=="ㄴ" and rendered[i].endswith("n")
                     and i+1<len(items) and syllable.boundary_after!="word"
                     and items[i+1].onset in {"ㅈ","ㅉ","ㅊ"}):
-                for alternate_nasal in ("ɲ", "nʲ"):
+                for alternate_nasal in ("ɲ", "nj"):
                     alternate=list(rendered)
                     alternate[i]=alternate[i][:-1]+alternate_nasal
                     variants.append({
