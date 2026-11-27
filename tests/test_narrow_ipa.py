@@ -128,3 +128,12 @@ def test_preconsonantal_coda_lateral_has_a_separate_unselected_retroflex_candida
     assert variant["evidence_status"] == "speaker-conditioned-sociophonetic-variant-only"
     assert "preconsonantal" in variant["note"]
     assert "10.3765/plsa.v6i1.5002" in variant["evidence_refs"]
+
+
+def test_geminate_lateral_before_high_front_vocoid_exposes_optional_palatalization():
+    result = realize_syllables(parse_syllables("빨리"), level="narrow")
+    assert result["ipa"] == "p͈al.li"
+    variant = next(item for item in result["variants"] if item["ipa"] == "p͈al.lʲi")
+    assert variant["selected"] is False
+    assert variant["evidence_status"] == "gradient-coarticulation-candidate-variant-only"
+    assert "10.3765/plsa.v6i1.5002" in variant["evidence_refs"]
