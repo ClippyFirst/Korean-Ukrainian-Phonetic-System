@@ -68,3 +68,12 @@ test('engine emits expanded aspiration and contextual allophones in the correct 
   assert.equal(layer('후','narrow'),'xu');
   assert.ok(!layer('안하','narrow').includes('ɦ'));
 });
+
+test('segment IR handles tied affricates and combining vowel diacritics', () => {
+  const segments = parseIpaSegments('t͡ɕʰ ãː').filter(item => item.kind === 'segment');
+  assert.deepEqual(segments.map(item => item.ipa), ['t͡ɕʰ','ãː']);
+  assert.equal(segments[0].base, 'tɕ');
+  assert.equal(segments[0].features.aspiration, 'aspirated');
+  assert.equal(segments[1].features.nasalization, 'nasalized');
+  assert.equal(segments[1].features.length, 'long');
+});
