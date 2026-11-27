@@ -39,7 +39,7 @@ test('segment IR preserves syllable source spans and rule provenance explicitly'
   assert.deepEqual(segment.provenance.rule_ids, ['narrow-nasal-palatalization']);
   assert.equal(boundary.kind, 'boundary');
   assert.equal(unknown.kind, 'unknown');
-  assert.equal(unknown.ipa, '?');
+  assert.equal(unknown.ipa, '😀');
 });
 
 test('browser Extended IPA attaches segment IR and source spans to every layer', () => {
