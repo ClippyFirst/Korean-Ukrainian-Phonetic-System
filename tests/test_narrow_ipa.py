@@ -164,8 +164,11 @@ def test_coda_nasal_palatalization_before_affricates_is_optional_only():
 
 def test_word_final_coda_stops_expose_unreleased_candidates_without_selecting_them():
     for word, primary, candidate in (("낫", "nat̚", "nat"), ("밖", "pak̚", "pak"), ("밥", "pap̚", "pap"), ("닭", "tak̚", "tak"), ("값", "kap̚", "kap")):
-        result = realize_syllables(parse_syllables(word), level="narrow")
+        parsed = parse_syllables(word)
+        result = realize_syllables(parsed, level="narrow")
+        broad = realize_syllables(parsed, level="broad")
         assert result["ipa"] == primary
+        assert broad["ipa"] == primary
         variant = next(item for item in result["variants"] if item["ipa"] == candidate)
         assert variant["selected"] is False
         assert variant["evidence_status"] == "source-scoped-release-variation-candidate-only"
