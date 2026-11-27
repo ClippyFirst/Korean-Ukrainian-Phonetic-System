@@ -487,3 +487,24 @@ The review also flags: variable /h/-deletion with residual effects on the preced
 - The runtime does **not** replace the primary [l] and does not emit categorical [ʎ]. [lʲ] is a project-level candidate notation for gradient coarticulation, not a phone directly labeled in the study.
 - Python/browser implementations and tests are aligned; Narrow profile id/version is now `clippyfirst-korean-narrow-contextual-allophones-v10` / 10.
 - Remaining liquid TODOs: independent evidence for [ʎ] versus [lʲ] in specific lexical/morphological environments; nasalized/intermediate laterals; speaker-conditioned tap/lateral probability; actual pause/prosodic-boundary detection. The current text-only path must not infer these from spaces or spelling.
+
+
+## Verification ledger — code head 3f903696e64ea3f07fc9cfc280a86be2aa035030 — 2026-11-27
+
+| Task | Status | Evidence / acceptance boundary |
+|---|---|---|
+| Literature inventory and phenomenon coverage matrix | DONE_VERIFIED | Undermind review returned 177 relevant papers; primary source records and DOI evidence added/linked; scope and uncertainty are explicit. Review depth is mixed: several sources were inspected at article-text level, the broad inventory includes abstract/metadata synthesis. |
+| Narrow v10 deterministic variant layer | DONE_VERIFIED | Python and browser code aligned; coda [ɭ] variants and geminate [lʲ] candidate are optional/unselected; primary Broad/Narrow IPA strings unchanged by candidate generation. |
+| Python regression/data integrity | DONE_VERIFIED | Verify run 45993974610: Python regression and data integrity job success. |
+| Browser regression and production build | DONE_VERIFIED | Verify run 45993974610: 1,500 tests passed, 0 failed; Vite production build succeeded. |
+| Source register and test-case register extraction | DONE_VERIFIED | Exhaustive test-case register extraction run 45993974642 succeeded; source-register count/rights audit is covered by Python/JS regression job. |
+| Broad native-vs-g2pk diagnostic | DONE_VERIFIED (diagnostic only) | Run 45993974826, UGTPHON test split: 275 sentences / 2,702 paired tokens; native exact 52.7387%, CER 9.0130%; g2pk exact 53.0892%, CER 9.2328%. g2pk gains 0.3701 pp exact but CER worsens 0.2207 pp. This is broad/native-vs-g2pk, not Standard-vs-Narrow. |
+| External UGTPHON normalization diagnostic | DONE_VERIFIED (diagnostic only) | Run 45993974603: 2,627 paired tokens; exact 51.0468% → 51.2752%, CER 9.9689% → 9.8637%; 15 rescued, 0 lost. This is normalization retrieval, not Narrow IPA accuracy. |
+| Exact-head Standard vs Extended IPA A/B report | TODO / RUN_PENDING | Multi-engine workflow run 45993974620 is pending in GitHub Actions queue. No v10 A/B scores claimed yet. When available, interpret narrow exact/CER only as cross-layer agreement because the corpora are not narrow-IPA adjudicated. |
+| Morphology-consensus diagnostic | TODO / RUN_PENDING | Run 45993974781 still in progress; no result claimed. |
+| Independent narrow gold, rights-cleared audio, expert phonetic adjudication | BLOCKED | User cannot provide audio/expert labels; no independently adjudicated layer-matched narrow IPA gold or rights-cleared aligned audio in the current project. Acceptance requires speaker/dialect metadata, inter-annotator agreement, and separate broad/narrow labels. |
+| Prosody-conditioned F0/VOT/voice-quality and gradient vowel targets | BLOCKED / EVIDENCE_LIMITED | Text-only input cannot infer acoustic measurements or phrase boundaries. Keep these as audio/context-conditioned annotations; do not hallucinate deterministic IPA symbols. |
+| Ukrainian adapter changes | DEFERRED | Explicitly outside this Narrow IPA task; no adapter behavior changed. |
+| CharsiuG2P and NIKL metadata inventory optional jobs | DEFERRED / SKIPPED_BY_POLICY | Workflows skipped these jobs by policy; they were not passed. |
+
+**Verification scope:** Python/browser jobs above validate code integrity and parity, not phonetic truth. The [ɭ]/[lʲ] candidates are research-only and unselected. Standard/Broad IPA and Ukrainian adaptation remain unchanged. PR #511 is draft and stacked on PR #510; neither is merged. **Readiness: research prototype, not release-ready and not independently phonetic-certified.**
