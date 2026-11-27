@@ -80,6 +80,16 @@ test('geminate lateral exposes cited [ʎ] and a combined [ɭ.ʎ] interaction hyp
   assert.equal(combined.evidence_status, 'source-scoped-interaction-hypothesis-only');
 });
 
+test('liquid assimilation plus geminate palatalization exposes an unselected [ʎ.ʎ] hypothesis', () => {
+  const result = extended('관리자');
+  assert.equal(result.layers.narrow.ipa, 'kwal.li.dʑa');
+  const candidate = result.variants.find(item => item.layer === 'narrow' && item.ipa === 'kwaʎ.ʎi.dʑa');
+  assert.ok(candidate);
+  assert.equal(candidate.selected, false);
+  assert.equal(candidate.evidence_status, 'source-scoped-geminate-palatalization-interaction-hypothesis-only');
+  assert.deepEqual(candidate.source_span, { start: 0, end: 2 });
+});
+
 test('post-sonorant /h/ is unresolved variation while the default remains [h]', () => {
   const result = extended('안하');
   assert.equal(result.layers.narrow.ipa, 'an.ha');

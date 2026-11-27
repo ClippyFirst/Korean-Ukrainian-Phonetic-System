@@ -16,8 +16,8 @@ def test_narrow_profile_aspirates_lenis_sibilant_without_changing_broad():
     narrow = _ipa("사", "narrow")
     assert narrow["ipa"] == "sʰa"
     assert narrow["level"] == "narrow"
-    assert narrow["transcription_profile"]["name"] == "korean-narrow-contextual-allophones-v16"
-    assert narrow["ipa_profile_version"] == 16
+    assert narrow["transcription_profile"]["name"] == "korean-narrow-contextual-allophones-v17"
+    assert narrow["ipa_profile_version"] == 17
     assert narrow["transcription_profile"]["target_compatible"] is False
     assert narrow["transcription_profile"]["limitations"]
 
@@ -184,6 +184,17 @@ def test_geminate_lateral_exposes_cited_palatal_and_combined_coda_onset_variants
     assert combined["syllable_indices"] == [0, 1]
     assert any("10.3765/plsa.v6i1.5002" in ref for ref in combined["evidence_refs"])
     assert any("10.20405/kl.2024.02.102.63" in ref for ref in combined["evidence_refs"])
+
+
+def test_liquid_assimilation_plus_geminate_palatalization_is_an_unselected_interaction_hypothesis():
+    result = _ipa("관리자", "narrow")
+    assert result["ipa"] == "kwal.li.dʑa"
+    candidate = next(item for item in result["variants"] if item["ipa"] == "kwaʎ.ʎi.dʑa")
+    assert candidate["selected"] is False
+    assert candidate["evidence_status"] == "source-scoped-geminate-palatalization-interaction-hypothesis-only"
+    assert candidate["syllable_indices"] == [0, 1]
+    assert any("regltn_code=0002" in ref for ref in candidate["evidence_refs"])
+    assert any("10.3765/plsa.v6i1.5002" in ref for ref in candidate["evidence_refs"])
 
 def test_coda_nasal_palatalization_before_affricates_is_optional_only():
     result = realize_syllables(parse_syllables("군주"), level="narrow")

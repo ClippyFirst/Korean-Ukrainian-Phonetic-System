@@ -200,6 +200,25 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
                     "uncertainty":"This composes separately described tendencies; no source independently adjudicates this exact sequence or this token. Candidate only; speaker/audio evidence is required for selection.",
                     "selected":False,
                 })
+                # A second interaction hypothesis covers a liquid-assimilated
+                # geminate /ll/ before /i,j/: both lateral timing slots may show
+                # palatalization. This composes normative R006 liquid assimilation
+                # with the source-described pre-/i,j/ palatal-lateral tendency;
+                # no cited source directly adjudicates categorical [ʎʎ].
+                palatal_pair=list(rendered)
+                palatal_pair[i-1]="ʎ"
+                palatal_pair[i]="ʎ"+palatal_pair[i][1:]
+                variants.append({
+                    "layer":"narrow", "syllable_indices":[i-1,i],
+                    "ipa":render_syllable_sequence(items,palatal_pair),
+                    "note":("Compositional interaction hypothesis only: NIKL §§19–20 license /n+l/ liquid assimilation to a geminate lateral; Kang (2017), as summarized by Crosby & Dalola (2021), describes [ʎ] before /i,j/, while their acoustic study supports gradient palatalization rather than categorical [ʎ]. Applying [ʎ] to both members of the geminate is not directly adjudicated by these sources. " + crosby_ref + " " + socioling_ref),
+                    "vowels":["geminate lateral [ʎ.ʎ] after liquid assimilation"],
+                    "evidence_status":"source-scoped-geminate-palatalization-interaction-hypothesis-only",
+                    "evidence_refs":[crosby_ref,socioling_ref],
+                    "environment":"same-word coda ㄴ/ㄹ + onset ㄹ after R006 liquid assimilation, before /i,j/; composed [ʎ.ʎ] candidate",
+                    "uncertainty":"This combines a normative surface liquid-assimilation step with a gradient/secondary palatal-lateral description; categorical palatalization of both geminate members is unverified. Candidate only; audio and speaker/dialect evidence are required.",
+                    "selected":False,
+                })
             # Lee (1996), summarized in Kim (2011, p.23), describes
             # /n/ as [nj]/[ɲ] before alveopalatal affricates. Expose the
             # coda-before-affricate context as optional candidates only:
@@ -469,12 +488,12 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     profile_ids={
         "phonemic":"clippyfirst-korean-phonemic-v1",
         "broad":"clippyfirst-korean-broad-v1",
-        "narrow":"clippyfirst-korean-narrow-contextual-allophones-v16",
+        "narrow":"clippyfirst-korean-narrow-contextual-allophones-v17",
     }
     result={
         "level":level,
         "ipa_profile":profile_ids[level],
-        "ipa_profile_version":16 if level=="narrow" else 1,
+        "ipa_profile_version":17 if level=="narrow" else 1,
         "ipa_profile_level":level,
         "ipa_profile_status":(
             "partial-research-only" if level=="narrow"
@@ -488,7 +507,7 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     }
     if level=="narrow":
         result["transcription_profile"]={
-            "name":"korean-narrow-contextual-allophones-v16",
+            "name":"korean-narrow-contextual-allophones-v17",
             "scope":["aspiration of lenis ㅅ as [sʰ]","palatalized [ɕʰ] candidate before ㅣ, ㅖ, ㅑ (Kang 2010; partial narrow profile)","palatalized [ɲ] for onset ㄴ before glide nuclei ㅑ, ㅒ, ㅕ, ㅖ, ㅛ, ㅠ; not generalized to ㅣ","ㅎ is [ç] before selected high-front/glide nuclei and [x] before ㅜ, following the cited Seoul description","after a same-word sonorant coda, /h/ may weaken or delete variably; no categorical [ɦ] is assigned without token-specific evidence","same-word intervocalic ㅎ is vowel-conditioned: [ʝ] before /i,j/, [ɣ] before /ɯ/, [β] before /o,u/, and [ɦ] elsewhere (Shin, Kiaer & Cha 2012); word-initial [ç]/[x] remain separate","tense ㅆ remains [s͈]; its palatalization is not assumed because evidence is mixed","coda ㄹ exposes optional [ɭ] variants word-finally, before same-word consonants and before ㅎ; never selected without speaker/dialect/audio evidence (Crosby & Dalola 2021; Crosby 2024)","geminate ㄹ before high-front vocoids exposes optional [lʲ] coarticulation candidate; primary [l] remains unchanged and categorical [ʎ] is not inferred (Crosby & Dalola 2021)","word-final coda stops retain the conventional unreleased [p̚,t̚,k̚] primary but expose optional released [p,t,k] alternatives; release is not selected from text because burst occurrence varies by study/task and no token audio is available","ㅟ retains primary [y] but exposes source-scoped [wi] in strong onsetless initial position, [ɥi] in non-initial/postconsonantal position, and a combined [ɕʰɥi] candidate for ㅅ+ㅟ; none is selected without speaker/audio evidence","geminate ㄹ before /i,j/ exposes gradient [lʲ], cited [ʎ], and a combined [ɭ.ʎ] interaction hypothesis; the combined form composes two source-described tendencies but is not directly adjudicated and remains unselected"],
             "sources":[
                 "Lee, Hyun Bok (1993), Korean, Illustrations of the IPA: /h/ [ç] before /i,j/ and [x] before /u/; /s/ is classified as fortis in this description: https://doi.org/10.1017/S0025100300004758",

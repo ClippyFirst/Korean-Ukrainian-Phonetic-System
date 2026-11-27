@@ -75,6 +75,10 @@ const EVIDENCE = {
   'narrow-geminate-lateral-interaction-hypothesis': {
     refs: ['https://doi.org/10.3765/plsa.v6i1.5002', 'https://doi.org/10.20405/kl.2024.02.102.63'],
     status: 'source-scoped-interaction-hypothesis-only'
+  },
+  'narrow-geminate-palatalization-interaction-hypothesis': {
+    refs: ['https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002', 'https://doi.org/10.3765/plsa.v6i1.5002'],
+    status: 'source-scoped-geminate-palatalization-interaction-hypothesis-only'
   }
 };
 
@@ -364,6 +368,9 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
           narrowVariantSites.push({ ipaStart: ipaStart - 2, sourceSpan: combinedSpan, from: 'l.l', to: 'ɭ.ʎ',
             evidence: 'narrow-geminate-lateral-interaction-hypothesis',
             environment: 'same-word coda ㄹ + onset ㄹ before /i,j/; composed [ɭ]+[ʎ] candidate' });
+          narrowVariantSites.push({ ipaStart: ipaStart - 2, sourceSpan: combinedSpan, from: 'l.l', to: 'ʎ.ʎ',
+            evidence: 'narrow-geminate-palatalization-interaction-hypothesis',
+            environment: 'same-word coda ㄴ/ㄹ + onset ㄹ after R006 liquid assimilation, before /i,j/; composed [ʎ.ʎ] candidate' });
         }
       }
       if (previousCodaNPosition !== null && ['ㅈ','ㅉ','ㅊ'].includes(currentParsed?.onset)) {
@@ -456,7 +463,9 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
                   ? 'Kang (2017), as summarized by Crosby & Dalola (2021), describes [ʎ] before /i,j/; the 2021 study independently supports gradient F2 palatalization, not categorical [ʎ]. Candidate only.'
                   : site.evidence === 'narrow-geminate-lateral-interaction-hypothesis'
                     ? 'This composes separately described preconsonantal retroflex [ɭ] and pre-/i,j/ palatal lateral [ʎ] tendencies; the sources do not directly adjudicate this combined token, so it remains an unselected hypothesis.'
-                    : 'Conflicting descriptions; speaker, dialect and prosodic context are unknown; optional [ɭ] is not selected over primary [ɾ].',
+                    : site.evidence === 'narrow-geminate-palatalization-interaction-hypothesis'
+                      ? 'This composes normative R006 /n+l/ liquid assimilation with a source-described pre-/i,j/ palatal-lateral tendency. Categorical [ʎʎ] across both geminate members is not directly adjudicated; candidate only.'
+                      : 'Conflicting descriptions; speaker, dialect and prosodic context are unknown; optional [ɭ] is not selected over primary [ɾ].',
         source_span: site.sourceSpan, selected: false
       });
     }
@@ -493,8 +502,8 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       },
       narrow: {
         ipa: narrowIpa,
-        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v16',
-        profile_version: 16,
+        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v17',
+        profile_version: 17,
         level: 'narrow',
         status: hasUnresolvedSource ? 'diagnostic-only-unresolved-source' : 'partial-research-only',
         evidence_status: 'partial-source-scoped-hypotheses-not-independently-reviewed',
