@@ -127,14 +127,6 @@ function narrowSyllable(current, previous, sameWord) {
       rules.push('narrow-h-sonorant-variation-unresolved');
       evidence.push(EVIDENCE['narrow-h-sonorant-variation-unresolved']);
       environment = 'same word: sonorant coda + onset ㅎ; weakening/deletion is variable, no single IPA selected';
-    } else if (prior && prior.coda === '') {
-      ipa = replaceInitial(ipa, ['h'], 'ɸ');
-      if (ipa.startsWith('ɸ')) {
-        rules.push('narrow-h-intervocalic-allophone');
-        evidence.push(EVIDENCE['narrow-h-intervocalic-allophone']);
-        environment = 'same word: intervocalic onset ㅎ after open syllable';
-      }
-    }
   } else if (parsed.onset === 'ㄹ' && prior && prior.coda === 'ㄹ') {
     ipa = replaceInitial(ipa, ['ɾ','l'], 'l');
     if (ipa.startsWith('l')) {
