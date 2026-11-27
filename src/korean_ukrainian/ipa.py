@@ -132,6 +132,7 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
         lee_ref="https://doi.org/10.1017/S0025100300004758"
         crosby_ref="https://doi.org/10.3765/plsa.v6i1.5002"
         socioling_ref="https://doi.org/10.20405/kl.2024.02.102.63"
+        nasal_ref="https://discovery.ucl.ac.uk/id/eprint/1324541/1/1324541.pdf"
         for i,syllable in enumerate(items):
             if i>0 and syllable.onset=="ㄹ" and rendered[i].startswith("ɾ"):
                 previous=items[i-1]
@@ -167,6 +168,28 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
                     "uncertainty":"F2 is a gradient acoustic correlate; [lʲ] is a conservative project candidate, not an independently adjudicated phone or selected output.",
                     "selected":False,
                 })
+            # Lee (1996), summarized in Kim (2011, p.23), describes
+            # /n/ as [nʲ]/[ɲ] before alveopalatal affricates. Expose the
+            # coda-before-affricate context as optional candidates only:
+            # the thesis is a secondary description, not direct evidence
+            # that every speaker categorically realizes [ɲ] here.
+            if (syllable.coda=="ㄴ" and rendered[i].endswith("n")
+                    and i+1<len(items) and syllable.boundary_after!="word"
+                    and items[i+1].onset in {"ㅈ","ㅉ","ㅊ"}):
+                for alternate_nasal in ("ɲ", "nʲ"):
+                    alternate=list(rendered)
+                    alternate[i]=alternate[i][:-1]+alternate_nasal
+                    variants.append({
+                        "layer":"narrow", "syllable_indices":[i],
+                        "ipa":render_syllable_sequence(items,alternate),
+                        "note":("Secondary description in Lee (1996), summarized by Kim (2011, p.23), lists [nʲ]/[ɲ] before /tɕ, tɕ͈, tɕʰ/. This project exposes optional coda-before-affricate candidates only; no categorical primary output is inferred. " + nasal_ref),
+                        "vowels":["coda ㄴ ["+alternate_nasal+"] before affricate"],
+                        "evidence_status":"secondary-description-candidate-only",
+                        "evidence_refs":[nasal_ref],
+                        "environment":"same-word coda ㄴ before alveopalatal affricate ㅈ/ㅉ/ㅊ",
+                        "uncertainty":"Secondary literature-review description, not direct acoustic evidence for this specific coda context; speaker/dialect and actual place realization remain unverified.",
+                        "selected":False,
+                    })
             # Coda /l/ has a separate, sociophonetic retroflex variant. The
             # 2024 study finds higher rates word-finally and before /h/, with
             # strong dialect/gender/style effects; do not select [ɭ] without
