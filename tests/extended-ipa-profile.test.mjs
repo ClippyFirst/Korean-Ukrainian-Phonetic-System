@@ -224,7 +224,7 @@ test('word-final coda stops expose optional unreleased candidates without changi
     assert.ok(variant.evidence_refs.some(ref => ref.includes('10.13064/ksss.2026.18.1.021')));
   }
   const nonfinal = extended('낫다');
-  assert.ok(!nonfinal.variants.some(item => item.evidence_status === 'source-scoped-release-variant-only'));
+  assert.ok(!nonfinal.variants.some(item => item.evidence_status === 'source-scoped-release-variation-candidate-only'));
 });
 
 test('coda /n/ before alveopalatal affricates exposes optional palatal candidates without changing primary IPA', () => {
