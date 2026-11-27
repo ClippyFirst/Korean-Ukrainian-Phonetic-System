@@ -94,6 +94,7 @@ test('layer segment identifiers are unique across syllables', () => {
   const result = buildExtendedIpaResult('나라', engine.convert('나라', { morphologyMode: 'strict', ipaProfile: 'clippyfirst-korean-broad-v1' }), phonemicIpaFromHangul('나라'));
   const ids = result.layers.narrow.segments.map(item => item.id);
   assert.equal(new Set(ids).size, ids.length);
+  assert.ok(result.layers.narrow.segments.some(item => item.kind === 'boundary' && item.ipa === '.'));
 });
 
 test('unknown code points retain source alignment and provenance; invalid offsets are rejected', () => {
