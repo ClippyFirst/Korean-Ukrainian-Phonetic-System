@@ -79,6 +79,11 @@ def test_narrow_seoul_h_and_intervocalic_liquid_tap_are_contextual():
     assert _ipa("나라", "narrow")["ipa"] == "na.ɾa"
     assert _ipa("다리", "narrow")["ipa"] == "ta.ɾi"
     assert _ipa("물론", "narrow")["ipa"] == "mul.lon"
+    variant = next(item for item in _ipa("나라", "narrow")["variants"] if item["ipa"] == "na.ɭa")
+    assert variant["layer"] == "narrow"
+    assert variant["selected"] is False
+    assert variant["evidence_status"] == "conflicting-source-descriptions-variant-only"
+    assert len(variant["evidence_refs"]) == 2
     assert _ipa("하", "narrow")["ipa"] == "ha"
     assert _ipa("가을", "narrow")["ipa"] == "ka.ɯl"
 

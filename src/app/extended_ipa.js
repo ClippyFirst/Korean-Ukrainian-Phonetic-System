@@ -33,8 +33,8 @@ const EVIDENCE = {
     status: 'normative-standard-pronunciation'
   },
   'narrow-retroflex-lateral-candidate': {
-    refs: ['https://doi.org/10.3765/plsa.v6i1.5002'],
-    status: 'position-conditioned-acoustic-variation-not-deterministically-realized'
+    refs: ['https://doi.org/10.1017/S0025100300004758', 'https://doi.org/10.3765/plsa.v6i1.5002'],
+    status: 'conflicting-source-descriptions-variant-only'
   }
 };
 
@@ -249,6 +249,7 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
   for (const boundary of (phonemicResult?.boundaries || [])) boundaries.push(boundary);
   let cursor = 0, previousHangul = null, boundarySincePrevious = true;
   let narrowIpa = '', previousWasHangul = false;
+  const narrowVariantSites = [];
   for (const item of sourceTrace) {
     const value = String(item.source ?? '');
     const span = findSpan(source, value, cursor);
@@ -274,7 +275,15 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
     const derived = narrowSyllable(item, previousHangul, !boundarySincePrevious);
     if (derived.ipa) {
       if (previousWasHangul) narrowIpa += '.';
+      const ipaStart = [...narrowIpa].length;
       narrowIpa += derived.ipa;
+      const currentParsed = decompose(item.surface || item.source);
+      const previousParsed = !boundarySincePrevious && previousHangul
+        ? decompose(previousHangul.surface || previousHangul.source) : null;
+      if (currentParsed?.onset === 'ㄹ' && previousParsed?.coda === '' && derived.ipa.startsWith('ɾ')) {
+        narrowVariantSites.push({ ipaStart, sourceSpan: span,
+          environment: 'same-word intervocalic onset ㄹ; Lee (1993) [ɭ] vs Crosby & Dalola (2021) predominantly [ɾ]' });
+      }
       previousWasHangul = true;
     } else previousWasHangul = false;
     if (span) { boundaries.push({ offset: span.end, kind: 'syllable' }); syllableSpans.push(span); }
@@ -290,6 +299,23 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
   }
   const hasUnresolvedSource = engineResult.pronunciation_status === 'unresolved' || sourceTrace.some(item => ['unresolved','unsupported-jamo','unsupported'].includes(item.status));
   if (hasUnresolvedSource) narrowIpa = '';
+  const narrowVariants = [];
+  if (!hasUnresolvedSource && narrowIpa) {
+    for (let index = 0; index < narrowVariantSites.length; index++) {
+      const site = narrowVariantSites[index];
+      const points = [...narrowIpa];
+      if (points[site.ipaStart] !== 'ɾ') continue;
+      points[site.ipaStart] = 'ɭ';
+      narrowVariants.push({
+        id: 'narrow-variant-' + (index + 1), layer: 'narrow', ipa: points.join(''),
+        evidence_status: EVIDENCE['narrow-retroflex-lateral-candidate'].status,
+        evidence_refs: EVIDENCE['narrow-retroflex-lateral-candidate'].refs,
+        environment: site.environment,
+        uncertainty: 'Speaker, dialect and prosodic context are unknown; optional [ɭ] is not selected over primary [ɾ].',
+        source_span: site.sourceSpan, selected: false
+      });
+    }
+  }
   trace.sort((a, b) => {
     const left = a.source_span?.start ?? Number.MAX_SAFE_INTEGER;
     const right = b.source_span?.start ?? Number.MAX_SAFE_INTEGER;
@@ -342,15 +368,17 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
         start: Math.min(...indices.map(value => syllableSpans[value].start)),
         end: Math.max(...indices.map(value => syllableSpans[value].end))
       } : null;
+      const layer = variant.layer || 'broad';
+      const note = String(variant.note || '');
       return {
-        id: 'broad-variant-' + (index + 1), layer: 'broad', ipa: String(variant.ipa ?? ''),
-        evidence_status: variant.note?.startsWith('Research-only') ? 'research-hypothesis' : 'source-or-rule-derived-variant',
-        evidence_refs: String(variant.note || '').split(' ').filter(ref => ref.startsWith('http://') || ref.startsWith('https://')),
-        environment: variant.note || null,
-        uncertainty: 'Speaker-specific realization is not identified by this result.',
-        source_span: sourceSpan, selected: false
+        id: layer + '-variant-' + (index + 1), layer, ipa: String(variant.ipa ?? ''),
+        evidence_status: variant.evidence_status || (note.startsWith('Research-only') ? 'research-hypothesis' : 'source-or-rule-derived-variant'),
+        evidence_refs: Array.isArray(variant.evidence_refs) ? variant.evidence_refs : note.split(' ').filter(ref => ref.startsWith('http://') || ref.startsWith('https://')),
+        environment: variant.environment || note || null,
+        uncertainty: variant.uncertainty || 'Speaker-specific realization is not identified by this result.',
+        source_span: sourceSpan, selected: variant.selected === true
       };
-    }),
+    }).concat(narrowVariants),
     boundaries: [...new Map(boundaries.map(item => [item.offset + ':' + item.kind, item])).values()],
     trace,
     target_adapter: {

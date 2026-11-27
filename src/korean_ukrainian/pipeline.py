@@ -373,28 +373,33 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
 
     extended_variants = []
     import re as _re
-    for index, variant in enumerate(broad_layer.get("variants", []), start=1):
-        note = str(variant.get("note") or "")
-        refs = _re.findall(r"https?://[^\s)]+", note)
-        indices = variant.get("syllable_indices") or []
-        span = None
-        valid_indices = [value for value in indices if isinstance(value, int) and 0 <= value < len(source_spans)]
-        if valid_indices and all(source_spans[value] for value in valid_indices):
-            span = {
-                "start": min(source_spans[value]["start"] for value in valid_indices),
-                "end": max(source_spans[value]["end"] for value in valid_indices),
-            }
-        extended_variants.append({
-            "id": f"broad-variant-{index}",
-            "layer": "broad",
-            "ipa": str(variant.get("ipa") or ""),
-            "evidence_status": "research-hypothesis" if "Research-only" in note or "research-only" in note else "source-or-rule-derived-variant",
-            "evidence_refs": refs,
-            "environment": note or None,
-            "uncertainty": "Speaker-specific realization is not identified by this result.",
-            "source_span": span,
-            "selected": False,
-        })
+    for variant_layer, layer_result in (("broad", broad_layer), ("narrow", narrow_layer)):
+        for index, variant in enumerate(layer_result.get("variants", []), start=1):
+            note = str(variant.get("note") or "")
+            refs = _re.findall(r"https?://[^\s)]+", note)
+            supplied_refs = variant.get("evidence_refs")
+            if isinstance(supplied_refs, list):
+                refs = [value for value in supplied_refs if isinstance(value, str)]
+            indices = variant.get("syllable_indices") or []
+            span = None
+            valid_indices = [value for value in indices if isinstance(value, int) and 0 <= value < len(source_spans)]
+            if valid_indices and all(source_spans[value] for value in valid_indices):
+                span = {
+                    "start": min(source_spans[value]["start"] for value in valid_indices),
+                    "end": max(source_spans[value]["end"] for value in valid_indices),
+                }
+            layer_name = variant.get("layer") or variant_layer
+            extended_variants.append({
+                "id": f"{layer_name}-variant-{index}",
+                "layer": layer_name,
+                "ipa": str(variant.get("ipa") or ""),
+                "evidence_status": variant.get("evidence_status") or ("research-hypothesis" if "Research-only" in note or "research-only" in note else "source-or-rule-derived-variant"),
+                "evidence_refs": refs,
+                "environment": variant.get("environment") or note or None,
+                "uncertainty": variant.get("uncertainty") or "Speaker-specific realization is not identified by this result.",
+                "source_span": span,
+                "selected": variant.get("selected") is True,
+            })
 
     extended_trace = []
     underlying_source_spans = []

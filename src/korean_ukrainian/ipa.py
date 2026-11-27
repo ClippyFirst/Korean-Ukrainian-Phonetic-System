@@ -107,6 +107,33 @@ def _word_form_at(items:list[Syllable],index:int)->str:
     return "".join(item.text for item in items[start:end+1])
 
 def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="broad")->list[dict]:
+    if level=="narrow":
+        variants=[]
+        lee_ref="https://doi.org/10.1017/S0025100300004758"
+        crosby_ref="https://doi.org/10.3765/plsa.v6i1.5002"
+        for i,syllable in enumerate(items):
+            if i==0 or syllable.onset!="ㄹ" or not rendered[i].startswith("ɾ"):
+                continue
+            previous=items[i-1]
+            if previous.boundary_after=="word" or previous.coda!="":
+                continue
+            alternate=list(rendered)
+            alternate[i]="ɭ"+alternate[i][1:]
+            variants.append({
+                "layer":"narrow",
+                "syllable_indices":[i],
+                "ipa":render_syllable_sequence(items,alternate),
+                "note":("Conflicting source descriptions: Lee (1993, p.31) describes Seoul /l/ as [ɭ] intervocalically and before /i,j/; "
+                        "Crosby & Dalola (2021) found 99.3% intervocalic taps in their 12-speaker sample. "
+                        "Optional unselected variant only; [ɾ] remains primary. " + lee_ref + " " + crosby_ref),
+                "vowels":["ㄹ [ɭ]"],
+                "evidence_status":"conflicting-source-descriptions-variant-only",
+                "evidence_refs":[lee_ref,crosby_ref],
+                "environment":"same-word intervocalic onset ㄹ",
+                "uncertainty":"Speaker, dialect and prosodic context are unknown; variant is not selected.",
+                "selected":False,
+            })
+        return variants
     if level!="broad":
         return []
     sites=[]
