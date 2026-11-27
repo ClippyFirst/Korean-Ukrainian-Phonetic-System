@@ -101,7 +101,7 @@ test('layer segment identifiers are unique across syllables', () => {
 });
 
 test('unknown code points retain source alignment and provenance; invalid offsets are rejected', () => {
-  const [unknown] = parseIpaSegments('?', {
+  const [unknown] = parseIpaSegments('😀', {
     sourceSpan: { start: 2, end: 3 },
     provenance: { ruleIds: ['r1'], evidenceRefs: ['SRC-1'] }
   });
