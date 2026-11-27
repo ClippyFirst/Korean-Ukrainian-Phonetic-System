@@ -58,8 +58,19 @@ test('high-front [ç] realization retains the separate post-sonorant variation t
   assert.ok(h.rule_ids.includes('narrow-h-sonorant-variation-unresolved'));
 });
 
+test('word-medial /h/ uses vowel-conditioned voiced allophones while word-initial /h/ stays voiceless', () => {
+  assert.equal(extended('아하').layers.narrow.ipa, 'a.ɦa');
+  assert.equal(extended('아히').layers.narrow.ipa, 'a.ʝi');
+  assert.equal(extended('으흐').layers.narrow.ipa, 'ɯ.ɣɯ');
+  assert.equal(extended('오호').layers.narrow.ipa, 'o.βo');
+  assert.equal(extended('하').layers.narrow.ipa, 'ha');
+  const h = extended('아히').trace.find(item => item.source === '히' && item.layer === 'narrow');
+  assert.ok(h.rule_ids.includes('narrow-h-intervocalic-allophone'));
+  assert.ok(h.evidence_refs.some(ref => ref.includes('CBO9781139342858')));
+});
+
 test('narrow /h/ and liquid assimilation remain explicitly context-bound', () => {
-  assert.equal(extended('아하').layers.narrow.ipa, 'a.ɸa');
+  assert.equal(extended('아하').layers.narrow.ipa, 'a.ɦa');
   assert.equal(extended('나라').layers.narrow.ipa, 'na.ɾa');
   assert.equal(extended('다리').layers.narrow.ipa, 'ta.ɾi');
   assert.equal(extended('물론').layers.narrow.ipa, 'mul.lon');
