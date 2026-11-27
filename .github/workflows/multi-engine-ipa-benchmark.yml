@@ -21,11 +21,6 @@ on:
       - "tests/extended-ipa-profile.test.mjs"
       - "tests/test_narrow_ipa.py"
       - "src/app/extended_ipa.js"
-      - "scripts/benchmark_extended_ipa_ab.mjs"
-      - "tests/benchmark_extended_ipa_ab.test.mjs"
-      - "tests/extended-ipa-profile.test.mjs"
-      - "tests/test_narrow_ipa.py"
-      - "src/app/extended_ipa.js"
       - "scripts/benchmark_ugtphon_ko.py"
       - "scripts/convert_sigmorphon_ko.py"
       - "scripts/prepare_korean_open_benchmarks.py"
@@ -47,6 +42,11 @@ on:
   # when the PR adds new dataset adapters, schemas, or test files.
   pull_request:
     paths:
+      - "scripts/benchmark_extended_ipa_ab.mjs"
+      - "tests/benchmark_extended_ipa_ab.test.mjs"
+      - "tests/extended-ipa-profile.test.mjs"
+      - "tests/test_narrow_ipa.py"
+      - "src/app/extended_ipa.js"
       - "scripts/benchmark_multi_engine_ko.py"
       - "scripts/export_kozak_kim_mismatch_fragments.py"
       - "tests/test_export_kozak_kim_mismatch_fragments.py"
