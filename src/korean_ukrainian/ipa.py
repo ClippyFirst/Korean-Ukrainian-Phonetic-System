@@ -133,6 +133,9 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
         crosby_ref="https://doi.org/10.3765/plsa.v6i1.5002"
         socioling_ref="https://doi.org/10.20405/kl.2024.02.102.63"
         nasal_ref="https://discovery.ucl.ac.uk/id/eprint/1324541/1/1324541.pdf"
+        kim_coda_ref="https://doi.org/10.1006/JPHO.1996.0016"
+        cha_coda_ref="https://doi.org/10.13064/ksss.2026.18.1.021"
+        coda_stop_place={"ㄱ":"k","ㄲ":"k","ㅋ":"k","ㄷ":"t","ㅅ":"t","ㅆ":"t","ㅈ":"t","ㅉ":"t","ㅊ":"t","ㅌ":"t","ㅂ":"p","ㅍ":"p"}
         for i,syllable in enumerate(items):
             if i>0 and syllable.onset=="ㄹ" and rendered[i].startswith("ɾ"):
                 previous=items[i-1]
@@ -218,6 +221,28 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
                         "uncertainty":"Variant frequency depends on dialect, speaker, style, preceding vowel and whether /l/ is realized as a lateral; text-only input cannot select it.",
                         "selected":False,
                     })
+            # Word-final coda stops are conventionally described as unreleased,
+            # but release is not categorical: Kim & Jongman (1996) observed a
+            # brief burst after 83% of word-final stops in their four-speaker
+            # sample; Cha (2026) found small task/place-conditioned production
+            # traces but did not report burst frequency. Expose only an
+            # unselected unreleased candidate; never infer release from text.
+            final_place=coda_stop_place.get(syllable.coda)
+            word_final=(i+1==len(items) or syllable.boundary_after=="word")
+            if final_place and rendered[i].endswith(final_place) and word_final:
+                alternate=list(rendered)
+                alternate[i]=alternate[i]+"̚"
+                variants.append({
+                    "layer":"narrow", "syllable_indices":[i],
+                    "ipa":render_syllable_sequence(items,alternate),
+                    "note":("Lee (1993, p.31) illustrates unreleased syllable-final [p̚,t̚,k̚]. Kim & Jongman (1996) report a brief burst after 83% of word-final stops in a four-speaker sample; Cha (2026) reports task/place-conditioned production traces but no burst rate. Optional unselected [̚] candidate only; release cannot be inferred from spelling. " + lee_ref + " " + kim_coda_ref + " " + cha_coda_ref),
+                    "vowels":["word-final coda stop ["+final_place+"̚]"],
+                    "evidence_status":"source-scoped-release-variant-only",
+                    "evidence_refs":[lee_ref,kim_coda_ref,cha_coda_ref],
+                    "environment":"word-final coda "+syllable.coda+"; release realization unobserved",
+                    "uncertainty":"The unreleased form is a source-described candidate, not a universal realization. Kim & Jongman found bursts in 83% of their four-speaker sample; Cha (2026) did not quantify burst frequency. Audio and prosodic context are required to select release.",
+                    "selected":False,
+                })
         return variants
     if level!="broad":
         return []
@@ -375,7 +400,7 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     profile_ids={
         "phonemic":"clippyfirst-korean-phonemic-v1",
         "broad":"clippyfirst-korean-broad-v1",
-        "narrow":"clippyfirst-korean-narrow-contextual-allophones-v13",
+        "narrow":"clippyfirst-korean-narrow-contextual-allophones-v14",
     }
     result={
         "level":level,
