@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { parseIpaSegments } from '../src/app/ipa_segments.js';
 import { createEngine } from '../src/app/engine.js';
-import { buildExtendedIpaResult } from '../src/app/extended_ipa.js';
+import { buildExtendedIpaResult, validateExtendedIpaResult } from '../src/app/extended_ipa.js';
 import { phonemicIpaFromHangul } from '../src/app/phonemic_ipa.js';
 import { readFileSync } from 'node:fs';
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
@@ -107,4 +107,16 @@ test('unknown code points retain source alignment and provenance; invalid offset
   assert.deepEqual(unknown.provenance.rule_ids, ['r1']);
   assert.throws(() => parseIpaSegments('a', { ipaOffset: -1 }), /ipaOffset/);
   assert.throws(() => parseIpaSegments('a', { provenance: { ruleIds: [1] } }), /arrays of strings/);
+});
+
+test('dependency-free browser validator checks segment spans and unique IDs', () => {
+  const result = buildExtendedIpaResult('나라', engine.convert('나라', { morphologyMode: 'strict', ipaProfile: 'clippyfirst-korean-broad-v1' }), phonemicIpaFromHangul('나라'));
+  assert.deepEqual(validateExtendedIpaResult(result), []);
+  const broken = structuredClone(result);
+  const segment = broken.layers.narrow.segments.find(item => item.kind === 'segment');
+  segment.ipa_span.end += 1;
+  assert.ok(validateExtendedIpaResult(broken).some(error => error.includes('ipa_span')));
+  const duplicate = structuredClone(result);
+  duplicate.layers.narrow.segments[1].id = duplicate.layers.narrow.segments[0].id;
+  assert.ok(validateExtendedIpaResult(duplicate).some(error => error.includes('unique')));
 });
