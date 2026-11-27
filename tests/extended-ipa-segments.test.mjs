@@ -49,6 +49,9 @@ test('browser Extended IPA attaches segment IR and source spans to every layer',
   assert.ok(result.layers.phonemic.segments.length > 0);
   assert.ok(result.layers.broad.segments.length > 0);
   assert.ok(result.layers.narrow.segments.length > 0);
+  const broad = result.layers.broad.segments.find(item => item.kind === 'segment');
+  assert.deepEqual(broad.source_span, { start: 0, end: 1 });
+  assert.equal(broad.source_alignment, 'syllable-span');
   const nasal = result.layers.narrow.segments.find(item => item.ipa === 'ɲ');
   assert.deepEqual(nasal.source_span, { start: 0, end: 1 });
   assert.equal(nasal.source_alignment, 'syllable-span');
