@@ -105,3 +105,15 @@ def test_segment_parser_rejects_invalid_offsets_and_provenance():
         parse_ipa_segments("a", ipa_offset=-1)
     with pytest.raises(ValueError, match="arrays of strings"):
         parse_ipa_segments("a", provenance={"rule_ids": [1]})
+
+
+def test_incomplete_layer_trace_falls_back_without_dropping_ipa_segments():
+    from korean_ukrainian.ipa_profiles import _segments_for_layer
+    tokens = _segments_for_layer(
+        "ka.na",
+        [{"layer": "narrow", "ipa": "ka", "source_span": {"start": 0, "end": 1}}],
+        "narrow",
+    )
+    assert "".join(item["ipa"] for item in tokens if item["kind"] in {"segment", "unknown"}) == "kana"
+    assert any(item["kind"] == "boundary" and item["ipa"] == "." for item in tokens)
+    assert all(item.get("source_span") is None for item in tokens if item["kind"] == "segment")
