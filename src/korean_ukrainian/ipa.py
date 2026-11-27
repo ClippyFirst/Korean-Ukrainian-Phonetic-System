@@ -37,7 +37,7 @@ def onset_ipa(s:Syllable,index:int,items:list[Syllable],*,phonemic=False,level="
         return ["ɾ"]
     if c=="ㅎ":
         if not phonemic and level=="narrow":
-            # Word-medial /h/ is voiced and its place varies with the following
+            # Narrow profile v11: word-medial /h/ is voiced and its place varies with the following
             # vowel: [ʝ] before /i,j/, [ɣ] before /ɯ/, [β] before /o,u,w/,
             # and [ɦ] before other vowels (Shin, Kiaer & Cha 2012, p.77).
             # This branch precedes the word-initial [ç]/[x] realizations.
