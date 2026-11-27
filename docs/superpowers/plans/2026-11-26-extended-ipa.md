@@ -251,3 +251,45 @@ A second test-oracle defect was found during review: the browser test destructur
 ### PR/CI topology update — 2026-11-27
 
 PR #510 currently targets `main` temporarily so the repository's mainline pull-request verification workflows can run. The incremental implementation itself remains a clean stack on PR #509: comparing #509's head `6b473a18e3f4e7f971398272ff0ef0e7f1be6abe` to this branch gives 73 commits ahead, 0 behind, and 16 changed files. Once exact-head CI has completed and its logs/artifacts have been inspected, retarget PR #510 to PR #509's branch to restore the compact stacked diff. Current branch head at this note: `a0498f51a0d185be6a9d4271e352b187712ecba9`.
+
+
+## Exact-head verification update — 2026-11-27 10:12 UTC
+
+Current PR #510 head: `a7116388d9c6ed592f4a1a94ea77436b16994737` on `feat/korean-extended-ipa-segment-ir-2026-11-27`. The preceding head `08feed20a54187ebc1c35f211801e9c7e5c85632` had one failing browser fixture: ASCII `?` was expected to be `unknown`, but punctuation is correctly tokenized as `boundary`. Replaced that fixture with `😀`; production code was not changed.
+
+### Exact-head results
+
+| Gate | Status | Evidence |
+|---|---|---|
+| Python tests, Python 3.11 / 3.12 / 3.13 | DONE_VERIFIED | Tests workflow `45979820107`, all three matrix jobs successful |
+| Python regression and data integrity | DONE_VERIFIED | Verify workflow `45979820187`, Python job successful |
+| JavaScript suite | DONE_VERIFIED | Tests workflow web job: 1,497 passed, 0 failed |
+| Browser G2P suite | DONE_VERIFIED | Browser G2P workflow `45979819931`: 1,497 passed, 0 failed |
+| Browser regression and production build | DONE_VERIFIED | Verify workflow `45979820187`: 1,497 passed, 0 failed; Vite build completed |
+| Python/browser phonemic parity over 11,172 modern Hangul syllables | DONE_VERIFIED | Node test #135 passed; exporter and browser adapter matched every item |
+| Segment IR fixtures, provenance, offsets and layer integration | DONE_VERIFIED | Node tests #150–158 passed, including the corrected unknown-codepoint fixture |
+| Clean wheel install | DONE_VERIFIED | Tests workflow wheel-install job successful |
+| Teacher corpus split audit | DONE_VERIFIED | Tests workflow and dedicated audit successful |
+| Browser visual review | DONE_VERIFIED | Desktop/tablet/mobile editorial review successful |
+| Morphology adapter smoke (Kiwi and MeCab-Ko) | DONE_VERIFIED | All real-engine and native strict/soft jobs successful |
+| Rule-license consensus, external UGTPHON comparison, corpus artifacts and test-register extraction | DONE_VERIFIED | Runs `45979819855`, `45979819908`, `45979820161`, `45979819995`, `45979820101` successful |
+| Multi-engine IPA benchmark | PARTIAL | Current-head run `45979819893` pending behind earlier run `45973857624`; do not infer a current-head benchmark result |
+| CharsiuG2P and ByT5 inference | DEFERRED / SKIPPED | Optional jobs skipped by workflow policy; not a pass |
+| Independent narrow/broad phonetic adjudication and rights-cleared audio review | BLOCKED | Requires qualified independent reviewers and approved audio/data rights |
+| Human keyboard/screen-reader/zoom acceptance | TODO | Automated viewport review is not a substitute for human accessibility acceptance |
+| Extended IPA → Ukrainian adapter | DEFERRED | Outside this implementation increment; existing fail-closed adapter preserved |
+
+### Diagnostic findings (not normative accuracy)
+
+- Previous pinned diagnostic on superseded code head `08feed20`: native engine scored 2,702/2,703 UGTPHON occurrences, exact match 52.7387%, CER 9.0130%; g2pk scored 2,703, exact match 53.0892%, CER 9.2328%. On paired cases, g2pk exact-match delta was +0.3701 percentage points but CER worsened by 0.2207 percentage points. This is a trade-off, not a winner or a release accuracy claim.
+- Morphology-consensus diagnostic on the same superseded head: exact-match remained 52.7192%; CER worsened from 9.0130% to 9.0303%. It did not demonstrate a gain.
+- UGTPHON normalization diagnostic: 2,627 paired tokens; exact match 51.2752% vs raw baseline 51.0468%, CER 9.8637% vs 9.9689%; 15 tokens rescued, 0 lost. Small diagnostic improvement only.
+- Python g2pk differential warning: 18/20 surface forms equal. Two JS-port mismatches remain: `넓죽하다` (raw JS `널쭈카다` vs Python/practical adapter `넙쭈카다`) and `읽고` (raw JS `익꼬` vs Python/practical adapter `일꼬`). IPA gold is not independently adjudicated; track these as a separate browser-port discrepancy, not as evidence of IPA accuracy.
+- The full adversarial NIKL passage audit still reports 13 morphology-sensitive unresolved forms. Strict whole-text rendering remains fail-closed; do not fill these gaps with guessed outputs.
+
+### Next actions
+
+1. Let the current-head multi-engine benchmark finish and inspect its artifacts, especially the paired standard-vs-Extended IPA report.
+2. Update the task ledger again with exact benchmark outcome and any genuine failure.
+3. Once all exact-head evidence is inspected, retarget PR #510 from `main` to PR #509's branch to restore the intended stack. Do not merge or release.
+4. Keep scientific adjudication, audio rights, and human accessibility as explicit external blockers.
