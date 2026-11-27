@@ -224,12 +224,12 @@ def test_python_ipa_results_expose_a_versioned_profile_contract():
     expected = {
         "phonemic": ("clippyfirst-korean-phonemic-v1", "phonemic"),
         "broad": ("clippyfirst-korean-broad-v1", "broad"),
-        "narrow": ("clippyfirst-korean-narrow-contextual-allophones-v12", "narrow"),
+        "narrow": ("clippyfirst-korean-narrow-contextual-allophones-v13", "narrow"),
     }
     for level, (profile_id, profile_level) in expected.items():
         result = phoneticize_korean("씨", ipa_level=level)["ipa"]
         assert result["ipa_profile"] == profile_id
-        assert result["ipa_profile_version"] == (12 if level == "narrow" else 1)
+        assert result["ipa_profile_version"] == (13 if level == "narrow" else 1)
         assert result["ipa_profile_level"] == profile_level
         assert result["ipa_profile_status"] == (
             "partial-research-only" if level == "narrow"
