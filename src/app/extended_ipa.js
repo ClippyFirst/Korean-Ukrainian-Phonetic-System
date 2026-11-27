@@ -16,7 +16,7 @@ const EVIDENCE = {
     status: 'source-scoped-acoustic-coarticulation'
   },
   'narrow-h-palatal-allophone': {
-    refs: ['https://doi.org/10.1017/S0025100300004758'],
+    refs: ['https://doi.org/10.1017/CBO9781139342858.006', 'https://doi.org/10.1017/S0025100300004758'],
     status: 'source-scoped-description'
   },
   'narrow-h-sonorant-variation-unresolved': {
@@ -25,8 +25,16 @@ const EVIDENCE = {
     status: 'speaker-and-dialect-variable-no-single-IPA-selected'
   },
   'narrow-h-intervocalic-allophone': {
-    refs: ['https://doi.org/10.1017/CBO9781139342858', 'https://doi.org/10.1017/S0025100300004758'],
+    refs: ['https://doi.org/10.1017/CBO9781139342858.006', 'https://doi.org/10.1017/S0025100300004758'],
     status: 'source-scoped-position-and-vowel-conditioned-allophones'
+  },
+  'narrow-h-rounded-allophone': {
+    refs: ['https://doi.org/10.1017/CBO9781139342858.006', 'https://fphil.uniba.sk/fileadmin/fif/katedry_pracoviska/kvas/SOS_subory_19_1/SOS_19_1__2020_.pdf'],
+    status: 'source-scoped-word-initial-rounded-vowel-allophone'
+  },
+  'narrow-h-velar-allophone': {
+    refs: ['https://doi.org/10.1017/CBO9781139342858.006'],
+    status: 'source-scoped-word-initial-unrounded-back-vowel-allophone'
   },
   'liquid-assimilation': {
     refs: ['https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002'],
@@ -86,20 +94,46 @@ function narrowSyllable(current, previous, sameWord) {
   } else if (parsed.onset === 'ㅆ') {
     ipa = replaceInitial(ipa, ['ɕ͈'], 's͈');
   } else if (parsed.onset === 'ㅎ') {
-    if (prior && prior.coda === '') {
-      // Word-medial /h/ is voiced; place follows the next vowel:
-      // [ʝ] before /i,j/, [ɣ] before /ɯ/, [β] before /o,u,w/,
-      // and [ɦ] elsewhere (Shin, Kiaer & Cha 2012, p.77).
+    if (prior && prior.boundaryAfter !== 'word' && prior.coda === '') {
+      // Word-medial /h/ is voiced; place follows the next vowel
+      // (Shin, Kiaer & Cha 2012, Table 4.6, p.77).
       const medial = ['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ'].includes(parsed.vowel) ? 'ʝ'
         : parsed.vowel === 'ㅡ' ? 'ɣ'
           : ['ㅗ','ㅜ'].includes(parsed.vowel) ? 'β' : 'ɦ';
-      ipa = replaceInitial(ipa, ['h','ç','x','ɸ'], medial);
+      ipa = replaceInitial(ipa, ['h','ç','x','ɸ','ɸʷ'], medial);
       if (ipa.startsWith(medial)) {
         rules.push('narrow-h-intervocalic-allophone');
         evidence.push(EVIDENCE['narrow-h-intervocalic-allophone']);
-        environment = 'same word: intervocalic onset ㅎ; vowel-conditioned voiced allophone [' + medial + ']';
+        environment = 'same-word intervocalic onset ㅎ; vowel-conditioned voiced allophone [' + medial + ']';
       }
-    } else if (['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ'].includes(parsed.vowel)) {
+    } else if (!prior || prior.boundaryAfter === 'word') {
+      if (['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ'].includes(parsed.vowel)) {
+        ipa = replaceInitial(ipa, ['h'], 'ç');
+        if (ipa.startsWith('ç')) {
+          rules.push('narrow-h-palatal-allophone');
+          evidence.push(EVIDENCE['narrow-h-palatal-allophone']);
+          environment = 'word-initial onset ㅎ before /i,j/';
+        }
+      } else if (parsed.vowel === 'ㅡ') {
+        ipa = replaceInitial(ipa, ['h'], 'x');
+        if (ipa.startsWith('x')) {
+          rules.push('narrow-h-velar-allophone');
+          evidence.push(EVIDENCE['narrow-h-velar-allophone']);
+          environment = 'word-initial onset ㅎ before /ɯ/';
+        }
+      } else if (['ㅗ','ㅜ'].includes(parsed.vowel)) {
+        ipa = replaceInitial(ipa, ['h'], 'ɸʷ');
+        if (ipa.startsWith('ɸʷ')) {
+          rules.push('narrow-h-rounded-allophone');
+          evidence.push(EVIDENCE['narrow-h-rounded-allophone']);
+          environment = 'word-initial onset ㅎ before /o,u/';
+        }
+      }
+    } else if (prior && SONORANT_CODAS.has(prior.coda)) {
+      rules.push('narrow-h-sonorant-variation-unresolved');
+      evidence.push(EVIDENCE['narrow-h-sonorant-variation-unresolved']);
+      environment = 'same word: sonorant coda + onset ㅎ; weakening/deletion remains variable';
+    }
       ipa = replaceInitial(ipa, ['h'], 'ç');
       if (ipa.startsWith('ç')) {
         rules.push('narrow-h-palatal-allophone');
@@ -391,7 +425,7 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       },
       narrow: {
         ipa: narrowIpa,
-        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v11',
+        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v12',
         profile_version: 11, level: 'narrow',
         status: hasUnresolvedSource ? 'diagnostic-only-unresolved-source' : 'partial-research-only',
         evidence_status: 'partial-source-scoped-hypotheses-not-independently-reviewed',
