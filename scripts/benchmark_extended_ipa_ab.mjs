@@ -129,6 +129,83 @@ export function summarizeNarrowVariants(rows, engine) {
   };
 }
 
+function alignCodepoints(predicted, reference) {
+  const a = [...predicted], b = [...reference];
+  const dp = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
+  for (let i = 0; i <= a.length; i += 1) dp[i][0] = i;
+  for (let j = 0; j <= b.length; j += 1) dp[0][j] = j;
+  for (let i = 1; i <= a.length; i += 1) {
+    for (let j = 1; j <= b.length; j += 1) {
+      dp[i][j] = Math.min(
+        dp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1),
+        dp[i - 1][j] + 1,
+        dp[i][j - 1] + 1
+      );
+    }
+  }
+  const operations = [];
+  let i = a.length, j = b.length;
+  while (i || j) {
+    if (i && j && a[i - 1] === b[j - 1] && dp[i][j] === dp[i - 1][j - 1]) {
+      operations.push({ type: 'equal', predicted: a[i - 1], reference: b[j - 1] });
+      i -= 1; j -= 1;
+    } else if (i && j && dp[i][j] === dp[i - 1][j - 1] + 1) {
+      operations.push({ type: 'substitution', predicted: a[i - 1], reference: b[j - 1] });
+      i -= 1; j -= 1;
+    } else if (i && dp[i][j] === dp[i - 1][j] + 1) {
+      operations.push({ type: 'deletion', predicted: a[i - 1], reference: null });
+      i -= 1;
+    } else {
+      operations.push({ type: 'insertion', predicted: null, reference: b[j - 1] });
+      j -= 1;
+    }
+  }
+  return operations.reverse();
+}
+
+export function summarizeNarrowErrorPatterns(records) {
+  const counts = { substitutions: {}, insertions: {}, deletions: {} };
+  const examples = { substitutions: {}, insertions: {}, deletions: {} };
+  let scoredTokens = 0, tokensWithErrors = 0;
+  for (const record of records ?? []) {
+    if (typeof record.normalized_predicted !== 'string' ||
+        typeof record.closest_normalized_gold !== 'string') continue;
+    scoredTokens += 1;
+    const operations = alignCodepoints(record.normalized_predicted, record.closest_normalized_gold);
+    const errors = operations.filter(item => item.type !== 'equal');
+    if (errors.length) tokensWithErrors += 1;
+    for (const item of errors) {
+      const group = item.type === 'substitution' ? 'substitutions'
+        : item.type === 'insertion' ? 'insertions' : 'deletions';
+      const key = item.type === 'substitution'
+        ? item.predicted + ' → ' + item.reference
+        : item.type === 'insertion' ? '∅ → ' + item.reference : item.predicted + ' → ∅';
+      counts[group][key] = (counts[group][key] ?? 0) + 1;
+      if (!examples[group][key]) examples[group][key] = [];
+      if (examples[group][key].length < 4) examples[group][key].push({
+        token: record.token,
+        predicted: record.predicted,
+        reference: record.gold
+      });
+    }
+  }
+  const top = group => Object.entries(counts[group])
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, 25)
+    .map(([edit, count]) => ({ edit, count, examples: examples[group][edit] }));
+  return {
+    interpretation: 'Unicode-codepoint Levenshtein error attribution for normalized strings; edit pairs are diagnostic symbol confusions, not phonological-feature judgments or narrow-IPA accuracy.',
+    scored_tokens: scoredTokens,
+    tokens_with_errors: tokensWithErrors,
+    substitution_count: Object.values(counts.substitutions).reduce((sum, n) => sum + n, 0),
+    insertion_count: Object.values(counts.insertions).reduce((sum, n) => sum + n, 0),
+    deletion_count: Object.values(counts.deletions).reduce((sum, n) => sum + n, 0),
+    top_substitutions: top('substitutions'),
+    top_insertions: top('insertions'),
+    top_deletions: top('deletions')
+  };
+}
+
 export function compareRows(standard, extendedBroad) {
   const left = standard.records ?? [];
   const right = extendedBroad.records ?? [];
@@ -172,6 +249,7 @@ function main() {
       const phonemic = scoreLayer(rows, engine, 'phonemic', name);
       const narrow = scoreLayer(rows, engine, 'narrow', name);
       const narrowVariants = summarizeNarrowVariants(rows, engine);
+      const narrowErrors = summarizeNarrowErrorPatterns(narrow.records);
       datasets[name] = {
         occurrence_policy: 'same source rows, token order, eligibility and gold strings across all four passes',
         reference_layer_status: name === 'Seoul Corpus' ? 'phonemic-word-level-reference' : 'reference-layer-not-independently-adjudicated-here',
@@ -183,6 +261,7 @@ function main() {
         },
         standard_vs_extended_broad: compareRows(standard, broad),
         narrow_variant_diagnostics: narrowVariants,
+        narrow_error_patterns: narrowErrors,
         records: {
           standard_ipa: standard.records,
           extended_broad: broad.records,
@@ -206,6 +285,7 @@ function main() {
         'Extended narrow is a partial research allophone profile. No independently adjudicated narrow-IPA gold is supplied by these corpora; its score is cross-layer string agreement only and must not be described as narrow IPA accuracy.',
         'Exact match, CER and coverage are reported separately; no permissive normalization is used for headline metrics.',
         'Unselected Narrow variant candidates are summarized separately by environment/evidence; candidate coverage is not accuracy and does not change the primary IPA score.',
+        'Narrow error patterns are Unicode-codepoint Levenshtein diagnostics; symbol confusions are not phonological-feature judgments and remain cross-layer when no layer-matched gold exists.',
         'This report does not measure Ukrainian target transcription accuracy.'
       ]
     };
@@ -218,6 +298,7 @@ function main() {
         extended_phonemic: data.extended_ipa.phonemic,
         extended_narrow: data.extended_ipa.narrow,
         narrow_variant_diagnostics: data.narrow_variant_diagnostics,
+        narrow_error_patterns: data.narrow_error_patterns,
         standard_vs_extended_broad: data.standard_vs_extended_broad
       }, null, 2) + '\n');
     }
