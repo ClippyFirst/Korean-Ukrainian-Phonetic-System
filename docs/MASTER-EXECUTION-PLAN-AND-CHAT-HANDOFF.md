@@ -2329,7 +2329,7 @@ The separate multi-engine artifact from the same run is aggregate-only and is no
 The A/B artifact was produced on implementation commit `08feed20a54187ebc1c35f211801e9c7e5c85632`; the subsequent `a7116388` change only corrected a test fixture (no production parser/IPA output change), and documentation-only commits followed. The current-head benchmark workflow was cancelled before producing its own artifact; this prior artifact remains the inspected diagnostic evidence, not an exact-current-head rerun.
 
 
-## Extended Narrow coverage continuation — 2026-11-27 — profile v8
+## Extended Narrow coverage continuation — 2026-11-27 — profile v9
 
 **Branch:** `feat/korean-narrow-phonetics-coverage-2026-11-27` (stacked on PR #510). **Base:** PR #510 head `e5d70f373c3603a9c573080eee0df7e19199f067`. **Scope:** research-grounded Narrow allophony; Standard/Broad and Ukrainian adaptation remain unchanged.
 
@@ -2354,7 +2354,7 @@ The A/B artifact was produced on implementation commit `08feed20a54187ebc1c35f21
 - Added a source-backed, **unselected** coda [ɭ] variant when ㄹ is word-final or precedes same-word ㅎ. Evidence: Crosby (2024), 23 speakers across Central, Gyeongsangdo and Jeollado; word-final position OR 2.516 and pre-/h/ OR 3.056 versus geminate reference; substantial dialect/gender/age/style effects. The article only analyzes tokens classified as lateral, so it does not imply that every written coda ㄹ is realized as a lateral.
 - Kept primary coda [l] and all Broad/Standard outputs unchanged. No speakerless probability or dialect guessing was added.
 - Added source S038 to `data/korean/sources.csv` and `SRC-KOREAN-LIQUID-RETROFLEX-2024` to `research/SOURCE-REGISTER.csv`; no audio or corpus annotations were imported.
-- Python and browser Extended IPA now use narrow profile v8; added tests for word-final and pre-/h/ candidates and a negative control for a non-triggering vowel-following context.
+- Python and browser Extended IPA now use narrow profile v9; added tests for word-final and pre-/h/ candidates and a negative control for a non-triggering vowel-following context.
 
 ### Benchmark interpretation and open gates
 
@@ -2384,3 +2384,12 @@ The review also flags: variable /h/-deletion with residual effects on the preced
 - KsponSpeech pronunciation transcripts are not equivalent to time-aligned narrow IPA. Do not relabel orthographic or pronunciation text as acoustic IPA gold.
 - Separate four acceptance dimensions: (1) categorical standard-rule correctness on NIKL cases, (2) optional-variant coverage/provenance and abstention, (3) narrow acoustic accuracy on rights-cleared, independently annotated audio with inter-annotator agreement, and (4) runtime determinism/parity. Keep exact match, CER/PER, feature-weighted distance, coverage-adjusted score, and per-rule false-addition/omission counts separate.
 - For stop contrast, evaluate IP/AP/word-medial separately and retain F0/VOT/closure/voice-quality measurements with Praat method, time window, source span and speaker metadata. For vowel and liquid allophones, stratify by dialect, age, gender, style, prosodic position and relevant preceding/following segments. A broad reference cannot certify a narrow output.
+
+
+## Narrow profile v9 — preconsonantal liquid detail — 2026-11-27
+
+- Expanded the v8 coda [ɭ] candidate eligibility to include same-word preconsonantal coda ㄹ, not only pre-/h/ and word-final contexts. Crosby & Dalola (2021) found retroflex laterals 3.204 times more likely preconsonantally and 6.972 times more likely before /h/ than in their word-initial reference; their 12-speaker sample also found 99.3% intervocalic taps. These are relative effects, not universal categorical rules.
+- Python and browser profile identifiers are now `clippyfirst-korean-narrow-contextual-allophones-v9`. Primary IPA remains unchanged; [ɭ] is an unselected alternative with evidence and uncertainty attached.
+- The same study found coarticulatory palatalization before high-front vocoids (mean F2 about 255 Hz higher), but this is a gradient acoustic effect; no categorical [ʎ] substitution is added without a more precise validated environment/profile. This remains an evidence-gated TODO.
+- Explicit pre-pausal selection remains unimplemented in the Python text-only path because orthographic punctuation/word boundaries are not reliable measurements of actual pause or prosodic boundary. A future audio/prosody input may support it; text-only output must not assume it.
+- Tests added for preconsonantal `물론` → primary `mul.lon` plus unselected `muɭ.lon`; browser/Python parity required. v9 remains research-only and not target-compatible.
