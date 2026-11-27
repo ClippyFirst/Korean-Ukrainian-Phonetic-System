@@ -224,7 +224,7 @@ def test_python_ipa_results_expose_a_versioned_profile_contract():
     expected = {
         "phonemic": ("clippyfirst-korean-phonemic-v1", "phonemic"),
         "broad": ("clippyfirst-korean-broad-v1", "broad"),
-        "narrow": ("clippyfirst-korean-narrow-contextual-allophones-v6", "narrow"),
+        "narrow": ("clippyfirst-korean-narrow-contextual-allophones-v7", "narrow"),
     }
     for level, (profile_id, profile_level) in expected.items():
         result = phoneticize_korean("씨", ipa_level=level)["ipa"]
@@ -345,7 +345,7 @@ def test_broad_h_allophones_are_optional_and_profile_scoped():
     assert phoneticize_korean("하")["ipa"]["variants"] == []
 
 
-def test_seoul_broad_profile_offers_source_scoped_h_and_liquid_allophones():
+def test_seoul_broad_profile_offers_source_scoped_h_and_conservative_liquid_output():
     from korean_ukrainian.pipeline import phoneticize_korean
 
     h = phoneticize_korean("아하")["ipa"]
@@ -354,7 +354,8 @@ def test_seoul_broad_profile_offers_source_scoped_h_and_liquid_allophones():
 
     liquid = phoneticize_korean("나라")["ipa"]
     assert liquid["ipa"] == "na.ɾa"
-    assert any(item["ipa"] == "na.ɭa" for item in liquid["variants"])
+    assert liquid["ipa"] == "na.ɾa"
+    assert not any("ɭ" in item["ipa"] for item in liquid["variants"])
 
     # Lee (1993, p.31) classifies /s/ as fortis; it cannot license a
     # lenis /s/ variant. Kang (2010) supports only /i, ye, ya/ acoustic
