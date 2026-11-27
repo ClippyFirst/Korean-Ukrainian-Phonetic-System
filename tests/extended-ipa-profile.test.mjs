@@ -170,3 +170,14 @@ test('browser exposes an unselected preconsonantal coda retroflex variant', () =
   assert.equal(preHVariant.selected, false);
   assert.match(preHVariant.environment, /before same-word onset ㅎ/);
 });
+
+
+test('browser exposes an unselected coarticulatory palatalization candidate for geminate /l/ before /i/', () => {
+  const result = extended('빨리');
+  assert.equal(result.layers.narrow.ipa, 'p͈al.li');
+  const variant = result.variants.find(item => item.layer === 'narrow' && item.ipa === 'p͈al.lʲi');
+  assert.ok(variant);
+  assert.equal(variant.selected, false);
+  assert.equal(variant.evidence_status, 'gradient-coarticulation-candidate-variant-only');
+  assert.ok(variant.evidence_refs.some(ref => ref.includes('10.3765/plsa.v6i1.5002')));
+});
