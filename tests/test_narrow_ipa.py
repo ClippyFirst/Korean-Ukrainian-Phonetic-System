@@ -163,13 +163,13 @@ def test_coda_nasal_palatalization_before_affricates_is_optional_only():
 
 
 def test_word_final_coda_stops_expose_unreleased_candidates_without_selecting_them():
-    for word, primary, candidate in (("낫", "nat", "nat̚"), ("밖", "pak", "pak̚"), ("밥", "pap", "pap̚")):
+    for word, primary, candidate in (("낫", "nat̚", "nat"), ("밖", "pak̚", "pak"), ("밥", "pap̚", "pap")):
         result = realize_syllables(parse_syllables(word), level="narrow")
         assert result["ipa"] == primary
         variant = next(item for item in result["variants"] if item["ipa"] == candidate)
         assert variant["selected"] is False
-        assert variant["evidence_status"] == "source-scoped-release-variant-only"
-        assert "word-final coda" in variant["environment"]
+        assert variant["evidence_status"] == "source-scoped-release-variation-candidate-only"
+        assert "optional released" in variant["environment"]
         assert any("10.1006/JPHO.1996.0016" in ref for ref in variant["evidence_refs"])
         assert any("10.13064/ksss.2026.18.1.021" in ref for ref in variant["evidence_refs"])
 
