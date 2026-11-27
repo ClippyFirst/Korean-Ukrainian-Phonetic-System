@@ -90,3 +90,10 @@ def test_vowel_segment_does_not_receive_consonant_only_features():
     assert vowel["features"]["aspiration"] == "not-applicable"
     assert vowel["features"]["fortisness"] == "not-applicable"
     assert vowel["features"]["release"] == "not-applicable"
+
+
+def test_layer_segment_ids_are_unique_across_syllables():
+    from korean_ukrainian.pipeline import phoneticize_korean
+    tokens = phoneticize_korean("나라")["extended_ipa"]["layers"]["narrow"]["segments"]
+    ids = [item["id"] for item in tokens]
+    assert len(ids) == len(set(ids))
