@@ -25,8 +25,8 @@ const EVIDENCE = {
     status: 'speaker-and-dialect-variable-no-single-IPA-selected'
   },
   'narrow-h-intervocalic-allophone': {
-    refs: ['https://doi.org/10.1017/S0025100300004758'],
-    status: 'source-scoped-description'
+    refs: ['https://doi.org/10.1017/CBO9781139342858', 'https://doi.org/10.1017/S0025100300004758'],
+    status: 'source-scoped-position-and-vowel-conditioned-allophones'
   },
   'liquid-assimilation': {
     refs: ['https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002'],
@@ -86,7 +86,20 @@ function narrowSyllable(current, previous, sameWord) {
   } else if (parsed.onset === 'ㅆ') {
     ipa = replaceInitial(ipa, ['ɕ͈'], 's͈');
   } else if (parsed.onset === 'ㅎ') {
-    if (['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ'].includes(parsed.vowel)) {
+    if (prior && prior.coda === '') {
+      // Word-medial /h/ is voiced; place follows the next vowel:
+      // [ʝ] before /i,j/, [ɣ] before /ɯ/, [β] before /o,u,w/,
+      // and [ɦ] elsewhere (Shin, Kiaer & Cha 2012, p.77).
+      const medial = ['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ'].includes(parsed.vowel) ? 'ʝ'
+        : parsed.vowel === 'ㅡ' ? 'ɣ'
+          : ['ㅗ','ㅜ'].includes(parsed.vowel) ? 'β' : 'ɦ';
+      ipa = replaceInitial(ipa, ['h','ç','x','ɸ'], medial);
+      if (ipa.startsWith(medial)) {
+        rules.push('narrow-h-intervocalic-allophone');
+        evidence.push(EVIDENCE['narrow-h-intervocalic-allophone']);
+        environment = 'same word: intervocalic onset ㅎ; vowel-conditioned voiced allophone [' + medial + ']';
+      }
+    } else if (['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ'].includes(parsed.vowel)) {
       ipa = replaceInitial(ipa, ['h'], 'ç');
       if (ipa.startsWith('ç')) {
         rules.push('narrow-h-palatal-allophone');
@@ -385,8 +398,8 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       },
       narrow: {
         ipa: narrowIpa,
-        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v10',
-        profile_version: 10, level: 'narrow',
+        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v11',
+        profile_version: 11, level: 'narrow',
         status: hasUnresolvedSource ? 'diagnostic-only-unresolved-source' : 'partial-research-only',
         evidence_status: 'partial-source-scoped-hypotheses-not-independently-reviewed',
         target_compatible: false
