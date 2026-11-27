@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createBrowserKozakKimEngine } from '../scripts/benchmark_kozak_kim_browser.mjs';
-import { summarizeNarrowVariants } from '../scripts/benchmark_extended_ipa_ab.mjs';
+import { summarizeNarrowVariants, summarizeNarrowErrorPatterns } from '../scripts/benchmark_extended_ipa_ab.mjs';
 
 test('Narrow variant diagnostics count candidate coverage without scoring candidates as accuracy', () => {
   const rows = [{
@@ -24,4 +24,20 @@ test('Narrow variant diagnostics count candidate coverage without scoring candid
   assert.equal(report.by_environment['coda ㄹ before same-word onset ㅎ'], 1);
   assert.match(report.interpretation, /not scored as correct\/incorrect/);
   assert.ok(report.examples.every(item => item.selected === false));
+});
+
+test('Narrow error attribution exposes recurrent symbol substitutions and length edits', () => {
+  const report = summarizeNarrowErrorPatterns([
+    { token: '팔', predicted: 'pal', gold: 'paɭ', normalized_predicted: 'pal', closest_normalized_gold: 'paɭ' },
+    { token: '아하', predicted: 'aɸa', gold: 'aɦa', normalized_predicted: 'aɸa', closest_normalized_gold: 'aɦa' },
+    { token: '말', predicted: 'mal', gold: 'malː', normalized_predicted: 'mal', closest_normalized_gold: 'malː' }
+  ]);
+  assert.equal(report.scored_tokens, 3);
+  assert.equal(report.tokens_with_errors, 3);
+  assert.equal(report.substitution_count, 2);
+  assert.equal(report.insertion_count, 1);
+  assert.equal(report.top_substitutions[0].edit, 'l → ɭ');
+  assert.equal(report.top_substitutions[1].edit, 'ɸ → ɦ');
+  assert.equal(report.top_insertions[0].edit, '∅ → ː');
+  assert.match(report.interpretation, /not phonological-feature judgments/);
 });
