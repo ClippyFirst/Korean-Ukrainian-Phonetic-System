@@ -420,13 +420,13 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
             "evidence_status": "deterministic-underlying-phonemic-inventory",
             "status": "underlying-phonemic-grapheme-derived",
         })
-    for item, span in zip(items, source_spans):
+    for index, (item, span) in enumerate(zip(items, source_spans)):
         extended_trace.append({
             "layer": "broad",
             "source_span": span,
             "source": item.text,
             "surface": item.text,
-            "ipa": broad_layer.get("syllables", [None] * len(items))[len([entry for entry in extended_trace if entry.get("layer") == "broad" and entry.get("evidence_status") == "structural-syllable-alignment"])],
+            "ipa": broad_layer.get("syllables", [None] * len(items))[index],
             "rule_ids": [],
             "environment": None,
             "evidence_refs": [],
@@ -439,6 +439,27 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
         evidence_refs = []
         evidence_status = "no-narrow-rule-applied"
         status = "aligned" if source_spans[index] else "source-span-unavailable"
+        narrow_value = narrow_layer.get("syllables", [None] * len(items))[index] or ""
+        if narrow_value.startswith("ɲ"):
+            rule_ids = ["narrow-nasal-palatalization"]
+            environment = "onset ㄴ before glide-initial nucleus"
+            evidence_refs = ["https://discovery.ucl.ac.uk/id/eprint/1324541/1/1324541.pdf"]
+            evidence_status = "secondary-description-requires-primary-phonetic-review"
+        elif narrow_value.startswith(("sʰ", "ɕʰ")):
+            rule_ids = ["narrow-lenis-sibilant-place"]
+            environment = "onset ㅅ; narrow aspiration/place realization in the source-scoped profile"
+            evidence_refs = ["https://doi.org/10.17959/sppm.2010.16.1.3"]
+            evidence_status = "source-scoped-acoustic-coarticulation"
+        elif narrow_value.startswith(("ç", "x", "ɸ")):
+            rule_ids = ["narrow-h-contextual-allophone"]
+            environment = "onset ㅎ in the documented vowel/intervocalic context"
+            evidence_refs = ["https://doi.org/10.1017/S0025100300004758"]
+            evidence_status = "source-scoped-description"
+        elif narrow_value.startswith("ɭ"):
+            rule_ids = ["narrow-liquid-allophone"]
+            environment = "same-word liquid context or selected vowel context"
+            evidence_refs = ["https://doi.org/10.1017/S0025100300004758"]
+            evidence_status = "source-scoped-description"
         if index > 0 and item.onset == "ㅎ":
             previous = items[index - 1]
             if previous.boundary_after != "word" and previous.coda in {"ㄴ", "ㄹ", "ㅁ", "ㅇ", "ㄵ", "ㄶ", "ㄻ", "ㄼ", "ㄽ", "ㄾ", "ㅀ"}:
