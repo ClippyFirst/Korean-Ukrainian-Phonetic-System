@@ -81,6 +81,7 @@ export function summarizeNarrowVariants(rows, engine) {
   let candidateOracleExactMatches = 0;
   let candidateOracleRescuedTokens = 0;
   const oracleRescuedByEnvironment = {};
+  const oracleRescuedByInteraction = new Map();
   const byEnvironment = {};
   const byEvidenceStatus = {};
   const examples = [];
@@ -115,6 +116,28 @@ export function summarizeNarrowVariants(rows, engine) {
           candidateOracleRescuedTokens += 1;
           const environment = oracleMatch.environment || 'unspecified';
           oracleRescuedByEnvironment[environment] = (oracleRescuedByEnvironment[environment] ?? 0) + 1;
+          const closestGold = goldVariants.map(gold => ({
+            gold,
+            errors: alignCodepoints(primaryNormalized, gold).filter(item => item.type !== 'equal')
+          })).sort((a, b) => a.errors.length - b.errors.length || a.gold.localeCompare(b.gold))[0];
+          const errorSignature = closestGold?.errors.length
+            ? [...new Set(closestGold.errors.map(item => item.type === 'substitution'
+              ? item.predicted + ' → ' + item.reference
+              : item.type === 'insertion' ? '∅ → ' + item.reference : item.predicted + ' → ∅'))]
+              .sort((a, b) => a.localeCompare(b)).join(' + ')
+            : 'no-primary-error';
+          const interactionKey = environment + '\\u0000' + errorSignature;
+          if (!oracleRescuedByInteraction.has(interactionKey)) {
+            oracleRescuedByInteraction.set(interactionKey, {
+              environment,
+              primary_error_signature: errorSignature,
+              occurrence_count: 0,
+              token_types: new Set()
+            });
+          }
+          const interaction = oracleRescuedByInteraction.get(interactionKey);
+          interaction.occurrence_count += 1;
+          interaction.token_types.add(canonical);
         }
       }
       if (!variants.length) continue;
@@ -151,6 +174,16 @@ export function summarizeNarrowVariants(rows, engine) {
     candidate_oracle_exact_rate: scoredGoldTokens ? Number((candidateOracleExactMatches / scoredGoldTokens).toFixed(6)) : null,
     candidate_oracle_rescued_tokens: candidateOracleRescuedTokens,
     candidate_oracle_rescued_by_environment: Object.fromEntries(Object.entries(oracleRescuedByEnvironment).sort(([a],[b]) => a.localeCompare(b))),
+    candidate_oracle_rescue_interactions: [...oracleRescuedByInteraction.values()]
+      .map(item => ({
+        environment: item.environment,
+        primary_error_signature: item.primary_error_signature,
+        occurrence_count: item.occurrence_count,
+        unique_token_types: item.token_types.size
+      }))
+      .sort((a, b) => b.occurrence_count - a.occurrence_count
+        || a.environment.localeCompare(b.environment)
+        || a.primary_error_signature.localeCompare(b.primary_error_signature)),
     by_environment: Object.fromEntries(Object.entries(byEnvironment).sort(([a],[b]) => a.localeCompare(b))),
     by_evidence_status: Object.fromEntries(Object.entries(byEvidenceStatus).sort(([a],[b]) => a.localeCompare(b))),
     examples
@@ -193,22 +226,51 @@ function alignCodepoints(predicted, reference) {
 
 export function summarizeNarrowErrorPatterns(records) {
   const counts = { substitutions: {}, insertions: {}, deletions: {} };
+  const tokenTypesByEdit = { substitutions: {}, insertions: {}, deletions: {} };
   const examples = { substitutions: {}, insertions: {}, deletions: {} };
+  const cooccurringPairs = new Map();
+  const errorSignatures = new Map();
+  const scoredTokenTypes = new Set();
+  const tokensWithErrorsSet = new Set();
   let scoredTokens = 0, tokensWithErrors = 0;
+  const editKey = item => item.type === 'substitution'
+    ? item.predicted + ' → ' + item.reference
+    : item.type === 'insertion' ? '∅ → ' + item.reference : item.predicted + ' → ∅';
   for (const record of records ?? []) {
     if (typeof record.normalized_predicted !== 'string' ||
         typeof record.closest_normalized_gold !== 'string') continue;
     scoredTokens += 1;
+    const tokenType = typeof record.token === 'string' && record.token ? record.token : null;
+    if (tokenType) scoredTokenTypes.add(tokenType);
     const operations = alignCodepoints(record.normalized_predicted, record.closest_normalized_gold);
     const errors = operations.filter(item => item.type !== 'equal');
-    if (errors.length) tokensWithErrors += 1;
+    if (errors.length) {
+      tokensWithErrors += 1;
+      if (tokenType) tokensWithErrorsSet.add(tokenType);
+    }
+    const distinctEdits = [...new Set(errors.map(editKey))].sort((a, b) => a.localeCompare(b));
+    for (const pair of distinctEdits.flatMap((left, index) =>
+      distinctEdits.slice(index + 1).map(right => [left, right]))) {
+      const key = pair.join('\\u0000');
+      if (!cooccurringPairs.has(key)) cooccurringPairs.set(key, { edits: pair, occurrence_count: 0, token_types: new Set() });
+      const item = cooccurringPairs.get(key);
+      item.occurrence_count += 1;
+      if (tokenType) item.token_types.add(tokenType);
+    }
+    if (distinctEdits.length) {
+      const signature = distinctEdits.join(' + ');
+      if (!errorSignatures.has(signature)) errorSignatures.set(signature, { signature, occurrence_count: 0, token_types: new Set() });
+      const item = errorSignatures.get(signature);
+      item.occurrence_count += 1;
+      if (tokenType) item.token_types.add(tokenType);
+    }
     for (const item of errors) {
       const group = item.type === 'substitution' ? 'substitutions'
         : item.type === 'insertion' ? 'insertions' : 'deletions';
-      const key = item.type === 'substitution'
-        ? item.predicted + ' → ' + item.reference
-        : item.type === 'insertion' ? '∅ → ' + item.reference : item.predicted + ' → ∅';
+      const key = editKey(item);
       counts[group][key] = (counts[group][key] ?? 0) + 1;
+      if (!tokenTypesByEdit[group][key]) tokenTypesByEdit[group][key] = new Set();
+      if (tokenType) tokenTypesByEdit[group][key].add(tokenType);
       if (!examples[group][key]) examples[group][key] = [];
       if (examples[group][key].length < 4) examples[group][key].push({
         token: record.token,
@@ -220,17 +282,35 @@ export function summarizeNarrowErrorPatterns(records) {
   const top = group => Object.entries(counts[group])
     .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
     .slice(0, 25)
-    .map(([edit, count]) => ({ edit, count, examples: examples[group][edit] }));
+    .map(([edit, count]) => ({
+      edit, count,
+      unique_token_types: tokenTypesByEdit[group][edit]?.size ?? 0,
+      examples: examples[group][edit]
+    }));
+  const ranked = values => [...values.values()]
+    .map(item => ({
+      ...(item.edits ? { edits: item.edits } : { signature: item.signature }),
+      occurrence_count: item.occurrence_count,
+      unique_token_types: item.token_types.size
+    }))
+    .sort((a, b) => b.occurrence_count - a.occurrence_count
+      || b.unique_token_types - a.unique_token_types
+      || (a.signature || a.edits.join(' + ')).localeCompare(b.signature || b.edits.join(' + ')))
+    .slice(0, 25);
   return {
-    interpretation: 'Unicode-codepoint Levenshtein error attribution for normalized strings; edit pairs are diagnostic symbol confusions, not phonological-feature judgments or narrow-IPA accuracy.',
+    interpretation: 'Unicode-codepoint Levenshtein diagnostics over normalized strings. Counts are occurrence-weighted; unique token-type counts expose repeated lexical items. Co-occurrences are within one token occurrence and are diagnostic symbol patterns, not phonological-feature judgments or narrow-IPA accuracy.',
     scored_tokens: scoredTokens,
+    unique_scored_token_types: scoredTokenTypes.size,
     tokens_with_errors: tokensWithErrors,
+    unique_tokens_with_errors: tokensWithErrorsSet.size,
     substitution_count: Object.values(counts.substitutions).reduce((sum, n) => sum + n, 0),
     insertion_count: Object.values(counts.insertions).reduce((sum, n) => sum + n, 0),
     deletion_count: Object.values(counts.deletions).reduce((sum, n) => sum + n, 0),
     top_substitutions: top('substitutions'),
     top_insertions: top('insertions'),
-    top_deletions: top('deletions')
+    top_deletions: top('deletions'),
+    top_cooccurring_error_pairs: ranked(cooccurringPairs),
+    top_error_signatures: ranked(errorSignatures)
   };
 }
 

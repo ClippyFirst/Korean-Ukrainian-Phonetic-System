@@ -686,3 +686,85 @@ A secondary Wiktionary entry decomposes `중심닮음` as `중심 + 닮- + -음`
 On the 1,907 unique UGTPHON words, Kiwi and MeCab-Ko have 80.5978% exact boundary-set agreement. Across 217 common observed rule events their boundary-presence agreement is 94.0092%. The two-analyzer consensus changes three unique words versus strict, newly resolves one (`칡칡이`), and withholds 24 unspaced phrase-boundary cases. It does not improve the diagnostic gold score: strict 53.0393% exact / 8.9920% CER; consensus 53.0196% exact / 9.0086% CER. Treat this as diagnostic morphology evidence, not production accuracy or gold segmentation. Keep exact licenses fail-closed.
 
 No production code change was justified by this drill-down. The next legitimate acceptance step is independent Korean morphological/IPA adjudication for the exact abstention and for the residual queue, not an engine-specific guess.
+
+
+## 2026-11-28 — Narrow benchmark interaction analysis (artifact-backed)
+
+**Scope:** diagnostic-only improvement to the paired Standard/Extended IPA benchmark. No runtime phonological rule, primary Narrow output, profile version, target adapter, or corpus label was changed.
+
+**Evidence anchor:** workflow run [46081938091](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/46081938091), source engine head `9ea66677e1a70ddf87d7dbcc43a770e1e18d0622`; paired artifact `15238494535` (SHA-256 `110e436093b28b4fc8794871093ba70c02851756e6dab2d0e0705cab0beee9d1`). Follow-up test-only head `cf1d7a1e8e34401b452c0a58146b1db06265d35e` passed the system checks in run [46127584454](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/46127584454); it did not change engine behavior.
+
+### Paired primary scores (cross-layer agreement, not Narrow gold accuracy)
+
+| Dataset | Scored | Narrow exact | Narrow CER | Candidate-oracle rescues |
+|---|---:|---:|---:|---:|
+| UGTPHON | 2,702 | 72.2058% | 4.5519% | 392 |
+| SIGMORPHON | 998 | 51.3026% | 9.8821% | 150 |
+
+The references are not independently adjudicated Narrow IPA gold. Candidate-oracle values are offline corpus-label coverage upper bounds, never a runtime selection rule. Standard and Extended Broad are identical by contract.
+
+### Error and interaction findings
+
+Occurrence-weighted normalized-symbol diagnostics:
+
+| Edit pattern | UGTPHON | SIGMORPHON |
+|---|---:|---:|
+| `l → ɭ` | 543 | 190 |
+| `h → ɦ` | 96 | 33 |
+| `s → ɕ` | 62 | 12 |
+| `y → i` | 37 | 20 |
+| `l → ʎ` | 33 | 55 |
+| `ʰ → x` | 24 | 11 |
+| `ʰ → ç` | 21 | 11 |
+
+These are Unicode-codepoint edit pairs, not phonological diagnoses. Within-token co-occurrence exposes several coupled patterns that aggregate exact/CER conceal:
+
+- `y → i` + insertion `∅ → ɥ`: 37 UGTPHON and 19 SIGMORPHON occurrences. This is consistent with a two-part [ɥi] versus [y] mismatch, not two independent rule failures.
+- `l → ɭ` + `l → ʎ`: 33 UGTPHON occurrences. This is the geminate-liquid sequence behind the source-scoped [ʎ.ʎ] interaction hypothesis; it does not prove that [ʎʎ] is the speaker's categorical realization.
+- `h → ɦ` + `l → ɾ`: 11 UGTPHON and 4 SIGMORPHON occurrences. The pair warrants focused review of liquid+/h/ contexts and rule ordering, but does not justify selecting either phone from text alone.
+
+UGTPHON's 751 mismatching occurrences represent 578 distinct Hangul types (173 repeated occurrences beyond one per type). Across 1,906 scored types, type-weighted exact is 69.6747%, versus occurrence-weighted 72.2058% (+2.5311 percentage points because frequent types are easier on average). SIGMORPHON has 486 mismatching occurrences among 998 scored types, so type- and occurrence-weighted exact are both 51.3026%. The one unscored type in each dataset is excluded from these rates. Occurrence-weighted and type-weighted diagnostics must remain separate.
+
+### Candidate interaction results
+
+- Unselected Narrow candidates occur on 1,124/2,703 UGTPHON tokens (41.58%) and 472/999 SIGMORPHON tokens (47.25%); selected candidates remain zero.
+- Candidate-oracle rescues cluster around word-final coda ㄹ (208/47), coda ㄹ before a same-word consonant (130/46), the composed [ʎ.ʎ] geminate hypothesis (27/20), and position-conditioned ㅟ → [ɥi] (26/12), UGTPHON/SIGMORPHON respectively. SIGMORPHON also has 25 rescues from coda ㄴ before an alveopalatal affricate.
+- The intervocalic [ɭ] candidate is frequent (516/157 candidate occurrences) but produced no candidate-oracle rescue in this paired artifact. Keep it unselected; this is not proof against the variant because the reference convention is not Narrow-adjudicated.
+- Candidate counts, candidate rescues and primary scores are distinct quantities. Do not add candidate rescues to exact match or tune a primary profile to maximize oracle coverage.
+
+### Evidence-led interpretation and next work
+
+1. Prioritize per-context investigation of coda ㄹ before consonants/word boundaries, ㅟ realization, geminate ㄹㄹ, and liquid+/h/ interactions.
+2. Keep source-conditioned [ɭ], [ʎ], [ɥi], [ɦ] and release variants unselected unless an exact environment and independent evidence support a deterministic choice.
+3. Separate lexical occurrence weighting from unique-type weighting and report error-pair co-occurrence in future benchmark artifacts.
+4. Do not infer that a low score on Seoul/K-SPAN is a direct Narrow failure: Seoul is phonemic, K-SPAN is lexical surface-phonetic, and their conventions differ. K-SPAN's 22,843 key/WorldBet mismatches remain a separate source-integrity warning.
+5. The 95% target cannot be validated until there is a frozen, independently adjudicated, layer-matched Narrow test set with speaker/dialect/prosody scope.
+
+### Task ledger
+
+- `DONE_VERIFIED`: artifact downloaded and inspected; paired score, per-edit counts, candidate rescues, occurrence/type imbalance and within-token edit co-occurrences calculated.
+- `DONE_VERIFIED`: benchmark runner and regression tests add occurrence/type weighting, within-token edit pairs/signatures, and candidate-rescue × primary-error interactions. Exact code/test-head System Verify run `46129060336` passed Python regression/data integrity, browser regression, rights gate, production build and generated-page checks; test-register extraction run `46129060371` passed. The isolated Node smoke test also passed.
+- `PARTIAL`: refreshed multi-engine run `46129060373` was cancelled by PR-workflow concurrency after documentation-only commits. Prior run `46128961225` remains in progress on superseded commit `274d4abef145a9ab0bf78ac27957d8ef51adc2ff`; its benchmark-runner blob SHA `700ecad6a1fd6dcad6420d6528b758676d66750d` is identical to the final runner, and its benchmark-adapter tests passed. Await its paired artifact; do not claim a refreshed aggregate until it uploads. Code/test head is `1fbc06f15c775b33e5b351e9c19f6d58839b7b1d`; subsequent commits on this branch are documentation-only.
+- `BLOCKED`: independent layer-matched Narrow IPA gold/audio and speaker/dialect adjudication remain unavailable.
+- `BLOCKED`: K-SPAN WorldBet key-field reconciliation remains open (22,843 mismatches).
+- `DEFERRED`: no new deterministic primary IPA rules promoted from benchmark-label matching.
+
+**Disposition:** a better diagnostic instrument, not an accuracy uplift. The deterministic engine remains a research prototype and the Narrow profile remains partial/research-only and target-incompatible.
+
+
+### External literature cross-check — interpretation guardrails (2026-11-28)
+
+- **Korean liquids:** Crosby & Dalola (2021), DOI [10.3765/plsa.v6i1.5002](https://doi.org/10.3765/plsa.v6i1.5002), studied 12 Standard Korean speakers. They report 422/425 intervocalic liquids as taps (99.3%); before /h/, 153 taps and 103 laterals (59.8%/40.2%); among those 103 laterals, only 12 were retroflex. Pre-pausal retroflexion was 263/509 laterals (51.7%), while preconsonantal retroflexion excluding /h/ was 15/222. The paper attributes much of the tap/lateral split before /h/ to /h/-lenition: [ɾ] when /h/ is elided, [l] when it remains. Thus the benchmark co-occurrence `l → ɾ` + `h → ɦ` is **not** a source-backed categorical interaction; it is in tension with that reported conditioning and should be treated as convention/dialect/token uncertainty pending adjudication, not encoded as a new rule.
+- **/h/ after sonorants:** Kang & Lee (2019), DOI [10.17290/jlsk.2019..84.175](https://doi.org/10.17290/jlsk.2019..84.175), compare three Seoul and three Gwangju speakers reading five stories. They report more weakening/deletion after sonorants in Gwangju, while the durations of voiceless and voiced /h/ were not significantly longer in Seoul. This supports dialect-conditioned optionality, not a universal [ɦ] rule. Um (2014), DOI [10.17959/sppm.2014.20.3.357](https://doi.org/10.17959/sppm.2014.20.3.357), finds that the preceding sonorant is shorter even when /h/ is not acoustically manifested; a plain segment-deletion candidate would therefore lose relevant phonetic information.
+- **N-insertion and morphology:** Jun (2021), DOI [10.5334/GJGL.1401](https://doi.org/10.5334/GJGL.1401), finds gradient effects and interactions among morphological category, etymology, component length, preceding consonant sonorancy/place, following-vowel height and dialect. These factors are not absolute conditions. Do not turn one benchmark correlation into a blanket categorical n-insertion rule.
+- **Stop narrowness and prosody:** Schweizer, Ahn & Kwon (2026), DOI [10.1017/S002510032510087X](https://doi.org/10.1017/S002510032510087X), compare IP-initial, AP-initial/inter-sonorant and word-medial stops. Cue weighting changes by prosodic position and vowel height; word-medial f0 effects are comparatively small and context-dependent, while closure duration/voicing and burst duration matter. These cues require audio and prosodic context, neither of which Hangul spelling supplies.
+
+**Engine decision:** preserve current deterministic primary outputs; keep uncertain allophones unselected; represent speaker/dialect/prosodic context and uncertainty in the typed IPA boundary; focus subsequent runtime changes on source-backed, testable rule interactions rather than maximizing cross-convention exact match.
+
+
+### Final review and rulings (2026-11-28)
+
+- **Ruling — no primary Narrow rule promotion:** the largest benchmark mismatches are not independent Narrow gold; the source literature shows positional, dialectal and prosodic variation. Promoting [ɭ], [ɦ], [ɾ] or [ɥi] to deterministic primary output from corpus exact-match alone would overfit conventions. Cost if wrong: a valid context-specific variant may be deferred; mitigation is to retain source-backed unselected candidates and prioritize an independently adjudicated, context-tagged holdout.
+- **Self-review:** reviewed the changed benchmark functions, output schema, test fixtures, five-file diff and exact code/test-head CI evidence. No Critical or Important code defect found. The diagnostics are occurrence-weighted and deterministic; token-type counts are separate; candidate rescue is never fed back into runtime selection.
+- **Deferred minor/process limitation:** the first implementation/test commits were made before an observed RED run; the strict Superpowers RED→GREEN chronology is therefore not evidenced, even though the final exact code/test-head System Verify passed. A local clone was unavailable, so repository tests were verified through GitHub Actions rather than a local full-suite command.
+- **Final review mode:** self-review (no subagent tool available). The PR remains draft and unmerged; no release or default-branch changes were made.

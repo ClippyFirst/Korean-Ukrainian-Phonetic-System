@@ -24,6 +24,12 @@ test('Narrow variant diagnostics count candidate coverage without scoring candid
   assert.ok(report.candidate_oracle_exact_matches >= report.primary_exact_matches);
   assert.equal(report.candidate_oracle_rescued_tokens, 3);
   assert.equal(report.candidate_oracle_rescued_by_environment['word-final coda ㄹ'], 1);
+  const codaLateralRescue = report.candidate_oracle_rescue_interactions.find(item =>
+    item.environment === 'word-final coda ㄹ');
+  assert.deepEqual(
+    { signature: codaLateralRescue.primary_error_signature, occurrences: codaLateralRescue.occurrence_count },
+    { signature: 'l → ɭ', occurrences: 1 }
+  );
   assert.equal(report.candidate_oracle_rescued_by_environment['same-word coda ㄴ before alveopalatal affricate ㅈ/ㅉ/ㅊ'], 1);
   assert.equal(report.by_environment['geminate lateral before high-front vocoid /i,j/'], 1);
   assert.ok(report.by_environment['coda ㄹ before same-word consonant'] >= 1);
@@ -50,4 +56,29 @@ test('Narrow error attribution exposes recurrent symbol substitutions and length
   assert.equal(report.top_substitutions[1].edit, 'ɸ → ɦ');
   assert.equal(report.top_insertions[0].edit, '∅ → ː');
   assert.match(report.interpretation, /not phonological-feature judgments/);
+});
+
+test('Narrow error diagnostics expose interacting edits and separate occurrence from type counts', () => {
+  const report = summarizeNarrowErrorPatterns([
+    { token: '귀엽냐', normalized_predicted: 'kyj', closest_normalized_gold: 'kɥij' },
+    { token: '귀엽냐', normalized_predicted: 'kyj', closest_normalized_gold: 'kɥij' },
+    { token: '올린', normalized_predicted: 'ollin', closest_normalized_gold: 'oɭʎin' },
+    { token: '창렬하다', normalized_predicted: 'tɕʰaŋɲjʌlhada', closest_normalized_gold: 'tɕʰaŋɲjʌɾɦada' }
+  ]);
+  assert.equal(report.scored_tokens, 4);
+  assert.equal(report.unique_scored_token_types, 3);
+  assert.equal(report.tokens_with_errors, 4);
+  assert.equal(report.unique_tokens_with_errors, 3);
+  const glidePair = report.top_cooccurring_error_pairs.find(item =>
+    item.edits.join('|') === ['y → i', '∅ → ɥ'].sort((a, b) => a.localeCompare(b)).join('|'));
+  assert.deepEqual(
+    { occurrences: glidePair.occurrence_count, types: glidePair.unique_token_types },
+    { occurrences: 2, types: 1 }
+  );
+  assert.ok(report.top_cooccurring_error_pairs.some(item =>
+    item.edits.join('|') === ['l → ɭ', 'l → ʎ'].sort().join('|')));
+  assert.ok(report.top_cooccurring_error_pairs.some(item =>
+    item.edits.join('|') === ['h → ɦ', 'l → ɾ'].sort().join('|')));
+  assert.ok(report.top_error_signatures.some(item =>
+    item.signature === ['h → ɦ', 'l → ɾ'].sort().join(' + ')));
 });
