@@ -24,6 +24,12 @@ test('Narrow variant diagnostics count candidate coverage without scoring candid
   assert.ok(report.candidate_oracle_exact_matches >= report.primary_exact_matches);
   assert.equal(report.candidate_oracle_rescued_tokens, 3);
   assert.equal(report.candidate_oracle_rescued_by_environment['word-final coda ㄹ'], 1);
+  const codaLateralRescue = report.candidate_oracle_rescue_interactions.find(item =>
+    item.environment === 'word-final coda ㄹ');
+  assert.deepEqual(
+    { signature: codaLateralRescue.primary_error_signature, occurrences: codaLateralRescue.occurrence_count },
+    { signature: 'l → ɭ', occurrences: 1 }
+  );
   assert.equal(report.candidate_oracle_rescued_by_environment['same-word coda ㄴ before alveopalatal affricate ㅈ/ㅉ/ㅊ'], 1);
   assert.equal(report.by_environment['geminate lateral before high-front vocoid /i,j/'], 1);
   assert.ok(report.by_environment['coda ㄹ before same-word consonant'] >= 1);
