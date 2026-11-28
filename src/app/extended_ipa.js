@@ -484,7 +484,9 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
                     ? 'This composes separately described preconsonantal retroflex [ɭ] and pre-/i,j/ palatal lateral [ʎ] tendencies; the sources do not directly adjudicate this combined token, so it remains an unselected hypothesis.'
                     : site.evidence === 'narrow-geminate-palatalization-interaction-hypothesis'
                       ? 'This composes normative R006 /n+l/ liquid assimilation with a source-described pre-/i,j/ palatal-lateral tendency. Categorical [ʎʎ] across both geminate members is not directly adjudicated; candidate only.'
-                      : 'Conflicting descriptions; speaker, dialect and prosodic context are unknown; optional [ɭ] is not selected over primary [ɾ].',
+                      : site.evidence === 'narrow-h-lenition-liquid-interaction-candidate'
+                        ? 'Crosby & Dalola (2021) describe [ɾ] when /h/ is elided and [l] when /h/ remains; the 12-speaker sample does not identify this text token. Candidate remains unselected without speaker/audio evidence.'
+                        : 'Conflicting descriptions; speaker, dialect and prosodic context are unknown; optional [ɭ] is not selected over primary [ɾ].',
         source_span: site.sourceSpan, selected: false
       });
     }
