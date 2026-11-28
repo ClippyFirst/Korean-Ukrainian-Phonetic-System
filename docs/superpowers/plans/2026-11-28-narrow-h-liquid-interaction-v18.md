@@ -42,7 +42,7 @@
 
 - [x] Add Python test for `말하` → primary `mal.ha`, candidate `maɾ.a`; assert evidence status, refs, and selected=false.
 - [x] Add browser test with the same primary and candidate outputs.
-- [x] Add negative controls for word-separated `말 하` and non-liquid sonorant coda + ㅎ.
+- [x] Add negative controls for word-separated `말 하`, punctuation-separated `말,하` (browser), and non-liquid sonorant coda + ㅎ.
 
 ### Task 2: Implement the joint candidate in both runtimes
 
