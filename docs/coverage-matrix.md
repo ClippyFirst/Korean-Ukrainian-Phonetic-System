@@ -716,8 +716,8 @@ UGTPHON's 751 mismatching occurrences represent 578 distinct Hangul types (173 r
 ### Task ledger
 
 - `DONE_VERIFIED`: artifact downloaded and inspected; paired score, per-edit counts, candidate rescues, occurrence/type imbalance and within-token edit co-occurrences calculated.
-- `DONE_VERIFIED`: benchmark runner now reports occurrence-weighted versus unique-type counts, top within-token edit pairs/signatures, and candidate-rescue × primary-error interactions; tests added for glide, geminate-liquid, liquid+/h and duplicate-occurrence patterns.
-- `PARTIAL`: exact-head GitHub Actions verification for this diagnostic increment is pending.
+- `PARTIAL`: benchmark runner and regression tests now add occurrence/type weighting, within-token edit pairs/signatures, and candidate-rescue × primary-error interactions; an isolated Node smoke test of the pure edit-attribution function passed, but full repository verification is still running.
+- `PARTIAL`: exact-head GitHub Actions on PR head `1fbc06f15c775b33e5b351e9c19f6d58839b7b1d` is in progress; do not mark the increment verified until all relevant jobs finish.
 - `BLOCKED`: independent layer-matched Narrow IPA gold/audio and speaker/dialect adjudication remain unavailable.
 - `BLOCKED`: K-SPAN WorldBet key-field reconciliation remains open (22,843 mismatches).
 - `DEFERRED`: no new deterministic primary IPA rules promoted from benchmark-label matching.
