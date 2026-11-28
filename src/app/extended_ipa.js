@@ -79,6 +79,10 @@ const EVIDENCE = {
   'narrow-geminate-palatalization-interaction-hypothesis': {
     refs: ['https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002', 'https://doi.org/10.3765/plsa.v6i1.5002'],
     status: 'source-scoped-geminate-palatalization-interaction-hypothesis-only'
+  },
+  'narrow-h-lenition-liquid-interaction-candidate': {
+    refs: ['https://doi.org/10.3765/plsa.v6i1.5002'],
+    status: 'source-scoped-h-lenition-liquid-interaction-candidate-only'
   }
 };
 
@@ -332,6 +336,19 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       const ipaStart = [...narrowIpa].length;
       narrowIpa += derived.ipa;
       const currentParsed = decompose(item.surface || item.source);
+      if (currentParsed?.onset === 'ㅎ' && previousParsed?.coda === 'ㄹ'
+          && ipaStart >= 2 && narrowIpa[ipaStart - 2] === 'l' && narrowIpa[ipaStart - 1] === '.') {
+        const hOnset = derived.ipa.startsWith('ç') ? 'ç' : derived.ipa.startsWith('h') ? 'h' : null;
+        if (hOnset) {
+          const previousSpan = previousHangulSpan ?? sourceTrace[sourceIndex - 1]?.source_span ?? sourceTrace[sourceIndex - 1]?.sourceSpan ?? null;
+          const combinedSpan = previousSpan && span ? { start: previousSpan.start, end: span.end } : span;
+          narrowVariantSites.push({
+            ipaStart: ipaStart - 2, sourceSpan: combinedSpan, from: 'l.' + hOnset, to: 'ɾ.',
+            evidence: 'narrow-h-lenition-liquid-interaction-candidate',
+            environment: 'same-word coda ㄹ + onset ㅎ; joint [ɾ] + /h/-elision candidate'
+          });
+        }
+      }
       if (currentParsed?.vowel === 'ㅟ') {
         const yOffset = [...derived.ipa].indexOf('y');
         if (yOffset >= 0) {
@@ -504,8 +521,8 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       },
       narrow: {
         ipa: narrowIpa,
-        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v17',
-        profile_version: 17,
+        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v18',
+        profile_version: 18,
         level: 'narrow',
         status: hasUnresolvedSource ? 'diagnostic-only-unresolved-source' : 'partial-research-only',
         evidence_status: 'partial-source-scoped-hypotheses-not-independently-reviewed',
