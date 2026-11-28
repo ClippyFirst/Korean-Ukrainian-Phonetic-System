@@ -733,3 +733,11 @@ UGTPHON's 751 mismatching occurrences represent 578 distinct Hangul types (173 r
 - **Stop narrowness and prosody:** Schweizer, Ahn & Kwon (2026), DOI [10.1017/S002510032510087X](https://doi.org/10.1017/S002510032510087X), compare IP-initial, AP-initial/inter-sonorant and word-medial stops. Cue weighting changes by prosodic position and vowel height; word-medial f0 effects are comparatively small and context-dependent, while closure duration/voicing and burst duration matter. These cues require audio and prosodic context, neither of which Hangul spelling supplies.
 
 **Engine decision:** preserve current deterministic primary outputs; keep uncertain allophones unselected; represent speaker/dialect/prosodic context and uncertainty in the typed IPA boundary; focus subsequent runtime changes on source-backed, testable rule interactions rather than maximizing cross-convention exact match.
+
+
+### Final review and rulings (2026-11-28)
+
+- **Ruling — no primary Narrow rule promotion:** the largest benchmark mismatches are not independent Narrow gold; the source literature shows positional, dialectal and prosodic variation. Promoting [ɭ], [ɦ], [ɾ] or [ɥi] to deterministic primary output from corpus exact-match alone would overfit conventions. Cost if wrong: a valid context-specific variant may be deferred; mitigation is to retain source-backed unselected candidates and prioritize an independently adjudicated, context-tagged holdout.
+- **Self-review:** reviewed the changed benchmark functions, output schema, test fixtures, five-file diff and exact code/test-head CI evidence. No Critical or Important code defect found. The diagnostics are occurrence-weighted and deterministic; token-type counts are separate; candidate rescue is never fed back into runtime selection.
+- **Deferred minor/process limitation:** the first implementation/test commits were made before an observed RED run; the strict Superpowers RED→GREEN chronology is therefore not evidenced, even though the final exact code/test-head System Verify passed. A local clone was unavailable, so repository tests were verified through GitHub Actions rather than a local full-suite command.
+- **Final review mode:** self-review (no subagent tool available). The PR remains draft and unmerged; no release or default-branch changes were made.
