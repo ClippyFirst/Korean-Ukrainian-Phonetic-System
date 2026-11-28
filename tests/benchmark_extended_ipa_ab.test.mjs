@@ -70,7 +70,7 @@ test('Narrow error diagnostics expose interacting edits and separate occurrence 
   assert.equal(report.tokens_with_errors, 4);
   assert.equal(report.unique_tokens_with_errors, 3);
   const glidePair = report.top_cooccurring_error_pairs.find(item =>
-    item.edits.join('|') === ['y → i', '∅ → ɥ'].sort().join('|'));
+    item.edits.join('|') === ['y → i', '∅ → ɥ'].sort((a, b) => a.localeCompare(b)).join('|'));
   assert.deepEqual(
     { occurrences: glidePair.occurrence_count, types: glidePair.unique_token_types },
     { occurrences: 2, types: 1 }
