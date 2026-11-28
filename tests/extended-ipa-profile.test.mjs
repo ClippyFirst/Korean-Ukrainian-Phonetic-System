@@ -314,6 +314,10 @@ test('same-word coda ㄹ + onset ㅎ exposes a joint tap + h-deletion candidate 
   assert.ok(!separated.variants.some(item =>
     item.evidence_status === 'source-scoped-h-lenition-liquid-interaction-candidate-only'
   ));
+  const punctuated = extended('말,하');
+  assert.ok(!punctuated.variants.some(item =>
+    item.evidence_status === 'source-scoped-h-lenition-liquid-interaction-candidate-only'
+  ));
   const nasal = extended('만하');
   assert.ok(!nasal.variants.some(item =>
     item.evidence_status === 'source-scoped-h-lenition-liquid-interaction-candidate-only'
