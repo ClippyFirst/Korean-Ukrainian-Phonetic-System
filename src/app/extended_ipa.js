@@ -336,8 +336,12 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       const ipaStart = [...narrowIpa].length;
       narrowIpa += derived.ipa;
       const currentParsed = decompose(item.surface || item.source);
-      if (currentParsed?.onset === 'ㅎ' && previousParsed?.coda === 'ㄹ'
-          && ipaStart >= 2 && narrowIpa[ipaStart - 2] === 'l' && narrowIpa[ipaStart - 1] === '.') {
+      const previousSourceParsed = !boundarySincePrevious && previousHangul
+        ? decompose(previousHangul.source) : null;
+      const currentSourceParsed = decompose(item.source);
+      const narrowPrefix = [...narrowIpa].slice(0, ipaStart).join('');
+      if (currentSourceParsed?.onset === 'ㅎ' && previousSourceParsed?.coda === 'ㄹ'
+          && narrowPrefix.endsWith('l.')) {
         const hOnset = derived.ipa.startsWith('ç') ? 'ç' : derived.ipa.startsWith('h') ? 'h' : null;
         if (hOnset) {
           const previousSpan = previousHangulSpan ?? sourceTrace[sourceIndex - 1]?.source_span ?? sourceTrace[sourceIndex - 1]?.sourceSpan ?? null;
