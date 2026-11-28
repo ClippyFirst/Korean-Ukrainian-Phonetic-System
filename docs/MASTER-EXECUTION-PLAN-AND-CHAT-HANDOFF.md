@@ -2788,3 +2788,67 @@ Interpretation limits:
 - Exact code/test head `cf1d7a1e8e34401b452c0a58146b1db06265d35e`, system verification run [46127584454](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/46127584454): Python regression/data integrity **PASS** (including the new end-to-end test); Browser regression, source redistribution-rights gate, production build and generated-page verification **PASS**. Official NIKL metadata-only inventory **SKIPPED by policy**.
 - The multi-engine benchmark rerun on this test-only head was queued behind the prior long-running comparison. The benchmark itself already completed successfully on source-identical head `9ea66677e1a70ddf87d7dbcc43a770e1e18d0622` (run 46081938091). No engine source changed in `cf1d7a1`; it adds test coverage only.
 - Current branch status: implementation/tests verified; supplemental K-SPAN key-vs-WorldBet audit remains evidence-limited as described above; audio-backed Narrow IPA adjudication remains blocked.
+
+
+## 2026-11-28 — Narrow benchmark interaction analysis (artifact-backed)
+
+**Scope:** diagnostic-only improvement to the paired Standard/Extended IPA benchmark. No runtime phonological rule, primary Narrow output, profile version, target adapter, or corpus label was changed.
+
+**Evidence anchor:** workflow run [46081938091](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/46081938091), source engine head `9ea66677e1a70ddf87d7dbcc43a770e1e18d0622`; paired artifact `15238494535` (SHA-256 `110e436093b28b4fc8794871093ba70c02851756e6dab2d0e0705cab0beee9d1`). Follow-up test-only head `cf1d7a1e8e34401b452c0a58146b1db06265d35e` passed the system checks in run [46127584454](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/46127584454); it did not change engine behavior.
+
+### Paired primary scores (cross-layer agreement, not Narrow gold accuracy)
+
+| Dataset | Scored | Narrow exact | Narrow CER | Candidate-oracle rescues |
+|---|---:|---:|---:|---:|
+| UGTPHON | 2,702 | 72.2058% | 4.5519% | 392 |
+| SIGMORPHON | 998 | 51.3026% | 9.8821% | 150 |
+
+The references are not independently adjudicated Narrow IPA gold. Candidate-oracle values are offline corpus-label coverage upper bounds, never a runtime selection rule. Standard and Extended Broad are identical by contract.
+
+### Error and interaction findings
+
+Occurrence-weighted normalized-symbol diagnostics:
+
+| Edit pattern | UGTPHON | SIGMORPHON |
+|---|---:|---:|
+| `l → ɭ` | 543 | 190 |
+| `h → ɦ` | 96 | 33 |
+| `s → ɕ` | 62 | 12 |
+| `y → i` | 37 | 20 |
+| `l → ʎ` | 33 | 55 |
+| `ʰ → x` | 24 | 11 |
+| `ʰ → ç` | 21 | 11 |
+
+These are Unicode-codepoint edit pairs, not phonological diagnoses. Within-token co-occurrence exposes several coupled patterns that aggregate exact/CER conceal:
+
+- `y → i` + insertion `∅ → ɥ`: 37 UGTPHON and 19 SIGMORPHON occurrences. This is consistent with a two-part [ɥi] versus [y] mismatch, not two independent rule failures.
+- `l → ɭ` + `l → ʎ`: 33 UGTPHON occurrences. This is the geminate-liquid sequence behind the source-scoped [ʎ.ʎ] interaction hypothesis; it does not prove that [ʎʎ] is the speaker's categorical realization.
+- `h → ɦ` + `l → ɾ`: 11 UGTPHON and 4 SIGMORPHON occurrences. The pair warrants focused review of liquid+/h/ contexts and rule ordering, but does not justify selecting either phone from text alone.
+
+UGTPHON's 751 mismatching occurrences represent 578 distinct Hangul types (173 repeated occurrences beyond one per type); SIGMORPHON has 486 mismatching occurrences and 486 types. Occurrence-weighted and type-weighted diagnostics must therefore remain separate.
+
+### Candidate interaction results
+
+- Unselected Narrow candidates occur on 1,124/2,703 UGTPHON tokens (41.58%) and 472/999 SIGMORPHON tokens (47.25%); selected candidates remain zero.
+- Candidate-oracle rescues cluster around word-final coda ㄹ (208/47), coda ㄹ before a same-word consonant (130/46), the composed [ʎ.ʎ] geminate hypothesis (27/20), and position-conditioned ㅟ → [ɥi] (26/12), UGTPHON/SIGMORPHON respectively. SIGMORPHON also has 25 rescues from coda ㄴ before an alveopalatal affricate.
+- The intervocalic [ɭ] candidate is frequent (516/157 candidate occurrences) but produced no candidate-oracle rescue in this paired artifact. Keep it unselected; this is not proof against the variant because the reference convention is not Narrow-adjudicated.
+- Candidate counts, candidate rescues and primary scores are distinct quantities. Do not add candidate rescues to exact match or tune a primary profile to maximize oracle coverage.
+
+### Evidence-led interpretation and next work
+
+1. Prioritize per-context investigation of coda ㄹ before consonants/word boundaries, ㅟ realization, geminate ㄹㄹ, and liquid+/h/ interactions.
+2. Keep source-conditioned [ɭ], [ʎ], [ɥi], [ɦ] and release variants unselected unless an exact environment and independent evidence support a deterministic choice.
+3. Separate lexical occurrence weighting from unique-type weighting and report error-pair co-occurrence in future benchmark artifacts.
+4. Do not infer that a low score on Seoul/K-SPAN is a direct Narrow failure: Seoul is phonemic, K-SPAN is lexical surface-phonetic, and their conventions differ. K-SPAN's 22,843 key/WorldBet mismatches remain a separate source-integrity warning.
+5. The 95% target cannot be validated until there is a frozen, independently adjudicated, layer-matched Narrow test set with speaker/dialect/prosody scope.
+
+### Task ledger
+
+- `DONE_VERIFIED`: artifact downloaded and inspected; paired score, per-edit counts, candidate rescues, occurrence/type imbalance and within-token edit co-occurrences calculated.
+- `DONE_VERIFIED`: benchmark runner now reports occurrence-weighted versus unique-type counts, top within-token edit pairs/signatures, and candidate-rescue × primary-error interactions; tests added for glide, geminate-liquid, liquid+/h and duplicate-occurrence patterns.
+- `PARTIAL`: exact-head GitHub Actions verification for this diagnostic increment is pending.
+- `BLOCKED`: independent layer-matched Narrow IPA gold/audio and speaker/dialect adjudication remain unavailable.
+- `BLOCKED`: K-SPAN WorldBet key-field reconciliation remains open (22,843 mismatches).
+- `DEFERRED`: no new deterministic primary IPA rules promoted from benchmark-label matching.
+
+**Disposition:** a better diagnostic instrument, not an accuracy uplift. The deterministic engine remains a research prototype and the Narrow profile remains partial/research-only and target-incompatible.
