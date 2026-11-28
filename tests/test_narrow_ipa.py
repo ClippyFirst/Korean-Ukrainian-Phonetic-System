@@ -16,8 +16,8 @@ def test_narrow_profile_aspirates_lenis_sibilant_without_changing_broad():
     narrow = _ipa("사", "narrow")
     assert narrow["ipa"] == "sʰa"
     assert narrow["level"] == "narrow"
-    assert narrow["transcription_profile"]["name"] == "korean-narrow-contextual-allophones-v17"
-    assert narrow["ipa_profile_version"] == 17
+    assert narrow["transcription_profile"]["name"] == "korean-narrow-contextual-allophones-v18"
+    assert narrow["ipa_profile_version"] == 18
     assert narrow["transcription_profile"]["target_compatible"] is False
     assert narrow["transcription_profile"]["limitations"]
 
@@ -226,3 +226,27 @@ def test_word_final_coda_stops_expose_unreleased_candidates_without_selecting_th
     nonfinal = realize_syllables(parse_syllables("낫다"), level="narrow")
     assert not any(item["evidence_status"] == "source-scoped-release-variation-candidate-only"
                    for item in nonfinal["variants"])
+
+
+def test_coda_l_tap_candidate_is_jointly_conditioned_on_h_elision():
+    result = realize_syllables(parse_syllables("말하"), level="narrow")
+    assert result["ipa"] == "mal.ha"
+    candidate = next(item for item in result["variants"] if item["ipa"] == "maɾ.a")
+    assert candidate["selected"] is False
+    assert candidate["evidence_status"] == "source-scoped-h-lenition-liquid-interaction-candidate-only"
+    assert candidate["syllable_indices"] == [0, 1]
+    assert any("10.3765/plsa.v6i1.5002" in ref for ref in candidate["evidence_refs"])
+    assert "h" in candidate["uncertainty"].lower()
+
+    palatal_h = realize_syllables(parse_syllables("말히"), level="narrow")
+    assert palatal_h["ipa"] == "mal.çi"
+    assert any(item["ipa"] == "maɾ.i" and not item["selected"]
+               for item in palatal_h["variants"])
+
+    # The interaction is same-word and specific to coda ㄹ, not all sonorants.
+    separated = realize_syllables(parse_syllables("말 하"), level="narrow")
+    assert not any(item["evidence_status"] == "source-scoped-h-lenition-liquid-interaction-candidate-only"
+                   for item in separated["variants"])
+    nasal = realize_syllables(parse_syllables("만하"), level="narrow")
+    assert not any(item["evidence_status"] == "source-scoped-h-lenition-liquid-interaction-candidate-only"
+                   for item in nasal["variants"])

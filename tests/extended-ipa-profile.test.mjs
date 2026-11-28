@@ -289,3 +289,37 @@ test('coda /n/ before alveopalatal affricates exposes optional palatal candidate
   assert.equal(palatalized.evidence_status, 'secondary-description-candidate-only');
   assert.ok(palatal.evidence_refs.some(ref => ref.includes('1324541')));
 });
+
+
+test('same-word coda ㄹ + onset ㅎ exposes a joint tap + h-deletion candidate only', () => {
+  const result = extended('말하');
+  assert.equal(result.layers.narrow.ipa, 'mal.ha');
+  const candidate = result.variants.find(item =>
+    item.layer === 'narrow' && item.ipa === 'maɾ.a' &&
+    item.evidence_status === 'source-scoped-h-lenition-liquid-interaction-candidate-only'
+  );
+  assert.ok(candidate);
+  assert.equal(candidate.selected, false);
+  assert.deepEqual(candidate.source_span, { start: 0, end: 2 });
+  assert.ok(candidate.evidence_refs.some(ref => ref.includes('10.3765/plsa.v6i1.5002')));
+
+  const palatalH = extended('말히');
+  assert.equal(palatalH.layers.narrow.ipa, 'mal.çi');
+  assert.ok(palatalH.variants.some(item =>
+    item.layer === 'narrow' && item.ipa === 'maɾ.i' && !item.selected
+  ));
+
+  const separated = extended('말 하');
+  assert.equal(separated.layers.narrow.ipa, 'mal ha');
+  assert.ok(!separated.variants.some(item =>
+    item.evidence_status === 'source-scoped-h-lenition-liquid-interaction-candidate-only'
+  ));
+  const punctuated = extended('말,하');
+  assert.ok(!punctuated.variants.some(item =>
+    item.evidence_status === 'source-scoped-h-lenition-liquid-interaction-candidate-only'
+  ));
+  const nasal = extended('만하');
+  assert.ok(!nasal.variants.some(item =>
+    item.evidence_status === 'source-scoped-h-lenition-liquid-interaction-candidate-only'
+  ));
+});

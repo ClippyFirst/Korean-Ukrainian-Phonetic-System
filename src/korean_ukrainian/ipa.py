@@ -252,6 +252,27 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
                 pre_h = next_same_word and next_onset=="ㅎ"
                 pre_consonantal = next_same_word and next_onset not in {None,"","ㅇ"}
                 word_final = i+1==len(items) or syllable.boundary_after=="word"
+                if pre_h:
+                    # Crosby & Dalola (2021) report that the liquid before /h/
+                    # may be a tap [ɾ] when /h/ is elided, versus a lateral [l]
+                    # when /h/ remains. Keep [l.h] primary; expose the joint
+                    # [ɾ] + /h/-deletion path only as an unselected candidate.
+                    h_onset = "".join(onset_ipa(items[i+1], i+1, items, level="narrow"))
+                    if h_onset and rendered[i+1].startswith(h_onset):
+                        alternate = list(rendered)
+                        alternate[i] = alternate[i][:-1] + "ɾ"
+                        alternate[i+1] = alternate[i+1][len(h_onset):]
+                        variants.append({
+                            "layer": "narrow", "syllable_indices": [i, i+1],
+                            "ipa": render_syllable_sequence(items, alternate),
+                            "note": ("Crosby & Dalola (2021) report a tap [ɾ] before /h/ when /h/ is elided, contrasting with lateral [l] when /h/ remains. Their Standard Korean sample comprised 12 speakers; expose this joint path only as an unselected interaction candidate, not a categorical rule. " + crosby_ref),
+                            "vowels": ["coda ㄹ [ɾ] conditioned on following /h/ elision"],
+                            "evidence_status": "source-scoped-h-lenition-liquid-interaction-candidate-only",
+                            "evidence_refs": [crosby_ref],
+                            "environment": "same-word coda ㄹ + onset ㅎ; joint [ɾ] + /h/-elision candidate",
+                            "uncertainty": "This is a small-sample, speaker-dependent association. Text-only input cannot establish whether /h/ is lenited or deleted, so the primary [l] + /h/ realization is preserved and this candidate remains unselected.",
+                            "selected": False,
+                        })
                 if pre_h or pre_consonantal or word_final:
                     alternate=list(rendered)
                     alternate[i]=alternate[i][:-1]+"ɭ"
@@ -489,12 +510,12 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     profile_ids={
         "phonemic":"clippyfirst-korean-phonemic-v1",
         "broad":"clippyfirst-korean-broad-v1",
-        "narrow":"clippyfirst-korean-narrow-contextual-allophones-v17",
+        "narrow":"clippyfirst-korean-narrow-contextual-allophones-v18",
     }
     result={
         "level":level,
         "ipa_profile":profile_ids[level],
-        "ipa_profile_version":17 if level=="narrow" else 1,
+        "ipa_profile_version":18 if level=="narrow" else 1,
         "ipa_profile_level":level,
         "ipa_profile_status":(
             "partial-research-only" if level=="narrow"
@@ -508,7 +529,7 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     }
     if level=="narrow":
         result["transcription_profile"]={
-            "name":"korean-narrow-contextual-allophones-v17",
+            "name":"korean-narrow-contextual-allophones-v18",
             "scope":["aspiration of lenis ㅅ as [sʰ]","palatalized [ɕʰ] candidate before ㅣ, ㅖ, ㅑ (Kang 2010; partial narrow profile)","palatalized [ɲ] for onset ㄴ before glide nuclei ㅑ, ㅒ, ㅕ, ㅖ, ㅛ, ㅠ; not generalized to ㅣ","ㅎ is [ç] before selected high-front/glide nuclei and [x] before ㅜ, following the cited Seoul description","after a same-word sonorant coda, /h/ may weaken or delete variably; no categorical [ɦ] is assigned without token-specific evidence","same-word intervocalic ㅎ is vowel-conditioned: [ʝ] before /i,j/, [ɣ] before /ɯ/, [β] before /o,u/, and [ɦ] elsewhere (Shin, Kiaer & Cha 2012); word-initial [ç]/[x] remain separate","tense ㅆ remains [s͈]; its palatalization is not assumed because evidence is mixed","coda ㄹ exposes optional [ɭ] variants word-finally, before same-word consonants and before ㅎ; never selected without speaker/dialect/audio evidence (Crosby & Dalola 2021; Crosby 2024)","geminate ㄹ before high-front vocoids exposes optional [lʲ] coarticulation candidate; primary [l] remains unchanged and categorical [ʎ] is not inferred (Crosby & Dalola 2021)","word-final coda stops retain the conventional unreleased [p̚,t̚,k̚] primary but expose optional released [p,t,k] alternatives; release is not selected from text because burst occurrence varies by study/task and no token audio is available","ㅟ retains primary [y] but exposes source-scoped [wi] in strong onsetless initial position, [ɥi] in non-initial/postconsonantal position, and a combined [ɕʰɥi] candidate for ㅅ+ㅟ; none is selected without speaker/audio evidence","geminate ㄹ before /i,j/ exposes gradient [lʲ], cited [ʎ], and a combined [ɭ.ʎ] interaction hypothesis; the combined form composes two source-described tendencies but is not directly adjudicated and remains unselected"],
             "sources":[
                 "Lee, Hyun Bok (1993), Korean, Illustrations of the IPA: /h/ [ç] before /i,j/ and [x] before /u/; /s/ is classified as fortis in this description: https://doi.org/10.1017/S0025100300004758",

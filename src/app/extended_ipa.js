@@ -79,6 +79,10 @@ const EVIDENCE = {
   'narrow-geminate-palatalization-interaction-hypothesis': {
     refs: ['https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002', 'https://doi.org/10.3765/plsa.v6i1.5002'],
     status: 'source-scoped-geminate-palatalization-interaction-hypothesis-only'
+  },
+  'narrow-h-lenition-liquid-interaction-candidate': {
+    refs: ['https://doi.org/10.3765/plsa.v6i1.5002'],
+    status: 'source-scoped-h-lenition-liquid-interaction-candidate-only'
   }
 };
 
@@ -332,6 +336,23 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       const ipaStart = [...narrowIpa].length;
       narrowIpa += derived.ipa;
       const currentParsed = decompose(item.surface || item.source);
+      const previousSourceParsed = !boundarySincePrevious && previousHangul
+        ? decompose(previousHangul.source) : null;
+      const currentSourceParsed = decompose(item.source);
+      const narrowPrefix = [...narrowIpa].slice(0, ipaStart).join('');
+      if (currentSourceParsed?.onset === 'ㅎ' && previousSourceParsed?.coda === 'ㄹ'
+          && narrowPrefix.endsWith('l.')) {
+        const hOnset = derived.ipa.startsWith('ç') ? 'ç' : derived.ipa.startsWith('h') ? 'h' : null;
+        if (hOnset) {
+          const previousSpan = previousHangulSpan ?? sourceTrace[sourceIndex - 1]?.source_span ?? sourceTrace[sourceIndex - 1]?.sourceSpan ?? null;
+          const combinedSpan = previousSpan && span ? { start: previousSpan.start, end: span.end } : span;
+          narrowVariantSites.push({
+            ipaStart: ipaStart - 2, sourceSpan: combinedSpan, from: 'l.' + hOnset, to: 'ɾ.',
+            evidence: 'narrow-h-lenition-liquid-interaction-candidate',
+            environment: 'same-word coda ㄹ + onset ㅎ; joint [ɾ] + /h/-elision candidate'
+          });
+        }
+      }
       if (currentParsed?.vowel === 'ㅟ') {
         const yOffset = [...derived.ipa].indexOf('y');
         if (yOffset >= 0) {
@@ -467,7 +488,9 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
                     ? 'This composes separately described preconsonantal retroflex [ɭ] and pre-/i,j/ palatal lateral [ʎ] tendencies; the sources do not directly adjudicate this combined token, so it remains an unselected hypothesis.'
                     : site.evidence === 'narrow-geminate-palatalization-interaction-hypothesis'
                       ? 'This composes normative R006 /n+l/ liquid assimilation with a source-described pre-/i,j/ palatal-lateral tendency. Categorical [ʎʎ] across both geminate members is not directly adjudicated; candidate only.'
-                      : 'Conflicting descriptions; speaker, dialect and prosodic context are unknown; optional [ɭ] is not selected over primary [ɾ].',
+                      : site.evidence === 'narrow-h-lenition-liquid-interaction-candidate'
+                        ? 'Crosby & Dalola (2021) describe [ɾ] when /h/ is elided and [l] when /h/ remains; the 12-speaker sample does not identify this text token. Candidate remains unselected without speaker/audio evidence.'
+                        : 'Conflicting descriptions; speaker, dialect and prosodic context are unknown; optional [ɭ] is not selected over primary [ɾ].',
         source_span: site.sourceSpan, selected: false
       });
     }
@@ -504,8 +527,8 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       },
       narrow: {
         ipa: narrowIpa,
-        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v17',
-        profile_version: 17,
+        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v18',
+        profile_version: 18,
         level: 'narrow',
         status: hasUnresolvedSource ? 'diagnostic-only-unresolved-source' : 'partial-research-only',
         evidence_status: 'partial-source-scoped-hypotheses-not-independently-reviewed',
