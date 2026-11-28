@@ -772,6 +772,8 @@ UGTPHON's 751 mismatching occurrences represent 578 distinct Hangul types (173 r
 
 ## Narrow v18 — /h/-lenition × coda-liquid interaction (2026-11-28)
 
+**Audit outcome:** DONE_VERIFIED for implementation and regression/build checks; PARTIAL for benchmark validation; BLOCKED for independent audio-backed phonetic adjudication.
+
 **Implementation:** Added a source-scoped, unselected whole-word Narrow alternative for a same-word coda ㄹ + onset ㅎ sequence: primary `[l.h]` / `[l.ç]` remains unchanged; the candidate jointly realizes the liquid as `[ɾ]` and deletes the following /h/ (e.g. `말하`: `mal.ha` → candidate `maɾ.a`; `말히`: `mal.çi` → candidate `maɾ.i`). The condition is restricted to the same word and coda ㄹ; word boundaries and other sonorants do not trigger it.
 
 **Evidence and interpretation:** Crosby & Dalola (2021), DOI https://doi.org/10.3765/plsa.v6i1.5002, report 59.8% taps and 40.2% laterals before /h/ in their 12-speaker Standard Korean sample; their discussion relates the tap/lateral alternation to /h/-lenition, with [ɾ] when /h/ is elided and [l] when it remains. This is encoded as an unselected candidate only. The text-only engine has no speaker, dialect, speech-style, or audio evidence to select it. The benchmark co-occurrence of liquid and /h/ edits is therefore not treated as evidence for a universal [ɾɦ] sequence or as permission to change primary output.
