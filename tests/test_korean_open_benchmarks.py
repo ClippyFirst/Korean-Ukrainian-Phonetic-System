@@ -12,6 +12,7 @@ from scripts.run_open_korean_benchmark_ci import (
     KSPAN_EXPECTED_MD5,
     KSPAN_FILE_URLS,
     _download_kspan_sources,
+    main as run_open_benchmark_main,
     _extract_kspan_dataset_bundle,
 )
 from scripts.prepare_korean_open_benchmarks import (
@@ -25,6 +26,24 @@ from scripts.prepare_korean_open_benchmarks import (
 
 
 class KoreanOpenBenchmarkPreparationTests(unittest.TestCase):
+    def test_main_records_external_blocker_without_failing_core_workflow(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            workdir = root / "open-korean-work"
+            with patch("sys.argv", ["run_open_korean_benchmark_ci.py", "--workdir", str(workdir)]):
+                with patch(
+                    "scripts.run_open_korean_benchmark_ci.run",
+                    side_effect=ExternalSourceUnavailable("HTTP 403 Forbidden: Dataverse"),
+                ):
+                    self.assertEqual(run_open_benchmark_main(), 0)
+
+            status_path = root / "open-korean-benchmark-status.json"
+            status = json.loads(status_path.read_text(encoding="utf-8"))
+            self.assertEqual(status["status"], "BLOCKED_EXTERNAL_SOURCE")
+            self.assertFalse(status["benchmark_scores_produced"])
+            self.assertTrue(status["retry_required"])
+            self.assertIn("HTTP 403", status["reason"])
+
     def test_transient_public_source_http_403_is_classified_as_external_blocker(self):
         import urllib.error
         from scripts.run_open_korean_benchmark_ci import _download
