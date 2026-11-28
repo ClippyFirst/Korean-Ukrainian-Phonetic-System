@@ -2691,7 +2691,7 @@ Standard and Extended Broad are identical by contract (zero paired prediction di
 - Narrow profile identity is now `clippyfirst-korean-narrow-contextual-allophones-v17` in Python and browser. No Broad/Standard output or default Ukrainian target behavior changes.
 - Exact-head verification run `46078277421` for head `1fb6aefd3d9e7af92c210ac027591aeee71405ce`: Python regression/data integrity **PASS**; browser regression **PASS**; source redistribution-rights gate **PASS**; production build **PASS**; generated-page verification **PASS**. Official NIKL metadata-only inventory **SKIPPED by policy** (not passed). The v17-specific positive interaction tests pass.
 - Earlier intermediate v17 attempts caught and corrected two implementation/test defects before the passing head: the Python coda replacement initially overwrote the preceding syllable's onset+nucleus; the browser candidate initially used only the current syllable's source span. The final implementation preserves the preceding syllable's onset+nucleus and unions both syllable spans. A further test caught missing explicit NIKL URL provenance in the Python candidate; that reference is now attached.
-- The exact-head v17 multi-engine/A-B workflow run `46078282099` is **PENDING** behind older long-running run `46076417414`, whose multi-engine comparison step remains in progress. The concurrency policy does not cancel long jobs automatically. No v17 benchmark uplift is claimed until the exact-head artifact is produced and inspected.
+- The earlier exact-head v17 multi-engine run was delayed behind older jobs; it was superseded by the completed final-head run 46081938091 on 9ea66677e1a70ddf87d7dbcc43a770e1e18d0622. See the 2026-11-28 final verification record below.
 
 **Acceptance:** Python/browser profile identity v17; same primary Broad/Narrow strings as before; [ʎ.ʎ] candidate only for same-word R006 liquid-assimilated geminate before /i,j/; combined source span; NIKL and acoustic-literature provenance; no default selection; Python/browser/build/generated-page/rights gates; exact-head paired A/B and candidate-oracle separately reported.
 
@@ -2717,3 +2717,65 @@ Standard and Extended Broad are identical by contract (zero paired prediction di
 - A focused regression test covers HTTP 403 classification and confirms no destination file is written. Exact-head CI for the final correction is pending; do not mark the correction DONE_VERIFIED until the new workflow run and Python test pass.
 
 **Current classification:** v17 implementation and paired A/B evidence = DONE_VERIFIED for the candidate-only behavior; optional Seoul/K-SPAN/IPA-Dict matrix = BLOCKED_EXTERNAL_SOURCE (no scores); final blocker-handling patch = PARTIAL pending exact-head CI. Project remains a research prototype, not Narrow-IPA-certified or release-ready.
+
+
+
+## Final-head verification after supplemental-source failure repair — 2026-11-28
+
+**Final branch HEAD:** `9ea66677e1a70ddf87d7dbcc43a770e1e18d0622`  
+**PR:** #511, still draft/open, stacked on #510. No merge or release performed.
+
+### Exact-head CI: PASS
+
+- [Multi-engine Korean IPA diagnostic](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/46081938091): **SUCCESS**. Every step passed, including paired Standard/Extended A/B, Native/Browser parity, SIGMORPHON, Browser three-mode regression, the open Korean benchmark matrix (Seoul, K-SPAN, IPA-Dict), aggregate summary generation and artifact upload.
+- [System verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/46081938068): **SUCCESS**. Python regression/data integrity and Browser regression/build passed. Official NIKL metadata-only inventory was **SKIPPED by policy**, not passed.
+- [Exhaustive test-case register extraction](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/46081938034): **SUCCESS**.
+- [Master table and research corpus artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/46081930726): **SUCCESS**.
+- Native-vs-g2pk diagnostic, morphology-consensus diagnostic, research morphology adapter smoke and external UGTPHON diagnostic: **SUCCESS**.
+- Optional neural inference and Charsiu rule-review jobs: **SKIPPED** by workflow conditions; no neural results are claimed.
+
+The earlier Dataverse HTTP 403 was transient/source-host access failure. The repaired workflow's final-head rerun subsequently fetched and validated the supplemental sources and completed all matrix and aggregate steps. Thus Seoul/K-SPAN/IPA-Dict are no longer blocked for this run. The fallback remains important: if a public host again returns HTTP 403/429/5xx, it is explicitly recorded as `BLOCKED_EXTERNAL_SOURCE` and must not be misreported as a successful score.
+
+### Paired Standard / Extended IPA A/B (artifact 15238494535)
+
+| Dataset | Standard / Extended Broad exact | Extended Narrow exact | Narrow CER | Candidate-oracle exact | Candidate rescues |
+|---|---:|---:|---:|---:|---:|
+| UGTPHON (2,702 scored) | 52.7387% | 72.2058% | 4.5519% | 86.7135% | 392 |
+| SIGMORPHON (998 scored) | 35.8717% | 51.3026% | 9.8821% | 66.3327% | 150 |
+
+- v17's primary Narrow values are unchanged from v16: the new [ʎ.ʎ] candidate is optional and unselected. No primary exact/CER uplift is claimed.
+- Candidate count increases by 33 on UGTPHON (1,532→1,565) and 22 on SIGMORPHON (665→687). SIGMORPHON candidate-oracle rescues increase 130→150. This oracle is corpus-label candidate coverage only, not accuracy, a runtime prediction, or independent narrow-IPA gold.
+- Standard and Extended Broad are identical by contract; zero optional candidates are selected at runtime.
+
+### Supplemental multi-engine tracks (artifact 15240140302)
+
+Ten pinned engines were compared on the supplemental samples. The table below reports ClippyFirst native strict output; corpus conventions and scopes differ, so these are not directly comparable as a single leaderboard.
+
+| Track | Scored | Native exact | Native CER | Coverage |
+|---|---:|---:|---:|---:|
+| Seoul Corpus phonemic sample | 1,000 | 14.80% | 39.84% | 96.60% |
+| K-SPAN Modern | 1,000 | 10.87% | 27.78% | 99.40% |
+| K-SPAN Conservative | 1,000 | 7.55% | 27.45% | 99.30% |
+| IPA-Dict Korean residual sample | 1,000 | 41.27% | 9.93% | 99.60% |
+
+Interpretation limits:
+- Seoul labels are phonemic and word-aligned, not narrow phonetic gold; its low exact score cannot be read as a narrow-acoustic accuracy result.
+- K-SPAN Modern and Conservative are separate reference tracks from one lexical surface-phonetic database, not independent datasets. The source-field-to-IPA conversion is the scoring input. An independent key/WorldBet cross-check produced **WARN: 22,843 mismatches** (13,078 Modern; 9,765 Conservative), mainly symbol differences such as `e→E`, `we→wE`, and `y→wi`. This warning is preserved; key fields do not override the documented source reference fields. The mapping and mismatch list require further audit before treating K-SPAN as clean gold.
+- IPA-Dict is Wiktionary-derived and not independent of SIGMORPHON; orthographic overlap was excluded. It is supplementary lexical evidence, not an independent holdout.
+- None of these tracks measures Ukrainian target orthography or IPA-to-Ukrainian adapter consistency.
+
+### Other diagnostic findings
+
+- On UGTPHON, paired native-vs-g2pk comparison (2,702 shared occurrences): native 52.7387% exact / 9.0130% CER; g2pk 53.1088% / 9.2337%. g2pk has a +0.3701 percentage-point exact advantage but worse CER by 0.2207 points. Neither dominates both metrics.
+- Kiwi + MeCab-Ko consensus changed only 3 of 1,907 unique words; exact rate did not improve and paired CER worsened by 0.000173. Morphology remains diagnostic-only and must not be used as a blanket IPA override.
+- Kiwi/MeCab-Ko exact boundary-set agreement is 80.65%; native soft-rule boundary agreement is 94.01% on 217 shared rule events. These are analyzer-agreement diagnostics, not segmentation gold or proof of phonological rule licensing.
+
+### Final classification
+
+- v17 candidate-only implementation and Python/browser parity: **DONE_VERIFIED**.
+- Final-head CI and generated artifacts listed above: **DONE_VERIFIED**.
+- Supplemental corpus preparation and matrix: **DONE_VERIFIED for this run**, with K-SPAN key-field cross-check warning retained as an evidence-quality issue.
+- K-SPAN WorldBet key-field mapping audit: **PARTIAL**; acceptance requires resolving/documenting all 22,843 cross-check mismatches or establishing a source-backed explanation per symbol mapping.
+- Independent, layer-matched Narrow IPA/audio gold and expert speaker/dialect adjudication: **BLOCKED**; acceptance requires licensed audio or independently reviewed speaker-labelled narrow IPA annotations.
+- Neural comparison: **DEFERRED/SKIPPED** by workflow conditions; no model outputs were used.
+- Release readiness: **not release-ready / research prototype**. Passing software CI does not certify phonetic correctness, narrow IPA accuracy, or Ukrainian target quality.
