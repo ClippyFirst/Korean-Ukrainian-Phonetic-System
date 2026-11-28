@@ -723,7 +723,7 @@ These are Unicode-codepoint edit pairs, not phonological diagnoses. Within-token
 - `l → ɭ` + `l → ʎ`: 33 UGTPHON occurrences. This is the geminate-liquid sequence behind the source-scoped [ʎ.ʎ] interaction hypothesis; it does not prove that [ʎʎ] is the speaker's categorical realization.
 - `h → ɦ` + `l → ɾ`: 11 UGTPHON and 4 SIGMORPHON occurrences. The pair warrants focused review of liquid+/h/ contexts and rule ordering, but does not justify selecting either phone from text alone.
 
-UGTPHON's 751 mismatching occurrences represent 578 distinct Hangul types (173 repeated occurrences beyond one per type); SIGMORPHON has 486 mismatching occurrences and 486 types. Occurrence-weighted and type-weighted diagnostics must therefore remain separate.
+UGTPHON's 751 mismatching occurrences represent 578 distinct Hangul types (173 repeated occurrences beyond one per type). Across 1,906 scored types, type-weighted exact is 69.6747%, versus occurrence-weighted 72.2058% (+2.5311 percentage points because frequent types are easier on average). SIGMORPHON has 486 mismatching occurrences among 998 scored types, so type- and occurrence-weighted exact are both 51.3026%. The one unscored type in each dataset is excluded from these rates. Occurrence-weighted and type-weighted diagnostics must remain separate.
 
 ### Candidate interaction results
 
