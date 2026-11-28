@@ -252,6 +252,27 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
                 pre_h = next_same_word and next_onset=="ㅎ"
                 pre_consonantal = next_same_word and next_onset not in {None,"","ㅇ"}
                 word_final = i+1==len(items) or syllable.boundary_after=="word"
+                if pre_h:
+                    # Crosby & Dalola (2021) report that the liquid before /h/
+                    # may be a tap [ɾ] when /h/ is elided, versus a lateral [l]
+                    # when /h/ remains. Keep [l.h] primary; expose the joint
+                    # [ɾ] + /h/-deletion path only as an unselected candidate.
+                    h_onset = "".join(onset_ipa(items[i+1], i+1, items, level="narrow"))
+                    if h_onset and rendered[i+1].startswith(h_onset):
+                        alternate = list(rendered)
+                        alternate[i] = alternate[i][:-1] + "ɾ"
+                        alternate[i+1] = alternate[i+1][len(h_onset):]
+                        variants.append({
+                            "layer": "narrow", "syllable_indices": [i, i+1],
+                            "ipa": render_syllable_sequence(items, alternate),
+                            "note": ("Crosby & Dalola (2021) report a tap [ɾ] before /h/ when /h/ is elided, contrasting with lateral [l] when /h/ remains. Their Standard Korean sample comprised 12 speakers; expose this joint path only as an unselected interaction candidate, not a categorical rule. " + crosby_ref),
+                            "vowels": ["coda ㄹ [ɾ] conditioned on following /h/ elision"],
+                            "evidence_status": "source-scoped-h-lenition-liquid-interaction-candidate-only",
+                            "evidence_refs": [crosby_ref],
+                            "environment": "same-word coda ㄹ + onset ㅎ; joint [ɾ] + /h/-elision candidate",
+                            "uncertainty": "This is a small-sample, speaker-dependent association. Text-only input cannot establish whether /h/ is lenited or deleted, so the primary [l] + /h/ realization is preserved and this candidate remains unselected.",
+                            "selected": False,
+                        })
                 if pre_h or pre_consonantal or word_final:
                     alternate=list(rendered)
                     alternate[i]=alternate[i][:-1]+"ɭ"
