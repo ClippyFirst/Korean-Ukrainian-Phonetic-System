@@ -238,6 +238,11 @@ def test_coda_l_tap_candidate_is_jointly_conditioned_on_h_elision():
     assert any("10.3765/plsa.v6i1.5002" in ref for ref in candidate["evidence_refs"])
     assert "h" in candidate["uncertainty"].lower()
 
+    palatal_h = realize_syllables(parse_syllables("말히"), level="narrow")
+    assert palatal_h["ipa"] == "mal.çi"
+    assert any(item["ipa"] == "maɾ.i" and not item["selected"]
+               for item in palatal_h["variants"])
+
     # The interaction is same-word and specific to coda ㄹ, not all sonorants.
     separated = realize_syllables(parse_syllables("말 하"), level="narrow")
     assert not any(item["evidence_status"] == "source-scoped-h-lenition-liquid-interaction-candidate-only"
