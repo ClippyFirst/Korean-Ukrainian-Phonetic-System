@@ -40,9 +40,9 @@
 - Consumes: existing `realize_syllables(..., level="narrow")` and `buildExtendedIpaResult(...)` result contracts.
 - Produces: an assertion that same-word ㄹㅎ yields an unselected [ɾ] + /h/-deletion candidate while primary IPA stays unchanged.
 
-- [ ] Add Python test for `말하` → primary `mal.ha`, candidate `maɾ.a`; assert evidence status, refs, and selected=false.
-- [ ] Add browser test with the same primary and candidate outputs.
-- [ ] Add negative controls for word-separated `말 하` and non-liquid sonorant coda + ㅎ.
+- [x] Add Python test for `말하` → primary `mal.ha`, candidate `maɾ.a`; assert evidence status, refs, and selected=false.
+- [x] Add browser test with the same primary and candidate outputs.
+- [x] Add negative controls for word-separated `말 하` and non-liquid sonorant coda + ㅎ.
 
 ### Task 2: Implement the joint candidate in both runtimes
 
@@ -55,17 +55,17 @@
 - Consumes: existing IPA sequence renderers, candidate variant schema, and Narrow profile registry.
 - Produces: Narrow profile v18, retaining v17 primary strings and adding one candidate with status `source-scoped-h-lenition-liquid-interaction-candidate-only`.
 
-- [ ] In Python, generate a combined candidate only when coda ㄹ is followed by same-word onset ㅎ; replace coda [l] with [ɾ] and remove the following onset realization while retaining the syllable boundary and vowel.
-- [ ] In browser JavaScript, add the equivalent source-span-aware candidate site.
-- [ ] Cite Crosby & Dalola (2021), DOI `10.3765/plsa.v6i1.5002`, for the reported [ɾ]/[l] split conditioned by /h/-lenition; explicitly note the small 12-speaker sample and that the candidate is not selected for unknown speakers.
-- [ ] Increment the Narrow profile version to 18 in both runtime contracts; do not alter primary realization rules.
+- [x] In Python, generate a combined candidate only when coda ㄹ is followed by same-word onset ㅎ; replace coda [l] with [ɾ] and remove the following onset realization while retaining the syllable boundary and vowel.
+- [x] In browser JavaScript, add the equivalent source-span-aware candidate site.
+- [x] Cite Crosby & Dalola (2021), DOI `10.3765/plsa.v6i1.5002`, for the reported [ɾ]/[l] split conditioned by /h/-lenition; explicitly note the small 12-speaker sample and that the candidate is not selected for unknown speakers.
+- [x] Increment the Narrow profile version to 18 in both runtime contracts; do not alter primary realization rules.
 
 ### Task 3: Verify and update evidence records
 
-- [ ] Run the focused Python and Node tests, then the complete repository suites and production build through available CI.
-- [ ] Run the paired Standard-vs-Extended IPA benchmark on the exact implementation head; compare primary IPA and candidate diagnostics against v17.
-- [ ] Update the existing master handoff, coverage matrix, and final audit with exact CI/benchmark evidence and blockers.
-- [ ] Self-review the full diff; leave the PR draft and unmerged.
+- [x] Run the complete Python and Node suites, rights gate, production build and generated-page checks through GitHub Actions (run 46130487280; all passed).
+- [ ] Run and inspect the refreshed paired Standard-vs-Extended IPA benchmark; workflow run 46130487292 is pending behind earlier multi-engine run 46128961225.
+- [x] Update the existing master handoff, coverage matrix, and final audit with exact CI evidence and the pending benchmark blocker.
+- [x] Self-review the full diff; PR #513 remains draft and unmerged.
 
 ## Acceptance
 
