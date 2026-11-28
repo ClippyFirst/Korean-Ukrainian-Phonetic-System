@@ -303,6 +303,12 @@ test('same-word coda ㄹ + onset ㅎ exposes a joint tap + h-deletion candidate 
   assert.deepEqual(candidate.source_span, { start: 0, end: 2 });
   assert.ok(candidate.evidence_refs.some(ref => ref.includes('10.3765/plsa.v6i1.5002')));
 
+  const palatalH = extended('말히');
+  assert.equal(palatalH.layers.narrow.ipa, 'mal.çi');
+  assert.ok(palatalH.variants.some(item =>
+    item.layer === 'narrow' && item.ipa === 'maɾ.i' && !item.selected
+  ));
+
   const separated = extended('말 하');
   assert.equal(separated.layers.narrow.ipa, 'mal ha');
   assert.ok(!separated.variants.some(item =>
