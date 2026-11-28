@@ -768,3 +768,18 @@ UGTPHON's 751 mismatching occurrences represent 578 distinct Hangul types (173 r
 - **Self-review:** reviewed the changed benchmark functions, output schema, test fixtures, five-file diff and exact code/test-head CI evidence. No Critical or Important code defect found. The diagnostics are occurrence-weighted and deterministic; token-type counts are separate; candidate rescue is never fed back into runtime selection.
 - **Deferred minor/process limitation:** the first implementation/test commits were made before an observed RED run; the strict Superpowers RED→GREEN chronology is therefore not evidenced, even though the final exact code/test-head System Verify passed. A local clone was unavailable, so repository tests were verified through GitHub Actions rather than a local full-suite command.
 - **Final review mode:** self-review (no subagent tool available). The PR remains draft and unmerged; no release or default-branch changes were made.
+
+
+## Narrow v18 — /h/-lenition × coda-liquid interaction (2026-11-28)
+
+**Implementation:** Added a source-scoped, unselected whole-word Narrow alternative for a same-word coda ㄹ + onset ㅎ sequence: primary `[l.h]` / `[l.ç]` remains unchanged; the candidate jointly realizes the liquid as `[ɾ]` and deletes the following /h/ (e.g. `말하`: `mal.ha` → candidate `maɾ.a`; `말히`: `mal.çi` → candidate `maɾ.i`). The condition is restricted to the same word and coda ㄹ; word boundaries and other sonorants do not trigger it.
+
+**Evidence and interpretation:** Crosby & Dalola (2021), DOI https://doi.org/10.3765/plsa.v6i1.5002, report 59.8% taps and 40.2% laterals before /h/ in their 12-speaker Standard Korean sample; their discussion relates the tap/lateral alternation to /h/-lenition, with [ɾ] when /h/ is elided and [l] when it remains. This is encoded as an unselected candidate only. The text-only engine has no speaker, dialect, speech-style, or audio evidence to select it. The benchmark co-occurrence of liquid and /h/ edits is therefore not treated as evidence for a universal [ɾɦ] sequence or as permission to change primary output.
+
+**Runtime/version:** Python and browser candidate generators now agree; Narrow profile metadata is v18 in both runtimes. Standard/Broad IPA and Ukrainian target adapter are unchanged.
+
+**TDD and verification:** Test-first RED was observed on test-only commit `207dfcfaa2e26f5dd3cdeb2f2791b879093cf98a`: Python raised `StopIteration` because the candidate was absent; browser assertion `assert.ok(candidate)` failed. The implementation then passed the complete Python suite and all 1,514 browser tests on code/test head `cd5ff602d8640794626ebaa9c0381a7b7f503e2e`. System Verify run `46130487280`: Python regression/data integrity PASS; browser tests PASS (1,514/1,514); redistribution-rights gate PASS; public build PASS; generated-page checks PASS; official NIKL metadata-only inventory SKIPPED BY POLICY. Intermediate profile-contract failures exposed stale v17 metadata in `ipa.py` and `tests/test_ipa.py`; both were corrected and the final exact-head run passed.
+
+**Benchmark status:** External UGTPHON broad diagnostic run `46130487284` completed successfully, but it evaluates the Broad profile and does not validate Narrow candidate rescue. The refreshed multi-engine/Narrow benchmark `46130487292` remains pending because prior multi-engine run `46128961225` is still processing its open Seoul/K-SPAN/IPA-Dict matrix. No Narrow accuracy uplift or candidate-rescue count is claimed until the exact v18 artifact is available and inspected.
+
+**Branch/PR:** `feat/narrow-h-lenition-liquid-interaction-v18-2026-11-28`; draft PR #513 against the diagnostic branch; deliberately unmerged. Independent audio-backed Narrow adjudication remains unavailable.
