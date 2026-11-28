@@ -186,6 +186,8 @@ const NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS=new Map([
   ['저출산','출>산'], // NIKL Basic Dictionary directly lists 저출산[저ː출싼].
   ['실시간','실>시'], // NIKL §26 + NIKL lexical source records 實時間; exact Sino-Korean 실>시간 boundary.
   ['팔자걸음','팔>자'], // NIKL Basic Dictionary 팔자[팔짜]; exact corpus compound only.
+  ['솔직','솔>직'], // NIKL Q&A 327592: bare 솔직 can be read [솔찍], derived from 솔직하다.
+  ['일제','일>제'], // NIKL Basic Dictionary directly lists 일제[일쩨], ParaWordNo=72394.
 ]);
 
 // Exact lexical fortition entries outside a productive rule environment.
@@ -216,9 +218,12 @@ const NIKL_28_COMPOUND_FORTITION_FORMS=new Map([
   ['물가','물>가'], ['물가로','물>가'], ['봄비','봄>비'],
   // NIKL Basic Dictionary 정신병자[정신뼝자]; exact corpus form with -네 only.
   ['정신병자네','신>병'],
+  // NIKL Q&A 335858 explicitly identifies 물고기[물꼬기] as a §28 compound-fortition case.
+  // Exact eojeol only; do not generalize tensing to every ㄹ+ㄱ sequence.
+  ['물고기','물>고'],
   // Korean Basic Dictionary directly lists 닭갈비[닥깔비] (ParaWordNo=56047).
   // Exact-form surface evidence only; do not generalize to other ㄺ+ㄱ sequences.
-  ['닭갈비','닭>갈'],
+  ['닭갈비','닭>갈']
 ]);
 
 // Exact, source-licensed phrase boundaries whose rules require syntax or a

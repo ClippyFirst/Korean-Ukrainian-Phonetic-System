@@ -11,12 +11,20 @@ const EVIDENCE = {
     refs: ['https://discovery.ucl.ac.uk/id/eprint/1324541/1/1324541.pdf'],
     status: 'secondary-description-requires-primary-phonetic-review'
   },
+  'narrow-coda-n-palatalization-candidate': {
+    refs: ['https://discovery.ucl.ac.uk/id/eprint/1324541/1/1324541.pdf'],
+    status: 'secondary-description-candidate-only'
+  },
+  'narrow-coda-stop-release-candidate': {
+    refs: ['https://doi.org/10.1017/S0025100300004758', 'https://doi.org/10.1006/JPHO.1996.0016', 'https://doi.org/10.13064/ksss.2026.18.1.021'],
+    status: 'source-scoped-release-variation-candidate-only'
+  },
   'narrow-lenis-sibilant-place': {
     refs: ['https://doi.org/10.17959/sppm.2010.16.1.3'],
     status: 'source-scoped-acoustic-coarticulation'
   },
   'narrow-h-palatal-allophone': {
-    refs: ['https://doi.org/10.1017/S0025100300004758'],
+    refs: ['https://doi.org/10.1017/CBO9781139342858.006', 'https://doi.org/10.1017/S0025100300004758'],
     status: 'source-scoped-description'
   },
   'narrow-h-sonorant-variation-unresolved': {
@@ -25,8 +33,16 @@ const EVIDENCE = {
     status: 'speaker-and-dialect-variable-no-single-IPA-selected'
   },
   'narrow-h-intervocalic-allophone': {
-    refs: ['https://doi.org/10.1017/S0025100300004758'],
-    status: 'source-scoped-description'
+    refs: ['https://doi.org/10.1017/CBO9781139342858.006', 'https://doi.org/10.1017/S0025100300004758'],
+    status: 'source-scoped-position-and-vowel-conditioned-allophones'
+  },
+  'narrow-h-rounded-allophone': {
+    refs: ['https://doi.org/10.1017/CBO9781139342858.006', 'https://fphil.uniba.sk/fileadmin/fif/katedry_pracoviska/kvas/SOS_subory_19_1/SOS_19_1__2020_.pdf'],
+    status: 'source-scoped-word-initial-rounded-vowel-allophone'
+  },
+  'narrow-h-velar-allophone': {
+    refs: ['https://doi.org/10.1017/CBO9781139342858.006'],
+    status: 'source-scoped-word-initial-unrounded-back-vowel-allophone'
   },
   'liquid-assimilation': {
     refs: ['https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002'],
@@ -35,6 +51,34 @@ const EVIDENCE = {
   'narrow-retroflex-lateral-candidate': {
     refs: ['https://doi.org/10.1017/S0025100300004758', 'https://doi.org/10.3765/plsa.v6i1.5002'],
     status: 'conflicting-source-descriptions-variant-only'
+  },
+  'narrow-coda-retroflex-lateral-candidate': {
+    refs: ['https://doi.org/10.3765/plsa.v6i1.5002', 'https://doi.org/10.20405/kl.2024.02.102.63'],
+    status: 'speaker-conditioned-sociophonetic-variant-only'
+  },
+  'narrow-lateral-palatalization-candidate': {
+    refs: ['https://doi.org/10.3765/plsa.v6i1.5002'],
+    status: 'gradient-coarticulation-candidate-variant-only'
+  },
+  'narrow-front-rounded-vowel-glide-variation': {
+    refs: ['https://doi.org/10.1017/9781108292351'],
+    status: 'source-scoped-position-conditioned-variant-only'
+  },
+  'narrow-sibilant-rounded-glide-interaction': {
+    refs: ['https://doi.org/10.1017/9781108292351'],
+    status: 'source-scoped-iterative-palatalization-candidate-only'
+  },
+  'narrow-palatal-lateral-candidate': {
+    refs: ['https://doi.org/10.3765/plsa.v6i1.5002'],
+    status: 'source-cited-palatal-lateral-variant-only'
+  },
+  'narrow-geminate-lateral-interaction-hypothesis': {
+    refs: ['https://doi.org/10.3765/plsa.v6i1.5002', 'https://doi.org/10.20405/kl.2024.02.102.63'],
+    status: 'source-scoped-interaction-hypothesis-only'
+  },
+  'narrow-geminate-palatalization-interaction-hypothesis': {
+    refs: ['https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002', 'https://doi.org/10.3765/plsa.v6i1.5002'],
+    status: 'source-scoped-geminate-palatalization-interaction-hypothesis-only'
   }
 };
 
@@ -78,40 +122,44 @@ function narrowSyllable(current, previous, sameWord) {
   } else if (parsed.onset === 'ㅆ') {
     ipa = replaceInitial(ipa, ['ɕ͈'], 's͈');
   } else if (parsed.onset === 'ㅎ') {
-    if (['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ'].includes(parsed.vowel)) {
-      ipa = replaceInitial(ipa, ['h'], 'ç');
-      if (ipa.startsWith('ç')) {
-        rules.push('narrow-h-palatal-allophone');
-        evidence.push(EVIDENCE['narrow-h-palatal-allophone']);
-        environment = 'onset ㅎ before selected high-front/glide nuclei';
-        if (prior && SONORANT_CODAS.has(prior.coda)) {
-          rules.push('narrow-h-sonorant-variation-unresolved');
-          evidence.push(EVIDENCE['narrow-h-sonorant-variation-unresolved']);
-          environment += '; preceding sonorant: optional weakening/deletion remains unresolved';
-        }
-      }
-    } else if (parsed.vowel === 'ㅜ') {
-      ipa = replaceInitial(ipa, ['h'], 'x');
-      if (ipa.startsWith('x')) {
-        rules.push('narrow-h-palatal-allophone');
-        evidence.push(EVIDENCE['narrow-h-palatal-allophone']);
-        environment = 'onset ㅎ before ㅜ';
-        if (prior && SONORANT_CODAS.has(prior.coda)) {
-          rules.push('narrow-h-sonorant-variation-unresolved');
-          evidence.push(EVIDENCE['narrow-h-sonorant-variation-unresolved']);
-          environment += '; preceding sonorant: optional weakening/deletion remains unresolved';
-        }
-      }
-    } else if (prior && SONORANT_CODAS.has(prior.coda)) {
-      rules.push('narrow-h-sonorant-variation-unresolved');
-      evidence.push(EVIDENCE['narrow-h-sonorant-variation-unresolved']);
-      environment = 'same word: sonorant coda + onset ㅎ; weakening/deletion is variable, no single IPA selected';
-    } else if (prior && prior.coda === '') {
-      ipa = replaceInitial(ipa, ['h'], 'ɸ');
-      if (ipa.startsWith('ɸ')) {
+    const medialOpenSyllable = prior && prior.boundaryAfter !== 'word' && prior.coda === '';
+    if (medialOpenSyllable) {
+      // Shin, Kiaer & Cha (2012), Table 4.6 p.77: voiced word-medial
+      // counterparts conditioned by the following vowel.
+      const medial = parsed.vowel === 'ㅣ' || ['ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ'].includes(parsed.vowel) ? 'ʝ'
+        : parsed.vowel === 'ㅡ' ? 'ɣ'
+          : ['ㅗ','ㅜ'].includes(parsed.vowel) ? 'β' : 'ɦ';
+      ipa = replaceInitial(ipa, ['h','ç','x','ɸ','ɸʷ'], medial);
+      if (ipa.startsWith(medial)) {
         rules.push('narrow-h-intervocalic-allophone');
         evidence.push(EVIDENCE['narrow-h-intervocalic-allophone']);
-        environment = 'same word: intervocalic onset ㅎ after open syllable';
+        environment = 'same word: intervocalic onset ㅎ; vowel-conditioned voiced allophone [' + medial + ']';
+      }
+    } else {
+      const wordInitial = !prior || prior.boundaryAfter === 'word';
+      if (wordInitial) {
+        const initial = parsed.vowel === 'ㅣ' || ['ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ'].includes(parsed.vowel) ? 'ç'
+          : parsed.vowel === 'ㅡ' ? 'x'
+            : ['ㅗ','ㅜ'].includes(parsed.vowel) ? 'ɸʷ' : 'h';
+        ipa = replaceInitial(ipa, ['h','ç','x','ɸ','ɸʷ'], initial);
+        if (ipa.startsWith(initial) && initial !== 'h') {
+          rules.push(initial === 'ç' ? 'narrow-h-palatal-allophone'
+            : initial === 'x' ? 'narrow-h-velar-allophone' : 'narrow-h-rounded-allophone');
+          evidence.push(EVIDENCE[initial === 'ç' ? 'narrow-h-palatal-allophone'
+            : initial === 'x' ? 'narrow-h-velar-allophone' : 'narrow-h-rounded-allophone']);
+          environment = 'word-initial onset ㅎ; vowel-conditioned allophone [' + initial + ']';
+        }
+      } else if (prior && SONORANT_CODAS.has(prior.coda)) {
+        if (parsed.vowel === 'ㅣ' || ['ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ'].includes(parsed.vowel)) {
+          ipa = replaceInitial(ipa, ['h','ç'], 'ç');
+          if (ipa.startsWith('ç')) {
+            rules.push('narrow-h-palatal-allophone');
+            evidence.push(EVIDENCE['narrow-h-palatal-allophone']);
+          }
+        }
+        rules.push('narrow-h-sonorant-variation-unresolved');
+        evidence.push(EVIDENCE['narrow-h-sonorant-variation-unresolved']);
+        environment = 'same word: sonorant coda + onset ㅎ; weakening/voicing/deletion remains variable, no single voiced phone selected';
       }
     }
   } else if (parsed.onset === 'ㄹ' && prior && prior.coda === 'ㄹ') {
@@ -247,10 +295,11 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
     trace.push({ layer: 'phonemic', source_span: item.source_span || null, source: item.source || '', surface: null, ipa: item.ipa ?? null, rule_ids: [], environment: 'underlying onset+nucleus+coda inventory; no surface rules', evidence_refs: [], evidence_status: phonemicResult.evidence_status || 'deterministic-underlying-phonemic-inventory', status: item.status || 'underlying-phonemic-grapheme-derived' });
   }
   for (const boundary of (phonemicResult?.boundaries || [])) boundaries.push(boundary);
-  let cursor = 0, previousHangul = null, boundarySincePrevious = true;
+  let cursor = 0, previousHangul = null, previousHangulSpan = null, boundarySincePrevious = true;
   let narrowIpa = '', previousWasHangul = false;
   const narrowVariantSites = [];
-  for (const item of sourceTrace) {
+  for (let sourceIndex = 0; sourceIndex < sourceTrace.length; sourceIndex++) {
+    const item = sourceTrace[sourceIndex];
     const value = String(item.source ?? '');
     const span = findSpan(source, value, cursor);
     if (span) cursor = span.end;
@@ -260,6 +309,7 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       }
       if (/^[\s\p{P}]+$/u.test(value)) narrowIpa += value;
       previousHangul = null;
+      previousHangulSpan = null;
       boundarySincePrevious = true;
       previousWasHangul = false;
       continue;
@@ -274,15 +324,99 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
     });
     const derived = narrowSyllable(item, previousHangul, !boundarySincePrevious);
     if (derived.ipa) {
+      const previousParsed = !boundarySincePrevious && previousHangul
+        ? decompose(previousHangul.surface || previousHangul.source) : null;
+      const previousCodaNPosition = previousParsed?.coda === 'ㄴ' && previousWasHangul
+        && narrowIpa.endsWith('n') ? [...narrowIpa].length - 1 : null;
       if (previousWasHangul) narrowIpa += '.';
       const ipaStart = [...narrowIpa].length;
       narrowIpa += derived.ipa;
       const currentParsed = decompose(item.surface || item.source);
-      const previousParsed = !boundarySincePrevious && previousHangul
-        ? decompose(previousHangul.surface || previousHangul.source) : null;
+      if (currentParsed?.vowel === 'ㅟ') {
+        const yOffset = [...derived.ipa].indexOf('y');
+        if (yOffset >= 0) {
+          if (currentParsed.onset === 'ㅅ' && derived.ipa.startsWith('sʰy')) {
+            narrowVariantSites.push({ ipaStart, sourceSpan: span, from: 'sʰy', to: 'ɕʰɥi',
+              evidence: 'narrow-sibilant-rounded-glide-interaction',
+              environment: 'same syllable onset ㅅ + ㅟ; iterative s-palatalization and /wi/→[ɥi] glide realization' });
+          } else if (currentParsed.onset === 'ㅇ' && boundarySincePrevious) {
+            narrowVariantSites.push({ ipaStart: ipaStart + yOffset, sourceSpan: span, from: 'y', to: 'wi',
+              evidence: 'narrow-front-rounded-vowel-glide-variation',
+              environment: 'word-initial onsetless ㅟ; source-described strong-position [wi] alternative' });
+          } else {
+            narrowVariantSites.push({ ipaStart: ipaStart + yOffset, sourceSpan: span, from: 'y', to: 'ɥi',
+              evidence: 'narrow-front-rounded-vowel-glide-variation',
+              environment: 'non-initial/postconsonantal ㅟ; source-described high-front rounded glide [ɥ] plus [i]' });
+          }
+        }
+      }
       if (currentParsed?.onset === 'ㄹ' && previousParsed?.coda === '' && derived.ipa.startsWith('ɾ')) {
-        narrowVariantSites.push({ ipaStart, sourceSpan: span,
+        narrowVariantSites.push({ ipaStart, sourceSpan: span, from: 'ɾ', to: 'ɭ',
+          evidence: 'narrow-retroflex-lateral-candidate',
           environment: 'same-word intervocalic onset ㄹ; Lee (1993) [ɭ] vs Crosby & Dalola (2021) predominantly [ɾ]' });
+      }
+      if (currentParsed?.onset === 'ㄹ' && previousParsed?.coda === 'ㄹ'
+          && ['ㅣ', ...GLIDE_NUCLEI].includes(currentParsed.vowel) && derived.ipa.startsWith('l')) {
+        narrowVariantSites.push({ ipaStart, sourceSpan: span, from: 'l', to: 'lʲ',
+          evidence: 'narrow-lateral-palatalization-candidate',
+          environment: 'geminate lateral before high-front vocoid /i,j/' });
+        narrowVariantSites.push({ ipaStart, sourceSpan: span, from: 'l', to: 'ʎ',
+          evidence: 'narrow-palatal-lateral-candidate',
+          environment: 'geminate lateral before /i,j/; cited [ʎ] description, not categorical acoustic adjudication' });
+        const previousSpan = previousHangulSpan ?? sourceTrace[sourceIndex - 1]?.source_span ?? sourceTrace[sourceIndex - 1]?.sourceSpan ?? null;
+        const combinedSpan = previousSpan && span ? { start: previousSpan.start, end: span.end } : span;
+        if (ipaStart >= 2 && narrowIpa[ipaStart - 2] === 'l' && narrowIpa[ipaStart - 1] === '.') {
+          narrowVariantSites.push({ ipaStart: ipaStart - 2, sourceSpan: combinedSpan, from: 'l.l', to: 'ɭ.ʎ',
+            evidence: 'narrow-geminate-lateral-interaction-hypothesis',
+            environment: 'same-word coda ㄹ + onset ㄹ before /i,j/; composed [ɭ]+[ʎ] candidate' });
+          narrowVariantSites.push({ ipaStart: ipaStart - 2, sourceSpan: combinedSpan, from: 'l.l', to: 'ʎ.ʎ',
+            evidence: 'narrow-geminate-palatalization-interaction-hypothesis',
+            environment: 'same-word coda ㄴ/ㄹ + onset ㄹ after R006 liquid assimilation, before /i,j/; composed [ʎ.ʎ] candidate' });
+        }
+      }
+      if (previousCodaNPosition !== null && ['ㅈ','ㅉ','ㅊ'].includes(currentParsed?.onset)) {
+        const sourceSpan = trace.at(-1)?.source_span ?? span;
+        narrowVariantSites.push({
+          ipaStart: previousCodaNPosition, sourceSpan, from: 'n', to: 'ɲ',
+          evidence: 'narrow-coda-n-palatalization-candidate',
+          environment: 'same-word coda ㄴ before alveopalatal affricate ㅈ/ㅉ/ㅊ'
+        });
+        narrowVariantSites.push({
+          ipaStart: previousCodaNPosition, sourceSpan, from: 'n', to: 'nj',
+          evidence: 'narrow-coda-n-palatalization-candidate',
+          environment: 'same-word coda ㄴ before alveopalatal affricate ㅈ/ㅉ/ㅊ'
+        });
+      }
+      if (currentParsed?.coda === 'ㄹ' && derived.ipa.endsWith('l')) {
+        const nextItem = sourceTrace[sourceIndex + 1];
+        const nextValue = String(nextItem?.source ?? '');
+        const nextParsed = /^[가-힣]$/u.test(nextValue) ? decompose(nextItem.surface || nextValue) : null;
+        const sameWordH = nextParsed?.onset === 'ㅎ';
+        const preConsonantal = !!nextParsed?.onset && nextParsed.onset !== 'ㅇ';
+        const wordFinal = !nextItem || nextItem.status === 'literal' && /^[\s\p{P}]+$/u.test(nextValue);
+        if (sameWordH || preConsonantal || wordFinal) {
+          narrowVariantSites.push({
+            ipaStart: ipaStart + [...derived.ipa].length - 1, sourceSpan: span, from: 'l', to: 'ɭ',
+            evidence: 'narrow-coda-retroflex-lateral-candidate',
+            environment: sameWordH ? 'coda ㄹ before same-word onset ㅎ'
+              : preConsonantal ? 'coda ㄹ before same-word consonant' : 'word-final coda ㄹ'
+          });
+        }
+      }
+      const codaStopPlace = {
+        'ㄱ':'k','ㄲ':'k','ㅋ':'k','ㄳ':'k','ㄺ':'k','ㄷ':'t','ㅅ':'t','ㅆ':'t',
+        'ㅈ':'t','ㅉ':'t','ㅊ':'t','ㅌ':'t','ㅂ':'p','ㅍ':'p','ㄿ':'p','ㅄ':'p'
+      }[currentParsed?.coda];
+      const nextItem = sourceTrace[sourceIndex + 1];
+      const nextValue = String(nextItem?.source ?? '');
+      const wordFinalCoda = !nextItem || nextItem.status === 'literal' && /^[\s\p{P}]+$/u.test(nextValue);
+      if (codaStopPlace && derived.ipa.endsWith(codaStopPlace + '̚') && wordFinalCoda) {
+        narrowVariantSites.push({
+          ipaStart: ipaStart + [...derived.ipa].length - 1, sourceSpan: span,
+          from: '̚', to: '',
+          evidence: 'narrow-coda-stop-release-candidate',
+          environment: 'word-final coda ' + currentParsed.coda + '; optional released [' + codaStopPlace + '] candidate'
+        });
       }
       previousWasHangul = true;
     } else previousWasHangul = false;
@@ -295,6 +429,7 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       status: item.status || 'ungraded'
     });
     previousHangul = item;
+    previousHangulSpan = span;
     boundarySincePrevious = false;
   }
   const hasUnresolvedSource = engineResult.pronunciation_status === 'unresolved' || sourceTrace.some(item => ['unresolved','unsupported-jamo','unsupported'].includes(item.status));
@@ -304,14 +439,35 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
     for (let index = 0; index < narrowVariantSites.length; index++) {
       const site = narrowVariantSites[index];
       const points = [...narrowIpa];
-      if (points[site.ipaStart] !== 'ɾ') continue;
-      points[site.ipaStart] = 'ɭ';
+      const fromPoints = [...site.from];
+      const toPoints = [...site.to];
+      if (points.slice(site.ipaStart, site.ipaStart + fromPoints.length).join('') !== site.from) continue;
+      points.splice(site.ipaStart, fromPoints.length, ...toPoints);
+      const evidence = EVIDENCE[site.evidence];
       narrowVariants.push({
         id: 'narrow-variant-' + (index + 1), layer: 'narrow', ipa: points.join(''),
-        evidence_status: EVIDENCE['narrow-retroflex-lateral-candidate'].status,
-        evidence_refs: EVIDENCE['narrow-retroflex-lateral-candidate'].refs,
+        evidence_status: evidence.status,
+        evidence_refs: evidence.refs,
         environment: site.environment,
-        uncertainty: 'Speaker, dialect and prosodic context are unknown; optional [ɭ] is not selected over primary [ɾ].',
+        uncertainty: site.evidence === 'narrow-coda-stop-release-candidate'
+          ? 'Lee (1993) illustrates unreleased coda stops, while Kim & Jongman (1996) observed bursts after 83% of word-final stops in a four-speaker sample; Cha (2026) did not quantify burst frequency. Optional released [p,t,k] candidate only; release cannot be inferred from text.'
+          : site.evidence === 'narrow-coda-n-palatalization-candidate'
+          ? 'Secondary description in Lee (1996), summarized by Kim (2011, p.23); not direct acoustic evidence for this specific coda context, so candidates remain unselected.'
+          : site.evidence === 'narrow-coda-retroflex-lateral-candidate'
+          ? 'Coda retroflexion is sociophonetic and depends on speaker, dialect, style, preceding vowel and whether the token is realized as a lateral; text-only input cannot select it.'
+          : site.evidence === 'narrow-lateral-palatalization-candidate'
+            ? 'F2 elevation is a gradient acoustic correlate; [lʲ] is an optional project candidate, not an independently adjudicated phone or selected output.'
+            : site.evidence === 'narrow-front-rounded-vowel-glide-variation'
+              ? 'Kim-Renaud (2022) synthesizes position-conditioned [wi]/[ɥi] and monophthongal [y] variation; the token speaker, dialect, age and style are unknown, so no variant is selected.'
+              : site.evidence === 'narrow-sibilant-rounded-glide-interaction'
+                ? 'Kim-Renaud (2022) describes iterative /s/ palatalization with /wi/→[ɥi]. The [ʰ] element is inherited from the existing partial profile, not newly established by this source; candidate remains unselected.'
+                : site.evidence === 'narrow-palatal-lateral-candidate'
+                  ? 'Kang (2017), as summarized by Crosby & Dalola (2021), describes [ʎ] before /i,j/; the 2021 study independently supports gradient F2 palatalization, not categorical [ʎ]. Candidate only.'
+                  : site.evidence === 'narrow-geminate-lateral-interaction-hypothesis'
+                    ? 'This composes separately described preconsonantal retroflex [ɭ] and pre-/i,j/ palatal lateral [ʎ] tendencies; the sources do not directly adjudicate this combined token, so it remains an unselected hypothesis.'
+                    : site.evidence === 'narrow-geminate-palatalization-interaction-hypothesis'
+                      ? 'This composes normative R006 /n+l/ liquid assimilation with a source-described pre-/i,j/ palatal-lateral tendency. Categorical [ʎʎ] across both geminate members is not directly adjudicated; candidate only.'
+                      : 'Conflicting descriptions; speaker, dialect and prosodic context are unknown; optional [ɭ] is not selected over primary [ɾ].',
         source_span: site.sourceSpan, selected: false
       });
     }
@@ -348,8 +504,9 @@ export function buildExtendedIpaResult(source, engineResult, phonemicResult = nu
       },
       narrow: {
         ipa: narrowIpa,
-        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v7',
-        profile_version: 7, level: 'narrow',
+        profile_id: 'clippyfirst-korean-narrow-contextual-allophones-v17',
+        profile_version: 17,
+        level: 'narrow',
         status: hasUnresolvedSource ? 'diagnostic-only-unresolved-source' : 'partial-research-only',
         evidence_status: 'partial-source-scoped-hypotheses-not-independently-reviewed',
         target_compatible: false

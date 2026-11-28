@@ -12,10 +12,14 @@ _NARROW_HIGH_FRONT_SIBILANT_NUCLEI={"ㅣ","ㅖ","ㅑ"}
 # The research-only narrow profile models onset /n/ palatalization before
 # glide-initial nuclei. Keep /i/ out: the dev counterfactual regressed when /i/
 # was included, so the observed /j/ correspondence must not be generalized.
-# Evidence status: the UCL thesis summarizes earlier descriptions of [nʲ]/[ɲ]
+# Evidence status: the UCL thesis summarizes earlier descriptions of [nj]/[ɲ]
 # before /j/; Ahn (2009) is an initial /n/-deletion study, not direct evidence
 # for a generalized [ɲ] allophone. Primary-source adjudication is still pending.
 _NARROW_PALATALIZED_NASAL_GLIDE_NUCLEI={"ㅑ","ㅒ","ㅕ","ㅖ","ㅛ","ㅠ"}
+# High-front vocoids for a research-only lateral coarticulation candidate.
+_NARROW_HIGH_FRONT_VOCOID_NUCLEI={"ㅣ","ㅑ","ㅒ","ㅕ","ㅖ","ㅛ","ㅠ"}
+_NARROW_H_GLIDE_NUCLEI={"ㅑ","ㅒ","ㅕ","ㅖ","ㅛ","ㅠ"}
+_NARROW_H_ROUNDED_NUCLEI={"ㅗ","ㅜ"}
 CODA={"ㄱ":"k̚","ㄲ":"k̚","ㄳ":"k̚","ㄴ":"n","ㄵ":"n","ㄶ":"n","ㄷ":"t̚","ㄹ":"l","ㄺ":"k̚","ㄻ":"m","ㄼ":"l","ㄽ":"l","ㄾ":"l","ㄿ":"p̚","ㅀ":"l","ㅁ":"m","ㅂ":"p̚","ㅄ":"p̚","ㅅ":"t̚","ㅆ":"t̚","ㅇ":"ŋ","ㅈ":"t̚","ㅊ":"t̚","ㅋ":"k̚","ㅌ":"t̚","ㅍ":"p̚","ㅎ":"t̚"}
 
 def onset_ipa(s:Syllable,index:int,items:list[Syllable],*,phonemic=False,level="broad")->list[str]:
@@ -33,19 +37,35 @@ def onset_ipa(s:Syllable,index:int,items:list[Syllable],*,phonemic=False,level="
         return ["ɾ"]
     if c=="ㅎ":
         if not phonemic and level=="narrow":
-            # Source-scoped Seoul allophones from S018: [ç] before /i,j/ and [x] before /u/.
-            # After sonorants, /h/ may weaken or delete variably; current evidence
-            # does not license a categorical [ɦ] output for every token.
-            if s.nucleus in {"ㅣ","ㅑ","ㅒ","ㅕ","ㅖ","ㅛ","ㅠ"}:
-                return ["ç"]
-            if s.nucleus=="ㅜ":
-                return ["x"]
-            # S018 describes /h/ as [ɸ] between voiced sounds. In this
-            # syllabic representation that is the same-word intervocalic case.
+            # Narrow profile v11: Table 4.6 lists [ʝ]/[ɣ]/[β]/[ɦ] as voiced counterparts
+            # in word-medial position. Their vowel mapping below pairs these with
+            # the word-initial [ç]/[x]/[ɸʷ]/[h] contexts (Shin, Kiaer & Cha 2012, p.77).
+            # This branch precedes the word-initial [ç]/[x] realizations.
             if index>0:
                 previous=items[index-1]
                 if previous.boundary_after!="word" and previous.coda=="":
-                    return ["ɸ"]
+                    if s.nucleus=="ㅣ" or s.nucleus in _NARROW_H_GLIDE_NUCLEI:
+                        return ["ʝ"]
+                    if s.nucleus=="ㅡ":
+                        return ["ɣ"]
+                    if s.nucleus in _NARROW_H_ROUNDED_NUCLEI:
+                        return ["β"]
+                    return ["ɦ"]
+            # Word-initial Seoul allophones remain distinct from medial voiced
+            # allophones. Post-sonorant weakening/deletion remains variable.
+            word_initial=index==0 or items[index-1].boundary_after=="word"
+            if word_initial:
+                if s.nucleus=="ㅣ" or s.nucleus in _NARROW_H_GLIDE_NUCLEI:
+                    return ["ç"]
+                if s.nucleus=="ㅡ":
+                    return ["x"]
+                if s.nucleus in _NARROW_H_ROUNDED_NUCLEI:
+                    return ["ɸʷ"]
+            elif index>0 and items[index-1].coda in {"ㄴ","ㄹ","ㅁ","ㅇ","ㄵ","ㄶ","ㄻ","ㄼ","ㄽ","ㄾ","ㅀ"}:
+                # Preserve place coarticulation before /i,j/ after a sonorant,
+                # but do not choose a voiced phone: /h/-lenition is variable.
+                if s.nucleus=="ㅣ" or s.nucleus in _NARROW_H_GLIDE_NUCLEI:
+                    return ["ç"]
         return ["h"]
     if c in LENIS:
         if phonemic: return [CONSONANT_PHONEMES[c].strip("/")]
@@ -111,28 +131,207 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
         variants=[]
         lee_ref="https://doi.org/10.1017/S0025100300004758"
         crosby_ref="https://doi.org/10.3765/plsa.v6i1.5002"
+        socioling_ref="https://doi.org/10.20405/kl.2024.02.102.63"
+        liquid_ref="https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002"
+        nasal_ref="https://discovery.ucl.ac.uk/id/eprint/1324541/1/1324541.pdf"
+        kim_coda_ref="https://doi.org/10.1006/JPHO.1996.0016"
+        cha_coda_ref="https://doi.org/10.13064/ksss.2026.18.1.021"
+        coda_stop_place={"ㄱ":"k","ㄲ":"k","ㅋ":"k","ㄳ":"k","ㄺ":"k","ㄷ":"t","ㅅ":"t","ㅆ":"t","ㅈ":"t","ㅉ":"t","ㅊ":"t","ㅌ":"t","ㅂ":"p","ㅍ":"p","ㄿ":"p","ㅄ":"p"}
         for i,syllable in enumerate(items):
-            if i==0 or syllable.onset!="ㄹ" or not rendered[i].startswith("ɾ"):
-                continue
-            previous=items[i-1]
-            if previous.boundary_after=="word" or previous.coda!="":
-                continue
-            alternate=list(rendered)
-            alternate[i]="ɭ"+alternate[i][1:]
-            variants.append({
-                "layer":"narrow",
-                "syllable_indices":[i],
-                "ipa":render_syllable_sequence(items,alternate),
-                "note":("Conflicting source descriptions: Lee (1993, p.31) describes Seoul /l/ as [ɭ] intervocalically and before /i,j/; "
-                        "Crosby & Dalola (2021) found 99.3% intervocalic taps in their 12-speaker sample. "
-                        "Optional unselected variant only; [ɾ] remains primary. " + lee_ref + " " + crosby_ref),
-                "vowels":["ㄹ [ɭ]"],
-                "evidence_status":"conflicting-source-descriptions-variant-only",
-                "evidence_refs":[lee_ref,crosby_ref],
-                "environment":"same-word intervocalic onset ㄹ",
-                "uncertainty":"Speaker, dialect and prosodic context are unknown; variant is not selected.",
-                "selected":False,
-            })
+            if i>0 and syllable.onset=="ㄹ" and rendered[i].startswith("ɾ"):
+                previous=items[i-1]
+                if previous.boundary_after!="word" and previous.coda=="":
+                    alternate=list(rendered)
+                    alternate[i]="ɭ"+alternate[i][1:]
+                    variants.append({
+                        "layer":"narrow", "syllable_indices":[i],
+                        "ipa":render_syllable_sequence(items,alternate),
+                        "note":("Conflicting descriptions for intervocalic onset /l/: Lee (1993, p.31) describes [ɭ], while Crosby & Dalola (2021) found 422/425 intervocalic liquids as [ɾ]. "
+                                "Optional unselected variant; [ɾ] remains primary. " + lee_ref + " " + crosby_ref),
+                        "vowels":["ㄹ [ɭ]"], "evidence_status":"conflicting-source-descriptions-variant-only",
+                        "evidence_refs":[lee_ref,crosby_ref], "environment":"same-word intervocalic onset ㄹ",
+                        "uncertainty":"Conflicting descriptions; speaker and dialect are unknown.", "selected":False,
+                    })
+            # A geminate lateral before /i,j/ may show coarticulatory palatalization.
+            # Crosby & Dalola (2021) measured mean F2 about 254.49 Hz higher
+            # before high-front vocoids; this is gradient acoustic evidence,
+            # not proof of categorical [ʎ]. Expose [lʲ] only as an unselected
+            # candidate and keep the primary [l] unchanged.
+            if (i>0 and syllable.onset=="ㄹ" and items[i-1].coda=="ㄹ"
+                    and items[i-1].boundary_after!="word"
+                    and syllable.nucleus in _NARROW_HIGH_FRONT_VOCOID_NUCLEI
+                    and rendered[i].startswith("l")):
+                alternate=list(rendered)
+                alternate[i]="lʲ"+alternate[i][1:]
+                variants.append({
+                    "layer":"narrow", "syllable_indices":[i],
+                    "ipa":render_syllable_sequence(items,alternate),
+                    "note":("Gradient coarticulatory palatalization candidate [lʲ]. Crosby & Dalola (2021) measured F2 about 254.49 Hz higher for laterals before high-front vocoids and discuss prior [ʎ] descriptions; the study does not establish categorical [ʎ]. " + crosby_ref),
+                    "vowels":["geminate ㄹ [lʲ]"], "evidence_status":"gradient-coarticulation-candidate-variant-only",
+                    "evidence_refs":[crosby_ref], "environment":"geminate lateral before high-front vocoid /i,j/",
+                    "uncertainty":"F2 is a gradient acoustic correlate; [lʲ] is a conservative project candidate, not an independently adjudicated phone or selected output.",
+                    "selected":False,
+                })
+                # Kang (2017), as summarized in Crosby & Dalola (2021), describes
+                # a palatal lateral [ʎ] before /i,j/. Their own study supports
+                # gradient F2 palatalization, not categorical [ʎ]; keep it optional.
+                palatal=list(rendered)
+                palatal[i]="ʎ"+palatal[i][1:]
+                variants.append({
+                    "layer":"narrow", "syllable_indices":[i],
+                    "ipa":render_syllable_sequence(items,palatal),
+                    "note":("Kang (2017), as summarized by Crosby & Dalola (2021), describes a palatal lateral [ʎ] when /l/ precedes /i/ or /j/. The 2021 study independently supports gradient palatalization via F2, not categorical [ʎ]; expose only as an unselected candidate. " + crosby_ref),
+                    "vowels":["geminate ㄹ [ʎ]"], "evidence_status":"source-cited-palatal-lateral-variant-only",
+                    "evidence_refs":[crosby_ref], "environment":"geminate lateral before high-front vocoid /i,j/; cited [ʎ] description",
+                    "uncertainty":"The cited [ʎ] description is secondary and the acoustic study establishes gradient palatalization rather than categorical [ʎ]. Speaker/token realization is unverified.",
+                    "selected":False,
+                })
+                # Compose two separately described tendencies as a research
+                # hypothesis: variable preconsonantal coda [ɭ] + palatal onset [ʎ].
+                combined=list(rendered)
+                combined[i-1]=combined[i-1][:-1]+"ɭ"
+                combined[i]="ʎ"+combined[i][1:]
+                variants.append({
+                    "layer":"narrow", "syllable_indices":[i-1,i],
+                    "ipa":render_syllable_sequence(items,combined),
+                    "note":("Compositional interaction hypothesis only: Crosby & Dalola (2021) report retroflex laterals in preconsonantal positions and summarize Kang (2017)'s [ʎ] before /i,j/; Crosby (2024) reports speaker-conditioned coda retroflexion. These sources do not directly adjudicate the combined [ɭ.ʎ] sequence. " + crosby_ref + " " + socioling_ref),
+                    "vowels":["coda ㄹ [ɭ] + onset ㄹ [ʎ]"], "evidence_status":"source-scoped-interaction-hypothesis-only",
+                    "evidence_refs":[crosby_ref,socioling_ref],
+                    "environment":"same-word coda ㄹ + onset ㄹ before /i,j/; composed [ɭ]+[ʎ] candidate",
+                    "uncertainty":"This composes separately described tendencies; no source independently adjudicates this exact sequence or this token. Candidate only; speaker/audio evidence is required for selection.",
+                    "selected":False,
+                })
+                # A second interaction hypothesis covers a liquid-assimilated
+                # geminate /ll/ before /i,j/: both lateral timing slots may show
+                # palatalization. This composes normative R006 liquid assimilation
+                # with the source-described pre-/i,j/ palatal-lateral tendency;
+                # no cited source directly adjudicates categorical [ʎʎ].
+                palatal_pair=list(rendered)
+                palatal_pair[i-1]=palatal_pair[i-1][:-1]+"ʎ"
+                palatal_pair[i]="ʎ"+palatal_pair[i][1:]
+                variants.append({
+                    "layer":"narrow", "syllable_indices":[i-1,i],
+                    "ipa":render_syllable_sequence(items,palatal_pair),
+                    "note":("Compositional interaction hypothesis only: NIKL §§19–20 license /n+l/ liquid assimilation to a geminate lateral; Kang (2017), as summarized by Crosby & Dalola (2021), describes [ʎ] before /i,j/, while their acoustic study supports gradient palatalization rather than categorical [ʎ]. Applying [ʎ] to both members of the geminate is not directly adjudicated by these sources. " + crosby_ref + " " + socioling_ref),
+                    "vowels":["geminate lateral [ʎ.ʎ] after liquid assimilation"],
+                    "evidence_status":"source-scoped-geminate-palatalization-interaction-hypothesis-only",
+                    "evidence_refs":[liquid_ref,crosby_ref,socioling_ref],
+                    "environment":"same-word coda ㄴ/ㄹ + onset ㄹ after R006 liquid assimilation, before /i,j/; composed [ʎ.ʎ] candidate",
+                    "uncertainty":"This combines a normative surface liquid-assimilation step with a gradient/secondary palatal-lateral description; categorical palatalization of both geminate members is unverified. Candidate only; audio and speaker/dialect evidence are required.",
+                    "selected":False,
+                })
+            # Lee (1996), summarized in Kim (2011, p.23), describes
+            # /n/ as [nj]/[ɲ] before alveopalatal affricates. Expose the
+            # coda-before-affricate context as optional candidates only:
+            # the thesis is a secondary description, not direct evidence
+            # that every speaker categorically realizes [ɲ] here.
+            if (syllable.coda=="ㄴ" and rendered[i].endswith("n")
+                    and i+1<len(items) and syllable.boundary_after!="word"
+                    and items[i+1].onset in {"ㅈ","ㅉ","ㅊ"}):
+                for alternate_nasal in ("ɲ", "nj"):
+                    alternate=list(rendered)
+                    alternate[i]=alternate[i][:-1]+alternate_nasal
+                    variants.append({
+                        "layer":"narrow", "syllable_indices":[i],
+                        "ipa":render_syllable_sequence(items,alternate),
+                        "note":("Secondary description in Lee (1996), summarized by Kim (2011, p.23), lists [nj]/[ɲ] before /tɕ, tɕ͈, tɕʰ/. This project exposes optional coda-before-affricate candidates only; no categorical primary output is inferred. " + nasal_ref),
+                        "vowels":["coda ㄴ ["+alternate_nasal+"] before affricate"],
+                        "evidence_status":"secondary-description-candidate-only",
+                        "evidence_refs":[nasal_ref],
+                        "environment":"same-word coda ㄴ before alveopalatal affricate ㅈ/ㅉ/ㅊ",
+                        "uncertainty":"Secondary literature-review description, not direct acoustic evidence for this specific coda context; speaker/dialect and actual place realization remain unverified.",
+                        "selected":False,
+                    })
+            # Coda /l/ has a separate, sociophonetic retroflex variant. The
+            # 2024 study finds higher rates word-finally and before /h/, with
+            # strong dialect/gender/style effects; do not select [ɭ] without
+            # speaker or audio evidence. Keep the canonical [l] untouched.
+            if syllable.coda=="ㄹ" and rendered[i].endswith("l"):
+                next_same_word = i+1<len(items) and syllable.boundary_after!="word"
+                next_onset = items[i+1].onset if next_same_word else None
+                pre_h = next_same_word and next_onset=="ㅎ"
+                pre_consonantal = next_same_word and next_onset not in {None,"","ㅇ"}
+                word_final = i+1==len(items) or syllable.boundary_after=="word"
+                if pre_h or pre_consonantal or word_final:
+                    alternate=list(rendered)
+                    alternate[i]=alternate[i][:-1]+"ɭ"
+                    if pre_h:
+                        environment="coda ㄹ before same-word ㅎ"
+                    elif pre_consonantal:
+                        environment="coda ㄹ before same-word consonant"
+                    else:
+                        environment="word-final coda ㄹ (orthographic word boundary or end of input)"
+                    variants.append({
+                        "layer":"narrow", "syllable_indices":[i],
+                        "ipa":render_syllable_sequence(items,alternate),
+                        "note":("Optional sociophonetic [ɭ] coda variant. Crosby & Dalola (2021) found retroflex laterals 3.204 times more likely preconsonantally and 6.972 times more likely before /h/ than in the word-initial reference; Crosby (2024) found higher odds word-finally (OR 2.516). Strong speaker/dialect/style effects; both studies classify lateral tokens, not taps. " + crosby_ref + " " + socioling_ref),
+                        "vowels":["coda ㄹ [ɭ]"], "evidence_status":"speaker-conditioned-sociophonetic-variant-only",
+                        "evidence_refs":[crosby_ref,socioling_ref], "environment":environment,
+                        "uncertainty":"Variant frequency depends on dialect, speaker, style, preceding vowel and whether /l/ is realized as a lateral; text-only input cannot select it.",
+                        "selected":False,
+                    })
+            # The broad baseline marks coda stops unreleased, following Lee
+            # (1993), but release is not categorical: Kim & Jongman (1996)
+            # observed a brief burst after 83% of word-final stops in their
+            # four-speaker sample; Cha (2026) found small task/place-conditioned
+            # production traces but did not report burst frequency. Expose a
+            # released [p,t,k] alternative only; never select it from text.
+            final_place=coda_stop_place.get(syllable.coda)
+            word_final=(i+1==len(items) or syllable.boundary_after=="word")
+            if final_place and rendered[i].endswith(final_place+"̚") and word_final:
+                alternate=list(rendered)
+                alternate[i]=alternate[i][:-1]
+                variants.append({
+                    "layer":"narrow", "syllable_indices":[i],
+                    "ipa":render_syllable_sequence(items,alternate),
+                    "note":("Lee (1993, p.31) illustrates unreleased syllable-final [p̚,t̚,k̚]. Kim & Jongman (1996) report a brief burst after 83% of word-final stops in a four-speaker sample; Cha (2026) reports task/place-conditioned production traces but no burst rate. Optional unselected released [p,t,k] alternative only; release cannot be inferred from spelling. " + lee_ref + " " + kim_coda_ref + " " + cha_coda_ref),
+                    "vowels":["word-final coda stop ["+final_place+"] released alternative"],
+                    "evidence_status":"source-scoped-release-variation-candidate-only",
+                    "evidence_refs":[lee_ref,kim_coda_ref,cha_coda_ref],
+                    "environment":"word-final coda "+syllable.coda+"; optional released ["+final_place+"] candidate",
+                    "uncertainty":"Lee (1993) illustrates unreleased forms, while Kim & Jongman found bursts after 83% of stops in a four-speaker sample; Cha (2026) did not quantify burst frequency. Release depends on token and prosodic context; audio is required to select.",
+                    "selected":False,
+                })
+        rounded_glide_ref="https://doi.org/10.1017/9781108292351"
+        for i,syllable in enumerate(items):
+            # Kim-Renaud (2022, pp. 25-26, 38-39) describes positional ㅟ
+            # realizations and iterative palatalization in /swi/. Keep [y]
+            # primary; expose [wi]/[ɥi] and the combined ㅅ+ㅟ path only.
+            if syllable.nucleus == "ㅟ" and "y" in rendered[i]:
+                alternate = list(rendered)
+                if syllable.onset == "ㅅ" and rendered[i].startswith("sʰy"):
+                    from_form, to_form = "sʰy", "ɕʰɥi"
+                    environment = "same syllable onset ㅅ + ㅟ; iterative s-palatalization and /wi/→[ɥi] glide realization"
+                    evidence_status = "source-scoped-iterative-palatalization-candidate-only"
+                    note = ("Kim-Renaud (2022, pp. 38-39) describes /s/ palatalization interacting with /wi/→[ɥi] before /i/. The existing profile's [ʰ] on lenis /s/ is retained; this source supports the palatalization/glide interaction, not aspiration. Optional unselected combined candidate only. " + rounded_glide_ref)
+                    labels = ["ㅅ [ɕ] + ㅟ [ɥi]"]
+                elif syllable.onset == "ㅇ" and (i == 0 or items[i-1].boundary_after == "word"):
+                    from_form, to_form = "y", "wi"
+                    environment = "word-initial onsetless ㅟ; source-described strong-position [wi] alternative"
+                    evidence_status = "source-scoped-position-conditioned-variant-only"
+                    note = ("Kim-Renaud (2022, pp. 25-26) describes [wi] in strong word-/syllable-initial position, while retaining speaker/dialect variation. Keep canonical [y] unchanged; expose [wi] only as an unselected candidate. " + rounded_glide_ref)
+                    labels = ["word-initial ㅟ [wi]"]
+                else:
+                    from_form, to_form = "y", "ɥi"
+                    environment = "non-initial/postconsonantal ㅟ; source-described high-front rounded glide [ɥ] plus [i]"
+                    evidence_status = "source-scoped-position-conditioned-variant-only"
+                    note = ("Kim-Renaud (2022, pp. 25-26, 38-39) describes postconsonantal ㅟ with a high-front rounded glide [ɥ] plus [i], alongside monophthongal [y] variation. Keep [y] primary; expose [ɥi] only as an unselected candidate. " + rounded_glide_ref)
+                    labels = ["ㅟ [ɥi]"]
+                if from_form == "y" and "y" in rendered[i]:
+                    alternate[i] = rendered[i].replace(from_form, to_form, 1)
+                elif rendered[i].startswith(from_form):
+                    alternate[i] = to_form + rendered[i][len(from_form):]
+                else:
+                    continue
+                variants.append({
+                    "layer": "narrow", "syllable_indices": [i],
+                    "ipa": render_syllable_sequence(items, alternate),
+                    "note": note, "vowels": labels,
+                    "evidence_status": evidence_status, "evidence_refs": [rounded_glide_ref],
+                    "environment": environment,
+                    "uncertainty": "The source synthesizes earlier work and does not identify this token's speaker, dialect, age or style. Audio or speaker metadata is required to select a realization.",
+                    "selected": False,
+                })
         return variants
     if level!="broad":
         return []
@@ -290,12 +489,12 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     profile_ids={
         "phonemic":"clippyfirst-korean-phonemic-v1",
         "broad":"clippyfirst-korean-broad-v1",
-        "narrow":"clippyfirst-korean-narrow-contextual-allophones-v7",
+        "narrow":"clippyfirst-korean-narrow-contextual-allophones-v17",
     }
     result={
         "level":level,
         "ipa_profile":profile_ids[level],
-        "ipa_profile_version":7 if level=="narrow" else 1,
+        "ipa_profile_version":17 if level=="narrow" else 1,
         "ipa_profile_level":level,
         "ipa_profile_status":(
             "partial-research-only" if level=="narrow"
@@ -309,8 +508,8 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     }
     if level=="narrow":
         result["transcription_profile"]={
-            "name":"korean-narrow-contextual-allophones-v7",
-            "scope":["aspiration of lenis ㅅ as [sʰ]","palatalized [ɕʰ] candidate before ㅣ, ㅖ, ㅑ (Kang 2010; partial narrow profile)","palatalized [ɲ] for onset ㄴ before glide nuclei ㅑ, ㅒ, ㅕ, ㅖ, ㅛ, ㅠ; not generalized to ㅣ","ㅎ is [ç] before selected high-front/glide nuclei and [x] before ㅜ, following the cited Seoul description","after a same-word sonorant coda, /h/ may weaken or delete variably; no categorical [ɦ] is assigned without token-specific evidence","same-word intervocalic ㅎ may be [ɸ]; intervocalic onset ㄹ remains [ɾ] as primary, with an unselected [ɭ] variant retained because Lee (1993) and Crosby & Dalola (2021) differ in their descriptions","tense ㅆ remains [s͈]; its palatalization is not assumed because evidence is mixed"],
+            "name":"korean-narrow-contextual-allophones-v17",
+            "scope":["aspiration of lenis ㅅ as [sʰ]","palatalized [ɕʰ] candidate before ㅣ, ㅖ, ㅑ (Kang 2010; partial narrow profile)","palatalized [ɲ] for onset ㄴ before glide nuclei ㅑ, ㅒ, ㅕ, ㅖ, ㅛ, ㅠ; not generalized to ㅣ","ㅎ is [ç] before selected high-front/glide nuclei and [x] before ㅜ, following the cited Seoul description","after a same-word sonorant coda, /h/ may weaken or delete variably; no categorical [ɦ] is assigned without token-specific evidence","same-word intervocalic ㅎ is vowel-conditioned: [ʝ] before /i,j/, [ɣ] before /ɯ/, [β] before /o,u/, and [ɦ] elsewhere (Shin, Kiaer & Cha 2012); word-initial [ç]/[x] remain separate","tense ㅆ remains [s͈]; its palatalization is not assumed because evidence is mixed","coda ㄹ exposes optional [ɭ] variants word-finally, before same-word consonants and before ㅎ; never selected without speaker/dialect/audio evidence (Crosby & Dalola 2021; Crosby 2024)","geminate ㄹ before high-front vocoids exposes optional [lʲ] coarticulation candidate; primary [l] remains unchanged and categorical [ʎ] is not inferred (Crosby & Dalola 2021)","word-final coda stops retain the conventional unreleased [p̚,t̚,k̚] primary but expose optional released [p,t,k] alternatives; release is not selected from text because burst occurrence varies by study/task and no token audio is available","ㅟ retains primary [y] but exposes source-scoped [wi] in strong onsetless initial position, [ɥi] in non-initial/postconsonantal position, and a combined [ɕʰɥi] candidate for ㅅ+ㅟ; none is selected without speaker/audio evidence","geminate ㄹ before /i,j/ exposes gradient [lʲ], cited [ʎ], and a combined [ɭ.ʎ] interaction hypothesis; the combined form composes two source-described tendencies but is not directly adjudicated and remains unselected"],
             "sources":[
                 "Lee, Hyun Bok (1993), Korean, Illustrations of the IPA: /h/ [ç] before /i,j/ and [x] before /u/; /s/ is classified as fortis in this description: https://doi.org/10.1017/S0025100300004758",
                 "Kang, Hyunsook (2010), Coarticulation effects of Korean sibilant /s/ before a high front segment: https://doi.org/10.17959/sppm.2010.16.1.3",
@@ -322,8 +521,10 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
                 "Kang & Lee (2019), The Realizations of /h/ in Seoul and Gwangju Koreans: speaker- and dialect-conditioned weakening/deletion; https://doi.org/10.17290/jlsk.2019..84.175",
                 "Eom (2014), Phonetic realizations of /h/ after a sonorant in Korean: residual effects and non-categorical realization; https://doi.org/10.17959/sppm.2014.20.3.357",
                 "Crosby, Drew & Dalola, Amanda (2021), Phonetic variation in the Korean liquid phoneme; intervocalic [ɾ] is near-categorical and retroflex laterals are position-/pause-conditioned; https://doi.org/10.3765/plsa.v6i1.5002",
+                "Crosby, Drew (2024), A Sociolinguistic Study of the Retroflex Variant of the Korean Liquid Phoneme; coda [ɭ] is more frequent word-finally and before /h/ and varies by dialect, gender, age and style; https://doi.org/10.20405/kl.2024.02.102.63",
+                "Kim-Renaud, Young-Key (2022), Phonology: An Overview, The Cambridge Handbook of Korean Linguistics, pp. 17-56; position-conditioned [wi]/[ɥi] and iterative palatalization in /swi/: https://doi.org/10.1017/9781108292351",
             ],
-            "limitations":["partial profile, not a complete narrow transcription","models [ç], [x], and [ɸ] in cited Seoul contexts; [ɭ] is exposed only as an unselected narrow variant with conflicting source descriptions and no speaker/prosodic selection; post-sonorant /h/ weakening/deletion remains unresolved and is not collapsed into [ɦ]","the [ɲ] choice before /j/-initial nuclei is a research-profile generalization; do not treat it as universal speaker-independent output","does not force palatalization of tense /s͈/ because the available literature reports variation and disagreement","research-only profile; do not treat as approved Ukrainian target input without target-inventory review"],
+            "limitations":["partial profile, not a complete narrow transcription","models word-initial [ç]/[x] and word-medial [ʝ]/[ɣ]/[β]/[ɦ] in cited Seoul contexts; onset [ɭ] remains an unselected conflict variant, coda [ɭ] is exposed only as a speaker-conditioned sociophonetic variant word-finally/preconsonantally/pre-/h/, and geminate [lʲ] only as a gradient high-front coarticulation candidate; post-sonorant /h/ weakening/deletion remains unresolved and is not collapsed into [ɦ]","the [ɲ] choice before /j/-initial nuclei is a research-profile generalization; do not treat it as universal speaker-independent output","does not force palatalization of tense /s͈/ because the available literature reports variation and disagreement","released coda [p,t,k] alternatives are word-final and unselected; Kim & Jongman (1996) observed bursts after 83% of stops in a four-speaker sample, while Cha (2026) did not quantify burst frequency; do not infer release from spelling","ㅟ [wi]/[ɥi] and ㅅ+ㅟ palatalization candidates are source-scoped and unselected; the chapter synthesizes prior research and does not identify a particular speaker or token; do not treat one realization as universal","the geminate [ɭ.ʎ] candidate composes separate coda-retroflex and pre-/i,j/ palatal-lateral descriptions; no source directly adjudicates the combined sequence","research-only profile; do not treat as approved Ukrainian target input without target-inventory review"],
             "target_compatible":False,
         }
     return result

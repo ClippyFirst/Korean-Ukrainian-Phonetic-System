@@ -11,7 +11,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createBrowserKozakKimEngine, evaluateRows } from './benchmark_kozak_kim_browser.mjs';
+import { createBrowserKozakKimEngine, evaluateRows, normalizeIpa } from './benchmark_kozak_kim_browser.mjs';
 import { buildExtendedIpaResult } from '../src/app/extended_ipa.js';
 import { phonemicIpaFromHangul } from '../src/app/phonemic_ipa.js';
 
@@ -69,6 +69,171 @@ export function scoreLayer(rows, engine, layer, datasetName) {
     'Pinned corpus input; identical occurrences for all IPA layers');
 }
 
+
+export function summarizeNarrowVariants(rows, engine) {
+  let eligibleTokens = 0;
+  let tokensWithVariants = 0;
+  let totalVariants = 0;
+  let selectedVariants = 0;
+  let primaryIpaChangedTokens = 0;
+  let scoredGoldTokens = 0;
+  let primaryExactMatches = 0;
+  let candidateOracleExactMatches = 0;
+  let candidateOracleRescuedTokens = 0;
+  const oracleRescuedByEnvironment = {};
+  const byEnvironment = {};
+  const byEvidenceStatus = {};
+  const examples = [];
+  for (const row of rows) {
+    for (const token of row.tokens ?? []) {
+      const canonical = token.canonical;
+      if (typeof canonical !== 'string' || !HANGUL_TOKEN.test(canonical) ||
+          typeof token.phoneme !== 'string' || !token.phoneme.trim()) continue;
+      eligibleTokens += 1;
+      const base = engine.convert(canonical, {
+        morphologyMode: 'strict',
+        ipaProfile: 'clippyfirst-korean-broad-v1'
+      });
+      const extended = buildExtendedIpaResult(
+        canonical, base, phonemicIpaFromHangul(canonical)
+      );
+      const primaryNarrow = extended.layers.narrow.ipa;
+      if (primaryNarrow && primaryNarrow !== base.ipa) primaryIpaChangedTokens += 1;
+      const goldVariants = String(token.phoneme).split(',').map(normalizeIpa).filter(Boolean);
+      const primaryNormalized = normalizeIpa(primaryNarrow);
+      const primaryExact = goldVariants.includes(primaryNormalized);
+      if (goldVariants.length && primaryNormalized) {
+        scoredGoldTokens += 1;
+        if (primaryExact) primaryExactMatches += 1;
+      }
+      const variants = (Array.isArray(extended.variants) ? extended.variants : [])
+        .filter(variant => variant.layer === 'narrow');
+      const oracleMatch = variants.find(variant => goldVariants.includes(normalizeIpa(variant.ipa)));
+      if (primaryNormalized && goldVariants.length && (primaryExact || oracleMatch)) {
+        candidateOracleExactMatches += 1;
+        if (!primaryExact && oracleMatch) {
+          candidateOracleRescuedTokens += 1;
+          const environment = oracleMatch.environment || 'unspecified';
+          oracleRescuedByEnvironment[environment] = (oracleRescuedByEnvironment[environment] ?? 0) + 1;
+        }
+      }
+      if (!variants.length) continue;
+      tokensWithVariants += 1;
+      totalVariants += variants.length;
+      for (const variant of variants) {
+        if (variant.selected) selectedVariants += 1;
+        const environment = variant.environment || 'unspecified';
+        const evidence = variant.evidence_status || 'unspecified';
+        byEnvironment[environment] = (byEnvironment[environment] ?? 0) + 1;
+        byEvidenceStatus[evidence] = (byEvidenceStatus[evidence] ?? 0) + 1;
+        if (examples.length < 30) examples.push({
+          token: canonical, primary_ipa: primaryNarrow,
+          variant_ipa: variant.ipa, environment,
+          evidence_status: evidence, selected: variant.selected === true,
+          evidence_refs: variant.evidence_refs || []
+        });
+      }
+    }
+  }
+  return {
+    interpretation: 'Candidate coverage is reported separately from primary IPA scores; unselected variants are not production predictions. The separately labeled oracle upper bound compares them to corpus IPA labels, which are not layer-matched narrow gold.',
+    eligible_tokens: eligibleTokens,
+    tokens_with_variants: tokensWithVariants,
+    variant_token_coverage_rate: eligibleTokens ? Number((tokensWithVariants / eligibleTokens).toFixed(6)) : null,
+    total_variant_candidates: totalVariants,
+    mean_variants_per_eligible_token: eligibleTokens ? Number((totalVariants / eligibleTokens).toFixed(6)) : null,
+    selected_variant_candidates: selectedVariants,
+    primary_ipa_changed_tokens: primaryIpaChangedTokens,
+    candidate_oracle_interpretation: 'Offline upper-bound diagnostic only: an unselected candidate exactly matches at least one corpus IPA variant. It is not accuracy, not independent narrow gold, and must never select runtime output.',
+    candidate_oracle_scored_tokens: scoredGoldTokens,
+    primary_exact_matches: primaryExactMatches,
+    candidate_oracle_exact_matches: candidateOracleExactMatches,
+    candidate_oracle_exact_rate: scoredGoldTokens ? Number((candidateOracleExactMatches / scoredGoldTokens).toFixed(6)) : null,
+    candidate_oracle_rescued_tokens: candidateOracleRescuedTokens,
+    candidate_oracle_rescued_by_environment: Object.fromEntries(Object.entries(oracleRescuedByEnvironment).sort(([a],[b]) => a.localeCompare(b))),
+    by_environment: Object.fromEntries(Object.entries(byEnvironment).sort(([a],[b]) => a.localeCompare(b))),
+    by_evidence_status: Object.fromEntries(Object.entries(byEvidenceStatus).sort(([a],[b]) => a.localeCompare(b))),
+    examples
+  };
+}
+
+function alignCodepoints(predicted, reference) {
+  const a = [...predicted], b = [...reference];
+  const dp = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
+  for (let i = 0; i <= a.length; i += 1) dp[i][0] = i;
+  for (let j = 0; j <= b.length; j += 1) dp[0][j] = j;
+  for (let i = 1; i <= a.length; i += 1) {
+    for (let j = 1; j <= b.length; j += 1) {
+      dp[i][j] = Math.min(
+        dp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1),
+        dp[i - 1][j] + 1,
+        dp[i][j - 1] + 1
+      );
+    }
+  }
+  const operations = [];
+  let i = a.length, j = b.length;
+  while (i || j) {
+    if (i && j && a[i - 1] === b[j - 1] && dp[i][j] === dp[i - 1][j - 1]) {
+      operations.push({ type: 'equal', predicted: a[i - 1], reference: b[j - 1] });
+      i -= 1; j -= 1;
+    } else if (i && j && dp[i][j] === dp[i - 1][j - 1] + 1) {
+      operations.push({ type: 'substitution', predicted: a[i - 1], reference: b[j - 1] });
+      i -= 1; j -= 1;
+    } else if (i && dp[i][j] === dp[i - 1][j] + 1) {
+      operations.push({ type: 'deletion', predicted: a[i - 1], reference: null });
+      i -= 1;
+    } else {
+      operations.push({ type: 'insertion', predicted: null, reference: b[j - 1] });
+      j -= 1;
+    }
+  }
+  return operations.reverse();
+}
+
+export function summarizeNarrowErrorPatterns(records) {
+  const counts = { substitutions: {}, insertions: {}, deletions: {} };
+  const examples = { substitutions: {}, insertions: {}, deletions: {} };
+  let scoredTokens = 0, tokensWithErrors = 0;
+  for (const record of records ?? []) {
+    if (typeof record.normalized_predicted !== 'string' ||
+        typeof record.closest_normalized_gold !== 'string') continue;
+    scoredTokens += 1;
+    const operations = alignCodepoints(record.normalized_predicted, record.closest_normalized_gold);
+    const errors = operations.filter(item => item.type !== 'equal');
+    if (errors.length) tokensWithErrors += 1;
+    for (const item of errors) {
+      const group = item.type === 'substitution' ? 'substitutions'
+        : item.type === 'insertion' ? 'insertions' : 'deletions';
+      const key = item.type === 'substitution'
+        ? item.predicted + ' → ' + item.reference
+        : item.type === 'insertion' ? '∅ → ' + item.reference : item.predicted + ' → ∅';
+      counts[group][key] = (counts[group][key] ?? 0) + 1;
+      if (!examples[group][key]) examples[group][key] = [];
+      if (examples[group][key].length < 4) examples[group][key].push({
+        token: record.token,
+        predicted: record.predicted,
+        reference: record.gold
+      });
+    }
+  }
+  const top = group => Object.entries(counts[group])
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, 25)
+    .map(([edit, count]) => ({ edit, count, examples: examples[group][edit] }));
+  return {
+    interpretation: 'Unicode-codepoint Levenshtein error attribution for normalized strings; edit pairs are diagnostic symbol confusions, not phonological-feature judgments or narrow-IPA accuracy.',
+    scored_tokens: scoredTokens,
+    tokens_with_errors: tokensWithErrors,
+    substitution_count: Object.values(counts.substitutions).reduce((sum, n) => sum + n, 0),
+    insertion_count: Object.values(counts.insertions).reduce((sum, n) => sum + n, 0),
+    deletion_count: Object.values(counts.deletions).reduce((sum, n) => sum + n, 0),
+    top_substitutions: top('substitutions'),
+    top_insertions: top('insertions'),
+    top_deletions: top('deletions')
+  };
+}
+
 export function compareRows(standard, extendedBroad) {
   const left = standard.records ?? [];
   const right = extendedBroad.records ?? [];
@@ -111,6 +276,8 @@ function main() {
       const broad = scoreLayer(rows, engine, 'broad', name);
       const phonemic = scoreLayer(rows, engine, 'phonemic', name);
       const narrow = scoreLayer(rows, engine, 'narrow', name);
+      const narrowVariants = summarizeNarrowVariants(rows, engine);
+      const narrowErrors = summarizeNarrowErrorPatterns(narrow.records);
       datasets[name] = {
         occurrence_policy: 'same source rows, token order, eligibility and gold strings across all four passes',
         reference_layer_status: name === 'Seoul Corpus' ? 'phonemic-word-level-reference' : 'reference-layer-not-independently-adjudicated-here',
@@ -121,6 +288,8 @@ function main() {
           narrow: summarize(narrow)
         },
         standard_vs_extended_broad: compareRows(standard, broad),
+        narrow_variant_diagnostics: narrowVariants,
+        narrow_error_patterns: narrowErrors,
         records: {
           standard_ipa: standard.records,
           extended_broad: broad.records,
@@ -143,6 +312,8 @@ function main() {
         'Extended phonemic is a deterministic underlying Hangul inventory. Its agreement with a corpus reference is meaningful only if that reference is phonemic and uses a compatible inventory/segmentation convention.',
         'Extended narrow is a partial research allophone profile. No independently adjudicated narrow-IPA gold is supplied by these corpora; its score is cross-layer string agreement only and must not be described as narrow IPA accuracy.',
         'Exact match, CER and coverage are reported separately; no permissive normalization is used for headline metrics.',
+        'Unselected Narrow variant candidates are summarized separately by environment/evidence; candidate coverage is not accuracy and does not change the primary IPA score.',
+        'Narrow error patterns are Unicode-codepoint Levenshtein diagnostics; symbol confusions are not phonological-feature judgments and remain cross-layer when no layer-matched gold exists.',
         'This report does not measure Ukrainian target transcription accuracy.'
       ]
     };
@@ -154,6 +325,8 @@ function main() {
         extended_broad: data.extended_ipa.broad,
         extended_phonemic: data.extended_ipa.phonemic,
         extended_narrow: data.extended_ipa.narrow,
+        narrow_variant_diagnostics: data.narrow_variant_diagnostics,
+        narrow_error_patterns: data.narrow_error_patterns,
         standard_vs_extended_broad: data.standard_vs_extended_broad
       }, null, 2) + '\n');
     }

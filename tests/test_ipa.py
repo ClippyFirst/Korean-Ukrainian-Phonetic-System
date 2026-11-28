@@ -224,12 +224,12 @@ def test_python_ipa_results_expose_a_versioned_profile_contract():
     expected = {
         "phonemic": ("clippyfirst-korean-phonemic-v1", "phonemic"),
         "broad": ("clippyfirst-korean-broad-v1", "broad"),
-        "narrow": ("clippyfirst-korean-narrow-contextual-allophones-v7", "narrow"),
+        "narrow": ("clippyfirst-korean-narrow-contextual-allophones-v17", "narrow"),
     }
     for level, (profile_id, profile_level) in expected.items():
         result = phoneticize_korean("씨", ipa_level=level)["ipa"]
         assert result["ipa_profile"] == profile_id
-        assert result["ipa_profile_version"] == (7 if level == "narrow" else 1)
+        assert result["ipa_profile_version"] == (17 if level == "narrow" else 1)
         assert result["ipa_profile_level"] == profile_level
         assert result["ipa_profile_status"] == (
             "partial-research-only" if level == "narrow"
@@ -320,7 +320,9 @@ def test_narrow_h_has_context_conditioned_palatal_and_velar_allophones():
     from korean_ukrainian.pipeline import phoneticize_korean
 
     assert phoneticize_korean("히", ipa_level="narrow")["ipa"]["ipa"] == "çi"
-    assert phoneticize_korean("후", ipa_level="narrow")["ipa"]["ipa"] == "xu"
+    assert phoneticize_korean("후", ipa_level="narrow")["ipa"]["ipa"] == "ɸʷu"
+    assert phoneticize_korean("호", ipa_level="narrow")["ipa"]["ipa"] == "ɸʷo"
+    assert phoneticize_korean("흐", ipa_level="narrow")["ipa"]["ipa"] == "xɯ"
     assert phoneticize_korean("하", ipa_level="narrow")["ipa"]["ipa"] == "ha"
 
 

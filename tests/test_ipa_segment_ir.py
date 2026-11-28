@@ -59,9 +59,9 @@ def test_engine_generates_existing_expanded_korean_ipa_realizations_by_layer():
     liquid_result = phoneticize_korean("나라")["extended_ipa"]
     assert any(item["layer"] == "narrow" and item["ipa"] == "na.ɭa" and item["selected"] is False
                for item in liquid_result["variants"])
-    assert layer("아하", "narrow") == "a.ɸa"
+    assert layer("아하", "narrow") == "a.ɦa"
     assert layer("히", "narrow") == "çi"
-    assert layer("후", "narrow") == "xu"
+    assert layer("후", "narrow") == "ɸʷu"
     assert "ɦ" not in layer("안하", "narrow")
 
 

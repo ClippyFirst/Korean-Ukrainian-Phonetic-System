@@ -1,4 +1,6 @@
 from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
+from korean_ukrainian.ipa import realize_syllables
+from korean_ukrainian.phonology import parse_syllables
 
 
 def _ipa(word: str, level: str) -> dict:
@@ -14,8 +16,8 @@ def test_narrow_profile_aspirates_lenis_sibilant_without_changing_broad():
     narrow = _ipa("사", "narrow")
     assert narrow["ipa"] == "sʰa"
     assert narrow["level"] == "narrow"
-    assert narrow["transcription_profile"]["name"] == "korean-narrow-contextual-allophones-v7"
-    assert narrow["ipa_profile_version"] == 7
+    assert narrow["transcription_profile"]["name"] == "korean-narrow-contextual-allophones-v17"
+    assert narrow["ipa_profile_version"] == 17
     assert narrow["transcription_profile"]["target_compatible"] is False
     assert narrow["transcription_profile"]["limitations"]
 
@@ -41,6 +43,28 @@ def test_narrow_profile_palatalizes_n_before_glide_nuclei_but_not_before_i():
     # Broad IPA and the production-default profile remain unchanged.
     assert _ipa("녀", "broad")["ipa"] == "njʌ"
 
+
+
+def test_rounded_front_vowel_exposes_position_conditioned_glides_and_sibilant_interaction():
+    initial = _ipa("위", "narrow")
+    assert initial["ipa"] == "y"
+    initial_variant = next(item for item in initial["variants"] if item["ipa"] == "wi")
+    assert initial_variant["selected"] is False
+    assert initial_variant["evidence_status"] == "source-scoped-position-conditioned-variant-only"
+
+    postconsonantal = _ipa("귀", "narrow")
+    assert postconsonantal["ipa"] == "ky"
+    glide_variant = next(item for item in postconsonantal["variants"] if item["ipa"] == "kɥi")
+    assert glide_variant["selected"] is False
+    assert "postconsonantal" in glide_variant["environment"]
+
+    interaction = _ipa("쉽다", "narrow")
+    assert interaction["ipa"] == "sʰyp̚.t͈a"
+    combined = next(item for item in interaction["variants"] if item["ipa"] == "ɕʰɥip̚.t͈a")
+    assert combined["selected"] is False
+    assert combined["evidence_status"] == "source-scoped-iterative-palatalization-candidate-only"
+    assert "iterative s-palatalization" in combined["environment"]
+    assert any("10.1017/9781108292351" in ref for ref in combined["evidence_refs"])
 
 def test_tense_sibilant_is_not_aspirated_and_palatalization_is_not_assumed():
     assert _ipa("싸", "narrow")["ipa"] == "s͈a"
@@ -73,7 +97,17 @@ def test_python_broad_fortis_sibilant_baseline_is_not_browser_profile_gold():
     assert _ipa("싸", "broad")["ipa"] == "s͈a"
 
 def test_narrow_seoul_h_and_intervocalic_liquid_tap_are_contextual():
-    assert _ipa("아하", "narrow")["ipa"] == "a.ɸa"
+    assert _ipa("아하", "narrow")["ipa"] == "a.ɦa"
+    assert _ipa("아히", "narrow")["ipa"] == "a.ʝi"
+    assert _ipa("으흐", "narrow")["ipa"] == "ɯ.ɣɯ"
+    assert _ipa("오호", "narrow")["ipa"] == "o.βo"
+    assert _ipa("하", "narrow")["ipa"] == "ha"
+    assert _ipa("히", "narrow")["ipa"] == "çi"
+    assert _ipa("후", "narrow")["ipa"] == "ɸʷu"
+    assert _ipa("호", "narrow")["ipa"] == "ɸʷo"
+    assert _ipa("흐", "narrow")["ipa"] == "xɯ"
+    assert _ipa("아후", "narrow")["ipa"] == "a.βu"
+    assert _ipa("아 후", "narrow")["ipa"] == "a ɸʷu"
     # Crosby & Dalola (2021): 99.3% of intervocalic liquids in their
     # 12-speaker Standard Korean sample were taps; do not emit [ɭ] here.
     assert _ipa("나라", "narrow")["ipa"] == "na.ɾa"
@@ -93,3 +127,102 @@ def test_post_sonorant_h_is_not_forced_to_voiced_allophone_without_token_evidenc
     assert "ɦ" not in result["ipa"]
     assert any("unresolved" in item.lower()
                for item in result["transcription_profile"]["limitations"])
+
+
+def test_coda_retroflexion_is_exposed_only_as_a_speaker_conditioned_variant():
+    final = _ipa("팔", "narrow")
+    assert final["ipa"] == "pʰal"
+    variant = next(item for item in final["variants"] if item["ipa"] == "pʰaɭ")
+    assert variant["layer"] == "narrow"
+    assert variant["selected"] is False
+    assert variant["evidence_status"] == "speaker-conditioned-sociophonetic-variant-only"
+    assert "https://doi.org/10.20405/kl.2024.02.102.63" in variant["evidence_refs"]
+    assert "word-final" in variant["environment"]
+
+    pre_h = realize_syllables(parse_syllables("말하"), level="narrow")
+    assert pre_h["ipa"] == "mal.ha"
+    pre_h_variant = next(item for item in pre_h["variants"] if item["ipa"] == "maɭ.ha")
+    assert pre_h_variant["selected"] is False
+    assert "before /h/" in pre_h_variant["note"]
+
+
+def test_coda_retroflex_variant_does_not_leak_into_non_triggering_contexts():
+    result = realize_syllables(parse_syllables("팔이"), level="narrow")
+    assert result["ipa"] == "pʰal.i"
+    assert not any("coda ㄹ" in item.get("vowels", [""])[0] for item in result["variants"])
+
+
+def test_preconsonantal_coda_lateral_has_a_separate_unselected_retroflex_candidate():
+    result = realize_syllables(parse_syllables("물론"), level="narrow")
+    assert result["ipa"] == "mul.lon"
+    variant = next(item for item in result["variants"] if item["ipa"] == "muɭ.lon")
+    assert variant["selected"] is False
+    assert variant["evidence_status"] == "speaker-conditioned-sociophonetic-variant-only"
+    assert "preconsonantal" in variant["note"]
+    assert any("10.3765/plsa.v6i1.5002" in ref for ref in variant["evidence_refs"])
+
+
+def test_geminate_lateral_before_high_front_vocoid_exposes_optional_palatalization():
+    result = realize_syllables(parse_syllables("빨리"), level="narrow")
+    assert result["ipa"] == "p͈al.li"
+    variant = next(item for item in result["variants"] if item["ipa"] == "p͈al.lʲi")
+    assert variant["selected"] is False
+    assert variant["evidence_status"] == "gradient-coarticulation-candidate-variant-only"
+    assert any("10.3765/plsa.v6i1.5002" in ref for ref in variant["evidence_refs"])
+
+
+
+def test_geminate_lateral_exposes_cited_palatal_and_combined_coda_onset_variants():
+    result = _ipa("올린", "narrow")
+    assert result["ipa"] == "ol.lin"
+    palatal = next(item for item in result["variants"] if item["ipa"] == "ol.ʎin")
+    assert palatal["selected"] is False
+    assert palatal["evidence_status"] == "source-cited-palatal-lateral-variant-only"
+    combined = next(item for item in result["variants"] if item["ipa"] == "oɭ.ʎin")
+    assert combined["selected"] is False
+    assert combined["evidence_status"] == "source-scoped-interaction-hypothesis-only"
+    assert combined["syllable_indices"] == [0, 1]
+    assert any("10.3765/plsa.v6i1.5002" in ref for ref in combined["evidence_refs"])
+    assert any("10.20405/kl.2024.02.102.63" in ref for ref in combined["evidence_refs"])
+
+
+def test_liquid_assimilation_plus_geminate_palatalization_is_an_unselected_interaction_hypothesis():
+    result = _ipa("관리자", "narrow")
+    assert result["ipa"] == "kwal.li.dʑa"
+    candidate = next(item for item in result["variants"] if item["ipa"] == "kwaʎ.ʎi.dʑa")
+    assert candidate["selected"] is False
+    assert candidate["evidence_status"] == "source-scoped-geminate-palatalization-interaction-hypothesis-only"
+    assert candidate["syllable_indices"] == [0, 1]
+    assert any("regltn_code=0002" in ref for ref in candidate["evidence_refs"])
+    assert any("10.3765/plsa.v6i1.5002" in ref for ref in candidate["evidence_refs"])
+
+def test_coda_nasal_palatalization_before_affricates_is_optional_only():
+    result = realize_syllables(parse_syllables("군주"), level="narrow")
+    assert result["ipa"] == "kun.dʑu"
+    by_ipa = {item["ipa"]: item for item in result["variants"]}
+    assert "kuɲ.dʑu" in by_ipa
+    assert "kunj.dʑu" in by_ipa
+    for variant in (by_ipa["kuɲ.dʑu"], by_ipa["kunj.dʑu"]):
+        assert variant["selected"] is False
+        assert variant["evidence_status"] == "secondary-description-candidate-only"
+        assert "same-word coda ㄴ before alveopalatal affricate" in variant["environment"]
+        assert any("1324541" in ref for ref in variant["evidence_refs"])
+
+
+def test_word_final_coda_stops_expose_unreleased_candidates_without_selecting_them():
+    for word, primary, candidate in (("낫", "nat̚", "nat"), ("밖", "pak̚", "pak"), ("밥", "pap̚", "pap"), ("닭", "tak̚", "tak"), ("값", "kap̚", "kap")):
+        parsed = parse_syllables(word)
+        result = realize_syllables(parsed, level="narrow")
+        broad = realize_syllables(parsed, level="broad")
+        assert result["ipa"] == primary
+        assert broad["ipa"] == primary
+        variant = next(item for item in result["variants"] if item["ipa"] == candidate)
+        assert variant["selected"] is False
+        assert variant["evidence_status"] == "source-scoped-release-variation-candidate-only"
+        assert "optional released" in variant["environment"]
+        assert any("10.1006/JPHO.1996.0016" in ref for ref in variant["evidence_refs"])
+        assert any("10.13064/ksss.2026.18.1.021" in ref for ref in variant["evidence_refs"])
+
+    nonfinal = realize_syllables(parse_syllables("낫다"), level="narrow")
+    assert not any(item["evidence_status"] == "source-scoped-release-variation-candidate-only"
+                   for item in nonfinal["variants"])

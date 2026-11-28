@@ -413,3 +413,273 @@ Inspected the uploaded `standard-vs-extended-ipa-ab` artifact (workflow run `459
 The separate multi-engine artifact from the same run is aggregate-only and is not an A/B of Extended IPA. Its strict native results are UGTPHON 52.7387% exact / 9.0130% CER (2,702 scored of 2,703), SIGMORPHON 35.9719% / 14.5347% (998/999), and Seoul phoneme-tier 14.8033% / 39.8430% (966/1,000). The separate paired UGTPHON engine comparison reports native 52.7387% / 9.0130% vs g2pk 53.0892% / 9.2328% on 2,702 paired occurrences; g2pk gains +0.3701 pp exact but worsens CER by +0.2207 pp. These are diagnostic comparisons across engines, not Extended-IPA gains or adjudicated gold accuracy.
 
 The A/B artifact was produced on implementation commit `08feed20a54187ebc1c35f211801e9c7e5c85632`; the subsequent `a7116388` change only corrected a test fixture (no production parser/IPA output change), and documentation-only commits followed. The current-head benchmark workflow was cancelled before producing its own artifact; this prior artifact remains the inspected diagnostic evidence, not an exact-current-head rerun.
+
+
+## Extended Narrow coverage continuation — 2026-11-27 — profile v9
+
+**Branch:** `feat/korean-narrow-phonetics-coverage-2026-11-27` (stacked on PR #510). **Base:** PR #510 head `e5d70f373c3603a9c573080eee0df7e19199f067`. **Scope:** research-grounded Narrow allophony; Standard/Broad and Ukrainian adaptation remain unchanged.
+
+### Literature-to-runtime coverage map
+
+| Phenomenon | Existing implementation | Narrow status / boundary |
+|---|---|---|
+| Three-way lenis/aspirated/fortis stop contrast | Underlying inventory and broad IPA; broad inter-sonorant voicing | No invented VOT/F0/voice-quality diacritics. 2020/2026 studies show prosodic-position, focus, age and vowel-conditioned cue reweighting; acoustic values require audio. |
+| Lenis /s/ and sibilant coarticulation | Narrow [sʰ], restricted [ɕʰ] before ㅣ/ㅖ/ㅑ | Partial, context-scoped; no blanket palatalization of all /j/ vowels or fortis /s͈/. |
+| Nasal palatalization | [ɲ] before selected /j/-initial nuclei | Research-only generalization; /i/ excluded; primary-source review still required. |
+| /h/ allophony | [ç] before selected high-front/glide nuclei, [x] before ㅜ, [ɸ] in same-word intervocalic position | Source-scoped descriptions; post-sonorant weakening/deletion remains unresolved, not forced to [ɦ]. |
+| Lenis stop voicing | Broad [b d ɡ dʑ] in the supported inter-sonorant contexts | Already represented; further phonetic gradience is not inferred without measurements. |
+| Liquid tap/lateral and assimilation | [ɾ] singleton onset; [l] coda/geminate; normative ㄹ+ㄹ assimilation | Intervocalic [ɾ] remains primary; conflicting onset [ɭ] is unselected. |
+| Coda lateral retroflexion | **New v8:** optional [ɭ] variants for word-final coda ㄹ and coda ㄹ before same-word ㅎ | Unselected sociophonetic alternatives based on Crosby (2024), with dialect/gender/age/style caveats; canonical [l] is unchanged. |
+| Geminate liquid before high-front vocoids | **New v10:** optional unselected [lʲ] candidate, primary [l] unchanged; Crosby & Dalola (2021) measured F2 elevation (~254.49 Hz) | Gradient coarticulation only; categorical [ʎ] is not inferred. Nasalized/intermediate laterals and speaker-conditioned tap/lateral probabilities remain TODO. |
+| Coda neutralization/release, nasalization, palatalization, aspiration, fortition, n-insertion, liaison, morphology and boundary interactions | Existing Standard/NIKL rule engine and adversarial cases | Broad phonological rules remain separate from Narrow phonetic detail; gradient rates are not collapsed into categorical outputs. |
+| Vowel quality, ㅢ, diphthongs/glides and hiatus | Existing broad realizations and optional ㅢ/ㅚ/ㅟ/ㅖ/ㅐ variants | Narrow formant/coarticulation/reduction is incomplete; no speaker-specific vowel quality inferred from text. |
+| Prosody, focus, phrase boundaries, speech rate | Nullable context fields and separate acoustic annotation contract | Text-only context stays null. F0, VOT, closure voicing, H1*-H2*, H1*-A1*, CPP and formants require measured audio and method provenance. |
+
+### v8 implementation
+
+- Added a source-backed, **unselected** coda [ɭ] variant when ㄹ is word-final or precedes same-word ㅎ. Evidence: Crosby (2024), 23 speakers across Central, Gyeongsangdo and Jeollado; word-final position OR 2.516 and pre-/h/ OR 3.056 versus geminate reference; substantial dialect/gender/age/style effects. The article only analyzes tokens classified as lateral, so it does not imply that every written coda ㄹ is realized as a lateral.
+- Kept primary coda [l] and all Broad/Standard outputs unchanged. No speakerless probability or dialect guessing was added.
+- Added source S038 to `data/korean/sources.csv` and `SRC-KOREAN-LIQUID-RETROFLEX-2024` to `research/SOURCE-REGISTER.csv`; no audio or corpus annotations were imported.
+- Python and browser Extended IPA now use narrow profile v9; added tests for word-final and pre-/h/ candidates and a negative control for a non-triggering vowel-following context.
+
+### Benchmark interpretation and open gates
+
+- Historical paired A/B artifact run 45973857624: Standard Broad = Extended Broad by contract; Narrow cross-layer string agreement was 55.8845% exact / 7.2217% CER on UGTPHON and 39.6794% / 12.6912% on SIGMORPHON. These are **not narrow accuracy scores**: the stored references were not independently adjudicated as narrow IPA, and the artifact predates the v7 [ɾ]-primary correction and v8 coda variants.
+- The 2024 coda [ɭ] variants do not alter primary IPA and are not expected to change Exact Match/CER. Their acceptance criterion is correct variant eligibility, provenance, and cross-runtime parity, not score uplift.
+- TODO: exact-head CI and rerun paired v8 A/B; inspect per-feature additions/omissions and paired wins/losses. BLOCKED: independent layer-matched narrow IPA gold, rights-cleared audio, and qualified phonetic adjudication. A high score against Broad or mixed references cannot clear this gate.
+- No F0/VOT/voice-quality realization, dialect choice, speaker choice, or phrase structure is guessed from text. No Ukrainian target adapter change.
+
+**Readiness:** research prototype. Software verification is pending on this branch; no linguistic certification or narrow accuracy gain is claimed.
+
+
+### Additional literature synthesis — 2026-11-27
+
+The completed Undermind review returned 177 relevant papers (summary is abstract/metadata-level unless individually opened). Its central implementation recommendation is to separate normative categorical phonology from narrow phonetic realization and only emit narrow detail when supported by audio or a declared, validated speaker/prosody profile. Research workspace: [Korean phonetic phenomena review](https://app.undermind.ai/projects/de353992-202a-4b09-bf19-47932f80e426?path=%2Frepository-continuation%2FKorean%20phonetic%20phenomena%20implementation%20coverage%20and%20benchmark%20design%202026-11-27).
+
+Newly registered sources:
+- Schweizer, Ahn & Kwon (2026), DOI 10.1017/S002510032510087X: Seoul lenis/aspirated/fortis stop cues differ between IP-initial, AP-initial and word-medial positions. IP/AP-initial distinction uses burst duration and post-stop F0, with H1*-H2* also separating tense from non-tense; word-medial cues include closure duration and voicing during closure. This supports a prosody-aware acoustic annotation layer, not deterministic IPA changes from orthography.
+- Jun (2021), DOI 10.5334/GJGL.1401: n-insertion is gradient, with morphology, etymology, component length, segmental environment and dialect interacting. Do not make a binary rule universal or select it from spelling alone.
+- Lee (2023), DOI 10.17959/sppm.2023.29.2.193, and Chung (2022), DOI 10.18855/lisoko.2022.47.4.009: the /e–ɛ/ merger is age-, gender- and position-sensitive; phonemic identity and measured vowel target are not the same thing.
+- Kang & Kong (2016), DOI 10.13064/KSSS.2016.8.4.039: /o/-raising and /u, ɨ/ fronting vary across speaker cohorts; do not substitute one assumed narrow vowel target for all Seoul speakers.
+
+The review also flags: variable /h/-deletion with residual effects on the preceding sonorant; optional/gradient aspiration merger; lenition and inter-sonorant voicing; compound tensification; coronal place assimilation; liquid assimilation and non-categorical nasal–liquid outcomes; initial denasalization; vowel nasalization/coarticulation; /ɨi/ monophthongization and glide/hiatus behavior; reduction and speech-rate effects; focus and prosodic-boundary strengthening. These require separate rule/variant/acoustic evidence rather than a single global narrow transcription rule.
+
+### Benchmark and corpus design corrections
+
+- Seoul Corpus contains phrasal-word/utterance boundaries and phonemic labels; it is useful for prosody-aware segmentation and phonemic G2P checks, **not** a narrow-phone gold set. OpenSLR SLR113 declares CC BY-NC 2.0, but original upstream rights and derived-label redistribution still require review.
+- KsponSpeech pronunciation transcripts are not equivalent to time-aligned narrow IPA. Do not relabel orthographic or pronunciation text as acoustic IPA gold.
+- Separate four acceptance dimensions: (1) categorical standard-rule correctness on NIKL cases, (2) optional-variant coverage/provenance and abstention, (3) narrow acoustic accuracy on rights-cleared, independently annotated audio with inter-annotator agreement, and (4) runtime determinism/parity. Keep exact match, CER/PER, feature-weighted distance, coverage-adjusted score, and per-rule false-addition/omission counts separate.
+- For stop contrast, evaluate IP/AP/word-medial separately and retain F0/VOT/closure/voice-quality measurements with Praat method, time window, source span and speaker metadata. For vowel and liquid allophones, stratify by dialect, age, gender, style, prosodic position and relevant preceding/following segments. A broad reference cannot certify a narrow output.
+
+
+## Narrow profile v9 — preconsonantal liquid detail — 2026-11-27
+
+- Expanded the v8 coda [ɭ] candidate eligibility to include same-word preconsonantal coda ㄹ, not only pre-/h/ and word-final contexts. Crosby & Dalola (2021) found retroflex laterals 3.204 times more likely preconsonantally and 6.972 times more likely before /h/ than in their word-initial reference; their 12-speaker sample also found 99.3% intervocalic taps. These are relative effects, not universal categorical rules.
+- Python and browser profile identifiers are now `clippyfirst-korean-narrow-contextual-allophones-v9`. Primary IPA remains unchanged; [ɭ] is an unselected alternative with evidence and uncertainty attached.
+- The same study found coarticulatory palatalization before high-front vocoids (mean F2 about 255 Hz higher), but this is a gradient acoustic effect; no categorical [ʎ] substitution is added without a more precise validated environment/profile. This remains an evidence-gated TODO.
+- Explicit pre-pausal selection remains unimplemented in the Python text-only path because orthographic punctuation/word boundaries are not reliable measurements of actual pause or prosodic boundary. A future audio/prosody input may support it; text-only output must not assume it.
+- Tests added for preconsonantal `물론` → primary `mul.lon` plus unselected `muɭ.lon`; browser/Python parity required. v9 remains research-only and not target-compatible.
+
+
+## Narrow profile v10 — geminate liquid coarticulation — 2026-11-27
+
+- Added an unselected [lʲ] candidate for a geminate ㄹㄹ lateral before high-front vocoids /i,j/ (e.g. the /ll/ sequence in `빨리`). Crosby & Dalola (2021) measured mean F2 approximately 254.49 Hz higher for laterals before high-front vocoids and interpret this as coarticulatory palatalization; they also cite Kang (2017) for a palatal-lateral description before /i,j/.
+- The runtime does **not** replace the primary [l] and does not emit categorical [ʎ]. [lʲ] is a project-level candidate notation for gradient coarticulation, not a phone directly labeled in the study.
+- Python/browser implementations and tests are aligned; Narrow profile id/version is now `clippyfirst-korean-narrow-contextual-allophones-v10` / 10.
+- Remaining liquid TODOs: independent evidence for [ʎ] versus [lʲ] in specific lexical/morphological environments; nasalized/intermediate laterals; speaker-conditioned tap/lateral probability; actual pause/prosodic-boundary detection. The current text-only path must not infer these from spaces or spelling.
+
+
+## Verification ledger — code head 3f903696e64ea3f07fc9cfc280a86be2aa035030 — 2026-11-27
+
+| Task | Status | Evidence / acceptance boundary |
+|---|---|---|
+| Literature inventory and phenomenon coverage matrix | DONE_VERIFIED | Undermind review returned 177 relevant papers; primary source records and DOI evidence added/linked; scope and uncertainty are explicit. Review depth is mixed: several sources were inspected at article-text level, the broad inventory includes abstract/metadata synthesis. |
+| Narrow v10 deterministic variant layer | DONE_VERIFIED | Python and browser code aligned; coda [ɭ] variants and geminate [lʲ] candidate are optional/unselected; primary Broad/Narrow IPA strings unchanged by candidate generation. |
+| Python regression/data integrity | DONE_VERIFIED | Verify run 45993974610: Python regression and data integrity job success. |
+| Browser regression and production build | DONE_VERIFIED | Verify run 45993974610: 1,501 tests passed, 0 failed; Vite production build succeeded. |
+| Source register and test-case register extraction | DONE_VERIFIED | Exhaustive test-case register extraction run 45993974642 succeeded; source-register count/rights audit is covered by Python/JS regression job. |
+| Broad native-vs-g2pk diagnostic | DONE_VERIFIED (diagnostic only) | Run 45993974826, UGTPHON test split: 275 sentences / 2,702 paired tokens; native exact 52.7387%, CER 9.0130%; g2pk exact 53.0892%, CER 9.2328%. g2pk gains 0.3701 pp exact but CER worsens 0.2207 pp. This is broad/native-vs-g2pk, not Standard-vs-Narrow. |
+| External UGTPHON normalization diagnostic | DONE_VERIFIED (diagnostic only) | Run 45993974603: 2,627 paired tokens; exact 51.0468% → 51.2752%, CER 9.9689% → 9.8637%; 15 rescued, 0 lost. This is normalization retrieval, not Narrow IPA accuracy. |
+| Exact-head Standard vs Extended IPA A/B report | TODO / RUN_PENDING | Multi-engine workflow run 45995864350 is pending in GitHub Actions queue. No v10 A/B scores claimed yet. When available, interpret narrow exact/CER only as cross-layer agreement because the corpora are not narrow-IPA adjudicated. |
+| Morphology-consensus diagnostic | TODO / RUN_PENDING | Run 45993974781 still in progress; no result claimed. |
+| Independent narrow gold, rights-cleared audio, expert phonetic adjudication | BLOCKED | User cannot provide audio/expert labels; no independently adjudicated layer-matched narrow IPA gold or rights-cleared aligned audio in the current project. Acceptance requires speaker/dialect metadata, inter-annotator agreement, and separate broad/narrow labels. |
+| Prosody-conditioned F0/VOT/voice-quality and gradient vowel targets | BLOCKED / EVIDENCE_LIMITED | Text-only input cannot infer acoustic measurements or phrase boundaries. Keep these as audio/context-conditioned annotations; do not hallucinate deterministic IPA symbols. |
+| Ukrainian adapter changes | DEFERRED | Explicitly outside this Narrow IPA task; no adapter behavior changed. |
+| CharsiuG2P and NIKL metadata inventory optional jobs | DEFERRED / SKIPPED_BY_POLICY | Workflows skipped these jobs by policy; they were not passed. |
+
+**Verification scope:** Python/browser jobs above validate code integrity and parity, not phonetic truth. The [ɭ]/[lʲ] candidates are research-only and unselected. Standard/Broad IPA and Ukrainian adaptation remain unchanged. PR #511 is draft and stacked on PR #510; neither is merged. **Readiness: research prototype, not release-ready and not independently phonetic-certified.**
+
+
+## Benchmark variant-coverage instrumentation — 2026-11-27
+
+- Updated `scripts/benchmark_extended_ipa_ab.mjs` to emit `narrow_variant_diagnostics` separately from the layer's exact-match/CER report: eligible tokens, tokens with candidates, candidate coverage, total and mean candidate count, selected-candidate count, primary-IPA-difference count, counts by environment/evidence status, and inspectable examples.
+- This is explicitly **coverage/provenance telemetry, not an accuracy metric**. It prevents new unselected candidates [ɭ]/[lʲ] from being invisible to the benchmark while avoiding false claims that more variants mean more correct IPA.
+- Added `tests/benchmark_extended_ipa_ab.test.mjs` for candidate coverage, environment counts and zero selected candidates.
+- Current code verification: Python regression/data integrity passed; browser suite **1,501 passed / 0 failed**; Vite build passed. Verify run 45995863825 (and duplicate PR event run 45995851384) succeeded. Test-case register extraction 45995864170, external UGTPHON diagnostic 45995863818, paired native-vs-g2pk 45995864068, morphology-consensus 45995863822 and master artifacts 45995851438 succeeded.
+- Exact-head Standard-vs-Extended A/B workflow run **45995864350** remains pending with no jobs assigned as of 2026-11-27 12:07 UTC. Earlier queued A/B runs were cancelled by newer PR revisions. No v10 A/B scores are claimed. The latest code head tested is `a352dc1c64b60e245de0efe9e5cf7e50cc1e20a0`; subsequent handoff-only edits do not alter runtime code.
+
+## Narrow v11 — benchmark-driven /h/ correction — 2026-11-27
+
+**Code head at implementation:** `65e29f65574f4d8aaf09f9e7998f7c46831047fb`. **Profile:** `clippyfirst-korean-narrow-contextual-allophones-v11`. **Scope:** Narrow only; Broad/Standard and Ukrainian target adaptation remain unchanged.
+
+### Error analysis and correction
+
+- Inspected the paired Standard/Extended IPA artifact from run `45996355780` rather than treating the overall score as an opaque number. On the prior v10 output, UGTPHON Narrow was 69.5781% exact / 5.0063% CER (2,702 scored of 2,703); SIGMORPHON was 48.6974% exact / 10.7349% CER (998/999). These are cross-layer agreement diagnostics, not adjudicated Narrow accuracy.
+- Mismatch analysis exposed a high-impact systematic error: same-word intervocalic onset ㅎ was emitted as [ɸ] nearly regardless of the following vowel; medial ㅎ before /i,j/ was also left voiceless [ç]. The implementation conflated word-initial and word-medial allophones.
+- Corrected both Python and browser implementations: after a same-word open syllable, medial /h/ now uses [ʝ] before /i,j/, [ɣ] before /ɯ/, [β] before /o,u/, and [ɦ] before other vowels, following the page-77 contextual description in Shin, Kiaer & Cha (2012). Word-initial [ç]/[x] remains a separate branch. Post-sonorant weakening/deletion remains variable and is not collapsed to a single selected phone.
+- Added source-register row `SRC-SHIN-KIAER-CHA-2012`, Python and browser positive/negative tests, and bumped the Narrow profile to v11. Broad/Standard code paths are untouched.
+
+### Counterfactual replay (not yet CI acceptance evidence)
+
+Replayed the v11 contextual mapping against the saved v10 paired artifact, preserving all other predictions and corpus rows. This is a deterministic counterfactual over the existing report, not a fresh run and not independent gold adjudication:
+
+| Dataset | v10 exact (coverage-adjusted) | Simulated v11 exact (coverage-adjusted) | v10 CER | Simulated v11 CER |
+|---|---:|---:|---:|---:|
+| UGTPHON | 69.5523% | 71.8831% | 5.0063% | 4.6471% |
+| SIGMORPHON | 48.6486% | 50.2503% | 10.7349% | 10.2207% |
+
+The replay changes 94 scored UGTPHON tokens and 50 scored SIGMORPHON tokens. The exact-head v11 benchmark must reproduce the direction and actual metrics before this uplift is accepted. Corpus IPA conventions differ, so the result remains cross-layer agreement rather than proof of narrow phonetic truth.
+
+### Verification and blockers
+
+- v11 multi-engine benchmark run `46002146555` is pending/queued; no v11 CI scores claimed yet.
+- v11 verification run `46002146570` is queued; Python/browser tests and build remain pending.
+- Prior open Korean benchmark matrix run `45996355780` failed only when downloading K-SPAN v2.1 from Dataverse: both versioned bundle and pinned file endpoints returned HTTP 403 after retries. Earlier UGTPHON and SIGMORPHON benchmark tracks completed successfully. This is an external data-host access blocker, not an engine test failure.
+- Independent layer-matched Narrow IPA gold, rights-cleared audio and qualified speaker/dialect annotation remain BLOCKED. Do not tune on the held-out test references or claim linguistic certification.
+- PR #511 remains draft/open/stacked; no merge or release.
+
+**Next acceptance:** v11 Python/browser parity and regression pass; exact-head paired A/B artifact confirms actual scores; Broad unchanged; no regressions on existing negative controls. Then continue by ranking per-rule errors and validating candidate fixes on non-test/dev evidence before changing primary outputs.
+
+## Benchmark diagnostics and CI trigger correction — 2026-11-27
+
+- Added `summarizeNarrowErrorPatterns` to `scripts/benchmark_extended_ipa_ab.mjs`. The report now emits top normalized Unicode-codepoint substitutions, insertions and deletions, with token-level examples, separately from exact/CER and candidate-coverage summaries.
+- This is intentionally codepoint Levenshtein attribution, **not** a phonological-feature classifier. Combining marks and source-specific IPA conventions can create multiple codepoint edits; use the output to locate hypotheses for review, not as linguistic adjudication.
+- Added regression coverage for recurrent lateral [l]→[ɭ], medial [ɸ]→[ɦ], and length-mark insertion patterns.
+- Corrected the multi-engine workflow path filters so PR changes to `src/app/extended_ipa.js`, `scripts/benchmark_extended_ipa_ab.mjs`, and their dedicated Narrow tests trigger the paired A/B benchmark. Previously these browser-only Narrow and report changes could be missed by the PR path filter.
+- The first v11 run `46002146555` was cancelled before jobs were assigned; it is superseded by exact-head run `46002598778` (pending as of 2026-11-27 12:55 UTC). Verification run `46002598827` is queued. No v11 CI scores are claimed yet.
+- Current PR head: `da56c8c928cdcd40f1cddd3cf3e0c5e7c2ba8132`.
+
+## Current verification checkpoint — Narrow v11 — 2026-11-27
+
+**Latest code head:** `a6e9f3a8feace70566688a08ab3f14ba26095b0d`. **PR:** [#511](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/511), draft/open, stacked on #510.
+
+- Narrow profile v11 is implemented in both Python and browser runtime. The medial /h/ mapping derives the word-medial voiced counterparts in Shin, Kiaer & Cha (2012, Table 4.6, p.77) by pairing them with the word-initial vowel contexts in that table; this is an evidence-scoped deterministic mapping, not token-level acoustic measurement. Word-initial [ç]/[x] remains distinct; post-sonorant weakening remains unresolved.
+- Benchmark runner now emits top codepoint-level Levenshtein substitutions/insertions/deletions with examples. These are symbol-confusion diagnostics, not phonological-feature judgments.
+- Workflow path filters now include the browser Narrow runtime and paired Narrow A/B script/tests, so changes to those paths trigger the benchmark.
+- **Exact-head verification run 46003794829: Python regression/data integrity PASS; browser regression 1,503 passed / 0 failed; Vite production build PASS.** The NIKL metadata-only job was skipped by policy, not passed.
+- Exact-head v11 A/B run **46003794854** is still pending with no jobs assigned. Do not promote the counterfactual preview to a measured benchmark result.
+- Counterfactual replay over the saved v10 paired artifact estimates UGTPHON coverage-adjusted exact 69.5523% → 71.8831%, CER 5.0063% → 4.6471%; SIGMORPHON coverage-adjusted exact 48.6486% → 50.2503%, CER 10.7349% → 10.2207%. This is a saved-artifact simulation, not a fresh A/B run.
+- The open K-SPAN matrix remains BLOCKED: Dataverse v2.1 bundle and pinned file endpoints both returned HTTP 403 after retries. Other independent UGTPHON/SIGMORPHON diagnostics completed; no K-SPAN result is claimed.
+- Independent layer-matched Narrow IPA gold, rights-cleared audio and expert speaker/dialect adjudication remain BLOCKED. **Readiness remains research prototype, not release-ready or phonetic-certified.**
+
+## Current-head verification refresh — 2026-11-27 13:13 UTC
+
+**Current head:** `c068aa338b24fe338f1f8c2ae34c1a849bfd7161`.
+
+- Python regression/data-integrity job `140525476954`: **success**.
+- Browser test/build job `140525477259`: **success**, 1,503 tests passed, 0 failed; Vite production build completed and generated `dist/index.html` and `dist/system.html`.
+- UGTPHON pinned test split job `140525477215`: **success**, pinned 275-row test split and 1,976-row train split validated.
+- Paired native-vs-g2pk job `140525476998`: **success**; UGTPHON test 2,702 paired tokens: native exact 52.7387%, CER 9.0130%; g2pk exact 53.0892%, CER 9.2328%. Diagnostic only, not Narrow score.
+- Morphology-consensus job `140525476956`: **success**; strict exact 52.7387%, CER 9.0130%; consensus coverage 100%, exact 52.7192%, CER 9.0296%. One unique unresolved word resolved, three unique words changed; paired exact delta 0.0000, CER delta +0.000173 (worse). Keep consensus diagnostic-only; do not promote it into production.
+- Test-case register extraction job `140525482452`: **success**.
+- External UGTPHON Narrow A/B workflow `46004893594`: still pending with no job assigned as of 13:13 UTC. No v11 Narrow A/B result is available yet.
+- K-SPAN v2.1 Dataverse 403 blocker and absence of layer-matched independently adjudicated Narrow IPA/audio gold remain unchanged.
+
+The earlier verification attempt `46003159398` failed on stale test expectations and test-loader errors; the current-head verification supersedes it and is green. The source-register test now reflects 252 actual rows. Do not count the skipped official NIKL metadata inventory or Charsiu train-dev review as passes.
+
+## Current benchmark/verification refresh — 2026-11-27 18:55 UTC
+
+**Runtime + benchmark code head:** `9c03fd3b37834f5b347b4ff9f4ec4403548b32fd`. **Workflow path-filter follow-up:** `a5b0834ce709f9a8545c1bed9333dbea7387ca59`. PR #511 remains draft/open.
+
+- Exact-head verification run `46052641603`: Python regression/data integrity **PASS**; browser **1,505 passed / 0 failed**; Vite production build **PASS**; generated `dist/index.html` and `dist/system.html` checked. Official NIKL metadata-only job skipped by policy.
+- UGTPHON test split run `46052641446`: **PASS**, 275 test rows and 1,976 train rows validated.
+- Native-vs-g2pk paired diagnostic `46052641464`: **PASS**, 2,702 paired tokens. Native exact 52.7387%, CER 9.0130%; g2pk exact 53.0892%, CER 9.2328%. Exact +0.3701 pp for g2pk, but CER worsens +0.2207 pp. This is broad/native diagnostic, not Narrow accuracy.
+- Morphology-consensus diagnostic `46052641488`: **PASS**, strict and analyzer consensus coverage-adjusted exact both 52.7192%; strict CER 9.0130%, consensus CER 9.0303% on paired rows (delta +0.0173 pp, worse). One unresolved word resolved, three changed; zero exact wins, two higher-edit-distance outcomes. Keep diagnostic-only; do not promote.
+- Test-case register extraction `46052641452`: **PASS**.
+- The paired v11 Narrow A/B workflow `46052642003` was cancelled when a new branch revision arrived before jobs were assigned; it produced no score. The replacement exact-head run `46052932943` is pending, with no job assigned yet. No v11 score uplift is claimed.
+- A/B workflow filter review found that Narrow runtime/report/test paths had been added to the push filter but were missing from the pull-request filter. Added them to the PR filter and deduplicated the push list. Latest workflow-only head is `a5b0834ce709f9a8545c1bed9333dbea7387ca59`; new verification run `46052926139` is in progress and replacement benchmark `46052932943` is pending.
+- Prior head `fa43efed0fd7e822d2616fc3b5cd189f55fd3a28` failed verification due to an unmatched brace/syntax error in the browser Narrow /h/ branch and a brittle source-register row-count constant. The browser branch was rebuilt to match the Python context logic; the row-count test now derives the count from the canonical CSV rather than hard-coding it. Do not cite the failed run `46007932275` as an engine failure or successful verification.
+- K-SPAN v2.1 Dataverse HTTP 403 and absence of independent layer-matched Narrow IPA gold/audio/expert speaker annotation remain BLOCKED. Research-prototype status unchanged.
+
+## V10 artifact error review and candidate-oracle diagnostic — 2026-11-27 19:00 UTC
+
+Inspected the saved v10 A/B JSON artifact `standard-vs-extended-ipa-ab-45996355780` directly (2,703 UGTPHON occurrences; 999 SIGMORPHON occurrences). A Unicode-codepoint Levenshtein replay over the scored records surfaced the following largest symbol mismatches:
+
+- **UGTPHON:** `l → ɭ` 543 edits; `h → ɦ` 96; `ɸ → ɦ` 71; `s → ɕ` 62; then `l → ʎ` 33, `ʰ → x` 24, `ʰ → ç` 21, `ç → ʝ` 19.
+- **SIGMORPHON:** `l → ɭ` 189; length-mark insertion `∅ → ː` 131; `l → ʎ` 53; `n → ɲ` 41; `h → ɦ` 33; `ʌ → ː` 39 and `∅ → ɘ` 39; `ɸ → ɦ` 31.
+
+These are cross-layer string mismatches, **not** adjudicated phonetic errors. They show the biggest areas for investigation: coda lateral realization/IPA convention, word-medial /h/ voicing, vowel length/transcription conventions, and high-front lateral/nasal symbols. Do not select [ɭ], lengthen vowels, or alter /n,s/ based only on these held-out labels.
+
+V10 candidate diagnostics already had unselected [ɭ]/[lʲ] candidates on 901/2,703 UGTPHON tokens (33.33%; 1,073 candidates) and 332/999 SIGMORPHON tokens (33.23%; 390 candidates); zero candidates were selected. The high `l → ɭ` counts therefore motivate measuring candidate coverage rather than automatically promoting a speaker-/dialect-conditioned variant.
+
+Added `candidate_oracle_*` fields to the Narrow variant diagnostic. It counts how many scored tokens have an unselected candidate that exactly matches one corpus IPA variant, and reports the rescue count by environment. This is an **offline oracle upper bound only**, not accuracy or a runtime selection mechanism. A regression fixture verifies the oracle stays diagnostic-only. The current active multi-engine job predates this report extension; exact-head A/B run `46053424508` is queued to include it after the prior long benchmark finishes.
+
+Also aligned word-initial ㅎ rounded-vowel mapping with Shin, Kiaer & Cha (2012), Table 4.6: [ɸʷ] before /o,u/ (e.g. 후, 호), [x] before /ɯ/, [ç] before /i,j/, and [h] elsewhere; word-medial voiced counterparts remain separately mapped. These initial/medial branches have positive and negative Python/browser regression tests.
+
+## Candidate-oracle implementation verification and queued A/B correction — 2026-11-27 19:01 UTC
+
+- The new candidate-oracle diagnostic and regression test are present on code head `4acbec41a527f119eff9c9d19bd851504b0f52a2`.
+- Verification run `46053432498`: Python regression/data integrity **PASS**; browser **1,505 passed / 0 failed**; Vite production build **PASS**; `dist/index.html` and `dist/system.html` verified. NIKL metadata-only job skipped by policy.
+- The earlier replacement benchmark `46053424508` was cancelled before job assignment as a newer revision arrived. The currently active long multi-engine comparison `46052610441` runs the v11 runtime but predates the candidate-oracle report extension. Exact-head benchmark `46053548883` is pending and will include the candidate-oracle report once the active run releases the workflow concurrency slot.
+- Do not infer an A/B uplift from the v10 error replay or candidate-oracle metric. Wait for a completed paired v11 A/B artifact and inspect both datasets and per-symbol errors.
+
+## Version label correction and measured Narrow v12 benchmark — 2026-11-27 19:05 UTC
+
+Correction to earlier handoff/PR wording: the runtime code exercised by paired A/B run `46052610441` is **Narrow profile v12**, not v11. The Python registry and browser result both declare `clippyfirst-korean-narrow-contextual-allophones-v12`, `profile_version: 12`. Earlier messages called it v11 because the /h/ correction was first discussed under that working label; use the repository's actual v12 registry as canonical.
+
+Measured v12 paired result (same frozen rows as v10):
+- UGTPHON: 2,702 scored; Standard/Broad exact 52.7387%; Extended Narrow exact 72.2058%; Narrow CER 4.5519%. Relative to v10 Narrow exact 69.5781%: **+2.6277 pp**; CER 5.0063% → 4.5519% (**−0.4544 pp**).
+- SIGMORPHON: 998 scored; Standard/Broad exact 35.8717%; Extended Narrow exact 51.3026%; Narrow CER 9.9824%. Relative to v10 Narrow exact 48.6974%: **+2.6052 pp**; CER 10.7349% → 9.9824% (**−0.7525 pp**).
+- Paired exact outcomes: UGTPHON 71 improved / 0 regressed; SIGMORPHON 26 improved / 0 regressed. Per-token edit distance improved on 96 and 51 tokens respectively; no edit-distance regressions.
+- Standard/Broad vs Extended/Broad had zero prediction/status differences by contract. These metrics remain cross-layer corpus agreement, not independently adjudicated narrow phonetic accuracy.
+
+The paired A/B step and artifact upload succeeded in run `46052610441`; the overall long multi-engine workflow was still completing SIGMORPHON/open-matrix tracks at last check. Exact-head candidate-oracle A/B run `46053826131` is pending; it includes the new candidate-oracle diagnostic. Do not claim its output until it completes.
+
+## Narrow v13 candidate expansion and current-head verification — 2026-11-27 19:22 UTC
+
+**Current PR head:** `58fd71223ed311d50a49f7d18fd352c20339ca4c`. **Runtime profile:** `clippyfirst-korean-narrow-contextual-allophones-v13` in both Python and browser. PR #511 remains draft/open.
+
+- v13 adds only **unselected** same-word coda ㄴ candidates [ɲ] and [nj] before ㅈ/ㅉ/ㅊ, grounded as a secondary-description hypothesis from Lee (1996) as summarized by Kim (2011, p.23). The primary IPA string is unchanged; no coda-nasal candidate is selected at runtime. This remains evidence-limited because the cited passage is secondary and does not directly measure the exact coda-before-affricate environment.
+- The Python regression initially exposed a test typo: implementation and source describe [ɲ]/[nj], while one assertion attempted to retrieve [nʲ]. The test now checks the actually emitted [nj] candidate; runtime behavior was not weakened or changed.
+- A CSV integrity check found an unquoted comma-separated clause in the UCL thesis source-register row (14 fields instead of 12). The row was re-quoted; Python's source-register integrity test now passes.
+- Browser regression/build verification run `46055990603`: **1,506 passed, 0 failed**; Vite 8.3.1 production build **PASS**; generated `dist/index.html` and `dist/system.html` verified. Python regression/data-integrity job **PASS**. Official NIKL metadata-only job was skipped by policy, not passed.
+- UGTPHON split validation run `46055990649`: **PASS** (275 test rows, 1,976 train rows). Test-case register extraction run `46055990698`: **PASS**.
+- Native-vs-g2pk diagnostic run `46055990615`: 2,702 paired UGTPHON tokens; native exact 52.7387%, CER 9.0130%; g2pk exact 53.0892%, CER 9.2328%. This is the broad/native comparison, not a Narrow score.
+- Morphology-consensus diagnostic run `46055990654`: coverage-adjusted exact unchanged at 52.7192%; CER worsened from 9.0130% to 9.0303%; one unique word resolved, three changed, zero exact wins and two higher-edit-distance outcomes. Keep analyzer consensus diagnostic-only.
+- Exact v13 paired multi-engine/A-B workflow `46055641802` is active at the multi-engine comparison stage (UGTPHON/SIGMORPHON engine portfolio, then paired Standard-vs-Extended IPA, then open matrix and aggregate report). It runs Narrow v13 code at head `61bfaee9443b4639ceceb525354f1f8087ea50b8`; later commits up to `58fd712` changed only the CSV quoting and tests, not runtime or benchmark logic. **No v13 A/B scores are available yet.** Candidate-oracle metrics, when produced, are an offline upper bound against corpus labels, not accuracy and not a runtime selection mechanism.
+- The earlier v12 paired result remains the latest measured primary Narrow result until v13 A/B completes: UGTPHON 72.2058% exact / 4.5519% CER (2,702 scored); SIGMORPHON 51.3026% exact / 9.9824% CER (998 scored). v13's candidate-only change should not alter those primary scores.
+- K-SPAN v2.1 Dataverse 403 access blocker and lack of independent layer-matched Narrow IPA/audio gold and expert speaker/dialect adjudication remain BLOCKED. Status remains research prototype; not release-ready or phonetic-certified.
+
+## v13 paired benchmark completed; v14 release-variation candidate — 2026-11-27
+
+### v13 exact-head paired A/B evidence
+
+Run `46055641802` completed the paired Standard-vs-Extended IPA report and uploaded artifact `standard-vs-extended-ipa-ab-46055641802` (artifact ID `15226349068`). The overall workflow concluded **failure** only at the later open Korean benchmark matrix (K-SPAN Dataverse HTTP 403); do not label the entire workflow successful.
+
+| Dataset | Standard/Broad exact | Extended Narrow exact | Narrow CER | Coverage |
+|---|---:|---:|---:|---:|
+| UGTPHON | 52.7387% | 72.2058% | 4.5519% | 2,702 / 2,703 |
+| SIGMORPHON | 35.8717% | 51.3026% | 9.9824% | 998 / 999 |
+
+Extended Broad equals Standard by design and was asserted. Extended Narrow is still **cross-layer agreement**, not measured narrow-IPA accuracy: neither corpus supplies independent layer-matched narrow gold.
+
+Unselected candidate diagnostics:
+- UGTPHON: 996/2,703 tokens (36.85%) with candidates; 1,309 candidates; candidate-oracle exact 84.715% versus primary 72.2058%, 338 tokens rescued.
+- SIGMORPHON: 362/999 (36.24%) with candidates; 476 candidates; candidate-oracle exact 63.0261% versus primary 51.3026%, 117 rescued.
+- Zero candidates were selected. The oracle is only an offline upper bound against corpus IPA labels, not accuracy and not a runtime selection policy.
+- UGTPHON oracle rescues were coda ㄹ before same-word consonants (130) and word-final coda ㄹ (208). SIGMORPHON rescues were coda ㄹ before consonants (45), word-final coda ㄹ (47), and coda ㄴ before alveopalatal affricates (25). The latter candidate had no UGTPHON oracle rescues, reinforcing corpus/convention dependence.
+- Top normalized codepoint mismatches included `l → ɭ` (543 UGTPHON; 189 SIGMORPHON), `h → ɦ` (96; 33), `s → ɕ` (62; 12), and SIGMORPHON `n → ɲ` (41). These are edit diagnostics, not phonological-feature adjudications. The source-backed coda [ɭ] alternatives remain unselected because speaker/dialect/style are unknown.
+
+### v13 workflow acceptance and blocker
+
+- Multi-engine comparison, per-fragment mismatch ledger, Browser Kozak Kim UGTPHON, paired Standard-vs-Extended IPA report, mode availability, native/browser parity, SIGMORPHON engine portfolio, SIGMORPHON Browser three-mode benchmark and regression suite: **PASS**.
+- Open matrix step `Run open Korean benchmark matrix (Seoul, K-SPAN, IPA-Dict)` failed before processing the matrix because Dataverse returned HTTP 403 for K-SPAN metadata after retries. Seoul/K-SPAN/IPA-Dict scores were therefore not produced; aggregate summary was skipped. Artifact upload of the already-completed A/B report succeeded.
+- No external engine was promoted into runtime; comparisons remain diagnostics.
+
+### Narrow v14 implementation — optional coda release alternatives
+
+- v13 mismatch attribution showed recurring deletion of the unreleased diacritic `̚`, but inspected examples were mainly preconsonantal. We deliberately did **not** generalize release alternatives to those contexts.
+- v14 adds optional, unselected released [p,t,k] alternatives only for word-final codas whose primary broad-derived output is [p̚,t̚,k̚]. This preserves the existing primary output and does not claim every token is released.
+- Evidence: Lee (1993, p.31) illustrates unreleased coda stops; Kim & Jongman (1996) found a brief burst after 83% of word-final stops in a four-speaker sample; Cha (2026) reports task/place-dependent production traces but no burst frequency. Thus the candidate is deliberately limited and never selected from spelling alone.
+- The source register now includes Kim & Jongman (1996) and Cha (2026), and tests cover ㄱ/ㄲ/ㅋ, ㄷ/ㅅ and ㅂ codas plus complex ㄺ/ㅄ codas, with a nonfinal negative control.
+- Current runtime profile is `clippyfirst-korean-narrow-contextual-allophones-v14`. Current code head when this note was prepared: `53ae4a48a2893f944e320bb08a1d3e625cfb1ca6`. v14 verification run `46058419570` completed: Python regression/data integrity **PASS**, browser suite **1,507/1,507 PASS**, source redistribution-rights gate **PASS**, production build and generated-page verification **PASS**. Source register has 255 structurally valid rows. Exact v14 paired multi-engine/A-B run `46058419641` remains pending; no v14 score is claimed yet.

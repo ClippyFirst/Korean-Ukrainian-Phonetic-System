@@ -42,6 +42,54 @@ test('narrow /s/ and /n/ retain the currently source-scoped contextual restricti
   assert.equal(extended('니').layers.narrow.ipa, 'ni');
 });
 
+
+test('ㅟ exposes position-conditioned glide variants and ㅅ+ㅟ iterative palatalization', () => {
+  const initial = extended('위');
+  assert.equal(initial.layers.narrow.ipa, 'y');
+  const initialVariant = initial.variants.find(item => item.layer === 'narrow' && item.ipa === 'wi');
+  assert.ok(initialVariant);
+  assert.equal(initialVariant.selected, false);
+  assert.equal(initialVariant.evidence_status, 'source-scoped-position-conditioned-variant-only');
+
+  const postconsonantal = extended('귀');
+  assert.equal(postconsonantal.layers.narrow.ipa, 'ky');
+  const glideVariant = postconsonantal.variants.find(item => item.layer === 'narrow' && item.ipa === 'kɥi');
+  assert.ok(glideVariant);
+  assert.equal(glideVariant.selected, false);
+
+  const interaction = extended('쉽다');
+  assert.equal(interaction.layers.narrow.ipa, 'sʰyp̚.t͈a');
+  const combined = interaction.variants.find(item => item.layer === 'narrow' && item.ipa === 'ɕʰɥip̚.t͈a');
+  assert.ok(combined);
+  assert.equal(combined.selected, false);
+  assert.equal(combined.evidence_status, 'source-scoped-iterative-palatalization-candidate-only');
+  assert.ok(combined.evidence_refs.includes('https://doi.org/10.1017/9781108292351'));
+});
+
+
+test('geminate lateral exposes cited [ʎ] and a combined [ɭ.ʎ] interaction hypothesis', () => {
+  const result = extended('올린');
+  assert.equal(result.layers.narrow.ipa, 'ol.lin');
+  const palatal = result.variants.find(item => item.layer === 'narrow' && item.ipa === 'ol.ʎin');
+  assert.ok(palatal);
+  assert.equal(palatal.selected, false);
+  assert.equal(palatal.evidence_status, 'source-cited-palatal-lateral-variant-only');
+  const combined = result.variants.find(item => item.layer === 'narrow' && item.ipa === 'oɭ.ʎin');
+  assert.ok(combined);
+  assert.equal(combined.selected, false);
+  assert.equal(combined.evidence_status, 'source-scoped-interaction-hypothesis-only');
+});
+
+test('liquid assimilation plus geminate palatalization exposes an unselected [ʎ.ʎ] hypothesis', () => {
+  const result = extended('관리자');
+  assert.equal(result.layers.narrow.ipa, 'kwal.li.dʑa');
+  const candidate = result.variants.find(item => item.layer === 'narrow' && item.ipa === 'kwaʎ.ʎi.dʑa');
+  assert.ok(candidate);
+  assert.equal(candidate.selected, false);
+  assert.equal(candidate.evidence_status, 'source-scoped-geminate-palatalization-interaction-hypothesis-only');
+  assert.deepEqual(candidate.source_span, { start: 0, end: 2 });
+});
+
 test('post-sonorant /h/ is unresolved variation while the default remains [h]', () => {
   const result = extended('안하');
   assert.equal(result.layers.narrow.ipa, 'an.ha');
@@ -58,8 +106,37 @@ test('high-front [ç] realization retains the separate post-sonorant variation t
   assert.ok(h.rule_ids.includes('narrow-h-sonorant-variation-unresolved'));
 });
 
+test('word-medial /h/ uses vowel-conditioned voiced allophones while word-initial /h/ stays voiceless', () => {
+  assert.equal(extended('아하').layers.narrow.ipa, 'a.ɦa');
+  assert.equal(extended('아히').layers.narrow.ipa, 'a.ʝi');
+  assert.equal(extended('으흐').layers.narrow.ipa, 'ɯ.ɣɯ');
+  assert.equal(extended('오호').layers.narrow.ipa, 'o.βo');
+  assert.equal(extended('하').layers.narrow.ipa, 'ha');
+  assert.equal(extended('히').layers.narrow.ipa, 'çi');
+  assert.equal(extended('후').layers.narrow.ipa, 'ɸʷu');
+  const initialRounded = extended('후').trace.find(item => item.source === '후' && item.layer === 'narrow');
+  assert.ok(initialRounded.rule_ids.includes('narrow-h-rounded-allophone'));
+  assert.ok(initialRounded.evidence_refs.some(ref => ref.includes('CBO9781139342858.006')));
+  assert.equal(extended('호').layers.narrow.ipa, 'ɸʷo');
+  assert.equal(extended('흐').layers.narrow.ipa, 'xɯ');
+  assert.equal(extended('아후').layers.narrow.ipa, 'a.βu');
+  assert.equal(extended('아 후').layers.narrow.ipa, 'a ɸʷu');
+  const h = extended('아히').trace.find(item => item.source === '히' && item.layer === 'narrow');
+  assert.ok(h.rule_ids.includes('narrow-h-intervocalic-allophone'));
+  assert.ok(h.evidence_refs.some(ref => ref.includes('CBO9781139342858.006')));
+});
+
+test('post-sonorant /h/ retains place coarticulation but does not force voicing', () => {
+  const result = extended('감히');
+  assert.equal(result.layers.narrow.ipa, 'kam.çi');
+  const h = result.trace.find(item => item.source === '히' && item.layer === 'narrow');
+  assert.ok(h.rule_ids.includes('narrow-h-palatal-allophone'));
+  assert.ok(h.rule_ids.includes('narrow-h-sonorant-variation-unresolved'));
+  assert.match(h.environment, /weakening\/voicing\/deletion remains variable/);
+});
+
 test('narrow /h/ and liquid assimilation remain explicitly context-bound', () => {
-  assert.equal(extended('아하').layers.narrow.ipa, 'a.ɸa');
+  assert.equal(extended('아하').layers.narrow.ipa, 'a.ɦa');
   assert.equal(extended('나라').layers.narrow.ipa, 'na.ɾa');
   assert.equal(extended('다리').layers.narrow.ipa, 'ta.ɾi');
   assert.equal(extended('물론').layers.narrow.ipa, 'mul.lon');
@@ -139,4 +216,76 @@ test('browser phonemic adapter preserves underlying codas rather than neutralizi
   assert.equal(phonemicIpaFromHangul('시 나').ipa, 'si na');
   assert.equal(phonemicIpaFromHangul('시!').ipa, 'si!');
   assert.equal(phonemicIpaFromHangul('유사성').ipa, 'juː.sa.sʌŋ');
+});
+
+
+test('browser exposes coda retroflexion as an unselected speaker-conditioned variant', () => {
+  const result = extended('팔');
+  assert.equal(result.layers.narrow.ipa, 'pʰal');
+  const variant = result.variants.find(item => item.layer === 'narrow' && item.ipa === 'pʰaɭ');
+  assert.ok(variant);
+  assert.equal(variant.selected, false);
+  assert.equal(variant.evidence_status, 'speaker-conditioned-sociophonetic-variant-only');
+  assert.ok(variant.evidence_refs.some(ref => ref.includes('10.20405/kl.2024.02.102.63')));
+  assert.match(variant.environment, /word-final coda ㄹ/);
+});
+
+
+test('browser exposes an unselected preconsonantal coda retroflex variant', () => {
+  const result = extended('물론');
+  assert.equal(result.layers.narrow.ipa, 'mul.lon');
+  const variant = result.variants.find(item => item.layer === 'narrow' && item.ipa === 'muɭ.lon');
+  assert.ok(variant);
+  assert.equal(variant.selected, false);
+  assert.equal(variant.evidence_status, 'speaker-conditioned-sociophonetic-variant-only');
+  assert.match(variant.environment, /before same-word consonant/);
+
+  const preH = extended('말하');
+  assert.equal(preH.layers.narrow.ipa, 'mal.ha');
+  const preHVariant = preH.variants.find(item => item.layer === 'narrow' && item.ipa === 'maɭ.ha');
+  assert.ok(preHVariant);
+  assert.equal(preHVariant.selected, false);
+  assert.match(preHVariant.environment, /before same-word onset ㅎ/);
+});
+
+
+test('browser exposes an unselected coarticulatory palatalization candidate for geminate /l/ before /i/', () => {
+  const result = extended('빨리');
+  assert.equal(result.layers.narrow.ipa, 'p͈al.li');
+  const variant = result.variants.find(item => item.layer === 'narrow' && item.ipa === 'p͈al.lʲi');
+  assert.ok(variant);
+  assert.equal(variant.selected, false);
+  assert.equal(variant.evidence_status, 'gradient-coarticulation-candidate-variant-only');
+  assert.ok(variant.evidence_refs.some(ref => ref.includes('10.3765/plsa.v6i1.5002')));
+});
+
+
+test('word-final coda stops expose optional unreleased candidates without changing primary IPA', () => {
+  for (const [word, primary, candidate] of [['낫', 'nat̚', 'nat'], ['밖', 'pak̚', 'pak'], ['밥', 'pap̚', 'pap'], ['닭', 'tak̚', 'tak'], ['값', 'kap̚', 'kap']]) {
+    const result = extended(word);
+    assert.equal(result.layers.narrow.ipa, primary);
+    assert.equal(result.layers.broad.ipa, primary);
+    const variant = result.variants.find(item => item.layer === 'narrow' && item.ipa === candidate);
+    assert.ok(variant, word + ' should expose ' + candidate);
+    assert.equal(variant.selected, false);
+    assert.equal(variant.evidence_status, 'source-scoped-release-variation-candidate-only');
+    assert.ok(variant.evidence_refs.some(ref => ref.includes('10.1006/JPHO.1996.0016')));
+    assert.ok(variant.evidence_refs.some(ref => ref.includes('10.13064/ksss.2026.18.1.021')));
+  }
+  const nonfinal = extended('낫다');
+  assert.ok(!nonfinal.variants.some(item => item.evidence_status === 'source-scoped-release-variation-candidate-only'));
+});
+
+test('coda /n/ before alveopalatal affricates exposes optional palatal candidates without changing primary IPA', () => {
+  const result = extended('군주');
+  assert.equal(result.layers.narrow.ipa, 'kun.dʑu');
+  const palatal = result.variants.find(item => item.layer === 'narrow' && item.ipa === 'kuɲ.dʑu');
+  const palatalized = result.variants.find(item => item.layer === 'narrow' && item.ipa === 'kunj.dʑu');
+  assert.ok(palatal);
+  assert.ok(palatalized);
+  assert.equal(palatal.selected, false);
+  assert.equal(palatalized.selected, false);
+  assert.equal(palatal.evidence_status, 'secondary-description-candidate-only');
+  assert.equal(palatalized.evidence_status, 'secondary-description-candidate-only');
+  assert.ok(palatal.evidence_refs.some(ref => ref.includes('1324541')));
 });
