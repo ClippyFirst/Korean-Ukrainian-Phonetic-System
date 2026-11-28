@@ -2779,3 +2779,12 @@ Interpretation limits:
 - Independent, layer-matched Narrow IPA/audio gold and expert speaker/dialect adjudication: **BLOCKED**; acceptance requires licensed audio or independently reviewed speaker-labelled narrow IPA annotations.
 - Neural comparison: **DEFERRED/SKIPPED** by workflow conditions; no model outputs were used.
 - Release readiness: **not release-ready / research prototype**. Passing software CI does not certify phonetic correctness, narrow IPA accuracy, or Ukrainian target quality.
+
+
+
+### Supplemental blocker fallback regression added and verified — 2026-11-28
+
+- Added an end-to-end unit test for `run_open_korean_benchmark_ci.main()`: when the optional supplemental matrix raises `ExternalSourceUnavailable(HTTP 403)`, the runner writes a machine-readable `BLOCKED_EXTERNAL_SOURCE` status, records that no supplemental scores were produced, and exits successfully so already-completed core benchmarks remain valid.
+- Exact code/test head `cf1d7a1e8e34401b452c0a58146b1db06265d35e`, system verification run [46127584454](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/46127584454): Python regression/data integrity **PASS** (including the new end-to-end test); Browser regression, source redistribution-rights gate, production build and generated-page verification **PASS**. Official NIKL metadata-only inventory **SKIPPED by policy**.
+- The multi-engine benchmark rerun on this test-only head was queued behind the prior long-running comparison. The benchmark itself already completed successfully on source-identical head `9ea66677e1a70ddf87d7dbcc43a770e1e18d0622` (run 46081938091). No engine source changed in `cf1d7a1`; it adds test coverage only.
+- Current branch status: implementation/tests verified; supplemental K-SPAN key-vs-WorldBet audit remains evidence-limited as described above; audio-backed Narrow IPA adjudication remains blocked.
